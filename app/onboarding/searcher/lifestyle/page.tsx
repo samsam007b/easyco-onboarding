@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation'; import Stepper from '@/components/Stepper'; import { track } from '@/lib/analytics';
 const OPTIONS=['non-smoker','quiet','pet-friendly','remote-worker','early-bird','night-owl'];
 export default function LifestyleStep(){ const r=useRouter();
-  const toggle=(k:string)=>{ const current=new Set<string>(JSON.parse(localStorage.getItem('lifestyle')||'[]')); current.has(k)?current.delete(k):current.add(k); localStorage.setItem('lifestyle',JSON.stringify([...current])); };
+  const toggle=(k:string)=>{ const current=new Set<string>(JSON.parse(localStorage.getItem('lifestyle')||'[]')); current.has(k)?current.delete(k):current.add(k); localStorage.setItem('lifestyle', JSON.stringify(Array.from(current)));
   const next=()=>{ track('lifestyle_done',{lifestyle: JSON.parse(localStorage.getItem('lifestyle')||'[]')}); r.push('/onboarding/searcher/review'); };
   const selected: string[] = JSON.parse(localStorage.getItem('lifestyle')||'[]');
   return (<main className="max-w-3xl mx-auto p-6 space-y-6">
