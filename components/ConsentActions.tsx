@@ -1,15 +1,20 @@
 // components/ConsentActions.tsx
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { safeLocalStorage } from '../lib/browser'; // <-- relatif (components -> lib)
+import { safeLocalStorage } from '@/lib/browser';
 
-export default function ConsentActions({ nextHref = '/onboarding/searcher' }: { nextHref?: string }) {
+interface ConsentActionsProps {
+  source?: string;
+  nextHref?: string;
+}
+
+export default function ConsentActions({ source = 'unknown', nextHref = '/onboarding/searcher' }: ConsentActionsProps) {
   const router = useRouter();
 
   const accept = () => {
     safeLocalStorage.set('consent', 'accepted');
+    safeLocalStorage.set('source', source);
     router.push(nextHref);
   };
 
@@ -20,8 +25,8 @@ export default function ConsentActions({ nextHref = '/onboarding/searcher' }: { 
 
   return (
     <main className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Consent</h1>
-      <p className="text-sm text-gray-500">source: landing</p>
+      <h1 className="text-2xl font-semibold">Consentement</h1>
+      <p className="text-sm text-gray-500">Source: {source}</p>
 
       <p>
         Nous avons besoin de votre accord pour lancer le test utilisateur.
@@ -29,16 +34,12 @@ export default function ConsentActions({ nextHref = '/onboarding/searcher' }: { 
       </p>
 
       <div className="flex items-center gap-3">
-        <button onClick={accept} className="px-4 py-2 rounded-xl bg-[color:var(--easy-purple)] text-white">
+        <button onClick={accept} className="px-4 py-2 rounded-xl bg-[color:var(--easy-purple)] text-white hover:opacity-90 transition">
           Démarrer le test
         </button>
-        <button onClick={decline} className="px-4 py-2 rounded-xl border">
+        <button onClick={decline} className="px-4 py-2 rounded-xl border hover:bg-gray-50 transition">
           Annuler
         </button>
-        {/* Si tu préfères des liens, tu peux garder ceux-ci :
-        <Link href="/onboarding/searcher/budget" className="px-4 py-2 rounded-xl bg-[color:var(--easy-purple)] text-white">Démarrer le test</Link>
-        <Link href="/" className="px-4 py-2 rounded-xl border">Annuler</Link>
-        */}
       </div>
     </main>
   );
