@@ -1,20 +1,28 @@
 // lib/browser.ts
-export const isBrowser = () => typeof window !== 'undefined';
-
 export const safeLocalStorage = {
-  get<T = unknown>(key: string, fallback: T): T {
-    if (!isBrowser()) return fallback;
+  get<T>(key: string, fallback: T): T {
     try {
-      const raw = localStorage.getItem(key);
+      if (typeof window === 'undefined') return fallback;
+      const raw = window.localStorage.getItem(key);
       return raw ? (JSON.parse(raw) as T) : fallback;
     } catch {
       return fallback;
     }
   },
-  set(key: string, value: unknown) {
-    if (!isBrowser()) return;
+  set<T>(key: string, value: T) {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch {}
+      if (typeof window === 'undefined') return;
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      /* no-op */
+    }
+  },
+  remove(key: string) {
+    try {
+      if (typeof window === 'undefined') return;
+      window.localStorage.removeItem(key);
+    } catch {
+      /* no-op */
+    }
   },
 };
