@@ -7,8 +7,11 @@ const __dirname = path.dirname(__filename)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+
+  // Configuration Webpack pour les alias
   webpack: (config) => {
-    // aligne Webpack sur l'alias TS: "@/..." pointe vers la racine du repo
+    // permet d’utiliser '@/...' pour référencer la racine du projet
     config.resolve.alias['@'] = path.resolve(__dirname)
     return config
   },
