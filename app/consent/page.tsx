@@ -1,7 +1,8 @@
 // app/consent/page.tsx
-import ConsentActions from '@/components/ConsentActions';
+import ConsentActions from '../components/ConsentActions'; // <-- relatif
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 export default function ConsentPage({
   searchParams,
