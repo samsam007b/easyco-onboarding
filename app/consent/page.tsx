@@ -1,10 +1,14 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { safeLocalStorage } from '@/lib/browser';
-import Link from 'next/link';
 
-export default function ConsentPage() {
+// Empêche le prerender statique (réglé au build)
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
+function ConsentInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const source = searchParams.get('source') ?? 'direct';
@@ -13,11 +17,10 @@ export default function ConsentPage() {
     try {
       safeLocalStorage.set('consent', { source, at: Date.now() });
     } catch {}
-    router.push('/onboarding/searcher'); // on démarre l’onboarding
+    router.push('/onboarding/searcher'); // démarrer le flow
   };
 
   const decline = () => {
-    // libre à toi de rediriger ailleurs
     router.push('/');
   };
 
@@ -30,9 +33,8 @@ export default function ConsentPage() {
 
       <section className="space-y-3">
         <p>
-          En cliquant sur « J’accepte », vous autorisez le stockage
-          local (localStorage) pour mémoriser vos réponses pendant le test
-          d’onboarding (budget, localisation, lifestyle, etc.).
+          En cliquant sur « J’accepte », vous autorisez l’usage du
+          stockage local pour mémoriser vos réponses d’onboarding.
         </p>
 
         <div className="flex gap-3">
@@ -49,13 +51,17 @@ export default function ConsentPage() {
           >
             Je refuse
           </button>
-
-          {/* lien alternatif si jamais (debug) */}
-          <Link href="/onboarding/searcher" className="px-4 py-2 underline">
-            Continuer sans consentement (debug)
-          </Link>
         </div>
       </section>
     </main>
+  );
+}
+
+export default function ConsentPage() {
+  // ⬇️ Répond à l’exigence “useSearchParams must be wrapped in Suspense”
+  return (
+    <Suspense fallback={<main className="p-6">Chargement…</main>}>
+      <ConsentInner />
+    </Suspense>
   );
 }
