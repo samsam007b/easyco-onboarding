@@ -1,5 +1,5 @@
 // app/consent/page.tsx
-import ConsentActions from '../components/ConsentActions'; // <-- relatif
+import ConsentActions from '@/components/ConsentActions';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
