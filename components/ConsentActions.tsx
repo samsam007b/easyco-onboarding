@@ -9,7 +9,7 @@ interface ConsentActionsProps {
   nextHref?: string;
 }
 
-export default function ConsentActions({ source = 'unknown', nextHref = '/onboarding/searcher' }: ConsentActionsProps) {
+export default function ConsentActions({ source = 'unknown', nextHref = '/onboarding/searcher/basic-info' }: ConsentActionsProps) {
   const router = useRouter();
 
   const accept = () => {
