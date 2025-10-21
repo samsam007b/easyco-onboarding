@@ -25,11 +25,11 @@ export default function BasicInfoPage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('basicInfo', JSON.stringify({
+    safeLocalStorage.set('basicInfo', {
       dateOfBirth,
       nationality,
       languages,
-    }));
+    });
 
     // Navigate to next step
     router.push('/onboarding/searcher/daily-habits');
