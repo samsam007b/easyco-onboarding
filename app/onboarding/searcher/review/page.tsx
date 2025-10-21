@@ -25,15 +25,32 @@ export default function ReviewPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      // Prepare lifestyle array from collected data
+      const lifestyleArray = [
+        data.dailyHabits?.isSmoker ? 'smoker' : 'non-smoker',
+        data.homeLifestyle?.cleanliness || '',
+        data.homeLifestyle?.hasPets ? 'has-pets' : 'no-pets',
+        data.socialVibe?.socialEnergy || '',
+      ].filter(Boolean);
+
       const { error } = await supabase.from('test_onboardings').insert([{
         tester_id: data.testerId,
         budget_min: data.preferences?.budgetMin || null,
         budget_max: data.preferences?.budgetMax || null,
         areas: data.preferences?.preferredDistrict || null,
-        lifestyle: JSON.stringify(data),
+        move_in_date: null, // Can be added in preferences later
+        lifestyle: lifestyleArray,
       }]);
 
       if (error) throw error;
+
+      // Clear localStorage after successful submission
+      safeLocalStorage.remove('basicInfo');
+      safeLocalStorage.remove('dailyHabits');
+      safeLocalStorage.remove('homeLifestyle');
+      safeLocalStorage.remove('socialVibe');
+      safeLocalStorage.remove('preferences');
+
       router.push('/onboarding/searcher/success');
     } catch (err: any) {
       alert('Error: ' + err.message);
