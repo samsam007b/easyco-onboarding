@@ -12,12 +12,12 @@ export default function ReviewPage() {
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
-    const basicInfo = JSON.parse(safeLocalStorage.get('basicInfo') || '{}');
-    const dailyHabits = JSON.parse(safeLocalStorage.get('dailyHabits') || '{}');
-    const homeLifestyle = JSON.parse(safeLocalStorage.get('homeLifestyle') || '{}');
-    const socialVibe = JSON.parse(safeLocalStorage.get('socialVibe') || '{}');
-    const preferences = JSON.parse(safeLocalStorage.get('preferences') || '{}');
-    const testerId = safeLocalStorage.get('tester_id') || null;
+    const basicInfo = safeLocalStorage.get('basicInfo', {});
+    const dailyHabits = safeLocalStorage.get('dailyHabits', {});
+    const homeLifestyle = safeLocalStorage.get('homeLifestyle', {});
+    const socialVibe = safeLocalStorage.get('socialVibe', {});
+    const preferences = safeLocalStorage.get('preferences', {});
+    const testerId = safeLocalStorage.get('tester_id', null);
 
     setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, preferences, testerId });
   }, []);
