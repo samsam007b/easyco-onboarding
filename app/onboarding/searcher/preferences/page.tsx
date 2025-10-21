@@ -15,13 +15,13 @@ export default function PreferencesPage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('preferences', JSON.stringify({
+    safeLocalStorage.set('preferences', {
       budgetMin: budgetMin ? parseInt(budgetMin) : null,
       budgetMax: budgetMax ? parseInt(budgetMax) : null,
       preferredDistrict,
       openToLivingWithPets,
       acceptSmokersInHouse,
-    }));
+    });
 
     // Navigate to review
     router.push('/onboarding/searcher/review');

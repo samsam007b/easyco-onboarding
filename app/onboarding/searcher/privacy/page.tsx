@@ -14,13 +14,13 @@ export default function PrivacyPage() {
 
   const handleFinish = () => {
     // Save privacy consents
-    safeLocalStorage.set('privacy', JSON.stringify({
+    safeLocalStorage.set('privacy', {
       acceptTerms,
       readPrivacy,
       consentData,
       agreeMatching,
       timestamp: new Date().toISOString(),
-    }));
+    });
 
     // Navigate to preferences (budget, location, etc.)
     router.push('/onboarding/searcher/preferences');

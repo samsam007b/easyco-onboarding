@@ -16,14 +16,14 @@ export default function HomeLifestylePage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('homeLifestyle', JSON.stringify({
+    safeLocalStorage.set('homeLifestyle', {
       cleanliness,
       guestFrequency,
       musicHabits,
       hasPets,
       petType: hasPets ? petType : null,
       cookingFrequency,
-    }));
+    });
 
     // Navigate to next step
     router.push('/onboarding/searcher/social-vibe');
