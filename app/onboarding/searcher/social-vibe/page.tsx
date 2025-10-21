@@ -14,12 +14,12 @@ export default function SocialVibePage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('socialVibe', JSON.stringify({
+    safeLocalStorage.set('socialVibe', {
       socialEnergy,
       opennessToSharing,
       communicationStyle,
       culturalOpenness,
-    }));
+    });
 
     // Navigate to next step
     router.push('/onboarding/searcher/privacy');

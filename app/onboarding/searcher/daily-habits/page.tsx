@@ -15,13 +15,13 @@ export default function DailyHabitsPage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('dailyHabits', JSON.stringify({
+    safeLocalStorage.set('dailyHabits', {
       wakeUpTime,
       sleepTime,
       workSchedule,
       sportFrequency,
       isSmoker,
-    }));
+    });
 
     // Navigate to next step
     router.push('/onboarding/searcher/home-lifestyle');
