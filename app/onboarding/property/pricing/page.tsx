@@ -12,7 +12,7 @@ export default function PropertyPricing() {
   const [availableFrom, setAvailableFrom] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('propertyPricing', {});
+    const saved = safeLocalStorage.get('propertyPricing', {}) as any;
     if (saved.monthlyRent) setMonthlyRent(saved.monthlyRent);
     if (saved.securityDeposit) setSecurityDeposit(saved.securityDeposit);
     if (saved.availableFrom) setAvailableFrom(saved.availableFrom);
