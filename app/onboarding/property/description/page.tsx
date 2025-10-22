@@ -10,7 +10,7 @@ export default function PropertyDescription() {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('propertyDescription', {});
+    const saved = safeLocalStorage.get('propertyDescription', {}) as any;
     if (saved.description) setDescription(saved.description);
   }, []);
 

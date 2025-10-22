@@ -12,7 +12,7 @@ export default function OwnerBasicInfo() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('ownerBasicInfo', {});
+    const saved = safeLocalStorage.get('ownerBasicInfo', {}) as any;
     if (saved.firstName) setFirstName(saved.firstName);
     if (saved.lastName) setLastName(saved.lastName);
     if (saved.email) setEmail(saved.email);
