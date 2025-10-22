@@ -15,7 +15,7 @@ export default function PropertyBasics() {
   const [bathrooms, setBathrooms] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('propertyBasics', {});
+    const saved = safeLocalStorage.get('propertyBasics', {}) as any;
     if (saved.propertyType) setPropertyType(saved.propertyType);
     if (saved.address) setAddress(saved.address);
     if (saved.city) setCity(saved.city);

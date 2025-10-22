@@ -12,7 +12,7 @@ export default function OwnerAbout() {
   const [hostingExperience, setHostingExperience] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('ownerAbout', {});
+    const saved = safeLocalStorage.get('ownerAbout', {}) as any;
     if (saved.ownerType) setOwnerType(saved.ownerType);
     if (saved.primaryLocation) setPrimaryLocation(saved.primaryLocation);
     if (saved.hostingExperience) setHostingExperience(saved.hostingExperience);
