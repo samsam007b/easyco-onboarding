@@ -135,13 +135,13 @@ export async function middleware(request: NextRequest) {
       let dashboardPath = '/dashboard'
       switch (userData.user_type) {
         case 'searcher':
-          dashboardPath = '/searcher/dashboard'
+          dashboardPath = '/dashboard/searcher'
           break
         case 'owner':
-          dashboardPath = '/owner/dashboard'
+          dashboardPath = '/dashboard/owner'
           break
         case 'resident':
-          dashboardPath = '/resident/dashboard'
+          dashboardPath = '/dashboard/resident'
           break
       }
 

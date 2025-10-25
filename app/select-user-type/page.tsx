@@ -37,13 +37,13 @@ export default function SelectUserTypePage() {
         if (userData.onboarding_completed) {
           switch (userData.user_type) {
             case 'owner':
-              router.push('/owner/dashboard')
+              router.push('/dashboard/owner')
               break
             case 'resident':
-              router.push('/resident/dashboard')
+              router.push('/dashboard/resident')
               break
             default:
-              router.push('/searcher/dashboard')
+              router.push('/dashboard/searcher')
           }
         } else {
           router.push(`/onboarding/${userData.user_type}/basic-info`)
@@ -53,7 +53,7 @@ export default function SelectUserTypePage() {
 
       // If user has completed onboarding as searcher, redirect to dashboard
       if (userData?.onboarding_completed) {
-        router.push('/searcher/dashboard')
+        router.push('/dashboard/searcher')
         return
       }
 
