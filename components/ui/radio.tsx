@@ -184,4 +184,3 @@ export function RadioGroup({
 RadioGroup.displayName = 'RadioGroup'
 
 export { RadioGroup as Radio }
-export type { RadioOption }
