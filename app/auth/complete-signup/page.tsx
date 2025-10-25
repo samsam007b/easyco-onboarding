@@ -63,13 +63,13 @@ export default function CompleteSignupPage() {
           if (userData.onboarding_completed) {
             switch (userData.user_type) {
               case 'searcher':
-                router.push('/searcher/dashboard')
+                router.push('/dashboard/searcher')
                 break
               case 'owner':
-                router.push('/owner/dashboard')
+                router.push('/dashboard/owner')
                 break
               case 'resident':
-                router.push('/resident/dashboard')
+                router.push('/dashboard/resident')
                 break
               default:
                 router.push('/dashboard')
