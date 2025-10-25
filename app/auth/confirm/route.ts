@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   try {
     // Verify the email confirmation token
