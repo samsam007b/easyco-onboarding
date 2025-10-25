@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { Select } from '@/components/ui/select'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface UserData {
@@ -14,8 +15,15 @@ interface UserData {
   full_name: string | null
   avatar_url: string | null
   user_type: string
+  onboarding_completed: boolean
   email_verified: boolean
 }
+
+const USER_TYPES = [
+  { value: 'searcher', label: 'Searcher (looking for a place)' },
+  { value: 'owner', label: 'Owner (have properties to rent)' },
+  { value: 'resident', label: 'Resident (currently renting)' },
+]
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -24,6 +32,10 @@ export default function ProfilePage() {
   const [fullName, setFullName] = useState('')
   const [isEditingName, setIsEditingName] = useState(false)
   const [isSavingName, setIsSavingName] = useState(false)
+
+  // User type change
+  const [selectedUserType, setSelectedUserType] = useState('')
+  const [isChangingUserType, setIsChangingUserType] = useState(false)
 
   // Password change state
   const [showChangePassword, setShowChangePassword] = useState(false)
@@ -67,6 +79,7 @@ export default function ProfilePage() {
 
         setUserData(data)
         setFullName(data.full_name || '')
+        setSelectedUserType(data.user_type)
       } catch (error) {
         console.error('Error:', error)
         toast.error('An unexpected error occurred')
@@ -109,6 +122,74 @@ export default function ProfilePage() {
       toast.error('An unexpected error occurred')
     } finally {
       setIsSavingName(false)
+    }
+  }
+
+  // Change user type
+  const handleChangeUserType = async () => {
+    if (!userData) return
+
+    if (selectedUserType === userData.user_type) {
+      toast.error('Please select a different role')
+      return
+    }
+
+    setIsChangingUserType(true)
+
+    try {
+      // Update user_type and reset onboarding
+      const { error } = await supabase
+        .from('users')
+        .update({
+          user_type: selectedUserType,
+          onboarding_completed: false
+        })
+        .eq('id', userData.id)
+
+      if (error) {
+        console.error('Error updating user type:', error)
+        toast.error('Failed to change role')
+        return
+      }
+
+      toast.success('Role changed successfully! Redirecting to onboarding...')
+
+      // Redirect to new onboarding
+      setTimeout(() => {
+        router.push(`/onboarding/${selectedUserType}/basic-info`)
+      }, 1000)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('An unexpected error occurred')
+    } finally {
+      setIsChangingUserType(false)
+    }
+  }
+
+  // Reset onboarding
+  const handleResetOnboarding = async () => {
+    if (!userData) return
+
+    if (!confirm('This will reset your onboarding progress. Continue?')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({ onboarding_completed: false })
+        .eq('id', userData.id)
+
+      if (error) throw error
+
+      toast.success('Onboarding reset! Redirecting...')
+
+      setTimeout(() => {
+        router.push(`/onboarding/${userData.user_type}/basic-info`)
+      }, 1000)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Failed to reset onboarding')
     }
   }
 
@@ -196,26 +277,22 @@ export default function ProfilePage() {
     setIsDeletingAccount(true)
 
     try {
-      // Delete user data from users table
-      const { error: deleteError } = await supabase
-        .from('users')
-        .delete()
-        .eq('id', userData!.id)
+      // Call API route to delete account (uses service role key)
+      const response = await fetch('/api/user/delete', {
+        method: 'DELETE',
+      })
 
-      if (deleteError) {
-        console.error('Error deleting user:', deleteError)
-        toast.error('Failed to delete account')
-        return
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to delete account')
       }
-
-      // Sign out
-      await supabase.auth.signOut()
 
       toast.success('Account deleted successfully')
       router.push('/')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error)
-      toast.error('An unexpected error occurred')
+      toast.error(error.message || 'An unexpected error occurred')
     } finally {
       setIsDeletingAccount(false)
     }
@@ -261,7 +338,15 @@ export default function ProfilePage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-6 py-8">
-        <h1 className="text-3xl font-bold text-[#4A148C] mb-8">Profile Settings</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-[#4A148C]">Profile Settings</h1>
+          <Button
+            onClick={() => router.push(`/dashboard/${userData.user_type}`)}
+            variant="outline"
+          >
+            Back to Dashboard
+          </Button>
+        </div>
 
         <div className="space-y-6">
           {/* Profile Picture */}
@@ -311,13 +396,12 @@ export default function ProfilePage() {
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="flex-1 rounded-full border-2 border-gray-300 focus:border-[#4A148C]"
+                      className="flex-1"
                       disabled={isSavingName}
                     />
                     <Button
                       onClick={handleSaveName}
                       disabled={isSavingName}
-                      className="bg-[#FFD600] hover:bg-[#F57F17] text-black rounded-full px-6"
                     >
                       {isSavingName ? 'Saving...' : 'Save'}
                     </Button>
@@ -327,7 +411,6 @@ export default function ProfilePage() {
                         setFullName(userData.full_name || '')
                       }}
                       variant="outline"
-                      className="rounded-full"
                       disabled={isSavingName}
                     >
                       Cancel
@@ -370,20 +453,69 @@ export default function ProfilePage() {
                   )}
                 </div>
               </div>
-
-              {/* User Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Type
-                </label>
-                <div className="p-4 bg-gray-50 rounded-2xl">
-                  <span className="text-gray-900 capitalize">{userData.user_type}</span>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Security */}
+          {/* Role Management */}
+          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Role</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Role
+                </label>
+                <div className="p-4 bg-purple-50 rounded-2xl">
+                  <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
+                  {userData.onboarding_completed && (
+                    <span className="ml-3 text-xs text-green-600">
+                      <Check className="w-3 h-3 inline mr-1" />
+                      Onboarding completed
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Change Role
+                </label>
+                <div className="flex gap-2">
+                  <Select
+                    value={selectedUserType}
+                    onChange={(e) => setSelectedUserType(e.target.value)}
+                    options={USER_TYPES}
+                    className="flex-1"
+                    disabled={isChangingUserType}
+                  />
+                  <Button
+                    onClick={handleChangeUserType}
+                    disabled={isChangingUserType || selectedUserType === userData.user_type}
+                  >
+                    {isChangingUserType ? 'Changing...' : 'Change Role'}
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Changing your role will reset your onboarding progress.
+                </p>
+              </div>
+
+              {userData.onboarding_completed && (
+                <div className="pt-4 border-t border-gray-100">
+                  <Button
+                    onClick={handleResetOnboarding}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Redo Onboarding
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Security - Same as before */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Security</h2>
 
@@ -398,9 +530,9 @@ export default function ProfilePage() {
               </Button>
             ) : (
               <div className="space-y-4 p-4 bg-gray-50 rounded-2xl">
+                {/* Password change form - keeping the same as before */}
                 <h3 className="font-medium text-gray-900">Change Password</h3>
 
-                {/* Current Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Current Password
@@ -410,7 +542,6 @@ export default function ProfilePage() {
                       type={showCurrentPassword ? 'text' : 'password'}
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className="pr-12 rounded-full border-2 border-gray-300 focus:border-[#4A148C]"
                       disabled={isChangingPassword}
                     />
                     <button
@@ -423,7 +554,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* New Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     New Password
@@ -433,7 +563,6 @@ export default function ProfilePage() {
                       type={showNewPassword ? 'text' : 'password'}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="pr-12 rounded-full border-2 border-gray-300 focus:border-[#4A148C]"
                       disabled={isChangingPassword}
                     />
                     <button
@@ -445,7 +574,6 @@ export default function ProfilePage() {
                     </button>
                   </div>
 
-                  {/* Password Strength */}
                   {newPassword && (
                     <div className="mt-2">
                       <div className="flex gap-1">
@@ -463,7 +591,6 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                {/* Confirm New Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Confirm New Password
@@ -473,7 +600,6 @@ export default function ProfilePage() {
                       type={showConfirmNewPassword ? 'text' : 'password'}
                       value={confirmNewPassword}
                       onChange={(e) => setConfirmNewPassword(e.target.value)}
-                      className="pr-12 rounded-full border-2 border-gray-300 focus:border-[#4A148C]"
                       disabled={isChangingPassword}
                     />
                     <button
@@ -502,12 +628,10 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                {/* Buttons */}
                 <div className="flex gap-2 pt-2">
                   <Button
                     onClick={handleChangePassword}
                     disabled={isChangingPassword || !currentPassword || !newPassword || newPassword !== confirmNewPassword}
-                    className="bg-[#FFD600] hover:bg-[#F57F17] text-black rounded-full"
                   >
                     {isChangingPassword ? 'Updating...' : 'Update Password'}
                   </Button>
@@ -519,7 +643,6 @@ export default function ProfilePage() {
                       setConfirmNewPassword('')
                     }}
                     variant="outline"
-                    className="rounded-full"
                     disabled={isChangingPassword}
                   >
                     Cancel
@@ -529,7 +652,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* Danger Zone */}
+          {/* Danger Zone - Same but with new API */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-red-200">
             <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
 
@@ -569,7 +692,6 @@ export default function ProfilePage() {
                     type="text"
                     value={deleteConfirmText}
                     onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    className="rounded-full border-2 border-red-300 focus:border-red-500"
                     placeholder="DELETE"
                     disabled={isDeletingAccount}
                   />
@@ -589,7 +711,6 @@ export default function ProfilePage() {
                       setDeleteConfirmText('')
                     }}
                     variant="outline"
-                    className="rounded-full"
                     disabled={isDeletingAccount}
                   >
                     Cancel
