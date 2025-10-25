@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/auth/supabase-client';
+import { saveOnboardingData } from '@/lib/onboarding-helpers';
+import { toast } from 'sonner';
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -25,6 +27,16 @@ export default function ReviewPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      const supabase = createClient();
+
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        toast.error('Please log in to continue');
+        router.push('/login');
+        return;
+      }
+
       // Prepare lifestyle array from collected data
       const lifestyleArray = [
         data.dailyHabits?.isSmoker ? 'smoker' : 'non-smoker',
@@ -33,16 +45,23 @@ export default function ReviewPage() {
         data.socialVibe?.socialEnergy || '',
       ].filter(Boolean);
 
-      const { error } = await supabase.from('test_onboardings').insert([{
-        tester_id: data.testerId,
-        budget_min: data.preferences?.budgetMin || null,
-        budget_max: data.preferences?.budgetMax || null,
-        areas: data.preferences?.preferredDistrict || null,
-        move_in_date: null, // Can be added in preferences later
+      // Prepare complete onboarding data
+      const onboardingData = {
+        ...data.basicInfo,
+        ...data.dailyHabits,
+        ...data.homeLifestyle,
+        ...data.socialVibe,
+        ...data.preferences,
         lifestyle: lifestyleArray,
-      }]);
+        completedAt: new Date().toISOString()
+      };
 
-      if (error) throw error;
+      // Save to user_profiles table
+      const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
+
+      if (!result.success) {
+        throw new Error('Failed to save profile');
+      }
 
       // Clear localStorage after successful submission
       safeLocalStorage.remove('basicInfo');
@@ -51,9 +70,11 @@ export default function ReviewPage() {
       safeLocalStorage.remove('socialVibe');
       safeLocalStorage.remove('preferences');
 
+      toast.success('Profile saved successfully!');
       router.push('/onboarding/searcher/success');
     } catch (err: any) {
-      alert('Error: ' + err.message);
+      console.error('Error submitting:', err);
+      toast.error('Error: ' + err.message);
       setIsSubmitting(false);
     }
   };
