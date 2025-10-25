@@ -144,13 +144,13 @@ export async function GET(request: NextRequest) {
         // Redirect to appropriate dashboard
         switch (userData.user_type) {
           case 'searcher':
-            redirectPath = '/searcher/dashboard'
+            redirectPath = '/dashboard/searcher'
             break
           case 'owner':
-            redirectPath = '/owner/dashboard'
+            redirectPath = '/dashboard/owner'
             break
           case 'resident':
-            redirectPath = '/resident/dashboard'
+            redirectPath = '/dashboard/resident'
             break
           default:
             redirectPath = '/dashboard'
