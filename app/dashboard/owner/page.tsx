@@ -3,9 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
+import { getMyProperties } from '@/lib/property-helpers'
 import { Button } from '@/components/ui/button'
-import { Home, Plus, Settings, LogOut, Edit, User, Building2 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath } from 'lucide-react'
 import { toast } from 'sonner'
+import type { Property } from '@/types/property.types'
 
 interface UserProfile {
   full_name: string
@@ -19,7 +22,7 @@ export default function OwnerDashboard() {
   const router = useRouter()
   const supabase = createClient()
   const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [properties, setProperties] = useState<any[]>([])
+  const [properties, setProperties] = useState<Property[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -70,11 +73,23 @@ export default function OwnerDashboard() {
         return
       }
 
+      // Load properties
+      await loadProperties()
+
     } catch (error: any) {
       console.error('Error:', error)
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const loadProperties = async () => {
+    const result = await getMyProperties()
+    if (result.success && result.data) {
+      setProperties(result.data)
+    } else {
+      console.error('Error loading properties:', result.error)
     }
   }
 
@@ -89,7 +104,16 @@ export default function OwnerDashboard() {
   }
 
   const handleAddProperty = () => {
-    router.push('/onboarding/property/basics')
+    router.push('/properties/add')
+  }
+
+  const getStatusBadge = (status: string) => {
+    const variants: Record<string, "default" | "success" | "warning"> = {
+      published: 'success',
+      draft: 'warning',
+      archived: 'default'
+    }
+    return variants[status] || 'default'
   }
 
   if (isLoading) {
@@ -219,13 +243,38 @@ export default function OwnerDashboard() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {properties.map((property, index) => (
-                <div key={index} className="border-2 border-gray-200 rounded-2xl p-6 hover:border-[#4A148C] transition-colors cursor-pointer">
-                  <h4 className="font-bold text-lg text-gray-900 mb-2">{property.title}</h4>
-                  <p className="text-sm text-gray-600 mb-4">{property.location}</p>
+              {properties.map((property) => (
+                <div key={property.id} className="border-2 border-gray-200 rounded-2xl p-6 hover:border-[#4A148C] transition-colors cursor-pointer">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="font-bold text-lg text-gray-900 flex-1">{property.title}</h4>
+                    <Badge variant={getStatusBadge(property.status)}>
+                      {property.status}
+                    </Badge>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                    <MapPin className="w-4 h-4" />
+                    {property.city}, {property.postal_code}
+                  </div>
+
+                  <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <Bed className="w-4 h-4" />
+                      {property.bedrooms} bed{property.bedrooms > 1 ? 's' : ''}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Bath className="w-4 h-4" />
+                      {property.bathrooms} bath{property.bathrooms > 1 ? 's' : ''}
+                    </div>
+                  </div>
+
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-[#4A148C]">${property.rent}/mo</span>
-                    <Button variant="outline" size="sm">
+                    <span className="text-lg font-bold text-[#4A148C]">€{property.monthly_rent}/mo</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => router.push(`/properties/${property.id}`)}
+                    >
                       View Details
                     </Button>
                   </div>
