@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User, MapPin, Award, CheckCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/auth/supabase-client';
+import { saveOnboardingData } from '@/lib/onboarding-helpers';
+import { toast } from 'sonner';
 
 export default function OwnerReview() {
   const router = useRouter();
@@ -19,35 +21,48 @@ export default function OwnerReview() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+
     try {
-      const { data: insertData, error } = await supabase
-        .from('test_owners')
-        .insert([
-          {
-            first_name: data.basicInfo?.firstName,
-            last_name: data.basicInfo?.lastName,
-            email: data.basicInfo?.email || null,
-            owner_type: data.about?.ownerType,
-            primary_location: data.about?.primaryLocation,
-            hosting_experience: data.about?.hostingExperience,
-          },
-        ])
-        .select();
+      const supabase = createClient();
 
-      if (error) throw error;
+      // Get current authenticated user
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-      // Save owner_id for property onboarding later
-      if (insertData && insertData[0]) {
-        safeLocalStorage.set('owner_id', insertData[0].id);
+      if (authError || !user) {
+        toast.error('Authentication error. Please login again.');
+        router.push('/login');
+        return;
       }
 
-      // Clear onboarding data
+      // Prepare owner onboarding data
+      const onboardingData = {
+        firstName: data.basicInfo?.firstName,
+        lastName: data.basicInfo?.lastName,
+        email: data.basicInfo?.email,
+        ownerType: data.about?.ownerType,
+        primaryLocation: data.about?.primaryLocation,
+        hostingExperience: data.about?.hostingExperience,
+        completedAt: new Date().toISOString()
+      };
+
+      // Save to user_profiles using the helper
+      const result = await saveOnboardingData(user.id, onboardingData, 'owner');
+
+      if (!result.success) {
+        throw new Error('Failed to save profile data');
+      }
+
+      // Clear onboarding data from localStorage
       safeLocalStorage.remove('ownerBasicInfo');
       safeLocalStorage.remove('ownerAbout');
 
+      toast.success('Profile created successfully!');
+
+      // Redirect to success page
       router.push('/onboarding/owner/success');
     } catch (err: any) {
-      alert('Error: ' + err.message);
+      console.error('Error submitting owner onboarding:', err);
+      toast.error('Error: ' + (err.message || 'Failed to create profile'));
       setIsSubmitting(false);
     }
   };

@@ -43,10 +43,10 @@ export default function OwnerSuccess() {
         {/* Next Steps */}
         <div className="space-y-3">
           <Link
-            href="/onboarding/property/basics"
+            href="/dashboard/owner"
             className="flex items-center justify-center gap-2 w-full bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
-            Add Your First Property
+            Go to Dashboard
             <ArrowRight className="w-5 h-5" />
           </Link>
 
