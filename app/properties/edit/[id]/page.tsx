@@ -195,7 +195,7 @@ export default function EditPropertyPage() {
 
       <PageHeader
         title="Edit Property"
-        subtitle="Update your property information"
+        description="Update your property information"
       />
 
       <form onSubmit={handleSubmit} className="space-y-6 mt-6">
