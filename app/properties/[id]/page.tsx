@@ -132,7 +132,7 @@ export default function PropertyDetailsPage() {
   }
 
   return (
-    <PageContainer maxWidth="4xl">
+    <PageContainer maxWidth="2xl">
       {/* Header */}
       <div className="mb-6">
         <Button
