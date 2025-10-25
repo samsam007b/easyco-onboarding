@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Check } from 'lucide-react'
 
-export default function EmailVerifiedPage() {
+function EmailVerifiedContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [countdown, setCountdown] = useState(3)
@@ -74,5 +74,13 @@ export default function EmailVerifiedPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function EmailVerifiedPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <EmailVerifiedContent />
+    </Suspense>
   )
 }
