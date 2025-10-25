@@ -183,7 +183,7 @@ export default function EditPropertyPage() {
   }
 
   return (
-    <PageContainer maxWidth="4xl">
+    <PageContainer maxWidth="2xl">
       <Button
         variant="ghost"
         onClick={() => router.back()}
