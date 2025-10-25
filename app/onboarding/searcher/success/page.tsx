@@ -47,10 +47,10 @@ export default function SuccessPage() {
         {/* CTA */}
         <div className="space-y-3">
           <Link
-            href="/post-test"
+            href="/dashboard/searcher"
             className="block w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
-            Take Feedback Survey
+            Go to Dashboard
           </Link>
           <Link
             href="/"
