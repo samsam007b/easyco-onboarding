@@ -163,10 +163,10 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.hobbies) profileData.hobbies = data.hobbies
 
     // Ideal Coliving (Searcher/Resident)
-    if (data.colivingSize) profileData.coliving_size = data.colivingSize
-    if (data.genderMix) profileData.gender_mix = data.genderMix
-    if (data.minAge !== undefined) profileData.min_age = data.minAge
-    if (data.maxAge !== undefined) profileData.max_age = data.maxAge
+    if (data.colivingSize) profileData.preferred_coliving_size = data.colivingSize
+    if (data.genderMix) profileData.preferred_gender_mix = data.genderMix
+    if (data.minAge !== undefined) profileData.roommate_age_min = data.minAge
+    if (data.maxAge !== undefined) profileData.roommate_age_max = data.maxAge
     if (data.sharedSpaceImportance !== undefined) profileData.shared_space_importance = data.sharedSpaceImportance
 
     // Values & Personality (Searcher/Resident)
@@ -214,7 +214,15 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
         onConflict: 'user_id'
       })
 
-    if (profileError) throw profileError
+    if (profileError) {
+      console.error('❌ Profile save error:', profileError)
+      console.error('   Code:', profileError.code)
+      console.error('   Message:', profileError.message)
+      console.error('   Details:', profileError.details)
+      console.error('   Hint:', profileError.hint)
+      console.error('   Data sent:', profileData)
+      throw profileError
+    }
 
     // Save verification data if present
     if (data.phoneVerification || data.idDocument || data.proofOfOwnership ||
@@ -350,10 +358,10 @@ export async function getOnboardingData(userId: string) {
     if (data.exercise_frequency) camelCaseData.exerciseFrequency = data.exercise_frequency
     if (data.hobbies) camelCaseData.hobbies = data.hobbies
 
-    if (data.coliving_size) camelCaseData.colivingSize = data.coliving_size
-    if (data.gender_mix) camelCaseData.genderMix = data.gender_mix
-    if (data.min_age !== undefined) camelCaseData.minAge = data.min_age
-    if (data.max_age !== undefined) camelCaseData.maxAge = data.max_age
+    if (data.preferred_coliving_size) camelCaseData.colivingSize = data.preferred_coliving_size
+    if (data.preferred_gender_mix) camelCaseData.genderMix = data.preferred_gender_mix
+    if (data.roommate_age_min !== undefined) camelCaseData.minAge = data.roommate_age_min
+    if (data.roommate_age_max !== undefined) camelCaseData.maxAge = data.roommate_age_max
     if (data.shared_space_importance !== undefined) camelCaseData.sharedSpaceImportance = data.shared_space_importance
 
     if (data.core_values) camelCaseData.coreValues = data.core_values
@@ -451,7 +459,7 @@ export async function getProfileCompletionPercentage(userId: string) {
       'first_name', 'last_name', 'date_of_birth', 'gender_identity', 'nationality',
       'current_city', 'languages_spoken', 'occupation_status', 'budget_min', 'budget_max',
       'move_in_date', 'preferred_cities', 'cleanliness_preference', 'is_smoker', 'has_pets',
-      'bio', 'hobbies', 'core_values', 'coliving_size', 'gender_mix'
+      'bio', 'hobbies', 'core_values', 'preferred_coliving_size', 'preferred_gender_mix'
       // Add more as needed
     ]
 
