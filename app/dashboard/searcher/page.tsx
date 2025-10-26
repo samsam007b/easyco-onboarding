@@ -169,6 +169,33 @@ export default function SearcherDashboard() {
           </p>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Search className="w-6 h-6 text-[#4A148C]" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.browseProperties}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
+          </button>
+
+          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Heart className="w-6 h-6 text-red-500" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.favorites}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
+          </button>
+
+          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="w-6 h-6 text-green-600" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
+          </button>
+        </div>
+
         {/* Profile Preview Card */}
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
           {/* Header with gradient */}
@@ -388,33 +415,6 @@ export default function SearcherDashboard() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Search className="w-6 h-6 text-[#4A148C]" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.browseProperties}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
-          </button>
-
-          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Heart className="w-6 h-6 text-red-500" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.favorites}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
-          </button>
-
-          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="w-6 h-6 text-green-600" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
-          </button>
         </div>
 
         {/* Matches Section (Coming Soon) */}
