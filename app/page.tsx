@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Home as HomeIcon, Users, Heart, Shield, Target, Zap } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 
 export default function Home() {
   const { t, getSection } = useLanguage();
@@ -173,6 +174,9 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Resume Onboarding Modal */}
+      <ResumeOnboardingModal />
     </main>
   );
 }

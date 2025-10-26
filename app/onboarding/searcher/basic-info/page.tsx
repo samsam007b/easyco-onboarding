@@ -7,6 +7,7 @@ import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { useAutoSave } from '@/lib/hooks/use-auto-save';
 
 export default function BasicInfoPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function BasicInfoPage() {
   const onboarding = getSection('onboarding');
   const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
+  const saveData = useAutoSave({ key: 'basicInfo' });
 
   // Check if this is a dependent profile
   const [profileType, setProfileType] = useState<'self' | 'dependent'>('self');
@@ -95,7 +97,7 @@ export default function BasicInfoPage() {
   };
 
   const handleContinue = () => {
-    // Save to localStorage
+    // Save data using auto-save hook
     const dataToSave: any = {
       firstName,
       lastName,
@@ -111,7 +113,7 @@ export default function BasicInfoPage() {
       dataToSave.isDependent = true;
     }
 
-    safeLocalStorage.set('basicInfo', dataToSave);
+    saveData(dataToSave);
 
     // Navigate to next step
     router.push('/onboarding/searcher/daily-habits');
