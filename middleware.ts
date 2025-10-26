@@ -75,6 +75,8 @@ export async function middleware(request: NextRequest) {
     '/privacy',
   ]
 
+  const welcomeRoute = '/welcome'
+
   const authOnlyRoutes = ['/login', '/signup']
 
   const protectedRoutes = [
@@ -132,27 +134,14 @@ export async function middleware(request: NextRequest) {
         )
       }
 
-      // If onboarding completed, redirect to dashboard (only if still on auth-only route)
+      // If onboarding completed, redirect to welcome page for role selection
       if (userData.onboarding_completed) {
-        let dashboardPath = '/dashboard'
-        switch (userData.user_type) {
-          case 'searcher':
-            dashboardPath = '/dashboard/searcher'
-            break
-          case 'owner':
-            dashboardPath = '/dashboard/owner'
-            break
-          case 'resident':
-            dashboardPath = '/dashboard/resident'
-            break
-        }
-
-        return NextResponse.redirect(new URL(dashboardPath, request.url))
+        return NextResponse.redirect(new URL(welcomeRoute, request.url))
       }
     }
 
-    // Fallback: If user exists but no userData found, allow access (edge case)
-    return NextResponse.next()
+    // Fallback: If user exists but no userData found, redirect to welcome
+    return NextResponse.redirect(new URL(welcomeRoute, request.url))
   }
 
   // Handle unauthenticated users trying to access protected routes
@@ -170,6 +159,16 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
     // Allow authenticated users to access onboarding
+    return response
+  }
+
+  // Allow welcome route for authenticated users only
+  if (pathname === welcomeRoute) {
+    if (!user) {
+      // Unauthenticated users should not access welcome page
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    // Allow authenticated users to access welcome page
     return response
   }
 
