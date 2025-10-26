@@ -64,7 +64,7 @@ export default function OwnerDashboard() {
         email: userData.email,
         user_type: userData.user_type,
         onboarding_completed: userData.onboarding_completed,
-        profile_data: profileData?.profile_data || {}
+        profile_data: profileData || {}
       })
 
       // If onboarding not completed, redirect directly to first step
@@ -186,7 +186,7 @@ export default function OwnerDashboard() {
                   <h2 className="text-2xl font-bold mb-1">Property Owner Profile</h2>
                   <div className="flex items-center gap-2 text-white/90">
                     <MapPin className="w-4 h-4" />
-                    <span>{profile.profile_data?.primaryLocation || 'Location not set'}</span>
+                    <span>{profile.profile_data?.primary_location || profile.profile_data?.property_city || 'Location not set'}</span>
                   </div>
                 </div>
               </div>
@@ -204,43 +204,46 @@ export default function OwnerDashboard() {
                 👤 Owner Information
               </h3>
               <div className="space-y-2 text-gray-700">
-                {profile.profile_data?.landlordType && (
-                  <p>• Type: <span className="font-medium capitalize">{profile.profile_data.landlordType}</span></p>
+                {profile.profile_data?.landlord_type && (
+                  <p>• Type: <span className="font-medium capitalize">{profile.profile_data.landlord_type}</span></p>
                 )}
-                {profile.profile_data?.companyName && (
-                  <p>• Company: <span className="font-medium">{profile.profile_data.companyName}</span></p>
+                {profile.profile_data?.owner_type && (
+                  <p>• Owner Type: <span className="font-medium capitalize">{profile.profile_data.owner_type}</span></p>
                 )}
-                {profile.profile_data?.phoneNumber && (
-                  <p>• Phone: <span className="font-medium">{profile.profile_data.phoneNumber}</span></p>
+                {profile.profile_data?.company_name && (
+                  <p>• Company: <span className="font-medium">{profile.profile_data.company_name}</span></p>
                 )}
-                {profile.profile_data?.hostingExperience && (
-                  <p>• Experience: <span className="font-medium">{profile.profile_data.hostingExperience}</span></p>
+                {profile.profile_data?.phone_number && (
+                  <p>• Phone: <span className="font-medium">{profile.profile_data.phone_number}</span></p>
+                )}
+                {profile.profile_data?.hosting_experience && (
+                  <p>• Experience: <span className="font-medium">{profile.profile_data.hosting_experience}</span></p>
                 )}
                 <p>• Email: <span className="font-medium">{profile.email}</span></p>
               </div>
             </div>
 
             {/* Property Info Section */}
-            {(profile.profile_data?.hasProperty || profile.profile_data?.propertyCity || profile.profile_data?.propertyType) && (
+            {(profile.profile_data?.has_property || profile.profile_data?.property_city || profile.profile_data?.property_type) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   🏠 Property Details
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {profile.profile_data?.hasProperty && (
+                  {profile.profile_data?.has_property && (
                     <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium border border-green-200">
                       Property Available
                     </span>
                   )}
-                  {profile.profile_data?.propertyCity && (
+                  {profile.profile_data?.property_city && (
                     <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200 flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
-                      {profile.profile_data.propertyCity}
+                      {profile.profile_data.property_city}
                     </span>
                   )}
-                  {profile.profile_data?.propertyType && (
-                    <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
-                      {profile.profile_data.propertyType}
+                  {profile.profile_data?.property_type && (
+                    <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200 capitalize">
+                      {profile.profile_data.property_type}
                     </span>
                   )}
                 </div>
@@ -248,22 +251,22 @@ export default function OwnerDashboard() {
             )}
 
             {/* Management Style */}
-            {(profile.profile_data?.experienceYears || profile.profile_data?.managementType) && (
+            {(profile.profile_data?.experience_years || profile.profile_data?.management_type) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   ⚙️ Management Style
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {profile.profile_data?.experienceYears && (
+                  {profile.profile_data?.experience_years && (
                     <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                       <p className="text-xs text-gray-600 mb-1">Years of Experience</p>
-                      <p className="font-semibold text-gray-900">{profile.profile_data.experienceYears} years</p>
+                      <p className="font-semibold text-gray-900">{profile.profile_data.experience_years} years</p>
                     </div>
                   )}
-                  {profile.profile_data?.managementType && (
+                  {profile.profile_data?.management_type && (
                     <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
                       <p className="text-xs text-gray-600 mb-1">Management Type</p>
-                      <p className="font-semibold text-gray-900 capitalize">{profile.profile_data.managementType}</p>
+                      <p className="font-semibold text-gray-900 capitalize">{profile.profile_data.management_type}</p>
                     </div>
                   )}
                 </div>
@@ -271,17 +274,17 @@ export default function OwnerDashboard() {
             )}
 
             {/* About/Bio */}
-            {profile.profile_data?.about && (
+            {(profile.profile_data?.bio || profile.profile_data?.owner_bio) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   📝 About
                 </h3>
-                <p className="text-gray-700 italic">"{profile.profile_data.about}"</p>
+                <p className="text-gray-700 italic">"{profile.profile_data.bio || profile.profile_data.owner_bio}"</p>
               </div>
             )}
 
             {/* Payment Info */}
-            {(profile.profile_data?.iban || profile.profile_data?.swiftBic) && (
+            {(profile.profile_data?.iban || profile.profile_data?.swift_bic) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   💳 Payment Information
@@ -290,6 +293,9 @@ export default function OwnerDashboard() {
                   <div className="flex items-center gap-2 text-green-600">
                     <span className="text-sm font-medium">✓ Banking details configured</span>
                   </div>
+                  {profile.profile_data?.iban && (
+                    <p className="text-xs text-gray-500 mt-2">IBAN: {profile.profile_data.iban.replace(/(.{4})/g, '$1 ').trim()}</p>
+                  )}
                 </div>
               </div>
             )}
