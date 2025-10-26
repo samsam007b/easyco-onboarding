@@ -182,15 +182,15 @@ export default function VerificationPage() {
             <h4 className="font-semibold text-gray-900 mb-2">{t('onboarding.verification.whyVerify')}</h4>
             <ul className="space-y-1 text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span>⭐</span>
+                <Check className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <span>{t('onboarding.verification.benefit1')}</span>
               </li>
               <li className="flex items-start gap-2">
-                <span>⭐</span>
+                <Check className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <span>{t('onboarding.verification.benefit2')}</span>
               </li>
               <li className="flex items-start gap-2">
-                <span>⭐</span>
+                <Check className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <span>{t('onboarding.verification.benefit3')}</span>
               </li>
             </ul>
