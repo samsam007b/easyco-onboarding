@@ -6,12 +6,13 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { getMyProperties } from '@/lib/property-helpers'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath } from 'lucide-react'
+import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath, Hand, UserCircle, FileText, CreditCard, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
 import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
+import IconBadge from '@/components/IconBadge'
 
 interface UserProfile {
   full_name: string
@@ -187,7 +188,7 @@ export default function OwnerDashboard() {
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            {dashboard.owner.welcome} {profile.full_name}! 👋
+            {dashboard.owner.welcome} {profile.full_name}! <Hand className="w-7 h-7 text-[#FFD700]" />
           </h2>
           <p className="text-gray-600">
             {dashboard.owner.welcomeMessage}
@@ -245,7 +246,7 @@ export default function OwnerDashboard() {
             {/* Owner Info Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                👤 {dashboard.owner.ownerInfo}
+                <IconBadge icon={UserCircle} variant="purple" size="sm" /> {dashboard.owner.ownerInfo}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile.profile_data?.landlord_type && (
@@ -271,7 +272,7 @@ export default function OwnerDashboard() {
             {(profile.profile_data?.has_property || profile.profile_data?.property_city || profile.profile_data?.property_type) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🏠 {dashboard.owner.propertyDetails}
+                  <IconBadge icon={Home} variant="blue" size="sm" /> {dashboard.owner.propertyDetails}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.profile_data?.has_property && (
@@ -298,7 +299,7 @@ export default function OwnerDashboard() {
             {(profile.profile_data?.experience_years || profile.profile_data?.management_type) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  ⚙️ Management Style
+                  <IconBadge icon={Settings} variant="orange" size="sm" /> Management Style
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {profile.profile_data?.experience_years && (
@@ -321,7 +322,7 @@ export default function OwnerDashboard() {
             {(profile.profile_data?.bio || profile.profile_data?.owner_bio) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  📝 About
+                  <IconBadge icon={FileText} variant="green" size="sm" /> About
                 </h3>
                 <p className="text-gray-700 italic">"{profile.profile_data.bio || profile.profile_data.owner_bio}"</p>
               </div>
@@ -331,7 +332,7 @@ export default function OwnerDashboard() {
             {(profile.profile_data?.iban || profile.profile_data?.swift_bic) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  💳 Payment Information
+                  <IconBadge icon={CreditCard} variant="cyan" size="sm" /> Payment Information
                 </h3>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <div className="flex items-center gap-2 text-green-600">
@@ -350,7 +351,7 @@ export default function OwnerDashboard() {
                 <span className="text-sm text-gray-600">Profile Status</span>
                 {profile.onboarding_completed ? (
                   <span className="inline-flex items-center gap-1 text-green-600 font-medium">
-                    ✓ Complete
+                    <Check className="w-4 h-4 mr-1" />Complete
                   </span>
                 ) : (
                   <span className="text-yellow-600 font-medium">Incomplete</span>

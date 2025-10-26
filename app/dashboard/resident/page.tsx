@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
-import { Users, Settings, LogOut, Edit, MapPin, MessageCircle } from 'lucide-react'
+import { Users, Settings, LogOut, Edit, MapPin, MessageCircle, Hand, ClipboardList, Sparkles, Home } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
+import IconBadge from '@/components/IconBadge'
 
 interface UserProfile {
   full_name: string
@@ -148,7 +149,7 @@ export default function ResidentDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            {dashboard.resident.welcome} {profile.full_name}! 👋
+            {dashboard.resident.welcome} {profile.full_name}! <Hand className="w-7 h-7 text-[#FFD700]" />
           </h2>
           <p className="text-gray-600">{dashboard.resident.welcomeMessage}</p>
         </div>
@@ -200,7 +201,7 @@ export default function ResidentDashboard() {
           <div className="p-8">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                📋 {dashboard.searcher.aboutMe}
+                <IconBadge icon={ClipboardList} variant="purple" size="sm" /> {dashboard.searcher.aboutMe}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.date_of_birth && (
@@ -224,7 +225,7 @@ export default function ResidentDashboard() {
             {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale || profile_data?.smoker !== undefined) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  ✨ {dashboard.searcher.lifestyle}
+                  <IconBadge icon={Sparkles} variant="pink" size="sm" /> {dashboard.searcher.lifestyle}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile_data?.cleanliness_preference && (
@@ -254,7 +255,7 @@ export default function ResidentDashboard() {
             {profile_data?.move_in_date && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🏠 {dashboard.resident.livingSituation}
+                  <IconBadge icon={Home} variant="green" size="sm" /> {dashboard.resident.livingSituation}
                 </h3>
                 <p className="text-gray-700">
                   {dashboard.resident.movedIn} {new Date(profile_data.move_in_date).toLocaleDateString()}

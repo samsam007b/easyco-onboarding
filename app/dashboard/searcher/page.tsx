@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
-import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign } from 'lucide-react'
+import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
+import IconBadge from '@/components/IconBadge'
 
 interface UserProfile {
   full_name: string
@@ -160,8 +161,8 @@ export default function SearcherDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            {dashboard.searcher.welcome} {profile.full_name}! 👋
+          <h2 className="text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
+            {dashboard.searcher.welcome} {profile.full_name}! <Hand className="w-7 h-7 text-[#FFD700]" />
           </h2>
           <p className="text-gray-600">
             {dashboard.searcher.welcomeMessage}
@@ -219,7 +220,8 @@ export default function SearcherDashboard() {
             {/* About Me Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                📋 {dashboard.searcher.aboutMe}
+                <IconBadge icon={ClipboardList} variant="purple" size="sm" />
+                {dashboard.searcher.aboutMe}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.date_of_birth && (
@@ -236,7 +238,7 @@ export default function SearcherDashboard() {
                 )}
                 {profile_data?.nationality && (
                   <p className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs">🌍</span>
+                    <Globe className="w-4 h-4 text-blue-600" />
                     {profile_data.nationality}
                   </p>
                 )}
@@ -253,7 +255,8 @@ export default function SearcherDashboard() {
             {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale !== undefined || profile_data?.is_smoker !== undefined || profile_data?.dietary_preferences || profile_data?.hobbies) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  ✨ {dashboard.searcher.lifestyle}
+                  <IconBadge icon={Sparkles} variant="pink" size="sm" />
+                  {dashboard.searcher.lifestyle}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile_data?.cleanliness_preference && (
@@ -308,7 +311,8 @@ export default function SearcherDashboard() {
             {(profile_data?.early_bird_night_owl || profile_data?.work_schedule) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🔄 {dashboard.searcher.dailyRoutine}
+                  <IconBadge icon={RotateCw} variant="blue" size="sm" />
+                  {dashboard.searcher.dailyRoutine}
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {profile_data?.early_bird_night_owl && (
@@ -336,7 +340,8 @@ export default function SearcherDashboard() {
             {/* Looking For Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                🏠 {dashboard.searcher.lookingFor}
+                <IconBadge icon={Home} variant="green" size="sm" />
+                {dashboard.searcher.lookingFor}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.coliving_size && (
