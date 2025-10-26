@@ -5,14 +5,18 @@ import { useRouter } from 'next/navigation';
 import { User, Users, ArrowLeft } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ProfileTypePage() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [profileType, setProfileType] = useState<'self' | 'dependent' | ''>('');
 
   const handleContinue = () => {
     if (!profileType) {
-      toast.error('Please select who you are searching for');
+      toast.error(onboarding.errors.selectProfileType);
       return;
     }
 
@@ -33,7 +37,7 @@ export default function ProfileTypePage() {
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
@@ -48,8 +52,8 @@ export default function ProfileTypePage() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Getting Started</span>
-            <span className="text-sm text-gray-500">Who are you searching for?</span>
+            <span className="text-sm font-medium text-gray-700">{onboarding.profileType.gettingStarted}</span>
+            <span className="text-sm text-gray-500">{onboarding.profileType.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div className="bg-[#4A148C] h-2 rounded-full" style={{ width: '10%' }} />
@@ -60,10 +64,10 @@ export default function ProfileTypePage() {
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-              Who are you searching for? 🔍
+              {onboarding.profileType.title}
             </h1>
             <p className="text-gray-600">
-              This helps us personalize your search experience
+              {onboarding.profileType.subtitle}
             </p>
           </div>
 
@@ -87,10 +91,10 @@ export default function ProfileTypePage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    For Myself
+                    {onboarding.profileType.forMyself}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    I'm looking for a coliving space for myself
+                    {onboarding.profileType.forMyselfDesc}
                   </p>
                 </div>
                 {profileType === 'self' && (
@@ -121,15 +125,15 @@ export default function ProfileTypePage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    For Someone Else
+                    {onboarding.profileType.forSomeoneElse}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    I'm helping a child, family member, or friend find a place
+                    {onboarding.profileType.forSomeoneElseDesc}
                   </p>
                   {profileType === 'dependent' && (
                     <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <p className="text-xs text-yellow-800">
-                        💡 You can create multiple profiles - one for yourself and separate ones for each person you're helping
+                        {onboarding.profileType.multipleProfilesNote}
                       </p>
                     </div>
                   )}
@@ -155,10 +159,10 @@ export default function ProfileTypePage() {
               </div>
               <div>
                 <h4 className="font-semibold text-blue-900 text-sm mb-1">
-                  Why do we ask?
+                  {onboarding.profileType.whyAsk}
                 </h4>
                 <p className="text-xs text-blue-800">
-                  This helps us create separate, independent search profiles. Each profile will have its own preferences, filters, and matches - ensuring privacy and personalized results for everyone.
+                  {onboarding.profileType.whyAskDesc}
                 </p>
               </div>
             </div>
@@ -174,7 +178,7 @@ export default function ProfileTypePage() {
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
-            Continue
+            {common.continue}
           </button>
         </div>
       </main>
