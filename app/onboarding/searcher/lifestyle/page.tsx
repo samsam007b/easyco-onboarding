@@ -3,15 +3,16 @@
 import { useRouter } from 'next/navigation';
 import Stepper from '@/components/Stepper';
 import { track } from '@/lib/analytics';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // tape explicitement le tableau pour éviter les warnings TS
 const OPTIONS: string[] = [
-  'non-smoker',
+  'nonSmoker',
   'quiet',
-  'pet-friendly',
-  'remote-worker',
-  'early-bird',
-  'night-owl',
+  'petFriendly',
+  'remoteWorker',
+  'earlyBird',
+  'nightOwl',
 ];
 
 // helpers 100% tableau (pas de Set)
@@ -31,6 +32,9 @@ function writeLifestyle(vals: string[]) {
 
 export default function LifestyleStep() {
   const r = useRouter();
+  const { getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
 
   const toggle = (k: string) => {
     const current = readLifestyle();
@@ -47,11 +51,21 @@ export default function LifestyleStep() {
 
   const selected = readLifestyle();
 
+  // Map option keys to translations
+  const optionLabels: Record<string, string> = {
+    nonSmoker: onboarding.lifestyle.nonSmoker,
+    quiet: onboarding.lifestyle.quiet,
+    petFriendly: onboarding.lifestyle.petFriendly,
+    remoteWorker: onboarding.lifestyle.remoteWorker,
+    earlyBird: onboarding.lifestyle.earlyBird,
+    nightOwl: onboarding.lifestyle.nightOwl,
+  };
+
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
       <Stepper />
       <div className="card space-y-4">
-        <h1 className="text-xl font-semibold">Lifestyle preferences</h1>
+        <h1 className="text-xl font-semibold">{onboarding.lifestyle.title}</h1>
 
         <div className="flex flex-wrap gap-2">
           {OPTIONS.map((o) => {
@@ -64,14 +78,14 @@ export default function LifestyleStep() {
                   active ? 'bg-primary text-white' : 'bg-white'
                 }`}
               >
-                {o}
+                {optionLabels[o]}
               </button>
             );
           })}
         </div>
 
         <button className="btn btn-primary" onClick={next}>
-          Continue
+          {common.continue}
         </button>
       </div>
     </main>
