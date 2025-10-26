@@ -82,14 +82,14 @@ export default function Home() {
           {/* CTA Buttons */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-2xl mx-auto">
             <Link
-              href="/consent?source=landing"
+              href="/onboarding/searcher/basic-info"
               className="py-4 px-6 rounded-full bg-[var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
             >
               {landing.hero.ctaSearcher}
             </Link>
 
             <Link
-              href="/consent?source=landing&nextHref=/onboarding/owner/basic-info"
+              href="/onboarding/owner/basic-info"
               className="py-4 px-6 rounded-full bg-[var(--easy-purple)] text-white font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
             >
               {landing.hero.ctaOwner}
