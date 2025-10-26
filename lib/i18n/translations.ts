@@ -729,6 +729,38 @@ export const translations = {
       nl: 'optioneel',
       de: 'optional',
     },
+    errors: {
+      saveFailed: {
+        fr: 'Échec de la sauvegarde',
+        en: 'Failed to save',
+        nl: 'Opslaan mislukt',
+        de: 'Speichern fehlgeschlagen',
+      },
+      loadFailed: {
+        fr: 'Échec du chargement',
+        en: 'Failed to load',
+        nl: 'Laden mislukt',
+        de: 'Laden fehlgeschlagen',
+      },
+      unexpected: {
+        fr: 'Une erreur inattendue s\'est produite',
+        en: 'An unexpected error occurred',
+        nl: 'Er is een onverwachte fout opgetreden',
+        de: 'Ein unerwarteter Fehler ist aufgetreten',
+      },
+    },
+    backToDashboard: {
+      fr: 'Retour au tableau de bord',
+      en: 'Back to Dashboard',
+      nl: 'Terug naar Dashboard',
+      de: 'Zurück zum Dashboard',
+    },
+    deleting: {
+      fr: 'Suppression...',
+      en: 'Deleting...',
+      nl: 'Verwijderen...',
+      de: 'Löschen...',
+    },
   },
 
   // ============================================================================
