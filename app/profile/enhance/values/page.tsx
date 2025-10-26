@@ -92,7 +92,7 @@ export default function EnhanceValuesPage() {
 
   const handleNext = () => {
     safeLocalStorage.set('enhanceValues', { coreValues, importantQualities, dealBreakers });
-    router.push('/profile/enhance/review');
+    router.push('/profile/enhance/financial');
   };
 
   const handleBack = () => {
@@ -101,7 +101,7 @@ export default function EnhanceValuesPage() {
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/review');
+    router.push('/profile/enhance/financial');
   };
 
   if (isLoading) {
@@ -122,11 +122,11 @@ export default function EnhanceValuesPage() {
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 3 of 3</span>
+            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 3 of 6</span>
             <span className="text-sm text-gray-500">Values & Preferences</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '100%' }} />
+            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '50%' }} />
           </div>
         </div>
 

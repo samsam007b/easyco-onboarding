@@ -41,11 +41,15 @@ export default function EnhanceReviewPage() {
         const aboutData = safeLocalStorage.get('enhanceAbout', {});
         const hobbiesData = safeLocalStorage.get('enhanceHobbies', {});
         const valuesData = safeLocalStorage.get('enhanceValues', {});
+        const financialData = safeLocalStorage.get('financialInfo', {});
+        const communityData = safeLocalStorage.get('communityEvents', {});
 
         setData({
           about: aboutData,
           hobbies: hobbiesData,
-          values: valuesData
+          values: valuesData,
+          financial: financialData,
+          community: communityData
         });
       } catch (error) {
         console.error('Error loading data:', error);
@@ -76,7 +80,15 @@ export default function EnhanceReviewPage() {
         hobbies: data.hobbies?.hobbies || [],
         coreValues: data.values?.coreValues || [],
         importantQualities: data.values?.importantQualities || [],
-        dealBreakers: data.values?.dealBreakers || []
+        dealBreakers: data.values?.dealBreakers || [],
+        // Financial info
+        incomeRange: data.financial?.incomeRange || '',
+        hasGuarantor: data.financial?.hasGuarantor || false,
+        employmentType: data.financial?.employmentType || '',
+        // Community events
+        eventInterest: data.community?.eventInterest || '',
+        enjoySharedMeals: data.community?.enjoySharedMeals || false,
+        openToMeetups: data.community?.openToMeetups || false
       };
 
       const result = await saveOnboardingData(user.id, enhancedData, userType);
@@ -86,6 +98,8 @@ export default function EnhanceReviewPage() {
         safeLocalStorage.remove('enhanceAbout');
         safeLocalStorage.remove('enhanceHobbies');
         safeLocalStorage.remove('enhanceValues');
+        safeLocalStorage.remove('financialInfo');
+        safeLocalStorage.remove('communityEvents');
 
         toast.success('Profile enhanced successfully!');
 
