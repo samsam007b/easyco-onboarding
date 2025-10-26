@@ -202,7 +202,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     // Owner-specific Information
     if (data.landlordType) profileData.landlord_type = data.landlordType
     if (data.companyName) profileData.company_name = data.companyName
-    if (data.email) profileData.email = data.email
+    // Note: email is stored in auth.users, not user_profiles
     if (data.phoneNumber) profileData.phone_number = data.phoneNumber
     if (data.ownerType) profileData.owner_type = data.ownerType
     if (data.primaryLocation) profileData.primary_location = data.primaryLocation
