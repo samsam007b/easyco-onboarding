@@ -25,6 +25,20 @@
   --easy-purple: var(--easy-purple-900);
   --easy-yellow: var(--easy-yellow-500);
 
+  /* NEW: Resident Color */
+  --easy-orange-600: #E65A2B;   /* Hover */
+  --easy-orange-500: #FF6F3C;   /* Primary (Resident) */
+  --easy-orange-400: #FF8C5C;   /* Lighter */
+  --easy-orange-100: #FFE5DC;   /* Backgrounds */
+  --easy-orange-50: #FFF3EF;    /* Lightest */
+  --easy-orange: var(--easy-orange-500);
+
+  /* Role-based Dynamic Variables (change based on active role) */
+  --role-primary: var(--easy-purple-900);
+  --role-light: rgba(74, 20, 140, 0.1);
+  --role-gradient-from: #4A148C;
+  --role-gradient-to: #6A1B9A;
+
   /* Neutral Colors */
   --gray-900: #1A1A1A;          /* Text primary */
   --gray-800: #2D2D2D;          /* Text secondary */
@@ -320,4 +334,42 @@ html {
 ::-moz-selection {
   background-color: var(--easy-purple-100);
   color: var(--easy-purple-900);
+}
+
+/* ============================================
+   Role-Based Theming
+   ============================================ */
+
+/* Searcher Theme (Yellow) */
+body.theme-searcher {
+  --role-primary: var(--easy-yellow-500);
+  --role-light: rgba(255, 214, 0, 0.1);
+  --role-gradient-from: #FFD700;
+  --role-gradient-to: #FFC700;
+}
+
+body.theme-searcher ::selection {
+  background-color: var(--easy-yellow-100);
+  color: var(--gray-900);
+}
+
+/* Owner Theme (Purple) - Default */
+body.theme-owner {
+  --role-primary: var(--easy-purple-900);
+  --role-light: rgba(74, 20, 140, 0.1);
+  --role-gradient-from: #4A148C;
+  --role-gradient-to: #6A1B9A;
+}
+
+/* Resident Theme (Orange) */
+body.theme-resident {
+  --role-primary: var(--easy-orange-500);
+  --role-light: rgba(255, 111, 60, 0.1);
+  --role-gradient-from: #FF6F3C;
+  --role-gradient-to: #FF8C5C;
+}
+
+body.theme-resident ::selection {
+  background-color: var(--easy-orange-100);
+  color: var(--gray-900);
 }
