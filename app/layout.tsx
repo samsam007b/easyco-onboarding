@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import { DevTools } from '@/components/DevTools'
 import { ClientProviders } from '@/components/ClientProviders'
 import CookieBanner from '@/components/CookieBanner'
+import Analytics from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: "EasyCo — Colocation fiable et compatible en Belgique",
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body className="min-h-screen">
+        <Analytics />
         <ClientProviders>
           {children}
         </ClientProviders>
