@@ -105,7 +105,7 @@ export default function HowItWorks() {
         {/* CTA */}
         <div className="text-center mt-12">
           <a
-            href="/select-user-type"
+            href="/signup"
             className="inline-block px-8 py-4 bg-[color:var(--easy-yellow)] text-black font-semibold rounded-full hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
             {howItWorks.cta}
