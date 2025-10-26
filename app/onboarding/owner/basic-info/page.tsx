@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { toast } from 'sonner';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
@@ -28,19 +29,19 @@ export default function OwnerBasicInfo() {
 
   const handleContinue = () => {
     if (!landlordType) {
-      alert('Please select your landlord type');
+      toast.error('Please select your landlord type');
       return;
     }
     if (!firstName.trim() || !lastName.trim()) {
-      alert('Please enter your first and last name');
+      toast.error('Please enter your first and last name');
       return;
     }
     if ((landlordType === 'agency' || landlordType === 'company') && !companyName.trim()) {
-      alert('Please enter your company name');
+      toast.error('Please enter your company name');
       return;
     }
     if (!phoneNumber.trim()) {
-      alert('Please enter your phone number');
+      toast.error('Please enter your phone number');
       return;
     }
 

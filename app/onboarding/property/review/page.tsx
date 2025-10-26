@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, MapPin, DollarSign, FileText, CheckCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 export default function PropertyReview() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function PropertyReview() {
 
   const handleSubmit = async () => {
     if (!data.ownerId) {
-      alert('Error: No owner profile found. Please complete the owner onboarding first.');
+      toast.error('Error: No owner profile found. Please complete the owner onboarding first.');
       router.push('/onboarding/owner/basic-info');
       return;
     }
@@ -54,7 +55,7 @@ export default function PropertyReview() {
 
       router.push('/onboarding/property/success');
     } catch (err: any) {
-      alert('Error: ' + err.message);
+      toast.error('Error: ' + err.message);
       setIsSubmitting(false);
     }
   };
