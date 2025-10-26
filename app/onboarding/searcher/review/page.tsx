@@ -129,6 +129,20 @@ export default function ReviewPage() {
           throw new Error('Failed to save dependent profile');
         }
 
+        // Mark parent user's onboarding as completed
+        const { error: userUpdateError } = await supabase
+          .from('users')
+          .update({
+            onboarding_completed: true,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', user.id);
+
+        if (userUpdateError) {
+          console.error('Error updating user onboarding status:', userUpdateError);
+          // Don't throw - dependent profile was saved successfully
+        }
+
         toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
       } else {
         // Save to user_profiles table (original behavior)
