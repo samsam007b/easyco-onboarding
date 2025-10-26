@@ -60,7 +60,7 @@ export default function SearcherDashboard() {
         email: userData.email,
         user_type: userData.user_type,
         onboarding_completed: userData.onboarding_completed,
-        profile_data: profileData?.profile_data || {}
+        profile_data: profileData || {}
       })
 
       // If onboarding not completed, redirect
@@ -159,7 +159,7 @@ export default function SearcherDashboard() {
                   <h2 className="text-2xl font-bold mb-1">Welcome!</h2>
                   <div className="flex items-center gap-2 text-white/90">
                     <MapPin className="w-4 h-4" />
-                    <span>{profile_data?.location || 'Location not set'}</span>
+                    <span>{profile_data?.current_city || profile_data?.preferred_cities?.[0] || 'Location not set'}</span>
                   </div>
                 </div>
               </div>
@@ -177,11 +177,17 @@ export default function SearcherDashboard() {
                 📋 About Me
               </h3>
               <div className="space-y-2 text-gray-700">
-                {profile_data?.dateOfBirth && (
-                  <p>• {new Date().getFullYear() - new Date(profile_data.dateOfBirth).getFullYear()} years old</p>
+                {profile_data?.date_of_birth && (
+                  <p>• {new Date().getFullYear() - new Date(profile_data.date_of_birth).getFullYear()} years old</p>
                 )}
-                {profile_data?.occupation && (
-                  <p>• {profile_data.occupation}</p>
+                {profile_data?.occupation_status && (
+                  <p>• {profile_data.occupation_status}</p>
+                )}
+                {(profile_data?.field_of_study || profile_data?.university) && (
+                  <p>• {profile_data.field_of_study && profile_data.university ? `${profile_data.field_of_study} at ${profile_data.university}` : profile_data.field_of_study || profile_data.university}</p>
+                )}
+                {(profile_data?.job_title || profile_data?.employer) && (
+                  <p>• {profile_data.job_title && profile_data.employer ? `${profile_data.job_title} at ${profile_data.employer}` : profile_data.job_title || profile_data.employer}</p>
                 )}
                 {profile_data?.nationality && (
                   <p className="flex items-center gap-2">
@@ -189,60 +195,93 @@ export default function SearcherDashboard() {
                     {profile_data.nationality}
                   </p>
                 )}
-                {profile_data?.about && (
-                  <p className="text-sm text-gray-600 mt-3 italic">"{profile_data.about}"</p>
+                {profile_data?.languages_spoken && profile_data.languages_spoken.length > 0 && (
+                  <p>• Speaks: {profile_data.languages_spoken.join(', ')}</p>
+                )}
+                {(profile_data?.bio || profile_data?.about_me) && (
+                  <p className="text-sm text-gray-600 mt-3 italic">"{profile_data.bio || profile_data.about_me}"</p>
                 )}
               </div>
             </div>
 
             {/* Lifestyle Section */}
-            {(profile_data?.cleanliness || profile_data?.socialPreference || profile_data?.smoking || profile_data?.cooking) && (
+            {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale !== undefined || profile_data?.is_smoker !== undefined || profile_data?.dietary_preferences || profile_data?.hobbies) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   ✨ Lifestyle
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {profile_data?.cleanliness && (
+                  {profile_data?.cleanliness_preference && (
                     <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200">
-                      Cleanliness: {profile_data.cleanliness}/10
+                      Cleanliness: {profile_data.cleanliness_preference}/10
                     </span>
                   )}
-                  {profile_data?.socialPreference && (
+                  {profile_data?.introvert_extrovert_scale !== undefined && (
                     <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
-                      {profile_data.socialPreference}
+                      {profile_data.introvert_extrovert_scale <= 3 ? 'Introvert' : profile_data.introvert_extrovert_scale >= 7 ? 'Extrovert' : 'Ambivert'}
                     </span>
                   )}
-                  {profile_data?.smoking !== undefined && (
+                  {profile_data?.is_smoker !== undefined && (
                     <span className="px-3 py-1.5 bg-gray-50 text-gray-700 rounded-full text-sm font-medium border border-gray-200">
-                      {profile_data.smoking ? 'Smoker' : 'Non-smoker'}
+                      {profile_data.is_smoker ? 'Smoker' : 'Non-smoker'}
                     </span>
                   )}
-                  {profile_data?.cooking && (
+                  {profile_data?.dietary_preferences && profile_data.dietary_preferences.length > 0 && (
+                    profile_data.dietary_preferences.map((diet: string) => (
+                      <span key={diet} className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium border border-green-200">
+                        {diet}
+                      </span>
+                    ))
+                  )}
+                  {profile_data?.exercise_frequency && (
+                    <span className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-full text-sm font-medium border border-orange-200">
+                      Exercise: {profile_data.exercise_frequency}
+                    </span>
+                  )}
+                  {profile_data?.alcohol_consumption && (
                     <span className="px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-full text-sm font-medium border border-yellow-200">
-                      {profile_data.cooking}
+                      Alcohol: {profile_data.alcohol_consumption}
                     </span>
                   )}
                 </div>
+                {profile_data?.hobbies && profile_data.hobbies.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-sm text-gray-600 mb-2">Hobbies:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {profile_data.hobbies.map((hobby: string) => (
+                        <span key={hobby} className="px-2 py-1 bg-pink-50 text-pink-700 rounded-md text-xs font-medium border border-pink-200">
+                          {hobby}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Daily Routine Section */}
-            {(profile_data?.wakeUpTime || profile_data?.bedTime) && (
+            {(profile_data?.early_bird_night_owl || profile_data?.work_schedule) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   🔄 Daily Routine
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {profile_data?.wakeUpTime && (
+                  {profile_data?.early_bird_night_owl && (
                     <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                      <p className="text-xs text-gray-600 mb-1">Wake up</p>
-                      <p className="font-semibold text-gray-900">{profile_data.wakeUpTime}</p>
+                      <p className="text-xs text-gray-600 mb-1">Sleep Schedule</p>
+                      <p className="font-semibold text-gray-900 capitalize">{profile_data.early_bird_night_owl.replace('_', ' ')}</p>
                     </div>
                   )}
-                  {profile_data?.bedTime && (
+                  {profile_data?.work_schedule && (
                     <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                      <p className="text-xs text-gray-600 mb-1">Sleep time</p>
-                      <p className="font-semibold text-gray-900">{profile_data.bedTime}</p>
+                      <p className="text-xs text-gray-600 mb-1">Work Schedule</p>
+                      <p className="font-semibold text-gray-900 capitalize">{profile_data.work_schedule}</p>
+                    </div>
+                  )}
+                  {profile_data?.work_from_home !== undefined && (
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Work from Home</p>
+                      <p className="font-semibold text-gray-900">{profile_data.work_from_home ? 'Yes' : 'No'}</p>
                     </div>
                   )}
                 </div>
@@ -255,23 +294,32 @@ export default function SearcherDashboard() {
                 🏠 Looking For
               </h3>
               <div className="space-y-2 text-gray-700">
-                {profile_data?.colivingSize && (
-                  <p>• Coliving size: <span className="font-medium">{profile_data.colivingSize}</span></p>
+                {profile_data?.coliving_size && (
+                  <p>• Coliving size: <span className="font-medium">{profile_data.coliving_size}</span></p>
                 )}
-                {profile_data?.genderPreference && (
-                  <p>• Gender preference: <span className="font-medium">{profile_data.genderPreference}</span></p>
+                {profile_data?.gender_mix && (
+                  <p>• Gender preference: <span className="font-medium">{profile_data.gender_mix}</span></p>
                 )}
-                {profile_data?.roommateAgeRange && (
-                  <p>• Roommates aged <span className="font-medium">{profile_data.roommateAgeRange}</span></p>
+                {(profile_data?.min_age || profile_data?.max_age) && (
+                  <p>• Roommates aged <span className="font-medium">{profile_data.min_age || '?'}-{profile_data.max_age || '?'}</span></p>
                 )}
-                {profile_data?.budget && (
+                {(profile_data?.budget_min || profile_data?.budget_max) && (
                   <p className="flex items-center gap-1">
                     <DollarSign className="w-4 h-4" />
-                    Budget: <span className="font-medium">${profile_data.budget}/month</span>
+                    Budget: <span className="font-medium">€{profile_data.budget_min || '?'}-€{profile_data.budget_max || '?'}/month</span>
                   </p>
                 )}
-                {profile_data?.moveInDate && (
-                  <p>• Move-in: <span className="font-medium">{profile_data.moveInDate}</span></p>
+                {profile_data?.move_in_date && (
+                  <p>• Move-in: <span className="font-medium">{new Date(profile_data.move_in_date).toLocaleDateString()}</span></p>
+                )}
+                {profile_data?.desired_stay_duration && (
+                  <p>• Stay duration: <span className="font-medium">{profile_data.desired_stay_duration}</span></p>
+                )}
+                {profile_data?.accepted_room_types && profile_data.accepted_room_types.length > 0 && (
+                  <p>• Room types: <span className="font-medium">{profile_data.accepted_room_types.join(', ')}</span></p>
+                )}
+                {profile_data?.preferred_cities && profile_data.preferred_cities.length > 0 && (
+                  <p>• Cities: <span className="font-medium">{profile_data.preferred_cities.join(', ')}</span></p>
                 )}
               </div>
             </div>
