@@ -23,8 +23,8 @@ export default function PreferencesPage() {
       acceptSmokersInHouse,
     });
 
-    // Navigate to verification
-    router.push('/onboarding/searcher/verification');
+    // Navigate to privacy for GDPR consent
+    router.push('/onboarding/searcher/privacy');
   };
 
   const canContinue = budgetMin && budgetMax;
@@ -188,7 +188,7 @@ export default function PreferencesPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue to Verification
+          Continue to Privacy
         </button>
       </div>
     </main>

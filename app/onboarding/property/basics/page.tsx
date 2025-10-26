@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, Building2, DoorClosed } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { toast } from 'sonner';
 
 export default function PropertyBasics() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function PropertyBasics() {
 
   const handleContinue = () => {
     if (!propertyType || !address.trim() || !city.trim() || !bedrooms || !bathrooms) {
-      alert('Please fill in all required fields');
+      toast.error('Please fill in all required fields');
       return;
     }
 

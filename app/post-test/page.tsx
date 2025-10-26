@@ -1,5 +1,5 @@
 'use client';
-import { useForm } from 'react-hook-form'; import { z } from 'zod'; import { supabase } from '@/lib/supabaseClient'; import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form'; import { z } from 'zod'; import { supabase } from '@/lib/supabaseClient'; import { useRouter } from 'next/navigation'; import { toast } from 'sonner';
 const Schema=z.object({ rating:z.coerce.number().min(1).max(5), comment:z.string().optional() });
 type FormData = z.infer<typeof Schema>;
 export default function PostTest(){
@@ -9,8 +9,8 @@ export default function PostTest(){
     const tester_id = localStorage.getItem('tester_id') || null;
     try{
       await supabase.from('test_feedback').insert({ tester_id, rating: d.rating, comment: d.comment||null });
-      alert('Thanks for your feedback!');
-    } catch(e){ console.error(e); alert('Could not save feedback (check Supabase).'); }
+      toast.success('Thanks for your feedback!');
+    } catch(e){ console.error(e); toast.error('Could not save feedback (check Supabase).'); }
     r.push('/');
   };
   return (

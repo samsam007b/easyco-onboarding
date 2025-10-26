@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, DollarSign, Calendar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { toast } from 'sonner';
 
 export default function PropertyPricing() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function PropertyPricing() {
 
   const handleContinue = () => {
     if (!monthlyRent || !securityDeposit) {
-      alert('Please fill in all required fields');
+      toast.error('Please fill in all required fields');
       return;
     }
 

@@ -82,7 +82,7 @@ export default function OwnerReview() {
   };
 
   const handleBack = () => {
-    router.push('/onboarding/owner/about');
+    router.push('/onboarding/owner/verification');
   };
 
   const getOwnerTypeLabel = (type: string) => {

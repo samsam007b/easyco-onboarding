@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User, Building2, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { toast } from 'sonner';
 
 export default function OwnerAbout() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function OwnerAbout() {
 
   const handleContinue = () => {
     if (!ownerType || !primaryLocation || !hostingExperience) {
-      alert('Please fill in all required fields');
+      toast.error('Please fill in all required fields');
       return;
     }
 

@@ -4,7 +4,7 @@ export default function SearcherIndex(){
     <h1 className="text-2xl font-bold">Searcher Onboarding</h1>
     <div className="card space-y-3">
       <p>Follow the steps to set your preferences.</p>
-      <Link href="/onboarding/searcher/budget" className="btn btn-primary inline-block">Start</Link>
+      <Link href="/onboarding/searcher/basic-info" className="btn btn-primary inline-block">Start</Link>
     </div>
   </main>);
 }
