@@ -44,15 +44,22 @@ export default function OwnerSuccess() {
         <div className="space-y-3">
           <Link
             href="/dashboard/owner"
-            className="flex items-center justify-center gap-2 w-full bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center gap-2 w-full bg-[color:var(--easy-yellow)] text-black py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
             Go to Dashboard
             <ArrowRight className="w-5 h-5" />
           </Link>
 
           <Link
+            href="/profile/enhance"
+            className="block w-full bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg"
+          >
+            ✨ Enhance Your Profile
+          </Link>
+
+          <Link
             href="/"
-            className="block w-full border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+            className="block w-full text-gray-600 py-3 rounded-lg font-medium hover:text-[color:var(--easy-purple)] transition"
           >
             Back to Home
           </Link>

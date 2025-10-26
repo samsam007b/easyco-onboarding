@@ -16,7 +16,9 @@ export default function OwnerReview() {
   useEffect(() => {
     const basicInfo = safeLocalStorage.get('ownerBasicInfo', {});
     const about = safeLocalStorage.get('ownerAbout', {});
-    setData({ basicInfo, about });
+    const propertyBasics = safeLocalStorage.get('ownerPropertyBasics', {});
+    const verification = safeLocalStorage.get('ownerVerification', {});
+    setData({ basicInfo, about, propertyBasics, verification });
   }, []);
 
   const handleSubmit = async () => {
@@ -36,12 +38,22 @@ export default function OwnerReview() {
 
       // Prepare owner onboarding data
       const onboardingData = {
+        landlordType: data.basicInfo?.landlordType,
         firstName: data.basicInfo?.firstName,
         lastName: data.basicInfo?.lastName,
+        companyName: data.basicInfo?.companyName,
         email: data.basicInfo?.email,
+        phoneNumber: data.basicInfo?.phoneNumber,
+        nationality: data.basicInfo?.nationality,
         ownerType: data.about?.ownerType,
         primaryLocation: data.about?.primaryLocation,
         hostingExperience: data.about?.hostingExperience,
+        hasProperty: data.propertyBasics?.hasProperty,
+        propertyCity: data.propertyBasics?.propertyCity,
+        propertyType: data.propertyBasics?.propertyType,
+        phoneVerification: data.verification?.phoneNumber,
+        idDocument: data.verification?.idDocument,
+        proofOfOwnership: data.verification?.proofOfOwnership,
         completedAt: new Date().toISOString()
       };
 
@@ -55,6 +67,8 @@ export default function OwnerReview() {
       // Clear onboarding data from localStorage
       safeLocalStorage.remove('ownerBasicInfo');
       safeLocalStorage.remove('ownerAbout');
+      safeLocalStorage.remove('ownerPropertyBasics');
+      safeLocalStorage.remove('ownerVerification');
 
       toast.success('Profile created successfully!');
 
@@ -129,6 +143,18 @@ export default function OwnerReview() {
                 <h3 className="font-semibold text-gray-900">Basic Information</h3>
               </div>
               <div className="space-y-2 text-sm">
+                {data.basicInfo?.landlordType && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Type:</span>
+                    <span className="font-medium text-gray-900 capitalize">{data.basicInfo.landlordType}</span>
+                  </div>
+                )}
+                {data.basicInfo?.companyName && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Company:</span>
+                    <span className="font-medium text-gray-900">{data.basicInfo.companyName}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Name:</span>
                   <span className="font-medium text-gray-900">
@@ -139,6 +165,18 @@ export default function OwnerReview() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Email:</span>
                     <span className="font-medium text-gray-900">{data.basicInfo.email}</span>
+                  </div>
+                )}
+                {data.basicInfo?.phoneNumber && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Phone:</span>
+                    <span className="font-medium text-gray-900">{data.basicInfo.phoneNumber}</span>
+                  </div>
+                )}
+                {data.basicInfo?.nationality && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Nationality:</span>
+                    <span className="font-medium text-gray-900">{data.basicInfo.nationality}</span>
                   </div>
                 )}
               </div>
@@ -167,6 +205,66 @@ export default function OwnerReview() {
                 </div>
               </div>
             </div>
+
+            {/* Property Basics */}
+            {data.propertyBasics && (
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-3">
+                  <MapPin className="w-5 h-5 text-[color:var(--easy-purple)]" />
+                  <h3 className="font-semibold text-gray-900">Property Information</h3>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Has Property:</span>
+                    <span className="font-medium text-gray-900">
+                      {data.propertyBasics.hasProperty === 'yes' ? 'Yes' : 'Not yet'}
+                    </span>
+                  </div>
+                  {data.propertyBasics.propertyCity && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Location:</span>
+                      <span className="font-medium text-gray-900">{data.propertyBasics.propertyCity}</span>
+                    </div>
+                  )}
+                  {data.propertyBasics.propertyType && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Type:</span>
+                      <span className="font-medium text-gray-900 capitalize">{data.propertyBasics.propertyType}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Verification */}
+            {data.verification && (data.verification.phoneNumber || data.verification.idDocument || data.verification.proofOfOwnership) && (
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle className="w-5 h-5 text-[color:var(--easy-purple)]" />
+                  <h3 className="font-semibold text-gray-900">Verification Status</h3>
+                </div>
+                <div className="space-y-2 text-sm">
+                  {data.verification.phoneNumber && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Phone:</span>
+                      <span className="font-medium text-gray-900">{data.verification.phoneNumber}</span>
+                    </div>
+                  )}
+                  {data.verification.idDocument && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">ID Document:</span>
+                      <span className="font-medium text-green-600">✓ Uploaded</span>
+                    </div>
+                  )}
+                  {data.verification.proofOfOwnership && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Proof of Ownership:</span>
+                      <span className="font-medium text-green-600">✓ Uploaded</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Next Steps */}

@@ -7,27 +7,51 @@ import { safeLocalStorage } from '@/lib/browser';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
+  const [landlordType, setLandlordType] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [nationality, setNationality] = useState('');
 
   useEffect(() => {
     const saved = safeLocalStorage.get('ownerBasicInfo', {}) as any;
+    if (saved.landlordType) setLandlordType(saved.landlordType);
     if (saved.firstName) setFirstName(saved.firstName);
     if (saved.lastName) setLastName(saved.lastName);
+    if (saved.companyName) setCompanyName(saved.companyName);
     if (saved.email) setEmail(saved.email);
+    if (saved.phoneNumber) setPhoneNumber(saved.phoneNumber);
+    if (saved.nationality) setNationality(saved.nationality);
   }, []);
 
   const handleContinue = () => {
+    if (!landlordType) {
+      alert('Please select your landlord type');
+      return;
+    }
     if (!firstName.trim() || !lastName.trim()) {
       alert('Please enter your first and last name');
       return;
     }
+    if ((landlordType === 'agency' || landlordType === 'company') && !companyName.trim()) {
+      alert('Please enter your company name');
+      return;
+    }
+    if (!phoneNumber.trim()) {
+      alert('Please enter your phone number');
+      return;
+    }
 
     safeLocalStorage.set('ownerBasicInfo', {
+      landlordType,
       firstName,
       lastName,
+      companyName: (landlordType === 'agency' || landlordType === 'company') ? companyName : '',
       email,
+      phoneNumber,
+      nationality,
     });
     router.push('/onboarding/owner/about');
   };
@@ -78,6 +102,39 @@ export default function OwnerBasicInfo() {
           </div>
 
           <div className="space-y-6">
+            {/* Landlord Type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                I am a <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={landlordType}
+                onChange={(e) => setLandlordType(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+              >
+                <option value="">Select...</option>
+                <option value="individual">Individual Landlord</option>
+                <option value="agency">Property Agency</option>
+                <option value="company">Property Management Company</option>
+              </select>
+            </div>
+
+            {/* Company Name (conditional) */}
+            {(landlordType === 'agency' || landlordType === 'company') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Enter your company name"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                />
+              </div>
+            )}
+
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -121,7 +178,34 @@ export default function OwnerBasicInfo() {
               <p className="mt-2 text-xs text-gray-500">Verified email helps protect your account</p>
             </div>
 
-            {/* TODO: Add phone verification and ID verification sections later */}
+            {/* Phone Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="+33 6 12 34 56 78"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+              />
+              <p className="mt-2 text-xs text-gray-500">Required for tenant communication</p>
+            </div>
+
+            {/* Nationality */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nationality
+              </label>
+              <input
+                type="text"
+                value={nationality}
+                onChange={(e) => setNationality(e.target.value)}
+                placeholder="e.g., French, Belgian"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+              />
+            </div>
           </div>
 
           {/* Continue Button */}

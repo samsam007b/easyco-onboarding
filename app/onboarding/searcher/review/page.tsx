@@ -18,10 +18,12 @@ export default function ReviewPage() {
     const dailyHabits = safeLocalStorage.get('dailyHabits', {});
     const homeLifestyle = safeLocalStorage.get('homeLifestyle', {});
     const socialVibe = safeLocalStorage.get('socialVibe', {});
+    const idealColiving = safeLocalStorage.get('idealColiving', {});
     const preferences = safeLocalStorage.get('preferences', {});
+    const verification = safeLocalStorage.get('verification', {});
     const testerId = safeLocalStorage.get('tester_id', null);
 
-    setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, preferences, testerId });
+    setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, idealColiving, preferences, verification, testerId });
   }, []);
 
   const handleSubmit = async () => {
@@ -51,7 +53,9 @@ export default function ReviewPage() {
         ...data.dailyHabits,
         ...data.homeLifestyle,
         ...data.socialVibe,
+        ...data.idealColiving,
         ...data.preferences,
+        ...data.verification,
         lifestyle: lifestyleArray,
         completedAt: new Date().toISOString()
       };
@@ -68,7 +72,9 @@ export default function ReviewPage() {
       safeLocalStorage.remove('dailyHabits');
       safeLocalStorage.remove('homeLifestyle');
       safeLocalStorage.remove('socialVibe');
+      safeLocalStorage.remove('idealColiving');
       safeLocalStorage.remove('preferences');
+      safeLocalStorage.remove('verification');
 
       toast.success('Profile saved successfully!');
       router.push('/onboarding/searcher/success');
@@ -94,6 +100,8 @@ export default function ReviewPage() {
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">Basic Info</h2>
               <dl className="space-y-2 text-sm">
+                {data.basicInfo.firstName && <div className="flex justify-between"><dt>First Name:</dt><dd className="font-medium">{data.basicInfo.firstName}</dd></div>}
+                {data.basicInfo.lastName && <div className="flex justify-between"><dt>Last Name:</dt><dd className="font-medium">{data.basicInfo.lastName}</dd></div>}
                 <div className="flex justify-between"><dt>Date of Birth:</dt><dd className="font-medium">{data.basicInfo.dateOfBirth}</dd></div>
                 <div className="flex justify-between"><dt>Nationality:</dt><dd className="font-medium">{data.basicInfo.nationality}</dd></div>
                 <div className="flex justify-between"><dt>Languages:</dt><dd className="font-medium">{data.basicInfo.languages?.join(', ')}</dd></div>
@@ -110,12 +118,32 @@ export default function ReviewPage() {
               </dl>
             </div>
           )}
+          {data.idealColiving && Object.keys(data.idealColiving).length > 0 && (
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">Ideal Coliving</h2>
+              <dl className="space-y-2 text-sm">
+                {data.idealColiving.colivingSize && <div className="flex justify-between"><dt>Coliving Size:</dt><dd className="font-medium capitalize">{data.idealColiving.colivingSize}</dd></div>}
+                {data.idealColiving.genderMix && <div className="flex justify-between"><dt>Gender Mix:</dt><dd className="font-medium capitalize">{data.idealColiving.genderMix.replace(/-/g, ' ')}</dd></div>}
+                {data.idealColiving.minAge && <div className="flex justify-between"><dt>Age Range:</dt><dd className="font-medium">{data.idealColiving.minAge} - {data.idealColiving.maxAge}</dd></div>}
+                {data.idealColiving.sharedSpaceImportance && <div className="flex justify-between"><dt>Shared Space:</dt><dd className="font-medium">{data.idealColiving.sharedSpaceImportance}/10</dd></div>}
+              </dl>
+            </div>
+          )}
           {data.preferences && Object.keys(data.preferences).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">Preferences</h2>
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between"><dt>Budget:</dt><dd className="font-medium">€{data.preferences.budgetMin} - €{data.preferences.budgetMax}</dd></div>
                 <div className="flex justify-between"><dt>District:</dt><dd className="font-medium">{data.preferences.preferredDistrict || 'Any'}</dd></div>
+              </dl>
+            </div>
+          )}
+          {data.verification && data.verification.phoneNumber && (
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">Verification</h2>
+              <dl className="space-y-2 text-sm">
+                {data.verification.phoneNumber && <div className="flex justify-between"><dt>Phone:</dt><dd className="font-medium">{data.verification.phoneNumber}</dd></div>}
+                {data.verification.idDocument && <div className="flex justify-between"><dt>ID Document:</dt><dd className="font-medium">✓ Uploaded</dd></div>}
               </dl>
             </div>
           )}

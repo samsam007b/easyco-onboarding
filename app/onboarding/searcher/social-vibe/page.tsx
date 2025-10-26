@@ -22,7 +22,7 @@ export default function SocialVibePage() {
     });
 
     // Navigate to next step
-    router.push('/onboarding/searcher/privacy');
+    router.push('/onboarding/searcher/ideal-coliving');
   };
 
   const canContinue = socialEnergy && opennessToSharing && communicationStyle && culturalOpenness;
