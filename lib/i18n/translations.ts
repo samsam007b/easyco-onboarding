@@ -612,6 +612,41 @@ export const translations = {
     },
   },
 
+  cookies: {
+    banner: {
+      title: {
+        fr: 'Nous utilisons des cookies',
+        en: 'We use cookies',
+        nl: 'Wij gebruiken cookies',
+        de: 'Wir verwenden Cookies',
+      },
+      description: {
+        fr: 'Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser le contenu. En cliquant sur "Accepter", vous consentez à notre utilisation des cookies.',
+        en: 'We use cookies to improve your experience, analyze traffic, and personalize content. By clicking "Accept", you consent to our use of cookies.',
+        nl: 'We gebruiken cookies om uw ervaring te verbeteren, verkeer te analyseren en inhoud te personaliseren. Door op "Accepteren" te klikken, stemt u in met ons gebruik van cookies.',
+        de: 'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern, den Verkehr zu analysieren und Inhalte zu personalisieren. Indem Sie auf "Akzeptieren" klicken, stimmen Sie unserer Verwendung von Cookies zu.',
+      },
+      learnMore: {
+        fr: 'En savoir plus',
+        en: 'Learn more',
+        nl: 'Meer informatie',
+        de: 'Mehr erfahren',
+      },
+      accept: {
+        fr: 'Accepter',
+        en: 'Accept',
+        nl: 'Accepteren',
+        de: 'Akzeptieren',
+      },
+      decline: {
+        fr: 'Refuser',
+        en: 'Decline',
+        nl: 'Weigeren',
+        de: 'Ablehnen',
+      },
+    },
+  },
+
   // ============================================================================
   // COMMON BUTTONS & ACTIONS
   // ============================================================================
