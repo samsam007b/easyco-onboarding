@@ -7,6 +7,8 @@ import { safeLocalStorage } from '@/lib/browser';
 
 export default function BasicInfoPage() {
   const router = useRouter();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [languages, setLanguages] = useState<string[]>([]);
@@ -26,6 +28,8 @@ export default function BasicInfoPage() {
   const handleContinue = () => {
     // Save to localStorage
     safeLocalStorage.set('basicInfo', {
+      firstName,
+      lastName,
       dateOfBirth,
       nationality,
       languages,
@@ -35,7 +39,7 @@ export default function BasicInfoPage() {
     router.push('/onboarding/searcher/daily-habits');
   };
 
-  const canContinue = dateOfBirth && nationality;
+  const canContinue = firstName && lastName && dateOfBirth && nationality;
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -68,6 +72,34 @@ export default function BasicInfoPage() {
 
         {/* Form */}
         <div className="space-y-6">
+
+          {/* First Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              First Name
+            </label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              placeholder="e.g., John"
+            />
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              placeholder="e.g., Doe"
+            />
+          </div>
 
           {/* Date of Birth */}
           <div>

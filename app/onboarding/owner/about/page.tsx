@@ -29,7 +29,7 @@ export default function OwnerAbout() {
       primaryLocation,
       hostingExperience,
     });
-    router.push('/onboarding/owner/review');
+    router.push('/onboarding/owner/property-basics');
   };
 
   const handleBack = () => {

@@ -23,8 +23,8 @@ export default function PreferencesPage() {
       acceptSmokersInHouse,
     });
 
-    // Navigate to review
-    router.push('/onboarding/searcher/review');
+    // Navigate to verification
+    router.push('/onboarding/searcher/verification');
   };
 
   const canContinue = budgetMin && budgetMax;

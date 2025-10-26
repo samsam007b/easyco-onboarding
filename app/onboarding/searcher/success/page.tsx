@@ -50,11 +50,17 @@ export default function SuccessPage() {
             href="/dashboard/searcher"
             className="block w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
-            Go to Dashboard
+            Start Browsing
+          </Link>
+          <Link
+            href="/profile/enhance"
+            className="block w-full py-4 rounded-full bg-[color:var(--easy-purple)] text-white font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+          >
+            ✨ Enhance Your Profile
           </Link>
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-full py-4 rounded-full border-2 border-gray-300 text-gray-700 font-semibold hover:border-[color:var(--easy-purple)] hover:text-[color:var(--easy-purple)] transition"
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-full text-gray-600 font-medium hover:text-[color:var(--easy-purple)] transition"
           >
             <Home className="w-5 h-5" />
             Back to Home
