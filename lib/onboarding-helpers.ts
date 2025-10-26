@@ -213,6 +213,19 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.iban) profileData.iban = data.iban
     if (data.swiftBic) profileData.swift_bic = data.swiftBic
 
+    // Owner Enhanced Profile
+    if (data.experienceYears) profileData.experience_years = parseInt(data.experienceYears) || 0
+    if (data.managementStyle) profileData.management_type = data.managementStyle
+    if (data.primaryMotivation) profileData.primary_motivation = data.primaryMotivation
+    if (data.ownerBio) profileData.owner_bio = data.ownerBio
+    if (data.petsAllowed !== undefined) profileData.pets_allowed_policy = data.petsAllowed
+    if (data.smokingAllowed !== undefined) profileData.smoking_allowed = data.smokingAllowed
+    if (data.minimumLeaseDuration) profileData.minimum_lease_duration_months = parseInt(data.minimumLeaseDuration) || null
+    if (data.depositAmount) profileData.deposit_amount_months = parseFloat(data.depositAmount) || 1.0
+    if (data.noticePeriod) profileData.notice_period_days = parseInt(data.noticePeriod.replace('-months', '')) * 30 || null
+    if (data.amenities) profileData.amenities = data.amenities
+    if (data.includedServices) profileData.included_services = data.includedServices
+
     // Upsert to user_profiles (insert or update)
     const { error: profileError } = await supabase
       .from('user_profiles')
