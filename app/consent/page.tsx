@@ -7,8 +7,9 @@ export const fetchCache = 'force-no-store';
 export default function ConsentPage({
   searchParams,
 }: {
-  searchParams?: { source?: string };
+  searchParams?: { source?: string; nextHref?: string };
 }) {
   const source = searchParams?.source ?? 'unknown';
-  return <ConsentActions source={source} />;
+  const nextHref = searchParams?.nextHref;
+  return <ConsentActions source={source} nextHref={nextHref} />;
 }
