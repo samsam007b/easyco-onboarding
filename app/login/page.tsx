@@ -93,7 +93,7 @@ export default function LoginPage() {
         } else if (userType === 'resident') {
           router.push('/dashboard/resident')
         } else {
-          router.push('/select-user-type')
+          router.push('/welcome')
         }
       }
     } catch (error: any) {

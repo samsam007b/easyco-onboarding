@@ -81,7 +81,7 @@ export default function CompleteSignupPage() {
           } else {
             // If user_type is default 'searcher' and onboarding not started,
             // ask them to select their type
-            router.push('/select-user-type')
+            router.push('/welcome')
           }
         }
       } catch (error) {

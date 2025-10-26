@@ -34,7 +34,7 @@ export async function redirectToDashboard(userType?: string) {
   } else if (userType === 'resident') {
     redirect('/dashboard/resident')
   } else {
-    redirect('/select-user-type')
+    redirect('/welcome')
   }
 }
 
