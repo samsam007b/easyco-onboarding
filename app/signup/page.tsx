@@ -8,11 +8,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X } from 'lucide-react'
 import { toast } from 'sonner'
+import { useLanguage } from '@/lib/i18n/use-language'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 type UserType = 'searcher' | 'owner' | 'resident'
 
 export default function SignupPage() {
   const router = useRouter()
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -37,19 +40,19 @@ export default function SignupPage() {
     if (/[0-9]/.test(pwd)) strength++
     if (/[^A-Za-z0-9]/.test(pwd)) strength++
 
-    if (strength <= 2) return { strength, label: 'Weak', color: 'bg-red-500' }
-    if (strength <= 3) return { strength, label: 'Medium', color: 'bg-yellow-500' }
-    return { strength, label: 'Strong', color: 'bg-green-500' }
+    if (strength <= 2) return { strength, label: t('auth.signup.weak'), color: 'bg-red-500' }
+    if (strength <= 3) return { strength, label: t('auth.signup.medium'), color: 'bg-yellow-500' }
+    return { strength, label: t('auth.signup.strong'), color: 'bg-green-500' }
   }
 
   const passwordStrength = getPasswordStrength(password)
 
   // Password requirements
   const requirements = [
-    { met: password.length >= 8, text: 'At least 8 characters' },
-    { met: /[A-Z]/.test(password), text: 'One uppercase letter' },
-    { met: /[a-z]/.test(password), text: 'One lowercase letter' },
-    { met: /[0-9]/.test(password), text: 'One number' },
+    { met: password.length >= 8, text: t('auth.signup.requirements.length') },
+    { met: /[A-Z]/.test(password), text: t('auth.signup.requirements.uppercase') },
+    { met: /[a-z]/.test(password), text: t('auth.signup.requirements.lowercase') },
+    { met: /[0-9]/.test(password), text: t('auth.signup.requirements.number') },
   ]
 
   const handleEmailSignup = async (e: React.FormEvent) => {
@@ -57,27 +60,27 @@ export default function SignupPage() {
 
     // Validation
     if (!fullName.trim()) {
-      toast.error('Please enter your full name')
+      toast.error(t('auth.signup.errors.enterName'))
       return
     }
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      toast.error('Please enter a valid email address')
+      toast.error(t('auth.signup.errors.invalidEmail'))
       return
     }
 
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters')
+      toast.error(t('auth.signup.errors.passwordLength'))
       return
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('auth.signup.errors.passwordsDontMatch'))
       return
     }
 
     if (!agreedToTerms) {
-      toast.error('Please agree to the Terms of Service and Privacy Policy')
+      toast.error(t('auth.signup.errors.agreeToTerms'))
       return
     }
 
@@ -99,10 +102,10 @@ export default function SignupPage() {
 
       if (error) {
         if (error.message.includes('already registered')) {
-          toast.error('This email is already registered', {
-            description: 'Please try logging in instead',
+          toast.error(t('auth.signup.errors.emailAlreadyRegistered'), {
+            description: t('auth.signup.errors.tryLogin'),
             action: {
-              label: 'Go to Login',
+              label: t('auth.signup.errors.goToLogin'),
               onClick: () => router.push('/login'),
             },
           })
@@ -122,8 +125,8 @@ export default function SignupPage() {
           })
           .eq('id', data.user.id)
 
-        toast.success('Account created successfully!', {
-          description: 'Please check your email to verify your account',
+        toast.success(t('auth.signup.success.accountCreated'), {
+          description: t('auth.signup.success.checkEmail'),
         })
 
         // Redirect to a "check your email" page or login
@@ -139,7 +142,7 @@ export default function SignupPage() {
 
   const handleGoogleSignup = async () => {
     if (!agreedToTerms) {
-      toast.error('Please agree to the Terms of Service and Privacy Policy')
+      toast.error(t('auth.signup.errors.agreeToTerms'))
       return
     }
 
@@ -179,12 +182,13 @@ export default function SignupPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to home</span>
+            <span>{t('auth.signup.backToHome')}</span>
           </Link>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
+          <LanguageSwitcher />
         </div>
       </header>
 
@@ -196,17 +200,17 @@ export default function SignupPage() {
             {/* Title */}
             <div className="text-center mb-6">
               <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-                Join EasyCo
+                {t('auth.signup.title')}
               </h1>
               <p className="text-gray-600">
-                Start your coliving journey today
+                {t('auth.signup.subtitle')}
               </p>
             </div>
 
             {/* User Type Selection */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                I want to:
+                {t('auth.signup.userTypeLabel')}
               </label>
               <div className="grid grid-cols-3 gap-3">
                 <button
@@ -221,8 +225,8 @@ export default function SignupPage() {
                 >
                   <div className="text-center">
                     <div className="text-2xl mb-1">🔍</div>
-                    <div className="font-semibold text-sm">Find a place</div>
-                    <div className="text-xs text-gray-500 mt-1">Searcher</div>
+                    <div className="font-semibold text-sm">{t('auth.signup.searcher')}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('auth.signup.searcherLabel')}</div>
                   </div>
                 </button>
                 <button
@@ -237,8 +241,8 @@ export default function SignupPage() {
                 >
                   <div className="text-center">
                     <div className="text-2xl mb-1">🏠</div>
-                    <div className="font-semibold text-sm">List property</div>
-                    <div className="text-xs text-gray-500 mt-1">Owner</div>
+                    <div className="font-semibold text-sm">{t('auth.signup.owner')}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('auth.signup.ownerLabel')}</div>
                   </div>
                 </button>
                 <button
@@ -253,8 +257,8 @@ export default function SignupPage() {
                 >
                   <div className="text-center">
                     <div className="text-2xl mb-1">👥</div>
-                    <div className="font-semibold text-sm">Join community</div>
-                    <div className="text-xs text-gray-500 mt-1">Resident</div>
+                    <div className="font-semibold text-sm">{t('auth.signup.resident')}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('auth.signup.residentLabel')}</div>
                   </div>
                 </button>
               </div>
@@ -277,7 +281,7 @@ export default function SignupPage() {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
               )}
-              <span>Continue with Google</span>
+              <span>{t('auth.signup.googleButton')}</span>
             </Button>
 
             {/* Divider */}
@@ -286,7 +290,7 @@ export default function SignupPage() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500">Or sign up with email</span>
+                <span className="px-4 bg-white text-gray-500">{t('auth.signup.divider')}</span>
               </div>
             </div>
 
@@ -295,14 +299,14 @@ export default function SignupPage() {
               {/* Full Name */}
               <div>
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
+                  {t('auth.signup.fullName')}
                 </label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder={t('auth.signup.fullNamePlaceholder')}
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     className="pl-12 pr-4 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -314,14 +318,14 @@ export default function SignupPage() {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                  {t('auth.signup.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder={t('auth.signup.emailPlaceholder')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-12 pr-4 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -333,14 +337,14 @@ export default function SignupPage() {
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
+                  {t('auth.signup.password')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder={t('auth.signup.passwordPlaceholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -359,10 +363,10 @@ export default function SignupPage() {
                 {password && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-gray-600">Password strength:</span>
+                      <span className="text-xs text-gray-600">{t('auth.signup.passwordStrength')}</span>
                       <span className={`text-xs font-medium ${
-                        passwordStrength.label === 'Weak' ? 'text-red-600' :
-                        passwordStrength.label === 'Medium' ? 'text-yellow-600' :
+                        passwordStrength.label === t('auth.signup.weak') ? 'text-red-600' :
+                        passwordStrength.label === t('auth.signup.medium') ? 'text-yellow-600' :
                         'text-green-600'
                       }`}>
                         {passwordStrength.label}
@@ -403,14 +407,14 @@ export default function SignupPage() {
               {/* Confirm Password */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm Password
+                  {t('auth.signup.confirmPassword')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder={t('auth.signup.passwordPlaceholder')}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -427,13 +431,13 @@ export default function SignupPage() {
                 {confirmPassword && password !== confirmPassword && (
                   <p className="text-xs text-red-600 mt-2 flex items-center gap-1">
                     <X className="w-3 h-3" />
-                    Passwords do not match
+                    {t('auth.signup.passwordsDontMatch')}
                   </p>
                 )}
                 {confirmPassword && password === confirmPassword && (
                   <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
                     <Check className="w-3 h-3" />
-                    Passwords match
+                    {t('auth.signup.passwordsMatch')}
                   </p>
                 )}
               </div>
@@ -449,13 +453,13 @@ export default function SignupPage() {
                     disabled={isLoading || isGoogleLoading}
                   />
                   <span className="text-sm text-gray-600">
-                    I agree to EasyCo's{' '}
+                    {t('auth.signup.termsAgree')}{' '}
                     <Link href="/terms" className="text-[#4A148C] hover:underline">
-                      Terms of Service
+                      {t('auth.signup.termsLink')}
                     </Link>
-                    {' '}and{' '}
+                    {' '}{t('auth.signup.and')}{' '}
                     <Link href="/privacy" className="text-[#4A148C] hover:underline">
-                      Privacy Policy
+                      {t('auth.signup.privacyLink')}
                     </Link>
                   </span>
                 </label>
@@ -470,10 +474,10 @@ export default function SignupPage() {
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                    <span>Creating account...</span>
+                    <span>{t('auth.signup.creatingAccount')}</span>
                   </div>
                 ) : (
-                  'Create Account'
+                  t('auth.signup.signupButton')
                 )}
               </Button>
             </form>
@@ -481,12 +485,12 @@ export default function SignupPage() {
             {/* Login Link */}
             <div className="mt-6 text-center">
               <p className="text-gray-600">
-                Already have an account?{' '}
+                {t('auth.signup.haveAccount')}{' '}
                 <Link
                   href="/login"
                   className="text-[#4A148C] hover:text-[#311B92] font-semibold"
                 >
-                  Log in
+                  {t('auth.signup.loginLink')}
                 </Link>
               </p>
             </div>

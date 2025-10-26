@@ -8,6 +8,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useAutoSave } from '@/lib/hooks/use-auto-save';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function BasicInfoPage() {
   const router = useRouter();
@@ -136,6 +137,11 @@ export default function BasicInfoPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-md mx-auto">
 
         {/* Progress bar */}

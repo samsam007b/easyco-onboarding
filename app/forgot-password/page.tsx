@@ -7,8 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowLeft, Mail, Check } from 'lucide-react'
 import { toast } from 'sonner'
+import { useLanguage } from '@/lib/i18n/use-language'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default function ForgotPasswordPage() {
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
@@ -20,7 +23,7 @@ export default function ForgotPasswordPage() {
 
     // Validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      toast.error('Please enter a valid email address')
+      toast.error(t('auth.forgotPassword.errors.invalidEmail'))
       return
     }
 
@@ -39,8 +42,8 @@ export default function ForgotPasswordPage() {
 
       // Always show success message
       setEmailSent(true)
-      toast.success('Password reset link sent!', {
-        description: 'Check your email for further instructions',
+      toast.success(t('auth.forgotPassword.errors.linkSent'), {
+        description: t('auth.forgotPassword.errors.checkEmailDescription'),
       })
     } catch (error: any) {
       console.error('Unexpected error:', error)
@@ -57,12 +60,13 @@ export default function ForgotPasswordPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/login" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to login</span>
+            <span>{t('auth.forgotPassword.backToLogin')}</span>
           </Link>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
+          <LanguageSwitcher />
         </div>
       </header>
 
@@ -78,10 +82,10 @@ export default function ForgotPasswordPage() {
                   <Mail className="w-8 h-8 text-[#4A148C]" />
                 </div>
                 <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-                  Forgot Password?
+                  {t('auth.forgotPassword.title')}
                 </h1>
                 <p className="text-gray-600">
-                  No worries! Enter your email and we'll send you reset instructions
+                  {t('auth.forgotPassword.subtitle')}
                 </p>
               </div>
 
@@ -90,14 +94,14 @@ export default function ForgotPasswordPage() {
                 {/* Email Field */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
+                    {t('auth.forgotPassword.email')}
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <Input
                       id="email"
                       type="email"
-                      placeholder="you@example.com"
+                      placeholder={t('auth.forgotPassword.emailPlaceholder')}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="pl-12 pr-4 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -116,10 +120,10 @@ export default function ForgotPasswordPage() {
                   {isLoading ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                      <span>Sending...</span>
+                      <span>{t('auth.forgotPassword.sending')}</span>
                     </div>
                   ) : (
-                    'Send Reset Link'
+                    t('auth.forgotPassword.sendButton')
                   )}
                 </Button>
               </form>
@@ -127,12 +131,12 @@ export default function ForgotPasswordPage() {
               {/* Back to Login */}
               <div className="mt-6 text-center">
                 <p className="text-gray-600">
-                  Remember your password?{' '}
+                  {t('auth.forgotPassword.rememberPassword')}{' '}
                   <Link
                     href="/login"
                     className="text-[#4A148C] hover:text-[#311B92] font-semibold"
                   >
-                    Log in
+                    {t('auth.forgotPassword.loginLink')}
                   </Link>
                 </p>
               </div>
@@ -145,36 +149,36 @@ export default function ForgotPasswordPage() {
                   <Check className="w-8 h-8 text-green-600" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                  Check Your Email
+                  {t('auth.forgotPassword.success.title')}
                 </h1>
                 <p className="text-gray-600 mb-6">
-                  We've sent password reset instructions to{' '}
+                  {t('auth.forgotPassword.success.subtitle')}{' '}
                   <span className="font-semibold text-gray-900">{email}</span>
                 </p>
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 text-left">
                   <p className="text-sm text-blue-900 mb-2 font-medium">
-                    What's next?
+                    {t('auth.forgotPassword.success.nextSteps')}
                   </p>
                   <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
-                    <li>Check your email inbox</li>
-                    <li>Click the password reset link</li>
-                    <li>Create a new password</li>
+                    <li>{t('auth.forgotPassword.success.step1')}</li>
+                    <li>{t('auth.forgotPassword.success.step2')}</li>
+                    <li>{t('auth.forgotPassword.success.step3')}</li>
                   </ol>
                 </div>
                 <p className="text-sm text-gray-500 mb-6">
-                  Didn't receive the email? Check your spam folder or{' '}
+                  {t('auth.forgotPassword.success.noEmail')}{' '}
                   <button
                     onClick={() => setEmailSent(false)}
                     className="text-[#4A148C] hover:text-[#311B92] font-semibold underline"
                   >
-                    try again
+                    {t('auth.forgotPassword.success.tryAgain')}
                   </button>
                 </p>
                 <Link
                   href="/login"
                   className="inline-block w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-full transition-colors"
                 >
-                  Back to Login
+                  {t('auth.forgotPassword.success.backToLogin')}
                 </Link>
               </div>
             </div>

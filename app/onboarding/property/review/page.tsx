@@ -6,9 +6,14 @@ import { ArrowLeft, Home, MapPin, DollarSign, FileText, CheckCircle } from 'luci
 import { safeLocalStorage } from '@/lib/browser';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PropertyReview() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [data, setData] = useState<any>({});
 
@@ -23,7 +28,7 @@ export default function PropertyReview() {
 
   const handleSubmit = async () => {
     if (!data.ownerId) {
-      toast.error('Error: No owner profile found. Please complete the owner onboarding first.');
+      toast.error(onboarding.property.review.errorNoOwner);
       router.push('/onboarding/owner/basic-info');
       return;
     }
@@ -66,11 +71,11 @@ export default function PropertyReview() {
 
   const getPropertyTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      apartment: 'Apartment',
-      house: 'House',
-      condo: 'Condo',
-      studio: 'Studio',
-      coliving: 'Coliving',
+      apartment: onboarding.property.basics.apartment,
+      house: onboarding.property.basics.house,
+      condo: onboarding.property.basics.condo,
+      studio: onboarding.property.basics.studio,
+      coliving: onboarding.property.basics.coliving,
     };
     return labels[type] || type;
   };
@@ -78,6 +83,11 @@ export default function PropertyReview() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
       <div className="max-w-2xl mx-auto">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -85,7 +95,7 @@ export default function PropertyReview() {
             className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.back}</span>
           </button>
         </div>
 
@@ -111,8 +121,8 @@ export default function PropertyReview() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Review your listing</h2>
-            <p className="text-gray-600">Make sure everything looks good before publishing.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{onboarding.property.review.title}</h2>
+            <p className="text-gray-600">{onboarding.property.review.subtitle}</p>
           </div>
 
           {/* Property Summary */}
@@ -121,21 +131,21 @@ export default function PropertyReview() {
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-2 mb-3">
                 <Home className="w-5 h-5 text-[color:var(--easy-purple)]" />
-                <h3 className="font-semibold text-gray-900">Property Details</h3>
+                <h3 className="font-semibold text-gray-900">{onboarding.property.review.propertyDetails}</h3>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Type:</span>
+                  <span className="text-gray-600">{onboarding.property.review.type}</span>
                   <span className="font-medium text-gray-900">
                     {getPropertyTypeLabel(data.basics?.propertyType)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Bedrooms:</span>
+                  <span className="text-gray-600">{onboarding.property.review.bedrooms}</span>
                   <span className="font-medium text-gray-900">{data.basics?.bedrooms}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Bathrooms:</span>
+                  <span className="text-gray-600">{onboarding.property.review.bathrooms}</span>
                   <span className="font-medium text-gray-900">{data.basics?.bathrooms}</span>
                 </div>
               </div>
@@ -145,15 +155,15 @@ export default function PropertyReview() {
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-2 mb-3">
                 <MapPin className="w-5 h-5 text-[color:var(--easy-purple)]" />
-                <h3 className="font-semibold text-gray-900">Location</h3>
+                <h3 className="font-semibold text-gray-900">{onboarding.property.review.location}</h3>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Address:</span>
+                  <span className="text-gray-600">{onboarding.property.review.address}</span>
                   <span className="font-medium text-gray-900">{data.basics?.address}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">City:</span>
+                  <span className="text-gray-600">{onboarding.property.review.city}</span>
                   <span className="font-medium text-gray-900">
                     {data.basics?.city}
                     {data.basics?.postalCode && ` ${data.basics.postalCode}`}
@@ -166,20 +176,20 @@ export default function PropertyReview() {
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-2 mb-3">
                 <DollarSign className="w-5 h-5 text-[color:var(--easy-purple)]" />
-                <h3 className="font-semibold text-gray-900">Pricing</h3>
+                <h3 className="font-semibold text-gray-900">{onboarding.property.review.pricing}</h3>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Monthly Rent:</span>
+                  <span className="text-gray-600">{onboarding.property.review.monthlyRent}</span>
                   <span className="font-medium text-gray-900">€{data.pricing?.monthlyRent}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Security Deposit:</span>
+                  <span className="text-gray-600">{onboarding.property.review.securityDeposit}</span>
                   <span className="font-medium text-gray-900">€{data.pricing?.securityDeposit}</span>
                 </div>
                 {data.pricing?.availableFrom && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Available From:</span>
+                    <span className="text-gray-600">{onboarding.property.review.availableFrom}</span>
                     <span className="font-medium text-gray-900">
                       {new Date(data.pricing.availableFrom).toLocaleDateString()}
                     </span>
@@ -193,7 +203,7 @@ export default function PropertyReview() {
               <div className="p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
                   <FileText className="w-5 h-5 text-[color:var(--easy-purple)]" />
-                  <h3 className="font-semibold text-gray-900">Description</h3>
+                  <h3 className="font-semibold text-gray-900">{onboarding.property.review.description}</h3>
                 </div>
                 <p className="text-sm text-gray-700">{data.description.description}</p>
               </div>
@@ -205,9 +215,9 @@ export default function PropertyReview() {
             <div className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-green-900 mb-1">Ready to publish!</h4>
+                <h4 className="font-semibold text-green-900 mb-1">{onboarding.property.review.readyToPublishTitle}</h4>
                 <p className="text-sm text-green-700">
-                  Your listing will be live immediately and visible to quality tenants.
+                  {onboarding.property.review.readyToPublishDesc}
                 </p>
               </div>
             </div>
@@ -220,14 +230,14 @@ export default function PropertyReview() {
               disabled={isSubmitting}
               className="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
-              Back
+              {common.back}
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
               className="flex-1 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {isSubmitting ? 'Publishing...' : 'Publish Listing'}
+              {isSubmitting ? onboarding.property.review.publishing : onboarding.property.review.publishListing}
             </button>
           </div>
         </div>

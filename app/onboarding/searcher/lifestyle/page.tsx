@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Stepper from '@/components/Stepper';
 import { track } from '@/lib/analytics';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // tape explicitement le tableau pour éviter les warnings TS
 const OPTIONS: string[] = [
@@ -63,6 +64,11 @@ export default function LifestyleStep() {
 
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <Stepper />
       <div className="card space-y-4">
         <h1 className="text-xl font-semibold">{onboarding.lifestyle.title}</h1>

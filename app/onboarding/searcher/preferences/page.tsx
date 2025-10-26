@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, DollarSign, MapPin, PawPrint, Cigarette, Settings } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PreferencesPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [budgetMin, setBudgetMin] = useState('');
   const [budgetMax, setBudgetMax] = useState('');
@@ -33,6 +36,11 @@ export default function PreferencesPage() {
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
 
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -55,10 +63,10 @@ export default function PreferencesPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-1">
-              Advanced Preferences
+              {t('onboarding.preferences.title')}
             </h1>
             <p className="text-gray-600">
-              Adjust your preferences anytime.
+              {t('onboarding.preferences.subtitle')}
             </p>
           </div>
         </div>
@@ -67,15 +75,14 @@ export default function PreferencesPage() {
         <div className="space-y-6">
 
           {/* Monthly budget */}
-          {/* TODO: Upgrade to slider component (see figma-20.png) */}
           <div className="p-5 rounded-xl bg-green-50 border border-green-200">
             <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-600" />
-              Monthly budget
+              {t('onboarding.preferences.monthlyBudget')}
             </label>
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-gray-600 mb-1 block">Minimum</label>
+                <label className="text-sm text-gray-600 mb-1 block">{t('onboarding.preferences.minimum')}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                   <input
@@ -89,7 +96,7 @@ export default function PreferencesPage() {
                 </div>
               </div>
               <div>
-                <label className="text-sm text-gray-600 mb-1 block">Maximum</label>
+                <label className="text-sm text-gray-600 mb-1 block">{t('onboarding.preferences.maximum')}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                   <input
@@ -104,7 +111,7 @@ export default function PreferencesPage() {
               </div>
               {budgetMin && budgetMax && (
                 <p className="text-sm text-gray-600 mt-2">
-                  Budget range: €{budgetMin} - €{budgetMax}/month
+                  {t('onboarding.preferences.budgetRange').replace('{min}', budgetMin).replace('{max}', budgetMax)}
                 </p>
               )}
             </div>
@@ -114,23 +121,23 @@ export default function PreferencesPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <MapPin className="w-4 h-4 text-red-600" />
-              Preferred district
+              {t('onboarding.preferences.preferredDistrict')}
             </label>
             <input
               type="text"
               value={preferredDistrict}
               onChange={(e) => setPreferredDistrict(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-              placeholder="e.g., City Center, Kreuzberg, Le Marais"
+              placeholder={t('onboarding.preferences.districtPlaceholder')}
             />
             <p className="text-sm text-gray-500 mt-1">
-              Enter your preferred neighborhood or leave blank for all areas
+              {t('onboarding.preferences.districtHelp')}
             </p>
           </div>
 
           {/* Tolerance preferences */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700">Tolerance preferences</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('onboarding.preferences.tolerancePreferences')}</h3>
 
             {/* Open to pets */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-gray-200">
@@ -138,7 +145,7 @@ export default function PreferencesPage() {
                 <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
                   <PawPrint className="w-4 h-4 text-orange-600" />
                 </div>
-                <span className="font-medium text-gray-700">Open to living with pets</span>
+                <span className="font-medium text-gray-700">{t('onboarding.preferences.openToLivingWithPets')}</span>
               </div>
               <button
                 onClick={() => setOpenToLivingWithPets(!openToLivingWithPets)}
@@ -160,7 +167,7 @@ export default function PreferencesPage() {
                 <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
                   <Cigarette className="w-4 h-4 text-red-600" />
                 </div>
-                <span className="font-medium text-gray-700">Accept smokers in the house</span>
+                <span className="font-medium text-gray-700">{t('onboarding.preferences.acceptSmokersInHouse')}</span>
               </div>
               <button
                 onClick={() => setAcceptSmokersInHouse(!acceptSmokersInHouse)}
@@ -188,7 +195,7 @@ export default function PreferencesPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue to Privacy
+          {t('onboarding.preferences.continueToPrivacy')}
         </button>
       </div>
     </main>

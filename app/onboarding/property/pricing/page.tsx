@@ -5,9 +5,14 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, DollarSign, Calendar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PropertyPricing() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [monthlyRent, setMonthlyRent] = useState('');
   const [securityDeposit, setSecurityDeposit] = useState('');
   const [availableFrom, setAvailableFrom] = useState('');
@@ -21,7 +26,7 @@ export default function PropertyPricing() {
 
   const handleContinue = () => {
     if (!monthlyRent || !securityDeposit) {
-      toast.error('Please fill in all required fields');
+      toast.error(onboarding.property.pricing.errorRequired);
       return;
     }
 
@@ -47,6 +52,11 @@ export default function PropertyPricing() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
       <div className="max-w-2xl mx-auto">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -54,7 +64,7 @@ export default function PropertyPricing() {
             className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.back}</span>
           </button>
         </div>
 
@@ -80,15 +90,15 @@ export default function PropertyPricing() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Pricing & Availability</h2>
-            <p className="text-gray-600">Set competitive pricing to attract quality tenants.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{onboarding.property.pricing.title}</h2>
+            <p className="text-gray-600">{onboarding.property.pricing.subtitle}</p>
           </div>
 
           <div className="space-y-6">
             {/* Monthly Rent */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Monthly Rent (€) <span className="text-red-500">*</span>
+                {onboarding.property.pricing.monthlyRent} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -96,16 +106,16 @@ export default function PropertyPricing() {
                   type="number"
                   value={monthlyRent}
                   onChange={(e) => setMonthlyRent(e.target.value)}
-                  placeholder="1300"
+                  placeholder={onboarding.property.pricing.monthlyRentPlaceholder}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
               {monthlyRent && (
                 <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
                   <div className="flex items-center gap-2 text-sm text-green-700">
-                    <span>💰 You'll earn approximately</span>
-                    <span className="font-bold">€{calculateEarnings()}/month</span>
-                    <span>after platform fees</span>
+                    <span>{onboarding.property.pricing.earningsEstimate}</span>
+                    <span className="font-bold">€{calculateEarnings()}{onboarding.property.pricing.perMonth}</span>
+                    <span>{onboarding.property.pricing.afterFees}</span>
                   </div>
                 </div>
               )}
@@ -114,7 +124,7 @@ export default function PropertyPricing() {
             {/* Security Deposit */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Security Deposit (€) <span className="text-red-500">*</span>
+                {onboarding.property.pricing.securityDeposit} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -122,16 +132,16 @@ export default function PropertyPricing() {
                   type="number"
                   value={securityDeposit}
                   onChange={(e) => setSecurityDeposit(e.target.value)}
-                  placeholder="2500"
+                  placeholder={onboarding.property.pricing.securityDepositPlaceholder}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
-              <p className="mt-2 text-xs text-gray-500">Typically equal to 1 month's rent</p>
+              <p className="mt-2 text-xs text-gray-500">{onboarding.property.pricing.securityDepositHelp}</p>
             </div>
 
             {/* Available From */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Available from</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{onboarding.property.pricing.availableFrom}</label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
@@ -152,13 +162,13 @@ export default function PropertyPricing() {
               onClick={handleBack}
               className="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
             >
-              Back
+              {common.back}
             </button>
             <button
               onClick={handleContinue}
               className="flex-1 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
             >
-              Continue
+              {common.continue}
             </button>
           </div>
         </div>

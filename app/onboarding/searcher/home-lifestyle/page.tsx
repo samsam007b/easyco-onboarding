@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Sparkles, Users, Music, PawPrint, ChefHat } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { Slider } from '@/components/ui/slider';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function HomeLifestylePage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [cleanliness, setCleanliness] = useState(5); // Changed to number for slider
   const [guestFrequency, setGuestFrequency] = useState('');
@@ -36,6 +39,11 @@ export default function HomeLifestylePage() {
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
 
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -54,10 +62,10 @@ export default function HomeLifestylePage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Home Lifestyle
+            {t('onboarding.homeLifestyle.title')}
           </h1>
           <p className="text-gray-600">
-            Your habits make a home feel like yours.
+            {t('onboarding.homeLifestyle.subtitle')}
           </p>
         </div>
 
@@ -70,15 +78,15 @@ export default function HomeLifestylePage() {
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-purple-600" />
               </div>
-              Cleanliness preference
+              {t('onboarding.homeLifestyle.cleanliness')}
             </label>
             <Slider
               value={cleanliness}
               onChange={setCleanliness}
               min={1}
               max={10}
-              leftLabel="Relaxed"
-              rightLabel="Spotless"
+              leftLabel={t('onboarding.homeLifestyle.relaxed')}
+              rightLabel={t('onboarding.homeLifestyle.spotless')}
               showValue={true}
             />
           </div>
@@ -89,18 +97,18 @@ export default function HomeLifestylePage() {
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <Users className="w-4 h-4 text-blue-600" />
               </div>
-              Guest frequency
+              {t('onboarding.homeLifestyle.guestFrequency')}
             </label>
             <select
               value={guestFrequency}
               onChange={(e) => setGuestFrequency(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="never">Never</option>
-              <option value="rarely">Rarely</option>
-              <option value="sometimes">Sometimes</option>
-              <option value="often">Often</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="never">{t('onboarding.homeLifestyle.never')}</option>
+              <option value="rarely">{t('onboarding.dailyHabits.rarely')}</option>
+              <option value="sometimes">{t('onboarding.homeLifestyle.sometimes')}</option>
+              <option value="often">{t('onboarding.homeLifestyle.often')}</option>
             </select>
           </div>
 
@@ -110,18 +118,18 @@ export default function HomeLifestylePage() {
               <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
                 <Music className="w-4 h-4 text-pink-600" />
               </div>
-              Music habits
+              {t('onboarding.homeLifestyle.musicHabits')}
             </label>
             <select
               value={musicHabits}
               onChange={(e) => setMusicHabits(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="quiet">Quiet environment</option>
-              <option value="low-volume">Low volume</option>
-              <option value="moderate">Moderate volume</option>
-              <option value="loud">Loud sometimes</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="quiet">{t('onboarding.homeLifestyle.quietEnvironment')}</option>
+              <option value="low-volume">{t('onboarding.homeLifestyle.lowVolume')}</option>
+              <option value="moderate">{t('onboarding.homeLifestyle.moderateVolume')}</option>
+              <option value="loud">{t('onboarding.homeLifestyle.loudSometimes')}</option>
             </select>
           </div>
 
@@ -132,7 +140,7 @@ export default function HomeLifestylePage() {
                 <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
                   <PawPrint className="w-4 h-4 text-orange-600" />
                 </div>
-                <span className="font-medium text-gray-700">I have pets</span>
+                <span className="font-medium text-gray-700">{t('onboarding.homeLifestyle.iHavePets')}</span>
               </div>
               <button
                 onClick={() => setHasPets(!hasPets)}
@@ -154,7 +162,7 @@ export default function HomeLifestylePage() {
                 value={petType}
                 onChange={(e) => setPetType(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                placeholder="e.g., cats, dog, hamster"
+                placeholder={t('onboarding.homeLifestyle.petTypePlaceholder')}
               />
             )}
           </div>
@@ -165,18 +173,18 @@ export default function HomeLifestylePage() {
               <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
                 <ChefHat className="w-4 h-4 text-yellow-600" />
               </div>
-              Cooking frequency
+              {t('onboarding.homeLifestyle.cookingFrequency')}
             </label>
             <select
               value={cookingFrequency}
               onChange={(e) => setCookingFrequency(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="never">Never / Rarely</option>
-              <option value="once-week">Once a week</option>
-              <option value="few-times">Few times a week</option>
-              <option value="daily">Daily</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="never">{t('onboarding.homeLifestyle.neverRarely')}</option>
+              <option value="once-week">{t('onboarding.dailyHabits.onceWeek')}</option>
+              <option value="few-times">{t('onboarding.homeLifestyle.fewTimesAWeek')}</option>
+              <option value="daily">{t('onboarding.dailyHabits.daily')}</option>
             </select>
           </div>
         </div>
@@ -191,7 +199,7 @@ export default function HomeLifestylePage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {t('common.continue')}
         </button>
       </div>
     </main>

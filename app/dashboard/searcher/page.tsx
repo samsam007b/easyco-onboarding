@@ -6,6 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign } from 'lucide-react'
 import { toast } from 'sonner'
+import { useLanguage } from '@/lib/i18n/use-language'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 interface UserProfile {
   full_name: string
@@ -18,6 +20,9 @@ interface UserProfile {
 export default function SearcherDashboard() {
   const router = useRouter()
   const supabase = createClient()
+  const { t, getSection } = useLanguage()
+  const dashboard = getSection('dashboard')
+  const common = getSection('common')
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -80,7 +85,7 @@ export default function SearcherDashboard() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/login')
-    toast.success('Logged out successfully')
+    toast.success(dashboard.searcher.logoutSuccess)
   }
 
   const handleEditProfile = () => {
@@ -92,7 +97,7 @@ export default function SearcherDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">{dashboard.searcher.loadingDashboard}</p>
         </div>
       </div>
     )
@@ -137,6 +142,11 @@ export default function SearcherDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -145,21 +155,21 @@ export default function SearcherDashboard() {
               {profile.full_name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-[#4A148C]">Searcher Dashboard</h1>
+              <h1 className="text-xl font-bold text-[#4A148C]">{dashboard.searcher.title}</h1>
               <p className="text-sm text-gray-600">{profile.full_name}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" onClick={() => router.push('/profile/enhance')}>
-              ✨ Enhance Profile
+              ✨ {dashboard.searcher.enhanceProfile}
             </Button>
             <Button variant="ghost" onClick={() => router.push('/profile')}>
               <Settings className="w-5 h-5 mr-2" />
-              Settings
+              {dashboard.searcher.settings}
             </Button>
             <Button variant="ghost" onClick={handleLogout}>
               <LogOut className="w-5 h-5 mr-2" />
-              Logout
+              {dashboard.searcher.logout}
             </Button>
           </div>
         </div>
@@ -170,10 +180,10 @@ export default function SearcherDashboard() {
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            Welcome back, {profile.full_name}! 👋
+            {dashboard.searcher.welcome} {profile.full_name}! 👋
           </h2>
           <p className="text-gray-600">
-            Ready to find your perfect coliving space?
+            {dashboard.searcher.welcomeMessage}
           </p>
         </div>
 
@@ -203,7 +213,7 @@ export default function SearcherDashboard() {
             {/* Progress Bar */}
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-white/90 font-medium">Profile Completion</span>
+                <span className="text-sm text-white/90 font-medium">{dashboard.searcher.profileCompletion}</span>
                 <span className="text-sm text-white font-semibold">{completionPercentage}%</span>
               </div>
               <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
@@ -218,7 +228,7 @@ export default function SearcherDashboard() {
               </div>
               {completionPercentage < 100 && (
                 <p className="text-xs text-white/70 mt-2">
-                  Complete your profile to increase your chances of finding the perfect match!
+                  {dashboard.searcher.completionMessage}
                 </p>
               )}
             </div>
@@ -228,11 +238,11 @@ export default function SearcherDashboard() {
             {/* About Me Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                📋 About Me
+                📋 {dashboard.searcher.aboutMe}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.date_of_birth && (
-                  <p>• {new Date().getFullYear() - new Date(profile_data.date_of_birth).getFullYear()} years old</p>
+                  <p>• {new Date().getFullYear() - new Date(profile_data.date_of_birth).getFullYear()} {dashboard.searcher.yearsOld}</p>
                 )}
                 {profile_data?.occupation_status && (
                   <p>• {profile_data.occupation_status}</p>
@@ -250,7 +260,7 @@ export default function SearcherDashboard() {
                   </p>
                 )}
                 {profile_data?.languages_spoken && profile_data.languages_spoken.length > 0 && (
-                  <p>• Speaks: {profile_data.languages_spoken.join(', ')}</p>
+                  <p>• {dashboard.searcher.speaks} {profile_data.languages_spoken.join(', ')}</p>
                 )}
                 {(profile_data?.bio || profile_data?.about_me) && (
                   <p className="text-sm text-gray-600 mt-3 italic">"{profile_data.bio || profile_data.about_me}"</p>
@@ -262,22 +272,22 @@ export default function SearcherDashboard() {
             {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale !== undefined || profile_data?.is_smoker !== undefined || profile_data?.dietary_preferences || profile_data?.hobbies) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  ✨ Lifestyle
+                  ✨ {dashboard.searcher.lifestyle}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile_data?.cleanliness_preference && (
                     <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200">
-                      Cleanliness: {profile_data.cleanliness_preference}/10
+                      {dashboard.searcher.cleanliness}: {profile_data.cleanliness_preference}/10
                     </span>
                   )}
                   {profile_data?.introvert_extrovert_scale !== undefined && (
                     <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
-                      {profile_data.introvert_extrovert_scale <= 3 ? 'Introvert' : profile_data.introvert_extrovert_scale >= 7 ? 'Extrovert' : 'Ambivert'}
+                      {profile_data.introvert_extrovert_scale <= 3 ? dashboard.searcher.introvert : profile_data.introvert_extrovert_scale >= 7 ? dashboard.searcher.extrovert : dashboard.searcher.ambivert}
                     </span>
                   )}
                   {profile_data?.is_smoker !== undefined && (
                     <span className="px-3 py-1.5 bg-gray-50 text-gray-700 rounded-full text-sm font-medium border border-gray-200">
-                      {profile_data.is_smoker ? 'Smoker' : 'Non-smoker'}
+                      {profile_data.is_smoker ? dashboard.searcher.smoker : dashboard.searcher.nonSmoker}
                     </span>
                   )}
                   {profile_data?.dietary_preferences && profile_data.dietary_preferences.length > 0 && (
@@ -289,18 +299,18 @@ export default function SearcherDashboard() {
                   )}
                   {profile_data?.exercise_frequency && (
                     <span className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-full text-sm font-medium border border-orange-200">
-                      Exercise: {profile_data.exercise_frequency}
+                      {dashboard.searcher.exercise}: {profile_data.exercise_frequency}
                     </span>
                   )}
                   {profile_data?.alcohol_consumption && (
                     <span className="px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-full text-sm font-medium border border-yellow-200">
-                      Alcohol: {profile_data.alcohol_consumption}
+                      {dashboard.searcher.alcohol}: {profile_data.alcohol_consumption}
                     </span>
                   )}
                 </div>
                 {profile_data?.hobbies && profile_data.hobbies.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-sm text-gray-600 mb-2">Hobbies:</p>
+                    <p className="text-sm text-gray-600 mb-2">{dashboard.searcher.hobbies}</p>
                     <div className="flex flex-wrap gap-2">
                       {profile_data.hobbies.map((hobby: string) => (
                         <span key={hobby} className="px-2 py-1 bg-pink-50 text-pink-700 rounded-md text-xs font-medium border border-pink-200">
@@ -317,25 +327,25 @@ export default function SearcherDashboard() {
             {(profile_data?.early_bird_night_owl || profile_data?.work_schedule) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🔄 Daily Routine
+                  🔄 {dashboard.searcher.dailyRoutine}
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {profile_data?.early_bird_night_owl && (
                     <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                      <p className="text-xs text-gray-600 mb-1">Sleep Schedule</p>
+                      <p className="text-xs text-gray-600 mb-1">{dashboard.searcher.sleepSchedule}</p>
                       <p className="font-semibold text-gray-900 capitalize">{profile_data.early_bird_night_owl.replace('_', ' ')}</p>
                     </div>
                   )}
                   {profile_data?.work_schedule && (
                     <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                      <p className="text-xs text-gray-600 mb-1">Work Schedule</p>
+                      <p className="text-xs text-gray-600 mb-1">{dashboard.searcher.workSchedule}</p>
                       <p className="font-semibold text-gray-900 capitalize">{profile_data.work_schedule}</p>
                     </div>
                   )}
                   {profile_data?.work_from_home !== undefined && (
                     <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                      <p className="text-xs text-gray-600 mb-1">Work from Home</p>
-                      <p className="font-semibold text-gray-900">{profile_data.work_from_home ? 'Yes' : 'No'}</p>
+                      <p className="text-xs text-gray-600 mb-1">{dashboard.searcher.workFromHome}</p>
+                      <p className="font-semibold text-gray-900">{profile_data.work_from_home ? dashboard.searcher.yes : dashboard.searcher.no}</p>
                     </div>
                   )}
                 </div>
@@ -345,35 +355,35 @@ export default function SearcherDashboard() {
             {/* Looking For Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                🏠 Looking For
+                🏠 {dashboard.searcher.lookingFor}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.coliving_size && (
-                  <p>• Coliving size: <span className="font-medium">{profile_data.coliving_size}</span></p>
+                  <p>• {dashboard.searcher.colivingSize} <span className="font-medium">{profile_data.coliving_size}</span></p>
                 )}
                 {profile_data?.gender_mix && (
-                  <p>• Gender preference: <span className="font-medium">{profile_data.gender_mix}</span></p>
+                  <p>• {dashboard.searcher.genderPreference} <span className="font-medium">{profile_data.gender_mix}</span></p>
                 )}
                 {(profile_data?.min_age || profile_data?.max_age) && (
-                  <p>• Roommates aged <span className="font-medium">{profile_data.min_age || '?'}-{profile_data.max_age || '?'}</span></p>
+                  <p>• {dashboard.searcher.roommatesAged} <span className="font-medium">{profile_data.min_age || '?'}-{profile_data.max_age || '?'}</span></p>
                 )}
                 {(profile_data?.budget_min || profile_data?.budget_max) && (
                   <p className="flex items-center gap-1">
                     <DollarSign className="w-4 h-4" />
-                    Budget: <span className="font-medium">€{profile_data.budget_min || '?'}-€{profile_data.budget_max || '?'}/month</span>
+                    {dashboard.searcher.budget} <span className="font-medium">€{profile_data.budget_min || '?'}-€{profile_data.budget_max || '?'}{dashboard.searcher.perMonth}</span>
                   </p>
                 )}
                 {profile_data?.move_in_date && (
-                  <p>• Move-in: <span className="font-medium">{new Date(profile_data.move_in_date).toLocaleDateString()}</span></p>
+                  <p>• {dashboard.searcher.moveIn} <span className="font-medium">{new Date(profile_data.move_in_date).toLocaleDateString()}</span></p>
                 )}
                 {profile_data?.desired_stay_duration && (
-                  <p>• Stay duration: <span className="font-medium">{profile_data.desired_stay_duration}</span></p>
+                  <p>• {dashboard.searcher.stayDuration} <span className="font-medium">{profile_data.desired_stay_duration}</span></p>
                 )}
                 {profile_data?.accepted_room_types && profile_data.accepted_room_types.length > 0 && (
-                  <p>• Room types: <span className="font-medium">{profile_data.accepted_room_types.join(', ')}</span></p>
+                  <p>• {dashboard.searcher.roomTypes} <span className="font-medium">{profile_data.accepted_room_types.join(', ')}</span></p>
                 )}
                 {profile_data?.preferred_cities && profile_data.preferred_cities.length > 0 && (
-                  <p>• Cities: <span className="font-medium">{profile_data.preferred_cities.join(', ')}</span></p>
+                  <p>• {dashboard.searcher.cities} <span className="font-medium">{profile_data.preferred_cities.join(', ')}</span></p>
                 )}
               </div>
             </div>
@@ -381,13 +391,13 @@ export default function SearcherDashboard() {
             {/* Profile Status */}
             <div className="pt-4 border-t border-gray-200">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Profile Status</span>
+                <span className="text-sm text-gray-600">{dashboard.searcher.profileStatus}</span>
                 {profile.onboarding_completed ? (
                   <span className="inline-flex items-center gap-1 text-green-600 font-medium">
-                    ✓ Complete
+                    ✓ {dashboard.searcher.complete}
                   </span>
                 ) : (
-                  <span className="text-yellow-600 font-medium">Incomplete</span>
+                  <span className="text-yellow-600 font-medium">{dashboard.searcher.incomplete}</span>
                 )}
               </div>
             </div>
@@ -400,41 +410,41 @@ export default function SearcherDashboard() {
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Search className="w-6 h-6 text-[#4A148C]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Browse Properties</h4>
-            <p className="text-sm text-gray-600">Find your perfect match</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.browseProperties}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
           </button>
 
           <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Heart className="w-6 h-6 text-red-500" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Favorites</h4>
-            <p className="text-sm text-gray-600">View saved properties</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.favorites}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
           </button>
 
           <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Settings className="w-6 h-6 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Account Settings</h4>
-            <p className="text-sm text-gray-600">Update preferences</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
           </button>
         </div>
 
         {/* Matches Section (Coming Soon) */}
         <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
-          <h3 className="text-xl font-bold text-[#4A148C] mb-4">Your Matches</h3>
+          <h3 className="text-xl font-bold text-[#4A148C] mb-4">{dashboard.searcher.yourMatches}</h3>
           <div className="text-center py-12">
             <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h4 className="text-lg font-semibold text-gray-700 mb-2">
-              No matches yet
+              {dashboard.searcher.noMatchesYet}
             </h4>
             <p className="text-gray-500 mb-6">
-              Start browsing properties to find your perfect coliving space
+              {dashboard.searcher.browseProperties}
             </p>
             <Button>
               <Search className="w-4 h-4 mr-2" />
-              Start Searching
+              {dashboard.searcher.browseProperties}
             </Button>
           </div>
         </div>

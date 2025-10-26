@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Sun, Moon, Briefcase, Dumbbell, Cigarette } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function DailyHabitsPage() {
   const router = useRouter();
@@ -35,6 +36,11 @@ export default function DailyHabitsPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-md mx-auto">
 
         {/* Progress bar */}

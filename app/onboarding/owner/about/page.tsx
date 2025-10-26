@@ -6,10 +6,13 @@ import { ArrowLeft, User, Building2, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function OwnerAbout() {
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [ownerType, setOwnerType] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -47,7 +50,7 @@ export default function OwnerAbout() {
       }
     } catch (error) {
       console.error('Error loading about data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('onboarding.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -55,12 +58,12 @@ export default function OwnerAbout() {
 
   const handleContinue = () => {
     if (!ownerType || !primaryLocation || !hostingExperience) {
-      toast.error('Please fill in all required fields');
+      toast.error(t('onboarding.owner.about.errorRequired'));
       return;
     }
 
     if ((ownerType === 'agency' || ownerType === 'company') && !companyName.trim()) {
-      toast.error('Please enter your company name');
+      toast.error(t('onboarding.owner.about.errorCompanyName'));
       return;
     }
 
@@ -78,9 +81,24 @@ export default function OwnerAbout() {
   };
 
   const ownerTypes = [
-    { value: 'individual', label: 'Individual Owner', icon: User, description: 'I own and manage my own property' },
-    { value: 'agency', label: 'Property Agency', icon: Building2, description: 'I manage multiple properties professionally' },
-    { value: 'company', label: 'Company / Corporation', icon: Users, description: 'Corporate property management' },
+    {
+      value: 'individual',
+      label: t('onboarding.owner.about.individualOwner'),
+      icon: User,
+      description: t('onboarding.owner.about.individualOwnerDesc')
+    },
+    {
+      value: 'agency',
+      label: t('onboarding.owner.about.propertyAgency'),
+      icon: Building2,
+      description: t('onboarding.owner.about.propertyAgencyDesc')
+    },
+    {
+      value: 'company',
+      label: t('onboarding.owner.about.companyCorporation'),
+      icon: Users,
+      description: t('onboarding.owner.about.companyCorporationDesc')
+    },
   ];
 
   if (isLoading) {
@@ -88,14 +106,19 @@ export default function OwnerAbout() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your information...</p>
+          <p className="text-gray-600">{t('onboarding.owner.about.loading')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6 relative">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -104,7 +127,7 @@ export default function OwnerAbout() {
             className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{t('common.back')}</span>
           </button>
         </div>
 
@@ -119,7 +142,7 @@ export default function OwnerAbout() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Step 2 of 3</span>
+            <span className="text-sm text-gray-600">{t('onboarding.progress.step')} 2 {t('onboarding.progress.of')} 3</span>
             <span className="text-sm font-semibold text-[color:var(--easy-purple)]">67%</span>
           </div>
           <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -130,15 +153,15 @@ export default function OwnerAbout() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Tell us about yourself</h2>
-            <p className="text-gray-600">This helps us customize your hosting experience.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('onboarding.owner.about.title')}</h2>
+            <p className="text-gray-600">{t('onboarding.owner.about.subtitle')}</p>
           </div>
 
           <div className="space-y-6">
             {/* Owner Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                I am a... <span className="text-red-500">*</span>
+                {t('onboarding.owner.about.ownerTypeLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="space-y-3">
                 {ownerTypes.map((type) => {
@@ -175,13 +198,13 @@ export default function OwnerAbout() {
             {(ownerType === 'agency' || ownerType === 'company') && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Company Name <span className="text-red-500">*</span>
+                  {t('onboarding.owner.about.companyName')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Enter your company or agency name"
+                  placeholder={t('onboarding.owner.about.companyNamePlaceholder')}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -190,36 +213,35 @@ export default function OwnerAbout() {
             {/* Primary Location */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Primary location <span className="text-red-500">*</span>
+                {t('onboarding.owner.about.primaryLocation')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={primaryLocation}
                 onChange={(e) => setPrimaryLocation(e.target.value)}
-                placeholder="Select your primary city"
+                placeholder={t('onboarding.owner.about.primaryLocationPlaceholder')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
-              {/* TODO: Upgrade to city dropdown/autocomplete later */}
             </div>
 
             {/* Hosting Experience */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Hosting experience <span className="text-red-500">*</span>
+                {t('onboarding.owner.about.hostingExperience')} <span className="text-red-500">*</span>
               </label>
               <select
                 value={hostingExperience}
                 onChange={(e) => setHostingExperience(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               >
-                <option value="">How long have you been a host?</option>
-                <option value="0-1 year">0-1 year</option>
-                <option value="1-3 years">1-3 years</option>
-                <option value="3+ years">3+ years</option>
+                <option value="">{t('onboarding.owner.about.hostingExperiencePlaceholder')}</option>
+                <option value="0-1 year">{t('onboarding.owner.about.experience0to1')}</option>
+                <option value="1-3 years">{t('onboarding.owner.about.experience1to3')}</option>
+                <option value="3+ years">{t('onboarding.owner.about.experience3plus')}</option>
               </select>
               <div className="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
                 <p className="text-sm text-yellow-800">
-                  💡 Tip: Complete profiles receive 3x more tenant inquiries on average.
+                  {t('onboarding.owner.about.tipComplete')}
                 </p>
               </div>
             </div>
@@ -231,13 +253,13 @@ export default function OwnerAbout() {
               onClick={handleBack}
               className="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
             >
-              Back
+              {t('common.back')}
             </button>
             <button
               onClick={handleContinue}
               className="flex-1 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
             >
-              Continue
+              {t('common.continue')}
             </button>
           </div>
         </div>
