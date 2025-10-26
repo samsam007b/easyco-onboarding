@@ -953,6 +953,46 @@ export const translations = {
         de: 'Ihre Antwort wurde aufgezeichnet. Vielen Dank für Ihre Teilnahme an unserem Test!',
       },
     },
+
+    // Resume Onboarding Modal
+    resumeOnboarding: {
+      title: {
+        fr: 'Reprendre votre profil ?',
+        en: 'Resume your profile?',
+        nl: 'Je profiel hervatten?',
+        de: 'Ihr Profil fortsetzen?',
+      },
+      subtitle: {
+        fr: 'Vous avez commencé à créer votre profil. Voulez-vous continuer là où vous vous êtes arrêté ?',
+        en: 'You started creating your profile. Want to continue where you left off?',
+        nl: 'Je bent begonnen met het maken van je profiel. Wil je verder gaan waar je gebleven was?',
+        de: 'Sie haben begonnen, Ihr Profil zu erstellen. Möchten Sie dort weitermachen, wo Sie aufgehört haben?',
+      },
+      continue: {
+        fr: 'Reprendre',
+        en: 'Resume',
+        nl: 'Hervatten',
+        de: 'Fortsetzen',
+      },
+      startFresh: {
+        fr: 'Recommencer',
+        en: 'Start Fresh',
+        nl: 'Opnieuw beginnen',
+        de: 'Neu beginnen',
+      },
+      later: {
+        fr: 'Plus tard',
+        en: 'Later',
+        nl: 'Later',
+        de: 'Später',
+      },
+      info: {
+        fr: 'Vos réponses sont sauvegardées automatiquement',
+        en: 'Your answers are saved automatically',
+        nl: 'Je antwoorden worden automatisch opgeslagen',
+        de: 'Ihre Antworten werden automatisch gespeichert',
+      },
+    },
   },
 };
 
