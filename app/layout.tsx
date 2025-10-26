@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Toaster } from 'sonner'
 import { DevTools } from '@/components/DevTools'
 import { ClientProviders } from '@/components/ClientProviders'
+import CookieBanner from '@/components/CookieBanner'
 
 export const metadata: Metadata = {
   title: "EasyCo — Colocation fiable et compatible en Belgique",
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </ClientProviders>
         <Toaster position="top-right" />
+        <CookieBanner />
         <DevTools />
       </body>
     </html>
