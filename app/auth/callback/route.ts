@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Determine redirect based on onboarding status and user type
-    let redirectPath = '/dashboard'
+    let redirectPath = '/welcome'
 
     if (userData) {
       // If onboarding not completed, redirect to complete-signup
@@ -141,20 +141,9 @@ export async function GET(request: NextRequest) {
       if (!userData.onboarding_completed) {
         redirectPath = '/auth/complete-signup'
       } else {
-        // Redirect to appropriate dashboard
-        switch (userData.user_type) {
-          case 'searcher':
-            redirectPath = '/dashboard/searcher'
-            break
-          case 'owner':
-            redirectPath = '/dashboard/owner'
-            break
-          case 'resident':
-            redirectPath = '/dashboard/resident'
-            break
-          default:
-            redirectPath = '/dashboard'
-        }
+        // For users who completed onboarding, redirect to welcome page
+        // where they can choose their role/action
+        redirectPath = '/welcome'
       }
     }
 
