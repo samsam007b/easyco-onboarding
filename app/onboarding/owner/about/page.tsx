@@ -4,20 +4,51 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User, Building2, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
 export default function OwnerAbout() {
   const router = useRouter();
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [ownerType, setOwnerType] = useState('');
   const [primaryLocation, setPrimaryLocation] = useState('');
   const [hostingExperience, setHostingExperience] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('ownerAbout', {}) as any;
-    if (saved.ownerType) setOwnerType(saved.ownerType);
-    if (saved.primaryLocation) setPrimaryLocation(saved.primaryLocation);
-    if (saved.hostingExperience) setHostingExperience(saved.hostingExperience);
+    loadExistingData();
   }, []);
+
+  const loadExistingData = async () => {
+    try {
+      const saved = safeLocalStorage.get('ownerAbout', {}) as any;
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileData) {
+          setOwnerType(saved.ownerType || profileData.owner_type || '');
+          setPrimaryLocation(saved.primaryLocation || profileData.primary_location || '');
+          setHostingExperience(saved.hostingExperience || profileData.hosting_experience || '');
+        } else if (saved.ownerType) {
+          setOwnerType(saved.ownerType);
+          setPrimaryLocation(saved.primaryLocation);
+          setHostingExperience(saved.hostingExperience);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading about data:', error);
+      toast.error('Failed to load existing data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleContinue = () => {
     if (!ownerType || !primaryLocation || !hostingExperience) {
@@ -42,6 +73,17 @@ export default function OwnerAbout() {
     { value: 'agency', label: 'Property Agency', icon: Building2, description: 'I manage multiple properties professionally' },
     { value: 'company', label: 'Company / Corporation', icon: Users, description: 'Corporate property management' },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
