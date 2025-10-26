@@ -6,10 +6,14 @@ import { ArrowLeft, Globe, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function BasicInfoPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
 
   // Check if this is a dependent profile
@@ -73,7 +77,7 @@ export default function BasicInfoPage() {
       }
     } catch (error) {
       console.error('Error loading profile data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(onboarding.errors.loadFailed);
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +126,7 @@ export default function BasicInfoPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your information...</p>
+          <p className="text-gray-600">{common.loadingInfo}</p>
         </div>
       </div>
     );
@@ -150,12 +154,12 @@ export default function BasicInfoPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Basic Info
+            {onboarding.basicInfo.title}
           </h1>
           <p className="text-gray-600">
             {profileType === 'dependent'
-              ? "Tell us about the person you're searching for."
-              : "These details help us personalize your experience."}
+              ? onboarding.basicInfo.subtitleDependent
+              : onboarding.basicInfo.subtitle}
           </p>
         </div>
 
@@ -165,10 +169,10 @@ export default function BasicInfoPage() {
             <Users className="w-5 h-5 text-[color:var(--easy-purple)]" />
             <div>
               <p className="text-sm font-medium text-[color:var(--easy-purple)]">
-                Creating a dependent profile
+                {onboarding.basicInfo.dependentBadgeTitle}
               </p>
               <p className="text-xs text-gray-600">
-                This profile will be separate from your personal profile
+                {onboarding.basicInfo.dependentBadgeSubtitle}
               </p>
             </div>
           </div>
@@ -181,17 +185,17 @@ export default function BasicInfoPage() {
           {profileType === 'dependent' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Profile Name <span className="text-red-500">*</span>
+                {onboarding.basicInfo.profileName} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={profileName}
                 onChange={(e) => setProfileName(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                placeholder="e.g., Profile for Emma, For my son"
+                placeholder={onboarding.basicInfo.profileNamePlaceholder}
               />
               <p className="text-xs text-gray-500 mt-1">
-                This helps you identify this profile in your dashboard
+                {onboarding.basicInfo.profileNameHelp}
               </p>
             </div>
           )}
@@ -200,14 +204,14 @@ export default function BasicInfoPage() {
           {profileType === 'dependent' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Relationship <span className="text-red-500">*</span>
+                {onboarding.basicInfo.relationship} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: 'child', label: 'Child', emoji: '👶' },
-                  { value: 'family_member', label: 'Family Member', emoji: '👨‍👩‍👧' },
-                  { value: 'friend', label: 'Friend', emoji: '👥' },
-                  { value: 'other', label: 'Other', emoji: '🤝' },
+                  { value: 'child', label: onboarding.basicInfo.relationshipChild, emoji: '👶' },
+                  { value: 'family_member', label: onboarding.basicInfo.relationshipFamily, emoji: '👨‍👩‍👧' },
+                  { value: 'friend', label: onboarding.basicInfo.relationshipFriend, emoji: '👥' },
+                  { value: 'other', label: onboarding.basicInfo.relationshipOther, emoji: '🤝' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -230,42 +234,42 @@ export default function BasicInfoPage() {
           {/* First Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              First Name
+              {onboarding.basicInfo.firstName}
             </label>
             <input
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-              placeholder="e.g., John"
+              placeholder={onboarding.basicInfo.firstNamePlaceholder}
             />
           </div>
 
           {/* Last Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Last Name
+              {onboarding.basicInfo.lastName}
             </label>
             <input
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-              placeholder="e.g., Doe"
+              placeholder={onboarding.basicInfo.lastNamePlaceholder}
             />
           </div>
 
           {/* Date of Birth */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Date of Birth
+              {onboarding.basicInfo.dateOfBirth}
             </label>
             <input
               type="date"
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-              placeholder="jj/mm/aaaa"
+              placeholder={onboarding.basicInfo.dateOfBirthPlaceholder}
             />
           </div>
 
@@ -273,21 +277,21 @@ export default function BasicInfoPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <Globe className="w-4 h-4" />
-              Nationality
+              {onboarding.basicInfo.nationality}
             </label>
             <input
               type="text"
               value={nationality}
               onChange={(e) => setNationality(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-              placeholder="e.g., French, Brazilian"
+              placeholder={onboarding.basicInfo.nationalityPlaceholder}
             />
           </div>
 
           {/* Languages Spoken */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Languages Spoken
+              {onboarding.basicInfo.languagesSpoken}
             </label>
             <div className="flex gap-2 mb-3">
               <input
@@ -296,13 +300,13 @@ export default function BasicInfoPage() {
                 onChange={(e) => setLanguageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
                 className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                placeholder="Add a language"
+                placeholder={onboarding.basicInfo.languagesPlaceholder}
               />
               <button
                 onClick={addLanguage}
                 className="px-6 py-3 rounded-full bg-[color:var(--easy-purple)] text-white font-medium hover:opacity-90 transition"
               >
-                Add
+                {common.add}
               </button>
             </div>
 
@@ -338,7 +342,7 @@ export default function BasicInfoPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {common.continue}
         </button>
       </div>
     </main>

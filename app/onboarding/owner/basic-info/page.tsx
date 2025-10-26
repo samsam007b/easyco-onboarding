@@ -6,10 +6,14 @@ import { ArrowLeft, User } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
   const supabase = createClient();
+  const { getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -51,7 +55,7 @@ export default function OwnerBasicInfo() {
       }
     } catch (error) {
       console.error('Error loading profile data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(onboarding.errors.loadFailed);
     } finally {
       setIsLoading(false);
     }
@@ -59,11 +63,11 @@ export default function OwnerBasicInfo() {
 
   const handleContinue = () => {
     if (!firstName.trim() || !lastName.trim()) {
-      toast.error('Please enter your first and last name');
+      toast.error(onboarding.errors.enterName);
       return;
     }
     if (!phoneNumber.trim()) {
-      toast.error('Please enter your phone number');
+      toast.error(onboarding.errors.enterPhone);
       return;
     }
 
@@ -81,7 +85,7 @@ export default function OwnerBasicInfo() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your information...</p>
+          <p className="text-gray-600">{common.loadingInfo}</p>
         </div>
       </div>
     );
@@ -97,7 +101,7 @@ export default function OwnerBasicInfo() {
             className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.back}</span>
           </button>
         </div>
 
@@ -112,7 +116,7 @@ export default function OwnerBasicInfo() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Step 1 of 3</span>
+            <span className="text-sm text-gray-600">{onboarding.progress.step} 1 {onboarding.progress.of} 3</span>
             <span className="text-sm font-semibold text-[color:var(--easy-purple)]">33%</span>
           </div>
           <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -123,26 +127,26 @@ export default function OwnerBasicInfo() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to EasyCo for Homeowners</h2>
-            <p className="text-gray-600">List your property, meet the right tenants, and manage everything from one place.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{onboarding.owner.welcomeTitle}</h2>
+            <p className="text-gray-600">{onboarding.owner.welcomeSubtitle}</p>
           </div>
 
           <div className="mb-6 p-4 bg-purple-50 rounded-lg border border-purple-100">
-            <h3 className="font-semibold text-[color:var(--easy-purple)] mb-2">Let's set up your host profile</h3>
-            <p className="text-sm text-gray-600">Your verified profile helps us build trust with potential tenants.</p>
+            <h3 className="font-semibold text-[color:var(--easy-purple)] mb-2">{onboarding.owner.profileSetup}</h3>
+            <p className="text-sm text-gray-600">{onboarding.owner.profileSetupHelp}</p>
           </div>
 
           <div className="space-y-6">
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name <span className="text-red-500">*</span>
+                {onboarding.basicInfo.firstName} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Enter your first name"
+                placeholder={onboarding.basicInfo.firstNamePlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
             </div>
@@ -150,13 +154,13 @@ export default function OwnerBasicInfo() {
             {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name <span className="text-red-500">*</span>
+                {onboarding.basicInfo.lastName} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Enter your last name"
+                placeholder={onboarding.basicInfo.lastNamePlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
             </div>
@@ -164,28 +168,28 @@ export default function OwnerBasicInfo() {
             {/* Phone Number */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number <span className="text-red-500">*</span>
+                {onboarding.owner.phoneNumber} <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="+33 6 12 34 56 78"
+                placeholder={onboarding.owner.phoneNumberPlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
-              <p className="mt-2 text-xs text-gray-500">Required for tenant communication</p>
+              <p className="mt-2 text-xs text-gray-500">{onboarding.owner.phoneNumberHelp}</p>
             </div>
 
             {/* Nationality */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nationality
+                {onboarding.basicInfo.nationality}
               </label>
               <input
                 type="text"
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
-                placeholder="e.g., French, Belgian"
+                placeholder={onboarding.basicInfo.nationalityPlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
             </div>
@@ -196,7 +200,7 @@ export default function OwnerBasicInfo() {
             onClick={handleContinue}
             className="w-full mt-8 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
-            Continue
+            {common.continue}
           </button>
         </div>
       </div>
