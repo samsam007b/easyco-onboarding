@@ -214,7 +214,7 @@ export default function ResidentLivingSituationPage() {
             {/* Current City */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.livingSituation.city} <span className="text-red-500">*</span>
+                {resident.livingSituation.currentCity} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -222,7 +222,7 @@ export default function ResidentLivingSituationPage() {
                   type="text"
                   value={currentCity}
                   onChange={(e) => setCurrentCity(e.target.value)}
-                  placeholder={resident.livingSituation.cityPlaceholder}
+                  placeholder={resident.livingSituation.currentCityPlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -248,7 +248,7 @@ export default function ResidentLivingSituationPage() {
             {/* Bio */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.livingSituation.bio} <span className="text-red-500">*</span>
+                {resident.livingSituation.tellUsAboutYourself} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <FileText className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -263,7 +263,7 @@ export default function ResidentLivingSituationPage() {
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-gray-500">
-                  {bio.length < 20 ? `${20 - bio.length} more characters needed` : 'Great!'}
+                  {bio.length < 20 ? `${20 - bio.length} ${resident.livingSituation.charactersNeeded}` : resident.livingSituation.great}
                 </span>
                 <span className="text-xs text-gray-500">{bio.length}/500</span>
               </div>
