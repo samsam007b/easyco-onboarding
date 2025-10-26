@@ -6,10 +6,15 @@ import { ArrowLeft, Briefcase, Moon, Sun, Cigarette, Utensils, Dumbbell } from '
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function ResidentLifestylePage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const resident = getSection('resident');
+  const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
 
   // Form fields based on PDF filters
@@ -52,7 +57,7 @@ export default function ResidentLifestylePage() {
       }
     } catch (error) {
       console.error('Error loading lifestyle data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);
     }
@@ -60,19 +65,19 @@ export default function ResidentLifestylePage() {
 
   const handleContinue = () => {
     if (!occupationStatus) {
-      toast.error('Please select your occupation status');
+      toast.error(resident.lifestyle.errors.occupationRequired);
       return;
     }
     if (!wakeUpTime) {
-      toast.error('Please select your typical wake-up time');
+      toast.error(resident.lifestyle.errors.wakeTimeRequired);
       return;
     }
     if (!sleepTime) {
-      toast.error('Please select your typical sleep time');
+      toast.error(resident.lifestyle.errors.sleepTimeRequired);
       return;
     }
     if (isSmoker === null) {
-      toast.error('Please indicate if you smoke');
+      toast.error(resident.lifestyle.errors.smokerRequired);
       return;
     }
 
@@ -96,7 +101,7 @@ export default function ResidentLifestylePage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
     );
@@ -104,6 +109,9 @@ export default function ResidentLifestylePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
@@ -112,7 +120,7 @@ export default function ResidentLifestylePage() {
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.actions.back}</span>
           </button>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
@@ -127,8 +135,8 @@ export default function ResidentLifestylePage() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Step 2 of 4</span>
-            <span className="text-sm text-gray-500">Lifestyle Essentials</span>
+            <span className="text-sm font-medium text-gray-700">{resident.lifestyle.progress}</span>
+            <span className="text-sm text-gray-500">{resident.lifestyle.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div className="bg-[#4A148C] h-2 rounded-full transition-all" style={{ width: '50%' }} />
@@ -139,10 +147,10 @@ export default function ResidentLifestylePage() {
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-              Your Lifestyle 🌟
+              {resident.lifestyle.heading}
             </h1>
             <p className="text-gray-600">
-              Help us understand your daily routine and habits
+              {resident.lifestyle.description}
             </p>
           </div>
 
@@ -305,7 +313,7 @@ export default function ResidentLifestylePage() {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              Continue
+              {common.actions.continue}
             </button>
           </div>
         </div>

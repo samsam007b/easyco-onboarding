@@ -6,6 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Users, Settings, LogOut, Edit, MapPin, MessageCircle } from 'lucide-react'
 import { toast } from 'sonner'
+import { useLanguage } from '@/lib/i18n/use-language'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 interface UserProfile {
   full_name: string
@@ -18,6 +20,9 @@ interface UserProfile {
 export default function ResidentDashboard() {
   const router = useRouter()
   const supabase = createClient()
+  const { t, getSection } = useLanguage()
+  const dashboard = getSection('dashboard')
+  const common = getSection('common')
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -42,7 +47,7 @@ export default function ResidentDashboard() {
 
       if (profileError) {
         console.error('Error loading profile:', profileError)
-        toast.error('Failed to load profile')
+        toast.error(common.failedToLoad)
         return
       }
 
@@ -67,7 +72,7 @@ export default function ResidentDashboard() {
 
     } catch (error: any) {
       console.error('Error:', error)
-      toast.error('An error occurred')
+      toast.error(common.errorOccurred)
     } finally {
       setIsLoading(false)
     }
@@ -76,7 +81,7 @@ export default function ResidentDashboard() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/login')
-    toast.success('Logged out successfully')
+    toast.success(dashboard.searcher.logoutSuccess)
   }
 
   if (isLoading) {
@@ -84,7 +89,7 @@ export default function ResidentDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">{dashboard.searcher.loadingDashboard}</p>
         </div>
       </div>
     )
@@ -126,6 +131,9 @@ export default function ResidentDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -133,18 +141,18 @@ export default function ResidentDashboard() {
               {profile.full_name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-[#4A148C]">Resident Dashboard</h1>
+              <h1 className="text-xl font-bold text-[#4A148C]">{dashboard.resident.title}</h1>
               <p className="text-sm text-gray-600">{profile.full_name}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={() => router.push('/profile')}>
               <Settings className="w-5 h-5 mr-2" />
-              Settings
+              {dashboard.searcher.settings}
             </Button>
             <Button variant="ghost" onClick={handleLogout}>
               <LogOut className="w-5 h-5 mr-2" />
-              Logout
+              {dashboard.searcher.logout}
             </Button>
           </div>
         </div>
@@ -153,9 +161,9 @@ export default function ResidentDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            Welcome back, {profile.full_name}! 👋
+            {dashboard.resident.welcome} {profile.full_name}! 👋
           </h2>
-          <p className="text-gray-600">Connect with your coliving community</p>
+          <p className="text-gray-600">{dashboard.resident.welcomeMessage}</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
@@ -166,22 +174,22 @@ export default function ResidentDashboard() {
                   <Users className="w-10 h-10" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">Community Member</h2>
+                  <h2 className="text-2xl font-bold mb-1">{dashboard.resident.communityMember}</h2>
                   <div className="flex items-center gap-2 text-white/90">
                     <MapPin className="w-4 h-4" />
-                    <span>{profile_data?.current_city || 'Location not set'}</span>
+                    <span>{profile_data?.current_city || dashboard.searcher.locationNotSet}</span>
                   </div>
                 </div>
               </div>
               <Button onClick={() => router.push('/dashboard/my-profile-resident')} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
                 <Edit className="w-4 h-4 mr-2" />
-                Edit Profile
+                {dashboard.searcher.editProfile}
               </Button>
             </div>
 
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-white/90 font-medium">Profile Completion</span>
+                <span className="text-sm text-white/90 font-medium">{dashboard.searcher.profileCompletion}</span>
                 <span className="text-sm text-white font-semibold">{completionPercentage}%</span>
               </div>
               <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
@@ -196,7 +204,7 @@ export default function ResidentDashboard() {
               </div>
               {completionPercentage < 100 && (
                 <p className="text-xs text-white/70 mt-2">
-                  Complete your profile to connect better with your community!
+                  {dashboard.resident.completionMessage}
                 </p>
               )}
             </div>
@@ -205,20 +213,20 @@ export default function ResidentDashboard() {
           <div className="p-8">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                📋 About Me
+                📋 {dashboard.searcher.aboutMe}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile_data?.date_of_birth && (
-                  <p>• {new Date().getFullYear() - new Date(profile_data.date_of_birth).getFullYear()} years old</p>
+                  <p>• {new Date().getFullYear() - new Date(profile_data.date_of_birth).getFullYear()} {dashboard.searcher.yearsOld}</p>
                 )}
                 {profile_data?.occupation_status && (
                   <p>• {profile_data.occupation_status}</p>
                 )}
                 {profile_data?.nationality && (
-                  <p>• From {profile_data.nationality}</p>
+                  <p>• {dashboard.resident.from} {profile_data.nationality}</p>
                 )}
                 {profile_data?.languages_spoken && profile_data.languages_spoken.length > 0 && (
-                  <p>• Speaks: {profile_data.languages_spoken.join(', ')}</p>
+                  <p>• {dashboard.searcher.speaks} {profile_data.languages_spoken.join(', ')}</p>
                 )}
                 {profile_data?.bio && (
                   <p className="text-sm text-gray-600 mt-3 italic">"{profile_data.bio}"</p>
@@ -229,22 +237,22 @@ export default function ResidentDashboard() {
             {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale || profile_data?.smoker !== undefined) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  ✨ Lifestyle
+                  ✨ {dashboard.searcher.lifestyle}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile_data?.cleanliness_preference && (
                     <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200">
-                      Cleanliness: {profile_data.cleanliness_preference}/10
+                      {dashboard.searcher.cleanliness}: {profile_data.cleanliness_preference}/10
                     </span>
                   )}
                   {profile_data?.introvert_extrovert_scale && (
                     <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
-                      {profile_data.introvert_extrovert_scale <= 2 ? 'Introvert' : profile_data.introvert_extrovert_scale >= 4 ? 'Extrovert' : 'Ambivert'}
+                      {profile_data.introvert_extrovert_scale <= 2 ? dashboard.searcher.introvert : profile_data.introvert_extrovert_scale >= 4 ? dashboard.searcher.extrovert : dashboard.searcher.ambivert}
                     </span>
                   )}
                   {profile_data?.smoker !== undefined && (
                     <span className="px-3 py-1.5 bg-gray-50 text-gray-700 rounded-full text-sm font-medium border border-gray-200">
-                      {profile_data.smoker ? 'Smoker' : 'Non-smoker'}
+                      {profile_data.smoker ? dashboard.searcher.smoker : dashboard.searcher.nonSmoker}
                     </span>
                   )}
                   {profile_data?.sociability_level && (
@@ -259,10 +267,10 @@ export default function ResidentDashboard() {
             {profile_data?.move_in_date && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🏠 Living Situation
+                  🏠 {dashboard.resident.livingSituation}
                 </h3>
                 <p className="text-gray-700">
-                  Moved in: {new Date(profile_data.move_in_date).toLocaleDateString()}
+                  {dashboard.resident.movedIn} {new Date(profile_data.move_in_date).toLocaleDateString()}
                 </p>
               </div>
             )}
@@ -274,24 +282,24 @@ export default function ResidentDashboard() {
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Users className="w-6 h-6 text-[#4A148C]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Community</h4>
-            <p className="text-sm text-gray-600">Meet your roommates</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.resident.community}</h4>
+            <p className="text-sm text-gray-600">{dashboard.resident.meetYourRoommates}</p>
           </button>
 
           <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <MessageCircle className="w-6 h-6 text-[#FFD600]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Messages</h4>
-            <p className="text-sm text-gray-600">Chat with others</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.resident.messages}</h4>
+            <p className="text-sm text-gray-600">{dashboard.resident.chatWithOthers}</p>
           </button>
 
           <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Settings className="w-6 h-6 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Account Settings</h4>
-            <p className="text-sm text-gray-600">Update preferences</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
           </button>
         </div>
       </main>

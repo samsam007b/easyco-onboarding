@@ -6,6 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { User, Users, Plus, Edit, Trash2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import ProfileSwitcher from '@/components/ProfileSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface DependentProfile {
   id: string;
@@ -25,6 +27,9 @@ interface DependentProfile {
 export default function ProfilesManagementPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const dashboard = getSection('dashboard');
+  const common = getSection('common');
   const [dependentProfiles, setDependentProfiles] = useState<DependentProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -49,14 +54,14 @@ export default function ProfilesManagementPage() {
 
       if (error) {
         console.error('Error loading dependent profiles:', error);
-        toast.error('Failed to load profiles');
+        toast.error(common.errors.loadFailed);
         return;
       }
 
       setDependentProfiles(data || []);
     } catch (error) {
       console.error('Error:', error);
-      toast.error('An error occurred');
+      toast.error(common.errors.unexpected);
     } finally {
       setIsLoading(false);
     }
@@ -71,16 +76,16 @@ export default function ProfilesManagementPage() {
 
       if (error) throw error;
 
-      toast.success(currentState ? 'Profile deactivated' : 'Profile activated');
+      toast.success(currentState ? dashboard.profiles.profileDeactivated : dashboard.profiles.profileActivated);
       loadDependentProfiles();
     } catch (error) {
       console.error('Error toggling profile:', error);
-      toast.error('Failed to update profile');
+      toast.error(dashboard.profiles.updateFailed);
     }
   };
 
   const handleDelete = async (profileId: string, profileName: string) => {
-    if (!confirm(`Are you sure you want to delete "${profileName}"? This action cannot be undone.`)) {
+    if (!confirm(dashboard.profiles.deleteConfirm.replace('{name}', profileName))) {
       return;
     }
 
@@ -94,11 +99,11 @@ export default function ProfilesManagementPage() {
 
       if (error) throw error;
 
-      toast.success('Profile deleted successfully');
+      toast.success(dashboard.profiles.deleteSuccess);
       loadDependentProfiles();
     } catch (error) {
       console.error('Error deleting profile:', error);
-      toast.error('Failed to delete profile');
+      toast.error(dashboard.profiles.deleteFailed);
     } finally {
       setDeletingId(null);
     }
@@ -106,10 +111,10 @@ export default function ProfilesManagementPage() {
 
   const getRelationshipLabel = (relationship: string) => {
     const labels: Record<string, string> = {
-      child: 'Child',
-      family_member: 'Family Member',
-      friend: 'Friend',
-      other: 'Other',
+      child: dashboard.profiles.relationships.child,
+      family_member: dashboard.profiles.relationships.familyMember,
+      friend: dashboard.profiles.relationships.friend,
+      other: dashboard.profiles.relationships.other,
     };
     return labels[relationship] || relationship;
   };
@@ -129,7 +134,7 @@ export default function ProfilesManagementPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading profiles...</p>
+          <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
     );
@@ -137,6 +142,9 @@ export default function ProfilesManagementPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <button
@@ -144,16 +152,16 @@ export default function ProfilesManagementPage() {
           className="mb-6 flex items-center gap-2 text-[color:var(--easy-purple)] hover:opacity-70 transition"
         >
           <ArrowLeft className="w-5 h-5" />
-          Back
+          {common.actions.back}
         </button>
 
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Manage Profiles
+            {dashboard.profiles.title}
           </h1>
           <p className="text-gray-600">
-            Manage your profile and dependent profiles (family, friends, etc.)
+            {dashboard.profiles.description}
           </p>
         </div>
 
@@ -164,14 +172,14 @@ export default function ProfilesManagementPage() {
               <User className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900">My Profile</h3>
-              <p className="text-sm text-gray-600">Your personal searcher profile</p>
+              <h3 className="text-lg font-semibold text-gray-900">{dashboard.profiles.myProfile}</h3>
+              <p className="text-sm text-gray-600">{dashboard.profiles.myProfileDesc}</p>
             </div>
             <button
               onClick={() => router.push('/dashboard/searcher')}
               className="px-4 py-2 rounded-full bg-[color:var(--easy-purple)] text-white font-medium hover:opacity-90 transition"
             >
-              View Dashboard
+              {dashboard.profiles.viewDashboard}
             </button>
           </div>
         </div>
@@ -181,10 +189,10 @@ export default function ProfilesManagementPage() {
           <div>
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <Users className="w-6 h-6 text-[color:var(--easy-purple)]" />
-              Dependent Profiles
+              {dashboard.profiles.dependentProfiles}
             </h2>
             <p className="text-sm text-gray-600 mt-1">
-              Profiles you're managing for family or friends
+              {dashboard.profiles.dependentDesc}
             </p>
           </div>
           <button
@@ -192,7 +200,7 @@ export default function ProfilesManagementPage() {
             className="flex items-center gap-2 px-4 py-2 rounded-full bg-[color:var(--easy-yellow)] text-black font-medium hover:opacity-90 transition"
           >
             <Plus className="w-5 h-5" />
-            Add Profile
+            {dashboard.profiles.addProfile}
           </button>
         </div>
 
@@ -201,17 +209,17 @@ export default function ProfilesManagementPage() {
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No dependent profiles yet
+              {dashboard.profiles.noProfiles}
             </h3>
             <p className="text-gray-600 mb-6">
-              Create a profile for a child, family member, or friend you're helping search for housing
+              {dashboard.profiles.noProfilesDesc}
             </p>
             <button
               onClick={() => router.push('/onboarding/searcher/profile-type')}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[color:var(--easy-purple)] text-white font-medium hover:opacity-90 transition"
             >
               <Plus className="w-5 h-5" />
-              Create Your First Profile
+              {dashboard.profiles.createFirst}
             </button>
           </div>
         ) : (
@@ -250,7 +258,7 @@ export default function ProfilesManagementPage() {
                               : 'bg-gray-100 text-gray-600'
                           }`}
                         >
-                          {profile.is_active ? 'Active' : 'Inactive'}
+                          {profile.is_active ? common.status.active : common.status.inactive}
                         </span>
                       </div>
                     </div>
@@ -281,12 +289,12 @@ export default function ProfilesManagementPage() {
                         {profile.is_active ? (
                           <>
                             <EyeOff className="w-4 h-4" />
-                            Deactivate
+                            {dashboard.profiles.deactivate}
                           </>
                         ) : (
                           <>
                             <Eye className="w-4 h-4" />
-                            Activate
+                            {dashboard.profiles.activate}
                           </>
                         )}
                       </button>
@@ -297,7 +305,7 @@ export default function ProfilesManagementPage() {
                         className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-red-200 hover:border-red-300 text-red-600 transition text-sm font-medium disabled:opacity-50"
                       >
                         <Trash2 className="w-4 h-4" />
-                        {deletingId === profile.id ? 'Deleting...' : 'Delete'}
+                        {deletingId === profile.id ? common.actions.deleting : common.actions.delete}
                       </button>
                     </div>
                   </div>

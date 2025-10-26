@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge'
 import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
+import { useLanguage } from '@/lib/i18n/use-language'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 interface UserProfile {
   full_name: string
@@ -21,6 +23,9 @@ interface UserProfile {
 export default function OwnerDashboard() {
   const router = useRouter()
   const supabase = createClient()
+  const { t, getSection } = useLanguage()
+  const dashboard = getSection('dashboard')
+  const common = getSection('common')
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [properties, setProperties] = useState<Property[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -96,7 +101,7 @@ export default function OwnerDashboard() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/login')
-    toast.success('Logged out successfully')
+    toast.success(dashboard.owner.logoutSuccess)
   }
 
   const handleEditProfile = () => {
@@ -121,7 +126,7 @@ export default function OwnerDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">{dashboard.owner.loadingDashboard}</p>
         </div>
       </div>
     )
@@ -163,6 +168,9 @@ export default function OwnerDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -171,21 +179,21 @@ export default function OwnerDashboard() {
               {profile.full_name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-[#4A148C]">Owner Dashboard</h1>
+              <h1 className="text-xl font-bold text-[#4A148C]">{dashboard.owner.title}</h1>
               <p className="text-sm text-gray-600">{profile.full_name}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" onClick={() => router.push('/profile/enhance-owner')}>
-              ✨ Enhance Profile
+              {dashboard.searcher.enhanceProfile}
             </Button>
             <Button variant="ghost" onClick={() => router.push('/profile')}>
               <Settings className="w-5 h-5 mr-2" />
-              Settings
+              {dashboard.searcher.settings}
             </Button>
             <Button variant="ghost" onClick={handleLogout}>
               <LogOut className="w-5 h-5 mr-2" />
-              Logout
+              {dashboard.searcher.logout}
             </Button>
           </div>
         </div>
@@ -196,10 +204,10 @@ export default function OwnerDashboard() {
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            Welcome back, {profile.full_name}! 👋
+            {dashboard.owner.welcome} {profile.full_name}! 👋
           </h2>
           <p className="text-gray-600">
-            Manage your properties and tenant applications from here.
+            {dashboard.owner.welcomeMessage}
           </p>
         </div>
 
@@ -213,23 +221,23 @@ export default function OwnerDashboard() {
                   <Building2 className="w-10 h-10" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">Property Owner Profile</h2>
+                  <h2 className="text-2xl font-bold mb-1">{dashboard.owner.propertyOwnerProfile}</h2>
                   <div className="flex items-center gap-2 text-white/90">
                     <MapPin className="w-4 h-4" />
-                    <span>{profile.profile_data?.primary_location || profile.profile_data?.property_city || 'Location not set'}</span>
+                    <span>{profile.profile_data?.primary_location || profile.profile_data?.property_city || dashboard.searcher.locationNotSet}</span>
                   </div>
                 </div>
               </div>
               <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
                 <Edit className="w-4 h-4 mr-2" />
-                Edit Profile
+                {dashboard.searcher.editProfile}
               </Button>
             </div>
 
             {/* Progress Bar */}
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-white/90 font-medium">Profile Completion</span>
+                <span className="text-sm text-white/90 font-medium">{dashboard.searcher.profileCompletion}</span>
                 <span className="text-sm text-white font-semibold">{completionPercentage}%</span>
               </div>
               <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
@@ -244,7 +252,7 @@ export default function OwnerDashboard() {
               </div>
               {completionPercentage < 100 && (
                 <p className="text-xs text-white/70 mt-2">
-                  Complete your profile to build trust with potential tenants!
+                  {dashboard.owner.completionMessage}
                 </p>
               )}
             </div>
@@ -254,25 +262,25 @@ export default function OwnerDashboard() {
             {/* Owner Info Section */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                👤 Owner Information
+                👤 {dashboard.owner.ownerInfo}
               </h3>
               <div className="space-y-2 text-gray-700">
                 {profile.profile_data?.landlord_type && (
-                  <p>• Type: <span className="font-medium capitalize">{profile.profile_data.landlord_type}</span></p>
+                  <p>• {dashboard.owner.type} <span className="font-medium capitalize">{profile.profile_data.landlord_type}</span></p>
                 )}
                 {profile.profile_data?.owner_type && (
-                  <p>• Owner Type: <span className="font-medium capitalize">{profile.profile_data.owner_type}</span></p>
+                  <p>• {dashboard.owner.ownerType} <span className="font-medium capitalize">{profile.profile_data.owner_type}</span></p>
                 )}
                 {profile.profile_data?.company_name && (
-                  <p>• Company: <span className="font-medium">{profile.profile_data.company_name}</span></p>
+                  <p>• {dashboard.owner.company} <span className="font-medium">{profile.profile_data.company_name}</span></p>
                 )}
                 {profile.profile_data?.phone_number && (
-                  <p>• Phone: <span className="font-medium">{profile.profile_data.phone_number}</span></p>
+                  <p>• {dashboard.owner.phone} <span className="font-medium">{profile.profile_data.phone_number}</span></p>
                 )}
                 {profile.profile_data?.hosting_experience && (
-                  <p>• Experience: <span className="font-medium">{profile.profile_data.hosting_experience}</span></p>
+                  <p>• {dashboard.owner.experience} <span className="font-medium">{profile.profile_data.hosting_experience}</span></p>
                 )}
-                <p>• Email: <span className="font-medium">{profile.email}</span></p>
+                <p>• {dashboard.owner.email} <span className="font-medium">{profile.email}</span></p>
               </div>
             </div>
 
@@ -280,12 +288,12 @@ export default function OwnerDashboard() {
             {(profile.profile_data?.has_property || profile.profile_data?.property_city || profile.profile_data?.property_type) && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
-                  🏠 Property Details
+                  🏠 {dashboard.owner.propertyDetails}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.profile_data?.has_property && (
                     <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium border border-green-200">
-                      Property Available
+                      {dashboard.owner.propertyAvailable}
                     </span>
                   )}
                   {profile.profile_data?.property_city && (
@@ -374,11 +382,11 @@ export default function OwnerDashboard() {
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-[#4A148C] flex items-center gap-2">
               <Building2 className="w-6 h-6" />
-              My Properties
+              {dashboard.owner.myProperties}
             </h3>
             <Button onClick={handleAddProperty}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Property
+              {dashboard.owner.addProperty}
             </Button>
           </div>
 
@@ -386,14 +394,14 @@ export default function OwnerDashboard() {
             <div className="text-center py-12">
               <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h4 className="text-lg font-semibold text-gray-700 mb-2">
-                No properties yet
+                {dashboard.owner.noPropertiesYet}
               </h4>
               <p className="text-gray-500 mb-6">
-                Add your first property to start receiving tenant applications
+                {dashboard.owner.addFirstProperty}
               </p>
               <Button onClick={handleAddProperty}>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Your First Property
+                {dashboard.owner.addYourFirstProperty}
               </Button>
             </div>
           ) : (
@@ -430,7 +438,7 @@ export default function OwnerDashboard() {
                       size="sm"
                       onClick={() => router.push(`/properties/${property.id}`)}
                     >
-                      View Details
+                      {dashboard.owner.viewDetails}
                     </Button>
                   </div>
                 </div>
@@ -445,24 +453,24 @@ export default function OwnerDashboard() {
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Building2 className="w-6 h-6 text-[#4A148C]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Manage Properties</h4>
-            <p className="text-sm text-gray-600">View and edit your listings</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.owner.manageProperties}</h4>
+            <p className="text-sm text-gray-600">{dashboard.owner.viewEditListings}</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
             <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <User className="w-6 h-6 text-[#FFD600]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Applications</h4>
-            <p className="text-sm text-gray-600">Review tenant requests</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.owner.applications}</h4>
+            <p className="text-sm text-gray-600">{dashboard.owner.reviewTenantRequests}</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/profile')}>
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Settings className="w-6 h-6 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Account Settings</h4>
-            <p className="text-sm text-gray-600">Update your preferences</p>
+            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
           </div>
         </div>
       </main>

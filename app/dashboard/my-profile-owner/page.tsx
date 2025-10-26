@@ -6,6 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, DollarSign, Home, Shield, TrendingUp, Building2, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface ProfileData {
   full_name: string;
@@ -34,6 +36,9 @@ interface ProfileData {
 export default function MyProfileOwnerPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const dashboard = getSection('dashboard');
+  const common = getSection('common');
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [completionPercentage, setCompletionPercentage] = useState(0);
@@ -65,7 +70,7 @@ export default function MyProfileOwnerPage() {
 
       if (profileError) {
         console.error('Error loading profile:', profileError);
-        toast.error('Failed to load profile');
+        toast.error(common.errors.loadFailed);
         return;
       }
 
@@ -117,7 +122,7 @@ export default function MyProfileOwnerPage() {
 
     } catch (error: any) {
       console.error('Error:', error);
-      toast.error('An error occurred');
+      toast.error(common.errors.unexpected);
     } finally {
       setIsLoading(false);
     }
@@ -152,7 +157,7 @@ export default function MyProfileOwnerPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your profile...</p>
+          <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
     );
@@ -164,44 +169,54 @@ export default function MyProfileOwnerPage() {
 
   const profileSections = [
     {
-      title: 'Property Information',
+      title: dashboard.myProfileOwner.sections.property.title,
       icon: Home,
-      description: 'Property details, type, location',
+      description: dashboard.myProfileOwner.sections.property.description,
       link: '/onboarding/owner/property-info',
       hasData: !!(profile.has_property && profile.property_city && profile.property_type),
     },
     {
-      title: 'Payment & Banking',
+      title: dashboard.myProfileOwner.sections.payment.title,
       icon: DollarSign,
-      description: 'IBAN, SWIFT/BIC, payment details',
+      description: dashboard.myProfileOwner.sections.payment.description,
       link: '/onboarding/owner/payment-info',
       hasData: !!(profile.iban && profile.swift_bic),
     },
     {
-      title: 'Experience & Management',
+      title: dashboard.myProfileOwner.sections.experience.title,
       icon: Building2,
-      description: 'Years of experience, management style',
+      description: dashboard.myProfileOwner.sections.experience.description,
       link: '/profile/enhance-owner/experience',
       hasData: !!(profile.experience_years || profile.management_type),
     },
     {
-      title: 'Owner Bio & Story',
+      title: dashboard.myProfileOwner.sections.bio.title,
       icon: FileText,
-      description: 'About you, hosting philosophy',
+      description: dashboard.myProfileOwner.sections.bio.description,
       link: '/profile/enhance-owner/bio',
       hasData: !!profile.owner_bio,
     },
     {
-      title: 'Profile Verification',
+      title: dashboard.myProfileOwner.sections.verification.title,
       icon: Shield,
-      description: 'ID verification, background checks',
+      description: dashboard.myProfileOwner.sections.verification.description,
       link: '/profile/enhance-owner/verification',
       hasData: profile.verification_status === 'verified',
     },
   ];
 
+  const getLandlordTypeLabel = () => {
+    if (profile.landlord_type === 'individual') return dashboard.myProfileOwner.landlordTypes.individual;
+    if (profile.landlord_type === 'agency') return dashboard.myProfileOwner.landlordTypes.agency;
+    if (profile.landlord_type === 'company') return dashboard.myProfileOwner.landlordTypes.company;
+    return dashboard.myProfileOwner.landlordTypes.owner;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -210,7 +225,7 @@ export default function MyProfileOwnerPage() {
             className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
+            <span>{common.actions.backToDashboard}</span>
           </button>
         </div>
       </header>
@@ -228,10 +243,7 @@ export default function MyProfileOwnerPage() {
                 {profile.full_name}
               </h1>
               <p className="text-gray-600 capitalize">
-                {profile.landlord_type === 'individual' && 'Individual Property Owner'}
-                {profile.landlord_type === 'agency' && 'Real Estate Agency'}
-                {profile.landlord_type === 'company' && 'Property Management Company'}
-                {!profile.landlord_type && 'Property Owner'}
+                {getLandlordTypeLabel()}
               </p>
               {profile.company_name && (
                 <p className="text-sm text-gray-500 mt-1">{profile.company_name}</p>
@@ -242,7 +254,7 @@ export default function MyProfileOwnerPage() {
           {/* Profile Completion */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Profile Completion</span>
+              <span className="text-sm font-medium text-gray-700">{dashboard.myProfileOwner.profileCompletion}</span>
               <span className="text-sm font-bold text-[#4A148C]">{completionPercentage}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -257,15 +269,15 @@ export default function MyProfileOwnerPage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.properties}</div>
-              <div className="text-sm text-gray-600">Properties</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfileOwner.stats.properties}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.activeListings}</div>
-              <div className="text-sm text-gray-600">Active Listings</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfileOwner.stats.activeListings}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.applications}</div>
-              <div className="text-sm text-gray-600">Applications</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfileOwner.stats.applications}</div>
             </div>
           </div>
         </div>
@@ -274,10 +286,10 @@ export default function MyProfileOwnerPage() {
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-6 h-6 text-[#4A148C]" />
-            <h2 className="text-2xl font-bold text-[#4A148C]">Enhance Your Profile</h2>
+            <h2 className="text-2xl font-bold text-[#4A148C]">{dashboard.myProfileOwner.enhanceTitle}</h2>
           </div>
           <p className="text-gray-600 mb-6">
-            Complete your profile to attract quality tenants and build trust
+            {dashboard.myProfileOwner.enhanceDescription}
           </p>
 
           <div className="grid gap-4">
@@ -307,7 +319,7 @@ export default function MyProfileOwnerPage() {
                       onClick={() => router.push(section.link)}
                       className="ml-4"
                     >
-                      {section.hasData ? 'Edit' : 'Add more details'}
+                      {section.hasData ? common.actions.edit : dashboard.myProfileOwner.addDetails}
                     </Button>
                   </div>
                 </div>
@@ -324,7 +336,7 @@ export default function MyProfileOwnerPage() {
             className="w-full sm:w-auto"
           >
             <Edit className="w-4 h-4 mr-2" />
-            Edit Core Profile
+            {dashboard.myProfileOwner.editCoreProfile}
           </Button>
         </div>
       </main>

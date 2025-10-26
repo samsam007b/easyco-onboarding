@@ -6,10 +6,15 @@ import { ArrowLeft, MapPin, Home, Calendar, FileText } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function ResidentLivingSituationPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const resident = getSection('resident');
+  const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -47,7 +52,7 @@ export default function ResidentLivingSituationPage() {
       }
     } catch (error) {
       console.error('Error loading living situation data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);
     }
@@ -55,19 +60,19 @@ export default function ResidentLivingSituationPage() {
 
   const handleComplete = async () => {
     if (!currentCity.trim()) {
-      toast.error('Please enter your current city');
+      toast.error(resident.livingSituation.errors.cityRequired);
       return;
     }
     if (!moveInDate) {
-      toast.error('Please enter when you moved in');
+      toast.error(resident.livingSituation.errors.dateRequired);
       return;
     }
     if (!bio.trim()) {
-      toast.error('Please write a short bio');
+      toast.error(resident.livingSituation.errors.bioRequired);
       return;
     }
     if (bio.length < 20) {
-      toast.error('Bio should be at least 20 characters');
+      toast.error(resident.livingSituation.errors.bioTooShort);
       return;
     }
 
@@ -77,7 +82,7 @@ export default function ResidentLivingSituationPage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('No user found');
+        toast.error(common.errors.noUser);
         return;
       }
 
@@ -123,7 +128,7 @@ export default function ResidentLivingSituationPage() {
 
       if (profileError) {
         console.error('Profile error:', profileError);
-        toast.error('Failed to save profile');
+        toast.error(common.errors.saveFailed);
         return;
       }
 
@@ -135,7 +140,7 @@ export default function ResidentLivingSituationPage() {
 
       if (userError) {
         console.error('User update error:', userError);
-        toast.error('Failed to complete onboarding');
+        toast.error(common.errors.saveFailed);
         return;
       }
 
@@ -145,15 +150,14 @@ export default function ResidentLivingSituationPage() {
       safeLocalStorage.remove('residentPersonality');
       safeLocalStorage.remove('residentLivingSituation');
 
-      toast.success('Profile completed!', {
-        description: 'Welcome to your coliving community!'
+      toast.success(resident.livingSituation.success, {
+        description: resident.livingSituation.successDesc
       });
 
-      // Redirect to dashboard
       router.push('/dashboard/resident');
     } catch (error) {
       console.error('Error completing onboarding:', error);
-      toast.error('An unexpected error occurred');
+      toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);
     }
@@ -166,7 +170,7 @@ export default function ResidentLivingSituationPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
     );
@@ -174,6 +178,9 @@ export default function ResidentLivingSituationPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
@@ -183,7 +190,7 @@ export default function ResidentLivingSituationPage() {
             disabled={isSaving}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.actions.back}</span>
           </button>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
@@ -198,8 +205,8 @@ export default function ResidentLivingSituationPage() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Step 4 of 4</span>
-            <span className="text-sm text-gray-500">Living Situation & Bio</span>
+            <span className="text-sm font-medium text-gray-700">{resident.livingSituation.progress}</span>
+            <span className="text-sm text-gray-500">{resident.livingSituation.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div className="bg-[#4A148C] h-2 rounded-full transition-all" style={{ width: '100%' }} />
@@ -210,10 +217,10 @@ export default function ResidentLivingSituationPage() {
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-              Almost Done! 🎉
+              {resident.livingSituation.heading}
             </h1>
             <p className="text-gray-600">
-              Tell us about your current living situation
+              {resident.livingSituation.description}
             </p>
           </div>
 
@@ -222,7 +229,7 @@ export default function ResidentLivingSituationPage() {
             {/* Current City */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Current City <span className="text-red-500">*</span>
+                {resident.livingSituation.fields.city.label} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -230,7 +237,7 @@ export default function ResidentLivingSituationPage() {
                   type="text"
                   value={currentCity}
                   onChange={(e) => setCurrentCity(e.target.value)}
-                  placeholder="e.g., Brussels, Paris, Berlin..."
+                  placeholder={resident.livingSituation.fields.city.placeholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -239,7 +246,7 @@ export default function ResidentLivingSituationPage() {
             {/* Move-in Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                When did you move in? <span className="text-red-500">*</span>
+                {resident.livingSituation.fields.moveInDate.label} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -256,14 +263,14 @@ export default function ResidentLivingSituationPage() {
             {/* Bio */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tell us about yourself <span className="text-red-500">*</span>
+                {resident.livingSituation.fields.bio.label} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <FileText className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Write a short introduction about yourself, your interests, what you're looking for in a coliving community... (min 20 characters)"
+                  placeholder={resident.livingSituation.fields.bio.placeholder}
                   rows={5}
                   maxLength={500}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all resize-none"
@@ -271,7 +278,7 @@ export default function ResidentLivingSituationPage() {
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-gray-500">
-                  {bio.length < 20 ? `${20 - bio.length} more characters needed` : 'Great!'}
+                  {bio.length < 20 ? resident.livingSituation.fields.bio.charCount.replace('{count}', String(20 - bio.length)) : resident.livingSituation.fields.bio.charValid}
                 </span>
                 <span className="text-xs text-gray-500">{bio.length}/500</span>
               </div>
@@ -281,13 +288,13 @@ export default function ResidentLivingSituationPage() {
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
               <h3 className="font-semibold text-[#4A148C] mb-2 flex items-center gap-2">
                 <span>💡</span>
-                Tips for a great bio:
+                {resident.livingSituation.tipsTitle}
               </h3>
               <ul className="text-sm text-gray-700 space-y-1">
-                <li>• Share your hobbies and interests</li>
-                <li>• Mention what you're studying or working on</li>
-                <li>• Describe what kind of community vibe you prefer</li>
-                <li>• Be authentic and friendly!</li>
+                <li>• {resident.livingSituation.tip1}</li>
+                <li>• {resident.livingSituation.tip2}</li>
+                <li>• {resident.livingSituation.tip3}</li>
+                <li>• {resident.livingSituation.tip4}</li>
               </ul>
             </div>
           </div>
@@ -306,10 +313,10 @@ export default function ResidentLivingSituationPage() {
               {isSaving ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-5 h-5 border-2 border-gray-400 border-t-gray-700 rounded-full animate-spin" />
-                  <span>Completing your profile...</span>
+                  <span>{resident.livingSituation.completing}</span>
                 </div>
               ) : (
-                'Complete Profile'
+                resident.livingSituation.complete
               )}
             </button>
           </div>

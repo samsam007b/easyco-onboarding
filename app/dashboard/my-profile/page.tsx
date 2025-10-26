@@ -6,6 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, DollarSign, Users, Heart, Settings, Shield, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface ProfileData {
   full_name: string;
@@ -29,6 +31,9 @@ interface ProfileData {
 export default function MyProfilePage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const dashboard = getSection('dashboard');
+  const common = getSection('common');
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [completionPercentage, setCompletionPercentage] = useState(0);
@@ -60,7 +65,7 @@ export default function MyProfilePage() {
 
       if (profileError) {
         console.error('Error loading profile:', profileError);
-        toast.error('Failed to load profile');
+        toast.error(common.errors.loadFailed);
         return;
       }
 
@@ -93,7 +98,7 @@ export default function MyProfilePage() {
 
     } catch (error: any) {
       console.error('Error:', error);
-      toast.error('An error occurred');
+      toast.error(common.errors.unexpected);
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +130,7 @@ export default function MyProfilePage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your profile...</p>
+          <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
     );
@@ -137,37 +142,37 @@ export default function MyProfilePage() {
 
   const profileSections = [
     {
-      title: 'Financial & Guarantee Info',
+      title: dashboard.myProfile.sections.financial.title,
       icon: DollarSign,
-      description: 'Bank details, guarantor, financial documents',
+      description: dashboard.myProfile.sections.financial.description,
       link: '/profile/enhance/financial',
       hasData: !!profile.financial_info,
     },
     {
-      title: 'Community & Events',
+      title: dashboard.myProfile.sections.community.title,
       icon: Users,
-      description: 'Community interests, event participation',
+      description: dashboard.myProfile.sections.community.description,
       link: '/profile/enhance/community',
       hasData: !!profile.community_preferences,
     },
     {
-      title: 'Extended Personality',
+      title: dashboard.myProfile.sections.personality.title,
       icon: Heart,
-      description: 'Hobbies, interests, lifestyle details',
+      description: dashboard.myProfile.sections.personality.description,
       link: '/profile/enhance/personality',
       hasData: !!profile.extended_personality,
     },
     {
-      title: 'Advanced Preferences',
+      title: dashboard.myProfile.sections.preferences.title,
       icon: Settings,
-      description: 'Detailed living preferences, deal-breakers',
+      description: dashboard.myProfile.sections.preferences.description,
       link: '/profile/enhance/preferences',
       hasData: !!profile.advanced_preferences,
     },
     {
-      title: 'Profile Verification',
+      title: dashboard.myProfile.sections.verification.title,
       icon: Shield,
-      description: 'ID verification, background checks',
+      description: dashboard.myProfile.sections.verification.description,
       link: '/profile/enhance/verification',
       hasData: profile.verification_status === 'verified',
     },
@@ -175,6 +180,9 @@ export default function MyProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -183,7 +191,7 @@ export default function MyProfilePage() {
             className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
+            <span>{common.actions.backToDashboard}</span>
           </button>
         </div>
       </header>
@@ -207,7 +215,7 @@ export default function MyProfilePage() {
           {/* Profile Completion */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Profile Completion</span>
+              <span className="text-sm font-medium text-gray-700">{dashboard.myProfile.profileCompletion}</span>
               <span className="text-sm font-bold text-[#4A148C]">{completionPercentage}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -222,15 +230,15 @@ export default function MyProfilePage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.matches}</div>
-              <div className="text-sm text-gray-600">Matches</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.matches}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.messages}</div>
-              <div className="text-sm text-gray-600">Messages</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.messages}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.favorites}</div>
-              <div className="text-sm text-gray-600">Favorites</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.favorites}</div>
             </div>
           </div>
         </div>
@@ -239,10 +247,10 @@ export default function MyProfilePage() {
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-6 h-6 text-[#4A148C]" />
-            <h2 className="text-2xl font-bold text-[#4A148C]">Enhance Your Profile</h2>
+            <h2 className="text-2xl font-bold text-[#4A148C]">{dashboard.myProfile.enhanceTitle}</h2>
           </div>
           <p className="text-gray-600 mb-6">
-            Add more details to increase your chances of finding the perfect match
+            {dashboard.myProfile.enhanceDescription}
           </p>
 
           <div className="grid gap-4">
@@ -272,7 +280,7 @@ export default function MyProfilePage() {
                       onClick={() => router.push(section.link)}
                       className="ml-4"
                     >
-                      {section.hasData ? 'Edit' : 'Add more details'}
+                      {section.hasData ? common.actions.edit : dashboard.myProfile.addDetails}
                     </Button>
                   </div>
                 </div>
@@ -289,7 +297,7 @@ export default function MyProfilePage() {
             className="w-full sm:w-auto"
           >
             <Edit className="w-4 h-4 mr-2" />
-            Edit Core Profile
+            {dashboard.myProfile.editCoreProfile}
           </Button>
         </div>
       </main>
