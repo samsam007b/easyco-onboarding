@@ -648,6 +648,90 @@ export const translations = {
   },
 
   // ============================================================================
+  // WELCOME PAGE (Post-Login Role Selection)
+  // ============================================================================
+  welcome: {
+    greeting: {
+      fr: 'Bonjour',
+      en: 'Hello',
+      nl: 'Hallo',
+      de: 'Hallo',
+    },
+    subtitle: {
+      fr: 'Que souhaitez-vous faire aujourd\'hui ?',
+      en: 'What would you like to do today?',
+      nl: 'Wat wilt u vandaag doen?',
+      de: 'Was möchten Sie heute tun?',
+    },
+    searcher: {
+      title: {
+        fr: 'Je cherche un logement',
+        en: 'I\'m looking for housing',
+        nl: 'Ik zoek woonruimte',
+        de: 'Ich suche eine Unterkunft',
+      },
+      description: {
+        fr: 'Trouver une coloc fiable et compatible',
+        en: 'Find a reliable and compatible flatshare',
+        nl: 'Vind een betrouwbare en compatibele flatshare',
+        de: 'Finde eine zuverlässige und kompatible WG',
+      },
+    },
+    owner: {
+      title: {
+        fr: 'Je loue mon bien',
+        en: 'I\'m renting out my property',
+        nl: 'Ik verhuur mijn woning',
+        de: 'Ich vermiete meine Immobilie',
+      },
+      description: {
+        fr: 'Gérer mes biens et trouver des locataires',
+        en: 'Manage my properties and find tenants',
+        nl: 'Beheer mijn eigendommen en vind huurders',
+        de: 'Verwalten Sie meine Immobilien und finden Sie Mieter',
+      },
+    },
+    resident: {
+      title: {
+        fr: 'Je suis déjà résident',
+        en: 'I\'m already a resident',
+        nl: 'Ik ben al een bewoner',
+        de: 'Ich bin bereits Bewohner',
+      },
+      description: {
+        fr: 'Accéder à mon espace de colocation',
+        en: 'Access my flatshare space',
+        nl: 'Toegang tot mijn flatshare ruimte',
+        de: 'Zugriff auf meinen WG-Bereich',
+      },
+    },
+    continueButton: {
+      fr: 'Continuer',
+      en: 'Continue',
+      nl: 'Doorgaan',
+      de: 'Weiter',
+    },
+    helpText: {
+      fr: 'Vous pourrez toujours changer de rôle plus tard dans les paramètres',
+      en: 'You can always change roles later in settings',
+      nl: 'U kunt later altijd van rol wisselen in de instellingen',
+      de: 'Sie können die Rolle später jederzeit in den Einstellungen ändern',
+    },
+    settings: {
+      fr: 'Paramètres',
+      en: 'Settings',
+      nl: 'Instellingen',
+      de: 'Einstellungen',
+    },
+    logout: {
+      fr: 'Se déconnecter',
+      en: 'Logout',
+      nl: 'Uitloggen',
+      de: 'Abmelden',
+    },
+  },
+
+  // ============================================================================
   // COMMON BUTTONS & ACTIONS
   // ============================================================================
   common: {

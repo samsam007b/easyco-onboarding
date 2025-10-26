@@ -8,6 +8,8 @@ import { Users, Settings, LogOut, Edit, MapPin, MessageCircle } from 'lucide-rea
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import RoleBadge from '@/components/RoleBadge'
+import { useRole } from '@/lib/role/role-context'
 
 interface UserProfile {
   full_name: string
@@ -21,6 +23,7 @@ export default function ResidentDashboard() {
   const router = useRouter()
   const supabase = createClient()
   const { t, getSection } = useLanguage()
+  const { setActiveRole } = useRole()
   const dashboard = getSection('dashboard')
   const common = getSection('common')
   const [profile, setProfile] = useState<UserProfile | null>(null)
@@ -28,6 +31,8 @@ export default function ResidentDashboard() {
 
   useEffect(() => {
     loadProfile()
+    // Set active role when dashboard loads
+    setActiveRole('resident')
   }, [])
 
   const loadProfile = async () => {
@@ -131,7 +136,9 @@ export default function ResidentDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <div className="absolute top-6 right-6 z-50">
+      {/* Top Bar: Role Badge & Language Switcher */}
+      <div className="absolute top-6 right-6 z-50 flex items-center gap-3">
+        <RoleBadge />
         <LanguageSwitcher />
       </div>
       <header className="bg-white border-b border-gray-200 shadow-sm">
