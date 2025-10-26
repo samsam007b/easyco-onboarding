@@ -128,6 +128,318 @@ export const translations = {
         de: 'Schließe dich Tausenden zufriedenen Mitbewohnern an',
       },
     },
+
+    howItWorks: {
+      title: {
+        fr: 'Comment ça marche ?',
+        en: 'How does it work?',
+        nl: 'Hoe werkt het?',
+        de: 'Wie funktioniert es?',
+      },
+      subtitle: {
+        fr: 'En 3 étapes simples',
+        en: 'In 3 simple steps',
+        nl: 'In 3 eenvoudige stappen',
+        de: 'In 3 einfachen Schritten',
+      },
+      step1: {
+        title: {
+          fr: 'Crée ton profil',
+          en: 'Create your profile',
+          nl: 'Maak je profiel',
+          de: 'Erstelle dein Profil',
+        },
+        description: {
+          fr: 'Réponds à 15 questions sur ton lifestyle et tes préférences pour que notre algorithme puisse te proposer les meilleurs matchs.',
+          en: 'Answer 15 questions about your lifestyle and preferences so our algorithm can suggest the best matches for you.',
+          nl: 'Beantwoord 15 vragen over je levensstijl en voorkeuren zodat ons algoritme de beste matches voor je kan voorstellen.',
+          de: 'Beantworte 15 Fragen zu deinem Lebensstil und deinen Präferenzen, damit unser Algorithmus die besten Matches für dich vorschlagen kann.',
+        },
+      },
+      step2: {
+        title: {
+          fr: 'Découvre tes matchs',
+          en: 'Discover your matches',
+          nl: 'Ontdek je matches',
+          de: 'Entdecke deine Matches',
+        },
+        description: {
+          fr: 'Notre algorithme te propose des colocataires compatibles avec ton mode de vie, tes horaires et tes valeurs. Plus besoin de deviner.',
+          en: 'Our algorithm suggests flatmates compatible with your lifestyle, schedule, and values. No more guessing.',
+          nl: 'Ons algoritme stelt huisgenoten voor die compatibel zijn met je levensstijl, schema en waarden. Niet meer gissen.',
+          de: 'Unser Algorithmus schlägt Mitbewohner vor, die mit deinem Lebensstil, Zeitplan und Werten kompatibel sind. Kein Raten mehr.',
+        },
+      },
+      step3: {
+        title: {
+          fr: 'Rejoins un groupe',
+          en: 'Join a group',
+          nl: 'Sluit je aan bij een groep',
+          de: 'Tritt einer Gruppe bei',
+        },
+        description: {
+          fr: 'Connecte-toi avec 2-4 personnes qui te ressemblent et cherchez ensemble. C\'est 3x plus rapide et beaucoup plus simple.',
+          en: 'Connect with 2-4 people like you and search together. It\'s 3x faster and much simpler.',
+          nl: 'Maak verbinding met 2-4 mensen zoals jij en zoek samen. Het is 3x sneller en veel eenvoudiger.',
+          de: 'Verbinde dich mit 2-4 Menschen wie dir und sucht zusammen. Es ist 3x schneller und viel einfacher.',
+        },
+      },
+      cta: {
+        fr: 'Commencer maintenant',
+        en: 'Get started now',
+        nl: 'Begin nu',
+        de: 'Jetzt starten',
+      },
+    },
+
+    stats: {
+      title: {
+        fr: 'EasyCo en chiffres',
+        en: 'EasyCo by the numbers',
+        nl: 'EasyCo in cijfers',
+        de: 'EasyCo in Zahlen',
+      },
+      subtitle: {
+        fr: 'Rejoins des milliers d\'utilisateurs satisfaits',
+        en: 'Join thousands of satisfied users',
+        nl: 'Sluit je aan bij duizenden tevreden gebruikers',
+        de: 'Schließe dich Tausenden zufriedener Nutzer an',
+      },
+      properties: {
+        fr: 'Annonces à Bruxelles',
+        en: 'Listings in Brussels',
+        nl: 'Advertenties in Brussel',
+        de: 'Anzeigen in Brüssel',
+      },
+      users: {
+        fr: 'Utilisateurs actifs',
+        en: 'Active users',
+        nl: 'Actieve gebruikers',
+        de: 'Aktive Nutzer',
+      },
+      satisfaction: {
+        fr: 'Taux de satisfaction',
+        en: 'Satisfaction rate',
+        nl: 'Tevredenheidspercentage',
+        de: 'Zufriedenheitsrate',
+      },
+      verified: {
+        fr: 'Profils vérifiés',
+        en: 'Verified profiles',
+        nl: 'Geverifieerde profielen',
+        de: 'Verifizierte Profile',
+      },
+      trustBadge: {
+        fr: 'Toutes les identités vérifiées manuellement',
+        en: 'All identities manually verified',
+        nl: 'Alle identiteiten handmatig geverifieerd',
+        de: 'Alle Identitäten manuell verifiziert',
+      },
+    },
+
+    testimonials: {
+      title: {
+        fr: 'Ce qu\'ils disent de nous',
+        en: 'What they say about us',
+        nl: 'Wat ze over ons zeggen',
+        de: 'Was sie über uns sagen',
+      },
+      subtitle: {
+        fr: 'Des milliers d\'utilisateurs nous font confiance',
+        en: 'Thousands of users trust us',
+        nl: 'Duizenden gebruikers vertrouwen ons',
+        de: 'Tausende Nutzer vertrauen uns',
+      },
+      testimonial1: {
+        name: {
+          fr: 'Thomas L.',
+          en: 'Thomas L.',
+          nl: 'Thomas L.',
+          de: 'Thomas L.',
+        },
+        role: {
+          fr: 'Étudiant à l\'ULB',
+          en: 'Student at ULB',
+          nl: 'Student aan ULB',
+          de: 'Student an der ULB',
+        },
+        text: {
+          fr: 'J\'ai trouvé mes colocataires en moins de 2 semaines grâce à EasyCo. Le matching est vraiment précis, on s\'entend super bien ! Plus besoin de passer des heures sur des sites douteux.',
+          en: 'I found my flatmates in less than 2 weeks thanks to EasyCo. The matching is really accurate, we get along great! No more spending hours on dodgy sites.',
+          nl: 'Ik vond mijn huisgenoten in minder dan 2 weken dankzij EasyCo. De matching is echt nauwkeurig, we kunnen het geweldig vinden! Niet meer uren spenderen op dubieuze sites.',
+          de: 'Ich habe meine Mitbewohner in weniger als 2 Wochen dank EasyCo gefunden. Das Matching ist wirklich genau, wir verstehen uns super! Keine Stunden mehr auf dubiosen Seiten verbringen.',
+        },
+      },
+      testimonial2: {
+        name: {
+          fr: 'Marie D.',
+          en: 'Marie D.',
+          nl: 'Marie D.',
+          de: 'Marie D.',
+        },
+        role: {
+          fr: 'Jeune professionnelle',
+          en: 'Young professional',
+          nl: 'Jonge professional',
+          de: 'Junge Berufstätige',
+        },
+        text: {
+          fr: 'Le matching est vraiment précis. J\'ai été mise en contact avec des personnes qui partagent mes valeurs et mon mode de vie. La vérification d\'identité me rassure complètement.',
+          en: 'The matching is really precise. I was connected with people who share my values and lifestyle. The identity verification completely reassures me.',
+          nl: 'De matching is echt nauwkeurig. Ik werd in contact gebracht met mensen die mijn waarden en levensstijl delen. De identiteitsverificatie stelt me volledig gerust.',
+          de: 'Das Matching ist wirklich präzise. Ich wurde mit Menschen verbunden, die meine Werte und Lebensweise teilen. Die Identitätsverifizierung beruhigt mich vollständig.',
+        },
+      },
+      testimonial3: {
+        name: {
+          fr: 'Lucas M.',
+          en: 'Lucas M.',
+          nl: 'Lucas M.',
+          de: 'Lucas M.',
+        },
+        role: {
+          fr: 'Développeur',
+          en: 'Developer',
+          nl: 'Ontwikkelaar',
+          de: 'Entwickler',
+        },
+        text: {
+          fr: 'Fini les arnaques et les mauvaises surprises. Avec EasyCo, tous les profils sont vérifiés et les annonces sont authentiques. J\'ai trouvé une coloc en 3 semaines, c\'est incroyable.',
+          en: 'No more scams and bad surprises. With EasyCo, all profiles are verified and listings are authentic. I found a flatshare in 3 weeks, it\'s amazing.',
+          nl: 'Geen oplichting en slechte verrassingen meer. Met EasyCo zijn alle profielen geverifieerd en advertenties authentiek. Ik vond een flatshare in 3 weken, het is geweldig.',
+          de: 'Keine Betrügereien und schlechten Überraschungen mehr. Mit EasyCo sind alle Profile verifiziert und Anzeigen authentisch. Ich fand eine WG in 3 Wochen, es ist unglaublich.',
+        },
+      },
+      rating: {
+        fr: '4.9/5 étoiles',
+        en: '4.9/5 stars',
+        nl: '4,9/5 sterren',
+        de: '4,9/5 Sterne',
+      },
+      reviews: {
+        fr: 'Plus de 500 avis',
+        en: 'Over 500 reviews',
+        nl: 'Meer dan 500 reviews',
+        de: 'Über 500 Bewertungen',
+      },
+    },
+
+    faq: {
+      title: {
+        fr: 'Questions fréquentes',
+        en: 'Frequently asked questions',
+        nl: 'Veelgestelde vragen',
+        de: 'Häufig gestellte Fragen',
+      },
+      subtitle: {
+        fr: 'Tout ce que vous devez savoir',
+        en: 'Everything you need to know',
+        nl: 'Alles wat je moet weten',
+        de: 'Alles, was Sie wissen müssen',
+      },
+      question1: {
+        q: {
+          fr: 'Comment fonctionne la vérification d\'identité ?',
+          en: 'How does identity verification work?',
+          nl: 'Hoe werkt identiteitsverificatie?',
+          de: 'Wie funktioniert die Identitätsverifizierung?',
+        },
+        a: {
+          fr: 'Nous vérifions manuellement chaque document d\'identité soumis. Notre équipe examine votre passeport, carte d\'identité ou permis de conduire pour s\'assurer qu\'il s\'agit bien de vous. Ce processus prend généralement 24-48 heures.',
+          en: 'We manually verify each submitted identity document. Our team examines your passport, ID card, or driver\'s license to ensure it\'s really you. This process typically takes 24-48 hours.',
+          nl: 'We verifiëren elk ingediend identiteitsdocument handmatig. Ons team onderzoekt je paspoort, identiteitskaart of rijbewijs om er zeker van te zijn dat het echt jou is. Dit proces duurt meestal 24-48 uur.',
+          de: 'Wir verifizieren jedes eingereichte Identitätsdokument manuell. Unser Team prüft Ihren Pass, Personalausweis oder Führerschein, um sicherzustellen, dass Sie es wirklich sind. Dieser Prozess dauert in der Regel 24-48 Stunden.',
+        },
+      },
+      question2: {
+        q: {
+          fr: 'Est-ce que c\'est gratuit ?',
+          en: 'Is it free?',
+          nl: 'Is het gratis?',
+          de: 'Ist es kostenlos?',
+        },
+        a: {
+          fr: 'L\'inscription et la création de profil sont entièrement gratuites. Vous pouvez parcourir les annonces, créer votre profil et recevoir des matchs sans aucun frais. Nous proposons également des fonctionnalités premium pour accélérer votre recherche.',
+          en: 'Registration and profile creation are completely free. You can browse listings, create your profile, and receive matches at no cost. We also offer premium features to speed up your search.',
+          nl: 'Registratie en profielcreatie zijn volledig gratis. Je kunt advertenties bekijken, je profiel aanmaken en matches ontvangen zonder kosten. We bieden ook premium functies om je zoektocht te versnellen.',
+          de: 'Registrierung und Profilerstellung sind völlig kostenlos. Sie können Anzeigen durchsuchen, Ihr Profil erstellen und Matches ohne Kosten erhalten. Wir bieten auch Premium-Funktionen, um Ihre Suche zu beschleunigen.',
+        },
+      },
+      question3: {
+        q: {
+          fr: 'Comment fonctionne le matching ?',
+          en: 'How does the matching work?',
+          nl: 'Hoe werkt de matching?',
+          de: 'Wie funktioniert das Matching?',
+        },
+        a: {
+          fr: 'Notre algorithme analyse vos réponses à 15 questions sur votre lifestyle, vos horaires, vos habitudes et vos valeurs. Il compare ensuite ces données avec celles des autres utilisateurs pour vous proposer les personnes les plus compatibles avec vous.',
+          en: 'Our algorithm analyzes your answers to 15 questions about your lifestyle, schedule, habits, and values. It then compares this data with other users to suggest the most compatible people for you.',
+          nl: 'Ons algoritme analyseert je antwoorden op 15 vragen over je levensstijl, schema, gewoonten en waarden. Het vergelijkt deze gegevens vervolgens met andere gebruikers om de meest compatibele mensen voor je voor te stellen.',
+          de: 'Unser Algorithmus analysiert Ihre Antworten auf 15 Fragen zu Ihrem Lebensstil, Zeitplan, Gewohnheiten und Werten. Er vergleicht dann diese Daten mit anderen Nutzern, um Ihnen die kompatibelsten Personen vorzuschlagen.',
+        },
+      },
+      question4: {
+        q: {
+          fr: 'Puis-je faire confiance aux annonces ?',
+          en: 'Can I trust the listings?',
+          nl: 'Kan ik de advertenties vertrouwen?',
+          de: 'Kann ich den Anzeigen vertrauen?',
+        },
+        a: {
+          fr: 'Oui, toutes les annonces sont vérifiées par notre équipe. Nous vérifions l\'identité des propriétaires et la validité de leurs documents. De plus, nous avons un système de signalement en 1 clic si vous détectez quelque chose de suspect.',
+          en: 'Yes, all listings are verified by our team. We verify the identity of owners and the validity of their documents. Additionally, we have a 1-click reporting system if you detect something suspicious.',
+          nl: 'Ja, alle advertenties worden geverifieerd door ons team. We verifiëren de identiteit van eigenaren en de geldigheid van hun documenten. Bovendien hebben we een rapportagesysteem met 1 klik als je iets verdachts detecteert.',
+          de: 'Ja, alle Anzeigen werden von unserem Team verifiziert. Wir überprüfen die Identität der Eigentümer und die Gültigkeit ihrer Dokumente. Außerdem haben wir ein 1-Klick-Meldesystem, wenn Sie etwas Verdächtiges entdecken.',
+        },
+      },
+      question5: {
+        q: {
+          fr: 'Comment rejoindre un groupe ?',
+          en: 'How do I join a group?',
+          nl: 'Hoe sluit ik me aan bij een groep?',
+          de: 'Wie trete ich einer Gruppe bei?',
+        },
+        a: {
+          fr: 'Une fois votre profil créé, notre algorithme vous proposera des groupes de 2-4 personnes compatibles avec vous. Vous pouvez parcourir ces groupes, voir leurs profils et demander à les rejoindre. C\'est aussi simple que ça !',
+          en: 'Once your profile is created, our algorithm will suggest groups of 2-4 people compatible with you. You can browse these groups, view their profiles, and request to join them. It\'s that simple!',
+          nl: 'Zodra je profiel is aangemaakt, stelt ons algoritme groepen van 2-4 mensen voor die compatibel zijn met jou. Je kunt deze groepen bekijken, hun profielen bekijken en verzoeken om lid te worden. Zo simpel is het!',
+          de: 'Sobald Ihr Profil erstellt ist, schlägt unser Algorithmus Gruppen von 2-4 Personen vor, die mit Ihnen kompatibel sind. Sie können diese Gruppen durchsuchen, ihre Profile anzeigen und eine Beitrittsanfrage stellen. So einfach ist das!',
+        },
+      },
+      question6: {
+        q: {
+          fr: 'Que faire en cas de problème ?',
+          en: 'What should I do if there\'s a problem?',
+          nl: 'Wat moet ik doen als er een probleem is?',
+          de: 'Was soll ich tun, wenn es ein Problem gibt?',
+        },
+        a: {
+          fr: 'Notre équipe support est disponible 24/7 pour vous aider. Vous pouvez nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
+          en: 'Our support team is available 24/7 to help you. You can contact us via live chat, email, or phone. We are committed to resolving all issues within 24 hours.',
+          nl: 'Ons supportteam is 24/7 beschikbaar om je te helpen. Je kunt contact met ons opnemen via livechat, e-mail of telefoon. We zijn toegewijd om alle problemen binnen 24 uur op te lossen.',
+          de: 'Unser Support-Team ist 24/7 verfügbar, um Ihnen zu helfen. Sie können uns über Live-Chat, E-Mail oder Telefon kontaktieren. Wir verpflichten uns, alle Probleme innerhalb von 24 Stunden zu lösen.',
+        },
+      },
+      contactTitle: {
+        fr: 'Vous avez d\'autres questions ?',
+        en: 'Have more questions?',
+        nl: 'Heb je meer vragen?',
+        de: 'Haben Sie weitere Fragen?',
+      },
+      contactSubtitle: {
+        fr: 'Notre équipe est là pour vous aider',
+        en: 'Our team is here to help you',
+        nl: 'Ons team is er om je te helpen',
+        de: 'Unser Team ist hier, um Ihnen zu helfen',
+      },
+      contactButton: {
+        fr: 'Nous contacter',
+        en: 'Contact us',
+        nl: 'Neem contact op',
+        de: 'Kontaktiere uns',
+      },
+    },
   },
 
   // ============================================================================
