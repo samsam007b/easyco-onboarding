@@ -83,10 +83,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <ClientProviders>
           {children}
+          <Toaster position="top-right" />
+          <CookieBanner />
+          <DevTools />
         </ClientProviders>
-        <Toaster position="top-right" />
-        <CookieBanner />
-        <DevTools />
       </body>
     </html>
   )
