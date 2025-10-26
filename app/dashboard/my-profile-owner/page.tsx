@@ -225,7 +225,7 @@ export default function MyProfileOwnerPage() {
             className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>{common.actions.backToDashboard}</span>
+            <span>{common.backToDashboard}</span>
           </button>
         </div>
       </header>
@@ -319,7 +319,7 @@ export default function MyProfileOwnerPage() {
                       onClick={() => router.push(section.link)}
                       className="ml-4"
                     >
-                      {section.hasData ? common.actions.edit : dashboard.myProfileOwner.addDetails}
+                      {section.hasData ? common.edit : dashboard.myProfileOwner.addDetails}
                     </Button>
                   </div>
                 </div>
