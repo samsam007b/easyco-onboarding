@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
+import RoleSwitchModal from '@/components/RoleSwitchModal'
 
 interface UserData {
   id: string
@@ -36,6 +37,7 @@ export default function ProfilePage() {
   // User type change
   const [selectedUserType, setSelectedUserType] = useState('')
   const [isChangingUserType, setIsChangingUserType] = useState(false)
+  const [showRoleSwitchModal, setShowRoleSwitchModal] = useState(false)
 
   // Password change state
   const [showChangePassword, setShowChangePassword] = useState(false)
@@ -125,8 +127,8 @@ export default function ProfilePage() {
     }
   }
 
-  // Change user type
-  const handleChangeUserType = async () => {
+  // Open role switch modal
+  const handleOpenRoleSwitch = () => {
     if (!userData) return
 
     if (selectedUserType === userData.user_type) {
@@ -134,20 +136,42 @@ export default function ProfilePage() {
       return
     }
 
-    // Confirm role change with user
-    if (!confirm(`Are you sure you want to change your role from ${userData.user_type} to ${selectedUserType}? This will reset your onboarding progress and you'll need to complete the onboarding process again.`)) {
-      return
-    }
+    setShowRoleSwitchModal(true)
+  }
+
+  // Confirm role switch
+  const handleConfirmRoleSwitch = async () => {
+    if (!userData) return
 
     setIsChangingUserType(true)
 
     try {
-      // Update user_type and reset onboarding
+      // Check if user has profile data for the new role
+      const { data: profileData } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', userData.id)
+        .single()
+
+      // Check if onboarding is completed for new role
+      // We'll check this by looking if key fields for that role exist
+      let hasCompletedNewRoleOnboarding = false
+
+      if (selectedUserType === 'searcher') {
+        hasCompletedNewRoleOnboarding = !!(profileData?.first_name && profileData?.date_of_birth && profileData?.budget_min)
+      } else if (selectedUserType === 'owner') {
+        hasCompletedNewRoleOnboarding = !!(profileData?.first_name && profileData?.phone_number && profileData?.owner_type)
+      } else if (selectedUserType === 'resident') {
+        hasCompletedNewRoleOnboarding = !!(profileData?.first_name && profileData?.current_city && profileData?.bio)
+      }
+
+      // Update user_type (keep all profile data intact!)
       const { error } = await supabase
         .from('users')
         .update({
           user_type: selectedUserType,
-          onboarding_completed: false
+          // Only mark onboarding as incomplete if they haven't completed it for this role
+          onboarding_completed: hasCompletedNewRoleOnboarding
         })
         .eq('id', userData.id)
 
@@ -157,17 +181,22 @@ export default function ProfilePage() {
         return
       }
 
-      toast.success('Role changed successfully! Redirecting to onboarding...')
+      toast.success('Role switched successfully!')
 
-      // Redirect to new onboarding
+      // Redirect based on onboarding status
       setTimeout(() => {
-        router.push(`/onboarding/${selectedUserType}/basic-info`)
+        if (hasCompletedNewRoleOnboarding) {
+          router.push(`/dashboard/${selectedUserType}`)
+        } else {
+          router.push(`/onboarding/${selectedUserType}/basic-info`)
+        }
       }, 1000)
     } catch (error) {
       console.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsChangingUserType(false)
+      setShowRoleSwitchModal(false)
     }
   }
 
@@ -494,14 +523,14 @@ export default function ProfilePage() {
                     disabled={isChangingUserType}
                   />
                   <Button
-                    onClick={handleChangeUserType}
+                    onClick={handleOpenRoleSwitch}
                     disabled={isChangingUserType || selectedUserType === userData.user_type}
                   >
-                    {isChangingUserType ? 'Changing...' : 'Change Role'}
+                    Change Role
                   </Button>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  Changing your role will reset your onboarding progress.
+                  Your data is preserved when switching roles. You can always switch back.
                 </p>
               </div>
 
@@ -726,6 +755,16 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
+
+      {/* Role Switch Modal */}
+      <RoleSwitchModal
+        isOpen={showRoleSwitchModal}
+        onClose={() => setShowRoleSwitchModal(false)}
+        onConfirm={handleConfirmRoleSwitch}
+        currentRole={userData.user_type}
+        newRole={selectedUserType}
+        isLoading={isChangingUserType}
+      />
     </div>
   )
 }
