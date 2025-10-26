@@ -4,9 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Sun, Moon, Briefcase, Dumbbell, Cigarette } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function DailyHabitsPage() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [wakeUpTime, setWakeUpTime] = useState('');
   const [sleepTime, setSleepTime] = useState('');
   const [workSchedule, setWorkSchedule] = useState('');
@@ -51,10 +55,10 @@ export default function DailyHabitsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Daily Habits
+            {onboarding.dailyHabits.title}
           </h1>
           <p className="text-gray-600">
-            Your routine helps us find compatible housemates.
+            {onboarding.dailyHabits.subtitle}
           </p>
         </div>
 
@@ -67,17 +71,17 @@ export default function DailyHabitsPage() {
               <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
                 <Sun className="w-4 h-4 text-yellow-600" />
               </div>
-              Wake-up time
+              {onboarding.dailyHabits.wakeUpTime}
             </label>
             <select
               value={wakeUpTime}
               onChange={(e) => setWakeUpTime(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="early">Early (5-7 AM)</option>
-              <option value="moderate">Moderate (7-9 AM)</option>
-              <option value="late">Late (9 AM+)</option>
+              <option value="">{onboarding.dailyHabits.select}</option>
+              <option value="early">{onboarding.dailyHabits.early5to7}</option>
+              <option value="moderate">{onboarding.dailyHabits.moderate7to9}</option>
+              <option value="late">{onboarding.dailyHabits.late9plus}</option>
             </select>
           </div>
 
@@ -87,17 +91,17 @@ export default function DailyHabitsPage() {
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Moon className="w-4 h-4 text-purple-600" />
               </div>
-              Sleep time
+              {onboarding.dailyHabits.sleepTime}
             </label>
             <select
               value={sleepTime}
               onChange={(e) => setSleepTime(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="early">Early (9-10 PM)</option>
-              <option value="moderate">Moderate (10-12 PM)</option>
-              <option value="late">Late (12 PM+)</option>
+              <option value="">{onboarding.dailyHabits.select}</option>
+              <option value="early">{onboarding.dailyHabits.early9to10}</option>
+              <option value="moderate">{onboarding.dailyHabits.moderate10to12}</option>
+              <option value="late">{onboarding.dailyHabits.late12plus}</option>
             </select>
           </div>
 
@@ -107,18 +111,18 @@ export default function DailyHabitsPage() {
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <Briefcase className="w-4 h-4 text-blue-600" />
               </div>
-              Work/Study schedule
+              {onboarding.dailyHabits.workSchedule}
             </label>
             <select
               value={workSchedule}
               onChange={(e) => setWorkSchedule(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="traditional">Traditional (9-5)</option>
-              <option value="flexible">Flexible</option>
-              <option value="remote">Remote</option>
-              <option value="student">Student</option>
+              <option value="">{onboarding.dailyHabits.select}</option>
+              <option value="traditional">{onboarding.dailyHabits.traditional9to5}</option>
+              <option value="flexible">{onboarding.dailyHabits.flexible}</option>
+              <option value="remote">{onboarding.dailyHabits.remote}</option>
+              <option value="student">{onboarding.dailyHabits.student}</option>
             </select>
           </div>
 
@@ -128,18 +132,18 @@ export default function DailyHabitsPage() {
               <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                 <Dumbbell className="w-4 h-4 text-green-600" />
               </div>
-              Sport frequency
+              {onboarding.dailyHabits.sportFrequency}
             </label>
             <select
               value={sportFrequency}
               onChange={(e) => setSportFrequency(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="daily">Daily</option>
-              <option value="few-times-week">Few times a week</option>
-              <option value="once-week">Once a week</option>
-              <option value="rarely">Rarely</option>
+              <option value="">{onboarding.dailyHabits.select}</option>
+              <option value="daily">{onboarding.dailyHabits.daily}</option>
+              <option value="few-times-week">{onboarding.dailyHabits.fewTimesWeek}</option>
+              <option value="once-week">{onboarding.dailyHabits.onceWeek}</option>
+              <option value="rarely">{onboarding.dailyHabits.rarely}</option>
             </select>
           </div>
 
@@ -149,7 +153,7 @@ export default function DailyHabitsPage() {
               <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
                 <Cigarette className="w-4 h-4 text-gray-600" />
               </div>
-              <span className="font-medium text-gray-700">I am a smoker</span>
+              <span className="font-medium text-gray-700">{onboarding.dailyHabits.iAmSmoker}</span>
             </div>
             <button
               onClick={() => setIsSmoker(!isSmoker)}
@@ -176,7 +180,7 @@ export default function DailyHabitsPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {common.continue}
         </button>
       </div>
     </main>

@@ -2,8 +2,12 @@
 
 import Link from 'next/link';
 import { CheckCircle2, Home } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function SuccessPage() {
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-6">
       <div className="max-w-md w-full text-center space-y-8">
@@ -18,28 +22,28 @@ export default function SuccessPage() {
         {/* Title */}
         <div className="space-y-3">
           <h1 className="text-3xl font-bold text-[color:var(--easy-purple)]">
-            Profile Created!
+            {onboarding.success.title}
           </h1>
           <p className="text-gray-600 text-lg">
-            Thank you for completing the onboarding
+            {onboarding.success.thankYou}
           </p>
         </div>
 
         {/* Info card */}
         <div className="bg-white p-6 rounded-2xl shadow-md border-2 border-green-200">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">What happens next?</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">{onboarding.success.whatNext}</h2>
           <ul className="text-left text-sm text-gray-600 space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-0.5">✓</span>
-              <span>Your profile has been saved successfully</span>
+              <span>{onboarding.success.profileSaved}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-0.5">✓</span>
-              <span>We'll use your answers to find compatible matches</span>
+              <span>{onboarding.success.findMatches}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-0.5">✓</span>
-              <span>You can update your preferences anytime</span>
+              <span>{onboarding.success.updateAnytime}</span>
             </li>
           </ul>
         </div>
@@ -50,26 +54,26 @@ export default function SuccessPage() {
             href="/dashboard/searcher"
             className="block w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
-            Start Browsing
+            {onboarding.success.startBrowsing}
           </Link>
           <Link
             href="/profile/enhance"
             className="block w-full py-4 rounded-full bg-[color:var(--easy-purple)] text-white font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
-            ✨ Enhance Your Profile
+            {onboarding.success.enhanceProfile}
           </Link>
           <Link
             href="/"
             className="flex items-center justify-center gap-2 w-full py-3 rounded-full text-gray-600 font-medium hover:text-[color:var(--easy-purple)] transition"
           >
             <Home className="w-5 h-5" />
-            Back to Home
+            {onboarding.success.backToHome}
           </Link>
         </div>
 
         {/* Footer note */}
         <p className="text-sm text-gray-400">
-          Your response has been recorded. Thank you for participating in our test!
+          {onboarding.success.thankYouNote}
         </p>
       </div>
     </main>
