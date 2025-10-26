@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,8 +21,17 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [redirectTo, setRedirectTo] = useState<string | null>(null)
 
   const supabase = createClient()
+
+  useEffect(() => {
+    // Get redirect parameter from URL if present
+    const redirect = searchParams.get('redirect')
+    if (redirect && redirect.startsWith('/')) {
+      setRedirectTo(redirect)
+    }
+  }, [searchParams])
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,6 +69,12 @@ export default function LoginPage() {
 
       if (data.user) {
         toast.success(t('auth.login.success.welcomeBack'))
+
+        // If there's a redirect parameter, use it
+        if (redirectTo) {
+          router.push(redirectTo)
+          return
+        }
 
         // Get user type from profile
         const { data: profile } = await supabase
