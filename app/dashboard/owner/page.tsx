@@ -131,6 +131,36 @@ export default function OwnerDashboard() {
     return null
   }
 
+  // Calculate profile completion percentage
+  const calculateProfileCompletion = () => {
+    const fields = [
+      profile.profile_data?.first_name,
+      profile.profile_data?.last_name,
+      profile.profile_data?.phone_number,
+      profile.profile_data?.nationality,
+      profile.profile_data?.owner_type,
+      profile.profile_data?.company_name,
+      profile.profile_data?.primary_location,
+      profile.profile_data?.hosting_experience,
+      profile.profile_data?.has_property,
+      profile.profile_data?.property_city,
+      profile.profile_data?.property_type,
+      profile.profile_data?.landlord_type,
+      profile.profile_data?.experience_years,
+      profile.profile_data?.management_type,
+      profile.profile_data?.bio || profile.profile_data?.owner_bio,
+      profile.profile_data?.primary_motivation,
+      profile.profile_data?.iban,
+      profile.profile_data?.swift_bic,
+      profile.profile_data?.verification_status
+    ]
+
+    const filledFields = fields.filter(field => field !== undefined && field !== null && field !== '').length
+    return Math.round((filledFields / fields.length) * 100)
+  }
+
+  const completionPercentage = calculateProfileCompletion()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       {/* Header */}
@@ -194,6 +224,29 @@ export default function OwnerDashboard() {
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-white/90 font-medium">Profile Completion</span>
+                <span className="text-sm text-white font-semibold">{completionPercentage}%</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
+                <div
+                  className="h-full bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-1"
+                  style={{ width: `${completionPercentage}%` }}
+                >
+                  {completionPercentage > 10 && (
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                  )}
+                </div>
+              </div>
+              {completionPercentage < 100 && (
+                <p className="text-xs text-white/70 mt-2">
+                  Complete your profile to build trust with potential tenants!
+                </p>
+              )}
             </div>
           </div>
 

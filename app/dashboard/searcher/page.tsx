@@ -104,6 +104,37 @@ export default function SearcherDashboard() {
 
   const { profile_data } = profile
 
+  // Calculate profile completion percentage
+  const calculateProfileCompletion = () => {
+    const fields = [
+      profile_data?.date_of_birth,
+      profile_data?.occupation_status,
+      profile_data?.nationality,
+      profile_data?.languages_spoken?.length,
+      profile_data?.bio || profile_data?.about_me,
+      profile_data?.cleanliness_preference,
+      profile_data?.introvert_extrovert_scale !== undefined,
+      profile_data?.is_smoker !== undefined,
+      profile_data?.dietary_preferences?.length,
+      profile_data?.hobbies?.length,
+      profile_data?.early_bird_night_owl,
+      profile_data?.work_schedule,
+      profile_data?.coliving_size,
+      profile_data?.gender_mix,
+      profile_data?.budget_min,
+      profile_data?.budget_max,
+      profile_data?.move_in_date,
+      profile_data?.desired_stay_duration,
+      profile_data?.accepted_room_types?.length,
+      profile_data?.preferred_cities?.length
+    ]
+
+    const filledFields = fields.filter(field => field !== undefined && field !== null && field !== '').length
+    return Math.round((filledFields / fields.length) * 100)
+  }
+
+  const completionPercentage = calculateProfileCompletion()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       {/* Header */}
@@ -167,6 +198,29 @@ export default function SearcherDashboard() {
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-white/90 font-medium">Profile Completion</span>
+                <span className="text-sm text-white font-semibold">{completionPercentage}%</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
+                <div
+                  className="h-full bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-1"
+                  style={{ width: `${completionPercentage}%` }}
+                >
+                  {completionPercentage > 10 && (
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                  )}
+                </div>
+              </div>
+              {completionPercentage < 100 && (
+                <p className="text-xs text-white/70 mt-2">
+                  Complete your profile to increase your chances of finding the perfect match!
+                </p>
+              )}
             </div>
           </div>
 
