@@ -22,8 +22,8 @@ export default function PrivacyPage() {
       timestamp: new Date().toISOString(),
     });
 
-    // Navigate to preferences (budget, location, etc.)
-    router.push('/onboarding/searcher/preferences');
+    // Navigate to verification step
+    router.push('/onboarding/searcher/verification');
   };
 
   const canContinue = acceptTerms && readPrivacy && consentData;
