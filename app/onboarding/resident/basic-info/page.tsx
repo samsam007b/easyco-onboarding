@@ -178,7 +178,7 @@ export default function ResidentBasicInfoPage() {
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.firstName.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.firstName} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -186,7 +186,7 @@ export default function ResidentBasicInfoPage() {
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder={resident.basicInfo.fields.firstName.placeholder}
+                  placeholder={resident.basicInfo.firstNamePlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -195,7 +195,7 @@ export default function ResidentBasicInfoPage() {
             {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.lastName.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.lastName} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -203,7 +203,7 @@ export default function ResidentBasicInfoPage() {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder={resident.basicInfo.fields.lastName.placeholder}
+                  placeholder={resident.basicInfo.lastNamePlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -212,7 +212,7 @@ export default function ResidentBasicInfoPage() {
             {/* Date of Birth */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.dob.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.dateOfBirth} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -229,7 +229,7 @@ export default function ResidentBasicInfoPage() {
             {/* Nationality */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.nationality.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.nationality} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -237,7 +237,7 @@ export default function ResidentBasicInfoPage() {
                   type="text"
                   value={nationality}
                   onChange={(e) => setNationality(e.target.value)}
-                  placeholder={resident.basicInfo.fields.nationality.placeholder}
+                  placeholder={resident.basicInfo.nationalityPlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -246,7 +246,7 @@ export default function ResidentBasicInfoPage() {
             {/* Phone Number */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.phone.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.phoneNumber} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -254,7 +254,7 @@ export default function ResidentBasicInfoPage() {
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder={resident.basicInfo.fields.phone.placeholder}
+                  placeholder={resident.basicInfo.phoneNumberPlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -263,7 +263,7 @@ export default function ResidentBasicInfoPage() {
             {/* Languages */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.basicInfo.fields.languages.label} <span className="text-red-500">*</span>
+                {resident.basicInfo.languages} <span className="text-red-500">*</span>
               </label>
               <div className="flex gap-2 mb-3">
                 <input
@@ -271,7 +271,7 @@ export default function ResidentBasicInfoPage() {
                   value={languageInput}
                   onChange={(e) => setLanguageInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
-                  placeholder={resident.basicInfo.fields.languages.placeholder}
+                  placeholder={resident.basicInfo.languagesPlaceholder}
                   className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
                 <button
