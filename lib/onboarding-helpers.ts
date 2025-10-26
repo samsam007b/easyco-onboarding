@@ -138,7 +138,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.jobTitle) profileData.job_title = data.jobTitle
     if (data.monthlyIncomeBracket) profileData.monthly_income_bracket = data.monthlyIncomeBracket
     if (data.incomeRange) profileData.income_range = data.incomeRange
-    if (data.hasGuarantor !== undefined) profileData.has_guarantor = data.hasGuarantor
+    if (data.hasGuarantor !== undefined) profileData.guarantor_available = data.hasGuarantor
     if (data.employmentType) profileData.employment_type = data.employmentType
 
     // Housing Information (Searcher/Resident)
@@ -184,7 +184,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.sharedMealsFrequency) profileData.shared_meals_frequency = data.sharedMealsFrequency
     if (data.sharedActivitiesInterest) profileData.shared_activities_interest = data.sharedActivitiesInterest
     if (data.eventInterest) profileData.event_interest = data.eventInterest
-    if (data.enjoySharedMeals !== undefined) profileData.enjoy_shared_meals = data.enjoySharedMeals
+    if (data.enjoySharedMeals !== undefined) profileData.shared_meals_interest = data.enjoySharedMeals
     if (data.openToMeetups !== undefined) profileData.open_to_meetups = data.openToMeetups
 
     // Practical Considerations (Searcher/Resident)

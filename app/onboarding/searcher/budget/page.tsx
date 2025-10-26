@@ -1,26 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Stepper from '@/components/Stepper';
-import { safeLocalStorage } from '@/lib/browser';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default function BudgetStep() {
-  const [selected, setSelected] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    setSelected(safeLocalStorage.get<string[]>('budget', []));
-  }, []);
-
-  useEffect(() => {
-    safeLocalStorage.set('budget', selected);
-  }, [selected]);
+    // Redirect to basic-info page
+    // TODO: Implement budget selection page in future
+    router.replace('/onboarding/searcher/basic-info');
+  }, [router]);
 
   return (
-    <main className="max-w-3xl mx-auto p-6 space-y-6">
-      <Stepper />
-      {/* ton interface ici */}
-    </main>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin" />
+    </div>
   );
 }

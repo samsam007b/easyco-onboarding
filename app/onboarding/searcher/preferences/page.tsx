@@ -188,7 +188,7 @@ export default function PreferencesPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue to Review
+          Continue to Verification
         </button>
       </div>
     </main>
