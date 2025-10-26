@@ -207,9 +207,8 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.ownerType) profileData.owner_type = data.ownerType
     if (data.primaryLocation) profileData.primary_location = data.primaryLocation
     if (data.hostingExperience) profileData.hosting_experience = data.hostingExperience
-    if (data.hasProperty) profileData.has_property = data.hasProperty
-    if (data.propertyCity) profileData.property_city = data.propertyCity
-    if (data.propertyType) profileData.property_type = data.propertyType
+    // Note: hasProperty, propertyCity, propertyType should be stored in a separate 'properties' table
+    // These fields are not part of the user_profiles schema
     if (data.iban) profileData.iban = data.iban
     if (data.swiftBic) profileData.swift_bic = data.swiftBic
 
