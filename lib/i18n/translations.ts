@@ -6277,6 +6277,44 @@ export const translations = {
         nl: 'Over jou, host filosofie',
         de: 'Über Sie, Hosting-Philosophie',
       },
+      verificationDocuments: {
+        fr: 'Documents de Vérification',
+        en: 'Verification Documents',
+        nl: 'Verificatie Documenten',
+        de: 'Verifizierungsdokumente',
+      },
+      verificationDescription: {
+        fr: 'Vérification d\'identité, documents légaux',
+        en: 'Identity verification, legal documents',
+        nl: 'Identiteitsverificatie, juridische documenten',
+        de: 'Identitätsprüfung, rechtliche Dokumente',
+      },
+      landlordTypes: {
+        individual: {
+          fr: 'Propriétaire Individuel',
+          en: 'Individual Owner',
+          nl: 'Individuele Eigenaar',
+          de: 'Einzelner Eigentümer',
+        },
+        agency: {
+          fr: 'Agence',
+          en: 'Agency',
+          nl: 'Agentschap',
+          de: 'Agentur',
+        },
+        company: {
+          fr: 'Entreprise',
+          en: 'Company',
+          nl: 'Bedrijf',
+          de: 'Unternehmen',
+        },
+        owner: {
+          fr: 'Propriétaire',
+          en: 'Owner',
+          nl: 'Eigenaar',
+          de: 'Eigentümer',
+        },
+      },
     },
   },
 
