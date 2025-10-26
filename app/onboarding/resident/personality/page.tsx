@@ -199,7 +199,7 @@ export default function ResidentPersonalityPage() {
                   >
                     <div className="text-center">
                       <div className="text-2xl mb-2">{option.icon}</div>
-                      <div className="font-medium text-sm">{option}</div>
+                      <div className="font-medium text-sm">{option.label}</div>
                       <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
                     </div>
                   </button>
@@ -231,7 +231,7 @@ export default function ResidentPersonalityPage() {
                     <div className="flex items-center gap-4">
                       <span className="text-3xl">{option.icon}</span>
                       <div className="flex-1">
-                        <div className="font-medium">{option}</div>
+                        <div className="font-medium">{option.label}</div>
                         <div className="text-sm text-gray-500 mt-1">{option.desc}</div>
                       </div>
                     </div>
@@ -263,7 +263,7 @@ export default function ResidentPersonalityPage() {
                   >
                     <div className="text-center">
                       <div className="text-2xl mb-2">{option.icon}</div>
-                      <div className="font-medium text-sm">{option}</div>
+                      <div className="font-medium text-sm">{option.label}</div>
                       <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
                     </div>
                   </button>
