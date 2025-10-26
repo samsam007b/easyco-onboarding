@@ -48,6 +48,42 @@ export default function ReviewPage() {
     return mapping[value] || value;
   };
 
+  const mapSociabilityLevel = (value: string) => {
+    const mapping: Record<string, string> = {
+      'introvert': 'low',
+      'moderate': 'medium',
+      'extrovert': 'high'
+    };
+    return mapping[value] || value;
+  };
+
+  const mapHomeActivityLevel = (value: string) => {
+    // Map from frontend values to database constraint values
+    // Database expects: 'quiet', 'social', 'very_active'
+    const mapping: Record<string, string> = {
+      'calm': 'quiet',
+      'balanced': 'social',
+      'lively': 'very_active',
+      'quiet': 'quiet',
+      'social': 'social',
+      'very_active': 'very_active'
+    };
+    return mapping[value] || value;
+  };
+
+  const mapPreferredInteractionType = (value: string) => {
+    // Database expects: 'cozy_evenings', 'independent_living', 'community_events'
+    const mapping: Record<string, string> = {
+      'cozy': 'cozy_evenings',
+      'independent': 'independent_living',
+      'community': 'community_events',
+      'cozy_evenings': 'cozy_evenings',
+      'independent_living': 'independent_living',
+      'community_events': 'community_events'
+    };
+    return mapping[value] || value;
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -123,10 +159,10 @@ export default function ReviewPage() {
 
           // Social (from socialVibe)
           introvert_extrovert_scale: data.socialVibe?.introvertExtrovertScale,
-          sociability_level: data.socialVibe?.socialEnergy,
+          sociability_level: data.socialVibe?.socialEnergy ? mapSociabilityLevel(data.socialVibe.socialEnergy) : null,
           shared_meals_interest: data.socialVibe?.sharedMealsInterest,
-          preferred_interaction_type: data.socialVibe?.interactionPreference,
-          home_activity_level: data.socialVibe?.homeActivity,
+          preferred_interaction_type: data.socialVibe?.interactionPreference ? mapPreferredInteractionType(data.socialVibe.interactionPreference) : null,
+          home_activity_level: data.socialVibe?.homeActivity ? mapHomeActivityLevel(data.socialVibe.homeActivity) : null,
 
           // Profile text (from idealColiving)
           bio: data.idealColiving?.bio,
