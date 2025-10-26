@@ -51,7 +51,7 @@ export default function OwnerSuccess() {
           </Link>
 
           <Link
-            href="/profile/enhance"
+            href="/profile/enhance-owner"
             className="block w-full bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
             ✨ Enhance Your Profile

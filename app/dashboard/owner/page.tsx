@@ -146,6 +146,9 @@ export default function OwnerDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Button variant="outline" onClick={() => router.push('/profile/enhance-owner')}>
+              ✨ Enhance Profile
+            </Button>
             <Button variant="ghost" onClick={() => router.push('/profile')}>
               <Settings className="w-5 h-5 mr-2" />
               Settings
