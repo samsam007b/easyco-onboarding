@@ -5,6 +5,10 @@ import { Home as HomeIcon, Users, Heart, Shield, Target, Zap } from 'lucide-reac
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
+import HowItWorks from '@/components/HowItWorks';
+import StatsSection from '@/components/StatsSection';
+import Testimonials from '@/components/Testimonials';
+import FAQ from '@/components/FAQ';
 
 export default function Home() {
   const { t, getSection } = useLanguage();
@@ -151,6 +155,18 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Stats Section */}
+      <StatsSection />
+
+      {/* Testimonials Section */}
+      <Testimonials />
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* Footer */}
       <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
