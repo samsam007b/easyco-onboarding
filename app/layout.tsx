@@ -6,6 +6,9 @@ import { ClientProviders } from '@/components/ClientProviders'
 import CookieBanner from '@/components/CookieBanner'
 import Analytics from '@/components/Analytics'
 
+// Force dynamic rendering to avoid useSearchParams() errors
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: "EasyCo — Colocation fiable et compatible en Belgique",
   description: "Trouve ta coloc idéale à Bruxelles, Liège, Gand. Vérification d'identité, matching intelligent, groupes pré-formés. Évite les arnaques.",
