@@ -229,7 +229,7 @@ export default function ResidentLivingSituationPage() {
             {/* Current City */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.livingSituation.fields.city.label} <span className="text-red-500">*</span>
+                {resident.livingSituation.city} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -237,7 +237,7 @@ export default function ResidentLivingSituationPage() {
                   type="text"
                   value={currentCity}
                   onChange={(e) => setCurrentCity(e.target.value)}
-                  placeholder={resident.livingSituation.fields.city.placeholder}
+                  placeholder={resident.livingSituation.cityPlaceholder}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -246,7 +246,7 @@ export default function ResidentLivingSituationPage() {
             {/* Move-in Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.livingSituation.fields.moveInDate.label} <span className="text-red-500">*</span>
+                {resident.livingSituation.moveInDate} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -263,14 +263,14 @@ export default function ResidentLivingSituationPage() {
             {/* Bio */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {resident.livingSituation.fields.bio.label} <span className="text-red-500">*</span>
+                {resident.livingSituation.bio} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <FileText className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder={resident.livingSituation.fields.bio.placeholder}
+                  placeholder={resident.livingSituation.bioPlaceholder}
                   rows={5}
                   maxLength={500}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all resize-none"
@@ -278,7 +278,7 @@ export default function ResidentLivingSituationPage() {
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-gray-500">
-                  {bio.length < 20 ? resident.livingSituation.fields.bio.charCount.replace('{count}', String(20 - bio.length)) : resident.livingSituation.fields.bio.charValid}
+                  {bio.length < 20 ? resident.livingSituation.bio.charCount.replace('{count}', String(20 - bio.length)) : resident.livingSituation.bio.charValid}
                 </span>
                 <span className="text-xs text-gray-500">{bio.length}/500</span>
               </div>
