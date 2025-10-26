@@ -212,7 +212,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="text-center">
                       <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                      <div className="font-medium text-sm">{option}</div>
+                      <div className="font-medium text-sm">{option.label}</div>
                       <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
                     </div>
                   </button>
@@ -243,7 +243,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="text-center">
                       <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                      <div className="font-medium text-sm">{option}</div>
+                      <div className="font-medium text-sm">{option.label}</div>
                     </div>
                   </button>
                 ))}
@@ -261,7 +261,7 @@ export default function ResidentLifestylePage() {
                   { value: true, label: 'Smoker', icon: '🚬' },
                 ].map((option) => (
                   <button
-                    key={option}
+                    key={option.value.toString()}
                     type="button"
                     onClick={() => setIsSmoker(option.value)}
                     className={`p-4 rounded-xl border-2 transition-all ${
@@ -272,7 +272,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="flex items-center gap-3 justify-center">
                       <span className="text-2xl">{option.icon}</span>
-                      <span className="font-medium">{option}</span>
+                      <span className="font-medium">{option.label}</span>
                     </div>
                   </button>
                 ))}
