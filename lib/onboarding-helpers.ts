@@ -81,7 +81,7 @@ export interface OnboardingData {
   ownerType?: 'individual' | 'agency' | 'company'
   primaryLocation?: string
   hostingExperience?: string
-  hasProperty?: string
+  hasProperty?: string | boolean
   propertyCity?: string
   propertyType?: string
   iban?: string
