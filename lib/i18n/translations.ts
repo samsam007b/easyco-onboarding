@@ -6315,6 +6315,56 @@ export const translations = {
           de: 'Eigentümer',
         },
       },
+      profileCompletion: {
+        fr: 'Complétude du Profil',
+        en: 'Profile Completion',
+        nl: 'Profiel Voltooiing',
+        de: 'Profilvollständigkeit',
+      },
+      stats: {
+        properties: {
+          fr: 'Propriétés',
+          en: 'Properties',
+          nl: 'Eigendommen',
+          de: 'Immobilien',
+        },
+        activeListings: {
+          fr: 'Annonces Actives',
+          en: 'Active Listings',
+          nl: 'Actieve Advertenties',
+          de: 'Aktive Angebote',
+        },
+        applications: {
+          fr: 'Candidatures',
+          en: 'Applications',
+          nl: 'Aanvragen',
+          de: 'Bewerbungen',
+        },
+      },
+      enhanceTitle: {
+        fr: 'Améliorez Votre Profil',
+        en: 'Enhance Your Profile',
+        nl: 'Verbeter Je Profiel',
+        de: 'Verbessern Sie Ihr Profil',
+      },
+      enhanceDescription: {
+        fr: 'Complétez ces sections pour créer un profil complet et attirer des locataires de qualité',
+        en: 'Complete these sections to create a comprehensive profile and attract quality tenants',
+        nl: 'Vul deze secties in om een uitgebreid profiel te maken en kwaliteitshuurders aan te trekken',
+        de: 'Vervollständigen Sie diese Abschnitte, um ein umfassendes Profil zu erstellen und qualitativ hochwertige Mieter anzuziehen',
+      },
+      editCoreProfile: {
+        fr: 'Modifier le Profil Principal',
+        en: 'Edit Core Profile',
+        nl: 'Bewerk Kernprofiel',
+        de: 'Hauptprofil Bearbeiten',
+      },
+      addDetails: {
+        fr: 'Ajouter des Détails',
+        en: 'Add Details',
+        nl: 'Details Toevoegen',
+        de: 'Details Hinzufügen',
+      },
     },
   },
 
