@@ -65,7 +65,7 @@ export default function SearcherDashboard() {
 
       // If onboarding not completed, redirect
       if (!userData.onboarding_completed) {
-        router.push('/onboarding/searcher')
+        router.push('/onboarding/searcher/basic-info')
         return
       }
 
@@ -119,6 +119,9 @@ export default function SearcherDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Button variant="outline" onClick={() => router.push('/profile/enhance')}>
+              ✨ Enhance Profile
+            </Button>
             <Button variant="ghost" onClick={() => router.push('/profile')}>
               <Settings className="w-5 h-5 mr-2" />
               Settings

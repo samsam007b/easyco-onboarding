@@ -51,7 +51,7 @@ export default function Home() {
 
           <div className="text-sm font-semibold text-gray-700 mt-6 mb-2">I'm a homeowner</div>
           <Link
-            href="/onboarding/owner/basic-info"
+            href="/consent?source=landing&nextHref=/onboarding/owner/basic-info"
             className="block w-full py-4 rounded-full bg-[color:var(--easy-purple)] text-white font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
             List Your Property

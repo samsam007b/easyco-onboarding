@@ -67,7 +67,7 @@ export default function OwnerDashboard() {
         profile_data: profileData?.profile_data || {}
       })
 
-      // If onboarding not completed, redirect
+      // If onboarding not completed, redirect directly to first step
       if (!userData.onboarding_completed) {
         router.push('/onboarding/owner/basic-info')
         return
