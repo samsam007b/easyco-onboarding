@@ -4,7 +4,6 @@ import { Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import ProfileDropdown from './ProfileDropdown';
 import LanguageSwitcher from './LanguageSwitcher';
-import RoleBadge from './RoleBadge';
 
 interface DashboardHeaderProps {
   profile: {
@@ -13,16 +12,16 @@ interface DashboardHeaderProps {
     profile_data?: any;
   };
   avatarColor?: string;
+  role?: 'searcher' | 'owner' | 'resident';
 }
 
-export default function DashboardHeader({ profile, avatarColor }: DashboardHeaderProps) {
+export default function DashboardHeader({ profile, avatarColor, role }: DashboardHeaderProps) {
   const router = useRouter();
 
   return (
     <>
-      {/* Top Bar: Role Badge & Language Switcher */}
-      <div className="absolute top-6 right-6 z-50 flex items-center gap-3">
-        <RoleBadge />
+      {/* Top Bar: Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
 
@@ -30,7 +29,7 @@ export default function DashboardHeader({ profile, avatarColor }: DashboardHeade
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Left: Profile Dropdown */}
-          <ProfileDropdown profile={profile} avatarColor={avatarColor} />
+          <ProfileDropdown profile={profile} avatarColor={avatarColor} role={role} />
 
           {/* Right: Settings Icon */}
           <button

@@ -142,6 +142,7 @@ export default function ResidentDashboard() {
           profile_data: profile.profile_data
         }}
         avatarColor="#FF6F3C"
+        role="resident"
       />
 
       <main className="max-w-7xl mx-auto px-6 py-8">

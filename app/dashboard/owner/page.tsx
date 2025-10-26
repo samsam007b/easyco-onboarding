@@ -179,6 +179,7 @@ export default function OwnerDashboard() {
           profile_data: profile.profile_data
         }}
         avatarColor="#4A148C"
+        role="owner"
       />
 
       {/* Main Content */}
