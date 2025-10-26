@@ -77,11 +77,11 @@ export default function EnhanceAboutPage() {
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 1 of 3</span>
+            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 1 of 6</span>
             <span className="text-sm text-gray-500">About You</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '33%' }} />
+            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '17%' }} />
           </div>
         </div>
 
