@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Globe } from 'lucide-react';
+import { ArrowLeft, Globe, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -11,6 +11,12 @@ export default function BasicInfoPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
+
+  // Check if this is a dependent profile
+  const [profileType, setProfileType] = useState<'self' | 'dependent'>('self');
+  const [profileName, setProfileName] = useState('');
+  const [relationship, setRelationship] = useState<'child' | 'family_member' | 'friend' | 'other'>('child');
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -24,8 +30,20 @@ export default function BasicInfoPage() {
 
   const loadExistingData = async () => {
     try {
+      // Check if this is a dependent profile from profile-type selection
+      const profileTypeData = safeLocalStorage.get('searcherProfileType', {}) as any;
+      if (profileTypeData.profileType === 'dependent') {
+        setProfileType('dependent');
+      }
+
       // First check localStorage for temporary data
       const saved = safeLocalStorage.get('basicInfo', {}) as any;
+
+      // If dependent profile, load dependent-specific fields
+      if (profileTypeData.profileType === 'dependent') {
+        setProfileName(saved.profileName || '');
+        setRelationship(saved.relationship || 'child');
+      }
 
       // Get current user and their profile from database
       const { data: { user } } = await supabase.auth.getUser();
@@ -74,19 +92,30 @@ export default function BasicInfoPage() {
 
   const handleContinue = () => {
     // Save to localStorage
-    safeLocalStorage.set('basicInfo', {
+    const dataToSave: any = {
       firstName,
       lastName,
       dateOfBirth,
       nationality,
       languages,
-    });
+    };
+
+    // Add dependent-specific fields if applicable
+    if (profileType === 'dependent') {
+      dataToSave.profileName = profileName;
+      dataToSave.relationship = relationship;
+      dataToSave.isDependent = true;
+    }
+
+    safeLocalStorage.set('basicInfo', dataToSave);
 
     // Navigate to next step
     router.push('/onboarding/searcher/daily-habits');
   };
 
-  const canContinue = firstName && lastName && dateOfBirth && nationality;
+  const canContinue = profileType === 'dependent'
+    ? firstName && lastName && dateOfBirth && nationality && profileName && relationship
+    : firstName && lastName && dateOfBirth && nationality;
 
   if (isLoading) {
     return (
@@ -124,12 +153,79 @@ export default function BasicInfoPage() {
             Basic Info
           </h1>
           <p className="text-gray-600">
-            These details help us personalize your experience.
+            {profileType === 'dependent'
+              ? "Tell us about the person you're searching for."
+              : "These details help us personalize your experience."}
           </p>
         </div>
 
+        {/* Dependent Profile Badge */}
+        {profileType === 'dependent' && (
+          <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-xl flex items-center gap-3">
+            <Users className="w-5 h-5 text-[color:var(--easy-purple)]" />
+            <div>
+              <p className="text-sm font-medium text-[color:var(--easy-purple)]">
+                Creating a dependent profile
+              </p>
+              <p className="text-xs text-gray-600">
+                This profile will be separate from your personal profile
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Form */}
         <div className="space-y-6">
+
+          {/* Profile Name (dependent only) */}
+          {profileType === 'dependent' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Profile Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+                placeholder="e.g., Profile for Emma, For my son"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                This helps you identify this profile in your dashboard
+              </p>
+            </div>
+          )}
+
+          {/* Relationship (dependent only) */}
+          {profileType === 'dependent' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Relationship <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { value: 'child', label: 'Child', emoji: '👶' },
+                  { value: 'family_member', label: 'Family Member', emoji: '👨‍👩‍👧' },
+                  { value: 'friend', label: 'Friend', emoji: '👥' },
+                  { value: 'other', label: 'Other', emoji: '🤝' },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setRelationship(option.value as any)}
+                    className={`p-4 rounded-xl border-2 transition text-left ${
+                      relationship === option.value
+                        ? 'border-[color:var(--easy-purple)] bg-purple-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="text-2xl mb-1">{option.emoji}</div>
+                    <div className="text-sm font-medium">{option.label}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* First Name */}
           <div>

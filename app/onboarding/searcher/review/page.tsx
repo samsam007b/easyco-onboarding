@@ -39,6 +39,9 @@ export default function ReviewPage() {
         return;
       }
 
+      // Check if this is a dependent profile
+      const isDependent = data.basicInfo?.isDependent === true;
+
       // Prepare lifestyle array from collected data
       const lifestyleArray = [
         data.dailyHabits?.isSmoker ? 'smoker' : 'non-smoker',
@@ -60,11 +63,79 @@ export default function ReviewPage() {
         completedAt: new Date().toISOString()
       };
 
-      // Save to user_profiles table
-      const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
+      if (isDependent) {
+        // Save to dependent_profiles table
+        const dependentProfileData = {
+          parent_user_id: user.id,
+          profile_name: data.basicInfo.profileName,
+          relationship: data.basicInfo.relationship,
+          is_active: true,
 
-      if (!result.success) {
-        throw new Error('Failed to save profile');
+          // Basic info
+          first_name: data.basicInfo.firstName,
+          last_name: data.basicInfo.lastName,
+          date_of_birth: data.basicInfo.dateOfBirth,
+          nationality: data.basicInfo.nationality,
+          languages_spoken: data.basicInfo.languages,
+
+          // Professional (from daily habits or preferences)
+          occupation_status: data.dailyHabits?.occupationStatus,
+          field_of_study_or_work: data.dailyHabits?.fieldOfStudy,
+          institution_or_company: data.dailyHabits?.institution,
+
+          // Location & Budget (from preferences)
+          current_city: data.preferences?.currentCity,
+          preferred_cities: data.preferences?.preferredCities,
+          budget_min: data.preferences?.budgetMin,
+          budget_max: data.preferences?.budgetMax,
+          move_in_date: data.preferences?.moveInDate,
+          preferred_accommodation: data.preferences?.accommodationType,
+
+          // Lifestyle (from homeLifestyle)
+          cleanliness_preference: data.homeLifestyle?.cleanlinessLevel,
+          is_smoker: data.dailyHabits?.isSmoker || false,
+          has_pets: data.homeLifestyle?.hasPets || false,
+          pet_types: data.homeLifestyle?.petTypes,
+          wake_up_time: data.dailyHabits?.wakeUpTime,
+          sleep_time: data.dailyHabits?.sleepTime,
+
+          // Social (from socialVibe)
+          introvert_extrovert_scale: data.socialVibe?.introvertExtrovertScale,
+          sociability_level: data.socialVibe?.socialEnergy,
+          shared_meals_interest: data.socialVibe?.sharedMealsInterest,
+          preferred_interaction_type: data.socialVibe?.interactionPreference,
+          home_activity_level: data.socialVibe?.homeActivity,
+
+          // Profile text (from idealColiving)
+          bio: data.idealColiving?.bio,
+          about_me: data.idealColiving?.aboutMe,
+          looking_for: data.idealColiving?.lookingFor,
+
+          // Enhanced profile (from idealColiving)
+          core_values: data.idealColiving?.coreValues,
+          important_qualities: data.idealColiving?.importantQualities,
+          deal_breakers: data.idealColiving?.dealBreakers,
+        };
+
+        const { error: insertError } = await supabase
+          .from('dependent_profiles')
+          .insert(dependentProfileData);
+
+        if (insertError) {
+          console.error('Error saving dependent profile:', insertError);
+          throw new Error('Failed to save dependent profile');
+        }
+
+        toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
+      } else {
+        // Save to user_profiles table (original behavior)
+        const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
+
+        if (!result.success) {
+          throw new Error('Failed to save profile');
+        }
+
+        toast.success('Profile saved successfully!');
       }
 
       // Clear localStorage after successful submission
@@ -75,8 +146,8 @@ export default function ReviewPage() {
       safeLocalStorage.remove('idealColiving');
       safeLocalStorage.remove('preferences');
       safeLocalStorage.remove('verification');
+      safeLocalStorage.remove('searcherProfileType');
 
-      toast.success('Profile saved successfully!');
       router.push('/onboarding/searcher/success');
     } catch (err: any) {
       console.error('Error submitting:', err);
