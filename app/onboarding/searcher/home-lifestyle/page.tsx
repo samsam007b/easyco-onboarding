@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Sparkles, Users, Music, PawPrint, ChefHat } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { Slider } from '@/components/ui/slider';
 
 export default function HomeLifestylePage() {
   const router = useRouter();
-  const [cleanliness, setCleanliness] = useState('');
+  const [cleanliness, setCleanliness] = useState(5); // Changed to number for slider
   const [guestFrequency, setGuestFrequency] = useState('');
   const [musicHabits, setMusicHabits] = useState('');
   const [hasPets, setHasPets] = useState(false);
@@ -29,7 +30,7 @@ export default function HomeLifestylePage() {
     router.push('/onboarding/searcher/social-vibe');
   };
 
-  const canContinue = cleanliness && guestFrequency && musicHabits && cookingFrequency && (!hasPets || petType);
+  const canContinue = guestFrequency && musicHabits && cookingFrequency && (!hasPets || petType);
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -64,25 +65,22 @@ export default function HomeLifestylePage() {
         <div className="space-y-6">
 
           {/* Cleanliness preference */}
-          {/* TODO: Upgrade to slider component (see figma-06.png) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <div className="p-4 rounded-xl bg-purple-50 border border-purple-200">
+            <label className="block text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-purple-600" />
               </div>
               Cleanliness preference
             </label>
-            <select
+            <Slider
               value={cleanliness}
-              onChange={(e) => setCleanliness(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-            >
-              <option value="">Select...</option>
-              <option value="relaxed">Relaxed</option>
-              <option value="moderate">Moderate</option>
-              <option value="tidy">Tidy</option>
-              <option value="spotless">Spotless</option>
-            </select>
+              onChange={setCleanliness}
+              min={1}
+              max={10}
+              leftLabel="Relaxed"
+              rightLabel="Spotless"
+              showValue={true}
+            />
           </div>
 
           {/* Guest frequency */}
