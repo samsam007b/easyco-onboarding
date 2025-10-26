@@ -1,18 +1,65 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Globe } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
 
 export default function BasicInfoPage() {
   const router = useRouter();
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [languages, setLanguages] = useState<string[]>([]);
   const [languageInput, setLanguageInput] = useState('');
+
+  useEffect(() => {
+    loadExistingData();
+  }, []);
+
+  const loadExistingData = async () => {
+    try {
+      // First check localStorage for temporary data
+      const saved = safeLocalStorage.get('basicInfo', {}) as any;
+
+      // Get current user and their profile from database
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileData) {
+          // Pre-fill from database, but localStorage takes priority (if user is in middle of editing)
+          setFirstName(saved.firstName || profileData.first_name || '');
+          setLastName(saved.lastName || profileData.last_name || '');
+          setDateOfBirth(saved.dateOfBirth || profileData.date_of_birth || '');
+          setNationality(saved.nationality || profileData.nationality || '');
+          setLanguages(saved.languages || profileData.languages || []);
+        } else if (saved.firstName) {
+          // Fallback to localStorage only if no database data
+          setFirstName(saved.firstName);
+          setLastName(saved.lastName);
+          setDateOfBirth(saved.dateOfBirth);
+          setNationality(saved.nationality);
+          setLanguages(saved.languages || []);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading profile data:', error);
+      toast.error('Failed to load existing data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const addLanguage = () => {
     if (languageInput.trim() && !languages.includes(languageInput.trim())) {
@@ -40,6 +87,17 @@ export default function BasicInfoPage() {
   };
 
   const canContinue = firstName && lastName && dateOfBirth && nationality;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">

@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [landlordType, setLandlordType] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -16,14 +19,49 @@ export default function OwnerBasicInfo() {
   const [nationality, setNationality] = useState('');
 
   useEffect(() => {
-    const saved = safeLocalStorage.get('ownerBasicInfo', {}) as any;
-    if (saved.landlordType) setLandlordType(saved.landlordType);
-    if (saved.firstName) setFirstName(saved.firstName);
-    if (saved.lastName) setLastName(saved.lastName);
-    if (saved.companyName) setCompanyName(saved.companyName);
-    if (saved.phoneNumber) setPhoneNumber(saved.phoneNumber);
-    if (saved.nationality) setNationality(saved.nationality);
+    loadExistingData();
   }, []);
+
+  const loadExistingData = async () => {
+    try {
+      // First check localStorage for temporary data
+      const saved = safeLocalStorage.get('ownerBasicInfo', {}) as any;
+
+      // Get current user and their profile from database
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileData) {
+          // Pre-fill from database, but localStorage takes priority (if user is in middle of editing)
+          setLandlordType(saved.landlordType || profileData.landlord_type || '');
+          setFirstName(saved.firstName || profileData.first_name || '');
+          setLastName(saved.lastName || profileData.last_name || '');
+          setCompanyName(saved.companyName || profileData.company_name || '');
+          setPhoneNumber(saved.phoneNumber || profileData.phone_number || '');
+          setNationality(saved.nationality || profileData.nationality || '');
+        } else if (saved.landlordType) {
+          // Fallback to localStorage only if no database data
+          setLandlordType(saved.landlordType);
+          setFirstName(saved.firstName);
+          setLastName(saved.lastName);
+          setCompanyName(saved.companyName);
+          setPhoneNumber(saved.phoneNumber);
+          setNationality(saved.nationality);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading profile data:', error);
+      toast.error('Failed to load existing data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleContinue = () => {
     if (!landlordType) {
@@ -53,6 +91,17 @@ export default function OwnerBasicInfo() {
     });
     router.push('/onboarding/owner/about');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">

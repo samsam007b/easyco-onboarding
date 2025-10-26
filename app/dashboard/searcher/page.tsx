@@ -84,7 +84,7 @@ export default function SearcherDashboard() {
   }
 
   const handleEditProfile = () => {
-    router.push('/onboarding/searcher/basic-info')
+    router.push('/dashboard/my-profile')
   }
 
   if (isLoading) {
