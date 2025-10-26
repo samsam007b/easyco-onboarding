@@ -28,7 +28,7 @@ export default function CompleteSignupPage() {
         // Check for pending user type in localStorage
         const pendingUserType = localStorage.getItem('easyco_pending_user_type')
 
-        if (pendingUserType && (pendingUserType === 'searcher' || pendingUserType === 'owner')) {
+        if (pendingUserType && (pendingUserType === 'searcher' || pendingUserType === 'owner' || pendingUserType === 'resident')) {
           // Update user record with selected type
           const { error: updateError } = await supabase
             .from('users')
@@ -42,8 +42,12 @@ export default function CompleteSignupPage() {
           // Clear localStorage
           localStorage.removeItem('easyco_pending_user_type')
 
-          // Redirect to onboarding
-          router.push(`/onboarding/${pendingUserType}/basic-info`)
+          // Redirect to onboarding (searcher starts with profile-type to ask if searching for self or dependent)
+          if (pendingUserType === 'searcher') {
+            router.push('/onboarding/searcher/profile-type')
+          } else {
+            router.push(`/onboarding/${pendingUserType}/basic-info`)
+          }
         } else {
           // No pending user type in localStorage
           // Check user's current status

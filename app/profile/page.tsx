@@ -188,7 +188,12 @@ export default function ProfilePage() {
         if (hasCompletedNewRoleOnboarding) {
           router.push(`/dashboard/${selectedUserType}`)
         } else {
-          router.push(`/onboarding/${selectedUserType}/basic-info`)
+          // Searcher onboarding starts with profile-type to ask if searching for self or dependent
+          if (selectedUserType === 'searcher') {
+            router.push('/onboarding/searcher/profile-type')
+          } else {
+            router.push(`/onboarding/${selectedUserType}/basic-info`)
+          }
         }
       }, 1000)
     } catch (error) {
@@ -219,7 +224,12 @@ export default function ProfilePage() {
       toast.success('Onboarding reset! Redirecting...')
 
       setTimeout(() => {
-        router.push(`/onboarding/${userData.user_type}/basic-info`)
+        // Searcher onboarding starts with profile-type
+        if (userData.user_type === 'searcher') {
+          router.push('/onboarding/searcher/profile-type')
+        } else {
+          router.push(`/onboarding/${userData.user_type}/basic-info`)
+        }
       }, 1000)
     } catch (error) {
       console.error('Error:', error)

@@ -46,7 +46,12 @@ export default function SelectUserTypePage() {
               router.push('/dashboard/searcher')
           }
         } else {
-          router.push(`/onboarding/${userData.user_type}/basic-info`)
+          // Searcher onboarding starts with profile-type
+          if (userData.user_type === 'searcher') {
+            router.push('/onboarding/searcher/profile-type')
+          } else {
+            router.push(`/onboarding/${userData.user_type}/basic-info`)
+          }
         }
         return
       }
@@ -87,10 +92,14 @@ export default function SelectUserTypePage() {
         return
       }
 
-      toast.success(`Welcome, ${selectedType === 'searcher' ? 'Searcher' : 'Owner'}!`)
+      toast.success(`Welcome, ${selectedType === 'searcher' ? 'Searcher' : selectedType === 'owner' ? 'Owner' : 'Resident'}!`)
 
-      // Redirect to onboarding
-      router.push(`/onboarding/${selectedType}/basic-info`)
+      // Redirect to onboarding (searcher starts with profile-type)
+      if (selectedType === 'searcher') {
+        router.push('/onboarding/searcher/profile-type')
+      } else {
+        router.push(`/onboarding/${selectedType}/basic-info`)
+      }
     } catch (error) {
       console.error('Error:', error)
       toast.error('An unexpected error occurred')

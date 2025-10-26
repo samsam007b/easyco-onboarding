@@ -65,7 +65,7 @@ export default function SearcherDashboard() {
 
       // If onboarding not completed, redirect
       if (!userData.onboarding_completed) {
-        router.push('/onboarding/searcher/basic-info')
+        router.push('/onboarding/searcher/profile-type')
         return
       }
 
