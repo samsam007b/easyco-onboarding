@@ -94,6 +94,7 @@ export default function ResidentLivingSituationPage() {
       // Combine all data
       const profileData = {
         user_id: user.id,
+        user_type: 'resident', // REQUIRED: user_type is NOT NULL in database
         // Basic Info
         first_name: basicInfo.firstName,
         last_name: basicInfo.lastName,
