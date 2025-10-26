@@ -29,32 +29,57 @@ export default function ReviewPage() {
     setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, idealColiving, preferences, verification, testerId });
   }, []);
 
-  // Map frontend values to database constraint values
-  const mapWakeUpTime = (value: string) => {
+  // Map frontend values to database constraint values with validation
+  const mapWakeUpTime = (value: string): string | null => {
+    if (!value) return null;
     const mapping: Record<string, string> = {
       'early': 'early',
       'moderate': 'average',
+      'average': 'average',
       'late': 'late'
     };
-    return mapping[value] || value;
+    const mapped = mapping[value.toLowerCase()];
+    if (!mapped) {
+      console.warn(`Invalid wake_up_time value: ${value}, using default 'average'`);
+      return 'average';
+    }
+    return mapped;
   };
 
-  const mapSleepTime = (value: string) => {
+  const mapSleepTime = (value: string): string | null => {
+    if (!value) return null;
     const mapping: Record<string, string> = {
       'early': 'before_23h',
       'moderate': '23h_01h',
-      'late': 'after_01h'
+      'late': 'after_01h',
+      'before_23h': 'before_23h',
+      '23h_01h': '23h_01h',
+      'after_01h': 'after_01h'
     };
-    return mapping[value] || value;
+    const mapped = mapping[value.toLowerCase()];
+    if (!mapped) {
+      console.warn(`Invalid sleep_time value: ${value}, using default '23h_01h'`);
+      return '23h_01h';
+    }
+    return mapped;
   };
 
-  const mapSociabilityLevel = (value: string) => {
+  const mapSociabilityLevel = (value: string): string | null => {
+    if (!value) return null;
     const mapping: Record<string, string> = {
       'introvert': 'low',
       'moderate': 'medium',
-      'extrovert': 'high'
+      'extrovert': 'high',
+      'low': 'low',
+      'medium': 'medium',
+      'high': 'high'
     };
-    return mapping[value] || value;
+    const mapped = mapping[value.toLowerCase()];
+    if (!mapped) {
+      console.warn(`Invalid sociability_level value: ${value}, using default 'medium'`);
+      return 'medium';
+    }
+    return mapped;
   };
 
   const mapHomeActivityLevel = (value: string) => {
@@ -198,7 +223,18 @@ export default function ReviewPage() {
           // Don't throw - dependent profile was saved successfully
         }
 
+        // Clear ALL onboarding localStorage after successful dependent profile creation
+        safeLocalStorage.remove('searcherProfileType');
+        safeLocalStorage.remove('basicInfo');
+        safeLocalStorage.remove('dailyHabits');
+        safeLocalStorage.remove('homeLifestyle');
+        safeLocalStorage.remove('socialVibe');
+        safeLocalStorage.remove('idealColiving');
+        safeLocalStorage.remove('preferences');
+        safeLocalStorage.remove('verification');
+
         toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
+        router.push('/dashboard/profiles');
       } else {
         // Save to user_profiles table (original behavior)
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');

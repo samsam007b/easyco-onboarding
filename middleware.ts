@@ -125,31 +125,34 @@ export async function middleware(request: NextRequest) {
 
     if (userData) {
       // If onboarding not completed, redirect to onboarding
-      if (!userData.onboarding_completed) {
+      // BUT only if not already on an onboarding page (prevent loops)
+      if (!userData.onboarding_completed && !pathname.startsWith('/onboarding')) {
         return NextResponse.redirect(
           new URL(`/onboarding/${userData.user_type}/basic-info`, request.url)
         )
       }
 
-      // Redirect to appropriate dashboard
-      let dashboardPath = '/dashboard'
-      switch (userData.user_type) {
-        case 'searcher':
-          dashboardPath = '/dashboard/searcher'
-          break
-        case 'owner':
-          dashboardPath = '/dashboard/owner'
-          break
-        case 'resident':
-          dashboardPath = '/dashboard/resident'
-          break
-      }
+      // If onboarding completed, redirect to dashboard (only if still on auth-only route)
+      if (userData.onboarding_completed) {
+        let dashboardPath = '/dashboard'
+        switch (userData.user_type) {
+          case 'searcher':
+            dashboardPath = '/dashboard/searcher'
+            break
+          case 'owner':
+            dashboardPath = '/dashboard/owner'
+            break
+          case 'resident':
+            dashboardPath = '/dashboard/resident'
+            break
+        }
 
-      return NextResponse.redirect(new URL(dashboardPath, request.url))
+        return NextResponse.redirect(new URL(dashboardPath, request.url))
+      }
     }
 
-    // Fallback to generic dashboard
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    // Fallback: If user exists but no userData found, allow access (edge case)
+    return NextResponse.next()
   }
 
   // Handle unauthenticated users trying to access protected routes
