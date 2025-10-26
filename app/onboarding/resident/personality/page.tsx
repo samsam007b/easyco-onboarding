@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Users, Heart, MessageCircle, Volume2, Smile, PartyPopper, Sofa, Door, Sparkles, BookOpen, Coffee, Guitar } from 'lucide-react';
+import { ArrowLeft, Users, Heart, MessageCircle, Volume2, Smile, PartyPopper, Sofa, DoorOpen, Sparkles, BookOpen, Coffee, Guitar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -218,7 +218,7 @@ export default function ResidentPersonalityPage() {
               <div className="space-y-3">
                 {[
                   { value: 'cozy_evenings', label: 'Cozy Evenings', icon: Sofa, variant: 'purple' as const, desc: 'Movie nights and chill hangouts' },
-                  { value: 'independent_living', label: 'Independent Living', icon: Door, variant: 'blue' as const, desc: 'Respect each other\'s space' },
+                  { value: 'independent_living', label: 'Independent Living', icon: DoorOpen, variant: 'blue' as const, desc: 'Respect each other\'s space' },
                   { value: 'community_events', label: 'Community Events', icon: Sparkles, variant: 'pink' as const, desc: 'Group activities and parties' },
                 ].map((option) => (
                   <button
