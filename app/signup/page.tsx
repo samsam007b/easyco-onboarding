@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X } from 'lucide-react'
 import { toast } from 'sonner'
 
-type UserType = 'searcher' | 'owner'
+type UserType = 'searcher' | 'owner' | 'resident'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -208,7 +208,7 @@ export default function SignupPage() {
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 I want to:
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <button
                   type="button"
                   onClick={() => setUserType('searcher')}
@@ -239,6 +239,22 @@ export default function SignupPage() {
                     <div className="text-2xl mb-1">🏠</div>
                     <div className="font-semibold text-sm">List property</div>
                     <div className="text-xs text-gray-500 mt-1">Owner</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUserType('resident')}
+                  className={`p-4 rounded-2xl border-2 transition-all ${
+                    userType === 'resident'
+                      ? 'border-[#4A148C] bg-purple-50'
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  disabled={isLoading || isGoogleLoading}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-1">👥</div>
+                    <div className="font-semibold text-sm">Join community</div>
+                    <div className="text-xs text-gray-500 mt-1">Resident</div>
                   </div>
                 </button>
               </div>
