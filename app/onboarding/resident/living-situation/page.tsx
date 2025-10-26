@@ -132,29 +132,14 @@ export default function ResidentLivingSituationPage() {
         return;
       }
 
-      // Update users table to mark onboarding as completed
-      const { error: userError } = await supabase
-        .from('users')
-        .update({ onboarding_completed: true })
-        .eq('id', user.id);
+      // Don't mark onboarding as completed yet - review page will do that
+      // Don't clear localStorage yet - review page needs it and will clear it
 
-      if (userError) {
-        console.error('User update error:', userError);
-        toast.error(common.errors.saveFailed);
-        return;
-      }
-
-      // Clear localStorage
-      safeLocalStorage.remove('residentBasicInfo');
-      safeLocalStorage.remove('residentLifestyle');
-      safeLocalStorage.remove('residentPersonality');
-      safeLocalStorage.remove('residentLivingSituation');
-
-      toast.success(resident.livingSituation.success, {
-        description: resident.livingSituation.successDesc
+      toast.success(resident.livingSituation.success || 'Information saved', {
+        description: resident.livingSituation.successDesc || 'Proceeding to review'
       });
 
-      router.push('/dashboard/resident');
+      router.push('/onboarding/resident/review');
     } catch (error) {
       console.error('Error completing onboarding:', error);
       toast.error(common.errors.unexpected);
