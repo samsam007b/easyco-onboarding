@@ -12,6 +12,7 @@ export default function OwnerAbout() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [ownerType, setOwnerType] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [primaryLocation, setPrimaryLocation] = useState('');
   const [hostingExperience, setHostingExperience] = useState('');
 
@@ -34,10 +35,12 @@ export default function OwnerAbout() {
 
         if (profileData) {
           setOwnerType(saved.ownerType || profileData.owner_type || '');
+          setCompanyName(saved.companyName || profileData.company_name || '');
           setPrimaryLocation(saved.primaryLocation || profileData.primary_location || '');
           setHostingExperience(saved.hostingExperience || profileData.hosting_experience || '');
         } else if (saved.ownerType) {
           setOwnerType(saved.ownerType);
+          setCompanyName(saved.companyName || '');
           setPrimaryLocation(saved.primaryLocation);
           setHostingExperience(saved.hostingExperience);
         }
@@ -56,8 +59,14 @@ export default function OwnerAbout() {
       return;
     }
 
+    if ((ownerType === 'agency' || ownerType === 'company') && !companyName.trim()) {
+      toast.error('Please enter your company name');
+      return;
+    }
+
     safeLocalStorage.set('ownerAbout', {
       ownerType,
+      companyName: (ownerType === 'agency' || ownerType === 'company') ? companyName : '',
       primaryLocation,
       hostingExperience,
     });
@@ -161,6 +170,22 @@ export default function OwnerAbout() {
                 })}
               </div>
             </div>
+
+            {/* Company Name (conditional) */}
+            {(ownerType === 'agency' || ownerType === 'company') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Enter your company or agency name"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                />
+              </div>
+            )}
 
             {/* Primary Location */}
             <div>

@@ -11,10 +11,8 @@ export default function OwnerBasicInfo() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
-  const [landlordType, setLandlordType] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [companyName, setCompanyName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [nationality, setNationality] = useState('');
 
@@ -39,18 +37,14 @@ export default function OwnerBasicInfo() {
 
         if (profileData) {
           // Pre-fill from database, but localStorage takes priority (if user is in middle of editing)
-          setLandlordType(saved.landlordType || profileData.landlord_type || '');
           setFirstName(saved.firstName || profileData.first_name || '');
           setLastName(saved.lastName || profileData.last_name || '');
-          setCompanyName(saved.companyName || profileData.company_name || '');
           setPhoneNumber(saved.phoneNumber || profileData.phone_number || '');
           setNationality(saved.nationality || profileData.nationality || '');
-        } else if (saved.landlordType) {
+        } else if (saved.firstName) {
           // Fallback to localStorage only if no database data
-          setLandlordType(saved.landlordType);
           setFirstName(saved.firstName);
           setLastName(saved.lastName);
-          setCompanyName(saved.companyName);
           setPhoneNumber(saved.phoneNumber);
           setNationality(saved.nationality);
         }
@@ -64,16 +58,8 @@ export default function OwnerBasicInfo() {
   };
 
   const handleContinue = () => {
-    if (!landlordType) {
-      toast.error('Please select your landlord type');
-      return;
-    }
     if (!firstName.trim() || !lastName.trim()) {
       toast.error('Please enter your first and last name');
-      return;
-    }
-    if ((landlordType === 'agency' || landlordType === 'company') && !companyName.trim()) {
-      toast.error('Please enter your company name');
       return;
     }
     if (!phoneNumber.trim()) {
@@ -82,10 +68,8 @@ export default function OwnerBasicInfo() {
     }
 
     safeLocalStorage.set('ownerBasicInfo', {
-      landlordType,
       firstName,
       lastName,
-      companyName: (landlordType === 'agency' || landlordType === 'company') ? companyName : '',
       phoneNumber,
       nationality,
     });
@@ -149,39 +133,6 @@ export default function OwnerBasicInfo() {
           </div>
 
           <div className="space-y-6">
-            {/* Landlord Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                I am a <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={landlordType}
-                onChange={(e) => setLandlordType(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-              >
-                <option value="">Select...</option>
-                <option value="individual">Individual Landlord</option>
-                <option value="agency">Property Agency</option>
-                <option value="company">Property Management Company</option>
-              </select>
-            </div>
-
-            {/* Company Name (conditional) */}
-            {(landlordType === 'agency' || landlordType === 'company') && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Company Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Enter your company name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-                />
-              </div>
-            )}
-
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
