@@ -100,7 +100,7 @@ export default function OwnerDashboard() {
   }
 
   const handleEditProfile = () => {
-    router.push('/onboarding/owner/basic-info')
+    router.push('/dashboard/my-profile-owner')
   }
 
   const handleAddProperty = () => {

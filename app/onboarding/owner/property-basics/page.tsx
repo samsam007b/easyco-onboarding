@@ -1,15 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, Plus, MapPin } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
 
 export default function PropertyBasicsPage() {
   const router = useRouter();
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [hasProperty, setHasProperty] = useState<string>('');
   const [propertyCity, setPropertyCity] = useState('');
   const [propertyType, setPropertyType] = useState('');
+
+  useEffect(() => {
+    loadExistingData();
+  }, []);
+
+  const loadExistingData = async () => {
+    try {
+      const saved = safeLocalStorage.get('ownerPropertyBasics', {}) as any;
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileData) {
+          const hasPropertyValue = saved.hasProperty || (profileData.has_property ? 'yes' : profileData.has_property === false ? 'no' : '');
+          setHasProperty(hasPropertyValue);
+          setPropertyCity(saved.propertyCity || profileData.property_city || '');
+          setPropertyType(saved.propertyType || profileData.property_type || '');
+        } else if (saved.hasProperty) {
+          setHasProperty(saved.hasProperty);
+          setPropertyCity(saved.propertyCity || '');
+          setPropertyType(saved.propertyType || '');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading property data:', error);
+      toast.error('Failed to load existing data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleContinue = () => {
     safeLocalStorage.set('ownerPropertyBasics', {
@@ -23,6 +63,17 @@ export default function PropertyBasicsPage() {
   };
 
   const canContinue = hasProperty && (hasProperty === 'no' || (propertyCity && propertyType));
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
