@@ -173,48 +173,141 @@ export default function OwnerDashboard() {
           </p>
         </div>
 
-        {/* Profile Info Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-[#4A148C] flex items-center gap-2">
-              <User className="w-6 h-6" />
-              Your Profile
-            </h3>
-            <Button onClick={handleEditProfile} variant="outline">
-              <Edit className="w-4 h-4 mr-2" />
-              Edit Profile
-            </Button>
+        {/* Profile Preview Card */}
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+          {/* Header with gradient */}
+          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-8 text-white relative">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+                  <Building2 className="w-10 h-10" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">Property Owner Profile</h2>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <MapPin className="w-4 h-4" />
+                    <span>{profile.profile_data?.primaryLocation || 'Location not set'}</span>
+                  </div>
+                </div>
+              </div>
+              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Profile
+              </Button>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="text-sm font-medium text-gray-600">Email</label>
-              <p className="text-gray-900">{profile.email}</p>
+          <div className="p-8">
+            {/* Owner Info Section */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                👤 Owner Information
+              </h3>
+              <div className="space-y-2 text-gray-700">
+                {profile.profile_data?.landlordType && (
+                  <p>• Type: <span className="font-medium capitalize">{profile.profile_data.landlordType}</span></p>
+                )}
+                {profile.profile_data?.companyName && (
+                  <p>• Company: <span className="font-medium">{profile.profile_data.companyName}</span></p>
+                )}
+                {profile.profile_data?.phoneNumber && (
+                  <p>• Phone: <span className="font-medium">{profile.profile_data.phoneNumber}</span></p>
+                )}
+                {profile.profile_data?.hostingExperience && (
+                  <p>• Experience: <span className="font-medium">{profile.profile_data.hostingExperience}</span></p>
+                )}
+                <p>• Email: <span className="font-medium">{profile.email}</span></p>
+              </div>
             </div>
-            <div>
-              <label className="text-sm font-medium text-gray-600">Account Type</label>
-              <p className="text-gray-900 capitalize">{profile.user_type}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-600">Onboarding Status</label>
-              <p className="text-gray-900">
+
+            {/* Property Info Section */}
+            {(profile.profile_data?.hasProperty || profile.profile_data?.propertyCity || profile.profile_data?.propertyType) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  🏠 Property Details
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {profile.profile_data?.hasProperty && (
+                    <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium border border-green-200">
+                      Property Available
+                    </span>
+                  )}
+                  {profile.profile_data?.propertyCity && (
+                    <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200 flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      {profile.profile_data.propertyCity}
+                    </span>
+                  )}
+                  {profile.profile_data?.propertyType && (
+                    <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
+                      {profile.profile_data.propertyType}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Management Style */}
+            {(profile.profile_data?.experienceYears || profile.profile_data?.managementType) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  ⚙️ Management Style
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {profile.profile_data?.experienceYears && (
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                      <p className="text-xs text-gray-600 mb-1">Years of Experience</p>
+                      <p className="font-semibold text-gray-900">{profile.profile_data.experienceYears} years</p>
+                    </div>
+                  )}
+                  {profile.profile_data?.managementType && (
+                    <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                      <p className="text-xs text-gray-600 mb-1">Management Type</p>
+                      <p className="font-semibold text-gray-900 capitalize">{profile.profile_data.managementType}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* About/Bio */}
+            {profile.profile_data?.about && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  📝 About
+                </h3>
+                <p className="text-gray-700 italic">"{profile.profile_data.about}"</p>
+              </div>
+            )}
+
+            {/* Payment Info */}
+            {(profile.profile_data?.iban || profile.profile_data?.swiftBic) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  💳 Payment Information
+                </h3>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 text-green-600">
+                    <span className="text-sm font-medium">✓ Banking details configured</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Profile Status */}
+            <div className="pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Profile Status</span>
                 {profile.onboarding_completed ? (
-                  <span className="inline-flex items-center gap-1 text-green-600">
-                    ✓ Completed
+                  <span className="inline-flex items-center gap-1 text-green-600 font-medium">
+                    ✓ Complete
                   </span>
                 ) : (
-                  <span className="text-yellow-600">Pending</span>
+                  <span className="text-yellow-600 font-medium">Incomplete</span>
                 )}
-              </p>
+              </div>
             </div>
           </div>
-
-          {profile.profile_data?.about && (
-            <div className="mt-6">
-              <label className="text-sm font-medium text-gray-600">About</label>
-              <p className="text-gray-900">{profile.profile_data.about}</p>
-            </div>
-          )}
         </div>
 
         {/* Properties Section */}

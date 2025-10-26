@@ -146,86 +146,150 @@ export default function SearcherDashboard() {
           </p>
         </div>
 
-        {/* Profile Summary Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-[#4A148C] flex items-center gap-2">
-              <User className="w-6 h-6" />
-              Your Profile
-            </h3>
-            <Button onClick={handleEditProfile} variant="outline">
-              <Edit className="w-4 h-4 mr-2" />
-              Edit Profile
-            </Button>
+        {/* Profile Preview Card */}
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+          {/* Header with gradient */}
+          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-8 text-white relative">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+                  <User className="w-10 h-10" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">Welcome!</h2>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <MapPin className="w-4 h-4" />
+                    <span>{profile_data?.location || 'Location not set'}</span>
+                  </div>
+                </div>
+              </div>
+              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Profile
+              </Button>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Basic Info */}
-            <div>
-              <label className="text-sm font-medium text-gray-600">Email</label>
-              <p className="text-gray-900">{profile.email}</p>
+          <div className="p-8">
+            {/* About Me Section */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                📋 About Me
+              </h3>
+              <div className="space-y-2 text-gray-700">
+                {profile_data?.dateOfBirth && (
+                  <p>• {new Date().getFullYear() - new Date(profile_data.dateOfBirth).getFullYear()} years old</p>
+                )}
+                {profile_data?.occupation && (
+                  <p>• {profile_data.occupation}</p>
+                )}
+                {profile_data?.nationality && (
+                  <p className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs">🌍</span>
+                    {profile_data.nationality}
+                  </p>
+                )}
+                {profile_data?.about && (
+                  <p className="text-sm text-gray-600 mt-3 italic">"{profile_data.about}"</p>
+                )}
+              </div>
             </div>
 
-            {/* Location Preference */}
-            {profile_data?.location && (
-              <div>
-                <label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  Preferred Location
-                </label>
-                <p className="text-gray-900">{profile_data.location}</p>
+            {/* Lifestyle Section */}
+            {(profile_data?.cleanliness || profile_data?.socialPreference || profile_data?.smoking || profile_data?.cooking) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  ✨ Lifestyle
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {profile_data?.cleanliness && (
+                    <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200">
+                      Cleanliness: {profile_data.cleanliness}/10
+                    </span>
+                  )}
+                  {profile_data?.socialPreference && (
+                    <span className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
+                      {profile_data.socialPreference}
+                    </span>
+                  )}
+                  {profile_data?.smoking !== undefined && (
+                    <span className="px-3 py-1.5 bg-gray-50 text-gray-700 rounded-full text-sm font-medium border border-gray-200">
+                      {profile_data.smoking ? 'Smoker' : 'Non-smoker'}
+                    </span>
+                  )}
+                  {profile_data?.cooking && (
+                    <span className="px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-full text-sm font-medium border border-yellow-200">
+                      {profile_data.cooking}
+                    </span>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Budget */}
-            {profile_data?.budget && (
-              <div>
-                <label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                  <DollarSign className="w-4 h-4" />
-                  Budget
-                </label>
-                <p className="text-gray-900">${profile_data.budget}/month</p>
+            {/* Daily Routine Section */}
+            {(profile_data?.wakeUpTime || profile_data?.bedTime) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                  🔄 Daily Routine
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {profile_data?.wakeUpTime && (
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                      <p className="text-xs text-gray-600 mb-1">Wake up</p>
+                      <p className="font-semibold text-gray-900">{profile_data.wakeUpTime}</p>
+                    </div>
+                  )}
+                  {profile_data?.bedTime && (
+                    <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                      <p className="text-xs text-gray-600 mb-1">Sleep time</p>
+                      <p className="font-semibold text-gray-900">{profile_data.bedTime}</p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Move-in Date */}
-            {profile_data?.moveInDate && (
-              <div>
-                <label className="text-sm font-medium text-gray-600">Move-in Date</label>
-                <p className="text-gray-900">{profile_data.moveInDate}</p>
+            {/* Looking For Section */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                🏠 Looking For
+              </h3>
+              <div className="space-y-2 text-gray-700">
+                {profile_data?.colivingSize && (
+                  <p>• Coliving size: <span className="font-medium">{profile_data.colivingSize}</span></p>
+                )}
+                {profile_data?.genderPreference && (
+                  <p>• Gender preference: <span className="font-medium">{profile_data.genderPreference}</span></p>
+                )}
+                {profile_data?.roommateAgeRange && (
+                  <p>• Roommates aged <span className="font-medium">{profile_data.roommateAgeRange}</span></p>
+                )}
+                {profile_data?.budget && (
+                  <p className="flex items-center gap-1">
+                    <DollarSign className="w-4 h-4" />
+                    Budget: <span className="font-medium">${profile_data.budget}/month</span>
+                  </p>
+                )}
+                {profile_data?.moveInDate && (
+                  <p>• Move-in: <span className="font-medium">{profile_data.moveInDate}</span></p>
+                )}
               </div>
-            )}
+            </div>
 
-            {/* Living Style */}
-            {profile_data?.lifestyle && (
-              <div>
-                <label className="text-sm font-medium text-gray-600">Living Style</label>
-                <p className="text-gray-900 capitalize">{profile_data.lifestyle}</p>
-              </div>
-            )}
-
-            {/* Onboarding Status */}
-            <div>
-              <label className="text-sm font-medium text-gray-600">Profile Status</label>
-              <p className="text-gray-900">
+            {/* Profile Status */}
+            <div className="pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Profile Status</span>
                 {profile.onboarding_completed ? (
-                  <span className="inline-flex items-center gap-1 text-green-600">
+                  <span className="inline-flex items-center gap-1 text-green-600 font-medium">
                     ✓ Complete
                   </span>
                 ) : (
-                  <span className="text-yellow-600">Incomplete</span>
+                  <span className="text-yellow-600 font-medium">Incomplete</span>
                 )}
-              </p>
+              </div>
             </div>
           </div>
-
-          {/* About/Bio */}
-          {profile_data?.about && (
-            <div className="mt-6">
-              <label className="text-sm font-medium text-gray-600">About Me</label>
-              <p className="text-gray-900 mt-1">{profile_data.about}</p>
-            </div>
-          )}
         </div>
 
         {/* Quick Actions */}
