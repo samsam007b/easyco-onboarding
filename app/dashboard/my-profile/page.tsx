@@ -142,37 +142,37 @@ export default function MyProfilePage() {
 
   const profileSections = [
     {
-      title: dashboard.myProfile.sections.financial.title,
+      title: dashboard.myProfile.financialGuaranteeInfo,
       icon: DollarSign,
-      description: dashboard.myProfile.sections.financial.description,
+      description: dashboard.myProfile.financialDescription,
       link: '/profile/enhance/financial',
       hasData: !!profile.financial_info,
     },
     {
-      title: dashboard.myProfile.sections.community.title,
+      title: dashboard.myProfile.communityEvents,
       icon: Users,
-      description: dashboard.myProfile.sections.community.description,
+      description: dashboard.myProfile.communityDescription,
       link: '/profile/enhance/community',
       hasData: !!profile.community_preferences,
     },
     {
-      title: dashboard.myProfile.sections.personality.title,
+      title: dashboard.myProfile.extendedPersonality,
       icon: Heart,
-      description: dashboard.myProfile.sections.personality.description,
+      description: dashboard.myProfile.personalityDescription,
       link: '/profile/enhance/personality',
       hasData: !!profile.extended_personality,
     },
     {
-      title: dashboard.myProfile.sections.preferences.title,
+      title: dashboard.myProfile.advancedPreferences,
       icon: Settings,
-      description: dashboard.myProfile.sections.preferences.description,
+      description: dashboard.myProfile.preferencesDescription,
       link: '/profile/enhance/preferences',
       hasData: !!profile.advanced_preferences,
     },
     {
-      title: dashboard.myProfile.sections.verification.title,
+      title: dashboard.myProfile.profileVerification,
       icon: Shield,
-      description: dashboard.myProfile.sections.verification.description,
+      description: dashboard.myProfile.verificationDescription,
       link: '/profile/enhance/verification',
       hasData: profile.verification_status === 'verified',
     },
@@ -215,7 +215,7 @@ export default function MyProfilePage() {
           {/* Profile Completion */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">{dashboard.myProfile.profileCompletion}</span>
+              <span className="text-sm font-medium text-gray-700">Profile Completion</span>
               <span className="text-sm font-bold text-[#4A148C]">{completionPercentage}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -230,15 +230,15 @@ export default function MyProfilePage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.matches}</div>
-              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.matches}</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.matches}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.messages}</div>
-              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.messages}</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.messages}</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.favorites}</div>
-              <div className="text-sm text-gray-600">{dashboard.myProfile.stats.favorites}</div>
+              <div className="text-sm text-gray-600">{dashboard.myProfile.favorites}</div>
             </div>
           </div>
         </div>
@@ -247,10 +247,10 @@ export default function MyProfilePage() {
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-6 h-6 text-[#4A148C]" />
-            <h2 className="text-2xl font-bold text-[#4A148C]">{dashboard.myProfile.enhanceTitle}</h2>
+            <h2 className="text-2xl font-bold text-[#4A148C]">{dashboard.myProfile.enhanceYourProfile}</h2>
           </div>
           <p className="text-gray-600 mb-6">
-            {dashboard.myProfile.enhanceDescription}
+            {dashboard.myProfile.addMoreDetails}
           </p>
 
           <div className="grid gap-4">
