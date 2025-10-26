@@ -31,7 +31,7 @@ export default function EnhanceHobbiesPage() {
         }
 
         // Load from localStorage first
-        const savedData = safeLocalStorage.get('enhanceHobbies', {});
+        const savedData = safeLocalStorage.get('enhanceHobbies', {}) as any;
         if (savedData.hobbies && savedData.hobbies.length > 0) {
           setHobbies(savedData.hobbies);
         } else {
