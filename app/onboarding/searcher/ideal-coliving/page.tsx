@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, Users } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function IdealColivingPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [colivingSize, setColivingSize] = useState('');
   const [genderMix, setGenderMix] = useState('');
@@ -30,22 +33,27 @@ export default function IdealColivingPage() {
   const canContinue = colivingSize && genderMix;
 
   const colivingSizes = [
-    { value: 'small', label: '2-3 people', emoji: '👥', description: 'Intimate and quiet' },
-    { value: 'medium', label: '4-6 people', emoji: '👨‍👩‍👧‍👦', description: 'Perfect balance' },
-    { value: 'large', label: '7-10 people', emoji: '👥', description: 'Vibrant community' },
-    { value: 'xlarge', label: '10+ people', emoji: '🏢', description: 'Large community' },
+    { value: 'small', label: t('onboarding.idealColiving.twoPeople'), emoji: '👥', description: t('onboarding.idealColiving.intimateQuiet') },
+    { value: 'medium', label: t('onboarding.idealColiving.fourPeople'), emoji: '👨‍👩‍👧‍👦', description: t('onboarding.idealColiving.perfectBalance') },
+    { value: 'large', label: t('onboarding.idealColiving.sevenPeople'), emoji: '👥', description: t('onboarding.idealColiving.vibrantCommunity') },
+    { value: 'xlarge', label: t('onboarding.idealColiving.tenPlusPeople'), emoji: '🏢', description: t('onboarding.idealColiving.largeCommunity') },
   ];
 
   const genderMixOptions = [
-    { value: 'male-only', label: 'Male only' },
-    { value: 'female-only', label: 'Female only' },
-    { value: 'mixed', label: 'Mixed' },
-    { value: 'no-preference', label: 'No preference' },
+    { value: 'male-only', label: t('onboarding.idealColiving.maleOnly') },
+    { value: 'female-only', label: t('onboarding.idealColiving.femaleOnly') },
+    { value: 'mixed', label: t('onboarding.idealColiving.mixed') },
+    { value: 'no-preference', label: t('onboarding.idealColiving.noPreference') },
   ];
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
+
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
 
         {/* Progress bar */}
         <div className="mb-6">
@@ -65,10 +73,10 @@ export default function IdealColivingPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Ideal Coliving
+            {t('onboarding.idealColiving.title')}
           </h1>
           <p className="text-gray-600">
-            Describe your ideal living atmosphere.
+            {t('onboarding.idealColiving.subtitle')}
           </p>
         </div>
 
@@ -81,7 +89,7 @@ export default function IdealColivingPage() {
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Home className="w-4 h-4 text-purple-600" />
               </div>
-              Preferred coliving size
+              {t('onboarding.idealColiving.preferredColivingSize')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               {colivingSizes.map((size) => (
@@ -112,14 +120,14 @@ export default function IdealColivingPage() {
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <Users className="w-4 h-4 text-blue-600" />
               </div>
-              Gender mix preference
+              {t('onboarding.idealColiving.genderMixPreference')}
             </label>
             <select
               value={genderMix}
               onChange={(e) => setGenderMix(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
               {genderMixOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -131,13 +139,13 @@ export default function IdealColivingPage() {
           {/* Roommate age range */}
           <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
             <label className="block text-sm font-medium text-gray-700 mb-4">
-              🗓️ Roommate age range
+              🗓️ {t('onboarding.idealColiving.roommateAgeRange')}
             </label>
 
             {/* Min age */}
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600">Min age</span>
+                <span className="text-sm text-gray-600">{t('onboarding.idealColiving.minAge')}</span>
                 <span className="text-lg font-bold text-[color:var(--easy-purple)]">{minAge}</span>
               </div>
               <input
@@ -153,7 +161,7 @@ export default function IdealColivingPage() {
             {/* Max age */}
             <div className="mb-2">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600">Max age</span>
+                <span className="text-sm text-gray-600">{t('onboarding.idealColiving.maxAge')}</span>
                 <span className="text-lg font-bold text-[color:var(--easy-purple)]">{maxAge}</span>
               </div>
               <input
@@ -167,19 +175,19 @@ export default function IdealColivingPage() {
             </div>
 
             <p className="text-sm text-gray-600 mt-3">
-              Looking for roommates aged {minAge}-{maxAge}
+              {t('onboarding.idealColiving.lookingForRoommates')} {minAge}-{maxAge}
             </p>
           </div>
 
           {/* Shared space importance */}
           <div className="p-5 rounded-xl bg-blue-50 border border-blue-200">
             <label className="block text-sm font-medium text-gray-700 mb-4">
-              💡 Shared space importance
+              💡 {t('onboarding.idealColiving.sharedSpaceImportance')}
             </label>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Need privacy</span>
+              <span className="text-sm text-gray-600">{t('onboarding.idealColiving.needPrivacy')}</span>
               <span className="text-lg font-bold text-[color:var(--easy-purple)]">{sharedSpaceImportance}/10</span>
-              <span className="text-sm text-gray-600">Love communal</span>
+              <span className="text-sm text-gray-600">{t('onboarding.idealColiving.loveCommunal')}</span>
             </div>
             <input
               type="range"
@@ -190,7 +198,7 @@ export default function IdealColivingPage() {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[color:var(--easy-purple)]"
             />
             <p className="text-sm text-gray-500 mt-3">
-              How important are shared living spaces to you?
+              {t('onboarding.idealColiving.sharedSpaceHelp')}
             </p>
           </div>
 
@@ -206,7 +214,7 @@ export default function IdealColivingPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {t('common.continue')}
         </button>
       </div>
     </main>

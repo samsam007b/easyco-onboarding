@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Sparkles } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PrivacyPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [readPrivacy, setReadPrivacy] = useState(false);
@@ -32,6 +35,11 @@ export default function PrivacyPage() {
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
 
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -53,10 +61,10 @@ export default function PrivacyPage() {
             <Shield className="w-8 h-8 text-[color:var(--easy-purple)]" />
           </div>
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Privacy & Confirmation
+            {t('onboarding.privacy.title')}
           </h1>
           <p className="text-gray-600">
-            We take your privacy seriously.
+            {t('onboarding.privacy.subtitle')}
           </p>
         </div>
 
@@ -73,13 +81,13 @@ export default function PrivacyPage() {
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
-                I accept the Terms & Conditions
+                {t('onboarding.privacy.acceptTermsRequired')}
                 <span className="text-red-500">*</span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                Review our{' '}
+                {t('onboarding.privacy.reviewTerms')}{' '}
                 <a href="/terms" className="text-[color:var(--easy-purple)] underline">
-                  terms of service
+                  {t('onboarding.privacy.termsOfService')}
                 </a>
               </p>
             </div>
@@ -95,13 +103,13 @@ export default function PrivacyPage() {
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
-                I have read the Privacy Policy
+                {t('onboarding.privacy.readPrivacyRequired')}
                 <span className="text-red-500">*</span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                Learn how we protect your{' '}
+                {t('onboarding.privacy.learnProtection')}{' '}
                 <a href="/privacy" className="text-[color:var(--easy-purple)] underline">
-                  personal data
+                  {t('onboarding.privacy.personalData')}
                 </a>
               </p>
             </div>
@@ -117,11 +125,11 @@ export default function PrivacyPage() {
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
-                I consent to data processing
+                {t('onboarding.privacy.consentDataRequired')}
                 <span className="text-red-500">*</span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                Required to create your profile and find matches. Your data will be processed securely according to GDPR.
+                {t('onboarding.privacy.consentDataHelp')}
               </p>
             </div>
           </label>
@@ -137,11 +145,11 @@ export default function PrivacyPage() {
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-yellow-600" />
-                I agree to algorithmic matching
-                <span className="text-xs text-gray-500">(Optional)</span>
+                {t('onboarding.privacy.agreeMatchingOptional')}
+                <span className="text-xs text-gray-500">({t('common.optional')})</span>
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                Our smart algorithm will suggest the best roommate matches based on compatibility. Highly recommended!
+                {t('onboarding.privacy.agreeMatchingHelp')}
               </p>
             </div>
           </label>
@@ -150,7 +158,7 @@ export default function PrivacyPage() {
         {/* Privacy notice */}
         <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 mb-8">
           <p className="text-sm text-gray-700">
-            <strong>Your privacy matters:</strong> We never share your personal information with third parties without consent. You can request data deletion at any time.
+            <strong>{t('onboarding.privacy.privacyMatters')}</strong> {t('onboarding.privacy.privacyNotice')}
           </p>
         </div>
 
@@ -164,7 +172,7 @@ export default function PrivacyPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue to Preferences
+          {t('onboarding.privacy.continueToPreferences')}
         </button>
       </div>
     </main>

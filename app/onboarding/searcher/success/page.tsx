@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { CheckCircle2, Home } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function SuccessPage() {
   const { t, getSection } = useLanguage();
@@ -10,6 +11,11 @@ export default function SuccessPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-6">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-md w-full text-center space-y-8">
         
         {/* Success icon */}

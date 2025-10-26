@@ -4,9 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Upload, Mail, Phone, Check, FileText } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function OwnerVerificationPage() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [idDocument, setIdDocument] = useState<File | null>(null);
   const [proofOfOwnership, setProofOfOwnership] = useState<File | null>(null);
@@ -52,6 +57,10 @@ export default function OwnerVerificationPage() {
   return (
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
 
         {/* Back button */}
         <button
@@ -70,10 +79,10 @@ export default function OwnerVerificationPage() {
 
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Landlord Verification
+            {onboarding.owner.verification.title}
           </h1>
           <p className="text-gray-600">
-            Build trust with verified credentials
+            {onboarding.owner.verification.subtitle}
           </p>
         </div>
 
@@ -88,10 +97,10 @@ export default function OwnerVerificationPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Identity verification (KYC)
+                  {onboarding.owner.verification.idVerificationTitle}
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
-                  Upload a government-issued ID (passport, driver's license, national ID)
+                  {onboarding.owner.verification.idVerificationDesc}
                 </p>
               </div>
             </div>
@@ -109,7 +118,7 @@ export default function OwnerVerificationPage() {
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-[color:var(--easy-purple)] text-white font-medium cursor-pointer hover:opacity-90 transition"
               >
                 <Upload className="w-4 h-4" />
-                {idDocument ? 'Change ID' : 'Upload ID'}
+                {idDocument ? onboarding.owner.verification.changeId : onboarding.owner.verification.uploadId}
               </label>
             </label>
 
@@ -129,10 +138,10 @@ export default function OwnerVerificationPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Proof of ownership
+                  {onboarding.owner.verification.proofOfOwnershipTitle}
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
-                  Upload property deed, rental agreement, or management authorization
+                  {onboarding.owner.verification.proofOfOwnershipDesc}
                 </p>
               </div>
             </div>
@@ -150,7 +159,7 @@ export default function OwnerVerificationPage() {
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-green-600 text-white font-medium cursor-pointer hover:opacity-90 transition"
               >
                 <FileText className="w-4 h-4" />
-                {proofOfOwnership ? 'Change Document' : 'Upload Document'}
+                {proofOfOwnership ? onboarding.owner.verification.changeDocument : onboarding.owner.verification.uploadDocument}
               </label>
             </label>
 
@@ -170,16 +179,16 @@ export default function OwnerVerificationPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Email verification
+                  {onboarding.owner.verification.emailVerificationTitle}
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
-                  We'll send a verification link to your email
+                  {onboarding.owner.verification.emailVerificationDesc}
                 </p>
               </div>
             </div>
 
             <button className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-medium hover:opacity-90 transition">
-              Verify Email
+              {onboarding.owner.verification.verifyEmail}
             </button>
           </div>
 
@@ -191,10 +200,10 @@ export default function OwnerVerificationPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Phone verification
+                  {onboarding.owner.verification.phoneVerificationTitle}
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
-                  Enter your phone number
+                  {onboarding.owner.verification.phoneVerificationDesc}
                 </p>
               </div>
             </div>
@@ -204,7 +213,7 @@ export default function OwnerVerificationPage() {
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition mb-3"
-              placeholder="+33 6 12 34 56 78"
+              placeholder={onboarding.owner.verification.phoneNumberPlaceholder}
             />
 
             <button
@@ -215,29 +224,25 @@ export default function OwnerVerificationPage() {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              Send OTP
+              {onboarding.owner.verification.sendOtp}
             </button>
           </div>
 
           {/* Why verify? */}
           <div className="p-4 rounded-lg bg-yellow-50 border border-yellow-200">
-            <h4 className="font-semibold text-gray-900 mb-2">Why verify as a landlord?</h4>
+            <h4 className="font-semibold text-gray-900 mb-2">{onboarding.owner.verification.whyVerifyTitle}</h4>
             <ul className="space-y-1 text-sm text-gray-700">
               <li className="flex items-start gap-2">
-                <span>⭐</span>
-                <span>Build trust with potential tenants</span>
+                <span>{onboarding.owner.verification.whyVerify1}</span>
               </li>
               <li className="flex items-start gap-2">
-                <span>⭐</span>
-                <span>Get priority listing placement</span>
+                <span>{onboarding.owner.verification.whyVerify2}</span>
               </li>
               <li className="flex items-start gap-2">
-                <span>⭐</span>
-                <span>Unlock verified landlord badge</span>
+                <span>{onboarding.owner.verification.whyVerify3}</span>
               </li>
               <li className="flex items-start gap-2">
-                <span>⭐</span>
-                <span>Comply with legal requirements</span>
+                <span>{onboarding.owner.verification.whyVerify4}</span>
               </li>
             </ul>
           </div>
@@ -250,14 +255,14 @@ export default function OwnerVerificationPage() {
             onClick={handleSaveProgress}
             className="w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
-            Save Progress
+            {onboarding.owner.verification.saveProgress}
           </button>
 
           <button
             onClick={handleVerifyLater}
             className="w-full py-3 rounded-full font-medium text-gray-600 hover:text-gray-800 transition"
           >
-            I'll verify later
+            {onboarding.owner.verification.verifyLater}
           </button>
         </div>
       </div>

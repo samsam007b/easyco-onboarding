@@ -6,6 +6,7 @@ import { User, Users, ArrowLeft } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function ProfileTypePage() {
   const router = useRouter();
@@ -29,6 +30,11 @@ export default function ProfileTypePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">

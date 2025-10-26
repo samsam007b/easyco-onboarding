@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Smile, Share2, MessageCircle, Globe } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function SocialVibePage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [socialEnergy, setSocialEnergy] = useState('');
   const [opennessToSharing, setOpennessToSharing] = useState('');
@@ -31,6 +34,11 @@ export default function SocialVibePage() {
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
 
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -49,10 +57,10 @@ export default function SocialVibePage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Social Vibe
+            {t('onboarding.socialVibe.title')}
           </h1>
           <p className="text-gray-600">
-            How do you connect with others?
+            {t('onboarding.socialVibe.subtitle')}
           </p>
         </div>
 
@@ -60,47 +68,45 @@ export default function SocialVibePage() {
         <div className="space-y-6">
 
           {/* Social energy */}
-          {/* TODO: Upgrade to slider component (see figma-07.png) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Smile className="w-4 h-4 text-purple-600" />
               </div>
-              Social energy
+              {t('onboarding.socialVibe.socialEnergy')}
             </label>
             <select
               value={socialEnergy}
               onChange={(e) => setSocialEnergy(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="introvert">Introvert</option>
-              <option value="moderate">Moderate</option>
-              <option value="extrovert">Extrovert</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="introvert">{t('onboarding.socialVibe.introvert')}</option>
+              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
+              <option value="extrovert">{t('onboarding.socialVibe.extrovert')}</option>
             </select>
-            <p className="text-sm text-gray-500 mt-1">How much do you enjoy social interactions?</p>
+            <p className="text-sm text-gray-500 mt-1">{t('onboarding.socialVibe.socialEnergyHelp')}</p>
           </div>
 
           {/* Openness to sharing */}
-          {/* TODO: Upgrade to slider component (see figma-07.png) */}
           <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
                 <Share2 className="w-4 h-4 text-yellow-600" />
               </div>
-              Openness to sharing
+              {t('onboarding.socialVibe.opennessToSharing')}
             </label>
             <select
               value={opennessToSharing}
               onChange={(e) => setOpennessToSharing(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="private">Private</option>
-              <option value="moderate">Moderate</option>
-              <option value="very-open">Very open</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="private">{t('onboarding.socialVibe.private')}</option>
+              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
+              <option value="very-open">{t('onboarding.socialVibe.veryOpen')}</option>
             </select>
-            <p className="text-sm text-gray-500 mt-2">Do you like sharing meals, stories, and experiences?</p>
+            <p className="text-sm text-gray-500 mt-2">{t('onboarding.socialVibe.opennessHelp')}</p>
           </div>
 
           {/* Communication style */}
@@ -109,41 +115,40 @@ export default function SocialVibePage() {
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <MessageCircle className="w-4 h-4 text-blue-600" />
               </div>
-              Communication style
+              {t('onboarding.socialVibe.communicationStyle')}
             </label>
             <select
               value={communicationStyle}
               onChange={(e) => setCommunicationStyle(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="direct">Direct & straightforward</option>
-              <option value="diplomatic">Diplomatic & tactful</option>
-              <option value="casual">Casual & friendly</option>
-              <option value="formal">Formal & professional</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="direct">{t('onboarding.socialVibe.directStraightforward')}</option>
+              <option value="diplomatic">{t('onboarding.socialVibe.diplomaticTactful')}</option>
+              <option value="casual">{t('onboarding.socialVibe.casualFriendly')}</option>
+              <option value="formal">{t('onboarding.socialVibe.formalProfessional')}</option>
             </select>
           </div>
 
           {/* Cultural openness */}
-          {/* TODO: Upgrade to slider component (see figma-07.png) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <Globe className="w-4 h-4 text-blue-600" />
               </div>
-              Cultural openness
+              {t('onboarding.socialVibe.culturalOpenness')}
             </label>
             <select
               value={culturalOpenness}
               onChange={(e) => setCulturalOpenness(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
             >
-              <option value="">Select...</option>
-              <option value="prefer-similar">Prefer similar</option>
-              <option value="moderate">Moderate</option>
-              <option value="love-diversity">Love diversity</option>
+              <option value="">{t('onboarding.dailyHabits.select')}</option>
+              <option value="prefer-similar">{t('onboarding.socialVibe.preferSimilar')}</option>
+              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
+              <option value="love-diversity">{t('onboarding.socialVibe.loveDiversity')}</option>
             </select>
-            <p className="text-sm text-gray-500 mt-1">How comfortable are you with different cultures and backgrounds?</p>
+            <p className="text-sm text-gray-500 mt-1">{t('onboarding.socialVibe.culturalOpennessHelp')}</p>
           </div>
         </div>
 
@@ -157,7 +162,7 @@ export default function SocialVibePage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {t('common.continue')}
         </button>
       </div>
     </main>

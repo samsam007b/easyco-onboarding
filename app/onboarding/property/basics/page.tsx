@@ -5,9 +5,14 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Home, Building2, DoorClosed } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PropertyBasics() {
   const router = useRouter();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [propertyType, setPropertyType] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -27,7 +32,7 @@ export default function PropertyBasics() {
 
   const handleContinue = () => {
     if (!propertyType || !address.trim() || !city.trim() || !bedrooms || !bathrooms) {
-      toast.error('Please fill in all required fields');
+      toast.error(onboarding.property.basics.errorRequired);
       return;
     }
 
@@ -43,16 +48,21 @@ export default function PropertyBasics() {
   };
 
   const propertyTypes = [
-    { value: 'apartment', label: 'Apartment', icon: Building2 },
-    { value: 'house', label: 'House', icon: Home },
-    { value: 'condo', label: 'Condo', icon: Building2 },
-    { value: 'studio', label: 'Studio', icon: DoorClosed },
-    { value: 'coliving', label: 'Coliving', icon: Home },
+    { value: 'apartment', label: onboarding.property.basics.apartment, icon: Building2 },
+    { value: 'house', label: onboarding.property.basics.house, icon: Home },
+    { value: 'condo', label: onboarding.property.basics.condo, icon: Building2 },
+    { value: 'studio', label: onboarding.property.basics.studio, icon: DoorClosed },
+    { value: 'coliving', label: onboarding.property.basics.coliving, icon: Home },
   ];
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
       <div className="max-w-2xl mx-auto">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -60,7 +70,7 @@ export default function PropertyBasics() {
             className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{common.back}</span>
           </button>
         </div>
 
@@ -86,15 +96,15 @@ export default function PropertyBasics() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Property Basics</h2>
-            <p className="text-gray-600">Start by describing your property basics.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{onboarding.property.basics.title}</h2>
+            <p className="text-gray-600">{onboarding.property.basics.subtitle}</p>
           </div>
 
           <div className="space-y-6">
             {/* Property Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Property Type <span className="text-red-500">*</span>
+                {onboarding.property.basics.propertyType} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {propertyTypes.map((type) => {
@@ -124,13 +134,13 @@ export default function PropertyBasics() {
             {/* Property Address */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Property address <span className="text-red-500">*</span>
+                {onboarding.property.basics.propertyAddress} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="123 Main St, Apt 4B"
+                placeholder={onboarding.property.basics.propertyAddressPlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
             </div>
@@ -139,23 +149,23 @@ export default function PropertyBasics() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  City <span className="text-red-500">*</span>
+                  {onboarding.property.basics.city} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder="City"
+                  placeholder={onboarding.property.basics.cityPlaceholder}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{onboarding.property.basics.zipCode}</label>
                 <input
                   type="text"
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
-                  placeholder="1180"
+                  placeholder={onboarding.property.basics.zipCodePlaceholder}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 />
               </div>
@@ -165,14 +175,14 @@ export default function PropertyBasics() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Bedrooms <span className="text-red-500">*</span>
+                  {onboarding.property.basics.bedrooms} <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={bedrooms}
                   onChange={(e) => setBedrooms(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 >
-                  <option value="">Select</option>
+                  <option value="">{onboarding.property.basics.select}</option>
                   {[1, 2, 3, 4, 5, 6].map((num) => (
                     <option key={num} value={num}>
                       {num}
@@ -182,14 +192,14 @@ export default function PropertyBasics() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Bathrooms <span className="text-red-500">*</span>
+                  {onboarding.property.basics.bathrooms} <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={bathrooms}
                   onChange={(e) => setBathrooms(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
                 >
-                  <option value="">Select</option>
+                  <option value="">{onboarding.property.basics.select}</option>
                   {[1, 2, 3, 4].map((num) => (
                     <option key={num} value={num}>
                       {num}
@@ -205,7 +215,7 @@ export default function PropertyBasics() {
             onClick={handleContinue}
             className="w-full mt-8 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
-            Continue
+            {common.continue}
           </button>
         </div>
       </div>

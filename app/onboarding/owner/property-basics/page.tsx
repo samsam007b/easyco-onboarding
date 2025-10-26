@@ -6,10 +6,15 @@ import { ArrowLeft, Home, Plus, MapPin } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function PropertyBasicsPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t, getSection } = useLanguage();
+  const onboarding = getSection('onboarding');
+  const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
   const [hasProperty, setHasProperty] = useState<string>('');
   const [propertyCity, setPropertyCity] = useState('');
@@ -45,7 +50,7 @@ export default function PropertyBasicsPage() {
       }
     } catch (error) {
       console.error('Error loading property data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(common.errorLoadingData);
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +74,7 @@ export default function PropertyBasicsPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading your information...</p>
+          <p className="text-gray-600">{onboarding.owner.about.loadingInfo}</p>
         </div>
       </div>
     );
@@ -78,6 +83,10 @@ export default function PropertyBasicsPage() {
   return (
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-md mx-auto">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
+        </div>
 
         {/* Progress bar */}
         <div className="mb-6">
@@ -97,10 +106,10 @@ export default function PropertyBasicsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Your Property
+            {onboarding.owner.propertyBasics.title}
           </h1>
           <p className="text-gray-600">
-            Let us know about your listing plans
+            {onboarding.owner.propertyBasics.subtitle}
           </p>
         </div>
 
@@ -110,7 +119,7 @@ export default function PropertyBasicsPage() {
           {/* Has Property */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
-              Do you already have a property to list?
+              {onboarding.owner.propertyBasics.hasPropertyLabel}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
@@ -132,7 +141,7 @@ export default function PropertyBasicsPage() {
                   <span className={`font-semibold text-sm ${
                     hasProperty === 'yes' ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
                   }`}>
-                    Yes, I do
+                    {onboarding.owner.propertyBasics.yes}
                   </span>
                 </div>
               </button>
@@ -156,7 +165,7 @@ export default function PropertyBasicsPage() {
                   <span className={`font-semibold text-sm ${
                     hasProperty === 'no' ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
                   }`}>
-                    Not yet
+                    {onboarding.owner.propertyBasics.notYet}
                   </span>
                 </div>
               </button>
@@ -170,14 +179,14 @@ export default function PropertyBasicsPage() {
               <div className="p-5 rounded-xl bg-blue-50 border border-blue-200">
                 <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
-                  Where is your property located?
+                  {onboarding.owner.propertyBasics.propertyLocation}
                 </label>
                 <input
                   type="text"
                   value={propertyCity}
                   onChange={(e) => setPropertyCity(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                  placeholder="e.g., Brussels, Paris, Amsterdam"
+                  placeholder={onboarding.owner.propertyBasics.propertyLocationPlaceholder}
                 />
               </div>
 
@@ -185,27 +194,27 @@ export default function PropertyBasicsPage() {
               <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
                 <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                   <Home className="w-4 h-4" />
-                  What type of property is it?
+                  {onboarding.owner.propertyBasics.propertyType}
                 </label>
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
                 >
-                  <option value="">Select type...</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="studio">Studio</option>
-                  <option value="room">Private Room</option>
-                  <option value="coliving">Coliving Space</option>
-                  <option value="other">Other</option>
+                  <option value="">{onboarding.owner.propertyBasics.propertyTypeSelect}</option>
+                  <option value="apartment">{onboarding.owner.propertyBasics.apartment}</option>
+                  <option value="house">{onboarding.owner.propertyBasics.house}</option>
+                  <option value="studio">{onboarding.owner.propertyBasics.studio}</option>
+                  <option value="room">{onboarding.owner.propertyBasics.privateRoom}</option>
+                  <option value="coliving">{onboarding.owner.propertyBasics.colivingSpace}</option>
+                  <option value="other">{onboarding.owner.propertyBasics.other}</option>
                 </select>
               </div>
 
               {/* Info box */}
               <div className="p-4 rounded-lg bg-green-50 border border-green-200">
                 <p className="text-sm text-gray-700">
-                  <strong className="text-green-800">Great!</strong> You'll be able to add full property details after completing your profile.
+                  {onboarding.owner.propertyBasics.infoGreat}
                 </p>
               </div>
             </>
@@ -214,9 +223,9 @@ export default function PropertyBasicsPage() {
           {/* Conditional: If no property */}
           {hasProperty === 'no' && (
             <div className="p-5 rounded-xl bg-purple-50 border border-purple-200">
-              <h3 className="font-semibold text-gray-900 mb-2">No problem!</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{onboarding.owner.propertyBasics.noProblemTitle}</h3>
               <p className="text-sm text-gray-700">
-                Complete your host profile now, and you can add property listings whenever you're ready.
+                {onboarding.owner.propertyBasics.noProblemDesc}
               </p>
             </div>
           )}
@@ -233,7 +242,7 @@ export default function PropertyBasicsPage() {
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          Continue
+          {common.continue}
         </button>
       </div>
     </main>

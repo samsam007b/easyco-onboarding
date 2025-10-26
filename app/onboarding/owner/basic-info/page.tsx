@@ -7,6 +7,7 @@ import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
@@ -93,6 +94,11 @@ export default function OwnerBasicInfo() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
+      {/* Language Switcher */}
+      <div className="absolute top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
