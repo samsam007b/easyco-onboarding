@@ -190,7 +190,7 @@ export default function ResidentLivingSituationPage() {
             disabled={isSaving}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>{common.actions.back}</span>
+            <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>

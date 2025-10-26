@@ -139,7 +139,7 @@ export default function ResidentBasicInfoPage() {
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>{common.actions.back}</span>
+            <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
@@ -279,7 +279,7 @@ export default function ResidentBasicInfoPage() {
                   onClick={addLanguage}
                   className="px-6 py-3 bg-[#4A148C] text-white rounded-lg hover:bg-[#6A1B9A] transition-colors font-medium"
                 >
-                  {common.actions.add}
+                  {common.add}
                 </button>
               </div>
               {languages.length > 0 && (
@@ -314,7 +314,7 @@ export default function ResidentBasicInfoPage() {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
-              {common.actions.continue}
+              {common.continue}
             </button>
           </div>
         </div>

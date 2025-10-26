@@ -152,7 +152,7 @@ export default function ProfilesManagementPage() {
           className="mb-6 flex items-center gap-2 text-[color:var(--easy-purple)] hover:opacity-70 transition"
         >
           <ArrowLeft className="w-5 h-5" />
-          {common.actions.back}
+          {common.back}
         </button>
 
         {/* Header */}
@@ -305,7 +305,7 @@ export default function ProfilesManagementPage() {
                         className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-red-200 hover:border-red-300 text-red-600 transition text-sm font-medium disabled:opacity-50"
                       >
                         <Trash2 className="w-4 h-4" />
-                        {deletingId === profile.id ? common.actions.deleting : common.actions.delete}
+                        {deletingId === profile.id ? common.deleting : common.delete}
                       </button>
                     </div>
                   </div>
