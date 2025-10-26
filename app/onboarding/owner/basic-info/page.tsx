@@ -12,7 +12,6 @@ export default function OwnerBasicInfo() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [nationality, setNationality] = useState('');
 
@@ -22,7 +21,6 @@ export default function OwnerBasicInfo() {
     if (saved.firstName) setFirstName(saved.firstName);
     if (saved.lastName) setLastName(saved.lastName);
     if (saved.companyName) setCompanyName(saved.companyName);
-    if (saved.email) setEmail(saved.email);
     if (saved.phoneNumber) setPhoneNumber(saved.phoneNumber);
     if (saved.nationality) setNationality(saved.nationality);
   }, []);
@@ -50,7 +48,6 @@ export default function OwnerBasicInfo() {
       firstName,
       lastName,
       companyName: (landlordType === 'agency' || landlordType === 'company') ? companyName : '',
-      email,
       phoneNumber,
       nationality,
     });
@@ -162,21 +159,6 @@ export default function OwnerBasicInfo() {
                 placeholder="Enter your last name"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
               />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your.email@example.com"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-              />
-              <p className="mt-2 text-xs text-gray-500">Verified email helps protect your account</p>
             </div>
 
             {/* Phone Number */}

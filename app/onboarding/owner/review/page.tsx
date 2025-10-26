@@ -42,7 +42,6 @@ export default function OwnerReview() {
         firstName: data.basicInfo?.firstName,
         lastName: data.basicInfo?.lastName,
         companyName: data.basicInfo?.companyName,
-        email: data.basicInfo?.email,
         phoneNumber: data.basicInfo?.phoneNumber,
         nationality: data.basicInfo?.nationality,
         ownerType: data.about?.ownerType,
@@ -161,12 +160,6 @@ export default function OwnerReview() {
                     {data.basicInfo?.firstName} {data.basicInfo?.lastName}
                   </span>
                 </div>
-                {data.basicInfo?.email && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Email:</span>
-                    <span className="font-medium text-gray-900">{data.basicInfo.email}</span>
-                  </div>
-                )}
                 {data.basicInfo?.phoneNumber && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Phone:</span>
