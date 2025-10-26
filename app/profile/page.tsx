@@ -134,6 +134,11 @@ export default function ProfilePage() {
       return
     }
 
+    // Confirm role change with user
+    if (!confirm(`Are you sure you want to change your role from ${userData.user_type} to ${selectedUserType}? This will reset your onboarding progress and you'll need to complete the onboarding process again.`)) {
+      return
+    }
+
     setIsChangingUserType(true)
 
     try {
