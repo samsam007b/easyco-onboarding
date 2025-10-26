@@ -6906,36 +6906,6 @@ export const translations = {
         nl: 'Vertel ons over je huidige woonsituatie en deel iets over jezelf',
         de: 'Erzählen Sie uns von Ihrer aktuellen Wohnsituation und teilen Sie etwas über sich',
       },
-      city: {
-        fr: 'Ville Actuelle',
-        en: 'Current City',
-        nl: 'Huidige Stad',
-        de: 'Aktuelle Stadt',
-      },
-      cityPlaceholder: {
-        fr: 'ex : Bruxelles, Paris, Berlin...',
-        en: 'e.g., Brussels, Paris, Berlin...',
-        nl: 'bijv. Brussel, Parijs, Berlijn...',
-        de: 'z.B. Brüssel, Paris, Berlin...',
-      },
-      moveInDate: {
-        fr: 'Date d\'emménagement',
-        en: 'Move-in Date',
-        nl: 'Verhuisdatum',
-        de: 'Einzugsdatum',
-      },
-      bio: {
-        fr: 'Parlez-nous de vous',
-        en: 'Tell us about yourself',
-        nl: 'Vertel ons over jezelf',
-        de: 'Erzählen Sie uns über sich',
-      },
-      bioPlaceholder: {
-        fr: 'Écrivez une courte introduction sur vous, vos intérêts, ce que vous recherchez dans une communauté de colocation... (min 20 caractères)',
-        en: 'Write a short introduction about yourself, your interests, what you\'re looking for in a coliving community... (min 20 characters)',
-        nl: 'Schrijf een korte introductie over jezelf, je interesses, wat je zoekt in een coliving gemeenschap... (min 20 tekens)',
-        de: 'Schreiben Sie eine kurze Einführung über sich, Ihre Interessen, was Sie in einer Coliving-Gemeinschaft suchen... (min 20 Zeichen)',
-      },
       complete: {
         fr: 'Continuer vers la révision',
         en: 'Continue to Review',
