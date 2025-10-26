@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, User, Mail, Calendar, LogOut, MapPin } from 'lucide-react';
+import { ChevronDown, User, Mail, Calendar, LogOut, MapPin, Search, Home as HomeIcon, Key } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -14,16 +14,42 @@ interface ProfileDropdownProps {
     profile_data?: any;
   };
   avatarColor?: string;
+  role?: 'searcher' | 'owner' | 'resident';
 }
 
-export default function ProfileDropdown({ profile, avatarColor = '#4A148C' }: ProfileDropdownProps) {
+export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
+  const { getSection, language } = useLanguage();
   const dashboard = getSection('dashboard');
   const common = getSection('common');
+
+  // Get role icon and label
+  const getRoleIcon = () => {
+    switch (role) {
+      case 'searcher':
+        return Search;
+      case 'owner':
+        return HomeIcon;
+      case 'resident':
+        return Key;
+      default:
+        return User;
+    }
+  };
+
+  const getRoleLabel = () => {
+    const labels = {
+      searcher: { fr: 'Chercheur', en: 'Searcher', nl: 'Zoeker', de: 'Suchender' },
+      owner: { fr: 'Propriétaire', en: 'Owner', nl: 'Eigenaar', de: 'Eigentümer' },
+      resident: { fr: 'Résident', en: 'Resident', nl: 'Bewoner', de: 'Bewohner' },
+    };
+    return role ? labels[role][language] : '';
+  };
+
+  const RoleIcon = getRoleIcon();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -73,15 +99,15 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C' }: Pr
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-3 hover:bg-gray-50 rounded-xl px-3 py-2 transition-colors"
       >
-        {/* Avatar */}
+        {/* Avatar with Role Icon */}
         <div
-          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm"
+          className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm"
           style={{ background: `linear-gradient(135deg, ${avatarColor}, ${avatarColor}dd)` }}
         >
-          {getInitials(profile.full_name)}
+          <RoleIcon className="w-5 h-5" />
         </div>
 
-        {/* Name & Role */}
+        {/* Name */}
         <div className="text-left">
           <p className="text-sm font-semibold text-gray-900">{profile.full_name}</p>
         </div>
@@ -100,15 +126,22 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C' }: Pr
             className="p-6 text-white"
             style={{ background: `linear-gradient(135deg, ${avatarColor}, ${avatarColor}dd)` }}
           >
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl font-bold border-2 border-white/30">
-                {getInitials(profile.full_name)}
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                <RoleIcon className="w-8 h-8" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h3 className="text-lg font-bold">{profile.full_name}</h3>
                 <p className="text-sm text-white/80">{profile.email}</p>
               </div>
             </div>
+            {/* Role Badge - Voyant */}
+            {role && (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                <RoleIcon className="w-4 h-4" />
+                <span className="text-sm font-semibold uppercase tracking-wide">{getRoleLabel()}</span>
+              </div>
+            )}
           </div>
 
           {/* Profile Info */}

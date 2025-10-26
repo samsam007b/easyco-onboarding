@@ -153,6 +153,7 @@ export default function SearcherDashboard() {
           profile_data: profile.profile_data
         }}
         avatarColor="#FFD700"
+        role="searcher"
       />
 
       {/* Main Content */}
