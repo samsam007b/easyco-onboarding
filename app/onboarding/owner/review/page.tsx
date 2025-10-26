@@ -14,10 +14,10 @@ export default function OwnerReview() {
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
-    const basicInfo = safeLocalStorage.get('ownerBasicInfo', {});
-    const about = safeLocalStorage.get('ownerAbout', {});
-    const propertyBasics = safeLocalStorage.get('ownerPropertyBasics', {});
-    const verification = safeLocalStorage.get('ownerVerification', {});
+    const basicInfo = safeLocalStorage.get('ownerBasicInfo', {}) as any;
+    const about = safeLocalStorage.get('ownerAbout', {}) as any;
+    const propertyBasics = safeLocalStorage.get('ownerPropertyBasics', {}) as any;
+    const verification = safeLocalStorage.get('ownerVerification', {}) as any;
     setData({ basicInfo, about, propertyBasics, verification });
   }, []);
 
