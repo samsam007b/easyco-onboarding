@@ -26,7 +26,7 @@ export default function EnhanceAboutPage() {
         }
 
         // Load from localStorage first
-        const savedData = safeLocalStorage.get('enhanceAbout', {});
+        const savedData = safeLocalStorage.get('enhanceAbout', {}) as any;
         if (savedData.bio) setBio(savedData.bio);
         if (savedData.aboutMe) setAboutMe(savedData.aboutMe);
         if (savedData.lookingFor) setLookingFor(savedData.lookingFor);

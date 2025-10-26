@@ -42,7 +42,7 @@ export default function EnhanceValuesPage() {
         }
 
         // Load from localStorage first
-        const savedData = safeLocalStorage.get('enhanceValues', {});
+        const savedData = safeLocalStorage.get('enhanceValues', {}) as any;
         if (savedData.coreValues) setCoreValues(savedData.coreValues);
         if (savedData.importantQualities) setImportantQualities(savedData.importantQualities);
         if (savedData.dealBreakers) setDealBreakers(savedData.dealBreakers);

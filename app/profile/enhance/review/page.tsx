@@ -38,11 +38,11 @@ export default function EnhanceReviewPage() {
         }
 
         // Load all data from localStorage
-        const aboutData = safeLocalStorage.get('enhanceAbout', {});
-        const hobbiesData = safeLocalStorage.get('enhanceHobbies', {});
-        const valuesData = safeLocalStorage.get('enhanceValues', {});
-        const financialData = safeLocalStorage.get('financialInfo', {});
-        const communityData = safeLocalStorage.get('communityEvents', {});
+        const aboutData = safeLocalStorage.get('enhanceAbout', {}) as any;
+        const hobbiesData = safeLocalStorage.get('enhanceHobbies', {}) as any;
+        const valuesData = safeLocalStorage.get('enhanceValues', {}) as any;
+        const financialData = safeLocalStorage.get('financialInfo', {}) as any;
+        const communityData = safeLocalStorage.get('communityEvents', {}) as any;
 
         setData({
           about: aboutData,
