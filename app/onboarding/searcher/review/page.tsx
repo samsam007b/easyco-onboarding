@@ -29,6 +29,25 @@ export default function ReviewPage() {
     setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, idealColiving, preferences, verification, testerId });
   }, []);
 
+  // Map frontend values to database constraint values
+  const mapWakeUpTime = (value: string) => {
+    const mapping: Record<string, string> = {
+      'early': 'early',
+      'moderate': 'average',
+      'late': 'late'
+    };
+    return mapping[value] || value;
+  };
+
+  const mapSleepTime = (value: string) => {
+    const mapping: Record<string, string> = {
+      'early': 'before_23h',
+      'moderate': '23h_01h',
+      'late': 'after_01h'
+    };
+    return mapping[value] || value;
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -99,8 +118,8 @@ export default function ReviewPage() {
           is_smoker: data.dailyHabits?.isSmoker || false,
           has_pets: data.homeLifestyle?.hasPets || false,
           pet_types: data.homeLifestyle?.petTypes,
-          wake_up_time: data.dailyHabits?.wakeUpTime,
-          sleep_time: data.dailyHabits?.sleepTime,
+          wake_up_time: data.dailyHabits?.wakeUpTime ? mapWakeUpTime(data.dailyHabits.wakeUpTime) : null,
+          sleep_time: data.dailyHabits?.sleepTime ? mapSleepTime(data.dailyHabits.sleepTime) : null,
 
           // Social (from socialVibe)
           introvert_extrovert_scale: data.socialVibe?.introvertExtrovertScale,
