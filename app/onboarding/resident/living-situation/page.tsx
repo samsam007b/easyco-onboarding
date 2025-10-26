@@ -263,7 +263,7 @@ export default function ResidentLivingSituationPage() {
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-gray-500">
-                  {bio.length < 20 ? resident.livingSituation.bio.charCount.replace('{count}', String(20 - bio.length)) : resident.livingSituation.bio.charValid}
+                  {bio.length < 20 ? `${20 - bio.length} more characters needed` : 'Great!'}
                 </span>
                 <span className="text-xs text-gray-500">{bio.length}/500</span>
               </div>

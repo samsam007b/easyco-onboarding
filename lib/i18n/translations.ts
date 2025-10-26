@@ -6850,6 +6850,184 @@ export const translations = {
         nl: 'Je profiel voltooien...',
         de: 'Ihr Profil wird vervollständigt...',
       },
+      errors: {
+        cityRequired: {
+          fr: 'Veuillez entrer votre ville actuelle',
+          en: 'Please enter your current city',
+          nl: 'Voer je huidige stad in',
+          de: 'Bitte geben Sie Ihre aktuelle Stadt ein',
+        },
+        dateRequired: {
+          fr: 'Veuillez sélectionner votre date d\'emménagement',
+          en: 'Please select your move-in date',
+          nl: 'Selecteer je verhuisdatum',
+          de: 'Bitte wählen Sie Ihr Einzugsdatum',
+        },
+        bioRequired: {
+          fr: 'Veuillez écrire quelque chose sur vous',
+          en: 'Please write something about yourself',
+          nl: 'Schrijf iets over jezelf',
+          de: 'Bitte schreiben Sie etwas über sich',
+        },
+        bioTooShort: {
+          fr: 'Votre bio doit contenir au moins 20 caractères',
+          en: 'Your bio must be at least 20 characters',
+          nl: 'Je bio moet minimaal 20 tekens bevatten',
+          de: 'Ihre Bio muss mindestens 20 Zeichen lang sein',
+        },
+      },
+      success: {
+        fr: 'Informations sauvegardées',
+        en: 'Information saved',
+        nl: 'Informatie opgeslagen',
+        de: 'Informationen gespeichert',
+      },
+      successDesc: {
+        fr: 'Passage à la révision',
+        en: 'Proceeding to review',
+        nl: 'Doorgaan naar beoordeling',
+        de: 'Weiter zur Überprüfung',
+      },
+      progress: {
+        fr: 'Étape 4 sur 4',
+        en: 'Step 4 of 4',
+        nl: 'Stap 4 van 4',
+        de: 'Schritt 4 von 4',
+      },
+      heading: {
+        fr: 'Situation de Logement & Bio',
+        en: 'Living Situation & Bio',
+        nl: 'Woonsituatie & Bio',
+        de: 'Wohnsituation & Bio',
+      },
+      description: {
+        fr: 'Parlez-nous de votre situation de logement actuelle et partagez un peu sur vous',
+        en: 'Tell us about your current living situation and share a bit about yourself',
+        nl: 'Vertel ons over je huidige woonsituatie en deel iets over jezelf',
+        de: 'Erzählen Sie uns von Ihrer aktuellen Wohnsituation und teilen Sie etwas über sich',
+      },
+      city: {
+        fr: 'Ville Actuelle',
+        en: 'Current City',
+        nl: 'Huidige Stad',
+        de: 'Aktuelle Stadt',
+      },
+      cityPlaceholder: {
+        fr: 'ex : Bruxelles, Paris, Berlin...',
+        en: 'e.g., Brussels, Paris, Berlin...',
+        nl: 'bijv. Brussel, Parijs, Berlijn...',
+        de: 'z.B. Brüssel, Paris, Berlin...',
+      },
+      moveInDate: {
+        fr: 'Date d\'emménagement',
+        en: 'Move-in Date',
+        nl: 'Verhuisdatum',
+        de: 'Einzugsdatum',
+      },
+      bio: {
+        fr: 'Parlez-nous de vous',
+        en: 'Tell us about yourself',
+        nl: 'Vertel ons over jezelf',
+        de: 'Erzählen Sie uns über sich',
+      },
+      bioPlaceholder: {
+        fr: 'Écrivez une courte introduction sur vous, vos intérêts, ce que vous recherchez dans une communauté de colocation... (min 20 caractères)',
+        en: 'Write a short introduction about yourself, your interests, what you\'re looking for in a coliving community... (min 20 characters)',
+        nl: 'Schrijf een korte introductie over jezelf, je interesses, wat je zoekt in een coliving gemeenschap... (min 20 tekens)',
+        de: 'Schreiben Sie eine kurze Einführung über sich, Ihre Interessen, was Sie in einer Coliving-Gemeinschaft suchen... (min 20 Zeichen)',
+      },
+      complete: {
+        fr: 'Continuer vers la révision',
+        en: 'Continue to Review',
+        nl: 'Doorgaan naar beoordeling',
+        de: 'Weiter zur Überprüfung',
+      },
+      completing: {
+        fr: 'Sauvegarde...',
+        en: 'Saving...',
+        nl: 'Opslaan...',
+        de: 'Speichern...',
+      },
+    },
+
+    // Review Page
+    review: {
+      title: {
+        fr: 'Révision de Votre Profil',
+        en: 'Review Your Profile',
+        nl: 'Bekijk Je Profiel',
+        de: 'Überprüfen Sie Ihr Profil',
+      },
+      subtitle: {
+        fr: 'Veuillez vérifier vos informations avant de soumettre',
+        en: 'Please review your information before submitting',
+        nl: 'Controleer je informatie voordat je indient',
+        de: 'Bitte überprüfen Sie Ihre Informationen vor dem Absenden',
+      },
+      submitButton: {
+        fr: 'Soumettre Mon Profil',
+        en: 'Submit My Profile',
+        nl: 'Mijn Profiel Indienen',
+        de: 'Mein Profil Einreichen',
+      },
+    },
+
+    // Success Page
+    success: {
+      title: {
+        fr: 'Profil Complété ! 🎉',
+        en: 'Profile Complete! 🎉',
+        nl: 'Profiel Voltooid! 🎉',
+        de: 'Profil Abgeschlossen! 🎉',
+      },
+      subtitle: {
+        fr: 'Votre profil de résident a été créé avec succès. Vous pouvez maintenant gérer votre expérience de colocation.',
+        en: 'Your resident profile has been successfully created. You can now manage your coliving experience.',
+        nl: 'Je bewonersprofiel is succesvol aangemaakt. Je kunt nu je coliving ervaring beheren.',
+        de: 'Ihr Bewohnerprofil wurde erfolgreich erstellt. Sie können jetzt Ihre Coliving-Erfahrung verwalten.',
+      },
+      nextStepsTitle: {
+        fr: 'Prochaines Étapes',
+        en: 'What\'s Next?',
+        nl: 'Wat Nu?',
+        de: 'Was Kommt Als Nächstes?',
+      },
+      step1: {
+        fr: 'Accédez à votre tableau de bord pour voir les mises à jour et annonces de la communauté',
+        en: 'Access your dashboard to view community updates and announcements',
+        nl: 'Krijg toegang tot je dashboard om gemeenschap updates en aankondigingen te bekijken',
+        de: 'Greifen Sie auf Ihr Dashboard zu, um Community-Updates und Ankündigungen anzuzeigen',
+      },
+      step2: {
+        fr: 'Connectez-vous avec vos colocataires et construisez votre communauté',
+        en: 'Connect with your housemates and build your community',
+        nl: 'Maak contact met je huisgenoten en bouw je gemeenschap op',
+        de: 'Vernetzen Sie sich mit Ihren Mitbewohnern und bauen Sie Ihre Gemeinschaft auf',
+      },
+      step3: {
+        fr: 'Gérez votre profil et vos préférences à tout moment',
+        en: 'Manage your profile and preferences at any time',
+        nl: 'Beheer je profiel en voorkeuren op elk moment',
+        de: 'Verwalten Sie Ihr Profil und Ihre Einstellungen jederzeit',
+      },
+      goToDashboard: {
+        fr: 'Aller au Tableau de Bord',
+        en: 'Go to Dashboard',
+        nl: 'Naar Dashboard',
+        de: 'Zum Dashboard',
+      },
+      enhanceProfile: {
+        fr: 'Améliorer le Profil',
+        en: 'Enhance Profile',
+        nl: 'Profiel Verbeteren',
+        de: 'Profil Verbessern',
+      },
+      tip: {
+        fr: 'Conseil : Gardez votre profil à jour pour profiter au maximum de votre expérience de colocation !',
+        en: 'Tip: Keep your profile up to date to make the most of your coliving experience!',
+        nl: 'Tip: Houd je profiel up-to-date om het meeste uit je coliving ervaring te halen!',
+        de: 'Tipp: Halten Sie Ihr Profil auf dem neuesten Stand, um das Beste aus Ihrer Coliving-Erfahrung zu machen!',
+      },
     },
 
     // Common for all resident pages
