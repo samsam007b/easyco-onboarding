@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
-import { User, Users, ChevronDown, Plus } from 'lucide-react';
+import { User, Users, ChevronDown, Plus, Baby, UsersRound, UserPlus, Handshake } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import IconBadge from './IconBadge';
 
 interface Profile {
   profile_id: string;
@@ -95,13 +96,13 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
     return null; // No profiles available
   }
 
-  const getRelationshipEmoji = (relationship: string | null) => {
+  const getRelationshipIcon = (relationship: string | null) => {
     switch (relationship) {
-      case 'child': return '👶';
-      case 'family_member': return '👨‍👩‍👧';
-      case 'friend': return '👥';
-      case 'other': return '🤝';
-      default: return '👤';
+      case 'child': return { icon: Baby, variant: 'blue' as const };
+      case 'family_member': return { icon: UsersRound, variant: 'purple' as const };
+      case 'friend': return { icon: UserPlus, variant: 'green' as const };
+      case 'other': return { icon: Handshake, variant: 'orange' as const };
+      default: return { icon: User, variant: 'indigo' as const };
     }
   };
 
@@ -123,8 +124,11 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
               {selectedProfile?.profile_name}
             </div>
             {selectedProfile?.profile_type === 'dependent' && (
-              <div className="text-xs text-gray-500">
-                {getRelationshipEmoji(selectedProfile.relationship)}{' '}
+              <div className="text-xs text-gray-500 flex items-center gap-1">
+                {(() => {
+                  const { icon, variant } = getRelationshipIcon(selectedProfile.relationship);
+                  return <IconBadge icon={icon} variant={variant} size="sm" />;
+                })()}
                 {selectedProfile.first_name} {selectedProfile.last_name}
               </div>
             )}
@@ -156,7 +160,10 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
                 {profile.profile_type === 'own' ? (
                   <User className="w-5 h-5 text-[color:var(--easy-purple)]" />
                 ) : (
-                  <div className="text-xl">{getRelationshipEmoji(profile.relationship)}</div>
+                  (() => {
+                    const { icon, variant } = getRelationshipIcon(profile.relationship);
+                    return <IconBadge icon={icon} variant={variant} size="md" />;
+                  })()
                 )}
                 <div className="flex-1">
                   <div className="font-medium text-gray-900">
