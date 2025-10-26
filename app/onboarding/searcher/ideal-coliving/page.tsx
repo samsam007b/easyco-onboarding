@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Home, Users } from 'lucide-react';
+import { ArrowLeft, Home, Users, Building2, Calendar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import IconBadge from '@/components/IconBadge';
 
 export default function IdealColivingPage() {
   const { t } = useLanguage();
@@ -33,10 +34,10 @@ export default function IdealColivingPage() {
   const canContinue = colivingSize && genderMix;
 
   const colivingSizes = [
-    { value: 'small', label: t('onboarding.idealColiving.twoPeople'), emoji: '👥', description: t('onboarding.idealColiving.intimateQuiet') },
-    { value: 'medium', label: t('onboarding.idealColiving.fourPeople'), emoji: '👨‍👩‍👧‍👦', description: t('onboarding.idealColiving.perfectBalance') },
-    { value: 'large', label: t('onboarding.idealColiving.sevenPeople'), emoji: '👥', description: t('onboarding.idealColiving.vibrantCommunity') },
-    { value: 'xlarge', label: t('onboarding.idealColiving.tenPlusPeople'), emoji: '🏢', description: t('onboarding.idealColiving.largeCommunity') },
+    { value: 'small', label: t('onboarding.idealColiving.twoPeople'), icon: Users, variant: 'purple' as const, description: t('onboarding.idealColiving.intimateQuiet') },
+    { value: 'medium', label: t('onboarding.idealColiving.fourPeople'), icon: Users, variant: 'blue' as const, description: t('onboarding.idealColiving.perfectBalance') },
+    { value: 'large', label: t('onboarding.idealColiving.sevenPeople'), icon: Users, variant: 'green' as const, description: t('onboarding.idealColiving.vibrantCommunity') },
+    { value: 'xlarge', label: t('onboarding.idealColiving.tenPlusPeople'), icon: Building2, variant: 'orange' as const, description: t('onboarding.idealColiving.largeCommunity') },
   ];
 
   const genderMixOptions = [
@@ -102,7 +103,9 @@ export default function IdealColivingPage() {
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
-                  <div className="text-2xl mb-2">{size.emoji}</div>
+                  <div className="flex justify-center mb-2">
+                    <IconBadge icon={size.icon} variant={size.variant} size="lg" />
+                  </div>
                   <div className={`font-semibold text-sm mb-1 ${
                     colivingSize === size.value ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
                   }`}>
@@ -138,8 +141,9 @@ export default function IdealColivingPage() {
 
           {/* Roommate age range */}
           <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
-            <label className="block text-sm font-medium text-gray-700 mb-4">
-              🗓️ {t('onboarding.idealColiving.roommateAgeRange')}
+            <label className="block text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
+              <IconBadge icon={Calendar} variant="yellow" size="sm" />
+              {t('onboarding.idealColiving.roommateAgeRange')}
             </label>
 
             {/* Min age */}
@@ -181,8 +185,9 @@ export default function IdealColivingPage() {
 
           {/* Shared space importance */}
           <div className="p-5 rounded-xl bg-blue-50 border border-blue-200">
-            <label className="block text-sm font-medium text-gray-700 mb-4">
-              💡 {t('onboarding.idealColiving.sharedSpaceImportance')}
+            <label className="block text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
+              <IconBadge icon={Home} variant="blue" size="sm" />
+              {t('onboarding.idealColiving.sharedSpaceImportance')}
             </label>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">{t('onboarding.idealColiving.needPrivacy')}</span>

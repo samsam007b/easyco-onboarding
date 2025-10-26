@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Globe, Users } from 'lucide-react';
+import { ArrowLeft, Globe, Users, Baby, UsersRound, UserPlus, Handshake } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useAutoSave } from '@/lib/hooks/use-auto-save';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import IconBadge from '@/components/IconBadge';
 
 export default function BasicInfoPage() {
   const router = useRouter();
@@ -216,10 +217,10 @@ export default function BasicInfoPage() {
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: 'child', label: onboarding.basicInfo.relationshipChild, emoji: '👶' },
-                  { value: 'family_member', label: onboarding.basicInfo.relationshipFamily, emoji: '👨‍👩‍👧' },
-                  { value: 'friend', label: onboarding.basicInfo.relationshipFriend, emoji: '👥' },
-                  { value: 'other', label: onboarding.basicInfo.relationshipOther, emoji: '🤝' },
+                  { value: 'child', label: onboarding.basicInfo.relationshipChild, icon: Baby, variant: 'blue' as const },
+                  { value: 'family_member', label: onboarding.basicInfo.relationshipFamily, icon: UsersRound, variant: 'purple' as const },
+                  { value: 'friend', label: onboarding.basicInfo.relationshipFriend, icon: UserPlus, variant: 'green' as const },
+                  { value: 'other', label: onboarding.basicInfo.relationshipOther, icon: Handshake, variant: 'orange' as const },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -231,7 +232,9 @@ export default function BasicInfoPage() {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <div className="text-2xl mb-1">{option.emoji}</div>
+                    <div className="mb-2">
+                      <IconBadge icon={option.icon} variant={option.variant} size="lg" />
+                    </div>
                     <div className="text-sm font-medium">{option.label}</div>
                   </button>
                 ))}

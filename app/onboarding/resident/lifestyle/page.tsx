@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Briefcase, Moon, Sun, Cigarette, Utensils, Dumbbell } from 'lucide-react';
+import { ArrowLeft, Briefcase, Moon, Sun, Cigarette, Utensils, Dumbbell, GraduationCap, Rocket, FileText, Search, Plus, CigaretteOff } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import IconBadge from '@/components/IconBadge';
 
 export default function ResidentLifestylePage() {
   const router = useRouter();
@@ -163,12 +164,12 @@ export default function ResidentLifestylePage() {
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: 'student', label: 'Student', icon: '🎓' },
-                  { value: 'employee', label: 'Employee', icon: '💼' },
-                  { value: 'self-employed', label: 'Self-Employed', icon: '🚀' },
-                  { value: 'intern', label: 'Intern', icon: '📝' },
-                  { value: 'job_seeker', label: 'Job Seeker', icon: '🔍' },
-                  { value: 'other', label: 'Other', icon: '➕' },
+                  { value: 'student', label: 'Student', icon: GraduationCap, variant: 'blue' as const },
+                  { value: 'employee', label: 'Employee', icon: Briefcase, variant: 'purple' as const },
+                  { value: 'self-employed', label: 'Self-Employed', icon: Rocket, variant: 'orange' as const },
+                  { value: 'intern', label: 'Intern', icon: FileText, variant: 'green' as const },
+                  { value: 'job_seeker', label: 'Job Seeker', icon: Search, variant: 'yellow' as const },
+                  { value: 'other', label: 'Other', icon: Plus, variant: 'indigo' as const },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -181,7 +182,7 @@ export default function ResidentLifestylePage() {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{option.icon}</span>
+                      <IconBadge icon={option.icon} variant={option.variant} size="md" />
                       <span className="font-medium">{option.label}</span>
                     </div>
                   </button>
@@ -257,8 +258,8 @@ export default function ResidentLifestylePage() {
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: false, label: 'Non-smoker', icon: '🚭' },
-                  { value: true, label: 'Smoker', icon: '🚬' },
+                  { value: false, label: 'Non-smoker', icon: CigaretteOff, variant: 'green' as const },
+                  { value: true, label: 'Smoker', icon: Cigarette, variant: 'red' as const },
                 ].map((option) => (
                   <button
                     key={option.value.toString()}
@@ -271,7 +272,7 @@ export default function ResidentLifestylePage() {
                     }`}
                   >
                     <div className="flex items-center gap-3 justify-center">
-                      <span className="text-2xl">{option.icon}</span>
+                      <IconBadge icon={option.icon} variant={option.variant} size="md" />
                       <span className="font-medium">{option.label}</span>
                     </div>
                   </button>

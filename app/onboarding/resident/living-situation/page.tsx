@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, MapPin, Home, Calendar, FileText } from 'lucide-react';
+import { ArrowLeft, MapPin, Home, Calendar, FileText, Lightbulb } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import IconBadge from '@/components/IconBadge';
 
 export default function ResidentLivingSituationPage() {
   const router = useRouter();
@@ -273,7 +274,7 @@ export default function ResidentLivingSituationPage() {
             {/* Tips */}
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
               <h3 className="font-semibold text-[#4A148C] mb-2 flex items-center gap-2">
-                <span>💡</span>
+                <IconBadge icon={Lightbulb} variant="purple" size="sm" />
                 {resident.livingSituation.tipsTitle}
               </h3>
               <ul className="text-sm text-gray-700 space-y-1">

@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Users, Heart, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Users, Heart, MessageCircle, Volume2, Smile, PartyPopper, Sofa, Door, Sparkles, BookOpen, Coffee, Guitar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import IconBadge from '@/components/IconBadge';
 
 export default function ResidentPersonalityPage() {
   const router = useRouter();
@@ -183,9 +184,9 @@ export default function ResidentPersonalityPage() {
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'low', label: 'Low', icon: '🤫', desc: 'I prefer quiet time' },
-                  { value: 'medium', label: 'Medium', icon: '😊', desc: 'Balanced social life' },
-                  { value: 'high', label: 'High', icon: '🎉', desc: 'Love being social' },
+                  { value: 'low', label: 'Low', icon: Volume2, variant: 'blue' as const, desc: 'I prefer quiet time' },
+                  { value: 'medium', label: 'Medium', icon: Smile, variant: 'green' as const, desc: 'Balanced social life' },
+                  { value: 'high', label: 'High', icon: PartyPopper, variant: 'orange' as const, desc: 'Love being social' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -198,7 +199,9 @@ export default function ResidentPersonalityPage() {
                     }`}
                   >
                     <div className="text-center">
-                      <div className="text-2xl mb-2">{option.icon}</div>
+                      <div className="flex justify-center mb-2">
+                        <IconBadge icon={option.icon} variant={option.variant} size="lg" />
+                      </div>
                       <div className="font-medium text-sm">{option.label}</div>
                       <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
                     </div>
@@ -214,9 +217,9 @@ export default function ResidentPersonalityPage() {
               </label>
               <div className="space-y-3">
                 {[
-                  { value: 'cozy_evenings', label: 'Cozy Evenings', icon: '🛋️', desc: 'Movie nights and chill hangouts' },
-                  { value: 'independent_living', label: 'Independent Living', icon: '🚪', desc: 'Respect each other\'s space' },
-                  { value: 'community_events', label: 'Community Events', icon: '🎊', desc: 'Group activities and parties' },
+                  { value: 'cozy_evenings', label: 'Cozy Evenings', icon: Sofa, variant: 'purple' as const, desc: 'Movie nights and chill hangouts' },
+                  { value: 'independent_living', label: 'Independent Living', icon: Door, variant: 'blue' as const, desc: 'Respect each other\'s space' },
+                  { value: 'community_events', label: 'Community Events', icon: Sparkles, variant: 'pink' as const, desc: 'Group activities and parties' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -229,7 +232,7 @@ export default function ResidentPersonalityPage() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <span className="text-3xl">{option.icon}</span>
+                      <IconBadge icon={option.icon} variant={option.variant} size="lg" />
                       <div className="flex-1">
                         <div className="font-medium">{option.label}</div>
                         <div className="text-sm text-gray-500 mt-1">{option.desc}</div>
@@ -247,9 +250,9 @@ export default function ResidentPersonalityPage() {
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'quiet', label: 'Quiet', icon: '📚', desc: 'Mostly in my room' },
-                  { value: 'social', label: 'Social', icon: '☕', desc: 'Often in common areas' },
-                  { value: 'very_active', label: 'Very Active', icon: '🎸', desc: 'Always doing something' },
+                  { value: 'quiet', label: 'Quiet', icon: BookOpen, variant: 'blue' as const, desc: 'Mostly in my room' },
+                  { value: 'social', label: 'Social', icon: Coffee, variant: 'orange' as const, desc: 'Often in common areas' },
+                  { value: 'very_active', label: 'Very Active', icon: Guitar, variant: 'purple' as const, desc: 'Always doing something' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -262,7 +265,9 @@ export default function ResidentPersonalityPage() {
                     }`}
                   >
                     <div className="text-center">
-                      <div className="text-2xl mb-2">{option.icon}</div>
+                      <div className="flex justify-center mb-2">
+                        <IconBadge icon={option.icon} variant={option.variant} size="lg" />
+                      </div>
                       <div className="font-medium text-sm">{option.label}</div>
                       <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
                     </div>
