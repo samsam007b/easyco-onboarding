@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Users, Settings, LogOut, Edit, MapPin, MessageCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
-import RoleBadge from '@/components/RoleBadge'
+import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
 
 interface UserProfile {
@@ -136,34 +135,14 @@ export default function ResidentDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      {/* Top Bar: Role Badge & Language Switcher */}
-      <div className="absolute top-6 right-6 z-50 flex items-center gap-3">
-        <RoleBadge />
-        <LanguageSwitcher />
-      </div>
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-full flex items-center justify-center text-white font-bold text-lg">
-              {profile.full_name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-[#4A148C]">{dashboard.resident.title}</h1>
-              <p className="text-sm text-gray-600">{profile.full_name}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => router.push('/profile')}>
-              <Settings className="w-5 h-5 mr-2" />
-              {dashboard.searcher.settings}
-            </Button>
-            <Button variant="ghost" onClick={handleLogout}>
-              <LogOut className="w-5 h-5 mr-2" />
-              {dashboard.searcher.logout}
-            </Button>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader
+        profile={{
+          full_name: profile.full_name,
+          email: profile.email,
+          profile_data: profile.profile_data
+        }}
+        avatarColor="#FF6F3C"
+      />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">

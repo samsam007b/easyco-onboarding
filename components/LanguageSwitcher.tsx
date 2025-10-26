@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Globe, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { languages, Language } from '@/lib/i18n/translations';
 
@@ -42,8 +42,7 @@ export default function LanguageSwitcher() {
         className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
         aria-label="Change language"
       >
-        <Globe className="w-4 h-4 text-gray-600" />
-        <span className="text-sm font-medium text-gray-700">{currentLang.flag} {currentLang.code.toUpperCase()}</span>
+        <span className="text-2xl">{currentLang.flag}</span>
         <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
