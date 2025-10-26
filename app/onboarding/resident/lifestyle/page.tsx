@@ -182,7 +182,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{option.icon}</span>
-                      <span className="font-medium">{option}</span>
+                      <span className="font-medium">{option.label}</span>
                     </div>
                   </button>
                 ))}
