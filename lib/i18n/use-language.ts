@@ -15,18 +15,24 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('fr');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedLang = localStorage.getItem('easyco_language') as Language;
-    if (savedLang && ['fr', 'en', 'nl', 'de'].includes(savedLang)) {
-      setLanguageState(savedLang);
+    setMounted(true);
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('easyco_language') as Language;
+      if (savedLang && ['fr', 'en', 'nl', 'de'].includes(savedLang)) {
+        setLanguageState(savedLang);
+      }
     }
   }, []);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('easyco_language', lang);
-    document.cookie = `easyco_language=${lang}; path=/; max-age=31536000`;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('easyco_language', lang);
+      document.cookie = `easyco_language=${lang}; path=/; max-age=31536000`;
+    }
   };
 
   const t = (key: string) => translate(key, language);
