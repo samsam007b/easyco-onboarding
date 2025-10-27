@@ -6,7 +6,7 @@ import { ArrowLeft, UserPlus, Users, Calendar, MapPin, DollarSign, Check, X } fr
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast, showInfoToast } from '@/lib/toast-helpers';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
@@ -35,7 +35,7 @@ interface GroupInvitation {
 
 export default function JoinGroupPage() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   const [inviteCode, setInviteCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);

@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast } from '@/lib/toast-helpers';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function CreateGroupPage() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
