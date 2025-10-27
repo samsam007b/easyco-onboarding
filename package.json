@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "demo": "./scripts/start-demo.sh",
+    "demo:exit": "./scripts/exit-demo.sh"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

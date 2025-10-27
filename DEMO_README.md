@@ -18,6 +18,24 @@ This is a **demo/test version** of the EasyCo coliving platform, designed for us
 
 ## 🚀 Quick Start
 
+### Local Testing
+
+If you want to run the demo locally:
+
+```bash
+# Start demo mode
+./scripts/start-demo.sh
+
+# Exit demo mode and return to main
+./scripts/exit-demo.sh
+```
+
+The `start-demo.sh` script will:
+- Switch to demo-version branch
+- Set up demo environment variables
+- Install dependencies
+- Start the development server with demo features enabled
+
 ### Demo Accounts
 
 Three pre-configured accounts are available to test different user roles:
