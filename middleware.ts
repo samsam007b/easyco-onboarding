@@ -134,8 +134,13 @@ export async function middleware(request: NextRequest) {
         )
       }
 
-      // If onboarding completed, redirect to welcome page for role selection
-      if (userData.onboarding_completed) {
+      // If onboarding completed and user has a role, redirect to their dashboard
+      if (userData.onboarding_completed && userData.user_type) {
+        return NextResponse.redirect(new URL(`/dashboard/${userData.user_type}`, request.url))
+      }
+
+      // If onboarding completed but no role yet (edge case), go to welcome for role selection
+      if (userData.onboarding_completed && !userData.user_type) {
         return NextResponse.redirect(new URL(welcomeRoute, request.url))
       }
     }
