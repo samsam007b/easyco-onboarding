@@ -103,11 +103,27 @@ export async function updateProperty(propertyId: string, data: Partial<CreatePro
       return { success: false, error: 'User not authenticated' }
     }
 
+    // SECURITY: Verify ownership BEFORE attempting update (IDOR protection)
+    const { data: existingProperty, error: fetchError } = await supabase
+      .from('properties')
+      .select('owner_id')
+      .eq('id', propertyId)
+      .single()
+
+    if (fetchError || !existingProperty) {
+      return { success: false, error: 'Property not found' }
+    }
+
+    if (existingProperty.owner_id !== user.id) {
+      return { success: false, error: 'Unauthorized: You do not own this property' }
+    }
+
+    // Now perform the update
     const { data: property, error } = await supabase
       .from('properties')
       .update(data)
       .eq('id', propertyId)
-      .eq('owner_id', user.id) // Ensure user owns the property
+      .eq('owner_id', user.id) // Double check with RLS
       .select()
       .single()
 
@@ -133,11 +149,27 @@ export async function deleteProperty(propertyId: string) {
       return { success: false, error: 'User not authenticated' }
     }
 
+    // SECURITY: Verify ownership BEFORE attempting delete (IDOR protection)
+    const { data: existingProperty, error: fetchError } = await supabase
+      .from('properties')
+      .select('owner_id')
+      .eq('id', propertyId)
+      .single()
+
+    if (fetchError || !existingProperty) {
+      return { success: false, error: 'Property not found' }
+    }
+
+    if (existingProperty.owner_id !== user.id) {
+      return { success: false, error: 'Unauthorized: You do not own this property' }
+    }
+
+    // Now perform the delete
     const { error } = await supabase
       .from('properties')
       .delete()
       .eq('id', propertyId)
-      .eq('owner_id', user.id) // Ensure user owns the property
+      .eq('owner_id', user.id) // Double check with RLS
 
     if (error) throw error
 

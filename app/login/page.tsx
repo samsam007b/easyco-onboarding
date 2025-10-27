@@ -28,8 +28,31 @@ function LoginContent() {
   useEffect(() => {
     // Get redirect parameter from URL if present
     const redirect = searchParams?.get('redirect')
-    if (redirect && redirect.startsWith('/')) {
-      setRedirectTo(redirect)
+
+    if (redirect) {
+      // SECURITY: Whitelist allowed redirect paths to prevent open redirect attacks
+      const allowedPaths = [
+        '/dashboard/searcher',
+        '/dashboard/owner',
+        '/dashboard/resident',
+        '/profile',
+        '/properties',
+        '/admin',
+        '/settings',
+        '/messages',
+      ]
+
+      // Check if redirect matches allowed paths (exact match or starts with allowed path + '/')
+      const isAllowed = allowedPaths.some(path =>
+        redirect === path || redirect.startsWith(path + '/')
+      )
+
+      // Also block protocol-relative URLs like //evil.com
+      const isSafe = redirect.startsWith('/') && !redirect.startsWith('//')
+
+      if (isAllowed && isSafe) {
+        setRedirectTo(redirect)
+      }
     }
   }, [searchParams])
 

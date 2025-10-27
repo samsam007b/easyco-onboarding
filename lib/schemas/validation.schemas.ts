@@ -18,22 +18,35 @@ export const emailSchema = z
 
 /**
  * Password validation schema
- * Requires: min 8 chars, uppercase, lowercase, number
+ * Requires: min 12 chars, uppercase, lowercase, number, special character
+ * Blocks common weak passwords
  */
 export const passwordSchema = z
   .string()
-  .min(8, 'Password must be at least 8 characters')
+  .min(12, 'Password must be at least 12 characters')
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
   .regex(/[0-9]/, 'Password must contain at least one number')
+  .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character (!@#$%^&*)')
+  .refine((pwd) => {
+    // Block common weak passwords
+    const commonPasswords = [
+      'password123!',
+      '123456789!',
+      'qwerty123!',
+      'admin123!',
+      'welcome123!',
+      'password1234',
+      '12345678910',
+    ];
+    return !commonPasswords.includes(pwd.toLowerCase());
+  }, 'Password is too common. Please choose a stronger password')
 
 /**
- * Strong password schema (adds special character requirement)
+ * Strong password schema (deprecated - passwordSchema now includes special characters)
+ * @deprecated Use passwordSchema instead, which now requires special characters
  */
-export const strongPasswordSchema = passwordSchema.regex(
-  /[^A-Za-z0-9]/,
-  'Password must contain at least one special character'
-)
+export const strongPasswordSchema = passwordSchema
 
 /**
  * French phone number schema
