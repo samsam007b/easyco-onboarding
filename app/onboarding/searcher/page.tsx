@@ -17,7 +17,7 @@ export default function SearcherIndex() {
       <h1 className="text-2xl font-bold">{t('onboarding.searcherIndex.title')}</h1>
       <div className="card space-y-3">
         <p>{t('onboarding.searcherIndex.description')}</p>
-        <Link href="/onboarding/searcher/basic-info" className="btn btn-primary inline-block">
+        <Link href="/onboarding/searcher/group-selection" className="btn btn-primary inline-block">
           {t('onboarding.searcherIndex.start')}
         </Link>
       </div>
