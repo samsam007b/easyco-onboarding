@@ -52,8 +52,33 @@ export default function GroupManagement({ userId }: { userId: string }) {
   const [generatedInviteCode, setGeneratedInviteCode] = useState<string | null>(null);
 
   useEffect(() => {
-    loadGroupData();
+    checkOnboardingAndLoadData();
   }, [userId]);
+
+  const checkOnboardingAndLoadData = async () => {
+    try {
+      // First, check if onboarding is completed
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('onboarding_completed')
+        .eq('id', userId)
+        .single();
+
+      if (userError) throw userError;
+
+      // If onboarding not completed, redirect
+      if (!userData?.onboarding_completed) {
+        router.push('/onboarding/searcher/basic-info');
+        return;
+      }
+
+      // Onboarding complete, load group data
+      await loadGroupData();
+    } catch (error) {
+      console.error('Error checking onboarding:', error);
+      setIsLoading(false);
+    }
+  };
 
   const loadGroupData = async () => {
     try {
