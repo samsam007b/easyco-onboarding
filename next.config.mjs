@@ -87,7 +87,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
-              "connect-src 'self' https://fgthoyilfupywmpmiuwd.supabase.co https://www.google-analytics.com",
+              "connect-src 'self' https://fgthoyilfupywmpmiuwd.supabase.co wss://fgthoyilfupywmpmiuwd.supabase.co https://www.google-analytics.com https://region1.google-analytics.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
