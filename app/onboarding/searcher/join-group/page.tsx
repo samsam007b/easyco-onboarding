@@ -337,14 +337,21 @@ export default function JoinGroupPage() {
 
                   {/* Actions */}
                   <div className="flex gap-3">
-                    <Button
-                      onClick={() => handleAcceptInvitation(invitation)}
-                      disabled={isLoading}
-                      className="flex-1 flex items-center justify-center gap-2"
-                    >
-                      <Check className="w-4 h-4" />
-                      Accept
-                    </Button>
+                    {invitation.member_count >= invitation.groups.max_members ? (
+                      <div className="flex-1 bg-gray-100 border border-gray-300 rounded-lg p-3 text-center">
+                        <p className="text-sm text-gray-600 font-medium">Group is Full</p>
+                        <p className="text-xs text-gray-500 mt-1">This group has reached its maximum capacity</p>
+                      </div>
+                    ) : (
+                      <Button
+                        onClick={() => handleAcceptInvitation(invitation)}
+                        disabled={isLoading}
+                        className="flex-1 flex items-center justify-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        Accept
+                      </Button>
+                    )}
                     <Button
                       variant="outline"
                       onClick={() => handleDeclineInvitation(invitation.id)}
