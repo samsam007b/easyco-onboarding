@@ -35,7 +35,7 @@ export default function OwnerApplicationsPage() {
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | Application['status']>('all');
 
-  const { loadApplications, updateApplicationStatus } = useApplications(userId || undefined);
+  const { applications: hookApplications, loadApplications, updateApplicationStatus, isLoading: hookLoading } = useApplications(userId || undefined);
 
   useEffect(() => {
     const init = async () => {
@@ -44,7 +44,7 @@ export default function OwnerApplicationsPage() {
 
       if (user) {
         setUserId(user.id);
-        await loadApplicationsData(user.id);
+        await loadApplications(true); // true = as owner
       }
 
       setLoading(false);
@@ -53,11 +53,15 @@ export default function OwnerApplicationsPage() {
     init();
   }, []);
 
-  const loadApplicationsData = async (uid: string) => {
-    setLoading(true);
-    const apps = await loadApplications(true); // true = as owner
-    setApplications(apps);
-    setLoading(false);
+  useEffect(() => {
+    // Update local applications state when hook applications change
+    if (hookApplications) {
+      setApplications(hookApplications);
+    }
+  }, [hookApplications]);
+
+  const loadApplicationsData = async () => {
+    await loadApplications(true); // true = as owner
   };
 
   const handleApprove = async (applicationId: string) => {
@@ -66,9 +70,9 @@ export default function OwnerApplicationsPage() {
     }
 
     const success = await updateApplicationStatus(applicationId, 'approved');
-    if (success && userId) {
+    if (success) {
       toast.success('Application approved!');
-      await loadApplicationsData(userId);
+      await loadApplicationsData();
       setSelectedApplication(null);
     }
   };
@@ -82,9 +86,9 @@ export default function OwnerApplicationsPage() {
       reason || undefined
     );
 
-    if (success && userId) {
+    if (success) {
       toast.success('Application rejected');
-      await loadApplicationsData(userId);
+      await loadApplicationsData();
       setSelectedApplication(null);
     }
   };
