@@ -16,7 +16,12 @@ export default function ResumeOnboardingModal() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkOnboardingProgress();
+    // Only check if we're client-side
+    if (typeof window !== 'undefined') {
+      checkOnboardingProgress();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   const checkOnboardingProgress = async () => {
