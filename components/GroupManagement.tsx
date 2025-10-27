@@ -359,10 +359,14 @@ export default function GroupManagement({ userId }: { userId: string }) {
                     <p className="font-medium text-gray-900 flex items-center gap-2">
                       {member.users.full_name}
                       {member.role === 'creator' && (
-                        <Crown className="w-4 h-4 text-yellow-500" title="Creator" />
+                        <span className="flex items-center gap-1" aria-label="Creator">
+                          <Crown className="w-4 h-4 text-yellow-500" />
+                        </span>
                       )}
                       {member.role === 'admin' && (
-                        <Shield className="w-4 h-4 text-blue-500" title="Admin" />
+                        <span className="flex items-center gap-1" aria-label="Admin">
+                          <Shield className="w-4 h-4 text-blue-500" />
+                        </span>
                       )}
                     </p>
                     <p className="text-sm text-gray-600">{member.users.email}</p>
