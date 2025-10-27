@@ -8,6 +8,7 @@ import { ArrowLeft, Edit, DollarSign, Users, Heart, Settings, Shield, TrendingUp
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useRole } from '@/lib/role/role-context';
 
 interface ProfileData {
   full_name: string;
@@ -31,6 +32,7 @@ interface ProfileData {
 export default function MyProfilePage() {
   const router = useRouter();
   const supabase = createClient();
+  const { activeRole } = useRole();
   const { t, getSection } = useLanguage();
   const dashboard = getSection('dashboard');
   const common = getSection('common');
@@ -187,7 +189,10 @@ export default function MyProfilePage() {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <button
-            onClick={() => router.push(`/dashboard/${profile.user_type}`)}
+            onClick={() => {
+              const role = activeRole || profile?.user_type || 'searcher';
+              router.push(`/dashboard/${role}`);
+            }}
             className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
