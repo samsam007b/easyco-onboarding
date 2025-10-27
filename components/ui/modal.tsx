@@ -76,6 +76,7 @@ export function Modal({
 }: ModalProps) {
   // Handle escape key
   React.useEffect(() => {
+    if (typeof window === 'undefined') return
     if (!closeOnEscape || !open) return
 
     const handleEscape = (e: KeyboardEvent) => {
@@ -90,6 +91,8 @@ export function Modal({
 
   // Prevent body scroll when modal is open
   React.useEffect(() => {
+    if (typeof window === 'undefined') return
+
     if (open) {
       document.body.style.overflow = 'hidden'
     } else {
