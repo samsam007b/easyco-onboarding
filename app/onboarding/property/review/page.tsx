@@ -35,7 +35,7 @@ export default function PropertyReview() {
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from('test_properties').insert([
+      const { error } = await supabase.from('properties').insert([
         {
           owner_id: data.ownerId,
           property_type: data.basics?.propertyType,
