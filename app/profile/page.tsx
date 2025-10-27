@@ -10,6 +10,7 @@ import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertC
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
+import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 
 interface UserData {
   id: string
@@ -400,33 +401,22 @@ export default function ProfilePage() {
         <div className="space-y-6">
           {/* Profile Picture */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Profile Picture</h2>
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                {userData.avatar_url ? (
-                  <img
-                    src={userData.avatar_url}
-                    alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-full bg-[#4A148C]/10 flex items-center justify-center">
-                    <User className="w-12 h-12 text-[#4A148C]" />
-                  </div>
-                )}
-                <button className="absolute bottom-0 right-0 w-8 h-8 bg-[#FFD600] rounded-full flex items-center justify-center hover:bg-[#F57F17] transition-colors">
-                  <Camera className="w-4 h-4 text-black" />
-                </button>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-2">
-                  Upload a profile picture (coming soon)
-                </p>
-                <p className="text-xs text-gray-500">
-                  JPG, PNG or GIF. Max size 2MB.
-                </p>
-              </div>
-            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Picture</h2>
+            <ProfilePictureUpload
+              userId={userData.id}
+              currentAvatarUrl={userData.avatar_url || undefined}
+              onUploadSuccess={async (url) => {
+                // Refresh user data after upload
+                const { data } = await supabase
+                  .from('users')
+                  .select('*')
+                  .eq('id', userData.id)
+                  .single();
+                if (data) {
+                  setUserData(data as UserData);
+                }
+              }}
+            />
           </div>
 
           {/* Personal Information */}
