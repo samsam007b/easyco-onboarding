@@ -101,10 +101,10 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
       >
         {/* Avatar with Role Icon */}
         <div
-          className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm"
+          className="w-11 h-11 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white shadow-sm"
           style={{ background: `linear-gradient(135deg, ${avatarColor}, ${avatarColor}dd)` }}
         >
-          <RoleIcon className="w-5 h-5" />
+          <RoleIcon className="w-6 h-6 sm:w-5 sm:h-5" />
         </div>
 
         {/* Name */}
@@ -120,7 +120,7 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+        <div className="absolute top-full left-0 mt-2 w-full sm:w-80 max-w-xs bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
           {/* Profile Header */}
           <div
             className="p-6 text-white"

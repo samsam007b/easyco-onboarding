@@ -142,23 +142,23 @@ export default function WelcomePage() {
       </header>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center min-h-screen p-6">
+      <div className="flex items-center justify-center min-h-screen p-4 sm:p-6">
         <div className="max-w-5xl w-full">
           {/* Welcome Message */}
-          <div className="text-center mb-12 animate-fadeIn">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-lg mb-6">
-              <span className="text-4xl">👋</span>
+          <div className="text-center mb-8 sm:mb-12 animate-fadeIn">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg mb-4 sm:mb-6">
+              <span className="text-3xl sm:text-4xl">👋</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[var(--easy-purple)] mb-3">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[var(--easy-purple)] mb-2 sm:mb-3">
               {welcome.greeting || 'Bonjour'}, {user?.full_name}!
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
               {welcome.subtitle || 'Que souhaitez-vous faire aujourd\'hui ?'}
             </p>
           </div>
 
           {/* Role Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {roleCards.map((card, index) => {
               const IconComponent = card.icon;
               return (
@@ -166,7 +166,7 @@ export default function WelcomePage() {
                   key={card.id}
                   onClick={() => handleRoleSelect(card.id as any)}
                   className={`
-                    group relative bg-white rounded-3xl p-8
+                    group relative bg-white rounded-3xl p-4 sm:p-8
                     border-2 ${card.borderColor}
                     shadow-lg hover:shadow-2xl
                     transition-all duration-300
@@ -180,17 +180,17 @@ export default function WelcomePage() {
                 >
                   {/* Icon Circle */}
                   <div
-                    className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: card.color }}
                   >
-                    <IconComponent className="w-10 h-10" />
+                    <IconComponent className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
                     {card.title}
                   </h3>
-                  <p className="text-gray-600 mb-6 min-h-[48px]">
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 min-h-[40px] sm:min-h-[48px]">
                     {card.description}
                   </p>
 

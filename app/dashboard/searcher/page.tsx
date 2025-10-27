@@ -158,11 +158,11 @@ export default function SearcherDashboard() {
       />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Welcome Section */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
-            {dashboard.searcher.welcome} {profile.full_name}! <Hand className="w-7 h-7 text-[#FFD700]" />
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
+            {dashboard.searcher.welcome} {profile.full_name}! <Hand className="w-6 h-6 sm:w-7 sm:h-7 text-[#FFD700]" />
           </h2>
           <p className="text-gray-600">
             {dashboard.searcher.welcomeMessage}
@@ -170,50 +170,50 @@ export default function SearcherDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Search className="w-6 h-6 text-[#4A148C]" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.browseProperties}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.browseProperties}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
           </button>
 
-          <button className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Heart className="w-6 h-6 text-red-500" />
+          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.favorites}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.favorites}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
           </button>
 
-          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="w-6 h-6 text-green-600" />
+          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
-            <p className="text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
           </button>
         </div>
 
         {/* Profile Preview Card */}
-        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-6 sm:mb-8">
           {/* Header with gradient */}
-          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-8 text-white relative">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
-                  <User className="w-10 h-10" />
+          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-4 sm:p-8 text-white relative">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+                  <User className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">Welcome!</h2>
-                  <div className="flex items-center gap-2 text-white/90">
-                    <MapPin className="w-4 h-4" />
-                    <span>{profile_data?.current_city || profile_data?.preferred_cities?.[0] || 'Location not set'}</span>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-1">Welcome!</h2>
+                  <div className="flex items-center gap-2 text-white/90 text-sm sm:text-base">
+                    <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="line-clamp-1">{profile_data?.current_city || profile_data?.preferred_cities?.[0] || 'Location not set'}</span>
                   </div>
                 </div>
               </div>
-              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 w-full sm:w-auto text-sm sm:text-base">
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>
@@ -243,10 +243,10 @@ export default function SearcherDashboard() {
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {/* About Me Section */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                 <IconBadge icon={ClipboardList} variant="purple" size="sm" />
                 {dashboard.searcher.aboutMe}
               </h3>
@@ -281,7 +281,7 @@ export default function SearcherDashboard() {
             {/* Lifestyle Section */}
             {(profile_data?.cleanliness_preference || profile_data?.introvert_extrovert_scale !== undefined || profile_data?.is_smoker !== undefined || profile_data?.dietary_preferences || profile_data?.hobbies) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={Sparkles} variant="pink" size="sm" />
                   {dashboard.searcher.lifestyle}
                 </h3>
@@ -337,11 +337,11 @@ export default function SearcherDashboard() {
             {/* Daily Routine Section */}
             {(profile_data?.early_bird_night_owl || profile_data?.work_schedule) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={RotateCw} variant="blue" size="sm" />
                   {dashboard.searcher.dailyRoutine}
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {profile_data?.early_bird_night_owl && (
                     <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                       <p className="text-xs text-gray-600 mb-1">{dashboard.searcher.sleepSchedule}</p>
@@ -366,7 +366,7 @@ export default function SearcherDashboard() {
 
             {/* Looking For Section */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                 <IconBadge icon={Home} variant="green" size="sm" />
                 {dashboard.searcher.lookingFor}
               </h3>
@@ -418,11 +418,11 @@ export default function SearcherDashboard() {
         </div>
 
         {/* Matches Section (Coming Soon) */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
-          <h3 className="text-xl font-bold text-[#4A148C] mb-4">{dashboard.searcher.yourMatches}</h3>
-          <div className="text-center py-12">
-            <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h4 className="text-lg font-semibold text-gray-700 mb-2">
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mt-6 sm:mt-8">
+          <h3 className="text-lg sm:text-xl font-bold text-[#4A148C] mb-4">{dashboard.searcher.yourMatches}</h3>
+          <div className="text-center py-8 sm:py-12">
+            <MessageCircle className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+            <h4 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
               {dashboard.searcher.noMatchesYet}
             </h4>
             <p className="text-gray-500 mb-6">

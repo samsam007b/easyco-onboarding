@@ -184,11 +184,11 @@ export default function OwnerDashboard() {
       />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Welcome Section */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#4A148C] mb-2">
-            {dashboard.owner.welcome} {profile.full_name}! <Hand className="w-7 h-7 text-[#FFD700]" />
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
+            {dashboard.owner.welcome} {profile.full_name}! <Hand className="w-6 h-6 sm:w-7 sm:h-7 text-[#FFD700]" />
           </h2>
           <p className="text-gray-600">
             {dashboard.owner.welcomeMessage}
@@ -196,23 +196,23 @@ export default function OwnerDashboard() {
         </div>
 
         {/* Profile Preview Card */}
-        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-6 sm:mb-8">
           {/* Header with gradient */}
-          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-8 text-white relative">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
-                  <Building2 className="w-10 h-10" />
+          <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-4 sm:p-8 text-white relative">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+                  <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">{dashboard.owner.propertyOwnerProfile}</h2>
-                  <div className="flex items-center gap-2 text-white/90">
-                    <MapPin className="w-4 h-4" />
-                    <span>{profile.profile_data?.primary_location || profile.profile_data?.property_city || dashboard.searcher.locationNotSet}</span>
+                  <h2 className="text-lg sm:text-2xl font-bold mb-1">{dashboard.owner.propertyOwnerProfile}</h2>
+                  <div className="flex items-center gap-2 text-white/90 text-sm sm:text-base">
+                    <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="line-clamp-1">{profile.profile_data?.primary_location || profile.profile_data?.property_city || dashboard.searcher.locationNotSet}</span>
                   </div>
                 </div>
               </div>
-              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+              <Button onClick={handleEditProfile} variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 w-full sm:w-auto text-sm sm:text-base">
                 <Edit className="w-4 h-4 mr-2" />
                 {dashboard.searcher.editProfile}
               </Button>
@@ -242,10 +242,10 @@ export default function OwnerDashboard() {
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {/* Owner Info Section */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+              <h3 className="text-base sm:text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                 <IconBadge icon={UserCircle} variant="purple" size="sm" /> {dashboard.owner.ownerInfo}
               </h3>
               <div className="space-y-2 text-gray-700">
@@ -271,7 +271,7 @@ export default function OwnerDashboard() {
             {/* Property Info Section */}
             {(profile.profile_data?.has_property || profile.profile_data?.property_city || profile.profile_data?.property_type) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={Home} variant="blue" size="sm" /> {dashboard.owner.propertyDetails}
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -298,7 +298,7 @@ export default function OwnerDashboard() {
             {/* Management Style */}
             {(profile.profile_data?.experience_years || profile.profile_data?.management_type) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={Settings} variant="orange" size="sm" /> Management Style
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -321,7 +321,7 @@ export default function OwnerDashboard() {
             {/* About/Bio */}
             {(profile.profile_data?.bio || profile.profile_data?.owner_bio) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={FileText} variant="green" size="sm" /> About
                 </h3>
                 <p className="text-gray-700 italic">"{profile.profile_data.bio || profile.profile_data.owner_bio}"</p>
@@ -331,7 +331,7 @@ export default function OwnerDashboard() {
             {/* Payment Info */}
             {(profile.profile_data?.iban || profile.profile_data?.swift_bic) && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#4A148C] mb-3 flex items-center gap-2">
                   <IconBadge icon={CreditCard} variant="cyan" size="sm" /> Payment Information
                 </h3>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -362,36 +362,36 @@ export default function OwnerDashboard() {
         </div>
 
         {/* Properties Section */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-[#4A148C] flex items-center gap-2">
-              <Building2 className="w-6 h-6" />
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <h3 className="text-lg sm:text-xl font-bold text-[#4A148C] flex items-center gap-2">
+              <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
               {dashboard.owner.myProperties}
             </h3>
-            <Button onClick={handleAddProperty}>
+            <Button onClick={handleAddProperty} className="w-full sm:w-auto">
               <Plus className="w-4 h-4 mr-2" />
               {dashboard.owner.addProperty}
             </Button>
           </div>
 
           {properties.length === 0 ? (
-            <div className="text-center py-12">
-              <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h4 className="text-lg font-semibold text-gray-700 mb-2">
+            <div className="text-center py-8 sm:py-12">
+              <Home className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+              <h4 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
                 {dashboard.owner.noPropertiesYet}
               </h4>
-              <p className="text-gray-500 mb-6">
+              <p className="text-sm sm:text-base text-gray-500 mb-6">
                 {dashboard.owner.addFirstProperty}
               </p>
-              <Button onClick={handleAddProperty}>
+              <Button onClick={handleAddProperty} className="w-full sm:w-auto">
                 <Plus className="w-4 h-4 mr-2" />
                 {dashboard.owner.addYourFirstProperty}
               </Button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {properties.map((property) => (
-                <div key={property.id} className="border-2 border-gray-200 rounded-2xl p-6 hover:border-[#4A148C] transition-colors cursor-pointer">
+                <div key={property.id} className="border-2 border-gray-200 rounded-2xl p-4 sm:p-6 hover:border-[#4A148C] transition-colors cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
                     <h4 className="font-bold text-lg text-gray-900 flex-1">{property.title}</h4>
                     <Badge variant={getStatusBadge(property.status)}>
@@ -432,29 +432,29 @@ export default function OwnerDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Building2 className="w-6 h-6 text-[#4A148C]" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.owner.manageProperties}</h4>
-            <p className="text-sm text-gray-600">{dashboard.owner.viewEditListings}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.manageProperties}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.viewEditListings}</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-            <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <User className="w-6 h-6 text-[#FFD600]" />
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.owner.applications}</h4>
-            <p className="text-sm text-gray-600">{dashboard.owner.reviewTenantRequests}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.applications}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.reviewTenantRequests}</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/profile')}>
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="w-6 h-6 text-green-600" />
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer sm:col-span-2 md:col-span-1" onClick={() => router.push('/profile')}>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">{dashboard.searcher.accountSettings}</h4>
-            <p className="text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
           </div>
         </div>
       </main>
