@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { getPropertyById, deleteProperty, publishProperty, archiveProperty } from '@/lib/property-helpers';
 import { createClient } from '@/lib/auth/supabase-client';
+import { useApplications } from '@/lib/hooks/use-applications';
+import ApplicationModal from '@/components/ApplicationModal';
 import type { Property, PropertyAmenity } from '@/types/property.types';
 import { toast } from 'sonner';
 
@@ -22,6 +24,12 @@ export default function PropertyDetailsPage() {
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<{ full_name: string; email: string; phone_number?: string } | null>(null);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+
+  const { hasApplied } = useApplications(userId || undefined);
 
   useEffect(() => {
     loadProperty();
@@ -34,12 +42,42 @@ export default function PropertyDetailsPage() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
+    if (user) {
+      setUserId(user.id);
+
+      // Load user profile
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('full_name, phone_number')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profile) {
+        setUserProfile({
+          full_name: profile.full_name || '',
+          email: user.email || '',
+          phone_number: profile.phone_number,
+        });
+      } else {
+        setUserProfile({
+          full_name: '',
+          email: user.email || '',
+        });
+      }
+    }
+
     // Load property
     const result = await getPropertyById(propertyId);
 
     if (result.success && result.data) {
       setProperty(result.data);
       setIsOwner(user?.id === result.data.owner_id);
+
+      // Check if user has already applied (only if not the owner)
+      if (user && user.id !== result.data.owner_id) {
+        const applied = await hasApplied(propertyId);
+        setAlreadyApplied(applied);
+      }
     } else {
       toast.error('Property not found');
       router.push('/dashboard/owner');
@@ -432,11 +470,39 @@ export default function PropertyDetailsPage() {
             </CardContent>
           </Card>
 
-          {/* Contact (for non-owners) */}
-          {!isOwner && property.status === 'published' && (
-            <Button className="w-full" size="lg">
-              Contact Owner
-            </Button>
+          {/* Apply Button (for non-owners) */}
+          {!isOwner && property.status === 'published' && userId && userProfile && (
+            <>
+              {alreadyApplied ? (
+                <Button className="w-full" size="lg" disabled variant="outline">
+                  <CheckCircle className="w-5 h-5 mr-2" />
+                  Application Submitted
+                </Button>
+              ) : (
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={() => setIsApplicationModalOpen(true)}
+                >
+                  <Send className="w-5 h-5 mr-2" />
+                  Apply Now
+                </Button>
+              )}
+
+              {/* Application Modal */}
+              <ApplicationModal
+                isOpen={isApplicationModalOpen}
+                onClose={() => {
+                  setIsApplicationModalOpen(false);
+                  // Reload to update application status
+                  loadProperty();
+                }}
+                propertyId={propertyId}
+                propertyTitle={property.title}
+                userId={userId}
+                userProfile={userProfile}
+              />
+            </>
           )}
         </div>
       </div>
