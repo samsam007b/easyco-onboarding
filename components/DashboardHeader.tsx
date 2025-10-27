@@ -21,23 +21,23 @@ export default function DashboardHeader({ profile, avatarColor, role }: Dashboar
   return (
     <>
       {/* Top Bar: Language Switcher */}
-      <div className="absolute top-6 right-6 z-50">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50">
         <LanguageSwitcher />
       </div>
 
       {/* Main Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           {/* Left: Profile Dropdown */}
           <ProfileDropdown profile={profile} avatarColor={avatarColor} role={role} />
 
           {/* Right: Settings Icon */}
           <button
             onClick={() => router.push('/profile')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Settings"
           >
-            <Settings className="w-5 h-5 text-gray-600" />
+            <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
           </button>
         </div>
       </header>
