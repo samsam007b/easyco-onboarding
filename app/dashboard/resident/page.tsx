@@ -266,7 +266,7 @@ export default function ResidentDashboard() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+          <button onClick={() => router.push('/community')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
             </div>
@@ -274,7 +274,7 @@ export default function ResidentDashboard() {
             <p className="text-xs sm:text-sm text-gray-600">{dashboard.resident.meetYourRoommates}</p>
           </button>
 
-          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+          <button onClick={() => router.push('/messages')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
             </div>

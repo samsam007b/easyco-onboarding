@@ -171,7 +171,7 @@ export default function SearcherDashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+          <button onClick={() => router.push('/properties/browse')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
             </div>
@@ -179,7 +179,7 @@ export default function SearcherDashboard() {
             <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.findPerfectMatch}</p>
           </button>
 
-          <button className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+          <button onClick={() => router.push('/favorites')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
             </div>
