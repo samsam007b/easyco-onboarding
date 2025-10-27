@@ -8,6 +8,7 @@ import { ArrowLeft, Search, MapPin, Home, Bed, Bath, Euro, SlidersHorizontal, X,
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
 import { useFavorites } from '@/lib/hooks/use-favorites';
+import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
 
 interface Property {
   id: string;
@@ -44,6 +45,8 @@ export default function BrowsePropertiesPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high'>('newest');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   const { isFavorited, toggleFavorite } = useFavorites(userId || undefined);
 
@@ -162,6 +165,17 @@ export default function BrowsePropertiesPage() {
 
   const filteredProperties = getFilteredAndSortedProperties();
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProperties = filteredProperties.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filters, sortBy]);
+
   const resetFilters = () => {
     setFilters({
       minPrice: 0,
@@ -187,11 +201,27 @@ export default function BrowsePropertiesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">{common.loading}</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+        {profile && (
+          <DashboardHeader
+            profile={profile}
+            avatarColor="#FFD700"
+            role="searcher"
+          />
+        )}
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+          {/* Header Skeleton */}
+          <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+            </div>
+          </div>
+
+          {/* Properties Grid Skeleton */}
+          <PropertyCardsGridSkeleton count={12} />
+        </main>
       </div>
     );
   }
@@ -260,6 +290,11 @@ export default function BrowsePropertiesPage() {
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span className="font-medium">{filteredProperties.length}</span>
                 <span>{filteredProperties.length === 1 ? 'property' : 'properties'} found</span>
+                {totalPages > 1 && (
+                  <span className="text-sm text-gray-500 ml-2">
+                    (Page {currentPage} of {totalPages})
+                  </span>
+                )}
               </div>
             </div>
 
@@ -396,8 +431,9 @@ export default function BrowsePropertiesPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredProperties.map((property) => (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {paginatedProperties.map((property) => (
               <div
                 key={property.id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
@@ -465,6 +501,60 @@ export default function BrowsePropertiesPage() {
               </div>
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex items-center justify-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                size="sm"
+              >
+                Previous
+              </Button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                  // Show first page, last page, current page, and pages around current
+                  const showPage =
+                    page === 1 ||
+                    page === totalPages ||
+                    (page >= currentPage - 1 && page <= currentPage + 1);
+
+                  if (!showPage) {
+                    // Show ellipsis
+                    if (page === currentPage - 2 || page === currentPage + 2) {
+                      return <span key={page} className="px-2 text-gray-400">...</span>;
+                    }
+                    return null;
+                  }
+
+                  return (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      onClick={() => setCurrentPage(page)}
+                      size="sm"
+                      className="min-w-[40px]"
+                    >
+                      {page}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                size="sm"
+              >
+                Next
+              </Button>
+            </div>
+          )}
+        </>
         )}
       </main>
     </div>
