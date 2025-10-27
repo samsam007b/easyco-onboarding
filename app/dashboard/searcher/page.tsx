@@ -10,8 +10,10 @@ import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
 import IconBadge from '@/components/IconBadge'
+import GroupManagement from '@/components/GroupManagement'
 
 interface UserProfile {
+  id: string
   full_name: string
   email: string
   user_type: string
@@ -66,6 +68,7 @@ export default function SearcherDashboard() {
         .single()
 
       setProfile({
+        id: user.id,
         full_name: userData.full_name || user.email?.split('@')[0] || 'User',
         email: userData.email,
         user_type: userData.user_type,
@@ -423,6 +426,11 @@ export default function SearcherDashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Group Management Section */}
+        <div className="mb-6 sm:mb-8">
+          <GroupManagement userId={profile.id} />
         </div>
 
         {/* Matches Section (Coming Soon) */}
