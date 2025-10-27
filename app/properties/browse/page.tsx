@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, MapPin, Home, Bed, Bath, Euro, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Search, MapPin, Home, Bed, Bath, Euro, SlidersHorizontal, X, ChevronDown, Heart } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
+import { useFavorites } from '@/lib/hooks/use-favorites';
 
 interface Property {
   id: string;
@@ -40,8 +41,11 @@ export default function BrowsePropertiesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [profile, setProfile] = useState<any>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high'>('newest');
+
+  const { isFavorited, toggleFavorite } = useFavorites(userId || undefined);
 
   const [filters, setFilters] = useState<Filters>({
     minPrice: 0,
@@ -64,6 +68,8 @@ export default function BrowsePropertiesPage() {
         router.push('/login');
         return;
       }
+
+      setUserId(user.id);
 
       // Get user profile
       const { data: userData } = await supabase
@@ -398,8 +404,23 @@ export default function BrowsePropertiesPage() {
                 onClick={() => router.push(`/properties/${property.id}`)}
               >
                 {/* Property Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center">
+                <div className="h-48 bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center relative">
                   <Home className="w-16 h-16 text-[#4A148C] opacity-50" />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(property.id);
+                    }}
+                    className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-transform"
+                  >
+                    <Heart
+                      className={`w-5 h-5 ${
+                        isFavorited(property.id)
+                          ? 'text-red-500 fill-current'
+                          : 'text-gray-400'
+                      }`}
+                    />
+                  </button>
                 </div>
 
                 <div className="p-4 sm:p-6">
