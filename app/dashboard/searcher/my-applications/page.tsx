@@ -31,7 +31,7 @@ export default function MyApplicationsPage() {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | Application['status']>('all');
 
-  const { loadApplications, withdrawApplication, deleteApplication } = useApplications(userId || undefined);
+  const { applications: hookApplications, loadApplications, withdrawApplication, deleteApplication, isLoading: hookLoading } = useApplications(userId || undefined);
 
   useEffect(() => {
     const init = async () => {
@@ -40,7 +40,7 @@ export default function MyApplicationsPage() {
 
       if (user) {
         setUserId(user.id);
-        await loadApplicationsData(user.id);
+        await loadApplications(false); // false = as applicant
       }
 
       setLoading(false);
@@ -49,11 +49,15 @@ export default function MyApplicationsPage() {
     init();
   }, []);
 
-  const loadApplicationsData = async (uid: string) => {
-    setLoading(true);
-    const apps = await loadApplications(false); // false = as applicant
-    setApplications(apps);
-    setLoading(false);
+  useEffect(() => {
+    // Update local applications state when hook applications change
+    if (hookApplications) {
+      setApplications(hookApplications);
+    }
+  }, [hookApplications]);
+
+  const loadApplicationsData = async () => {
+    await loadApplications(false); // false = as applicant
   };
 
   const handleWithdraw = async (applicationId: string) => {
@@ -62,9 +66,9 @@ export default function MyApplicationsPage() {
     }
 
     const success = await withdrawApplication(applicationId);
-    if (success && userId) {
+    if (success) {
       toast.success('Application withdrawn');
-      await loadApplicationsData(userId);
+      await loadApplicationsData();
     }
   };
 
@@ -74,9 +78,9 @@ export default function MyApplicationsPage() {
     }
 
     const success = await deleteApplication(applicationId);
-    if (success && userId) {
+    if (success) {
       toast.success('Application deleted');
-      await loadApplicationsData(userId);
+      await loadApplicationsData();
     }
   };
 
