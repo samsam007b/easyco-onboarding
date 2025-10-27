@@ -19,7 +19,7 @@ export default function ProfilePictureUpload({
 }: ProfilePictureUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
-  const { updateUserAvatar, uploadProgress, isUploading } = useImageUpload();
+  const { uploadImage, updateUserAvatar, uploadProgress, isUploading } = useImageUpload();
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -46,10 +46,26 @@ export default function ProfilePictureUpload({
 
     // Upload to Supabase
     try {
-      const url = await updateUserAvatar(userId, file);
-      if (url) {
+      // First, upload the image
+      const result = await uploadImage(file, {
+        bucket: 'avatars',
+        folder: `users/${userId}`,
+        maxSizeMB: 5,
+        maxWidthOrHeight: 500,
+        compress: true,
+      });
+
+      if (!result) {
+        throw new Error('Failed to upload image');
+      }
+
+      // Then, update the user's avatar URL
+      const success = await updateUserAvatar(userId, result.url);
+      if (success) {
         toast.success('Profile picture updated successfully!');
-        onUploadSuccess?.(url);
+        onUploadSuccess?.(result.url);
+      } else {
+        throw new Error('Failed to update profile');
       }
     } catch (error: any) {
       toast.error(error.message || 'Failed to upload profile picture');
