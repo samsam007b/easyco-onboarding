@@ -10,6 +10,7 @@ import { ArrowLeft, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import DemoCredentials from '@/components/DemoCredentials'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -131,6 +132,18 @@ export default function LoginPage() {
     }
   }
 
+  const handleQuickLogin = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail)
+    setPassword(demoPassword)
+    // Trigger login after a short delay to show the credentials being filled
+    setTimeout(() => {
+      const form = document.querySelector('form') as HTMLFormElement
+      if (form) {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
+      }
+    }, 100)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       {/* Header */}
@@ -144,12 +157,22 @@ export default function LoginPage() {
 
       {/* Main Content */}
       <main className="flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-4xl">
           {/* Logo/Title */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-[#4A148C] mb-2">{t('auth.login.title')}</h1>
             <p className="text-gray-600">{t('auth.login.subtitle')}</p>
           </div>
+
+          {/* Demo Credentials (only in demo mode) */}
+          {process.env.NEXT_PUBLIC_DEMO_MODE === 'true' && (
+            <div className="mb-8">
+              <DemoCredentials onQuickLogin={handleQuickLogin} />
+            </div>
+          )}
+
+          <div className="flex justify-center">
+            <div className="w-full max-w-md">
 
           {/* Login Form */}
           <div className="bg-white rounded-3xl shadow-xl p-8">
@@ -289,6 +312,8 @@ export default function LoginPage() {
                   {t('auth.login.signupLink')}
                 </Link>
               </p>
+            </div>
+          </div>
             </div>
           </div>
         </div>

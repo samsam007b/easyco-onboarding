@@ -5,6 +5,7 @@ import { DevTools } from '@/components/DevTools'
 import { ClientProviders } from '@/components/ClientProviders'
 import CookieBanner from '@/components/CookieBanner'
 import Analytics from '@/components/Analytics'
+import DemoBanner from '@/components/DemoBanner'
 
 // Force dynamic rendering to avoid useSearchParams() errors
 export const dynamic = 'force-dynamic'
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <body className="min-h-screen">
         <Analytics />
+        {process.env.NEXT_PUBLIC_DEMO_MODE === 'true' && <DemoBanner />}
         <ClientProviders>
           {children}
           <Toaster position="top-right" />
