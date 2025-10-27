@@ -154,6 +154,33 @@ export default function ResidentDashboard() {
           <p className="text-gray-600">{dashboard.resident.welcomeMessage}</p>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <button onClick={() => router.push('/community')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.resident.community}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.resident.meetYourRoommates}</p>
+          </button>
+
+          <button onClick={() => router.push('/messages')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.resident.messages}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.resident.chatWithOthers}</p>
+          </button>
+
+          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
+          </button>
+        </div>
+
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-6 sm:mb-8">
           <div className="bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] p-4 sm:p-8 text-white relative">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
@@ -263,32 +290,6 @@ export default function ResidentDashboard() {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          <button onClick={() => router.push('/community')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.resident.community}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.resident.meetYourRoommates}</p>
-          </button>
-
-          <button onClick={() => router.push('/messages')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.resident.messages}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.resident.chatWithOthers}</p>
-          </button>
-
-          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.updatePreferences}</p>
-          </button>
         </div>
       </main>
     </div>
