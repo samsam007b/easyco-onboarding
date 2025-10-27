@@ -195,6 +195,33 @@ export default function OwnerDashboard() {
           </p>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.manageProperties}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.viewEditListings}</p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/dashboard/owner/applications')}>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.applications}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.reviewTenantRequests}</p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer sm:col-span-2 md:col-span-1" onClick={() => router.push('/profile')}>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
+            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
+          </div>
+        </div>
+
         {/* Profile Preview Card */}
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-6 sm:mb-8">
           {/* Header with gradient */}
@@ -429,33 +456,6 @@ export default function OwnerDashboard() {
               ))}
             </div>
           )}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
-          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.manageProperties}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.viewEditListings}</p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/dashboard/owner/applications')}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFD600]" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.owner.applications}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.reviewTenantRequests}</p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer sm:col-span-2 md:col-span-1" onClick={() => router.push('/profile')}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{dashboard.searcher.accountSettings}</h4>
-            <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
-          </div>
         </div>
       </main>
     </div>
