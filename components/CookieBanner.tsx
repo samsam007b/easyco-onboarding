@@ -12,25 +12,31 @@ export default function CookieBanner() {
 
   useEffect(() => {
     // Check if user has already accepted/declined cookies
-    const cookieConsent = localStorage.getItem('cookie-consent');
-    if (!cookieConsent) {
-      // Show banner after 2 seconds delay (better UX)
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 2000);
-      return () => clearTimeout(timer);
+    if (typeof window !== 'undefined') {
+      const cookieConsent = localStorage.getItem('cookie-consent');
+      if (!cookieConsent) {
+        // Show banner after 2 seconds delay (better UX)
+        const timer = setTimeout(() => {
+          setIsVisible(true);
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
     }
   }, []);
 
   const acceptCookies = () => {
-    localStorage.setItem('cookie-consent', 'accepted');
-    localStorage.setItem('cookie-consent-date', new Date().toISOString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cookie-consent', 'accepted');
+      localStorage.setItem('cookie-consent-date', new Date().toISOString());
+    }
     setIsVisible(false);
   };
 
   const declineCookies = () => {
-    localStorage.setItem('cookie-consent', 'declined');
-    localStorage.setItem('cookie-consent-date', new Date().toISOString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cookie-consent', 'declined');
+      localStorage.setItem('cookie-consent-date', new Date().toISOString());
+    }
     setIsVisible(false);
   };
 

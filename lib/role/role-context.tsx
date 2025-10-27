@@ -86,19 +86,23 @@ export function RoleProvider({ children }: { children: ReactNode }) {
 
   // Load role from localStorage on mount
   useEffect(() => {
-    const savedRole = localStorage.getItem('activeRole') as UserRole | null;
-    if (savedRole && (savedRole === 'searcher' || savedRole === 'owner' || savedRole === 'resident')) {
-      setActiveRoleState(savedRole);
+    if (typeof window !== 'undefined') {
+      const savedRole = localStorage.getItem('activeRole') as UserRole | null;
+      if (savedRole && (savedRole === 'searcher' || savedRole === 'owner' || savedRole === 'resident')) {
+        setActiveRoleState(savedRole);
+      }
     }
   }, []);
 
   // Save role to localStorage when it changes
   const setActiveRole = (role: UserRole | null) => {
     setActiveRoleState(role);
-    if (role) {
-      localStorage.setItem('activeRole', role);
-    } else {
-      localStorage.removeItem('activeRole');
+    if (typeof window !== 'undefined') {
+      if (role) {
+        localStorage.setItem('activeRole', role);
+      } else {
+        localStorage.removeItem('activeRole');
+      }
     }
   };
 
@@ -110,10 +114,12 @@ export function RoleProvider({ children }: { children: ReactNode }) {
 
   // Apply theme class to body
   useEffect(() => {
-    if (activeRole) {
-      document.body.className = roleConfigs[activeRole].themeClass;
-    } else {
-      document.body.className = '';
+    if (typeof window !== 'undefined') {
+      if (activeRole) {
+        document.body.className = roleConfigs[activeRole].themeClass;
+      } else {
+        document.body.className = '';
+      }
     }
   }, [activeRole]);
 
