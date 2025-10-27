@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, MapPin, Home, Bed, Bath, Euro, SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, Search, MapPin, Home, Bed, Bath, Euro, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
 
@@ -18,6 +18,17 @@ interface Property {
   bathrooms: number;
   status: string;
   description?: string;
+  property_type?: string;
+  created_at?: string;
+}
+
+interface Filters {
+  minPrice: number;
+  maxPrice: number;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  propertyType: string;
+  city: string;
 }
 
 export default function BrowsePropertiesPage() {
@@ -29,6 +40,17 @@ export default function BrowsePropertiesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [profile, setProfile] = useState<any>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high'>('newest');
+
+  const [filters, setFilters] = useState<Filters>({
+    minPrice: 0,
+    maxPrice: 5000,
+    bedrooms: null,
+    bathrooms: null,
+    propertyType: 'all',
+    city: ''
+  });
 
   useEffect(() => {
     loadData();
@@ -81,10 +103,81 @@ export default function BrowsePropertiesPage() {
     }
   };
 
-  const filteredProperties = properties.filter(property =>
-    property.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    property.city?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const getFilteredAndSortedProperties = () => {
+    let filtered = properties.filter(property => {
+      // Search query filter
+      const matchesSearch =
+        property.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Price filter
+      const matchesPrice =
+        property.monthly_rent >= filters.minPrice &&
+        property.monthly_rent <= filters.maxPrice;
+
+      // Bedrooms filter
+      const matchesBedrooms =
+        filters.bedrooms === null || property.bedrooms >= filters.bedrooms;
+
+      // Bathrooms filter
+      const matchesBathrooms =
+        filters.bathrooms === null || property.bathrooms >= filters.bathrooms;
+
+      // Property type filter
+      const matchesType =
+        filters.propertyType === 'all' ||
+        property.property_type === filters.propertyType;
+
+      // City filter
+      const matchesCity =
+        !filters.city ||
+        property.city?.toLowerCase().includes(filters.city.toLowerCase());
+
+      return matchesSearch && matchesPrice && matchesBedrooms &&
+             matchesBathrooms && matchesType && matchesCity;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'price_low':
+          return a.monthly_rent - b.monthly_rent;
+        case 'price_high':
+          return b.monthly_rent - a.monthly_rent;
+        case 'newest':
+        default:
+          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      }
+    });
+
+    return filtered;
+  };
+
+  const filteredProperties = getFilteredAndSortedProperties();
+
+  const resetFilters = () => {
+    setFilters({
+      minPrice: 0,
+      maxPrice: 5000,
+      bedrooms: null,
+      bathrooms: null,
+      propertyType: 'all',
+      city: ''
+    });
+    setSearchQuery('');
+  };
+
+  const activeFiltersCount = () => {
+    let count = 0;
+    if (filters.minPrice > 0) count++;
+    if (filters.maxPrice < 5000) count++;
+    if (filters.bedrooms !== null) count++;
+    if (filters.bathrooms !== null) count++;
+    if (filters.propertyType !== 'all') count++;
+    if (filters.city) count++;
+    return count;
+  };
 
   if (isLoading) {
     return (
@@ -122,26 +215,161 @@ export default function BrowsePropertiesPage() {
           </div>
 
           {/* Search Bar */}
-          <div className="relative">
+          <div className="relative mb-4">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search by location or property name..."
+              placeholder="Search by location, property name, or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#4A148C] focus:outline-none text-gray-900"
             />
           </div>
 
-          <div className="flex items-center gap-4 mt-4">
-            <Button variant="outline" size="sm">
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-            <span className="text-sm text-gray-600">
-              {filteredProperties.length} {filteredProperties.length === 1 ? 'property' : 'properties'} available
-            </span>
+          {/* Filters and Sort Bar */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 flex-wrap">
+              <Button
+                variant={showFilters ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className="relative"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                Filters
+                {activeFiltersCount() > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-[#4A148C] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {activeFiltersCount()}
+                  </span>
+                )}
+              </Button>
+
+              {activeFiltersCount() > 0 && (
+                <Button variant="ghost" size="sm" onClick={resetFilters}>
+                  <X className="w-4 h-4 mr-1" />
+                  Clear all
+                </Button>
+              )}
+
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <span className="font-medium">{filteredProperties.length}</span>
+                <span>{filteredProperties.length === 1 ? 'property' : 'properties'} found</span>
+              </div>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="appearance-none pl-4 pr-10 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm bg-white cursor-pointer"
+              >
+                <option value="newest">Newest first</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            </div>
           </div>
+
+          {/* Advanced Filters Panel */}
+          {showFilters && (
+            <div className="mt-6 p-4 sm:p-6 bg-gray-50 rounded-2xl border-2 border-gray-200 animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {/* Price Range */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Price Range (€/month)
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={filters.minPrice}
+                      onChange={(e) => setFilters({...filters, minPrice: parseInt(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm"
+                    />
+                    <span className="text-gray-400">-</span>
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={filters.maxPrice}
+                      onChange={(e) => setFilters({...filters, maxPrice: parseInt(e.target.value) || 5000})}
+                      className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Bedrooms */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Minimum Bedrooms
+                  </label>
+                  <select
+                    value={filters.bedrooms || ''}
+                    onChange={(e) => setFilters({...filters, bedrooms: e.target.value ? parseInt(e.target.value) : null})}
+                    className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm bg-white"
+                  >
+                    <option value="">Any</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                    <option value="5">5+</option>
+                  </select>
+                </div>
+
+                {/* Bathrooms */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Minimum Bathrooms
+                  </label>
+                  <select
+                    value={filters.bathrooms || ''}
+                    onChange={(e) => setFilters({...filters, bathrooms: e.target.value ? parseInt(e.target.value) : null})}
+                    className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm bg-white"
+                  >
+                    <option value="">Any</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                  </select>
+                </div>
+
+                {/* Property Type */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Property Type
+                  </label>
+                  <select
+                    value={filters.propertyType}
+                    onChange={(e) => setFilters({...filters, propertyType: e.target.value})}
+                    className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm bg-white"
+                  >
+                    <option value="all">All Types</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="studio">Studio</option>
+                    <option value="coliving">Coliving Space</option>
+                  </select>
+                </div>
+
+                {/* City */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter city name"
+                    value={filters.city}
+                    onChange={(e) => setFilters({...filters, city: e.target.value})}
+                    className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Properties Grid */}
@@ -150,15 +378,23 @@ export default function BrowsePropertiesPage() {
             <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No properties found</h3>
             <p className="text-gray-600 mb-6">
-              {searchQuery ? 'Try adjusting your search criteria' : 'Check back soon for new listings'}
+              {searchQuery || activeFiltersCount() > 0
+                ? 'Try adjusting your search criteria or filters'
+                : 'Check back soon for new listings'}
             </p>
+            {activeFiltersCount() > 0 && (
+              <Button onClick={resetFilters}>
+                <X className="w-4 h-4 mr-2" />
+                Clear Filters
+              </Button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredProperties.map((property) => (
               <div
                 key={property.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
                 onClick={() => router.push(`/properties/${property.id}`)}
               >
                 {/* Property Image Placeholder */}
@@ -167,7 +403,14 @@ export default function BrowsePropertiesPage() {
                 </div>
 
                 <div className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{property.title}</h3>
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex-1">{property.title}</h3>
+                    {property.property_type && (
+                      <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full capitalize">
+                        {property.property_type}
+                      </span>
+                    )}
+                  </div>
 
                   <div className="flex items-center gap-2 text-gray-600 mb-4">
                     <MapPin className="w-4 h-4" />
