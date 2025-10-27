@@ -13,7 +13,7 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false,
 })
 
-const DevTools = dynamic(() => import('@/components/DevTools'), {
+const DevTools = dynamic(() => import('@/components/DevTools').then(mod => ({ default: mod.DevTools })), {
   ssr: false,
 })
 
