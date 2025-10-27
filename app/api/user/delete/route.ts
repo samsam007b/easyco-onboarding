@@ -1,14 +1,44 @@
 import { createClient } from '@supabase/supabase-js'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
+import { checkRateLimit, getClientIdentifier, createRateLimitHeaders, RateLimitConfig } from '@/lib/security/rate-limiter'
+import { logger } from '@/lib/security/logger'
 
 /**
  * DELETE /api/user/delete
  * Deletes the current user's account from both auth.users and users table
  */
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
   try {
+    // Get client identifier (IP address)
+    const clientId = getClientIdentifier(request)
+
+    // SECURITY: Check rate limit (2 deletes per hour per IP)
+    const rateLimitResult = await checkRateLimit(
+      `delete:${clientId}`,
+      'delete',
+      RateLimitConfig.DELETE.limit,
+      RateLimitConfig.DELETE.window
+    )
+
+    if (!rateLimitResult.success) {
+      logger.security('Account deletion rate limit exceeded', {
+        ip: clientId,
+      })
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many deletion requests. Please try again later.',
+        },
+        {
+          status: 429,
+          headers: createRateLimitHeaders(rateLimitResult),
+        }
+      )
+    }
+
     const cookieStore = await cookies()
 
     // Create client for session verification
@@ -36,9 +66,19 @@ export async function DELETE() {
     if (authError || !user) {
       return NextResponse.json(
         { success: false, error: 'Not authenticated' },
-        { status: 401 }
+        {
+          status: 401,
+          headers: createRateLimitHeaders(rateLimitResult),
+        }
       )
     }
+
+    // Log account deletion attempt
+    logger.security('Account deletion requested', {
+      userId: user.id,
+      email: user.email,
+      ip: clientId,
+    })
 
     // Create admin client (requires service role key)
     const supabaseAdmin = createClient(
@@ -84,12 +124,22 @@ export async function DELETE() {
       console.warn('Error deleting from user_profiles table:', profilesError)
     }
 
+    // Log successful deletion
+    logger.security('Account deleted successfully', {
+      userId: user.id,
+      email: user.email,
+      ip: clientId,
+    })
+
     // Sign out the user
     await supabase.auth.signOut()
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json(
+      { success: true },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch (error) {
-    console.error('Unexpected error deleting account:', error)
+    logger.error('Unexpected error deleting account', error as Error)
     return NextResponse.json(
       { success: false, error: 'An unexpected error occurred' },
       { status: 500 }
