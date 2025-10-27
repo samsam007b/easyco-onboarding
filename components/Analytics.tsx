@@ -8,6 +8,15 @@ import { usePathname, useSearchParams } from 'next/navigation';
 // TODO: Replace with actual GA4 measurement ID when available
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
 
+// Valider le format GA4 pour éviter l'injection de code
+const isValidGAId = (id: string): boolean => {
+  return /^G-[A-Z0-9]{10}$/.test(id);
+};
+
+if (!isValidGAId(GA_MEASUREMENT_ID)) {
+  console.warn('Invalid Google Analytics ID format:', GA_MEASUREMENT_ID);
+}
+
 /**
  * Google Analytics Component
  * Tracks pageviews and custom events
@@ -26,8 +35,8 @@ export default function Analytics() {
     }
   }, [pathname, searchParams]);
 
-  // Don't load analytics in development
-  if (process.env.NODE_ENV === 'development') {
+  // Don't load analytics in development or if ID is invalid
+  if (process.env.NODE_ENV === 'development' || !isValidGAId(GA_MEASUREMENT_ID)) {
     return null;
   }
 
@@ -46,7 +55,7 @@ export default function Analytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', {
+            gtag('config', '${GA_MEASUREMENT_ID.replace(/[^A-Z0-9-]/g, '')}', {
               page_path: window.location.pathname,
               cookie_flags: 'SameSite=None;Secure',
             });

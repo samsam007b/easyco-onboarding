@@ -47,10 +47,10 @@ export default function SearcherDashboard() {
         return
       }
 
-      // Get user profile
+      // Get user profile - only fields needed for dashboard
       const { data: userData, error: profileError } = await supabase
         .from('users')
-        .select('*')
+        .select('id, full_name, email, user_type, onboarding_completed, avatar_url')
         .eq('id', user.id)
         .single()
 
@@ -60,10 +60,42 @@ export default function SearcherDashboard() {
         return
       }
 
-      // Get detailed profile data
+      // Get detailed profile data - only fields displayed on dashboard
       const { data: profileData } = await supabase
         .from('user_profiles')
-        .select('*')
+        .select(`
+          date_of_birth,
+          occupation_status,
+          field_of_study,
+          university,
+          job_title,
+          employer,
+          nationality,
+          languages_spoken,
+          bio,
+          about_me,
+          current_city,
+          preferred_cities,
+          cleanliness_preference,
+          introvert_extrovert_scale,
+          is_smoker,
+          dietary_preferences,
+          hobbies,
+          early_bird_night_owl,
+          work_schedule,
+          work_from_home,
+          exercise_frequency,
+          alcohol_consumption,
+          coliving_size,
+          gender_mix,
+          min_age,
+          max_age,
+          budget_min,
+          budget_max,
+          move_in_date,
+          desired_stay_duration,
+          accepted_room_types
+        `)
         .eq('user_id', user.id)
         .single()
 

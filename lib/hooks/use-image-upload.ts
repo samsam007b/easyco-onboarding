@@ -95,18 +95,47 @@ export function useImageUpload() {
     []
   );
 
-  // Validate file
-  const validateFile = useCallback((file: File, maxSizeMB: number = 5): boolean => {
+  // Validate file with magic number (file signature) verification
+  const validateFile = useCallback(async (file: File, maxSizeMB: number = 5): Promise<boolean> => {
     const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
+    // 1. Check MIME type (basic check)
     if (!validTypes.includes(file.type)) {
       toast.error('Please upload an image file (JPEG, PNG, or WebP)');
       return false;
     }
 
+    // 2. Check file size
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
     if (file.size > maxSizeBytes) {
       toast.error(`File size must be less than ${maxSizeMB}MB`);
+      return false;
+    }
+
+    // 3. Verify magic number (file signature) to prevent fake extensions
+    try {
+      const buffer = await file.slice(0, 12).arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+
+      // Check file signatures (magic numbers)
+      const isJPEG = bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF;
+      const isPNG = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47;
+      const isWebP =
+        bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+        bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50;
+
+      if (!isJPEG && !isPNG && !isWebP) {
+        toast.error('Invalid image file. The file may be corrupted or not a real image.');
+        console.warn('File magic number validation failed:', {
+          fileName: file.name,
+          mimeType: file.type,
+          firstBytes: Array.from(bytes.slice(0, 4)).map(b => b.toString(16)).join(' ')
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error('Error validating file signature:', error);
+      toast.error('Failed to validate file');
       return false;
     }
 
@@ -127,8 +156,9 @@ export function useImageUpload() {
         compress = true,
       } = options;
 
-      // Validate file
-      if (!validateFile(file, maxSizeMB)) {
+      // Validate file (now async with magic number check)
+      const isValid = await validateFile(file, maxSizeMB);
+      if (!isValid) {
         return null;
       }
 
