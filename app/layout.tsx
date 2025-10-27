@@ -1,13 +1,25 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { Toaster } from 'sonner'
-import { DevTools } from '@/components/DevTools'
 import { ClientProviders } from '@/components/ClientProviders'
-import CookieBanner from '@/components/CookieBanner'
-import Analytics from '@/components/Analytics'
+import dynamic from 'next/dynamic'
 
-// Force dynamic rendering to avoid useSearchParams() errors
-export const dynamic = 'force-dynamic'
+// Lazy load des composants non-critiques pour améliorer les performances
+const Analytics = dynamic(() => import('@/components/Analytics'), {
+  ssr: false, // Ne pas render côté serveur (client-only)
+})
+
+const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
+  ssr: false,
+})
+
+const DevTools = dynamic(() => import('@/components/DevTools'), {
+  ssr: false,
+})
+
+// IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
+// Cela désactive le cache Next.js et ralentit toutes les pages
+// export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
 
 export const metadata: Metadata = {
   title: "EasyCo — Colocation fiable et compatible en Belgique",

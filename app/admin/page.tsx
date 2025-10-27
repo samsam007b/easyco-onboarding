@@ -1,6 +1,41 @@
 // app/admin/page.tsx
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
+import { redirect } from 'next/navigation';
+import { createClient as createServerClient } from '@/lib/auth/supabase-server';
+
+async function checkAdminAccess() {
+  const supabase = await createServerClient();
+
+  // Vérifier l'authentification
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    redirect('/login?redirect=/admin');
+  }
+
+  // Vérifier si l'utilisateur est admin via la fonction RPC
+  const { data: isAdmin, error: adminError } = await supabase
+    .rpc('is_admin', { user_email: user.email });
+
+  if (adminError || !isAdmin) {
+    console.error('Admin check failed:', adminError);
+    redirect('/dashboard');
+  }
+
+  // Logger l'accès admin
+  await supabase.from('audit_logs').insert({
+    user_id: user.id,
+    action: 'admin_access',
+    resource_type: 'admin_panel',
+    metadata: {
+      email: user.email,
+      timestamp: new Date().toISOString()
+    }
+  });
+
+  return user;
+}
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,16 +43,29 @@ const supabase = createClient(
 );
 
 async function fetchData() {
-  const [o, b, f] = await Promise.all([
-    supabase.from('onboardings').select('*').order('created_at', { ascending: false }).limit(200),
-    supabase.from('group_briefs').select('*').order('created_at', { ascending: false }).limit(200),
-    supabase.from('feedback').select('*').order('created_at', { ascending: false }).limit(200),
+  const [users, profiles, properties, groups, applications, notifications] = await Promise.all([
+    supabase.from('users').select('id, email, full_name, user_type, onboarding_completed, created_at').order('created_at', { ascending: false }).limit(200),
+    supabase.from('user_profiles').select('*').order('created_at', { ascending: false }).limit(200),
+    supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(100),
+    supabase.from('groups').select('*').order('created_at', { ascending: false }).limit(100),
+    supabase.from('applications').select('*').order('created_at', { ascending: false }).limit(100),
+    supabase.from('notifications').select('id, user_id, type, message, read, created_at').order('created_at', { ascending: false }).limit(200),
   ]);
-  return { onboardings: o.data ?? [], briefs: b.data ?? [], feedback: f.data ?? [] };
+  return {
+    users: users.data ?? [],
+    profiles: profiles.data ?? [],
+    properties: properties.data ?? [],
+    groups: groups.data ?? [],
+    applications: applications.data ?? [],
+    notifications: notifications.data ?? []
+  };
 }
 
 export default async function AdminPage() {
-  const { onboardings, briefs, feedback } = await fetchData();
+  // Vérifier l'accès admin AVANT de charger les données
+  const user = await checkAdminAccess();
+
+  const { users, profiles, properties, groups, applications, notifications } = await fetchData();
 
   const toCSV = (rows: any[]) => {
     if (!rows.length) return '';
@@ -32,12 +80,20 @@ export default async function AdminPage() {
 
   return (
     <main className="p-6 space-y-8">
-      <h1 className="text-2xl font-semibold">Admin — Data</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">Admin — Data</h1>
+        <div className="text-sm text-gray-500">
+          Logged in as: {user.email}
+        </div>
+      </div>
 
       {[
-        { title: 'Onboardings', rows: onboardings, key: 'onb' },
-        { title: 'Group Briefs', rows: briefs, key: 'brf' },
-        { title: 'Feedback', rows: feedback, key: 'fb' },
+        { title: 'Users', rows: users, key: 'users' },
+        { title: 'User Profiles', rows: profiles, key: 'profiles' },
+        { title: 'Properties', rows: properties, key: 'properties' },
+        { title: 'Groups', rows: groups, key: 'groups' },
+        { title: 'Applications', rows: applications, key: 'applications' },
+        { title: 'Notifications', rows: notifications, key: 'notifications' },
       ].map(({ title, rows, key }) => (
         <section key={key} className="border rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">

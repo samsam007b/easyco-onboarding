@@ -5,6 +5,11 @@ import { useEffect, useRef, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
+// Rate limiting: max saves per minute
+const RATE_LIMIT_MAX_SAVES = 10;
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
+const saveTimestamps: number[] = [];
+
 interface AutoSaveOptions {
   key: string; // The localStorage key for this data
   debounceMs?: number; // Debounce time in milliseconds (default: 2000)
@@ -32,7 +37,42 @@ export function useAutoSave(options: AutoSaveOptions) {
     if (!enabled || isSavingRef.current) return;
 
     try {
+      // Check rate limit
+      const now = Date.now();
+      const recentSaves = saveTimestamps.filter(ts => now - ts < RATE_LIMIT_WINDOW_MS);
+
+      if (recentSaves.length >= RATE_LIMIT_MAX_SAVES) {
+        console.warn('Auto-save rate limit exceeded');
+        return;
+      }
+
+      saveTimestamps.push(now);
+      // Keep only recent timestamps
+      while (saveTimestamps.length > 0 && now - saveTimestamps[0] > RATE_LIMIT_WINDOW_MS) {
+        saveTimestamps.shift();
+      }
+
       isSavingRef.current = true;
+
+      // 1. Validate data size to prevent DoS
+      const jsonString = JSON.stringify(data);
+      const sizeInBytes = new Blob([jsonString]).size;
+      const maxSizeBytes = 100 * 1024; // 100KB max per save
+
+      if (sizeInBytes > maxSizeBytes) {
+        console.error('Data too large for auto-save:', {
+          size: sizeInBytes,
+          maxSize: maxSizeBytes,
+          key
+        });
+        toast.error('Data is too large to save');
+        return;
+      }
+
+      // 2. Sanitize data to prevent XSS
+      const sanitizedData = typeof data === 'object' && data !== null
+        ? JSON.parse(jsonString) // Re-parse to ensure no functions/undefined values
+        : data;
 
       // Get current user
       const { data: { user } } = await supabase.auth.getUser();
@@ -48,11 +88,11 @@ export function useAutoSave(options: AutoSaveOptions) {
         .eq('user_id', user.id)
         .single();
 
-      // Merge new data with existing data
+      // Merge new data with existing data (use sanitized data)
       const updatedProfileData = {
         ...(existingProfile?.profile_data || {}),
         [key]: {
-          ...data,
+          ...sanitizedData,
           savedAt: new Date().toISOString(),
         },
       };
