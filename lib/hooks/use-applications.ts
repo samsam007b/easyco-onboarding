@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
-import { toast } from 'sonner';
+import { toasts } from '@/lib/toast-helpers';
 
 export interface Application {
   id: string;
@@ -144,7 +144,7 @@ export function useApplications(userId?: string) {
   const createApplication = useCallback(
     async (applicationData: CreateApplicationData): Promise<boolean> => {
       if (!userId) {
-        toast.error('Please login to apply');
+        toasts.permissionDenied();
         return false;
       }
 
@@ -152,7 +152,7 @@ export function useApplications(userId?: string) {
         // Check if already applied
         const alreadyApplied = await hasApplied(applicationData.property_id);
         if (alreadyApplied) {
-          toast.error('You have already applied for this property');
+          toasts.validationError('application - you already applied');
           return false;
         }
 
@@ -164,12 +164,12 @@ export function useApplications(userId?: string) {
 
         if (error) throw error;
 
-        toast.success('Application submitted successfully!');
+        toasts.applicationSubmitted();
         await loadApplications();
         return true;
       } catch (error: any) {
         console.error('Error creating application:', error);
-        toast.error(error.message || 'Failed to submit application');
+        toasts.serverError();
         return false;
       }
     },
