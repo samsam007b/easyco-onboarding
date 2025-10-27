@@ -95,8 +95,8 @@ export default function OwnerApplicationsPage() {
 
   const handleMarkReviewing = async (applicationId: string) => {
     const success = await updateApplicationStatus(applicationId, 'reviewing');
-    if (success && userId) {
-      await loadApplicationsData(userId);
+    if (success) {
+      await loadApplicationsData();
     }
   };
 
