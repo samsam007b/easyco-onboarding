@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/auth/supabase-client'
@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { t } = useLanguage()
@@ -27,7 +27,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Get redirect parameter from URL if present
-    const redirect = searchParams.get('redirect')
+    const redirect = searchParams?.get('redirect')
     if (redirect && redirect.startsWith('/')) {
       setRedirectTo(redirect)
     }
@@ -294,5 +294,17 @@ export default function LoginPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }

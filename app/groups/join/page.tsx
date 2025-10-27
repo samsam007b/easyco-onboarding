@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
@@ -20,14 +20,14 @@ interface Group {
   member_count?: number;
 }
 
-export default function JoinGroupPage() {
+function JoinGroupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
   const { getSection } = useLanguage();
   const common = getSection('common');
 
-  const [inviteCode, setInviteCode] = useState(searchParams.get('code') || '');
+  const [inviteCode, setInviteCode] = useState(searchParams?.get('code') || '');
   const [isSearching, setIsSearching] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
   const [foundGroup, setFoundGroup] = useState<Group | null>(null);
@@ -378,5 +378,17 @@ export default function JoinGroupPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function JoinGroupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <JoinGroupContent />
+    </Suspense>
   );
 }
