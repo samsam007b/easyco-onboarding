@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
 import { toasts } from '@/lib/toast-helpers';
 
 export interface Application {

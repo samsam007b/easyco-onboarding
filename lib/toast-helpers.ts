@@ -94,10 +94,10 @@ export const showConfirmToast = (
       label: 'Confirm',
       onClick: onConfirm,
     },
-    cancel: {
+    cancel: onCancel ? {
       label: 'Cancel',
       onClick: onCancel,
-    },
+    } : undefined,
   });
 };
 
