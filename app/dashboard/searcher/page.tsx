@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
-import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand } from 'lucide-react'
+import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand, FileText } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
@@ -170,7 +170,7 @@ export default function SearcherDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <button onClick={() => router.push('/properties/browse')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
@@ -187,7 +187,15 @@ export default function SearcherDashboard() {
             <p className="text-xs sm:text-sm text-gray-600">{dashboard.searcher.viewSavedProperties}</p>
           </button>
 
-          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
+          <button onClick={() => router.push('/dashboard/searcher/my-applications')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">My Applications</h4>
+            <p className="text-xs sm:text-sm text-gray-600">Track your applications</p>
+          </button>
+
+          <button onClick={() => router.push('/profile')} className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
             </div>
