@@ -7,22 +7,33 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Heart, Home, MapPin, Bed, Bath, Euro, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
-import { toast } from 'sonner';
+import { useFavorites } from '@/lib/hooks/use-favorites';
 
 export default function FavoritesPage() {
   const router = useRouter();
   const supabase = createClient();
   const { getSection } = useLanguage();
   const common = getSection('common');
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [favoriteProperties, setFavoriteProperties] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  const { favorites, removeFavorite } = useFavorites(userId || undefined);
 
   useEffect(() => {
-    loadFavorites();
+    loadUserAndFavorites();
   }, []);
 
-  const loadFavorites = async () => {
+  useEffect(() => {
+    if (favorites.length > 0) {
+      loadFavoriteProperties();
+    } else {
+      setFavoriteProperties([]);
+    }
+  }, [favorites]);
+
+  const loadUserAndFavorites = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
 
@@ -30,6 +41,8 @@ export default function FavoritesPage() {
         router.push('/login');
         return;
       }
+
+      setUserId(user.id);
 
       // Get user profile
       const { data: userData } = await supabase
@@ -50,19 +63,37 @@ export default function FavoritesPage() {
         profile_data: profileData
       });
 
-      // TODO: Load favorites from database when favorites table is created
-      // For now, showing empty state
-      setFavorites([]);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
-    } finally {
       setIsLoading(false);
     }
   };
 
+  const loadFavoriteProperties = async () => {
+    try {
+      const propertyIds = favorites.map(f => f.property_id);
+
+      if (propertyIds.length === 0) {
+        setFavoriteProperties([]);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .in('id', propertyIds);
+
+      if (error) throw error;
+
+      setFavoriteProperties(data || []);
+    } catch (error) {
+      console.error('Error loading properties:', error);
+    }
+  };
+
   const handleRemoveFavorite = async (propertyId: string) => {
-    // TODO: Implement remove favorite functionality
-    toast.success('Removed from favorites');
+    await removeFavorite(propertyId);
   };
 
   if (isLoading) {
@@ -105,7 +136,7 @@ export default function FavoritesPage() {
         </div>
 
         {/* Favorites List */}
-        {favorites.length === 0 ? (
+        {favoriteProperties.length === 0 ? (
           <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 text-center">
             <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No favorites yet</h3>
@@ -118,7 +149,7 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {favorites.map((property) => (
+            {favoriteProperties.map((property) => (
               <div
                 key={property.id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
