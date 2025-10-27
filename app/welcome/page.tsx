@@ -30,13 +30,28 @@ export default function WelcomePage() {
         return;
       }
 
-      // Get user profile data
+      // Get user profile data including user_type and onboarding status
       const { data: userData } = await supabase
         .from('users')
-        .select('full_name, email')
+        .select('full_name, email, user_type, onboarding_completed')
         .eq('id', authUser.id)
         .single();
 
+      // If user already has a role configured and completed onboarding, redirect to their dashboard
+      if (userData?.user_type && userData?.onboarding_completed) {
+        setActiveRole(userData.user_type as 'searcher' | 'owner' | 'resident');
+        router.push(`/dashboard/${userData.user_type}`);
+        return;
+      }
+
+      // If user has a role but hasn't completed onboarding, redirect to onboarding
+      if (userData?.user_type && !userData?.onboarding_completed) {
+        setActiveRole(userData.user_type as 'searcher' | 'owner' | 'resident');
+        router.push(`/onboarding/${userData.user_type}/basic-info`);
+        return;
+      }
+
+      // Otherwise, show welcome page for role selection (new users)
       setUser({
         ...authUser,
         full_name: userData?.full_name || authUser.email?.split('@')[0] || 'User',

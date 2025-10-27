@@ -140,9 +140,11 @@ export async function GET(request: NextRequest) {
       // This allows us to check localStorage for user_type selection
       if (!userData.onboarding_completed) {
         redirectPath = '/auth/complete-signup'
+      } else if (userData.user_type) {
+        // For users who completed onboarding and have a role, redirect to their dashboard
+        redirectPath = `/dashboard/${userData.user_type}`
       } else {
-        // For users who completed onboarding, redirect to welcome page
-        // where they can choose their role/action
+        // For users who completed onboarding but no role yet (edge case), go to welcome
         redirectPath = '/welcome'
       }
     }
