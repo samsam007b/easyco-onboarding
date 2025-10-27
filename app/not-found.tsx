@@ -22,19 +22,19 @@ export default function NotFound() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild>
-              <Link href="/" className="flex items-center gap-2">
+            <Link href="/">
+              <Button className="flex items-center gap-2 w-full sm:w-auto">
                 <Home className="w-4 h-4" />
                 Go Home
-              </Link>
-            </Button>
+              </Button>
+            </Link>
 
-            <Button variant="outline" asChild>
-              <Link href="/properties/browse" className="flex items-center gap-2">
+            <Link href="/properties/browse">
+              <Button variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
                 <Search className="w-4 h-4" />
                 Browse Properties
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
 
           <div className="mt-6">
