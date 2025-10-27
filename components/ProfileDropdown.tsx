@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, User, Mail, Calendar, LogOut, MapPin, Search, Home as HomeIcon, Key } from 'lucide-react';
+import { ChevronDown, User, Mail, Calendar, LogOut, MapPin, Search, Home as HomeIcon, Key, Settings } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -182,7 +182,17 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
           </div>
 
           {/* Actions */}
-          <div className="p-2">
+          <div className="p-2 space-y-1">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                router.push('/profile');
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
+            >
+              <Settings className="w-5 h-5" />
+              <span className="font-medium">Profile Settings</span>
+            </button>
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 rounded-xl transition-colors"
