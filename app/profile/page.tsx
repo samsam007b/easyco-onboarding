@@ -9,6 +9,7 @@ import { Select } from '@/components/ui/select'
 import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
+import { useRole } from '@/lib/role/role-context'
 
 interface UserData {
   id: string
@@ -28,6 +29,7 @@ const USER_TYPES = [
 
 export default function ProfilePage() {
   const router = useRouter()
+  const { activeRole } = useRole()
   const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [fullName, setFullName] = useState('')
@@ -385,7 +387,10 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-[#4A148C]">Profile Settings</h1>
           <Button
-            onClick={() => router.push(`/dashboard/${userData.user_type}`)}
+            onClick={() => {
+              const role = activeRole || userData?.user_type || 'searcher'
+              router.push(`/dashboard/${role}`)
+            }}
             variant="outline"
           >
             Back to Dashboard
