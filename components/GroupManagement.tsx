@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Users, UserPlus, Settings, ExternalLink, Copy, Mail, UserX, Crown, Shield, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast, showInfoToast, toasts } from '@/lib/toast-helpers';
 
 interface Group {
@@ -41,7 +41,7 @@ interface GroupInvitation {
 
 export default function GroupManagement({ userId }: { userId: string }) {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   const [currentGroup, setCurrentGroup] = useState<Group | null>(null);
   const [members, setMembers] = useState<GroupMember[]>([]);

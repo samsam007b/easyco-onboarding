@@ -159,9 +159,9 @@ export const toasts = {
   validationError: (field: string) =>
     showErrorToast('Validation error', `Please check the ${field} field.'),
   permissionDenied: () =>
-    showErrorToast('Permission denied', 'You don\'t have permission to perform this action.'),
+    showErrorToast('Permission denied', 'You do not have permission to perform this action.'),
   notFound: (resource: string) =>
-    showErrorToast('Not found', `The ${resource} you're looking for doesn't exist.'),
+    showErrorToast('Not found', `The ${resource} you are looking for does not exist.'),
 
   // Generic
   saved: () => showSuccessToast('Saved'),
