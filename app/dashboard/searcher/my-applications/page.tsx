@@ -117,7 +117,7 @@ export default function MyApplicationsPage() {
 
   if (loading) {
     return (
-      <PageContainer>
+      <PageContainer center>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
@@ -129,7 +129,7 @@ export default function MyApplicationsPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer center>
       <PageHeader
         title="My Applications"
         description="Track your property applications"
