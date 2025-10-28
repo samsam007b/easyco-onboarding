@@ -132,19 +132,16 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Determine redirect based on onboarding status and user type
+    // Determine redirect based on user profile status
     let redirectPath = '/welcome'
 
     if (userData) {
-      // If onboarding not completed, redirect to complete-signup
-      // This allows us to check localStorage for user_type selection
-      if (!userData.onboarding_completed) {
-        redirectPath = '/auth/complete-signup'
-      } else if (userData.user_type) {
-        // For users who completed onboarding and have a role, redirect to their dashboard
+      // Check if user has completed onboarding
+      if (userData.onboarding_completed && userData.user_type) {
+        // User has finished onboarding → redirect to their dashboard
         redirectPath = `/dashboard/${userData.user_type}`
       } else {
-        // For users who completed onboarding but no role yet (edge case), go to welcome
+        // User hasn't completed onboarding → redirect to welcome page to select role
         redirectPath = '/welcome'
       }
     }
