@@ -13,9 +13,25 @@ export async function POST(request: NextRequest) {
     // Sanitize email
     const email = sanitizeEmail(rawEmail);
 
+    // Validate email and password
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate password type and length
+    if (typeof password !== 'string') {
+      return NextResponse.json(
+        { error: 'Invalid password format' },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 8 || password.length > 128) {
+      return NextResponse.json(
+        { error: 'Password must be between 8 and 128 characters' },
         { status: 400 }
       );
     }
