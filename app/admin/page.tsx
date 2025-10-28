@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import { createClient as createServerClient } from '@/lib/auth/supabase-server';
+import { ADMIN_CONFIG, DB_LIMITS } from '@/lib/config/constants';
+import { ROUTES } from '@/lib/config/routes';
 
 async function checkAdminAccess() {
   const supabase = await createServerClient();
@@ -20,7 +22,7 @@ async function checkAdminAccess() {
 
   if (adminError || !isAdmin) {
     console.error('Admin check failed:', adminError);
-    redirect('/dashboard');
+    redirect(ROUTES.HOME);
   }
 
   // Logger l'accès admin
@@ -44,12 +46,12 @@ const supabase = createClient(
 
 async function fetchData() {
   const [users, profiles, properties, groups, applications, notifications] = await Promise.all([
-    supabase.from('users').select('id, email, full_name, user_type, onboarding_completed, created_at').order('created_at', { ascending: false }).limit(200),
-    supabase.from('user_profiles').select('*').order('created_at', { ascending: false }).limit(200),
-    supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(100),
-    supabase.from('groups').select('*').order('created_at', { ascending: false }).limit(100),
-    supabase.from('applications').select('*').order('created_at', { ascending: false }).limit(100),
-    supabase.from('notifications').select('id, user_id, type, message, read, created_at').order('created_at', { ascending: false }).limit(200),
+    supabase.from('users').select('id, email, full_name, user_type, onboarding_completed, created_at').order('created_at', { ascending: false }).limit(DB_LIMITS.USERS),
+    supabase.from('user_profiles').select('*').order('created_at', { ascending: false }).limit(DB_LIMITS.PROFILES),
+    supabase.from('properties').select('*').order('created_at', { ascending: false }).limit(DB_LIMITS.PROPERTIES),
+    supabase.from('groups').select('*').order('created_at', { ascending: false }).limit(DB_LIMITS.GROUPS),
+    supabase.from('applications').select('*').order('created_at', { ascending: false }).limit(DB_LIMITS.APPLICATIONS),
+    supabase.from('notifications').select('id, user_id, type, message, read, created_at').order('created_at', { ascending: false }).limit(DB_LIMITS.NOTIFICATIONS),
   ]);
   return {
     users: users.data ?? [],
@@ -135,8 +137,19 @@ export default async function AdminPage() {
         </section>
       ))}
 
+      <div className="text-sm text-gray-500 mt-8 p-4 bg-gray-50 rounded-lg">
+        <p className="font-medium mb-2">ℹ️ Data Limits Information</p>
+        <p className="text-xs mb-2">
+          Currently showing up to {DB_LIMITS.USERS} users, {DB_LIMITS.PROFILES} profiles, {DB_LIMITS.PROPERTIES} properties,
+          {DB_LIMITS.GROUPS} groups, {DB_LIMITS.APPLICATIONS} applications, and {DB_LIMITS.NOTIFICATIONS} notifications.
+        </p>
+        <p className="text-xs text-gray-400">
+          To modify these limits, update the DB_LIMITS configuration in lib/config/constants.ts
+        </p>
+      </div>
+
       <div className="text-sm text-gray-500">
-        <Link href="/">← Back to app</Link>
+        <Link href={ROUTES.HOME}>← Back to app</Link>
       </div>
     </main>
   );
