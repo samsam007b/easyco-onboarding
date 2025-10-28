@@ -14,11 +14,7 @@ function reportToSentry(metric: Metric) {
 
   // Don't report in development
   if (process.env.NODE_ENV === 'development') {
-    // console.log(`[Web Vitals] ${name}:`, {
-      value: Math.round(value),
-      rating,
-      id,
-    })
+    // console.log(`[Web Vitals] ${name}: value=${Math.round(value)}, rating=${rating}, id=${id}`)
     return
   }
 

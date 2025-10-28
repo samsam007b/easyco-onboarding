@@ -126,15 +126,12 @@ export function useImageUpload() {
 
       if (!isJPEG && !isPNG && !isWebP) {
         toast.error('Invalid image file. The file may be corrupted or not a real image.');
-        // FIXME: Use logger.warn('File magic number validation failed:', {
-          fileName: file.name,
-          mimeType: file.type,
-          firstBytes: Array.from(bytes.slice(0, 4)).map(b => b.toString(16)).join(' ')
-        });
+        // FIXME: Use logger.warn - File magic number validation failed
+        // fileName: file.name, mimeType: file.type, firstBytes: Array.from(bytes.slice(0, 4))
         return false;
       }
     } catch (error) {
-      // FIXME: Use logger.error - 'Error validating file signature:', error);
+      // FIXME: Use logger.error - Error validating file signature
       toast.error('Failed to validate file');
       return false;
     }
