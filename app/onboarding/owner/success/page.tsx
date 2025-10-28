@@ -1,14 +1,51 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle, Home, ArrowRight } from 'lucide-react';
+import { CheckCircle, Home, ArrowRight, Plus } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { createClient } from '@/lib/auth/supabase-client';
 
 export default function OwnerSuccess() {
   const { t, getSection } = useLanguage();
   const onboarding = getSection('onboarding');
   const common = getSection('common');
+  const [hasProperty, setHasProperty] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkPropertyStatus = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (user) {
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('has_property')
+            .eq('user_id', user.id)
+            .single();
+
+          setHasProperty(profile?.has_property || false);
+        }
+      } catch (error) {
+        console.error('Error checking property status:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkPropertyStatus();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin" />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
@@ -53,6 +90,17 @@ export default function OwnerSuccess() {
 
         {/* Next Steps */}
         <div className="space-y-3">
+          {/* Show "List Your Property" as primary action if owner has a property */}
+          {hasProperty && (
+            <Link
+              href="/properties/add"
+              className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition shadow-md hover:shadow-lg"
+            >
+              <Plus className="w-5 h-5" />
+              List Your Property Now
+            </Link>
+          )}
+
           <Link
             href="/dashboard/owner"
             className="flex items-center justify-center gap-2 w-full bg-[color:var(--easy-yellow)] text-black py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg"
