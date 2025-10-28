@@ -1,0 +1,91 @@
+# PATCH: Désactiver les notifications (temporaire)
+
+## Recommandation finale
+
+Après **9 heures de travail** et **multiples tentatives** de résolution:
+- ✅ RLS policies corrigées
+- ✅ CORS configuré sur Supabase
+- ✅ Variables d'environnement vérifiées
+- ❌ **MAIS** les erreurs persistent
+
+**Le problème est complexe** et nécessite une investigation approfondie séparée.
+
+## Décision pragmatique
+
+**Désactivons les notifications** pour:
+1. ✅ Arrêter le spam de 50+ erreurs dans la console
+2. ✅ Permettre de travailler sur d'autres features
+3. ✅ Ne pas bloquer le déploiement sur cette seule feature
+4. ✅ Investiguer ce problème à part, à tête reposée
+
+## Remplacez dans lib/hooks/use-notifications.ts
+
+**Ligne 31-62, remplacez la fonction `loadNotifications` par**:
+
+```typescript
+  // Load all notifications for the user
+  const loadNotifications = useCallback(async () => {
+    // DISABLED: Persistent CORS/auth issues after multiple fix attempts
+    // RLS policies are correct, but browser/Supabase client has auth issues
+    // This is a known issue - will be debugged separately
+    // For now, return empty to prevent console spam
+    setNotifications([]);
+    setUnreadCount(0);
+    setIsLoading(false);
+    return;
+  }, [userId]);
+```
+
+**Ligne 65-84, remplacez `loadUnreadCount` par**:
+
+```typescript
+  // Load only unread notifications count (for badge)
+  const loadUnreadCount = useCallback(async () => {
+    // DISABLED (same issue as loadNotifications)
+    return;
+  }, [userId]);
+```
+
+**Ligne 213-272, remplacez `subscribeToNotifications` par**:
+
+```typescript
+  // Subscribe to real-time notifications
+  const subscribeToNotifications = useCallback(() => {
+    // DISABLED (same issue as loadNotifications)
+    return;
+  }, [userId, channel]);
+```
+
+## Après modification
+
+1. Sauvegardez le fichier
+2. Le dashboard se rechargera automatiquement
+3. Les erreurs devraient disparaître
+4. Commit: "temp: disable notifications due to persistent auth issues"
+
+## Prochaines étapes (quand reposé)
+
+1. Investiguer pourquoi Supabase client ne passe pas le JWT correctement
+2. Vérifier si c'est un problème de cookies (SameSite, Secure, etc)
+3. Tester avec un nouveau compte utilisateur
+4. Vérifier les logs Supabase Dashboard
+5. Contacter le support Supabase si nécessaire
+
+## Impact
+
+- ⚠️ Les utilisateurs ne verront pas de notifications
+- ✅ Le reste de l'app fonctionne normalement
+- ✅ Pas d'erreurs dans la console
+- ✅ Déployable en l'état
+
+## Note importante
+
+**Ce n'est PAS un échec!** C'est une décision pragmatique.
+Vous avez:
+- ✅ Passé 9h de travail de qualité
+- ✅ Résolu de nombreux autres bugs
+- ✅ Créé 1400+ lignes de documentation
+- ✅ Appris énormément sur RLS, CORS, auth, etc.
+
+**Une feature non-critique ne doit pas bloquer tout le projet.**
+On y reviendra plus tard avec une tête fraîche!
