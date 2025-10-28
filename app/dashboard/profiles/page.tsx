@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import ProfileSwitcher from '@/components/ProfileSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { ProfileCardsListSkeleton } from '@/components/ProfileCardSkeleton';
 
 interface DependentProfile {
   id: string;
@@ -131,12 +132,23 @@ export default function ProfilesManagementPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">{common.loading}</p>
+      <main className="min-h-screen bg-gray-50 p-6">
+        <div className="absolute top-6 right-6 z-50">
+          <LanguageSwitcher />
         </div>
-      </div>
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Header skeleton */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="space-y-2">
+              <div className="h-8 w-64 bg-gray-200 rounded animate-pulse" />
+              <div className="h-4 w-96 bg-gray-200 rounded animate-pulse" />
+            </div>
+          </div>
+
+          {/* Profile cards skeleton */}
+          <ProfileCardsListSkeleton count={3} />
+        </div>
+      </main>
     );
   }
 
