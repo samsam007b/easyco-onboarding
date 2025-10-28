@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
-import type { Application } from '@/lib/hooks/use-applications';
+import type { Application, GroupApplication } from '@/lib/hooks/use-applications';
 import {
   CheckCircle,
   XCircle,
@@ -24,18 +24,30 @@ import {
   Eye,
   ThumbsUp,
   ThumbsDown,
+  Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
+
+type ApplicationType = 'individual' | 'group';
+type CombinedStatus = Application['status'] | GroupApplication['status'];
 
 export default function OwnerApplicationsPage() {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
+  const [groupApps, setGroupApps] = useState<GroupApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
-  const [filterStatus, setFilterStatus] = useState<'all' | Application['status']>('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | CombinedStatus>('all');
+  const [filterType, setFilterType] = useState<'all' | ApplicationType>('all');
 
-  const { applications: hookApplications, loadApplications, updateApplicationStatus, isLoading: hookLoading } = useApplications(userId || undefined);
+  const {
+    applications: hookApplications,
+    groupApplications: hookGroupApplications,
+    loadApplications,
+    updateApplicationStatus,
+    updateGroupApplicationStatus,
+    isLoading: hookLoading
+  } = useApplications(userId || undefined);
 
   useEffect(() => {
     const init = async () => {
@@ -54,16 +66,19 @@ export default function OwnerApplicationsPage() {
   }, []);
 
   useEffect(() => {
-    // Update local applications state when hook applications change
     if (hookApplications) {
       setApplications(hookApplications);
     }
-  }, [hookApplications]);
+    if (hookGroupApplications) {
+      setGroupApps(hookGroupApplications);
+    }
+  }, [hookApplications, hookGroupApplications]);
 
   const loadApplicationsData = async () => {
     await loadApplications(true); // true = as owner
   };
 
+  // Individual application handlers
   const handleApprove = async (applicationId: string) => {
     if (!confirm('Are you sure you want to approve this application?')) {
       return;
@@ -73,7 +88,6 @@ export default function OwnerApplicationsPage() {
     if (success) {
       toast.success('Application approved!');
       await loadApplicationsData();
-      setSelectedApplication(null);
     }
   };
 
@@ -89,7 +103,6 @@ export default function OwnerApplicationsPage() {
     if (success) {
       toast.success('Application rejected');
       await loadApplicationsData();
-      setSelectedApplication(null);
     }
   };
 
@@ -100,7 +113,40 @@ export default function OwnerApplicationsPage() {
     }
   };
 
-  const getStatusBadge = (status: Application['status']) => {
+  // Group application handlers
+  const handleGroupApprove = async (groupApplicationId: string) => {
+    if (!confirm('Are you sure you want to approve this group application?')) {
+      return;
+    }
+
+    const success = await updateGroupApplicationStatus(groupApplicationId, 'approved');
+    if (success) {
+      await loadApplicationsData();
+    }
+  };
+
+  const handleGroupReject = async (groupApplicationId: string) => {
+    const reason = prompt('Please provide a reason for rejection (optional):');
+
+    const success = await updateGroupApplicationStatus(
+      groupApplicationId,
+      'rejected',
+      reason || undefined
+    );
+
+    if (success) {
+      await loadApplicationsData();
+    }
+  };
+
+  const handleGroupMarkReviewing = async (groupApplicationId: string) => {
+    const success = await updateGroupApplicationStatus(groupApplicationId, 'reviewing');
+    if (success) {
+      await loadApplicationsData();
+    }
+  };
+
+  const getStatusBadge = (status: CombinedStatus) => {
     const config = {
       pending: { variant: 'warning' as const, icon: Clock, label: 'Pending' },
       reviewing: { variant: 'default' as const, icon: Eye, label: 'Reviewing' },
@@ -119,16 +165,32 @@ export default function OwnerApplicationsPage() {
     );
   };
 
-  const filteredApplications = applications.filter((app) =>
-    filterStatus === 'all' ? true : app.status === filterStatus
-  );
+  // Filter applications
+  const filteredIndividualApps = applications.filter((app) => {
+    const statusMatch = filterStatus === 'all' || app.status === filterStatus;
+    const typeMatch = filterType === 'all' || filterType === 'individual';
+    return statusMatch && typeMatch;
+  });
 
+  const filteredGroupApps = groupApps.filter((app) => {
+    const statusMatch = filterStatus === 'all' || app.status === filterStatus;
+    const typeMatch = filterType === 'all' || filterType === 'group';
+    return statusMatch && typeMatch;
+  });
+
+  // Calculate stats
   const stats = {
-    total: applications.length,
-    pending: applications.filter((a) => a.status === 'pending').length,
-    reviewing: applications.filter((a) => a.status === 'reviewing').length,
-    approved: applications.filter((a) => a.status === 'approved').length,
-    rejected: applications.filter((a) => a.status === 'rejected').length,
+    total: applications.length + groupApps.length,
+    individual: applications.length,
+    groups: groupApps.length,
+    pending: applications.filter((a) => a.status === 'pending').length +
+             groupApps.filter((a) => a.status === 'pending').length,
+    reviewing: applications.filter((a) => a.status === 'reviewing').length +
+               groupApps.filter((a) => a.status === 'reviewing').length,
+    approved: applications.filter((a) => a.status === 'approved').length +
+              groupApps.filter((a) => a.status === 'approved').length,
+    rejected: applications.filter((a) => a.status === 'rejected').length +
+              groupApps.filter((a) => a.status === 'rejected').length,
   };
 
   if (loading) {
@@ -148,15 +210,27 @@ export default function OwnerApplicationsPage() {
     <PageContainer>
       <PageHeader
         title="Property Applications"
-        description="Manage applications for your properties"
+        description="Manage individual and group applications for your properties"
       />
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-gray-600">Total</p>
             <p className="text-2xl font-bold text-[#4A148C]">{stats.total}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-600">Individual</p>
+            <p className="text-2xl font-bold text-blue-600">{stats.individual}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-600">Groups</p>
+            <p className="text-2xl font-bold text-purple-600">{stats.groups}</p>
           </CardContent>
         </Card>
         <Card>
@@ -185,14 +259,40 @@ export default function OwnerApplicationsPage() {
         </Card>
       </div>
 
-      {/* Filters */}
+      {/* Type Filters */}
+      <div className="flex gap-2 mb-4">
+        <Button
+          variant={filterType === 'all' ? 'default' : 'outline'}
+          onClick={() => setFilterType('all')}
+          size="sm"
+        >
+          All Types ({stats.total})
+        </Button>
+        <Button
+          variant={filterType === 'individual' ? 'default' : 'outline'}
+          onClick={() => setFilterType('individual')}
+          size="sm"
+        >
+          Individual ({stats.individual})
+        </Button>
+        <Button
+          variant={filterType === 'group' ? 'default' : 'outline'}
+          onClick={() => setFilterType('group')}
+          size="sm"
+        >
+          <Users className="w-4 h-4 mr-1" />
+          Groups ({stats.groups})
+        </Button>
+      </div>
+
+      {/* Status Filters */}
       <div className="flex gap-2 mb-6 overflow-x-auto">
         <Button
           variant={filterStatus === 'all' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('all')}
           size="sm"
         >
-          All ({stats.total})
+          All Status
         </Button>
         <Button
           variant={filterStatus === 'pending' ? 'default' : 'outline'}
@@ -225,24 +325,175 @@ export default function OwnerApplicationsPage() {
       </div>
 
       {/* Applications List */}
-      {filteredApplications.length === 0 ? (
+      {filteredIndividualApps.length === 0 && filteredGroupApps.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center">
             <Home className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {filterStatus === 'all' ? 'No applications yet' : `No ${filterStatus} applications`}
+              No applications found
             </h3>
             <p className="text-gray-600">
-              {filterStatus === 'all'
-                ? 'Applications for your properties will appear here'
-                : 'Try selecting a different filter'}
+              Try adjusting your filters or wait for new applications
             </p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-4">
-          {filteredApplications.map((application) => (
-            <Card key={application.id} className="hover:shadow-md transition-shadow">
+          {/* Group Applications */}
+          {filteredGroupApps.map((groupApp) => (
+            <Card key={`group-${groupApp.id}`} className="hover:shadow-md transition-shadow border-l-4 border-l-purple-500">
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                  {/* Left: Group Info */}
+                  <div className="flex-1">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Users className="w-6 h-6 text-purple-600 mt-1" />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {groupApp.group?.name || 'Group Application'}
+                          </h3>
+                          <Badge variant="outline" className="bg-purple-50 text-purple-700">
+                            <Users className="w-3 h-3 mr-1" />
+                            GROUP
+                          </Badge>
+                          {getStatusBadge(groupApp.status)}
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">
+                          Applied for: <span className="font-medium">{groupApp.property?.title || 'Property'}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Group Members */}
+                    {groupApp.group && (
+                      <div className="mb-3 p-3 bg-purple-50 rounded-lg">
+                        <p className="text-sm font-medium text-gray-700 mb-2">
+                          Group Members ({groupApp.group.members?.length || 0}/{groupApp.group.max_members}):
+                        </p>
+                        <div className="space-y-1">
+                          {groupApp.group.members?.map((member, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                              <div className="w-6 h-6 rounded-full bg-purple-200 flex items-center justify-center text-xs font-medium">
+                                {member.user.full_name?.charAt(0).toUpperCase() || '?'}
+                              </div>
+                              <span>{member.user.full_name}</span>
+                              <span className="text-gray-400">•</span>
+                              <span className="text-gray-500">{member.user.email}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                      {groupApp.combined_income && (
+                        <div className="flex items-center gap-2 text-gray-700">
+                          <DollarSign className="w-4 h-4 text-gray-500" />
+                          <span>Combined Income: €{groupApp.combined_income.toLocaleString()}/month</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {groupApp.message && (
+                      <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-2 mb-1">
+                          <MessageSquare className="w-4 h-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-700">Message:</span>
+                        </div>
+                        <p className="text-sm text-gray-600">{groupApp.message}</p>
+                      </div>
+                    )}
+
+                    <p className="text-xs text-gray-500 mt-3">
+                      Applied {new Date(groupApp.created_at).toLocaleDateString()} at{' '}
+                      {new Date(groupApp.created_at).toLocaleTimeString()}
+                    </p>
+                  </div>
+
+                  {/* Right: Actions */}
+                  <div className="flex md:flex-col gap-2">
+                    {groupApp.status === 'pending' && (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleGroupMarkReviewing(groupApp.id)}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          Mark Reviewing
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => handleGroupApprove(groupApp.id)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <ThumbsUp className="w-4 h-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleGroupReject(groupApp.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <ThumbsDown className="w-4 h-4 mr-1" />
+                          Reject
+                        </Button>
+                      </>
+                    )}
+
+                    {groupApp.status === 'reviewing' && (
+                      <>
+                        <Button
+                          size="sm"
+                          onClick={() => handleGroupApprove(groupApp.id)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <ThumbsUp className="w-4 h-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleGroupReject(groupApp.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <ThumbsDown className="w-4 h-4 mr-1" />
+                          Reject
+                        </Button>
+                      </>
+                    )}
+
+                    {(groupApp.status === 'approved' || groupApp.status === 'rejected') && (
+                      <div className="text-sm text-gray-600 text-center md:text-right">
+                        {groupApp.status === 'approved' ? (
+                          <div className="text-green-600 font-medium">
+                            <CheckCircle className="w-5 h-5 mx-auto mb-1" />
+                            Approved
+                          </div>
+                        ) : (
+                          <div className="text-red-600 font-medium">
+                            <XCircle className="w-5 h-5 mx-auto mb-1" />
+                            Rejected
+                          </div>
+                        )}
+                        {groupApp.reviewed_at && (
+                          <p className="text-xs mt-1">
+                            {new Date(groupApp.reviewed_at).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+
+          {/* Individual Applications */}
+          {filteredIndividualApps.map((application) => (
+            <Card key={`individual-${application.id}`} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                   {/* Left: Application Info */}
