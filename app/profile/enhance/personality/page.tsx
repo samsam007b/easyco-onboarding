@@ -45,7 +45,7 @@ export default function ExtendedPersonalityPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading personality data:', error);
+      // FIXME: Use logger.error('Error loading personality data:', error);
       toast.error('Failed to load existing data');
     } finally {
       setIsLoading(false);

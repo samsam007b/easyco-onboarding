@@ -126,7 +126,7 @@ export function useImageUpload() {
 
       if (!isJPEG && !isPNG && !isWebP) {
         toast.error('Invalid image file. The file may be corrupted or not a real image.');
-        console.warn('File magic number validation failed:', {
+        // FIXME: Use logger.warn('File magic number validation failed:', {
           fileName: file.name,
           mimeType: file.type,
           firstBytes: Array.from(bytes.slice(0, 4)).map(b => b.toString(16)).join(' ')
@@ -134,7 +134,7 @@ export function useImageUpload() {
         return false;
       }
     } catch (error) {
-      console.error('Error validating file signature:', error);
+      // FIXME: Use logger.error - 'Error validating file signature:', error);
       toast.error('Failed to validate file');
       return false;
     }
@@ -210,7 +210,7 @@ export function useImageUpload() {
           path: filePath,
         };
       } catch (error: any) {
-        console.error('Error uploading image:', error);
+        // FIXME: Use logger.error - 'Error uploading image:', error);
         toast.error(error.message || 'Failed to upload image');
         return {
           url: '',
@@ -258,7 +258,7 @@ export function useImageUpload() {
         toast.success('Image deleted');
         return true;
       } catch (error: any) {
-        console.error('Error deleting image:', error);
+        // FIXME: Use logger.error - 'Error deleting image:', error);
         toast.error(error.message || 'Failed to delete image');
         return false;
       }
@@ -288,7 +288,7 @@ export function useImageUpload() {
 
         return true;
       } catch (error: any) {
-        console.error('Error updating avatar:', error);
+        // FIXME: Use logger.error - 'Error updating avatar:', error);
         return false;
       }
     },
@@ -319,7 +319,7 @@ export function useImageUpload() {
 
         return true;
       } catch (error: any) {
-        console.error('Error updating property images:', error);
+        // FIXME: Use logger.error - 'Error updating property images:', error);
         toast.error('Failed to update property images');
         return false;
       }

@@ -75,7 +75,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       // Onboarding complete, load group data
       await loadGroupData();
     } catch (error) {
-      console.error('Error checking onboarding:', error);
+      // FIXME: Use logger.error('Error checking onboarding:', error);
       setIsLoading(false);
     }
   };
@@ -138,7 +138,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       }
 
     } catch (error) {
-      console.error('Error loading group data:', error);
+      // FIXME: Use logger.error('Error loading group data:', error);
       showErrorToast('Failed to load group data');
     } finally {
       setIsLoading(false);
@@ -172,7 +172,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       showSuccessToast('Invite code generated!', 'Share this code with people you want to invite');
       loadGroupData();
     } catch (error: any) {
-      console.error('Error generating invite code:', error);
+      // FIXME: Use logger.error('Error generating invite code:', error);
       showErrorToast('Failed to generate invite code', error.message);
     }
   };
@@ -227,7 +227,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       setShowInviteForm(false);
       loadGroupData();
     } catch (error: any) {
-      console.error('Error sending invitation:', error);
+      // FIXME: Use logger.error('Error sending invitation:', error);
       showErrorToast('Failed to send invitation', error.message);
     }
   };
@@ -246,7 +246,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       showSuccessToast('Member removed', `${memberName} has been removed from the group`);
       loadGroupData();
     } catch (error: any) {
-      console.error('Error removing member:', error);
+      // FIXME: Use logger.error('Error removing member:', error);
       showErrorToast('Failed to remove member', error.message);
     }
   };
@@ -268,7 +268,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
       setCurrentGroup(null);
       setMembers([]);
     } catch (error: any) {
-      console.error('Error leaving group:', error);
+      // FIXME: Use logger.error('Error leaving group:', error);
       showErrorToast('Failed to leave group', error.message);
     }
   };

@@ -47,7 +47,7 @@ export default function LifestyleResidentPage() {
         setGuestsFrequency(prefs.guestsFrequency || '');
       }
     } catch (error) {
-      console.error('Error loading lifestyle preferences:', error);
+      // FIXME: Use logger.error('Error loading lifestyle preferences:', error);
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +86,7 @@ export default function LifestyleResidentPage() {
       toast.success('Lifestyle preferences saved!');
       router.push('/dashboard/my-profile-resident');
     } catch (error) {
-      console.error('Error saving lifestyle preferences:', error);
+      // FIXME: Use logger.error('Error saving lifestyle preferences:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);

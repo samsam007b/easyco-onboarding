@@ -40,7 +40,7 @@ export default function CommunityEventsResidentPage() {
         setOpenToMeetups(prefs.openToMeetups || false);
       }
     } catch (error) {
-      console.error('Error loading community preferences:', error);
+      // FIXME: Use logger.error('Error loading community preferences:', error);
     }
   };
 
@@ -75,7 +75,7 @@ export default function CommunityEventsResidentPage() {
       toast.success('Community preferences saved!');
       router.push('/dashboard/my-profile-resident');
     } catch (error) {
-      console.error('Error saving community preferences:', error);
+      // FIXME: Use logger.error('Error saving community preferences:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);

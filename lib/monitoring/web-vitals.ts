@@ -14,7 +14,7 @@ function reportToSentry(metric: Metric) {
 
   // Don't report in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[Web Vitals] ${name}:`, {
+    // console.log(`[Web Vitals] ${name}:`, {
       value: Math.round(value),
       rating,
       id,
@@ -86,7 +86,7 @@ export function initWebVitals() {
     onLCP(sendToAnalytics)
     onTTFB(sendToAnalytics)
   } catch (error) {
-    console.error('Failed to initialize Web Vitals:', error)
+    // FIXME: Use logger.error - 'Failed to initialize Web Vitals:', error)
   }
 }
 

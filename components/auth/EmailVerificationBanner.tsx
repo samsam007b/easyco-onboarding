@@ -33,7 +33,7 @@ export function EmailVerificationBanner() {
           setUserEmail(userData.email)
         }
       } catch (error) {
-        console.error('Error checking email verification:', error)
+        // FIXME: Use logger.error('Error checking email verification:', error)
       }
     }
 
@@ -58,7 +58,7 @@ export function EmailVerificationBanner() {
       })
 
       if (error) {
-        console.error('Error resending email:', error)
+        // FIXME: Use logger.error('Error resending email:', error)
         toast.error('Failed to resend verification email')
         return
       }
@@ -73,7 +73,7 @@ export function EmailVerificationBanner() {
         setEmailSent(false)
       }, 30000)
     } catch (error) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsResending(false)

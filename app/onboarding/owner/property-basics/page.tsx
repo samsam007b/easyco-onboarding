@@ -49,7 +49,7 @@ export default function PropertyBasicsPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading property data:', error);
+      // FIXME: Use logger.error('Error loading property data:', error);
       toast.error(common.errorLoadingData);
     } finally {
       setIsLoading(false);

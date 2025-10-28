@@ -42,7 +42,7 @@ export default function OwnerVerificationPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading verification data:', error);
+      // FIXME: Use logger.error('Error loading verification data:', error);
       toast.error('Failed to load existing data');
     } finally {
       setIsLoading(false);

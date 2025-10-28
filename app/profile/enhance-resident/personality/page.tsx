@@ -52,7 +52,7 @@ export default function PersonalityResidentPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading personality data:', error);
+      // FIXME: Use logger.error('Error loading personality data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +114,7 @@ export default function PersonalityResidentPage() {
       toast.success('Personality details saved!');
       router.push('/dashboard/my-profile-resident');
     } catch (error) {
-      console.error('Error saving personality:', error);
+      // FIXME: Use logger.error('Error saving personality:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);

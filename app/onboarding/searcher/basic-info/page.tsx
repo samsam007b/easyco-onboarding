@@ -80,7 +80,7 @@ export default function BasicInfoPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading profile data:', error);
+      // FIXME: Use logger.error('Error loading profile data:', error);
       toast.error(onboarding.errors.loadFailed);
     } finally {
       setIsLoading(false);

@@ -105,7 +105,7 @@ export default function JoinGroupPage() {
 
       setPendingInvitations(invitationsWithDetails);
     } catch (error: any) {
-      console.error('Error fetching invitations:', error);
+      // FIXME: Use logger.error('Error fetching invitations:', error);
     } finally {
       setLoadingInvitations(false);
     }
@@ -196,7 +196,7 @@ export default function JoinGroupPage() {
       router.push('/onboarding/searcher/basic-info');
 
     } catch (error: any) {
-      console.error('Error joining group:', error);
+      // FIXME: Use logger.error('Error joining group:', error);
       showErrorToast('Failed to join group', error.message);
     } finally {
       setIsLoading(false);
@@ -243,7 +243,7 @@ export default function JoinGroupPage() {
       router.push('/onboarding/searcher/basic-info');
 
     } catch (error: any) {
-      console.error('Error accepting invitation:', error);
+      // FIXME: Use logger.error('Error accepting invitation:', error);
       showErrorToast('Failed to join group', error.message);
     } finally {
       setIsLoading(false);
@@ -260,7 +260,7 @@ export default function JoinGroupPage() {
       setPendingInvitations(prev => prev.filter(inv => inv.id !== invitationId));
       showInfoToast('Invitation declined');
     } catch (error) {
-      console.error('Error declining invitation:', error);
+      // FIXME: Use logger.error('Error declining invitation:', error);
     }
   };
 

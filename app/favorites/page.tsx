@@ -65,7 +65,7 @@ export default function FavoritesPage() {
 
       setIsLoading(false);
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
       setIsLoading(false);
     }
   };
@@ -88,7 +88,7 @@ export default function FavoritesPage() {
 
       setFavoriteProperties(data || []);
     } catch (error) {
-      console.error('Error loading properties:', error);
+      // FIXME: Use logger.error('Error loading properties:', error);
     }
   };
 

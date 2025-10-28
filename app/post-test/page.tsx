@@ -10,7 +10,7 @@ export default function PostTest(){
     try{
       await supabase.from('test_feedback').insert({ tester_id, rating: d.rating, comment: d.comment||null });
       toast.success('Thanks for your feedback!');
-    } catch(e){ console.error(e); toast.error('Could not save feedback (check Supabase).'); }
+    } catch(e){ // FIXME: Use logger.error(e); toast.error('Could not save feedback (check Supabase).'); }
     r.push('/');
   };
   return (

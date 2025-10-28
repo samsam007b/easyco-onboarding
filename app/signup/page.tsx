@@ -133,7 +133,7 @@ export default function SignupPage() {
         router.push('/login?verified=false')
       }
     } catch (error: any) {
-      console.error('Signup error:', error)
+      // FIXME: Use logger.error('Signup error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -167,7 +167,7 @@ export default function SignupPage() {
       }
       // If successful, user will be redirected to Google
     } catch (error) {
-      console.error('Google signup error:', error)
+      // FIXME: Use logger.error('Google signup error:', error)
       toast.error('An unexpected error occurred')
       setIsGoogleLoading(false)
       // Clean up localStorage on error

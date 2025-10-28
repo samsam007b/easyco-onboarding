@@ -54,7 +54,7 @@ export default function ResidentPersonalityPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading personality data:', error);
+      // FIXME: Use logger.error('Error loading personality data:', error);
       toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);

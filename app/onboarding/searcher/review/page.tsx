@@ -40,7 +40,7 @@ export default function ReviewPage() {
     };
     const mapped = mapping[value.toLowerCase()];
     if (!mapped) {
-      console.warn(`Invalid wake_up_time value: ${value}, using default 'average'`);
+      // FIXME: Use logger.warn(`Invalid wake_up_time value: ${value}, using default 'average'`);
       return 'average';
     }
     return mapped;
@@ -58,7 +58,7 @@ export default function ReviewPage() {
     };
     const mapped = mapping[value.toLowerCase()];
     if (!mapped) {
-      console.warn(`Invalid sleep_time value: ${value}, using default '23h_01h'`);
+      // FIXME: Use logger.warn(`Invalid sleep_time value: ${value}, using default '23h_01h'`);
       return '23h_01h';
     }
     return mapped;
@@ -76,7 +76,7 @@ export default function ReviewPage() {
     };
     const mapped = mapping[value.toLowerCase()];
     if (!mapped) {
-      console.warn(`Invalid sociability_level value: ${value}, using default 'medium'`);
+      // FIXME: Use logger.warn(`Invalid sociability_level value: ${value}, using default 'medium'`);
       return 'medium';
     }
     return mapped;
@@ -205,7 +205,7 @@ export default function ReviewPage() {
           .insert(dependentProfileData);
 
         if (insertError) {
-          console.error('Error saving dependent profile:', insertError);
+          // FIXME: Use logger.error('Error saving dependent profile:', insertError);
           throw new Error('Failed to save dependent profile');
         }
 
@@ -219,7 +219,7 @@ export default function ReviewPage() {
           .eq('id', user.id);
 
         if (userUpdateError) {
-          console.error('Error updating user onboarding status:', userUpdateError);
+          // FIXME: Use logger.error('Error updating user onboarding status:', userUpdateError);
           // Don't throw - dependent profile was saved successfully
         }
 
@@ -258,7 +258,7 @@ export default function ReviewPage() {
 
       router.push('/onboarding/searcher/success');
     } catch (err: any) {
-      console.error('Error submitting:', err);
+      // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
       setIsSubmitting(false);
     }

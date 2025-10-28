@@ -14,7 +14,7 @@ const isValidGAId = (id: string): boolean => {
 };
 
 if (!isValidGAId(GA_MEASUREMENT_ID)) {
-  console.warn('Invalid Google Analytics ID format:', GA_MEASUREMENT_ID);
+  // FIXME: Use logger.warn('Invalid Google Analytics ID format:', GA_MEASUREMENT_ID);
 }
 
 /**

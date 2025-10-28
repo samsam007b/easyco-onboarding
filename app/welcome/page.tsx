@@ -57,7 +57,7 @@ export default function WelcomePage() {
         full_name: userData?.full_name || authUser.email?.split('@')[0] || 'User',
       });
     } catch (error) {
-      console.error('Error loading user:', error);
+      // FIXME: Use logger.error('Error loading user:', error);
       router.push('/login');
     } finally {
       setLoading(false);

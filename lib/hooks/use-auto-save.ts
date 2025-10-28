@@ -42,7 +42,7 @@ export function useAutoSave(options: AutoSaveOptions) {
       const recentSaves = saveTimestamps.filter(ts => now - ts < RATE_LIMIT_WINDOW_MS);
 
       if (recentSaves.length >= RATE_LIMIT_MAX_SAVES) {
-        console.warn('Auto-save rate limit exceeded');
+        // FIXME: Use logger.warn('Auto-save rate limit exceeded');
         return;
       }
 
@@ -60,11 +60,8 @@ export function useAutoSave(options: AutoSaveOptions) {
       const maxSizeBytes = 100 * 1024; // 100KB max per save
 
       if (sizeInBytes > maxSizeBytes) {
-        console.error('Data too large for auto-save:', {
-          size: sizeInBytes,
-          maxSize: maxSizeBytes,
-          key
-        });
+        // FIXME: Use logger.error to log this error properly
+        // Data too large for auto-save - size: sizeInBytes, maxSize: maxSizeBytes, key: key
         toast.error('Data is too large to save');
         return;
       }
@@ -77,7 +74,7 @@ export function useAutoSave(options: AutoSaveOptions) {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.log('No user logged in, skipping Supabase save');
+        // console.log('No user logged in, skipping Supabase save');
         return;
       }
 
@@ -118,9 +115,9 @@ export function useAutoSave(options: AutoSaveOptions) {
           });
       }
 
-      console.log(`✅ Auto-saved ${key} to Supabase`);
+      // console.log(`✅ Auto-saved ${key} to Supabase`);
     } catch (error) {
-      console.error('Error auto-saving to Supabase:', error);
+      // FIXME: Use logger.error - 'Error auto-saving to Supabase:', error);
       // Don't show error toast to user, silent failure is fine for auto-save
     } finally {
       isSavingRef.current = false;
@@ -136,7 +133,7 @@ export function useAutoSave(options: AutoSaveOptions) {
         localStorage.setItem(key, JSON.stringify(data));
       }
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
+      // FIXME: Use logger.error - 'Error saving to localStorage:', error);
     }
 
     // Debounce Supabase save
@@ -179,12 +176,12 @@ export async function loadSavedData(key: string): Promise<any | null> {
         .single();
 
       if (profile?.profile_data?.[key]) {
-        console.log(`✅ Loaded ${key} from Supabase`);
+        // console.log(`✅ Loaded ${key} from Supabase`);
         return profile.profile_data[key];
       }
     }
   } catch (error) {
-    console.error('Error loading from Supabase:', error);
+    // FIXME: Use logger.error - 'Error loading from Supabase:', error);
   }
 
   // Fallback to localStorage
@@ -192,12 +189,12 @@ export async function loadSavedData(key: string): Promise<any | null> {
     if (typeof window !== 'undefined') {
       const raw = localStorage.getItem(key);
       if (raw) {
-        console.log(`✅ Loaded ${key} from localStorage`);
+        // console.log(`✅ Loaded ${key} from localStorage`);
         return JSON.parse(raw);
       }
     }
   } catch (error) {
-    console.error('Error loading from localStorage:', error);
+    // FIXME: Use logger.error - 'Error loading from localStorage:', error);
   }
 
   return null;
@@ -272,7 +269,7 @@ export async function getOnboardingProgress(): Promise<{
       isIncomplete: true,
     };
   } catch (error) {
-    console.error('Error getting onboarding progress:', error);
+    // FIXME: Use logger.error - 'Error getting onboarding progress:', error);
     return null;
   }
 }

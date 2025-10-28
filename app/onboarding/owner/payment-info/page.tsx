@@ -45,7 +45,7 @@ export default function PaymentInfoPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading payment data:', error);
+      // FIXME: Use logger.error('Error loading payment data:', error);
       toast.error(common.errorLoadingData);
     } finally {
       setIsLoading(false);

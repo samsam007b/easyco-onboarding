@@ -49,7 +49,7 @@ export function DevTools() {
         .eq('id', user.id);
 
       if (error) {
-        console.error('Error switching role:', error);
+        // FIXME: Use logger.error('Error switching role:', error);
         toast.error('Failed to switch role');
         return;
       }
@@ -58,7 +58,7 @@ export function DevTools() {
       router.push(`/dashboard/${role}`);
       router.refresh();
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
       toast.error('An error occurred');
     } finally {
       setIsChangingRole(false);
@@ -93,7 +93,7 @@ export function DevTools() {
       toast.success('Onboarding reset!');
       router.push(`/onboarding/${userData?.user_type || 'searcher'}/basic-info`);
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
       toast.error('An error occurred');
     }
   };

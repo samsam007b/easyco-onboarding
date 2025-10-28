@@ -94,7 +94,7 @@ export function useTypingIndicator(conversationId: string | null, userId: string
             .eq('user_id', userId)
         }
       } catch (error) {
-        console.error('Error sending typing indicator:', error)
+        // FIXME: Use logger.error - 'Error sending typing indicator:', error)
       }
     },
     [channel, userId, conversationId, supabase]

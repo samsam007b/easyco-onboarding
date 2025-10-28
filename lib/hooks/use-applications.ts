@@ -127,7 +127,7 @@ export function useApplications(userId?: string) {
             .order('created_at', { ascending: false });
 
           if (groupError) {
-            console.warn('Failed to load group applications:', groupError.message);
+            // FIXME: Use logger.warn('Failed to load group applications:', groupError.message);
             setGroupApplications([]);
           } else {
             setGroupApplications(groupApps || []);
@@ -144,7 +144,7 @@ export function useApplications(userId?: string) {
 
         setApplications(data || []);
       } catch (error: any) {
-        console.error('Error loading applications:', error);
+        // FIXME: Use logger.error - 'Error loading applications:', error);
         toast.error('Failed to load applications');
       } finally {
         setIsLoading(false);
@@ -167,7 +167,7 @@ export function useApplications(userId?: string) {
 
         return data;
       } catch (error: any) {
-        console.error('Error loading application:', error);
+        // FIXME: Use logger.error - 'Error loading application:', error);
         toast.error('Failed to load application');
         return null;
       }
@@ -192,7 +192,7 @@ export function useApplications(userId?: string) {
 
         return !!data;
       } catch (error: any) {
-        console.error('Error checking application:', error);
+        // FIXME: Use logger.error - 'Error checking application:', error);
         return false;
       }
     },
@@ -227,7 +227,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        console.error('Error creating application:', error);
+        // FIXME: Use logger.error - 'Error creating application:', error);
         toasts.serverError();
         return false;
       }
@@ -264,7 +264,7 @@ export function useApplications(userId?: string) {
         await loadApplications(true);
         return true;
       } catch (error: any) {
-        console.error('Error updating application:', error);
+        // FIXME: Use logger.error - 'Error updating application:', error);
         toast.error('Failed to update application');
         return false;
       }
@@ -288,7 +288,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        console.error('Error withdrawing application:', error);
+        // FIXME: Use logger.error - 'Error withdrawing application:', error);
         toast.error('Failed to withdraw application');
         return false;
       }
@@ -313,7 +313,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        console.error('Error deleting application:', error);
+        // FIXME: Use logger.error - 'Error deleting application:', error);
         toast.error('Failed to delete application');
         return false;
       }
@@ -362,7 +362,7 @@ export function useApplications(userId?: string) {
 
         return stats;
       } catch (error: any) {
-        console.error('Error getting application stats:', error);
+        // FIXME: Use logger.error - 'Error getting application stats:', error);
         return null;
       }
     },
@@ -403,7 +403,7 @@ export function useApplications(userId?: string) {
         toast.success(`Group application ${newStatus}!`);
         return true;
       } catch (error: any) {
-        console.error('Error updating group application:', error);
+        // FIXME: Use logger.error - 'Error updating group application:', error);
         toast.error('Failed to update group application');
         return false;
       }

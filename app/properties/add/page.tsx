@@ -118,7 +118,7 @@ export default function AddPropertyPage() {
       toast.success('Property created successfully!');
       router.push('/dashboard/owner');
     } catch (error: any) {
-      console.error('Error creating property:', error);
+      // FIXME: Use logger.error('Error creating property:', error);
       toast.error(error.message || 'Failed to create property');
       setIsSubmitting(false);
     }

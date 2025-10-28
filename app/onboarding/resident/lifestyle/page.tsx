@@ -57,7 +57,7 @@ export default function ResidentLifestylePage() {
         }
       }
     } catch (error) {
-      console.error('Error loading lifestyle data:', error);
+      // FIXME: Use logger.error('Error loading lifestyle data:', error);
       toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);

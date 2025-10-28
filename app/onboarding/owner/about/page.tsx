@@ -49,7 +49,7 @@ export default function OwnerAbout() {
         }
       }
     } catch (error) {
-      console.error('Error loading about data:', error);
+      // FIXME: Use logger.error('Error loading about data:', error);
       toast.error(t('onboarding.errors.loadFailed'));
     } finally {
       setIsLoading(false);

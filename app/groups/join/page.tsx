@@ -114,7 +114,7 @@ function JoinGroupContent() {
       setFoundGroup({ ...group, member_count: count || 0 });
 
     } catch (error: any) {
-      console.error('Error searching group:', error);
+      // FIXME: Use logger.error('Error searching group:', error);
       toast.error(error.message || 'Failed to find group');
     } finally {
       setIsSearching(false);
@@ -154,7 +154,7 @@ function JoinGroupContent() {
       setOpenGroups(groupsWithCounts);
 
     } catch (error: any) {
-      console.error('Error loading open groups:', error);
+      // FIXME: Use logger.error('Error loading open groups:', error);
     } finally {
       setIsLoadingOpenGroups(false);
     }
@@ -200,7 +200,7 @@ function JoinGroupContent() {
       }, 1500);
 
     } catch (error: any) {
-      console.error('Error joining group:', error);
+      // FIXME: Use logger.error('Error joining group:', error);
       toast.error(error.message || 'Failed to join group');
     } finally {
       setIsJoining(false);

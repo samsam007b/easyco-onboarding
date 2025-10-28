@@ -53,7 +53,7 @@ export default function PropertyInfoPage() {
         // numberOfProperties isn't in the schema yet, but we'll keep it for future use
       }
     } catch (error) {
-      console.error('Error loading property data:', error);
+      // FIXME: Use logger.error('Error loading property data:', error);
       toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);
@@ -79,7 +79,7 @@ export default function PropertyInfoPage() {
         .eq('user_id', userId);
 
       if (error) {
-        console.error('Error updating property info:', error);
+        // FIXME: Use logger.error('Error updating property info:', error);
         toast.error(common.errors.saveFailed);
         return;
       }
@@ -87,7 +87,7 @@ export default function PropertyInfoPage() {
       toast.success(common.saveSuccess);
       router.push('/dashboard/my-profile-owner');
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);

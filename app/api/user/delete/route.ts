@@ -96,7 +96,7 @@ export async function DELETE(request: NextRequest) {
     const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id)
 
     if (deleteError) {
-      console.error('Error deleting user from auth:', deleteError)
+      // FIXME: Use logger.error('Error deleting user from auth:', deleteError)
       return NextResponse.json(
         { success: false, error: 'Failed to delete account' },
         { status: 500 }
@@ -110,7 +110,7 @@ export async function DELETE(request: NextRequest) {
       .eq('id', user.id)
 
     if (usersError) {
-      console.warn('Error deleting from users table:', usersError)
+      // FIXME: Use logger.warn('Error deleting from users table:', usersError)
       // Don't fail here as auth user is already deleted
     }
 
@@ -121,7 +121,7 @@ export async function DELETE(request: NextRequest) {
       .eq('user_id', user.id)
 
     if (profilesError) {
-      console.warn('Error deleting from user_profiles table:', profilesError)
+      // FIXME: Use logger.warn('Error deleting from user_profiles table:', profilesError)
     }
 
     // Log successful deletion

@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error to console (in production, you'd send to error tracking service like Sentry)
-    console.error('Error caught by boundary:', error, errorInfo);
+    // FIXME: Use logger.error('Error caught by boundary:', error, errorInfo);
   }
 
   render() {

@@ -41,7 +41,7 @@ export default function EnhanceAboutPage() {
           }
         }
       } catch (error) {
-        console.error('Error loading data:', error);
+        // FIXME: Use logger.error('Error loading data:', error);
       } finally {
         setIsLoading(false);
       }

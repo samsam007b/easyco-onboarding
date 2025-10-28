@@ -59,7 +59,7 @@ export default function AdvancedPreferencesPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading preferences data:', error);
+      // FIXME: Use logger.error('Error loading preferences data:', error);
       toast.error('Failed to load existing data');
     } finally {
       setIsLoading(false);

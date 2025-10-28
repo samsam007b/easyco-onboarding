@@ -52,7 +52,7 @@ export default function ResidentLivingSituationPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading living situation data:', error);
+      // FIXME: Use logger.error('Error loading living situation data:', error);
       toast.error(common.errors.loadFailed);
     } finally {
       setIsLoading(false);
@@ -129,7 +129,7 @@ export default function ResidentLivingSituationPage() {
         .upsert(profileData, { onConflict: 'user_id' });
 
       if (profileError) {
-        console.error('Profile error:', profileError);
+        // FIXME: Use logger.error('Profile error:', profileError);
         toast.error(common.errors.saveFailed);
         return;
       }
@@ -143,7 +143,7 @@ export default function ResidentLivingSituationPage() {
 
       router.push('/onboarding/resident/review');
     } catch (error) {
-      console.error('Error completing onboarding:', error);
+      // FIXME: Use logger.error('Error completing onboarding:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsSaving(false);

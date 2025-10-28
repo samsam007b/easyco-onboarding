@@ -53,14 +53,14 @@ export default function ProfilesManagementPage() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading dependent profiles:', error);
+        // FIXME: Use logger.error('Error loading dependent profiles:', error);
         toast.error(common.errors.loadFailed);
         return;
       }
 
       setDependentProfiles(data || []);
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
       toast.error(common.errors.unexpected);
     } finally {
       setIsLoading(false);
@@ -79,7 +79,7 @@ export default function ProfilesManagementPage() {
       toast.success(currentState ? dashboard.profiles.profileDeactivated : dashboard.profiles.profileActivated);
       loadDependentProfiles();
     } catch (error) {
-      console.error('Error toggling profile:', error);
+      // FIXME: Use logger.error('Error toggling profile:', error);
       toast.error(dashboard.profiles.updateFailed);
     }
   };
@@ -102,7 +102,7 @@ export default function ProfilesManagementPage() {
       toast.success(dashboard.profiles.deleteSuccess);
       loadDependentProfiles();
     } catch (error) {
-      console.error('Error deleting profile:', error);
+      // FIXME: Use logger.error('Error deleting profile:', error);
       toast.error(dashboard.profiles.deleteFailed);
     } finally {
       setDeletingId(null);

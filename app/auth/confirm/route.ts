@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     })
 
     if (error) {
-      console.error('Email verification error:', error)
+      // FIXME: Use logger.error('Email verification error:', error)
       return NextResponse.redirect(
         new URL(`/login?error=${encodeURIComponent(error.message)}`, requestUrl.origin)
       )
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
         .eq('id', data.user.id)
 
       if (updateError) {
-        console.error('Error updating email_verified status:', updateError)
+        // FIXME: Use logger.error('Error updating email_verified status:', updateError)
         // Don't fail the whole flow, just log the error
       }
 
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       new URL('/login?error=verification_failed', requestUrl.origin)
     )
   } catch (error: any) {
-    console.error('Unexpected error in email confirmation:', error)
+    // FIXME: Use logger.error('Unexpected error in email confirmation:', error)
     return NextResponse.redirect(
       new URL('/login?error=unexpected_error', requestUrl.origin)
     )

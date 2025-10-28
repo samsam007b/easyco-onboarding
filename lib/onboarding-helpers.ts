@@ -234,12 +234,12 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
       })
 
     if (profileError) {
-      console.error('❌ Profile save error:', profileError)
-      console.error('   Code:', profileError.code)
-      console.error('   Message:', profileError.message)
-      console.error('   Details:', profileError.details)
-      console.error('   Hint:', profileError.hint)
-      console.error('   Data sent:', profileData)
+      // FIXME: Use logger.error - '❌ Profile save error:', profileError)
+      // FIXME: Use logger.error - '   Code:', profileError.code)
+      // FIXME: Use logger.error - '   Message:', profileError.message)
+      // FIXME: Use logger.error - '   Details:', profileError.details)
+      // FIXME: Use logger.error - '   Hint:', profileError.hint)
+      // FIXME: Use logger.error - '   Data sent:', profileData)
       throw profileError
     }
 
@@ -266,7 +266,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
         })
 
       if (verificationError) {
-        console.warn('Warning: Could not save verification data (table may not exist yet):', verificationError)
+        // FIXME: Use logger.warn('Warning: Could not save verification data (table may not exist yet):', verificationError)
         // Don't throw - verification table might not be created yet
       }
     }
@@ -292,7 +292,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
         })
 
       if (consentError) {
-        console.warn('Warning: Could not save consent data (table may not exist yet):', consentError)
+        // FIXME: Use logger.warn('Warning: Could not save consent data (table may not exist yet):', consentError)
         // Don't throw - consent table might not be created yet
       }
     }
@@ -310,7 +310,7 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
 
     return { success: true }
   } catch (error) {
-    console.error('Error saving onboarding data:', error)
+    // FIXME: Use logger.error - 'Error saving onboarding data:', error)
     return { success: false, error }
   }
 }
@@ -418,7 +418,7 @@ export async function getOnboardingData(userId: string) {
 
     return { data: camelCaseData }
   } catch (error) {
-    console.error('Error getting onboarding data:', error)
+    // FIXME: Use logger.error - 'Error getting onboarding data:', error)
     return { data: null, error }
   }
 }
@@ -440,7 +440,7 @@ export async function hasCompletedOnboarding(userId: string) {
 
     return data?.onboarding_completed || false
   } catch (error) {
-    console.error('Error checking onboarding status:', error)
+    // FIXME: Use logger.error - 'Error checking onboarding status:', error)
     return false
   }
 }
@@ -490,7 +490,7 @@ export async function getProfileCompletionPercentage(userId: string) {
 
     return Math.round((filledFields / totalFields) * 100)
   } catch (error) {
-    console.error('Error calculating profile completion:', error)
+    // FIXME: Use logger.error - 'Error calculating profile completion:', error)
     return 0
   }
 }

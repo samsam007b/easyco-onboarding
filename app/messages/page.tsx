@@ -82,7 +82,7 @@ export default function MessagesPage() {
         user_type: userData?.user_type,
       });
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
     } finally {
       setIsLoading(false);
     }

@@ -117,7 +117,7 @@ export default function CreateGroupPage() {
           expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
         });
 
-      if (inviteError) console.error('Error creating invite code:', inviteError);
+      if (inviteError) // FIXME: Use logger.error('Error creating invite code:', inviteError);
 
       toast.success('Group created successfully!');
 
@@ -127,7 +127,7 @@ export default function CreateGroupPage() {
       }, 1000);
 
     } catch (error: any) {
-      console.error('Error creating group:', error);
+      // FIXME: Use logger.error('Error creating group:', error);
       toast.error(error.message || 'Failed to create group');
     } finally {
       setIsCreating(false);

@@ -33,7 +33,7 @@ export default function ResumeOnboardingModal() {
         setIsOpen(true);
       }
     } catch (error) {
-      console.error('Error checking onboarding progress:', error);
+      // FIXME: Use logger.error('Error checking onboarding progress:', error);
     } finally {
       setIsLoading(false);
     }
