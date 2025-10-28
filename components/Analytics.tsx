@@ -73,7 +73,7 @@ export default function Analytics() {
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
+    gtag?: (command: string, eventName: string, params?: Record<string, any>) => void;
   }
 }
 

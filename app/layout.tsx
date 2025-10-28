@@ -17,6 +17,10 @@ const DevTools = dynamic(() => import('@/components/DevTools').then(mod => ({ de
   ssr: false,
 })
 
+const WebVitalsReporter = dynamic(() => import('@/components/WebVitalsReporter').then(mod => ({ default: mod.WebVitalsReporter })), {
+  ssr: false,
+})
+
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
@@ -93,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <body className="min-h-screen">
         <Analytics />
+        <WebVitalsReporter />
         <ClientProviders>
           {children}
           <Toaster position="top-right" />

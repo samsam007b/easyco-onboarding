@@ -1,4 +1,5 @@
 // next.config.mjs
+import { withSentryConfig } from '@sentry/nextjs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -171,4 +172,19 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+// Sentry configuration options
+const sentryWebpackPluginOptions = {
+  // Suppresses source map uploading logs during build
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  // Upload source maps to Sentry
+  widenClientFileUpload: true,
+  // Hide source maps from generated client bundles
+  hideSourceMaps: true,
+  // Disable Sentry during development
+  disableLogger: true,
+}
+
+// Export config wrapped with Sentry
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
