@@ -69,17 +69,10 @@ DROP FUNCTION IF EXISTS get_demo_user_id(TEXT);
 -- VERIFICATION
 -- ============================================================================
 
--- Show all property members with details
+-- Show all property members with basic details
 SELECT
   p.title as property,
   up.first_name || ' ' || up.last_name as resident_name,
-  CASE
-    WHEN up.date_of_birth IS NOT NULL
-    THEN EXTRACT(YEAR FROM age(up.date_of_birth))::INTEGER
-    ELSE NULL
-  END as age,
-  up.occupation,
-  up.nationality,
   pm.role,
   pm.status,
   pm.move_in_date
