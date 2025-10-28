@@ -454,11 +454,11 @@ export default function SignupPage() {
                   />
                   <span className="text-sm text-gray-600">
                     {t('auth.signup.termsAgree')}{' '}
-                    <Link href="/terms" className="text-[#4A148C] hover:underline">
+                    <Link href="/legal/terms" className="text-[#4A148C] hover:underline">
                       {t('auth.signup.termsLink')}
                     </Link>
                     {' '}{t('auth.signup.and')}{' '}
-                    <Link href="/privacy" className="text-[#4A148C] hover:underline">
+                    <Link href="/legal/privacy" className="text-[#4A148C] hover:underline">
                       {t('auth.signup.privacyLink')}
                     </Link>
                   </span>

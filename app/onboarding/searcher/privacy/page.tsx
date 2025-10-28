@@ -86,7 +86,7 @@ export default function PrivacyPage() {
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {t('onboarding.privacy.reviewTerms')}{' '}
-                <a href="/terms" className="text-[color:var(--easy-purple)] underline">
+                <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="text-[color:var(--easy-purple)] underline">
                   {t('onboarding.privacy.termsOfService')}
                 </a>
               </p>
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {t('onboarding.privacy.learnProtection')}{' '}
-                <a href="/privacy" className="text-[color:var(--easy-purple)] underline">
+                <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[color:var(--easy-purple)] underline">
                   {t('onboarding.privacy.personalData')}
                 </a>
               </p>
