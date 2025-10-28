@@ -29,6 +29,14 @@ export function useNotifications(userId?: string) {
 
   // Load all notifications for the user
   const loadNotifications = useCallback(async () => {
+    // TEMPORARY FIX: Disable notifications to avoid CORS errors
+    // TODO: Re-enable after fixing authentication issues
+    setNotifications([]);
+    setUnreadCount(0);
+    setIsLoading(false);
+    return;
+
+    /* COMMENTED OUT - Original implementation
     if (!userId) {
       setIsLoading(false);
       return;
@@ -51,25 +59,13 @@ export function useNotifications(userId?: string) {
     } finally {
       setIsLoading(false);
     }
+    */
   }, [userId]);
 
   // Load only unread notifications count (for badge)
   const loadUnreadCount = useCallback(async () => {
-    if (!userId) return;
-
-    try {
-      const { count, error } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .eq('read', false);
-
-      if (error) throw error;
-
-      setUnreadCount(count || 0);
-    } catch (error: any) {
-      console.error('Error loading unread count:', error);
-    }
+    // TEMPORARY FIX: Disabled
+    return;
   }, [userId]);
 
   // Mark a notification as read
@@ -200,64 +196,8 @@ export function useNotifications(userId?: string) {
 
   // Subscribe to real-time notifications
   const subscribeToNotifications = useCallback(() => {
-    if (!userId) return;
-
-    // Unsubscribe from previous channel if exists
-    if (channel) {
-      supabase.removeChannel(channel);
-    }
-
-    // Subscribe to new notifications
-    const newChannel = supabase
-      .channel(`notifications:${userId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${userId}`,
-        },
-        (payload) => {
-          const newNotification = payload.new as Notification;
-          setNotifications(prev => [newNotification, ...prev]);
-          setUnreadCount(prev => prev + 1);
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${userId}`,
-        },
-        (payload) => {
-          const updatedNotification = payload.new as Notification;
-          setNotifications(prev =>
-            prev.map(n => (n.id === updatedNotification.id ? updatedNotification : n))
-          );
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${userId}`,
-        },
-        (payload) => {
-          const deletedNotification = payload.old as Notification;
-          setNotifications(prev => prev.filter(n => n.id !== deletedNotification.id));
-          if (!deletedNotification.read) {
-            setUnreadCount(prev => Math.max(0, prev - 1));
-          }
-        }
-      )
-      .subscribe();
-
-    setChannel(newChannel);
+    // TEMPORARY FIX: Disabled realtime subscriptions
+    return;
   }, [userId, channel]);
 
   // Unsubscribe from real-time notifications
