@@ -93,15 +93,13 @@ export default function TopMatchesPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title={
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-[#4A148C]" />
-            <span>Your Top Matches</span>
-          </div>
-        }
-        description="Properties that best match your preferences and lifestyle"
-      />
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkles className="w-6 h-6 text-[#4A148C]" />
+          <h1 className="text-3xl font-bold text-gray-900">Your Top Matches</h1>
+        </div>
+        <p className="text-gray-600">Properties that best match your preferences and lifestyle</p>
+      </div>
 
       {/* Stats Banner */}
       <Card className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
