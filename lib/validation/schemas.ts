@@ -126,66 +126,177 @@ export type UserProfileInput = z.infer<typeof userProfileSchema>;
 // ============================================================================
 
 /**
- * Property creation/update schema
+ * Property type validation
+ */
+export const propertyTypeSchema = z.enum([
+  'apartment',
+  'house',
+  'studio',
+  'coliving',
+  'shared_room',
+  'private_room',
+  'entire_place',
+], {
+  errorMap: () => ({ message: 'Please select a valid property type' }),
+});
+
+/**
+ * Property amenities validation
+ */
+export const propertyAmenitiesSchema = z.array(
+  z.enum([
+    'wifi',
+    'parking',
+    'elevator',
+    'balcony',
+    'garden',
+    'gym',
+    'laundry',
+    'dishwasher',
+    'washing_machine',
+    'dryer',
+    'air_conditioning',
+    'heating',
+    'kitchen',
+    'furnished',
+    'pets_allowed',
+    'smoking_allowed',
+    'wheelchair_accessible',
+    'security',
+    'concierge',
+    'pool',
+    'terrace',
+  ])
+).default([]);
+
+/**
+ * Property creation/update schema (comprehensive)
  */
 export const propertySchema = z.object({
+  // Basic Information
   title: z
     .string()
     .min(10, 'Title must be at least 10 characters')
-    .max(100, 'Title cannot exceed 100 characters'),
+    .max(255, 'Title must not exceed 255 characters'),
 
   description: z
     .string()
     .min(50, 'Description must be at least 50 characters')
-    .max(2000, 'Description cannot exceed 2000 characters'),
+    .max(5000, 'Description must not exceed 5000 characters')
+    .optional(),
 
-  property_type: z.enum(['apartment', 'house', 'studio', 'coliving', 'shared_room', 'private_room', 'entire_place'], {
-    errorMap: () => ({ message: 'Please select a valid property type' }),
-  }),
+  property_type: propertyTypeSchema,
 
-  address: z.string().min(5, 'Address must be at least 5 characters'),
-  city: z.string().min(2, 'City must be at least 2 characters'),
+  // Location
+  address: z.string().min(5, 'Address is required'),
+  city: z.string().min(2, 'City is required').max(100),
+  neighborhood: z.string().max(100).optional(),
   postal_code: postalCodeSchema,
+  country: z.string().min(2).max(100).default('France'),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
 
+  // Property Details
   bedrooms: z
     .number()
     .int('Bedrooms must be a whole number')
     .min(0, 'Bedrooms cannot be negative')
-    .max(20, 'Bedrooms cannot exceed 20'),
+    .max(20, 'Maximum 20 bedrooms allowed'),
 
   bathrooms: z
     .number()
     .int('Bathrooms must be a whole number')
     .min(0, 'Bathrooms cannot be negative')
-    .max(10, 'Bathrooms cannot exceed 10'),
+    .max(10, 'Maximum 10 bathrooms allowed'),
+
+  total_rooms: z
+    .number()
+    .int()
+    .min(0)
+    .max(50)
+    .optional(),
 
   surface_area: z
     .number()
-    .positive('Surface area must be positive')
+    .int('Surface area must be a whole number')
+    .min(1, 'Surface area must be at least 1 m²')
     .max(10000, 'Surface area cannot exceed 10,000 m²')
     .optional(),
 
-  monthly_rent: moneySchema,
-  charges: moneySchema.optional(),
-  deposit: moneySchema.optional(),
-
-  furnished: z.boolean(),
-  smoking_allowed: z.boolean(),
-  pets_allowed: z.boolean(),
-  couples_allowed: z.boolean(),
-
-  available_from: z.string().optional(),
-  minimum_stay_months: z
+  floor_number: z
     .number()
-    .int('Minimum stay must be a whole number')
-    .min(1, 'Minimum stay must be at least 1 month')
-    .max(24, 'Minimum stay cannot exceed 24 months')
+    .int()
+    .min(-5, 'Floor number must be between -5 and 200')
+    .max(200)
     .optional(),
 
-  amenities: z.array(z.string()).optional(),
+  total_floors: z
+    .number()
+    .int()
+    .min(1)
+    .max(200)
+    .optional(),
+
+  furnished: z.boolean().default(false),
+
+  // Pricing
+  monthly_rent: moneySchema,
+  charges: moneySchema.default(0),
+  deposit: moneySchema.optional(),
+
+  // Availability
+  available_from: z.string().optional(),
+  available_until: z.string().optional(),
+  minimum_stay_months: z
+    .number()
+    .int()
+    .min(1, 'Minimum stay must be at least 1 month')
+    .max(24, 'Minimum stay cannot exceed 24 months')
+    .default(1),
+
+  maximum_stay_months: z
+    .number()
+    .int()
+    .min(1)
+    .max(60)
+    .optional(),
+
+  // Amenities
+  amenities: propertyAmenitiesSchema,
+
+  // Rules & Preferences
+  smoking_allowed: z.boolean().default(false),
+  pets_allowed: z.boolean().default(false),
+  couples_allowed: z.boolean().default(true),
+  children_allowed: z.boolean().default(true),
+
+  // Images
+  images: z.array(z.string().url()).max(20, 'Maximum 20 images allowed').default([]),
+  main_image: z.string().url().optional(),
+});
+
+/**
+ * Property filter schema for search
+ */
+export const propertyFiltersSchema = z.object({
+  city: z.string().optional(),
+  neighborhood: z.string().optional(),
+  property_type: propertyTypeSchema.optional(),
+  min_price: moneySchema.optional(),
+  max_price: moneySchema.optional(),
+  bedrooms: z.number().int().min(0).max(20).optional(),
+  bathrooms: z.number().int().min(0).max(10).optional(),
+  amenities: propertyAmenitiesSchema.optional(),
+  is_furnished: z.boolean().optional(),
+  pets_allowed: z.boolean().optional(),
+  smoking_allowed: z.boolean().optional(),
+  available_from: z.string().optional(),
+  minimum_stay_months: z.number().int().min(1).max(24).optional(),
+  maximum_stay_months: z.number().int().min(1).max(60).optional(),
 });
 
 export type PropertyInput = z.infer<typeof propertySchema>;
+export type PropertyFilters = z.infer<typeof propertyFiltersSchema>;
 
 // ============================================================================
 // APPLICATION SCHEMAS
@@ -235,70 +346,7 @@ export type ApplicationInput = z.infer<typeof applicationSchema>;
 // GROUP SCHEMAS
 // ============================================================================
 
-/**
- * Group creation schema
- */
-export const groupSchema = z.object({
-  name: z
-    .string()
-    .min(3, 'Group name must be at least 3 characters')
-    .max(50, 'Group name cannot exceed 50 characters'),
-
-  description: z
-    .string()
-    .min(10, 'Description must be at least 10 characters')
-    .max(500, 'Description cannot exceed 500 characters')
-    .optional(),
-
-  max_members: z
-    .number()
-    .int('Max members must be a whole number')
-    .min(2, 'Group must allow at least 2 members')
-    .max(10, 'Group cannot exceed 10 members'),
-
-  is_private: z.boolean().default(false),
-});
-
-export type GroupInput = z.infer<typeof groupSchema>;
-
-// ============================================================================
-// PREFERENCES SCHEMAS
-// ============================================================================
-
-/**
- * Searcher preferences schema
- */
-export const preferencesSchema = z.object({
-  budget_min: moneySchema.optional(),
-  budget_max: moneySchema,
-
-  preferred_cities: z.array(z.string()).min(1, 'Select at least one city'),
-
-  bedrooms_min: z.number().int().min(0).optional(),
-  bathrooms_min: z.number().int().min(0).optional(),
-
-  property_types: z.array(z.string()).min(1, 'Select at least one property type'),
-
-  move_in_date: z.string().optional(),
-  lease_duration_months: z.number().int().min(1).max(60).optional(),
-
-  lifestyle_preferences: z.object({
-    smoking: z.enum(['yes', 'no', 'no_preference']).optional(),
-    pets: z.enum(['yes', 'no', 'no_preference']).optional(),
-    noise_level: z.enum(['quiet', 'moderate', 'lively', 'no_preference']).optional(),
-    cleanliness: z.enum(['very_clean', 'clean', 'moderate', 'no_preference']).optional(),
-  }).optional(),
-
-  required_amenities: z.array(z.string()).optional(),
-}).refine(
-  (data) => !data.budget_min || data.budget_min < data.budget_max,
-  {
-    message: 'Minimum budget must be less than maximum budget',
-    path: ['budget_min'],
-  }
-);
-
-export type PreferencesInput = z.infer<typeof preferencesSchema>;
+// (Group schemas will be added when needed)
 
 // ============================================================================
 // VALIDATION HELPERS
@@ -345,3 +393,4 @@ export function formatZodErrors(error: z.ZodError) {
     return acc;
   }, {} as Record<string, string>);
 }
+
