@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send } from 'lucide-react';
+import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,6 +26,8 @@ export default function PropertyDetailsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<{ full_name: string; email: string; phone_number?: string } | null>(null);
+  const [ownerProfile, setOwnerProfile] = useState<{ full_name: string; profile_photo_url?: string; user_type?: string; phone_number?: string } | null>(null);
+  const [residents, setResidents] = useState<Array<{ full_name: string; profile_photo_url?: string; age?: number; occupation?: string; nationality?: string }>>([]);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [alreadyApplied, setAlreadyApplied] = useState(false);
 
@@ -72,6 +74,36 @@ export default function PropertyDetailsPage() {
     if (result.success && result.data) {
       setProperty(result.data);
       setIsOwner(user?.id === result.data.owner_id);
+
+      // Load owner profile
+      const { data: owner } = await supabase
+        .from('user_profiles')
+        .select('full_name, profile_photo_url, user_type, phone_number')
+        .eq('user_id', result.data.owner_id)
+        .single();
+
+      if (owner) {
+        setOwnerProfile(owner);
+      }
+
+      // Load residents (from property_members table)
+      const { data: propertyMembers } = await supabase
+        .from('property_members')
+        .select('user_id, role')
+        .eq('property_id', propertyId)
+        .eq('status', 'active');
+
+      if (propertyMembers && propertyMembers.length > 0) {
+        const residentIds = propertyMembers.map(m => m.user_id);
+        const { data: residentProfiles } = await supabase
+          .from('user_profiles')
+          .select('full_name, profile_photo_url, age, occupation, nationality')
+          .in('user_id', residentIds);
+
+        if (residentProfiles) {
+          setResidents(residentProfiles);
+        }
+      }
 
       // Check if user has already applied (only if not the owner)
       if (user && user.id !== result.data.owner_id) {
@@ -469,6 +501,92 @@ export default function PropertyDetailsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Owner Card */}
+          {ownerProfile && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Owner
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-start gap-4">
+                  {ownerProfile.profile_photo_url ? (
+                    <img
+                      src={ownerProfile.profile_photo_url}
+                      alt={ownerProfile.full_name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-purple-200"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center">
+                      <User className="w-8 h-8 text-[#4A148C]" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <p className="font-semibold text-lg">{ownerProfile.full_name}</p>
+                    {ownerProfile.user_type && (
+                      <Badge variant="outline" className="mt-1">
+                        {ownerProfile.user_type}
+                      </Badge>
+                    )}
+                    {ownerProfile.phone_number && !isOwner && (
+                      <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                        <Phone className="w-4 h-4" />
+                        <span>{ownerProfile.phone_number}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Residents Card */}
+          {residents.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Current Residents ({residents.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {residents.map((resident, index) => (
+                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                      {resident.profile_photo_url ? (
+                        <img
+                          src={resident.profile_photo_url}
+                          alt={resident.full_name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-purple-100"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
+                          <User className="w-6 h-6 text-[#4A148C]" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold">{resident.full_name}</p>
+                        {resident.age && (
+                          <p className="text-sm text-gray-600">{resident.age} years old</p>
+                        )}
+                        {resident.occupation && (
+                          <p className="text-sm text-gray-600">{resident.occupation}</p>
+                        )}
+                        {resident.nationality && (
+                          <Badge variant="outline" className="mt-1 text-xs">
+                            {resident.nationality}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Property Info */}
           <Card>
