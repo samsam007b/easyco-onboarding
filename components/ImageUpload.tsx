@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
@@ -169,10 +170,12 @@ export function ImageUpload({
                 key={index}
                 className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group"
               >
-                <img
+                <Image
                   src={url}
                   alt={`Property image ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  className="object-cover"
                 />
                 {!disabled && (
                   <button
