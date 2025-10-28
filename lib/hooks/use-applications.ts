@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { toasts } from '@/lib/toast-helpers';
+import { logger } from '@/lib/utils/logger';
 
 export interface Application {
   id: string;
@@ -127,7 +128,10 @@ export function useApplications(userId?: string) {
             .order('created_at', { ascending: false });
 
           if (groupError) {
-            // FIXME: Use logger.warn('Failed to load group applications:', groupError.message);
+            logger.supabaseError('load group applications', groupError, {
+              userId,
+              propertyIds: propertyIds.slice(0, 5), // Log first 5 IDs only
+            });
             setGroupApplications([]);
           } else {
             setGroupApplications(groupApps || []);
@@ -144,8 +148,11 @@ export function useApplications(userId?: string) {
 
         setApplications(data || []);
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error loading applications:', error);
-        toast.error('Failed to load applications');
+        logger.supabaseError('load applications', error, {
+          userId,
+          asOwner,
+        });
+        toast.error('Failed to load applications. Please try again or contact support.');
       } finally {
         setIsLoading(false);
       }
@@ -167,7 +174,7 @@ export function useApplications(userId?: string) {
 
         return data;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error loading application:', error);
+        logger.supabaseError('get application', error, { applicationId });
         toast.error('Failed to load application');
         return null;
       }
@@ -192,7 +199,7 @@ export function useApplications(userId?: string) {
 
         return !!data;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error checking application:', error);
+        logger.supabaseError('check application', error, { userId, propertyId });
         return false;
       }
     },
@@ -227,7 +234,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error creating application:', error);
+        logger.supabaseError('create application', error, { userId, propertyId: applicationData.property_id });
         toasts.serverError();
         return false;
       }
@@ -264,7 +271,7 @@ export function useApplications(userId?: string) {
         await loadApplications(true);
         return true;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error updating application:', error);
+        logger.supabaseError('update application status', error, { applicationId, status });
         toast.error('Failed to update application');
         return false;
       }
@@ -288,7 +295,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error withdrawing application:', error);
+        logger.supabaseError('withdraw application', error, { applicationId, userId });
         toast.error('Failed to withdraw application');
         return false;
       }
@@ -313,7 +320,7 @@ export function useApplications(userId?: string) {
         await loadApplications();
         return true;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error deleting application:', error);
+        logger.supabaseError('delete application', error, { applicationId, userId });
         toast.error('Failed to delete application');
         return false;
       }
@@ -362,7 +369,7 @@ export function useApplications(userId?: string) {
 
         return stats;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error getting application stats:', error);
+        logger.supabaseError('get application stats', error, { userId, propertyId });
         return null;
       }
     },
@@ -403,7 +410,7 @@ export function useApplications(userId?: string) {
         toast.success(`Group application ${newStatus}!`);
         return true;
       } catch (error: any) {
-        // FIXME: Use logger.error - 'Error updating group application:', error);
+        logger.supabaseError('update group application status', error, { groupApplicationId, newStatus });
         toast.error('Failed to update group application');
         return false;
       }
