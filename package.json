@@ -11,7 +11,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "seed:demo": "tsx scripts/seed-demo-data.ts"
+    "seed:demo": "tsx scripts/seed-demo-data.ts",
+    "property:add": "tsx scripts/add-property-to-existing-user.ts",
+    "property:list": "tsx scripts/list-all-properties.ts"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.22.0",
