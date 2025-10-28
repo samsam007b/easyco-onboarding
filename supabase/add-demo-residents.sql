@@ -72,7 +72,7 @@ DROP FUNCTION IF EXISTS get_demo_user_id(TEXT);
 -- Show all property members with details
 SELECT
   p.title as property,
-  up.full_name as resident_name,
+  up.first_name || ' ' || up.last_name as resident_name,
   up.age,
   up.occupation,
   up.nationality,

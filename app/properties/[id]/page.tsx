@@ -26,8 +26,8 @@ export default function PropertyDetailsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<{ full_name: string; email: string; phone_number?: string } | null>(null);
-  const [ownerProfile, setOwnerProfile] = useState<{ full_name: string; profile_photo_url?: string; user_type?: string; phone_number?: string } | null>(null);
-  const [residents, setResidents] = useState<Array<{ full_name: string; profile_photo_url?: string; age?: number; occupation?: string; nationality?: string }>>([]);
+  const [ownerProfile, setOwnerProfile] = useState<{ first_name: string; last_name: string; profile_photo_url?: string; user_type?: string; phone_number?: string } | null>(null);
+  const [residents, setResidents] = useState<Array<{ first_name: string; last_name: string; profile_photo_url?: string; age?: number; occupation?: string; nationality?: string }>>([]);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [alreadyApplied, setAlreadyApplied] = useState(false);
 
@@ -78,7 +78,7 @@ export default function PropertyDetailsPage() {
       // Load owner profile
       const { data: owner } = await supabase
         .from('user_profiles')
-        .select('full_name, profile_photo_url, user_type, phone_number')
+        .select('first_name, last_name, profile_photo_url, user_type, phone_number')
         .eq('user_id', result.data.owner_id)
         .single();
 
@@ -97,7 +97,7 @@ export default function PropertyDetailsPage() {
         const residentIds = propertyMembers.map(m => m.user_id);
         const { data: residentProfiles } = await supabase
           .from('user_profiles')
-          .select('full_name, profile_photo_url, age, occupation, nationality')
+          .select('first_name, last_name, profile_photo_url, age, occupation, nationality')
           .in('user_id', residentIds);
 
         if (residentProfiles) {
@@ -516,7 +516,7 @@ export default function PropertyDetailsPage() {
                   {ownerProfile.profile_photo_url ? (
                     <img
                       src={ownerProfile.profile_photo_url}
-                      alt={ownerProfile.full_name}
+                      alt={`${ownerProfile.first_name} ${ownerProfile.last_name}`}
                       className="w-16 h-16 rounded-full object-cover border-2 border-purple-200"
                     />
                   ) : (
@@ -525,7 +525,7 @@ export default function PropertyDetailsPage() {
                     </div>
                   )}
                   <div className="flex-1">
-                    <p className="font-semibold text-lg">{ownerProfile.full_name}</p>
+                    <p className="font-semibold text-lg">{ownerProfile.first_name} {ownerProfile.last_name}</p>
                     {ownerProfile.user_type && (
                       <Badge variant="outline" className="mt-1">
                         {ownerProfile.user_type}
@@ -559,7 +559,7 @@ export default function PropertyDetailsPage() {
                       {resident.profile_photo_url ? (
                         <img
                           src={resident.profile_photo_url}
-                          alt={resident.full_name}
+                          alt={`${resident.first_name} ${resident.last_name}`}
                           className="w-12 h-12 rounded-full object-cover border-2 border-purple-100"
                         />
                       ) : (
@@ -568,7 +568,7 @@ export default function PropertyDetailsPage() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold">{resident.full_name}</p>
+                        <p className="font-semibold">{resident.first_name} {resident.last_name}</p>
                         {resident.age && (
                           <p className="text-sm text-gray-600">{resident.age} years old</p>
                         )}
