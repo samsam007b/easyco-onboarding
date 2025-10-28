@@ -388,11 +388,15 @@ async function createUser(email: string, password: string, metadata: any) {
   });
 
   if (error) {
-    if (error.message.includes('already registered')) {
+    // Check if user already exists
+    if (error.message.includes('already registered') || error.message.includes('already been registered') || error.code === 'email_exists') {
       console.log(`⚠️  User ${email} already exists, fetching existing user...`);
       const { data: existingUser } = await supabase.auth.admin.listUsers();
       const user = existingUser?.users.find(u => u.email === email);
-      return user;
+      if (user) {
+        console.log(`✅ Found existing user: ${user.email}`);
+        return user;
+      }
     }
     throw error;
   }
