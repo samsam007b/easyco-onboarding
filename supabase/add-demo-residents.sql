@@ -73,7 +73,11 @@ DROP FUNCTION IF EXISTS get_demo_user_id(TEXT);
 SELECT
   p.title as property,
   up.first_name || ' ' || up.last_name as resident_name,
-  up.age,
+  CASE
+    WHEN up.date_of_birth IS NOT NULL
+    THEN EXTRACT(YEAR FROM age(up.date_of_birth))::INTEGER
+    ELSE NULL
+  END as age,
   up.occupation,
   up.nationality,
   pm.role,
