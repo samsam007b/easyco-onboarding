@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, User, MessageCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { ProfileEditFormSkeleton } from '@/components/ProfileEditFormSkeleton';
 
 export default function EnhanceAboutPage() {
   const router = useRouter();
@@ -61,9 +62,11 @@ export default function EnhanceAboutPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin" />
-      </div>
+      <main className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-2xl mx-auto">
+          <ProfileEditFormSkeleton />
+        </div>
+      </main>
     );
   }
 
