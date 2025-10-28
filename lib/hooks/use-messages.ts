@@ -12,6 +12,11 @@ export interface Message {
   content: string;
   created_at: string;
   read_at: string | null;
+  attachment_url?: string | null;
+  attachment_type?: string | null;
+  attachment_size?: number | null;
+  attachment_name?: string | null;
+  message_type?: 'text' | 'image' | 'file' | 'system';
 }
 
 export interface Conversation {
@@ -187,6 +192,46 @@ export function useMessages(userId?: string) {
     [userId]
   );
 
+  // Send a message with attachment
+  const sendMessageWithAttachment = useCallback(
+    async (
+      conversationId: string,
+      content: string,
+      attachmentUrl: string,
+      attachmentType: string,
+      attachmentSize: number,
+      attachmentName: string
+    ): Promise<boolean> => {
+      if (!userId) {
+        return false;
+      }
+
+      try {
+        const messageType = attachmentType.startsWith('image/') ? 'image' : 'file';
+
+        const { error } = await supabase.from('messages').insert({
+          conversation_id: conversationId,
+          sender_id: userId,
+          content: content.trim() || attachmentName, // Use filename if no caption
+          message_type: messageType,
+          attachment_url: attachmentUrl,
+          attachment_type: attachmentType,
+          attachment_size: attachmentSize,
+          attachment_name: attachmentName,
+        });
+
+        if (error) throw error;
+
+        return true;
+      } catch (error: any) {
+        console.error('Error sending message with attachment:', error);
+        toast.error('Failed to send message');
+        return false;
+      }
+    },
+    [userId]
+  );
+
   // Create or get existing conversation with another user
   const getOrCreateConversation = useCallback(
     async (otherUserId: string): Promise<string | null> => {
@@ -294,6 +339,7 @@ export function useMessages(userId?: string) {
     loadConversations,
     loadMessages,
     sendMessage,
+    sendMessageWithAttachment,
     getOrCreateConversation,
     markConversationAsRead,
     subscribeToConversation,
