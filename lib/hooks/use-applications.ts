@@ -31,6 +31,35 @@ export interface Application {
   property?: any;
 }
 
+export interface GroupApplication {
+  id: string;
+  group_id: string;
+  property_id: string;
+  status: 'pending' | 'reviewing' | 'approved' | 'rejected' | 'withdrawn';
+  message?: string;
+  combined_income?: number;
+  reviewed_at?: string;
+  reviewed_by?: string;
+  review_notes?: string;
+  rejection_reason?: string;
+  created_at: string;
+  updated_at: string;
+  group?: {
+    id: string;
+    name: string;
+    description?: string;
+    max_members: number;
+    members: Array<{
+      user: {
+        id: string;
+        full_name: string;
+        email: string;
+      };
+    }>;
+  };
+  property?: any;
+}
+
 export interface CreateApplicationData {
   property_id: string;
   desired_move_in_date?: string;
@@ -47,6 +76,7 @@ export interface CreateApplicationData {
 export function useApplications(userId?: string) {
   const supabase = createClient();
   const [applications, setApplications] = useState<Application[]>([]);
+  const [groupApplications, setGroupApplications] = useState<GroupApplication[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Load applications (either for applicant or property owner)
@@ -69,15 +99,43 @@ export function useApplications(userId?: string) {
 
           if (!properties || properties.length === 0) {
             setApplications([]);
+            setGroupApplications([]);
             setIsLoading(false);
             return;
           }
 
           const propertyIds = properties.map(p => p.id);
           query = query.in('property_id', propertyIds);
+
+          // Also load group applications for these properties
+          const { data: groupApps, error: groupError } = await supabase
+            .from('group_applications')
+            .select(`
+              *,
+              group:groups(
+                id,
+                name,
+                description,
+                max_members,
+                members:group_members(
+                  user:users(id, full_name, email)
+                )
+              ),
+              property:properties(*)
+            `)
+            .in('property_id', propertyIds)
+            .order('created_at', { ascending: false });
+
+          if (groupError) {
+            console.warn('Failed to load group applications:', groupError.message);
+            setGroupApplications([]);
+          } else {
+            setGroupApplications(groupApps || []);
+          }
         } else {
           // Load applications submitted by this user
           query = query.eq('applicant_id', userId);
+          setGroupApplications([]); // No group apps for applicant view
         }
 
         const { data, error } = await query.order('created_at', { ascending: false });
@@ -318,14 +376,51 @@ export function useApplications(userId?: string) {
     }
   }, [userId]);
 
+  // Update group application status (approve/reject)
+  const updateGroupApplicationStatus = useCallback(
+    async (groupApplicationId: string, newStatus: GroupApplication['status'], notes?: string): Promise<boolean> => {
+      try {
+        const updateData: any = {
+          status: newStatus,
+          updated_at: new Date().toISOString(),
+        };
+
+        if (newStatus === 'approved' || newStatus === 'rejected') {
+          updateData.reviewed_at = new Date().toISOString();
+          updateData.reviewed_by = userId;
+          if (notes) {
+            updateData.review_notes = notes;
+          }
+        }
+
+        const { error } = await supabase
+          .from('group_applications')
+          .update(updateData)
+          .eq('id', groupApplicationId);
+
+        if (error) throw error;
+
+        toast.success(`Group application ${newStatus}!`);
+        return true;
+      } catch (error: any) {
+        console.error('Error updating group application:', error);
+        toast.error('Failed to update group application');
+        return false;
+      }
+    },
+    [userId, supabase]
+  );
+
   return {
     applications,
+    groupApplications,
     isLoading,
     loadApplications,
     getApplication,
     hasApplied,
     createApplication,
     updateApplicationStatus,
+    updateGroupApplicationStatus,
     withdrawApplication,
     deleteApplication,
     getApplicationStats,
