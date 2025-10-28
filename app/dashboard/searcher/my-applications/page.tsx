@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -231,10 +232,14 @@ export default function MyApplicationsPage() {
                         }
                       >
                         {application.property?.main_image ? (
-                          <img
+                          <Image
                             src={application.property.main_image}
                             alt={application.property.title || 'Property'}
-                            className="w-full h-full object-cover rounded-lg"
+                            width={96}
+                            height={96}
+                            sizes="96px"
+                            className="object-cover rounded-lg"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">

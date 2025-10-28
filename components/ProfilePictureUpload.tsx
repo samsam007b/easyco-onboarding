@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { Camera, Upload, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useImageUpload } from '@/lib/hooks/use-image-upload';
@@ -88,12 +89,15 @@ export default function ProfilePictureUpload({
     <div className="flex flex-col items-center gap-4">
       {/* Avatar Preview */}
       <div className="relative group">
-        <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center border-4 border-white shadow-lg">
+        <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center border-4 border-white shadow-lg">
           {preview ? (
-            <img
+            <Image
               src={preview}
               alt="Profile"
-              className="w-full h-full object-cover"
+              width={128}
+              height={128}
+              className="object-cover"
+              priority
             />
           ) : (
             <Camera className="w-12 h-12 text-gray-400" />

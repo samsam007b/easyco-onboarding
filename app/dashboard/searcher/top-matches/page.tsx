@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -167,12 +168,15 @@ export default function TopMatchesPage() {
               <CardContent className="p-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Image */}
-                  <div className="relative h-64 md:h-auto">
+                  <div className="relative h-64 md:h-auto min-h-[256px]">
                     {property.images && property.images.length > 0 ? (
-                      <img
+                      <Image
                         src={property.images[0]}
                         alt={property.title}
-                        className="w-full h-full object-cover md:rounded-l-lg"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover md:rounded-l-lg"
+                        loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
