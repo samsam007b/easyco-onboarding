@@ -125,15 +125,13 @@ export default function PreferencesEditorPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title={
-          <div className="flex items-center gap-2">
-            <Settings className="w-6 h-6 text-[#4A148C]" />
-            <span>Matching Preferences</span>
-          </div>
-        }
-        description="Customize your preferences to get better property matches"
-      />
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Settings className="w-6 h-6 text-[#4A148C]" />
+          <h1 className="text-3xl font-bold text-gray-900">Matching Preferences</h1>
+        </div>
+        <p className="text-gray-600">Customize your preferences to get better property matches</p>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Form - Left Side (2 columns) */}

@@ -349,7 +349,7 @@ function generateTenantWarnings(
       warnings.push('🚭 Tenant smokes but property is non-smoking');
     }
     if (tenant.pets && !property.pets_allowed) {
-      warnings.push('🐾 Tenant has pets but property doesn't allow them');
+      warnings.push('🐾 Tenant has pets but property does not allow them');
     }
   }
 
