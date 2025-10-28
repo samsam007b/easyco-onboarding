@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
+import DashboardHeader from '@/components/DashboardHeader';
+import { useRole } from '@/lib/role/role-context';
 import type { Application, GroupApplication } from '@/lib/hooks/use-applications';
 import {
   CheckCircle,
@@ -33,7 +35,9 @@ type CombinedStatus = Application['status'] | GroupApplication['status'];
 
 export default function OwnerApplicationsPage() {
   const router = useRouter();
+  const { setActiveRole } = useRole();
   const [userId, setUserId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [groupApps, setGroupApps] = useState<GroupApplication[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +60,27 @@ export default function OwnerApplicationsPage() {
 
       if (user) {
         setUserId(user.id);
+        setActiveRole('owner');
+
+        // Load profile
+        const { data: userData } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        setProfile({
+          full_name: userData?.full_name || user.email?.split('@')[0] || 'User',
+          email: userData?.email || user.email || '',
+          profile_data: profileData || {}
+        });
+
         await loadApplications(true); // true = as owner
       }
 
@@ -195,23 +220,30 @@ export default function OwnerApplicationsPage() {
 
   if (loading) {
     return (
-      <PageContainer>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
-            <p className="mt-4 text-gray-600">Loading applications...</p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
+          <p className="mt-4 text-gray-600">Loading applications...</p>
         </div>
-      </PageContainer>
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <PageHeader
-        title="Property Applications"
-        description="Manage individual and group applications for your properties"
-      />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      {profile && (
+        <DashboardHeader
+          profile={profile}
+          avatarColor="#4A148C"
+          role="owner"
+        />
+      )}
+
+      <PageContainer center>
+        <PageHeader
+          title="Property Applications"
+          description="Manage individual and group applications for your properties"
+        />
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
@@ -651,6 +683,7 @@ export default function OwnerApplicationsPage() {
           ))}
         </div>
       )}
-    </PageContainer>
+      </PageContainer>
+    </div>
   );
 }
