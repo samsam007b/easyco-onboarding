@@ -110,7 +110,32 @@ export function useMessages(userId?: string) {
     } finally {
       setIsLoading(false);
     }
-  }, [userId, supabase]);
+  }, [userId]);
+
+  // Mark conversation as read
+  const markConversationAsRead = useCallback(
+    async (conversationId: string) => {
+      if (!userId) return;
+
+      try {
+        const { error } = await supabase
+          .from('conversation_read_status')
+          .upsert({
+            conversation_id: conversationId,
+            user_id: userId,
+            last_read_at: new Date().toISOString(),
+          });
+
+        if (error) throw error;
+
+        // Refresh conversations to update unread count
+        await loadConversations();
+      } catch (error: any) {
+        console.error('Error marking as read:', error);
+      }
+    },
+    [userId, loadConversations]
+  );
 
   // Load messages for a specific conversation
   const loadMessages = useCallback(
@@ -133,7 +158,7 @@ export function useMessages(userId?: string) {
         toast.error('Failed to load messages');
       }
     },
-    [supabase, userId]
+    [markConversationAsRead]
   );
 
   // Send a new message
@@ -159,7 +184,7 @@ export function useMessages(userId?: string) {
         return false;
       }
     },
-    [userId, supabase]
+    [userId]
   );
 
   // Create or get existing conversation with another user
@@ -206,32 +231,7 @@ export function useMessages(userId?: string) {
         return null;
       }
     },
-    [userId, supabase, loadConversations]
-  );
-
-  // Mark conversation as read
-  const markConversationAsRead = useCallback(
-    async (conversationId: string) => {
-      if (!userId) return;
-
-      try {
-        const { error } = await supabase
-          .from('conversation_read_status')
-          .upsert({
-            conversation_id: conversationId,
-            user_id: userId,
-            last_read_at: new Date().toISOString(),
-          });
-
-        if (error) throw error;
-
-        // Refresh conversations to update unread count
-        await loadConversations();
-      } catch (error: any) {
-        console.error('Error marking as read:', error);
-      }
-    },
-    [userId, supabase, loadConversations]
+    [userId, loadConversations]
   );
 
   // Subscribe to real-time updates for a conversation
@@ -264,7 +264,7 @@ export function useMessages(userId?: string) {
 
       setChannel(newChannel);
     },
-    [channel, supabase]
+    [channel]
   );
 
   // Unsubscribe from real-time updates
@@ -273,7 +273,7 @@ export function useMessages(userId?: string) {
       supabase.removeChannel(channel);
       setChannel(null);
     }
-  }, [channel, supabase]);
+  }, [channel]);
 
   // Initial load
   useEffect(() => {
@@ -285,7 +285,7 @@ export function useMessages(userId?: string) {
         supabase.removeChannel(channel);
       }
     };
-  }, [userId]);
+  }, [loadConversations, channel]);
 
   return {
     conversations,

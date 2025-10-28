@@ -125,7 +125,7 @@ export function useAutoSave(options: AutoSaveOptions) {
     } finally {
       isSavingRef.current = false;
     }
-  }, [enabled, key, supabase]);
+  }, [enabled, key]);
 
   const saveData = useCallback((data: any) => {
     if (!enabled) return;
