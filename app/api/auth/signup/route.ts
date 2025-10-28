@@ -21,6 +21,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate password type and length
+    if (typeof password !== 'string') {
+      return NextResponse.json(
+        { error: 'Invalid password format' },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 8 || password.length > 128) {
+      return NextResponse.json(
+        { error: 'Password must be between 8 and 128 characters' },
+        { status: 400 }
+      );
+    }
+
+    // Validate full name length
+    if (fullName.length < 2 || fullName.length > 100) {
+      return NextResponse.json(
+        { error: 'Name must be between 2 and 100 characters' },
+        { status: 400 }
+      );
+    }
+
     // Validate userType
     const validUserTypes = ['searcher', 'owner', 'resident'];
     if (!validUserTypes.includes(userType)) {

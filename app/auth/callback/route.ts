@@ -151,8 +151,37 @@ export async function GET(request: NextRequest) {
 
     // Check if there was a redirect parameter (user was trying to access a protected route)
     const intendedDestination = requestUrl.searchParams.get('redirect')
-    if (intendedDestination && intendedDestination.startsWith('/')) {
-      redirectPath = intendedDestination
+    if (intendedDestination) {
+      // Whitelist of allowed redirect destinations to prevent open redirect vulnerability
+      const allowedRoutes = [
+        '/dashboard',
+        '/dashboard/searcher',
+        '/dashboard/owner',
+        '/dashboard/resident',
+        '/dashboard/my-profile',
+        '/dashboard/my-profile-owner',
+        '/dashboard/my-profile-resident',
+        '/dashboard/profiles',
+        '/profile',
+        '/properties',
+        '/messages',
+        '/notifications',
+        '/favorites',
+        '/groups',
+        '/settings',
+        '/onboarding',
+      ]
+
+      // Check if redirect matches an allowed route or is a sub-path of one
+      const isAllowed = allowedRoutes.some(route =>
+        intendedDestination === route ||
+        intendedDestination.startsWith(route + '/')
+      )
+
+      // Only use redirect if it's in the whitelist and doesn't contain protocol
+      if (isAllowed && !intendedDestination.includes('://') && !intendedDestination.startsWith('//')) {
+        redirectPath = intendedDestination
+      }
     }
 
     return NextResponse.redirect(new URL(redirectPath, requestUrl.origin))

@@ -93,8 +93,41 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Allow access to public API routes
+  // Define public API routes that don't require authentication
+  const publicApiRoutes = [
+    '/api/auth/login',
+    '/api/auth/signup',
+    '/api/auth/callback',
+    '/api/health', // if you have health check endpoints
+  ]
+
+  // Define protected API routes that require authentication
+  const protectedApiRoutes = [
+    '/api/user/',
+    '/api/analytics',
+    '/api/admin/',
+  ]
+
+  // Check if this is an API route
   if (pathname.startsWith('/api/')) {
+    // Allow public API routes without authentication
+    const isPublicApi = publicApiRoutes.some(route => pathname.startsWith(route))
+    if (isPublicApi) {
+      return response
+    }
+
+    // Check if this is a protected API route
+    const isProtectedApi = protectedApiRoutes.some(route => pathname.startsWith(route))
+    if (isProtectedApi && !user) {
+      // Return 401 for protected API routes without authentication
+      return NextResponse.json(
+        { error: 'Unauthorized - Authentication required' },
+        { status: 401 }
+      )
+    }
+
+    // For other API routes, allow with warning (log for monitoring)
+    console.warn(`[MIDDLEWARE] Unclassified API route accessed: ${pathname}`)
     return response
   }
 
