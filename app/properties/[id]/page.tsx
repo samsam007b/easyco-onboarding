@@ -237,15 +237,44 @@ export default function PropertyDetailsPage() {
         </div>
       </div>
 
-      {/* Image Gallery Placeholder */}
+      {/* Image Gallery */}
       <Card className="mb-6">
         <CardContent className="p-0">
-          <div className="bg-gray-200 h-96 flex items-center justify-center rounded-t-2xl">
-            <div className="text-center text-gray-500">
-              <p className="text-lg font-medium">No images yet</p>
-              <p className="text-sm">Upload images to showcase your property</p>
+          {property.images && property.images.length > 0 ? (
+            <div className="relative h-96 rounded-t-2xl overflow-hidden">
+              <img
+                src={property.main_image || property.images[0]}
+                alt={property.title}
+                className="w-full h-full object-cover"
+              />
+              {property.images.length > 1 && (
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="flex gap-2 overflow-x-auto pb-2">
+                    {property.images.slice(1, 5).map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`${property.title} - ${index + 2}`}
+                        className="w-20 h-20 object-cover rounded-lg border-2 border-white shadow-lg flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
+                      />
+                    ))}
+                    {property.images.length > 5 && (
+                      <div className="w-20 h-20 bg-black/50 rounded-lg border-2 border-white shadow-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-semibold">+{property.images.length - 5}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <div className="bg-gray-200 h-96 flex items-center justify-center rounded-t-2xl">
+              <div className="text-center text-gray-500">
+                <p className="text-lg font-medium">No images yet</p>
+                <p className="text-sm">Upload images to showcase your property</p>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
