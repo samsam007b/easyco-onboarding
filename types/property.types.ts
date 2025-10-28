@@ -82,8 +82,9 @@ export interface Property {
   couples_allowed: boolean;
 
   // Images
-  images: PropertyImage[];
+  images: PropertyImage[] | string[]; // Can be PropertyImage objects or string URLs
   main_image_url?: string;
+  main_image?: string; // Alias for main_image_url for compatibility
 
   // Status & Metadata
   status: PropertyStatus;
@@ -127,9 +128,12 @@ export interface PropertyFilters {
   city?: string;
   min_rent?: number;
   max_rent?: number;
+  min_price?: number; // Alias for min_rent
+  max_price?: number; // Alias for max_rent
   bedrooms?: number;
   property_type?: PropertyType;
   furnished?: boolean;
+  is_furnished?: boolean; // Alias for furnished
   amenities?: PropertyAmenity[];
   available_from?: string;
 }

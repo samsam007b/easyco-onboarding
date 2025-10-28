@@ -35,7 +35,10 @@ export type PropertyAmenity =
   | 'dryer'
   | 'air_conditioning'
   | 'heating'
+  | 'tv'
+  | 'workspace'
   | 'kitchen'
+  | 'private_bathroom'
   | 'furnished'
   | 'pets_allowed'
   | 'smoking_allowed'
@@ -313,7 +316,10 @@ export const AMENITY_LABELS: Record<PropertyAmenity, string> = {
   dryer: 'Dryer',
   air_conditioning: 'Air Conditioning',
   heating: 'Heating',
+  tv: 'TV',
+  workspace: 'Workspace',
   kitchen: 'Kitchen',
+  private_bathroom: 'Private Bathroom',
   furnished: 'Furnished',
   pets_allowed: 'Pets Allowed',
   smoking_allowed: 'Smoking Allowed',

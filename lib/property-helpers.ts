@@ -1,9 +1,13 @@
 import { createClient } from './auth/supabase-client'
 import type {
   Property,
+  PropertyFilters,
+} from '@/types/property.types'
+
+// Keep using the old types for create/update for now (they're compatible)
+import type {
   PropertyCreateInput,
   PropertyUpdateInput,
-  PropertyFilters,
 } from '@/lib/types/property'
 
 /**
