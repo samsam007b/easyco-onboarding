@@ -1,16 +1,15 @@
 import { createClient } from './auth/supabase-client'
 import type {
   Property,
-  CreatePropertyInput,
-  UpdatePropertyInput,
+  PropertyCreateInput,
+  PropertyUpdateInput,
   PropertyFilters,
-  PropertyListResponse
-} from '@/types/property.types'
+} from '@/lib/types/property'
 
 /**
  * Create a new property
  */
-export async function createProperty(data: CreatePropertyInput) {
+export async function createProperty(data: PropertyCreateInput) {
   const supabase = createClient()
 
   try {
@@ -93,7 +92,7 @@ export async function getPropertyById(propertyId: string) {
 /**
  * Update an existing property
  */
-export async function updateProperty(propertyId: string, data: Partial<CreatePropertyInput>) {
+export async function updateProperty(propertyId: string, data: Partial<PropertyCreateInput>) {
   const supabase = createClient()
 
   try {
@@ -264,12 +263,12 @@ export async function searchProperties(filters: PropertyFilters, page: number = 
       query = query.ilike('city', `%${filters.city}%`)
     }
 
-    if (filters.min_rent !== undefined) {
-      query = query.gte('monthly_rent', filters.min_rent)
+    if (filters.min_price !== undefined) {
+      query = query.gte('monthly_rent', filters.min_price)
     }
 
-    if (filters.max_rent !== undefined) {
-      query = query.lte('monthly_rent', filters.max_rent)
+    if (filters.max_price !== undefined) {
+      query = query.lte('monthly_rent', filters.max_price)
     }
 
     if (filters.bedrooms !== undefined) {
@@ -280,8 +279,8 @@ export async function searchProperties(filters: PropertyFilters, page: number = 
       query = query.eq('property_type', filters.property_type)
     }
 
-    if (filters.furnished !== undefined) {
-      query = query.eq('furnished', filters.furnished)
+    if (filters.is_furnished !== undefined) {
+      query = query.eq('furnished', filters.is_furnished)
     }
 
     // Pagination
@@ -303,7 +302,7 @@ export async function searchProperties(filters: PropertyFilters, page: number = 
         total: count || 0,
         page,
         per_page: perPage
-      } as PropertyListResponse
+      }
     }
   } catch (error: any) {
     // FIXME: Use logger.error - 'Error searching properties:', error)

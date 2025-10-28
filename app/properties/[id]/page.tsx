@@ -12,7 +12,7 @@ import { getPropertyById, deleteProperty, publishProperty, archiveProperty } fro
 import { createClient } from '@/lib/auth/supabase-client';
 import { useApplications } from '@/lib/hooks/use-applications';
 import ApplicationModal from '@/components/ApplicationModal';
-import type { Property, PropertyAmenity } from '@/types/property.types';
+import type { Property, PropertyAmenity } from '@/lib/types/property';
 import { toast } from 'sonner';
 
 export default function PropertyDetailsPage() {
@@ -389,7 +389,7 @@ export default function PropertyDetailsPage() {
                   </div>
                 )}
 
-                {property.deposit !== undefined && property.deposit > 0 && (
+                {property.deposit !== undefined && property.deposit !== null && property.deposit > 0 && (
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Deposit</span>
                     <span className="font-semibold">€{property.deposit.toLocaleString()}</span>

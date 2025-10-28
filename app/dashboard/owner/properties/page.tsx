@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Building2, Plus, Edit, Trash2, Eye, MapPin, Bed, Bath, DollarSign, Calendar } from 'lucide-react'
 import { toast } from 'sonner'
-import type { Property } from '@/types/property.types'
+import type { Property } from '@/lib/types/property'
 import DashboardHeader from '@/components/DashboardHeader'
 import { useRole } from '@/lib/role/role-context'
 

@@ -12,7 +12,7 @@ import { PageContainer, PageHeader } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { createProperty } from '@/lib/property-helpers';
 import { toast } from 'sonner';
-import type { PropertyType, PropertyAmenity } from '@/types/property.types';
+import type { PropertyType, PropertyAmenity } from '@/lib/types/property';
 
 const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
   { value: 'apartment', label: 'Apartment' },
@@ -34,11 +34,13 @@ const AMENITIES: { value: PropertyAmenity; label: string }[] = [
   { value: 'laundry', label: 'Laundry' },
   { value: 'dishwasher', label: 'Dishwasher' },
   { value: 'washing_machine', label: 'Washing Machine' },
+  { value: 'dryer', label: 'Dryer' },
   { value: 'air_conditioning', label: 'Air Conditioning' },
   { value: 'heating', label: 'Heating' },
-  { value: 'tv', label: 'TV' },
-  { value: 'workspace', label: 'Workspace' },
   { value: 'kitchen', label: 'Kitchen' },
+  { value: 'furnished', label: 'Furnished' },
+  { value: 'pets_allowed', label: 'Pets Allowed' },
+  { value: 'smoking_allowed', label: 'Smoking Allowed' },
 ];
 
 export default function AddPropertyPage() {
