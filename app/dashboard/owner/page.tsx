@@ -197,7 +197,7 @@ export default function OwnerDashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white rounded-2xl shadow p-4 sm:p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/dashboard/owner/properties')}>
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#4A148C]" />
             </div>
