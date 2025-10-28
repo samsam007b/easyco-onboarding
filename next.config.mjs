@@ -25,6 +25,7 @@ const nextConfig = {
     domains: [
       'fgthoyilfupywmpmiuwd.supabase.co', // Supabase Storage
       'lh3.googleusercontent.com', // Google OAuth avatars
+      'images.unsplash.com', // Unsplash property images
     ],
     formats: ['image/avif', 'image/webp'], // Formats modernes
     deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Breakpoints responsive

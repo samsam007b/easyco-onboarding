@@ -22,6 +22,8 @@ interface Property {
   description?: string;
   property_type?: string;
   created_at?: string;
+  main_image?: string;
+  images?: string[];
 }
 
 interface Filters {
@@ -439,9 +441,19 @@ export default function BrowsePropertiesPage() {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
                 onClick={() => router.push(`/properties/${property.id}`)}
               >
-                {/* Property Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center relative">
-                  <Home className="w-16 h-16 text-[#4A148C] opacity-50" />
+                {/* Property Image */}
+                <div className="h-48 relative overflow-hidden">
+                  {property.main_image ? (
+                    <img
+                      src={property.main_image}
+                      alt={property.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center">
+                      <Home className="w-16 h-16 text-[#4A148C] opacity-50" />
+                    </div>
+                  )}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
