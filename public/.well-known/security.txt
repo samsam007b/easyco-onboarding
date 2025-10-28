@@ -1,0 +1,44 @@
+Contact: security@easyco.be
+Expires: 2026-10-28T00:00:00.000Z
+Preferred-Languages: en, fr
+Canonical: https://easyco.be/.well-known/security.txt
+
+# Security Policy
+
+Thank you for helping keep EasyCo and our users safe!
+
+## Reporting Security Issues
+
+If you discover a security vulnerability, please report it to us at:
+- Email: security@easyco.be
+- Please do NOT file a public issue
+
+## Our Commitment
+
+- We will respond to your report within 48 hours
+- We will keep you informed of the progress
+- We will credit you for your discovery (if desired)
+
+## Scope
+
+In scope:
+- Authentication and authorization issues
+- SQL injection, XSS, CSRF vulnerabilities
+- Sensitive data exposure
+- Security misconfigurations
+- Rate limiting bypass
+
+Out of scope:
+- Social engineering attacks
+- Physical security issues
+- Denial of Service (DoS) attacks
+- Issues in third-party services
+
+## Safe Harbor
+
+We consider security research conducted consistent with this policy to be:
+- Authorized concerning any applicable anti-hacking laws
+- Exempt from DMCA takedown notices
+- Exempt from restrictions in our Terms of Service
+
+Thank you for helping us maintain the security of EasyCo!
