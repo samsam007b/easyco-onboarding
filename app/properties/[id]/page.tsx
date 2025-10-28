@@ -539,7 +539,7 @@ export default function PropertyDetailsPage() {
                   <div className="flex-1">
                     <p className="font-semibold text-lg">{ownerProfile.first_name} {ownerProfile.last_name}</p>
                     {ownerProfile.user_type && (
-                      <Badge variant="outline" className="mt-1">
+                      <Badge variant="default" className="mt-1">
                         {ownerProfile.user_type}
                       </Badge>
                     )}
@@ -588,7 +588,7 @@ export default function PropertyDetailsPage() {
                           <p className="text-sm text-gray-600 capitalize">{resident.occupation_status.replace('_', ' ')}</p>
                         )}
                         {resident.nationality && (
-                          <Badge variant="outline" className="mt-1 text-xs">
+                          <Badge variant="default" size="sm" className="mt-1">
                             {resident.nationality}
                           </Badge>
                         )}
