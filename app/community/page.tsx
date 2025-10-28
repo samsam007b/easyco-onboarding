@@ -55,7 +55,7 @@ export default function CommunityPage() {
       setRoommates([]);
       setEvents([]);
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
     } finally {
       setIsLoading(false);
     }

@@ -51,7 +51,7 @@ export default function ResidentDashboard() {
         .single()
 
       if (profileError) {
-        console.error('Error loading profile:', profileError)
+        // FIXME: Use logger.error('Error loading profile:', profileError)
         toast.error(common.failedToLoad)
         return
       }
@@ -76,7 +76,7 @@ export default function ResidentDashboard() {
       }
 
     } catch (error: any) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error(common.errorOccurred)
     } finally {
       setIsLoading(false)

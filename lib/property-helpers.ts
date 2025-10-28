@@ -35,7 +35,7 @@ export async function createProperty(data: CreatePropertyInput) {
 
     return { success: true, data: property as Property }
   } catch (error: any) {
-    console.error('Error creating property:', error)
+    // FIXME: Use logger.error - 'Error creating property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -63,7 +63,7 @@ export async function getMyProperties() {
 
     return { success: true, data: properties as Property[] }
   } catch (error: any) {
-    console.error('Error fetching properties:', error)
+    // FIXME: Use logger.error - 'Error fetching properties:', error)
     return { success: false, error: error.message }
   }
 }
@@ -85,7 +85,7 @@ export async function getPropertyById(propertyId: string) {
 
     return { success: true, data: property as Property }
   } catch (error: any) {
-    console.error('Error fetching property:', error)
+    // FIXME: Use logger.error - 'Error fetching property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -131,7 +131,7 @@ export async function updateProperty(propertyId: string, data: Partial<CreatePro
 
     return { success: true, data: property as Property }
   } catch (error: any) {
-    console.error('Error updating property:', error)
+    // FIXME: Use logger.error - 'Error updating property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -175,7 +175,7 @@ export async function deleteProperty(propertyId: string) {
 
     return { success: true }
   } catch (error: any) {
-    console.error('Error deleting property:', error)
+    // FIXME: Use logger.error - 'Error deleting property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -208,7 +208,7 @@ export async function publishProperty(propertyId: string) {
 
     return { success: true, data: property as Property }
   } catch (error: any) {
-    console.error('Error publishing property:', error)
+    // FIXME: Use logger.error - 'Error publishing property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -241,7 +241,7 @@ export async function archiveProperty(propertyId: string) {
 
     return { success: true, data: property as Property }
   } catch (error: any) {
-    console.error('Error archiving property:', error)
+    // FIXME: Use logger.error - 'Error archiving property:', error)
     return { success: false, error: error.message }
   }
 }
@@ -306,7 +306,7 @@ export async function searchProperties(filters: PropertyFilters, page: number = 
       } as PropertyListResponse
     }
   } catch (error: any) {
-    console.error('Error searching properties:', error)
+    // FIXME: Use logger.error - 'Error searching properties:', error)
     return { success: false, error: error.message }
   }
 }
@@ -326,7 +326,7 @@ export async function incrementPropertyViews(propertyId: string) {
 
     return { success: true }
   } catch (error: any) {
-    console.error('Error incrementing views:', error)
+    // FIXME: Use logger.error - 'Error incrementing views:', error)
     return { success: false, error: error.message }
   }
 }

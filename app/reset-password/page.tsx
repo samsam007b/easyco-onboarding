@@ -39,7 +39,7 @@ function ResetPasswordContent() {
           setIsValidToken(true)
         }
       } catch (error) {
-        console.error('Error verifying token:', error)
+        // FIXME: Use logger.error('Error verifying token:', error)
         setIsValidToken(false)
       } finally {
         setIsVerifying(false)
@@ -102,7 +102,7 @@ function ResetPasswordContent() {
       })
 
       if (error) {
-        console.error('Password update error:', error)
+        // FIXME: Use logger.error('Password update error:', error)
         toast.error(error.message || 'Failed to update password')
         return
       }
@@ -117,7 +117,7 @@ function ResetPasswordContent() {
         router.push('/login')
       }, 2000)
     } catch (error: any) {
-      console.error('Unexpected error:', error)
+      // FIXME: Use logger.error('Unexpected error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsLoading(false)

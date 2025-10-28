@@ -83,7 +83,7 @@ export async function uploadMessageAttachment(
       })
 
     if (error) {
-      console.error('Upload error:', error)
+      // FIXME: Use logger.error - 'Upload error:', error)
       return {
         success: false,
         error: error.message,
@@ -103,7 +103,7 @@ export async function uploadMessageAttachment(
       fileType: file.type,
     }
   } catch (error: any) {
-    console.error('Upload exception:', error)
+    // FIXME: Use logger.error - 'Upload exception:', error)
     return {
       success: false,
       error: error.message || 'Failed to upload file',
@@ -124,7 +124,7 @@ export async function deleteMessageAttachment(fileUrl: string): Promise<boolean>
     const bucketIndex = pathParts.indexOf(STORAGE_BUCKET)
 
     if (bucketIndex === -1) {
-      console.error('Invalid file URL')
+      // FIXME: Use logger.error - 'Invalid file URL')
       return false
     }
 
@@ -136,13 +136,13 @@ export async function deleteMessageAttachment(fileUrl: string): Promise<boolean>
       .remove([filePath])
 
     if (error) {
-      console.error('Delete error:', error)
+      // FIXME: Use logger.error - 'Delete error:', error)
       return false
     }
 
     return true
   } catch (error) {
-    console.error('Delete exception:', error)
+    // FIXME: Use logger.error - 'Delete exception:', error)
     return false
   }
 }

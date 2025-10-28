@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   // Handle OAuth errors
   if (error) {
-    console.error('OAuth error:', error, error_description)
+    // FIXME: Use logger.error('OAuth error:', error, error_description)
     return NextResponse.redirect(
       new URL(`/login?error=${encodeURIComponent(error_description || error)}`, requestUrl.origin)
     )
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const { data: { session }, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
     if (exchangeError) {
-      console.error('Error exchanging code for session:', exchangeError)
+      // FIXME: Use logger.error('Error exchanging code for session:', exchangeError)
       return NextResponse.redirect(
         new URL(`/login?error=${encodeURIComponent(exchangeError.message)}`, requestUrl.origin)
       )
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
           .single()
 
         if (insertError) {
-          console.error('Error creating user record:', insertError)
+          // FIXME: Use logger.error('Error creating user record:', insertError)
           return NextResponse.redirect(
             new URL(`/login?error=${encodeURIComponent('Failed to create user record')}`, requestUrl.origin)
           )
@@ -183,7 +183,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(new URL(redirectPath, requestUrl.origin))
   } catch (error: any) {
-    console.error('Unexpected error in OAuth callback:', error)
+    // FIXME: Use logger.error('Unexpected error in OAuth callback:', error)
     return NextResponse.redirect(
       new URL(`/login?error=${encodeURIComponent('An unexpected error occurred')}`, requestUrl.origin)
     )

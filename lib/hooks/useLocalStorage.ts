@@ -25,7 +25,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       // If error also return initialValue
-      console.warn(`Error loading localStorage key "${key}":`, error)
+      // FIXME: Use logger.warn(`Error loading localStorage key "${key}":`, error)
       return initialValue
     }
   })
@@ -43,7 +43,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
       }
     } catch (error) {
       // A more advanced implementation would handle the error case
-      console.warn(`Error setting localStorage key "${key}":`, error)
+      // FIXME: Use logger.warn(`Error setting localStorage key "${key}":`, error)
     }
   }
 

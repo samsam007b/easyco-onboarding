@@ -57,7 +57,7 @@ export default function OwnerDashboard() {
         .single()
 
       if (profileError) {
-        console.error('Error loading profile:', profileError)
+        // FIXME: Use logger.error('Error loading profile:', profileError)
         toast.error('Failed to load profile')
         return
       }
@@ -87,7 +87,7 @@ export default function OwnerDashboard() {
       await loadProperties()
 
     } catch (error: any) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
@@ -99,7 +99,7 @@ export default function OwnerDashboard() {
     if (result.success && result.data) {
       setProperties(result.data)
     } else {
-      console.error('Error loading properties:', result.error)
+      // FIXME: Use logger.error('Error loading properties:', result.error)
     }
   }
 

@@ -35,7 +35,7 @@ export default function VerificationResidentPage() {
         setVerificationStatus(profileData.verification_status);
       }
     } catch (error) {
-      console.error('Error loading verification status:', error);
+      // FIXME: Use logger.error('Error loading verification status:', error);
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +59,7 @@ export default function VerificationResidentPage() {
       setVerificationStatus('pending');
       toast.success('Verification request submitted! We\'ll review it soon.');
     } catch (error) {
-      console.error('Error requesting verification:', error);
+      // FIXME: Use logger.error('Error requesting verification:', error);
       toast.error(common.errors.unexpected);
     }
   };

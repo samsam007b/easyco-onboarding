@@ -20,7 +20,7 @@ export default function CompleteSignupPage() {
         const { data: { user }, error: authError } = await supabase.auth.getUser()
 
         if (authError || !user) {
-          console.error('No authenticated user found')
+          // FIXME: Use logger.error('No authenticated user found')
           router.push('/login')
           return
         }
@@ -36,7 +36,7 @@ export default function CompleteSignupPage() {
             .eq('id', user.id)
 
           if (updateError) {
-            console.error('Error updating user type:', updateError)
+            // FIXME: Use logger.error('Error updating user type:', updateError)
           }
 
           // Clear localStorage
@@ -58,7 +58,7 @@ export default function CompleteSignupPage() {
             .single()
 
           if (userError || !userData) {
-            console.error('Error fetching user data:', userError)
+            // FIXME: Use logger.error('Error fetching user data:', userError)
             setStatus('error')
             return
           }
@@ -85,7 +85,7 @@ export default function CompleteSignupPage() {
           }
         }
       } catch (error) {
-        console.error('Error completing signup:', error)
+        // FIXME: Use logger.error('Error completing signup:', error)
         setStatus('error')
       }
     }

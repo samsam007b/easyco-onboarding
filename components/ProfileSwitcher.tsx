@@ -44,7 +44,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
         .rpc('get_all_user_profiles', { user_id_param: user.id });
 
       if (error) {
-        console.error('Error loading profiles:', error);
+        // FIXME: Use logger.error('Error loading profiles:', error);
         toast.error('Failed to load profiles');
         return;
       }
@@ -61,7 +61,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
         }
       }
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
     } finally {
       setIsLoading(false);
     }

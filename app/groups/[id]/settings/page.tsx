@@ -146,7 +146,7 @@ export default function GroupSettingsPage() {
       }
 
     } catch (error: any) {
-      console.error('Error loading group:', error);
+      // FIXME: Use logger.error('Error loading group:', error);
       toast.error('Failed to load group settings');
     } finally {
       setIsLoading(false);
@@ -179,7 +179,7 @@ export default function GroupSettingsPage() {
       setGroup({ ...group!, name: groupName, description, max_members: maxMembers, is_open: isOpen, requires_approval: requiresApproval });
 
     } catch (error: any) {
-      console.error('Error saving settings:', error);
+      // FIXME: Use logger.error('Error saving settings:', error);
       toast.error(error.message || 'Failed to save settings');
     } finally {
       setIsSaving(false);
@@ -201,7 +201,7 @@ export default function GroupSettingsPage() {
       setMembers(members.filter(m => m.id !== memberId));
 
     } catch (error: any) {
-      console.error('Error removing member:', error);
+      // FIXME: Use logger.error('Error removing member:', error);
       toast.error('Failed to remove member');
     }
   };
@@ -225,7 +225,7 @@ export default function GroupSettingsPage() {
       setTimeout(() => router.push('/dashboard/searcher'), 1000);
 
     } catch (error: any) {
-      console.error('Error leaving group:', error);
+      // FIXME: Use logger.error('Error leaving group:', error);
       toast.error('Failed to leave group');
     }
   };
@@ -246,7 +246,7 @@ export default function GroupSettingsPage() {
       setTimeout(() => router.push('/dashboard/searcher'), 1000);
 
     } catch (error: any) {
-      console.error('Error deleting group:', error);
+      // FIXME: Use logger.error('Error deleting group:', error);
       toast.error('Failed to delete group');
       setIsDeleting(false);
     }

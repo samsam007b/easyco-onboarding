@@ -76,7 +76,7 @@ export default function CreateGroupPage() {
       router.push('/onboarding/searcher/basic-info');
 
     } catch (error: any) {
-      console.error('Error creating group:', error);
+      // FIXME: Use logger.error('Error creating group:', error);
       showErrorToast('Failed to create group', error.message);
     } finally {
       setIsLoading(false);

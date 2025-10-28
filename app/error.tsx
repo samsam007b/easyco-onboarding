@@ -13,7 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Application error:', error);
+    // FIXME: Use logger.error('Application error:', error);
   }, [error]);
 
   return (

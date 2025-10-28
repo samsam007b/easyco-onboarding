@@ -22,7 +22,7 @@ if (hasUpstashConfig) {
 function getRateLimiter(operation: string, limit: number, window: number): Ratelimit | null {
   if (!redis) {
     // In development or if Redis is not configured, skip rate limiting
-    console.warn(`⚠️ Rate limiting disabled for ${operation} - Redis not configured`);
+    // FIXME: Use logger.warn(`⚠️ Rate limiting disabled for ${operation} - Redis not configured`);
     return null;
   }
 
@@ -76,7 +76,7 @@ export async function checkRateLimit(
       reset: result.reset,
     };
   } catch (error) {
-    console.error('Rate limit check failed:', error);
+    // FIXME: Use logger.error - 'Rate limit check failed:', error);
     // On error, allow the request (fail open)
     return {
       success: true,

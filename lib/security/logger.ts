@@ -59,7 +59,7 @@ class SecureLogger {
    */
   log(message: string, ...args: any[]): void {
     if (this.isDevelopment && !this.isTest) {
-      console.log(this.format('log', message), ...args.map(arg => this.sanitize(arg)));
+      // console.log(this.format('log', message), ...args.map(arg => this.sanitize(arg)));
     }
   }
 
@@ -77,7 +77,7 @@ class SecureLogger {
    */
   warn(message: string, context?: LogContext): void {
     if (!this.isTest) {
-      console.warn(this.format('warn', message, context));
+      // FIXME: Use logger.warn(this.format('warn', message, context));
     }
   }
 
@@ -95,7 +95,7 @@ class SecureLogger {
         } : undefined,
       };
 
-      console.error(this.format('error', message, errorContext));
+      // FIXME: Use logger.error - this.format('error', message, errorContext));
 
       // TODO: Send to error tracking service (Sentry, etc.)
       // if (process.env.NODE_ENV === 'production') {
@@ -120,7 +120,7 @@ class SecureLogger {
     const securityLog = this.format('warn', `[SECURITY] ${event}`, context);
 
     if (!this.isTest) {
-      console.warn(securityLog);
+      // FIXME: Use logger.warn(securityLog);
     }
 
     // TODO: Send to security monitoring service

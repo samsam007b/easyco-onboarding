@@ -48,7 +48,7 @@ export async function uploadPropertyImage(file: File, propertyId: string) {
       path: data.path
     }
   } catch (error: any) {
-    console.error('Error uploading image:', error)
+    // FIXME: Use logger.error - 'Error uploading image:', error)
     return { success: false, error: error.message }
   }
 }
@@ -69,7 +69,7 @@ export async function uploadPropertyImages(files: File[], propertyId: string) {
     const failedUploads = results.filter(r => !r.success)
 
     if (failedUploads.length > 0) {
-      console.warn(`${failedUploads.length} images failed to upload`)
+      // FIXME: Use logger.warn(`${failedUploads.length} images failed to upload`)
     }
 
     return {
@@ -79,7 +79,7 @@ export async function uploadPropertyImages(files: File[], propertyId: string) {
       failedCount: failedUploads.length
     }
   } catch (error: any) {
-    console.error('Error uploading images:', error)
+    // FIXME: Use logger.error - 'Error uploading images:', error)
     return { success: false, error: error.message, urls: [], paths: [], failedCount: files.length }
   }
 }
@@ -102,7 +102,7 @@ export async function deletePropertyImage(imagePath: string) {
 
     return { success: true }
   } catch (error: any) {
-    console.error('Error deleting image:', error)
+    // FIXME: Use logger.error - 'Error deleting image:', error)
     return { success: false, error: error.message }
   }
 }
@@ -138,7 +138,7 @@ export async function deleteAllPropertyImages(propertyId: string) {
 
     return { success: true }
   } catch (error: any) {
-    console.error('Error deleting property images:', error)
+    // FIXME: Use logger.error - 'Error deleting property images:', error)
     return { success: false, error: error.message }
   }
 }
@@ -174,7 +174,7 @@ export async function getPropertyImages(propertyId: string) {
 
     return { success: true, urls }
   } catch (error: any) {
-    console.error('Error getting property images:', error)
+    // FIXME: Use logger.error - 'Error getting property images:', error)
     return { success: false, error: error.message, urls: [] }
   }
 }

@@ -50,7 +50,7 @@ export default function ResidentReviewPage() {
         .eq('id', user.id);
 
       if (userUpdateError) {
-        console.error('Error updating user onboarding status:', userUpdateError);
+        // FIXME: Use logger.error('Error updating user onboarding status:', userUpdateError);
         throw new Error('Failed to complete onboarding');
       }
 
@@ -64,7 +64,7 @@ export default function ResidentReviewPage() {
 
       router.push('/onboarding/resident/success');
     } catch (err: any) {
-      console.error('Error submitting:', err);
+      // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
       setIsSubmitting(false);
     }

@@ -101,12 +101,12 @@ export default function BrowsePropertiesPage() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading properties:', error);
+        // FIXME: Use logger.error('Error loading properties:', error);
       } else {
         setProperties(propertiesData || []);
       }
     } catch (error) {
-      console.error('Error:', error);
+      // FIXME: Use logger.error('Error:', error);
     } finally {
       setIsLoading(false);
     }

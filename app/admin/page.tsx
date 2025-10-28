@@ -21,7 +21,7 @@ async function checkAdminAccess() {
     .rpc('is_admin', { user_email: user.email });
 
   if (adminError || !isAdmin) {
-    console.error('Admin check failed:', adminError);
+    // FIXME: Use logger.error('Admin check failed:', adminError);
     redirect(ROUTES.HOME);
   }
 

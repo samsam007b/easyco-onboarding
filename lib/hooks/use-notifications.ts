@@ -75,7 +75,7 @@ export function useNotifications(userId?: string) {
 
         return true;
       } catch (error: any) {
-        console.error('Error marking notification as read:', error);
+        // FIXME: Use logger.error - 'Error marking notification as read:', error);
         return false;
       }
     },
@@ -111,7 +111,7 @@ export function useNotifications(userId?: string) {
 
       return true;
     } catch (error: any) {
-      console.error('Error marking all as read:', error);
+      // FIXME: Use logger.error - 'Error marking all as read:', error);
       return false;
     }
   }, [userId]);
@@ -140,7 +140,7 @@ export function useNotifications(userId?: string) {
 
         return true;
       } catch (error: any) {
-        console.error('Error deleting notification:', error);
+        // FIXME: Use logger.error - 'Error deleting notification:', error);
         return false;
       }
     },
@@ -165,7 +165,7 @@ export function useNotifications(userId?: string) {
 
       return true;
     } catch (error: any) {
-      console.error('Error clearing read notifications:', error);
+      // FIXME: Use logger.error - 'Error clearing read notifications:', error);
       return false;
     }
   }, [userId]);

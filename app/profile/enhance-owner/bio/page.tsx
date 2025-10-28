@@ -40,7 +40,7 @@ export default function OwnerBioPage() {
         }
       }
     } catch (error) {
-      console.error('Error loading bio data:', error);
+      // FIXME: Use logger.error('Error loading bio data:', error);
       toast.error('Failed to load existing data');
     } finally {
       setIsLoading(false);

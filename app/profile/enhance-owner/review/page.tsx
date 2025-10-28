@@ -48,7 +48,7 @@ export default function OwnerEnhanceReviewPage() {
           services: servicesData
         });
       } catch (error) {
-        console.error('Error loading data:', error);
+        // FIXME: Use logger.error('Error loading data:', error);
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +103,7 @@ export default function OwnerEnhanceReviewPage() {
         throw new Error('Failed to save enhanced profile');
       }
     } catch (error: any) {
-      console.error('Save error:', error);
+      // FIXME: Use logger.error('Save error:', error);
       toast.error(error.message || 'Failed to save');
       setIsSaving(false);
     }

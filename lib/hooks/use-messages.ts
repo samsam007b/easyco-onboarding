@@ -110,7 +110,7 @@ export function useMessages(userId?: string) {
 
       setConversations(enrichedConversations);
     } catch (error: any) {
-      console.error('Error loading conversations:', error);
+      // FIXME: Use logger.error - 'Error loading conversations:', error);
       toast.error('Failed to load conversations');
     } finally {
       setIsLoading(false);
@@ -136,7 +136,7 @@ export function useMessages(userId?: string) {
         // Refresh conversations to update unread count
         await loadConversations();
       } catch (error: any) {
-        console.error('Error marking as read:', error);
+        // FIXME: Use logger.error - 'Error marking as read:', error);
       }
     },
     [userId, loadConversations]
@@ -159,7 +159,7 @@ export function useMessages(userId?: string) {
         // Mark conversation as read
         await markConversationAsRead(conversationId);
       } catch (error: any) {
-        console.error('Error loading messages:', error);
+        // FIXME: Use logger.error - 'Error loading messages:', error);
         toast.error('Failed to load messages');
       }
     },
@@ -184,7 +184,7 @@ export function useMessages(userId?: string) {
 
         return true;
       } catch (error: any) {
-        console.error('Error sending message:', error);
+        // FIXME: Use logger.error - 'Error sending message:', error);
         toast.error('Failed to send message');
         return false;
       }
@@ -224,7 +224,7 @@ export function useMessages(userId?: string) {
 
         return true;
       } catch (error: any) {
-        console.error('Error sending message with attachment:', error);
+        // FIXME: Use logger.error - 'Error sending message with attachment:', error);
         toast.error('Failed to send message');
         return false;
       }
@@ -271,7 +271,7 @@ export function useMessages(userId?: string) {
 
         return newConv.id;
       } catch (error: any) {
-        console.error('Error creating conversation:', error);
+        // FIXME: Use logger.error - 'Error creating conversation:', error);
         toast.error('Failed to start conversation');
         return null;
       }

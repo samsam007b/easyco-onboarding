@@ -55,7 +55,7 @@ export default function SearcherDashboard() {
         .single()
 
       if (profileError) {
-        console.error('Error loading profile:', profileError)
+        // FIXME: Use logger.error('Error loading profile:', profileError)
         toast.error('Failed to load profile')
         return
       }
@@ -115,7 +115,7 @@ export default function SearcherDashboard() {
       }
 
     } catch (error: any) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

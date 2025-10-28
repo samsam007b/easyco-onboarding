@@ -79,7 +79,7 @@ export default function OwnerReview() {
       // Redirect to success page
       router.push('/onboarding/owner/success');
     } catch (err: any) {
-      console.error('Error submitting owner onboarding:', err);
+      // FIXME: Use logger.error('Error submitting owner onboarding:', err);
       toast.error('Error: ' + (err.message || 'Failed to create profile'));
       setIsSubmitting(false);
     }

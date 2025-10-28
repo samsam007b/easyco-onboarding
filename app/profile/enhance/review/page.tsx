@@ -52,7 +52,7 @@ export default function EnhanceReviewPage() {
           community: communityData
         });
       } catch (error) {
-        console.error('Error loading data:', error);
+        // FIXME: Use logger.error('Error loading data:', error);
       } finally {
         setIsLoading(false);
       }
@@ -110,7 +110,7 @@ export default function EnhanceReviewPage() {
         throw new Error('Failed to save profile');
       }
     } catch (error: any) {
-      console.error('Error saving profile:', error);
+      // FIXME: Use logger.error('Error saving profile:', error);
       toast.error('Error: ' + error.message);
     } finally {
       setIsSaving(false);

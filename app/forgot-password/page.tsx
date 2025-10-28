@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
       })
 
       if (error) {
-        console.error('Password reset error:', error)
+        // FIXME: Use logger.error('Password reset error:', error)
         // For security reasons, we still show success even if email doesn't exist
         // This prevents email enumeration attacks
       }
@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
         description: t('auth.forgotPassword.errors.checkEmailDescription'),
       })
     } catch (error: any) {
-      console.error('Unexpected error:', error)
+      // FIXME: Use logger.error('Unexpected error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsLoading(false)

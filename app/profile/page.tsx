@@ -77,7 +77,7 @@ export default function ProfilePage() {
           .single()
 
         if (error) {
-          console.error('Error fetching user data:', error)
+          // FIXME: Use logger.error('Error fetching user data:', error)
           toast.error('Failed to load profile')
           return
         }
@@ -86,7 +86,7 @@ export default function ProfilePage() {
         setFullName(data.full_name || '')
         setSelectedUserType(data.user_type)
       } catch (error) {
-        console.error('Error:', error)
+        // FIXME: Use logger.error('Error:', error)
         toast.error('An unexpected error occurred')
       } finally {
         setIsLoading(false)
@@ -114,7 +114,7 @@ export default function ProfilePage() {
         .eq('id', userData.id)
 
       if (error) {
-        console.error('Error updating name:', error)
+        // FIXME: Use logger.error('Error updating name:', error)
         toast.error('Failed to update name')
         return
       }
@@ -123,7 +123,7 @@ export default function ProfilePage() {
       setIsEditingName(false)
       toast.success('Name updated successfully')
     } catch (error) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsSavingName(false)
@@ -179,7 +179,7 @@ export default function ProfilePage() {
         .eq('id', userData.id)
 
       if (error) {
-        console.error('Error updating user type:', error)
+        // FIXME: Use logger.error('Error updating user type:', error)
         toast.error('Failed to change role')
         return
       }
@@ -200,7 +200,7 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsChangingUserType(false)
@@ -235,7 +235,7 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('Failed to reset onboarding')
     }
   }
@@ -296,7 +296,7 @@ export default function ProfilePage() {
       })
 
       if (updateError) {
-        console.error('Error updating password:', updateError)
+        // FIXME: Use logger.error('Error updating password:', updateError)
         toast.error('Failed to update password')
         return
       }
@@ -307,7 +307,7 @@ export default function ProfilePage() {
       setNewPassword('')
       setConfirmNewPassword('')
     } catch (error) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsChangingPassword(false)
@@ -338,7 +338,7 @@ export default function ProfilePage() {
       toast.success('Account deleted successfully')
       router.push('/')
     } catch (error: any) {
-      console.error('Error:', error)
+      // FIXME: Use logger.error('Error:', error)
       toast.error(error.message || 'An unexpected error occurred')
     } finally {
       setIsDeletingAccount(false)

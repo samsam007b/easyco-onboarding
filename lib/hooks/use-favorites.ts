@@ -36,7 +36,7 @@ export function useFavorites(userId?: string) {
       setFavorites(data || []);
       setFavoriteIds(new Set((data || []).map(f => f.property_id)));
     } catch (error: any) {
-      console.error('Error loading favorites:', error);
+      // FIXME: Use logger.error - 'Error loading favorites:', error);
       toast.error('Failed to load favorites');
     } finally {
       setIsLoading(false);
@@ -78,7 +78,7 @@ export function useFavorites(userId?: string) {
       toast.success('Added to favorites');
       return true;
     } catch (error: any) {
-      console.error('Error adding favorite:', error);
+      // FIXME: Use logger.error - 'Error adding favorite:', error);
 
       if (error.code === '23505') {
         toast.error('Already in favorites');
@@ -118,7 +118,7 @@ export function useFavorites(userId?: string) {
       toast.success('Removed from favorites');
       return true;
     } catch (error: any) {
-      console.error('Error removing favorite:', error);
+      // FIXME: Use logger.error - 'Error removing favorite:', error);
       toast.error('Failed to remove favorite');
       return false;
     }
