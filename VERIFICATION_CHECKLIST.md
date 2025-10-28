@@ -1,6 +1,29 @@
-# ✅ Checklist de Vérification - Corrections CORS/RLS/Navigation
+# ✅ Checklist de Vérification - Après Désactivation Notifications
 
-Date: 2025-10-28
+Date: 2025-10-28 (Session Continue)
+
+**Status Actuel**: Notifications désactivées temporairement pour éliminer console spam
+
+## 🎯 Changements Récents
+
+### ⚠️ Notifications Désactivées (Commit: `4855f41`)
+
+**Raison**: Erreurs CORS persistantes malgré toutes les corrections RLS/auth
+
+**Fonctions désactivées**:
+- `loadNotifications()` → Retourne `[]` immédiatement
+- `loadUnreadCount()` → Retourne `0` immédiatement
+- `subscribeToNotifications()` → Ne fait rien
+
+**Impact**:
+- ✅ Plus d'erreurs CORS dans la console
+- ✅ Dashboard charge normalement
+- ⚠️ Badge notifications affiche toujours 0
+- ⚠️ Page notifications affiche vide
+
+**Prochaine étape**: Vérifier que tout le reste fonctionne correctement
+
+---
 
 ## 🎯 Problèmes Résolus Aujourd'hui
 
