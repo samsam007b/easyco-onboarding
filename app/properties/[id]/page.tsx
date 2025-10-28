@@ -12,7 +12,8 @@ import { getPropertyById, deleteProperty, publishProperty, archiveProperty } fro
 import { createClient } from '@/lib/auth/supabase-client';
 import { useApplications } from '@/lib/hooks/use-applications';
 import ApplicationModal from '@/components/ApplicationModal';
-import type { Property, PropertyAmenity } from '@/lib/types/property';
+import type { Property } from '@/types/property.types';
+import type { PropertyAmenity } from '@/lib/types/property';
 import { toast } from 'sonner';
 
 export default function PropertyDetailsPage() {
@@ -187,6 +188,12 @@ export default function PropertyDetailsPage() {
     return age;
   };
 
+  const getImageUrl = (image: any): string => {
+    if (typeof image === 'string') return image;
+    if (image && typeof image === 'object' && 'url' in image) return image.url;
+    return '';
+  };
+
   if (loading) {
     return (
       <PageContainer>
@@ -287,7 +294,7 @@ export default function PropertyDetailsPage() {
           {property.images && property.images.length > 0 ? (
             <div className="relative h-96 rounded-t-2xl overflow-hidden">
               <img
-                src={property.main_image || property.images[0]}
+                src={property.main_image || getImageUrl(property.images[0])}
                 alt={property.title}
                 className="w-full h-full object-cover"
               />
@@ -297,7 +304,7 @@ export default function PropertyDetailsPage() {
                     {property.images.slice(1, 5).map((image, index) => (
                       <img
                         key={index}
-                        src={image}
+                        src={getImageUrl(image)}
                         alt={`${property.title} - ${index + 2}`}
                         className="w-20 h-20 object-cover rounded-lg border-2 border-white shadow-lg flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
                       />
