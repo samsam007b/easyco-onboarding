@@ -51,7 +51,7 @@ export function useNotifications(userId?: string) {
     } finally {
       setIsLoading(false);
     }
-  }, [userId, supabase]);
+  }, [userId]);
 
   // Load only unread notifications count (for badge)
   const loadUnreadCount = useCallback(async () => {
@@ -70,7 +70,7 @@ export function useNotifications(userId?: string) {
     } catch (error: any) {
       console.error('Error loading unread count:', error);
     }
-  }, [userId, supabase]);
+  }, [userId]);
 
   // Mark a notification as read
   const markAsRead = useCallback(
@@ -107,7 +107,7 @@ export function useNotifications(userId?: string) {
         return false;
       }
     },
-    [userId, supabase]
+    [userId]
   );
 
   // Mark all notifications as read
@@ -142,7 +142,7 @@ export function useNotifications(userId?: string) {
       console.error('Error marking all as read:', error);
       return false;
     }
-  }, [userId, supabase]);
+  }, [userId]);
 
   // Delete a notification
   const deleteNotification = useCallback(
@@ -172,7 +172,7 @@ export function useNotifications(userId?: string) {
         return false;
       }
     },
-    [userId, supabase, notifications]
+    [userId, notifications]
   );
 
   // Delete all read notifications
@@ -196,7 +196,7 @@ export function useNotifications(userId?: string) {
       console.error('Error clearing read notifications:', error);
       return false;
     }
-  }, [userId, supabase]);
+  }, [userId]);
 
   // Subscribe to real-time notifications
   const subscribeToNotifications = useCallback(() => {
@@ -258,7 +258,7 @@ export function useNotifications(userId?: string) {
       .subscribe();
 
     setChannel(newChannel);
-  }, [userId, channel, supabase]);
+  }, [userId, channel]);
 
   // Unsubscribe from real-time notifications
   const unsubscribeFromNotifications = useCallback(() => {
@@ -266,7 +266,7 @@ export function useNotifications(userId?: string) {
       supabase.removeChannel(channel);
       setChannel(null);
     }
-  }, [channel, supabase]);
+  }, [channel]);
 
   // Initial load and real-time subscription
   useEffect(() => {
@@ -277,7 +277,7 @@ export function useNotifications(userId?: string) {
     return () => {
       unsubscribeFromNotifications();
     };
-  }, [userId]);
+  }, [loadNotifications, subscribeToNotifications, unsubscribeFromNotifications]);
 
   return {
     notifications,
