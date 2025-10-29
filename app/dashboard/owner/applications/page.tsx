@@ -29,6 +29,17 @@ import {
   Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { PromptDialog } from '@/components/ui/prompt-dialog';
 
 type ApplicationType = 'individual' | 'group';
 type CombinedStatus = Application['status'] | GroupApplication['status'];
@@ -43,6 +54,12 @@ export default function OwnerApplicationsPage() {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | CombinedStatus>('all');
   const [filterType, setFilterType] = useState<'all' | ApplicationType>('all');
+
+  // Dialog states
+  const [approveDialogOpen, setApproveDialogOpen] = useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
+  const [selectedApplicationType, setSelectedApplicationType] = useState<'individual' | 'group'>('individual');
 
   const {
     applications: hookApplications,
@@ -105,22 +122,34 @@ export default function OwnerApplicationsPage() {
 
   // Individual application handlers
   const handleApprove = async (applicationId: string) => {
-    if (!confirm('Are you sure you want to approve this application?')) {
-      return;
-    }
+    setSelectedApplicationId(applicationId);
+    setSelectedApplicationType('individual');
+    setApproveDialogOpen(true);
+  };
 
-    const success = await updateApplicationStatus(applicationId, 'approved');
+  const confirmApprove = async () => {
+    if (!selectedApplicationId) return;
+
+    const success = await updateApplicationStatus(selectedApplicationId, 'approved');
     if (success) {
       toast.success('Application approved!');
       await loadApplicationsData();
     }
+    setApproveDialogOpen(false);
+    setSelectedApplicationId(null);
   };
 
   const handleReject = async (applicationId: string) => {
-    const reason = prompt('Please provide a reason for rejection (optional):');
+    setSelectedApplicationId(applicationId);
+    setSelectedApplicationType('individual');
+    setRejectDialogOpen(true);
+  };
+
+  const confirmReject = async (reason: string) => {
+    if (!selectedApplicationId) return;
 
     const success = await updateApplicationStatus(
-      applicationId,
+      selectedApplicationId,
       'rejected',
       reason || undefined
     );
@@ -129,6 +158,7 @@ export default function OwnerApplicationsPage() {
       toast.success('Application rejected');
       await loadApplicationsData();
     }
+    setSelectedApplicationId(null);
   };
 
   const handleMarkReviewing = async (applicationId: string) => {
@@ -140,28 +170,43 @@ export default function OwnerApplicationsPage() {
 
   // Group application handlers
   const handleGroupApprove = async (groupApplicationId: string) => {
-    if (!confirm('Are you sure you want to approve this group application?')) {
-      return;
-    }
+    setSelectedApplicationId(groupApplicationId);
+    setSelectedApplicationType('group');
+    setApproveDialogOpen(true);
+  };
 
-    const success = await updateGroupApplicationStatus(groupApplicationId, 'approved');
+  const confirmGroupApprove = async () => {
+    if (!selectedApplicationId) return;
+
+    const success = await updateGroupApplicationStatus(selectedApplicationId, 'approved');
     if (success) {
+      toast.success('Group application approved!');
       await loadApplicationsData();
     }
+    setApproveDialogOpen(false);
+    setSelectedApplicationId(null);
   };
 
   const handleGroupReject = async (groupApplicationId: string) => {
-    const reason = prompt('Please provide a reason for rejection (optional):');
+    setSelectedApplicationId(groupApplicationId);
+    setSelectedApplicationType('group');
+    setRejectDialogOpen(true);
+  };
+
+  const confirmGroupReject = async (reason: string) => {
+    if (!selectedApplicationId) return;
 
     const success = await updateGroupApplicationStatus(
-      groupApplicationId,
+      selectedApplicationId,
       'rejected',
       reason || undefined
     );
 
     if (success) {
+      toast.success('Group application rejected');
       await loadApplicationsData();
     }
+    setSelectedApplicationId(null);
   };
 
   const handleGroupMarkReviewing = async (groupApplicationId: string) => {
@@ -684,6 +729,46 @@ export default function OwnerApplicationsPage() {
         </div>
       )}
       </PageContainer>
+
+      {/* Approve Confirmation Dialog */}
+      <AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Approve Application</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to approve this {selectedApplicationType === 'group' ? 'group' : 'individual'} application?
+              This action will notify the applicant(s) and mark the application as approved.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setSelectedApplicationId(null)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={selectedApplicationType === 'group' ? confirmGroupApprove : confirmApprove}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              Approve
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Reject Prompt Dialog */}
+      <PromptDialog
+        open={rejectDialogOpen}
+        onOpenChange={setRejectDialogOpen}
+        title="Reject Application"
+        description={`Provide a reason for rejecting this ${selectedApplicationType === 'group' ? 'group' : 'individual'} application. This will be sent to the applicant(s).`}
+        label="Rejection Reason"
+        placeholder="Enter reason for rejection..."
+        multiline
+        required={false}
+        onConfirm={selectedApplicationType === 'group' ? confirmGroupReject : confirmReject}
+        onCancel={() => setSelectedApplicationId(null)}
+        confirmText="Reject"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
