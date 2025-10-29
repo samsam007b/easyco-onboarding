@@ -23,6 +23,7 @@ export default function OnboardingCompletionPage() {
         const { data: { user } } = await supabase.auth.getUser();
 
         console.log('🔍 Completion page - User:', user?.id);
+        console.log('🔍 User metadata:', user?.user_metadata);
 
         if (!user) {
           console.log('❌ No user, redirecting to login');
@@ -30,8 +31,30 @@ export default function OnboardingCompletionPage() {
           return;
         }
 
-        // Force refresh to get latest data
-        await supabase.auth.refreshSession();
+        // Priority 1: Get user_type from URL query parameter (most reliable)
+        const userTypeFromURL = searchParams.get('user_type');
+        if (userTypeFromURL && ['searcher', 'owner', 'resident'].includes(userTypeFromURL)) {
+          console.log('✅ Got user type from URL:', userTypeFromURL);
+          setUserType(userTypeFromURL as 'searcher' | 'owner' | 'resident');
+          setUserName(user.user_metadata?.full_name || user.user_metadata?.name || 'User');
+          setIsLoading(false);
+          return;
+        }
+
+        // Priority 2: Get user_type from metadata (faster, no DB query)
+        const userTypeFromMetadata = user.user_metadata?.user_type;
+        const fullNameFromMetadata = user.user_metadata?.full_name || user.user_metadata?.name;
+
+        if (userTypeFromMetadata) {
+          console.log('✅ Got user type from metadata:', userTypeFromMetadata);
+          setUserType(userTypeFromMetadata as 'searcher' | 'owner' | 'resident');
+          setUserName(fullNameFromMetadata || 'User');
+          setIsLoading(false);
+          return;
+        }
+
+        // Priority 3: Try to fetch from database
+        console.log('⚠️ No user_type in URL or metadata, fetching from DB...');
 
         const { data: userData, error: userError } = await supabase
           .from('users')
@@ -39,12 +62,13 @@ export default function OnboardingCompletionPage() {
           .eq('id', user.id)
           .single();
 
-        console.log('📊 User data:', userData);
+        console.log('📊 User data from DB:', userData);
         console.log('❌ User error:', userError);
 
         if (userError) {
           console.error('Failed to fetch user data:', userError);
-          // Set loading to false anyway to show buttons
+          console.error('⚠️ Cannot determine user type - navigation will be blocked');
+          setUserName('User');
           setIsLoading(false);
           return;
         }
@@ -56,7 +80,7 @@ export default function OnboardingCompletionPage() {
           return;
         }
 
-        console.log('✅ Setting user type:', userData.user_type);
+        console.log('✅ Setting user type from DB:', userData.user_type);
         setUserType(userData.user_type as 'searcher' | 'owner' | 'resident');
         setUserName(userData.full_name || 'User');
         setIsLoading(false);
@@ -67,7 +91,7 @@ export default function OnboardingCompletionPage() {
     };
 
     verifyCompletion();
-  }, [router]);
+  }, [router, searchParams]);
 
   const handleGoHome = () => {
     console.log('🏠 handleGoHome clicked, userType:', userType);

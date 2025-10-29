@@ -11,8 +11,8 @@ export default function ResidentSuccessPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to unified completion page
-    router.replace('/onboarding/completion');
+    // Redirect to unified completion page with user_type parameter
+    router.replace('/onboarding/completion?user_type=resident');
   }, [router]);
 
   // Show loading state during redirect
