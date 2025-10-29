@@ -3509,6 +3509,82 @@ export const translations = {
         de: 'Ihre Antworten werden automatisch gespeichert',
       },
     },
+
+    // Completion Page
+    completion: {
+      congratulations: {
+        fr: 'Félicitations',
+        en: 'Congratulations',
+        nl: 'Gefeliciteerd',
+        de: 'Glückwunsch',
+      },
+      subtitle: {
+        fr: 'Ton profil de base est complet. Que veux-tu faire maintenant ?',
+        en: 'Your basic profile is complete. What would you like to do now?',
+        nl: 'Je basisprofiel is compleet. Wat wil je nu doen?',
+        de: 'Dein Basisprofil ist vollständig. Was möchtest du jetzt tun?',
+      },
+      goHomeTitle: {
+        fr: 'Aller à l\'Accueil',
+        en: 'Go to Home',
+        nl: 'Ga naar Home',
+        de: 'Zur Startseite',
+      },
+      goHomeDescriptionSearcher: {
+        fr: 'Commencer à explorer les propriétés et les colocataires',
+        en: 'Start exploring properties and roommates',
+        nl: 'Begin met het verkennen van woningen en huisgenoten',
+        de: 'Beginne mit der Erkundung von Immobilien und Mitbewohnern',
+      },
+      goHomeDescriptionOwner: {
+        fr: 'Commencer à explorer tes propriétés et candidats',
+        en: 'Start exploring your properties and applicants',
+        nl: 'Begin met het verkennen van je eigendommen en kandidaten',
+        de: 'Beginne mit der Erkundung deiner Immobilien und Bewerber',
+      },
+      goHomeDescriptionResident: {
+        fr: 'Commencer à explorer ta communauté',
+        en: 'Start exploring your community',
+        nl: 'Begin met het verkennen van je gemeenschap',
+        de: 'Beginne mit der Erkundung deiner Gemeinschaft',
+      },
+      enhanceProfileTitle: {
+        fr: 'Enrichir Mon Profil',
+        en: 'Enhance My Profile',
+        nl: 'Mijn Profiel Verbeteren',
+        de: 'Mein Profil Verbessern',
+      },
+      enhanceProfileDescription: {
+        fr: 'Ajouter plus d\'informations pour améliorer ton matching et ta visibilité',
+        en: 'Add more information to improve your matching and visibility',
+        nl: 'Voeg meer informatie toe om je matching en zichtbaarheid te verbeteren',
+        de: 'Füge mehr Informationen hinzu, um dein Matching und deine Sichtbarkeit zu verbessern',
+      },
+      continueButton: {
+        fr: 'Continuer',
+        en: 'Continue',
+        nl: 'Doorgaan',
+        de: 'Weiter',
+      },
+      enhanceNowButton: {
+        fr: 'Enrichir maintenant',
+        en: 'Enhance now',
+        nl: 'Nu verbeteren',
+        de: 'Jetzt verbessern',
+      },
+      tipTitle: {
+        fr: 'Conseil',
+        en: 'Tip',
+        nl: 'Tip',
+        de: 'Tipp',
+      },
+      tipMessage: {
+        fr: 'Tu peux toujours enrichir ton profil plus tard depuis ton dashboard.',
+        en: 'You can always enhance your profile later from your dashboard.',
+        nl: 'Je kunt je profiel altijd later verbeteren vanaf je dashboard.',
+        de: 'Du kannst dein Profil jederzeit später über dein Dashboard verbessern.',
+      },
+    },
   },
 
   // ============================================================================
