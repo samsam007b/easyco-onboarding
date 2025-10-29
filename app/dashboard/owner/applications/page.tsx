@@ -385,7 +385,7 @@ export default function OwnerApplicationsPage() {
                           <h3 className="text-lg font-semibold text-gray-900">
                             {groupApp.group?.name || 'Group Application'}
                           </h3>
-                          <Badge variant="secondary" className="bg-purple-50 text-purple-700 border-purple-200">
+                          <Badge variant="default" className="bg-purple-50 text-purple-700 border-purple-200">
                             <Users className="w-3 h-3 mr-1" />
                             GROUP
                           </Badge>

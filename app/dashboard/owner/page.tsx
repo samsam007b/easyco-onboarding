@@ -97,7 +97,7 @@ export default function OwnerDashboard() {
   const loadProperties = async () => {
     const result = await getMyProperties()
     if (result.success && result.data) {
-      setProperties(result.data)
+      setProperties(result.data as Property[])
     } else {
       // FIXME: Use logger.error('Error loading properties:', result.error)
     }
