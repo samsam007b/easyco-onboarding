@@ -788,20 +788,20 @@ export default function ProfilePage() {
 
       {/* Reset Onboarding Confirmation Dialog */}
       <AlertDialog open={showResetOnboardingDialog} onOpenChange={setShowResetOnboardingDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>Reset Onboarding Progress</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-gray-900">Reset Onboarding Progress</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
               This will reset your onboarding progress and redirect you to the beginning of the onboarding process.
               All your profile information will be preserved, but you'll need to go through the onboarding steps again.
               Are you sure you want to continue?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmResetOnboarding}
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-orange-600 hover:bg-orange-700 text-white"
             >
               Reset Onboarding
             </AlertDialogAction>
