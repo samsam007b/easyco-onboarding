@@ -11,6 +11,16 @@ import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
 import ProfilePictureUpload from '@/components/ProfilePictureUpload'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 interface UserData {
   id: string
@@ -56,6 +66,9 @@ export default function ProfilePage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [deleteConfirmText, setDeleteConfirmText] = useState('')
   const [isDeletingAccount, setIsDeletingAccount] = useState(false)
+
+  // Reset onboarding dialog state
+  const [showResetOnboardingDialog, setShowResetOnboardingDialog] = useState(false)
 
   const supabase = createClient()
 
@@ -211,10 +224,11 @@ export default function ProfilePage() {
   // Reset onboarding
   const handleResetOnboarding = async () => {
     if (!userData) return
+    setShowResetOnboardingDialog(true)
+  }
 
-    if (!confirm('This will reset your onboarding progress. Continue?')) {
-      return
-    }
+  const confirmResetOnboarding = async () => {
+    if (!userData) return
 
     try {
       const { error } = await supabase
@@ -225,6 +239,7 @@ export default function ProfilePage() {
       if (error) throw error
 
       toast.success('Onboarding reset! Redirecting...')
+      setShowResetOnboardingDialog(false)
 
       setTimeout(() => {
         // Searcher onboarding starts with profile-type
@@ -770,6 +785,29 @@ export default function ProfilePage() {
         newRole={selectedUserType}
         isLoading={isChangingUserType}
       />
+
+      {/* Reset Onboarding Confirmation Dialog */}
+      <AlertDialog open={showResetOnboardingDialog} onOpenChange={setShowResetOnboardingDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reset Onboarding Progress</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will reset your onboarding progress and redirect you to the beginning of the onboarding process.
+              All your profile information will be preserved, but you'll need to go through the onboarding steps again.
+              Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmResetOnboarding}
+              className="bg-orange-600 hover:bg-orange-700"
+            >
+              Reset Onboarding
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
