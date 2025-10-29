@@ -559,7 +559,7 @@ export default function ProfilePage() {
                   <Button
                     onClick={handleResetOnboarding}
                     variant="outline"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 border-[#4A148C] text-[#4A148C] hover:bg-[#4A148C] hover:text-white transition-colors"
                   >
                     <RefreshCw className="w-4 h-4" />
                     Redo Onboarding
