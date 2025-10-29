@@ -101,7 +101,7 @@ export default function OnboardingCompletionPage() {
       return;
     }
     console.log('✅ Navigating to:', `/home/${userType}`);
-    router.push(`/home/${userType}`);
+    router.replace(`/home/${userType}`);
   };
 
   const handleEnhanceProfile = () => {
@@ -114,13 +114,13 @@ export default function OnboardingCompletionPage() {
     // Redirect to appropriate enhance profile page
     if (userType === 'searcher') {
       console.log('✅ Navigating to: /profile/enhance');
-      router.push('/profile/enhance');
+      router.replace('/profile/enhance');
     } else if (userType === 'owner') {
       console.log('✅ Navigating to: /profile/enhance-owner');
-      router.push('/profile/enhance-owner');
+      router.replace('/profile/enhance-owner');
     } else if (userType === 'resident') {
       console.log('✅ Navigating to: /profile/enhance-resident/personality');
-      router.push('/profile/enhance-resident/personality');
+      router.replace('/profile/enhance-resident/personality');
     }
   };
 
