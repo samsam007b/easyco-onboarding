@@ -54,6 +54,20 @@ export default function ResidentReviewPage() {
         throw new Error('Failed to complete onboarding');
       }
 
+      // ⚡ CRITICAL: Force refresh auth session to update cached user data
+      await supabase.auth.refreshSession();
+
+      // ⚡ Verify the update was successful before proceeding
+      const { data: verifyUser } = await supabase
+        .from('users')
+        .select('onboarding_completed')
+        .eq('id', user.id)
+        .single();
+
+      if (!verifyUser?.onboarding_completed) {
+        throw new Error('Failed to verify onboarding completion');
+      }
+
       toast.success('Profile completed successfully!');
 
       // Clear localStorage after successful submission
@@ -62,7 +76,8 @@ export default function ResidentReviewPage() {
       safeLocalStorage.remove('residentLivingSituation');
       safeLocalStorage.remove('residentPersonality');
 
-      router.push('/onboarding/resident/success');
+      // ⚡ Add cache-busting parameter to force reload
+      router.push('/onboarding/resident/success?completed=true');
     } catch (err: any) {
       // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
