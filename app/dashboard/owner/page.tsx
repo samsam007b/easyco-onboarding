@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { getMyProperties } from '@/lib/property-helpers'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath, Hand, UserCircle, FileText, CreditCard, Check } from 'lucide-react'
+import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath, Hand, UserCircle, FileText, CreditCard, Check, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
 import { useLanguage } from '@/lib/i18n/use-language'
@@ -185,6 +185,15 @@ export default function OwnerDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Back to Home Button */}
+        <Button
+          onClick={() => router.push('/home/owner')}
+          variant="outline"
+          className="mb-4 rounded-2xl gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">

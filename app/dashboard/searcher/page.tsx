@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
-import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand, FileText } from 'lucide-react'
+import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand, FileText, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import DashboardHeader from '@/components/DashboardHeader'
@@ -194,6 +194,15 @@ export default function SearcherDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Back to Home Button */}
+        <Button
+          onClick={() => router.push('/home/searcher')}
+          variant="outline"
+          className="mb-4 rounded-2xl gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
         {/* Welcome Section */}
         <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
