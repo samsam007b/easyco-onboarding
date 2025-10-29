@@ -102,7 +102,7 @@ export default function OwnerSuccess() {
           )}
 
           <Link
-            href="/dashboard/owner"
+            href="/home/owner"
             className="flex items-center justify-center gap-2 w-full bg-[color:var(--easy-yellow)] text-black py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg"
           >
             {onboarding.owner.success.goToDashboard}

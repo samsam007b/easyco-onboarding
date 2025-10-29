@@ -72,7 +72,7 @@ export default function ResidentSuccessPage() {
           {/* Action Buttons */}
           <div className="space-y-4">
             <Link
-              href="/dashboard/resident"
+              href="/home/resident"
               className="w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition flex items-center justify-center gap-2"
             >
               <Home className="w-5 h-5" />
