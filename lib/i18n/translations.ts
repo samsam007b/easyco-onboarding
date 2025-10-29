@@ -51,16 +51,16 @@ export const translations = {
     benefits: {
       verified: {
         title: {
-          fr: '100% Vérifié',
-          en: '100% Verified',
-          nl: '100% Geverifieerd',
-          de: '100% Verifiziert',
+          fr: 'Vérifications Systématiques',
+          en: 'Systematic Verification',
+          nl: 'Systematische Verificatie',
+          de: 'Systematische Überprüfung',
         },
         description: {
-          fr: 'Identité et annonces vérifiées manuellement. Zéro arnaque garantie.',
-          en: 'Manually verified identities and listings. Zero scam guarantee.',
-          nl: 'Handmatig geverifieerde identiteiten en advertenties. Nul oplichting gegarandeerd.',
-          de: 'Manuell verifizierte Identitäten und Anzeigen. Null Betrug garantiert.',
+          fr: 'Identité et annonces vérifiées manuellement. Toute annonce signalée retirée sous 24h.',
+          en: 'Manually verified identities and listings. Any reported listing removed within 24h.',
+          nl: 'Handmatig geverifieerde identiteiten en advertenties. Gemelde advertenties binnen 24u verwijderd.',
+          de: 'Manuell verifizierte Identitäten und Anzeigen. Gemeldete Anzeigen innerhalb von 24h entfernt.',
         },
       },
       compatibility: {
