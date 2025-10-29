@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/auth-context';
 import { createBrowserClient } from '@supabase/ssr';
+import { getRoleGradient, getRoleColors } from '@/lib/config/role-colors';
 import {
   Users,
   Search,
@@ -39,6 +40,8 @@ export default function SearcherHomePage() {
   });
   const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const roleColors = getRoleColors('searcher');
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -102,7 +105,7 @@ export default function SearcherHomePage() {
       {
         id: '1',
         icon: Heart,
-        iconBgColor: 'bg-pink-500',
+        iconBgColor: roleColors.badge,
         title: 'New match!',
         subtitle: 'You matched with Sophie M.',
         time: '2h ago',
@@ -166,13 +169,13 @@ export default function SearcherHomePage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${getRoleGradient('searcher', 'light')}`}>
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className={`text-3xl font-bold ${roleColors.text.dark}`}>
                 Welcome back{userProfile?.first_name ? `, ${userProfile.first_name}` : ''}!
               </h1>
               <p className="text-gray-600 mt-1">Let's find your perfect coliving match</p>
@@ -181,26 +184,25 @@ export default function SearcherHomePage() {
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full relative"
+                className={`rounded-full relative ${roleColors.border.primary} ${roleColors.border.hover}`}
                 onClick={() => router.push('/notifications')}
               >
-                <Bell className="h-5 w-5" />
+                <Bell className={`h-5 w-5 ${roleColors.text.primary}`} />
                 <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </Button>
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full relative"
+                className={`rounded-full relative ${roleColors.border.primary} ${roleColors.border.hover}`}
                 onClick={() => router.push('/messages')}
               >
-                <MessageCircle className="h-5 w-5" />
+                <MessageCircle className={`h-5 w-5 ${roleColors.text.primary}`} />
                 {stats.activeChats > 0 && (
                   <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
                 )}
               </Button>
               <Button
-                variant="outline"
-                className="rounded-2xl gap-2"
+                className={`rounded-2xl gap-2 ${roleColors.button.primary}`}
                 onClick={() => router.push('/dashboard/searcher')}
               >
                 <LayoutDashboard className="h-5 w-5" />
@@ -216,7 +218,7 @@ export default function SearcherHomePage() {
               placeholder="Where do you want to live?"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-12 py-6 rounded-2xl text-lg"
+              className={`pl-12 pr-12 py-6 rounded-2xl text-lg focus:${roleColors.border.primary}`}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && searchQuery) {
                   router.push(`/properties/browse?search=${encodeURIComponent(searchQuery)}`);
@@ -225,7 +227,7 @@ export default function SearcherHomePage() {
             />
             <Button
               size="icon"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-xl bg-purple-700 hover:bg-purple-800"
+              className={`absolute right-2 top-1/2 transform -translate-y-1/2 rounded-xl ${roleColors.button.primary}`}
               onClick={() => {
                 if (searchQuery) {
                   router.push(`/properties/browse?search=${encodeURIComponent(searchQuery)}`);
@@ -246,28 +248,28 @@ export default function SearcherHomePage() {
             icon={BookmarkIcon}
             label="Saved Properties"
             value={stats.savedProperties}
-            iconBgColor="bg-blue-100"
+            iconBgColor={roleColors.bg.card}
             onClick={() => router.push('/properties/browse?filter=favorites')}
           />
           <QuickStatsCard
             icon={MessageCircle}
             label="Active Chats"
             value={stats.activeChats}
-            iconBgColor="bg-green-100"
+            iconBgColor={roleColors.bg.card}
             onClick={() => router.push('/messages')}
           />
           <QuickStatsCard
             icon={Users}
             label="Potential Matches"
             value={stats.potentialMatches}
-            iconBgColor="bg-purple-100"
+            iconBgColor={roleColors.bg.card}
             onClick={() => router.push('/matching/swipe')}
           />
           <QuickStatsCard
             icon={UserPlus}
             label="Group Invites"
             value={stats.groupInvites}
-            iconBgColor="bg-yellow-100"
+            iconBgColor={roleColors.bg.card}
             onClick={() => router.push('/groups')}
           />
         </div>
@@ -280,7 +282,7 @@ export default function SearcherHomePage() {
             icon={Users}
             badge="Most Popular"
             features={['Smart Matching', 'Active Now']}
-            gradient="bg-gradient-to-br from-purple-600 to-purple-800"
+            gradient={`bg-gradient-to-br from-[${roleColors.gradient.from}] to-[${roleColors.gradient.to}]`}
             buttonText="Start Matching"
             onClick={() => router.push('/matching/swipe?context=searcher_matching')}
           />
@@ -290,7 +292,7 @@ export default function SearcherHomePage() {
             icon={Building2}
             badge={`${287} Available`}
             features={['Verified Listings', 'Smart Filters']}
-            gradient="bg-gradient-to-br from-yellow-500 to-yellow-600"
+            gradient={`bg-gradient-to-br from-[${roleColors.gradient.from}] to-[${roleColors.gradient.to}]`}
             buttonText="Explore Now"
             onClick={() => router.push('/properties/browse')}
           />
@@ -320,7 +322,7 @@ export default function SearcherHomePage() {
       {/* Floating Action Button */}
       <Button
         size="lg"
-        className="fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-2xl bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600"
+        className={`fixed bottom-8 right-8 rounded-full w-16 h-16 shadow-2xl ${roleColors.button.primary}`}
         onClick={() => router.push('/matching/swipe?context=searcher_matching')}
       >
         <Heart className="h-7 w-7" fill="white" />
