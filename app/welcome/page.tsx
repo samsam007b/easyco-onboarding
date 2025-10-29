@@ -26,7 +26,7 @@ export default function WelcomePage() {
       const { data: { user: authUser }, error } = await supabase.auth.getUser();
 
       if (error || !authUser) {
-        router.push('/login');
+        router.push('/auth');
         return;
       }
 
@@ -58,7 +58,7 @@ export default function WelcomePage() {
       });
     } catch (error) {
       // FIXME: Use logger.error('Error loading user:', error);
-      router.push('/login');
+      router.push('/auth');
     } finally {
       setLoading(false);
     }
