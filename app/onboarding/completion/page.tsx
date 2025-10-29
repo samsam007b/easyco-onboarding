@@ -12,6 +12,7 @@ export default function OnboardingCompletionPage() {
   const searchParams = useSearchParams();
   const { getSection } = useLanguage();
   const common = getSection('common');
+  const onboarding = getSection('onboarding');
   const [userType, setUserType] = useState<'searcher' | 'owner' | 'resident' | null>(null);
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -154,10 +155,10 @@ export default function OnboardingCompletionPage() {
 
           {/* Success Message */}
           <h1 className="text-3xl sm:text-4xl font-bold text-[#4A148C] mb-3">
-            🎉 Félicitations, {userName}!
+            🎉 {onboarding.completion.congratulations}, {userName}!
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            Ton profil de base est complet. Que veux-tu faire maintenant ?
+            {onboarding.completion.subtitle}
           </p>
 
           {/* Divider */}
@@ -176,14 +177,18 @@ export default function OnboardingCompletionPage() {
 
               <div className="text-left">
                 <h3 className="text-xl font-bold mb-2">
-                  Aller à l'Accueil
+                  {onboarding.completion.goHomeTitle}
                 </h3>
                 <p className="text-sm text-purple-100 mb-4">
-                  Commencer à explorer {userType === 'searcher' ? 'les propriétés et les colocataires' : userType === 'owner' ? 'tes propriétés et candidats' : 'ta communauté'}
+                  {userType === 'searcher'
+                    ? onboarding.completion.goHomeDescriptionSearcher
+                    : userType === 'owner'
+                    ? onboarding.completion.goHomeDescriptionOwner
+                    : onboarding.completion.goHomeDescriptionResident}
                 </p>
 
                 <div className="flex items-center text-[#FFD600] font-semibold">
-                  <span>Continuer</span>
+                  <span>{onboarding.completion.continueButton}</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -200,14 +205,14 @@ export default function OnboardingCompletionPage() {
 
               <div className="text-left">
                 <h3 className="text-xl font-bold mb-2">
-                  Enrichir Mon Profil
+                  {onboarding.completion.enhanceProfileTitle}
                 </h3>
                 <p className="text-sm text-purple-900 mb-4">
-                  Ajouter plus d'informations pour améliorer ton matching et ta visibilité
+                  {onboarding.completion.enhanceProfileDescription}
                 </p>
 
                 <div className="flex items-center font-semibold">
-                  <span>Enrichir maintenant</span>
+                  <span>{onboarding.completion.enhanceNowButton}</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
@@ -217,7 +222,7 @@ export default function OnboardingCompletionPage() {
           {/* Info Message */}
           <div className="bg-purple-50 rounded-xl p-4 text-sm text-gray-600">
             <p>
-              💡 <strong>Conseil :</strong> Tu peux toujours enrichir ton profil plus tard depuis ton dashboard.
+              💡 <strong>{onboarding.completion.tipTitle} :</strong> {onboarding.completion.tipMessage}
             </p>
           </div>
         </div>
