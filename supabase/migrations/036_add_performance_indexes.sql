@@ -38,24 +38,24 @@ CREATE INDEX IF NOT EXISTS idx_conversations_unique_participants
   WHERE participant1_id IS NOT NULL AND participant2_id IS NOT NULL;
 
 -- ============================================================================
--- 2. APPLICATIONS TABLE INDEXES
+-- 2. PROPERTY_APPLICATIONS TABLE INDEXES
 -- ============================================================================
 -- Use case: Find applications by applicant or property owner (loadApplications)
--- Query: SELECT * FROM applications WHERE applicant_id = ? AND status = ?
+-- Query: SELECT * FROM property_applications WHERE applicant_id = ? AND status = ?
 
 -- Index for applicant queries with status filter
-CREATE INDEX IF NOT EXISTS idx_applications_applicant_status
-  ON public.applications(applicant_id, status)
+CREATE INDEX IF NOT EXISTS idx_property_applications_applicant_status
+  ON public.property_applications(applicant_id, status)
   WHERE applicant_id IS NOT NULL;
 
 -- Index for property-based queries with status
-CREATE INDEX IF NOT EXISTS idx_applications_property_status
-  ON public.applications(property_id, status)
+CREATE INDEX IF NOT EXISTS idx_property_applications_property_status
+  ON public.property_applications(property_id, status)
   WHERE property_id IS NOT NULL;
 
 -- Index for applicant with created_at ordering
-CREATE INDEX IF NOT EXISTS idx_applications_applicant_created
-  ON public.applications(applicant_id, created_at DESC)
+CREATE INDEX IF NOT EXISTS idx_property_applications_applicant_created
+  ON public.property_applications(applicant_id, created_at DESC)
   WHERE applicant_id IS NOT NULL;
 
 -- ============================================================================
@@ -168,12 +168,12 @@ CREATE INDEX IF NOT EXISTS idx_favorites_property_user
 -- ORDER BY created_at ASC;
 -- Expected: Index Scan using idx_messages_conversation_created
 
--- Example 3: Verify applications index usage
+-- Example 3: Verify property_applications index usage
 -- EXPLAIN ANALYZE
--- SELECT * FROM applications
+-- SELECT * FROM property_applications
 -- WHERE applicant_id = 'some-uuid' AND status = 'pending'
 -- ORDER BY created_at DESC;
--- Expected: Index Scan using idx_applications_applicant_status
+-- Expected: Index Scan using idx_property_applications_applicant_status
 
 -- ============================================================================
 -- MAINTENANCE & MONITORING
@@ -208,9 +208,9 @@ CREATE INDEX IF NOT EXISTS idx_favorites_property_user
 -- DROP INDEX IF EXISTS public.idx_conversations_participant2;
 -- DROP INDEX IF EXISTS public.idx_conversations_participants_updated;
 -- DROP INDEX IF EXISTS public.idx_conversations_unique_participants;
--- DROP INDEX IF EXISTS public.idx_applications_applicant_status;
--- DROP INDEX IF EXISTS public.idx_applications_property_status;
--- DROP INDEX IF EXISTS public.idx_applications_applicant_created;
+-- DROP INDEX IF EXISTS public.idx_property_applications_applicant_status;
+-- DROP INDEX IF EXISTS public.idx_property_applications_property_status;
+-- DROP INDEX IF EXISTS public.idx_property_applications_applicant_created;
 -- DROP INDEX IF EXISTS public.idx_messages_conversation_created;
 -- DROP INDEX IF EXISTS public.idx_messages_sender_conversation;
 -- DROP INDEX IF EXISTS public.idx_messages_unread_lookup;
