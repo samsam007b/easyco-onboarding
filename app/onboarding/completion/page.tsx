@@ -18,51 +18,83 @@ export default function OnboardingCompletionPage() {
 
   useEffect(() => {
     const verifyCompletion = async () => {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-      if (!user) {
-        router.push('/login');
-        return;
+        console.log('🔍 Completion page - User:', user?.id);
+
+        if (!user) {
+          console.log('❌ No user, redirecting to login');
+          router.push('/login');
+          return;
+        }
+
+        // Force refresh to get latest data
+        await supabase.auth.refreshSession();
+
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('user_type, full_name, onboarding_completed')
+          .eq('id', user.id)
+          .single();
+
+        console.log('📊 User data:', userData);
+        console.log('❌ User error:', userError);
+
+        if (userError) {
+          console.error('Failed to fetch user data:', userError);
+          // Set loading to false anyway to show buttons
+          setIsLoading(false);
+          return;
+        }
+
+        if (!userData?.onboarding_completed) {
+          // If not completed, redirect back to onboarding
+          console.log('⚠️ Onboarding not completed, redirecting back');
+          router.push(`/onboarding/${userData?.user_type}/basic-info`);
+          return;
+        }
+
+        console.log('✅ Setting user type:', userData.user_type);
+        setUserType(userData.user_type as 'searcher' | 'owner' | 'resident');
+        setUserName(userData.full_name || 'User');
+        setIsLoading(false);
+      } catch (error) {
+        console.error('💥 Error in verifyCompletion:', error);
+        setIsLoading(false);
       }
-
-      // Force refresh to get latest data
-      await supabase.auth.refreshSession();
-
-      const { data: userData } = await supabase
-        .from('users')
-        .select('user_type, full_name, onboarding_completed')
-        .eq('id', user.id)
-        .single();
-
-      if (!userData?.onboarding_completed) {
-        // If not completed, redirect back to onboarding
-        router.push(`/onboarding/${userData?.user_type}/basic-info`);
-        return;
-      }
-
-      setUserType(userData.user_type as 'searcher' | 'owner' | 'resident');
-      setUserName(userData.full_name || 'User');
-      setIsLoading(false);
     };
 
     verifyCompletion();
   }, [router]);
 
   const handleGoHome = () => {
-    if (!userType) return;
+    console.log('🏠 handleGoHome clicked, userType:', userType);
+    if (!userType) {
+      console.log('❌ No userType, cannot navigate');
+      return;
+    }
+    console.log('✅ Navigating to:', `/home/${userType}`);
     router.push(`/home/${userType}`);
   };
 
   const handleEnhanceProfile = () => {
-    if (!userType) return;
+    console.log('✨ handleEnhanceProfile clicked, userType:', userType);
+    if (!userType) {
+      console.log('❌ No userType, cannot navigate');
+      return;
+    }
 
     // Redirect to appropriate enhance profile page
     if (userType === 'searcher') {
+      console.log('✅ Navigating to: /profile/enhance');
       router.push('/profile/enhance');
     } else if (userType === 'owner') {
+      console.log('✅ Navigating to: /profile/enhance-owner');
       router.push('/profile/enhance-owner');
     } else if (userType === 'resident') {
+      console.log('✅ Navigating to: /profile/enhance-resident/personality');
       router.push('/profile/enhance-resident/personality');
     }
   };
