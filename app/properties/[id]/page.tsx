@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users } from 'lucide-react';
+import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +15,7 @@ import ApplicationModal from '@/components/ApplicationModal';
 import type { Property } from '@/types/property.types';
 import type { PropertyAmenity } from '@/lib/types/property';
 import { toast } from 'sonner';
+import { getOrCreateConversation } from '@/lib/services/messaging-service';
 
 export default function PropertyDetailsPage() {
   const router = useRouter();
@@ -159,6 +160,36 @@ export default function PropertyDetailsPage() {
     } else {
       toast.error('Failed to archive property');
     }
+    setActionLoading(false);
+  };
+
+  const handleContactOwner = async () => {
+    if (!userId || !property?.owner_id) {
+      toast.error('Unable to start conversation');
+      return;
+    }
+
+    if (userId === property.owner_id) {
+      toast.info('You are the owner of this property');
+      return;
+    }
+
+    setActionLoading(true);
+
+    const result = await getOrCreateConversation(
+      userId,
+      property.owner_id,
+      'property_inquiry',
+      propertyId
+    );
+
+    if (result.success && result.data) {
+      toast.success('Opening conversation...');
+      router.push(`/messages?conversation=${result.data}`);
+    } else {
+      toast.error('Failed to start conversation');
+    }
+
     setActionLoading(false);
   };
 
@@ -531,7 +562,7 @@ export default function PropertyDetailsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 mb-4">
                   {ownerProfile.profile_photo_url ? (
                     <img
                       src={ownerProfile.profile_photo_url}
@@ -558,6 +589,19 @@ export default function PropertyDetailsPage() {
                     )}
                   </div>
                 </div>
+
+                {/* Contact Owner Button */}
+                {!isOwner && userId && (
+                  <Button
+                    className="w-full"
+                    variant="outline"
+                    onClick={handleContactOwner}
+                    disabled={actionLoading}
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Contact Owner
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}

@@ -7,6 +7,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import ProfileDropdown from './ProfileDropdown';
 import LanguageSwitcher from './LanguageSwitcher';
 import NotificationsDropdown from './NotificationsDropdown';
+import MessagesIconWithBadge from './MessagesIconWithBadge';
 
 interface DashboardHeaderProps {
   profile: {
@@ -46,8 +47,9 @@ export default function DashboardHeader({ profile, avatarColor, role }: Dashboar
           {/* Left: Profile Dropdown */}
           <ProfileDropdown profile={profile} avatarColor={avatarColor} role={role} />
 
-          {/* Right: Notifications & Settings */}
+          {/* Right: Messages, Notifications & Settings */}
           <div className="flex items-center gap-2">
+            {userId && <MessagesIconWithBadge userId={userId} />}
             {userId && <NotificationsDropdown userId={userId} />}
             <button
               onClick={() => router.push('/profile')}
