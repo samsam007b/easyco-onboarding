@@ -8,6 +8,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
 
 export default function ResidentBasicInfoPage() {
   const router = useRouter();
@@ -21,8 +22,7 @@ export default function ResidentBasicInfoPage() {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [languages, setLanguages] = useState<string[]>([]);
-  const [languageInput, setLanguageInput] = useState('');
+  const [languages, setLanguages] = useState<LanguageChip[]>([]);
 
   useEffect(() => {
     loadExistingData();
@@ -46,14 +46,39 @@ export default function ResidentBasicInfoPage() {
           setDateOfBirth(saved.dateOfBirth || profileData.date_of_birth || '');
           setNationality(saved.nationality || profileData.nationality || '');
           setPhoneNumber(saved.phoneNumber || profileData.phone_number || '');
-          setLanguages(saved.languages || profileData.languages_spoken || []);
+
+          // Convert old string array format to new LanguageChip format if needed
+          const savedLangs = saved.languages || profileData.languages_spoken || [];
+          if (Array.isArray(savedLangs) && savedLangs.length > 0) {
+            if (typeof savedLangs[0] === 'string') {
+              setLanguages(savedLangs.map((lang: string) => ({
+                code: lang,
+                display: lang,
+                canonicalEn: lang,
+              })));
+            } else {
+              setLanguages(savedLangs as LanguageChip[]);
+            }
+          }
         } else if (saved.firstName) {
           setFirstName(saved.firstName);
           setLastName(saved.lastName);
           setDateOfBirth(saved.dateOfBirth);
           setNationality(saved.nationality);
           setPhoneNumber(saved.phoneNumber);
-          setLanguages(saved.languages || []);
+
+          const savedLangs = saved.languages || [];
+          if (Array.isArray(savedLangs) && savedLangs.length > 0) {
+            if (typeof savedLangs[0] === 'string') {
+              setLanguages(savedLangs.map((lang: string) => ({
+                code: lang,
+                display: lang,
+                canonicalEn: lang,
+              })));
+            } else {
+              setLanguages(savedLangs as LanguageChip[]);
+            }
+          }
         }
       }
     } catch (error) {
@@ -62,17 +87,6 @@ export default function ResidentBasicInfoPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const addLanguage = () => {
-    if (languageInput.trim() && !languages.includes(languageInput.trim())) {
-      setLanguages([...languages, languageInput.trim()]);
-      setLanguageInput('');
-    }
-  };
-
-  const removeLanguage = (lang: string) => {
-    setLanguages(languages.filter(l => l !== lang));
   };
 
   const handleContinue = () => {
@@ -265,41 +279,12 @@ export default function ResidentBasicInfoPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {resident.basicInfo.languages} <span className="text-red-500">*</span>
               </label>
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="text"
-                  value={languageInput}
-                  onChange={(e) => setLanguageInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
-                  placeholder={resident.basicInfo.languagesPlaceholder}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={addLanguage}
-                  className="px-6 py-3 bg-[#4A148C] text-white rounded-lg hover:bg-[#6A1B9A] transition-colors font-medium"
-                >
-                  {common.add}
-                </button>
-              </div>
-              {languages.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {languages.map((lang) => (
-                    <span
-                      key={lang}
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-[#4A148C] rounded-full text-sm font-medium"
-                    >
-                      {lang}
-                      <button
-                        onClick={() => removeLanguage(lang)}
-                        className="hover:text-red-600 transition-colors"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+              <LanguagesChipInput
+                value={languages}
+                onChange={setLanguages}
+                maxLanguages={10}
+                placeholder={resident.basicInfo.languagesPlaceholder}
+              />
             </div>
           </div>
 
