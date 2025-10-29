@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { MessageCircle, ArrowLeft } from 'lucide-react';
@@ -22,7 +22,7 @@ import {
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
 
-export default function MessagesPage() {
+function MessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -344,7 +344,7 @@ export default function MessagesPage() {
                     currentUserId={userId}
                     otherUserName={selectedConversation.other_user_name}
                     otherUserPhoto={selectedConversation.other_user_photo}
-                    isTyping={isOtherUserTyping}
+                    isTyping={!!isOtherUserTyping}
                     onSendMessage={handleSendMessage}
                     onStartTyping={handleStartTyping}
                     onStopTyping={handleStopTyping}
@@ -369,5 +369,20 @@ export default function MessagesPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <p className="mt-4 text-gray-600">Loading messages...</p>
+        </div>
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   );
 }
