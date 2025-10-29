@@ -10,6 +10,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { useAutoSave } from '@/lib/hooks/use-auto-save';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import IconBadge from '@/components/IconBadge';
+import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
 
 export default function BasicInfoPage() {
   const router = useRouter();
@@ -29,8 +30,7 @@ export default function BasicInfoPage() {
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
-  const [languages, setLanguages] = useState<string[]>([]);
-  const [languageInput, setLanguageInput] = useState('');
+  const [languages, setLanguages] = useState<LanguageChip[]>([]);
 
   useEffect(() => {
     loadExistingData();
@@ -69,14 +69,41 @@ export default function BasicInfoPage() {
           setLastName(saved.lastName || profileData.last_name || '');
           setDateOfBirth(saved.dateOfBirth || profileData.date_of_birth || '');
           setNationality(saved.nationality || profileData.nationality || '');
-          setLanguages(saved.languages || profileData.languages || []);
+
+          // Convert old string array format to new LanguageChip format if needed
+          const savedLangs = saved.languages || profileData.languages || [];
+          if (Array.isArray(savedLangs) && savedLangs.length > 0) {
+            if (typeof savedLangs[0] === 'string') {
+              // Old format: convert strings to chips
+              setLanguages(savedLangs.map((lang: string) => ({
+                code: lang, // Will be migrated properly later
+                display: lang,
+                canonicalEn: lang,
+              })));
+            } else {
+              // New format: already LanguageChip[]
+              setLanguages(savedLangs as LanguageChip[]);
+            }
+          }
         } else if (saved.firstName) {
           // Fallback to localStorage only if no database data
           setFirstName(saved.firstName);
           setLastName(saved.lastName);
           setDateOfBirth(saved.dateOfBirth);
           setNationality(saved.nationality);
-          setLanguages(saved.languages || []);
+
+          const savedLangs = saved.languages || [];
+          if (Array.isArray(savedLangs) && savedLangs.length > 0) {
+            if (typeof savedLangs[0] === 'string') {
+              setLanguages(savedLangs.map((lang: string) => ({
+                code: lang,
+                display: lang,
+                canonicalEn: lang,
+              })));
+            } else {
+              setLanguages(savedLangs as LanguageChip[]);
+            }
+          }
         }
       }
     } catch (error) {
@@ -85,17 +112,6 @@ export default function BasicInfoPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const addLanguage = () => {
-    if (languageInput.trim() && !languages.includes(languageInput.trim())) {
-      setLanguages([...languages, languageInput.trim()]);
-      setLanguageInput('');
-    }
-  };
-
-  const removeLanguage = (lang: string) => {
-    setLanguages(languages.filter(l => l !== lang));
   };
 
   const handleContinue = () => {
@@ -304,42 +320,12 @@ export default function BasicInfoPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {onboarding.basicInfo.languagesSpoken}
             </label>
-            <div className="flex gap-2 mb-3">
-              <input
-                type="text"
-                value={languageInput}
-                onChange={(e) => setLanguageInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                placeholder={onboarding.basicInfo.languagesPlaceholder}
-              />
-              <button
-                onClick={addLanguage}
-                className="px-6 py-3 rounded-full bg-[color:var(--easy-purple)] text-white font-medium hover:opacity-90 transition"
-              >
-                {common.add}
-              </button>
-            </div>
-
-            {/* Language tags */}
-            {languages.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {languages.map((lang) => (
-                  <span
-                    key={lang}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color:var(--easy-yellow)] text-black text-sm font-medium"
-                  >
-                    {lang}
-                    <button
-                      onClick={() => removeLanguage(lang)}
-                      className="hover:opacity-70"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
+            <LanguagesChipInput
+              value={languages}
+              onChange={setLanguages}
+              maxLanguages={10}
+              placeholder={onboarding.basicInfo.languagesPlaceholder}
+            />
           </div>
         </div>
 
