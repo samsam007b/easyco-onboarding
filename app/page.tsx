@@ -1,14 +1,50 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Home as HomeIcon, Users, Heart, Shield, Target, Zap } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
-import HowItWorks from '@/components/HowItWorks';
-import StatsSection from '@/components/StatsSection';
-import Testimonials from '@/components/Testimonials';
-import FAQ from '@/components/FAQ';
+
+// ============================================================================
+// PERFORMANCE OPTIMIZATION: Dynamic Imports for Below-the-Fold Components
+// ============================================================================
+// These components are only visible after scrolling, so we lazy-load them
+// to reduce initial bundle size by ~30KB
+// ============================================================================
+
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), {
+  loading: () => (
+    <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="h-96 bg-gray-100 rounded-3xl animate-pulse" />
+    </div>
+  ),
+});
+
+const StatsSection = dynamic(() => import('@/components/StatsSection'), {
+  loading: () => (
+    <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="h-32 bg-gray-100 rounded-2xl animate-pulse" />
+    </div>
+  ),
+});
+
+const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+  loading: () => (
+    <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="h-80 bg-gray-100 rounded-3xl animate-pulse" />
+    </div>
+  ),
+});
+
+const FAQ = dynamic(() => import('@/components/FAQ'), {
+  loading: () => (
+    <div className="max-w-3xl mx-auto px-6 py-20">
+      <div className="h-96 bg-gray-100 rounded-2xl animate-pulse" />
+    </div>
+  ),
+});
 
 export default function Home() {
   const { t, getSection } = useLanguage();
