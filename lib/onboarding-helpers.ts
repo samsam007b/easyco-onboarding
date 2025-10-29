@@ -297,10 +297,11 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
       }
     }
 
-    // Mark onboarding as completed in users table
+    // Mark onboarding as completed in users table AND set user_type
     const { error: userError } = await supabase
       .from('users')
       .update({
+        user_type: userType,  // ⚡ CRITICAL: Set user_type so middleware can check it
         onboarding_completed: true,
         updated_at: new Date().toISOString()
       })

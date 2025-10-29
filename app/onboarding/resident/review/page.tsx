@@ -40,10 +40,11 @@ export default function ResidentReviewPage() {
         return;
       }
 
-      // Mark onboarding as completed in users table
+      // Mark onboarding as completed in users table AND set user_type
       const { error: userUpdateError } = await supabase
         .from('users')
         .update({
+          user_type: 'resident',  // ⚡ CRITICAL: Set user_type so middleware can check it
           onboarding_completed: true,
           updated_at: new Date().toISOString()
         })
