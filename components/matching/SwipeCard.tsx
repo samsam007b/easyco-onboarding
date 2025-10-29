@@ -5,6 +5,7 @@ import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { Heart, X, MapPin, Briefcase, Calendar, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { UserProfile, getCompatibilityQuality } from '@/lib/services/user-matching-service';
+import Image from 'next/image';
 
 interface SwipeCardProps {
   user: UserProfile & { compatibility_score?: number };
@@ -67,13 +68,18 @@ export function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
         className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden"
         onClick={onCardClick}
       >
-        {/* Profile Image */}
+        {/* Profile Image - OPTIMIZED with Next.js Image */}
         <div className="relative h-[60%] overflow-hidden">
           {user.profile_photo_url ? (
-            <img
+            <Image
               src={user.profile_photo_url}
               alt={`${user.first_name} ${user.last_name}`}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              priority={false}
+              loading="lazy"
+              quality={85}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-purple-200 via-purple-100 to-yellow-100 flex items-center justify-center">

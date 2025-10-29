@@ -1,14 +1,74 @@
 'use client';
 
+import { memo, useMemo } from 'react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { Star, Quote } from 'lucide-react';
 
-export default function Testimonials() {
+// ============================================================================
+// PERFORMANCE OPTIMIZATION: Memoized Testimonial Card Component
+// ============================================================================
+// Prevents unnecessary re-renders when parent re-renders
+// ============================================================================
+
+interface TestimonialData {
+  name: string;
+  role: string;
+  text: string;
+  rating: number;
+  avatar: string;
+}
+
+const TestimonialCard = memo(({ testimonial, index }: { testimonial: TestimonialData; index: number }) => (
+  <div
+    key={`testimonial-${index}`}
+    className="bg-gradient-to-br from-purple-50 to-yellow-50 rounded-2xl p-8 relative hover:shadow-xl transition-shadow duration-300"
+  >
+    {/* Quote Icon */}
+    <div className="absolute top-6 right-6 opacity-20">
+      <Quote className="w-12 h-12 text-[color:var(--easy-purple)]" />
+    </div>
+
+    {/* Stars */}
+    <div className="flex gap-1 mb-4">
+      {[...Array(testimonial.rating)].map((_, i) => (
+        <Star
+          key={`star-${i}`}
+          className="w-5 h-5 fill-yellow-400 text-yellow-400"
+        />
+      ))}
+    </div>
+
+    {/* Text */}
+    <p className="text-gray-700 leading-relaxed mb-6 relative z-10">
+      "{testimonial.text}"
+    </p>
+
+    {/* Author */}
+    <div className="flex items-center gap-3">
+      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-2xl shadow-md">
+        {testimonial.avatar}
+      </div>
+      <div>
+        <div className="font-semibold text-gray-900">
+          {testimonial.name}
+        </div>
+        <div className="text-sm text-gray-600">
+          {testimonial.role}
+        </div>
+      </div>
+    </div>
+  </div>
+));
+
+TestimonialCard.displayName = 'TestimonialCard';
+
+function Testimonials() {
   const { getSection } = useLanguage();
   const landing = getSection('landing');
   const testimonials = landing.testimonials;
 
-  const testimonialsData = [
+  // Memoize testimonials data to prevent recreation on every render
+  const testimonialsData = useMemo(() => [
     {
       name: testimonials.testimonial1.name,
       role: testimonials.testimonial1.role,
@@ -30,7 +90,7 @@ export default function Testimonials() {
       rating: 5,
       avatar: '👨‍💻',
     },
-  ];
+  ], [testimonials]);
 
   return (
     <section className="py-20 bg-white">
@@ -48,45 +108,11 @@ export default function Testimonials() {
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonialsData.map((testimonial, index) => (
-            <div
-              key={index}
-              className="bg-gradient-to-br from-purple-50 to-yellow-50 rounded-2xl p-8 relative hover:shadow-xl transition-shadow duration-300"
-            >
-              {/* Quote Icon */}
-              <div className="absolute top-6 right-6 opacity-20">
-                <Quote className="w-12 h-12 text-[color:var(--easy-purple)]" />
-              </div>
-
-              {/* Stars */}
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                  />
-                ))}
-              </div>
-
-              {/* Text */}
-              <p className="text-gray-700 leading-relaxed mb-6 relative z-10">
-                "{testimonial.text}"
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-2xl shadow-md">
-                  {testimonial.avatar}
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {testimonial.role}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TestimonialCard
+              key={`testimonial-${index}`}
+              testimonial={testimonial}
+              index={index}
+            />
           ))}
         </div>
 
@@ -103,3 +129,6 @@ export default function Testimonials() {
     </section>
   );
 }
+
+// Memoize the entire component to prevent re-renders when parent changes
+export default memo(Testimonials);
