@@ -308,6 +308,20 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
 
     if (userError) throw userError
 
+    // ⚡ CRITICAL: Force refresh auth session to update cached user data
+    await supabase.auth.refreshSession()
+
+    // ⚡ Verify the update was successful before proceeding
+    const { data: verifyUser } = await supabase
+      .from('users')
+      .select('onboarding_completed')
+      .eq('id', userId)
+      .single()
+
+    if (!verifyUser?.onboarding_completed) {
+      throw new Error('Failed to verify onboarding completion')
+    }
+
     return { success: true }
   } catch (error) {
     // FIXME: Use logger.error - 'Error saving onboarding data:', error)
