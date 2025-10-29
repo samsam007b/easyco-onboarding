@@ -1,0 +1,757 @@
+/**
+ * EasyCo Internal Property Rating Service
+ *
+ * Calculates quality scores (0-100) for properties with:
+ * - Category-specific weighting (house vs apartment vs studio vs coliving)
+ * - Local normalization (compare within same zone/category)
+ * - A+ premium rules validation
+ * - Detailed breakdown and insights
+ */
+
+import {
+  PROPERTY_RATING_CONFIG,
+  PropertyCategory,
+  RatingGrade,
+  getGradeFromScore,
+  getGradeColor,
+  getGradeDescription,
+} from '../config/property-rating.config';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+export interface PropertyRatingData {
+  // Identification
+  property_id: string;
+  category: PropertyCategory;
+  zone: string; // For local normalization (e.g., "Brussels-Ixelles")
+
+  // Quality (Q) - 0-100
+  quality: {
+    renovation_year?: number; // Year of last major renovation
+    construction_year?: number; // Year of construction
+    peb_rating?: string; // A++, A+, A, B, C, D, E, F, G
+    general_condition?: 'excellent' | 'good' | 'average' | 'poor';
+    sound_insulation?: boolean; // Validated sound isolation
+    bathroom_condition?: 'new' | 'renovated' | 'good' | 'average' | 'old';
+    kitchen_condition?: 'new' | 'renovated' | 'good' | 'average' | 'old';
+    luminosity?: 'excellent' | 'good' | 'average' | 'low';
+    materials_quality?: 'premium' | 'good' | 'standard' | 'basic';
+  };
+
+  // Features (F) - 0-100
+  features: {
+    bedrooms: number;
+    bathrooms: number;
+    surface_area?: number; // m²
+    outdoor_type?: 'garden' | 'terrace' | 'balcony' | 'courtyard' | 'none';
+    parking_type?: 'private' | 'street_easy' | 'street_difficult' | 'none';
+    kitchen_type?: 'full_equipped' | 'standard' | 'minimal';
+    furniture_type?: 'full_new' | 'partial' | 'none';
+    storage_space?: 'excellent' | 'good' | 'limited' | 'none';
+    has_elevator?: boolean;
+    has_laundry?: boolean;
+    has_domotics?: boolean;
+    floor?: number; // For apartments
+  };
+
+  // Location (L) - 0-100 (normalized per zone)
+  location: {
+    transport_walking_minutes?: number; // Minutes to nearest metro/tram/train
+    shops_walking_minutes?: number; // Minutes to shops/services
+    safety_index?: number; // 0-100 (local police data, etc.)
+    noise_level_db?: number; // Decibels (average)
+    walkability_score?: number; // 0-100
+  };
+
+  // Efficiency (E) - 0-100 (normalized per zone)
+  efficiency: {
+    peb_score?: string; // A++, A+, A, B, C, D, E, F, G
+    heating_type?: 'heat_pump' | 'gas_condensing' | 'electric' | 'gas_standard' | 'oil';
+    insulation_quality?: 'excellent' | 'good' | 'average' | 'poor';
+    double_glazing?: boolean;
+    triple_glazing?: boolean;
+    estimated_monthly_charges?: number; // €/month (energy + water)
+    hot_water_type?: 'instant' | 'tank' | 'solar';
+  };
+
+  // Price (P) - 0-100 (normalized per zone & category)
+  price: {
+    monthly_rent: number; // Total rent
+    charges_included?: boolean;
+    charges_amount?: number; // If not included
+    price_per_sqm?: number; // €/m²
+  };
+
+  // Landlord/Management (B) - 0-100
+  landlord: {
+    sla_response_hours?: number; // Average response time
+    resolution_time_hours?: number; // Average fix time
+    verified_review_count?: number;
+    verified_review_rating?: number; // 0-5
+    unresolved_disputes?: number;
+    has_maintenance_contract?: boolean;
+    professional_management?: boolean;
+  };
+
+  // Compliance & Hard Rules
+  compliance: {
+    has_required_documents?: boolean; // PEB, electrical, etc.
+    safety_compliant?: boolean;
+    major_work_needed?: boolean; // Caps score if true
+  };
+}
+
+export interface PropertyRatingResult {
+  score: number; // Final score 0-100
+  grade: RatingGrade; // A+, A, B, C, D
+  breakdown: {
+    Q: number; // Quality subscore (0-100)
+    F: number; // Features subscore (0-100)
+    L: number; // Location subscore (0-100)
+    E: number; // Efficiency subscore (0-100)
+    P: number; // Price subscore (0-100)
+    B: number; // Landlord subscore (0-100)
+  };
+  weighted_breakdown: {
+    Q: number; // Weighted contribution to final score
+    F: number;
+    L: number;
+    E: number;
+    P: number;
+    B: number;
+  };
+  aplus_rules_passed: boolean;
+  aplus_rules_status: Record<string, boolean>;
+  hard_rules_passed: boolean;
+  insights: string[]; // Top positive aspects
+  warnings: string[]; // Areas for improvement
+  dealbreakers: string[]; // Critical issues
+}
+
+// ============================================================================
+// MAIN CALCULATION FUNCTION
+// ============================================================================
+
+export function calculatePropertyRating(data: PropertyRatingData): PropertyRatingResult {
+  const config = PROPERTY_RATING_CONFIG.categories[data.category];
+
+  // 1. Check hard rules first
+  const hardRulesPassed = checkHardRules(data);
+
+  // 2. Calculate subscores (0-100 each)
+  const Q = calculateQualityScore(data);
+  const F = calculateFeaturesScore(data);
+  const L = calculateLocationScore(data);
+  const E = calculateEfficiencyScore(data);
+  const P = calculatePriceScore(data);
+  const B = calculateLandlordScore(data);
+
+  const breakdown = { Q, F, L, E, P, B };
+
+  // 3. Normalize to 0-1 and apply category weights
+  const Qn = Q / 100;
+  const Fn = F / 100;
+  const Ln = L / 100;
+  const En = E / 100;
+  const Pn = P / 100;
+  const Bn = B / 100;
+
+  const weightedQ = config.weights.Q * Qn;
+  const weightedF = config.weights.F * Fn;
+  const weightedL = config.weights.L * Ln;
+  const weightedE = config.weights.E * En;
+  const weightedP = config.weights.P * Pn;
+  const weightedB = config.weights.B * Bn;
+
+  let score = 100 * (weightedQ + weightedF + weightedL + weightedE + weightedP + weightedB);
+
+  // 4. Apply hard rules cap (max 59 = C grade if compliance issues)
+  if (!hardRulesPassed) {
+    score = Math.min(59, score);
+  }
+
+  // 5. Check A+ rules
+  const aplusRulesStatus = checkAplusRules(data);
+  const aplusRulesPassed = Object.values(aplusRulesStatus).every((passed) => passed);
+
+  // 6. Determine grade
+  const grade = getGradeFromScore(score, aplusRulesPassed);
+
+  // 7. Generate insights, warnings, dealbreakers
+  const insights = generateInsights(breakdown, data);
+  const warnings = generateWarnings(breakdown, data);
+  const dealbreakers = generateDealbreakers(data);
+
+  return {
+    score: Math.round(score * 10) / 10, // Round to 1 decimal
+    grade,
+    breakdown,
+    weighted_breakdown: {
+      Q: Math.round(weightedQ * 100 * 10) / 10,
+      F: Math.round(weightedF * 100 * 10) / 10,
+      L: Math.round(weightedL * 100 * 10) / 10,
+      E: Math.round(weightedE * 100 * 10) / 10,
+      P: Math.round(weightedP * 100 * 10) / 10,
+      B: Math.round(weightedB * 100 * 10) / 10,
+    },
+    aplus_rules_passed: aplusRulesPassed,
+    aplus_rules_status: aplusRulesStatus,
+    hard_rules_passed: hardRulesPassed,
+    insights,
+    warnings,
+    dealbreakers,
+  };
+}
+
+// ============================================================================
+// SUBSCORE CALCULATIONS
+// ============================================================================
+
+/**
+ * Quality Score (Q) - 0-100
+ * Based on: renovation, PEB, condition, materials
+ */
+function calculateQualityScore(data: PropertyRatingData): number {
+  let score = 50; // Base score
+  const baremes = PROPERTY_RATING_CONFIG.baremes.quality;
+
+  // Renovation year (0-20 pts)
+  if (data.quality.renovation_year) {
+    const yearsAgo = new Date().getFullYear() - data.quality.renovation_year;
+    const renoWeights = baremes.reno_year_weighting;
+
+    for (const weight of renoWeights) {
+      if (yearsAgo <= weight.max_years) {
+        score += weight.pts;
+        break;
+      }
+    }
+  }
+
+  // PEB rating (0-12 pts)
+  if (data.quality.peb_rating && baremes.peb[data.quality.peb_rating]) {
+    score += baremes.peb[data.quality.peb_rating];
+  }
+
+  // Sound insulation (+6 pts)
+  if (data.quality.sound_insulation) {
+    score += baremes.sound_insulation;
+  }
+
+  // New bathroom/kitchen (+6 pts)
+  if (
+    data.quality.bathroom_condition === 'new' ||
+    data.quality.kitchen_condition === 'new'
+  ) {
+    score += baremes.bath_kitchen_new;
+  }
+
+  // General condition bonus/penalty
+  const conditionScores = {
+    excellent: 10,
+    good: 5,
+    average: 0,
+    poor: -10,
+  };
+  if (data.quality.general_condition) {
+    score += conditionScores[data.quality.general_condition];
+  }
+
+  // Materials quality
+  const materialsScores = {
+    premium: 8,
+    good: 4,
+    standard: 0,
+    basic: -5,
+  };
+  if (data.quality.materials_quality) {
+    score += materialsScores[data.quality.materials_quality];
+  }
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Features Score (F) - 0-100
+ * Based on: bathrooms/bedrooms ratio, outdoor, parking, kitchen, furniture
+ */
+function calculateFeaturesScore(data: PropertyRatingData): number {
+  let score = 50; // Base score
+  const baremes = PROPERTY_RATING_CONFIG.baremes.features;
+
+  // Bath/bed ratio (-8 to +15 pts)
+  const bathBedRatio = data.features.bathrooms / data.features.bedrooms;
+  const ratioWeights = baremes.bath_bed_ratio;
+
+  for (const weight of ratioWeights) {
+    if (bathBedRatio >= weight.min_ratio) {
+      score += weight.pts;
+      break;
+    }
+  }
+
+  // Outdoor (0-8 pts)
+  if (data.features.outdoor_type && baremes.outdoor[data.features.outdoor_type]) {
+    score += baremes.outdoor[data.features.outdoor_type];
+  }
+
+  // Parking (−3 to +6 pts)
+  if (data.features.parking_type && baremes.parking[data.features.parking_type]) {
+    score += baremes.parking[data.features.parking_type];
+  }
+
+  // Kitchen (0-6 pts)
+  if (data.features.kitchen_type && baremes.kitchen[data.features.kitchen_type]) {
+    score += baremes.kitchen[data.features.kitchen_type];
+  }
+
+  // Furniture (0-6 pts)
+  if (data.features.furniture_type && baremes.furniture[data.features.furniture_type]) {
+    score += baremes.furniture[data.features.furniture_type];
+  }
+
+  // Storage
+  const storageScores = { excellent: 4, good: 2, limited: 0, none: -2 };
+  if (data.features.storage_space) {
+    score += storageScores[data.features.storage_space];
+  }
+
+  // Elevator (apartments only, if floor >= 3)
+  if (
+    data.category === 'apartment' &&
+    data.features.floor !== undefined &&
+    data.features.floor >= 3
+  ) {
+    score += data.features.has_elevator ? 5 : -5;
+  }
+
+  // Extras
+  if (data.features.has_laundry) score += 3;
+  if (data.features.has_domotics) score += 3;
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Location Score (L) - 0-100
+ * Based on: transport, shops, safety, noise
+ * Note: Should ideally be z-score normalized by zone (simplified here)
+ */
+function calculateLocationScore(data: PropertyRatingData): number {
+  let score = 50; // Base score
+  const baremes = PROPERTY_RATING_CONFIG.baremes.location;
+
+  // Transport walking distance (0-20 pts)
+  if (data.location.transport_walking_minutes !== undefined) {
+    const transportWeights = baremes.transport_walking;
+    for (const weight of transportWeights) {
+      if (data.location.transport_walking_minutes <= weight.max_minutes) {
+        score += weight.pts;
+        break;
+      }
+    }
+  } else {
+    score += 10; // Default if missing
+  }
+
+  // Shops walking distance (0-10 pts)
+  if (data.location.shops_walking_minutes !== undefined) {
+    const shopsWeights = baremes.shops_walking;
+    for (const weight of shopsWeights) {
+      if (data.location.shops_walking_minutes <= weight.max_minutes) {
+        score += weight.pts;
+        break;
+      }
+    }
+  } else {
+    score += 5; // Default if missing
+  }
+
+  // Safety index (0-15 pts)
+  if (data.location.safety_index !== undefined) {
+    const safetyWeights = baremes.safety_index;
+    for (const weight of safetyWeights) {
+      if (data.location.safety_index >= weight.min_score) {
+        score += weight.pts;
+        break;
+      }
+    }
+  } else {
+    score += 7; // Default if missing
+  }
+
+  // Noise level (0-10 pts)
+  if (data.location.noise_level_db !== undefined) {
+    const noiseWeights = baremes.noise_level;
+    for (const weight of noiseWeights) {
+      if (data.location.noise_level_db <= weight.max_db) {
+        score += weight.pts;
+        break;
+      }
+    }
+  } else {
+    score += 5; // Default if missing
+  }
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Efficiency Score (E) - 0-100
+ * Based on: PEB, heating, insulation, charges
+ */
+function calculateEfficiencyScore(data: PropertyRatingData): number {
+  let score = 40; // Base score
+  const baremes = PROPERTY_RATING_CONFIG.baremes.efficiency;
+
+  // PEB score (0-25 pts)
+  if (data.efficiency.peb_score && baremes.peb_score[data.efficiency.peb_score]) {
+    score += baremes.peb_score[data.efficiency.peb_score];
+  } else {
+    score += 10; // Default if missing
+  }
+
+  // Heating type (0-8 pts)
+  if (data.efficiency.heating_type && baremes.heating_type[data.efficiency.heating_type]) {
+    score += baremes.heating_type[data.efficiency.heating_type];
+  }
+
+  // Insulation quality (0-10 pts)
+  if (
+    data.efficiency.insulation_quality &&
+    baremes.insulation_quality[data.efficiency.insulation_quality]
+  ) {
+    score += baremes.insulation_quality[data.efficiency.insulation_quality];
+  }
+
+  // Glazing bonuses
+  if (data.efficiency.triple_glazing) score += 5;
+  else if (data.efficiency.double_glazing) score += 3;
+
+  // Estimated monthly charges (0-12 pts)
+  if (data.efficiency.estimated_monthly_charges !== undefined) {
+    const chargesWeights = baremes.estimated_monthly_charges;
+    for (const weight of chargesWeights) {
+      if (data.efficiency.estimated_monthly_charges <= weight.max_amount) {
+        score += weight.pts;
+        break;
+      }
+    }
+  }
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Price Score (P) - 0-100
+ * Based on: price vs local comparables
+ * Note: Should ideally use hedonic pricing model (simplified here)
+ */
+function calculatePriceScore(data: PropertyRatingData): number {
+  let score = 60; // Base score (assume average pricing)
+
+  // TODO: Implement z-score normalization with local comparables
+  // For now, use simplified logic:
+  // - If price_per_sqm is provided, compare to zone average
+  // - Placeholder: assume score based on relative positioning
+
+  // Simplified: bonus for reasonable pricing
+  // This should be replaced with actual market data comparison
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Landlord Score (B) - 0-100
+ * Based on: SLA, resolution time, reviews, disputes
+ */
+function calculateLandlordScore(data: PropertyRatingData): number {
+  let score = 50; // Base score
+  const baremes = PROPERTY_RATING_CONFIG.baremes.landlord;
+
+  // SLA response (0-8 pts)
+  if (data.landlord.sla_response_hours !== undefined) {
+    const slaWeights = baremes.sla_response;
+    for (const weight of slaWeights) {
+      if (data.landlord.sla_response_hours <= weight.max_hours) {
+        score += weight.pts;
+        break;
+      }
+    }
+  }
+
+  // Resolution time (0-6 pts)
+  if (data.landlord.resolution_time_hours !== undefined) {
+    const resolutionWeights = baremes.resolution_time;
+    for (const weight of resolutionWeights) {
+      if (data.landlord.resolution_time_hours <= weight.max_hours) {
+        score += weight.pts;
+        break;
+      }
+    }
+  }
+
+  // Verified reviews (0-6 pts)
+  if (
+    data.landlord.verified_review_count !== undefined &&
+    data.landlord.verified_review_rating !== undefined
+  ) {
+    const reviewWeights = baremes.verified_reviews;
+    for (const weight of reviewWeights) {
+      if (
+        data.landlord.verified_review_count >= weight.min_count &&
+        data.landlord.verified_review_rating >= weight.min_rating
+      ) {
+        score += weight.pts;
+        break;
+      }
+    }
+  }
+
+  // Unresolved disputes (−10 pts each)
+  if (data.landlord.unresolved_disputes && data.landlord.unresolved_disputes > 0) {
+    score += data.landlord.unresolved_disputes * baremes.unresolved_disputes;
+  }
+
+  // Bonuses
+  if (data.landlord.has_maintenance_contract) score += 6;
+  if (data.landlord.professional_management) score += 4;
+
+  // Cap at 50 if more than 1 unresolved dispute
+  if (data.landlord.unresolved_disputes && data.landlord.unresolved_disputes > 1) {
+    score = Math.min(50, score);
+  }
+
+  return Math.max(0, Math.min(100, score));
+}
+
+// ============================================================================
+// RULES CHECKING
+// ============================================================================
+
+function checkHardRules(data: PropertyRatingData): boolean {
+  // Compliance required
+  if (data.compliance.has_required_documents === false) return false;
+  if (data.compliance.safety_compliant === false) return false;
+  if (data.compliance.major_work_needed === true) return false;
+
+  return true;
+}
+
+function checkAplusRules(data: PropertyRatingData): Record<string, boolean> {
+  const rules = PROPERTY_RATING_CONFIG.categories[data.category].aplus_rules;
+  const status: Record<string, boolean> = {};
+
+  for (const rule of rules) {
+    switch (rule) {
+      case 'bath_per_bed':
+        status[rule] = data.features.bathrooms >= data.features.bedrooms;
+        break;
+
+      case 'reno_recent_or_peb_good':
+        const recentReno =
+          data.quality.renovation_year &&
+          new Date().getFullYear() - data.quality.renovation_year <= 5;
+        const goodPeb = ['A++', 'A+', 'A', 'B'].includes(data.quality.peb_rating || '');
+        status[rule] = !!(recentReno || goodPeb);
+        break;
+
+      case 'outdoor_present':
+        status[rule] =
+          data.features.outdoor_type !== undefined &&
+          data.features.outdoor_type !== 'none';
+        break;
+
+      case 'parking_ok':
+        status[rule] =
+          data.features.parking_type === 'private' ||
+          data.features.parking_type === 'street_easy';
+        break;
+
+      case 'reno_recent_or_new_build':
+        const reno5y =
+          data.quality.renovation_year &&
+          new Date().getFullYear() - data.quality.renovation_year <= 5;
+        const newBuild =
+          data.quality.construction_year &&
+          new Date().getFullYear() - data.quality.construction_year <= 10;
+        status[rule] = !!(reno5y || newBuild);
+        break;
+
+      case 'balcony_or_terrace':
+        status[rule] =
+          data.features.outdoor_type === 'balcony' ||
+          data.features.outdoor_type === 'terrace';
+        break;
+
+      case 'elevator_if_high_floor':
+        if (data.features.floor !== undefined && data.features.floor >= 3) {
+          status[rule] = data.features.has_elevator === true;
+        } else {
+          status[rule] = true; // Not applicable
+        }
+        break;
+
+      case 'sound_insulation':
+        status[rule] = data.quality.sound_insulation === true;
+        break;
+
+      case 'optimal_layout':
+        // Simplified: assume true if surface_area >= bedrooms * 15m²
+        status[rule] =
+          data.features.surface_area !== undefined &&
+          data.features.surface_area >= data.features.bedrooms * 15;
+        break;
+
+      case 'quality_furniture':
+        status[rule] = data.features.furniture_type === 'full_new';
+        break;
+
+      case 'outdoor_or_storage':
+        status[rule] =
+          (data.features.outdoor_type !== undefined &&
+            data.features.outdoor_type !== 'none') ||
+          data.features.storage_space === 'excellent';
+        break;
+
+      case 'cleaning_included':
+        // This would need additional data field
+        status[rule] = false; // TODO: Add field to PropertyRatingData
+        break;
+
+      case 'large_common_areas':
+        // This would need additional data field
+        status[rule] = false; // TODO: Add field to PropertyRatingData
+        break;
+
+      case 'full_furnished':
+        status[rule] = data.features.furniture_type === 'full_new';
+        break;
+
+      default:
+        status[rule] = false;
+    }
+  }
+
+  return status;
+}
+
+// ============================================================================
+// INSIGHTS GENERATION
+// ============================================================================
+
+function generateInsights(
+  breakdown: PropertyRatingResult['breakdown'],
+  data: PropertyRatingData
+): string[] {
+  const insights: string[] = [];
+
+  // Quality insights
+  if (breakdown.Q >= 80) {
+    insights.push('⭐ Excellent property quality and condition');
+  }
+  if (data.quality.renovation_year && new Date().getFullYear() - data.quality.renovation_year <= 5) {
+    insights.push('🔧 Recently renovated (within last 5 years)');
+  }
+  if (['A++', 'A+', 'A'].includes(data.quality.peb_rating || '')) {
+    insights.push('🌿 Outstanding energy performance (PEB A)');
+  }
+
+  // Features insights
+  if (breakdown.F >= 80) {
+    insights.push('✨ Exceptional features and amenities');
+  }
+  if (data.features.bathrooms >= data.features.bedrooms) {
+    insights.push('🚿 Ideal bathroom to bedroom ratio');
+  }
+  if (data.features.outdoor_type === 'garden') {
+    insights.push('🌳 Private garden available');
+  }
+
+  // Location insights
+  if (breakdown.L >= 80) {
+    insights.push('📍 Prime location with excellent accessibility');
+  }
+  if (data.location.transport_walking_minutes && data.location.transport_walking_minutes <= 5) {
+    insights.push('🚇 Public transport within 5 minutes walk');
+  }
+  if (data.location.safety_index && data.location.safety_index >= 80) {
+    insights.push('🛡️ Very safe neighborhood');
+  }
+
+  // Efficiency insights
+  if (breakdown.E >= 80) {
+    insights.push('💡 Highly energy efficient property');
+  }
+
+  // Landlord insights
+  if (breakdown.B >= 80) {
+    insights.push('👍 Excellent landlord responsiveness and management');
+  }
+
+  return insights.slice(0, 5); // Top 5 insights
+}
+
+function generateWarnings(
+  breakdown: PropertyRatingResult['breakdown'],
+  data: PropertyRatingData
+): string[] {
+  const warnings: string[] = [];
+
+  // Quality warnings
+  if (breakdown.Q < 50) {
+    warnings.push('⚠️ Property quality needs significant improvement');
+  }
+  if (data.quality.major_work_needed) {
+    warnings.push('🔨 Major renovation works recommended');
+  }
+
+  // Features warnings
+  if (data.features.bathrooms < data.features.bedrooms * 0.5) {
+    warnings.push('⚠️ Insufficient bathrooms for number of bedrooms');
+  }
+  if (data.features.parking_type === 'street_difficult') {
+    warnings.push('🚗 Difficult parking situation');
+  }
+
+  // Location warnings
+  if (data.location.noise_level_db && data.location.noise_level_db > 70) {
+    warnings.push('🔊 Noisy environment');
+  }
+  if (data.location.transport_walking_minutes && data.location.transport_walking_minutes > 15) {
+    warnings.push('🚶 Long walk to public transport');
+  }
+
+  // Efficiency warnings
+  if (['F', 'G'].includes(data.efficiency.peb_score || '')) {
+    warnings.push('⚡ Poor energy efficiency - high utility costs expected');
+  }
+  if (data.efficiency.estimated_monthly_charges && data.efficiency.estimated_monthly_charges > 200) {
+    warnings.push('💰 High monthly charges');
+  }
+
+  // Landlord warnings
+  if (data.landlord.unresolved_disputes && data.landlord.unresolved_disputes > 0) {
+    warnings.push('⚠️ Unresolved disputes with previous tenants');
+  }
+
+  return warnings.slice(0, 3); // Top 3 warnings
+}
+
+function generateDealbreakers(data: PropertyRatingData): string[] {
+  const dealbreakers: string[] = [];
+
+  if (data.compliance.has_required_documents === false) {
+    dealbreakers.push('❌ Missing required compliance documents');
+  }
+  if (data.compliance.safety_compliant === false) {
+    dealbreakers.push('❌ Safety compliance issues');
+  }
+  if (data.landlord.unresolved_disputes && data.landlord.unresolved_disputes > 2) {
+    dealbreakers.push('❌ Multiple unresolved tenant disputes');
+  }
+
+  return dealbreakers;
+}

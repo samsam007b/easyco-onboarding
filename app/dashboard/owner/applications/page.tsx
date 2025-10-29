@@ -40,6 +40,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { PromptDialog } from '@/components/ui/prompt-dialog';
+import { Spinner } from '@/components/ui/spinner';
 
 type ApplicationType = 'individual' | 'group';
 type CombinedStatus = Application['status'] | GroupApplication['status'];
@@ -60,6 +61,7 @@ export default function OwnerApplicationsPage() {
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
   const [selectedApplicationType, setSelectedApplicationType] = useState<'individual' | 'group'>('individual');
+  const [processingAction, setProcessingAction] = useState<string | null>(null);
 
   const {
     applications: hookApplications,
@@ -130,11 +132,13 @@ export default function OwnerApplicationsPage() {
   const confirmApprove = async () => {
     if (!selectedApplicationId) return;
 
+    setProcessingAction(`approve-${selectedApplicationId}`);
     const success = await updateApplicationStatus(selectedApplicationId, 'approved');
     if (success) {
       toast.success('Application approved!');
       await loadApplicationsData();
     }
+    setProcessingAction(null);
     setApproveDialogOpen(false);
     setSelectedApplicationId(null);
   };
@@ -148,6 +152,7 @@ export default function OwnerApplicationsPage() {
   const confirmReject = async (reason: string) => {
     if (!selectedApplicationId) return;
 
+    setProcessingAction(`reject-${selectedApplicationId}`);
     const success = await updateApplicationStatus(
       selectedApplicationId,
       'rejected',
@@ -158,6 +163,7 @@ export default function OwnerApplicationsPage() {
       toast.success('Application rejected');
       await loadApplicationsData();
     }
+    setProcessingAction(null);
     setSelectedApplicationId(null);
   };
 
@@ -178,11 +184,13 @@ export default function OwnerApplicationsPage() {
   const confirmGroupApprove = async () => {
     if (!selectedApplicationId) return;
 
+    setProcessingAction(`approve-group-${selectedApplicationId}`);
     const success = await updateGroupApplicationStatus(selectedApplicationId, 'approved');
     if (success) {
       toast.success('Group application approved!');
       await loadApplicationsData();
     }
+    setProcessingAction(null);
     setApproveDialogOpen(false);
     setSelectedApplicationId(null);
   };
@@ -196,6 +204,7 @@ export default function OwnerApplicationsPage() {
   const confirmGroupReject = async (reason: string) => {
     if (!selectedApplicationId) return;
 
+    setProcessingAction(`reject-group-${selectedApplicationId}`);
     const success = await updateGroupApplicationStatus(
       selectedApplicationId,
       'rejected',
@@ -206,6 +215,7 @@ export default function OwnerApplicationsPage() {
       toast.success('Group application rejected');
       await loadApplicationsData();
     }
+    setProcessingAction(null);
     setSelectedApplicationId(null);
   };
 
@@ -741,14 +751,25 @@ export default function OwnerApplicationsPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setSelectedApplicationId(null)}>
+            <AlertDialogCancel
+              onClick={() => setSelectedApplicationId(null)}
+              disabled={processingAction !== null}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={selectedApplicationType === 'group' ? confirmGroupApprove : confirmApprove}
               className="bg-green-600 hover:bg-green-700"
+              disabled={processingAction !== null}
             >
-              Approve
+              {processingAction !== null ? (
+                <>
+                  <Spinner size="sm" className="mr-2" />
+                  Approving...
+                </>
+              ) : (
+                'Approve'
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

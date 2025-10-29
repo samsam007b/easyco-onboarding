@@ -227,8 +227,11 @@ function MessagesContent() {
   };
 
   const handleDelete = async () => {
-    // TODO: Implement delete conversation
-    toast.info('Delete conversation not yet implemented');
+    if (!selectedConversationId || !userId) return;
+
+    // Note: For now, archive serves as soft delete
+    // Full delete will be implemented when needed
+    await handleArchive();
   };
 
   const getRoleColor = () => {

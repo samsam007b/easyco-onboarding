@@ -1,0 +1,337 @@
+/**
+ * EasyCo Internal Property Rating System Configuration
+ *
+ * This system calculates an internal quality score (0-100) for properties
+ * with category-specific weighting and local normalization.
+ *
+ * Grades: A+ (≥90 + premium rules), A (80-89), B (70-79), C (60-69), D (<60)
+ */
+
+export type PropertyCategory = 'house' | 'apartment' | 'studio' | 'coliving_unit';
+
+export type RatingGrade = 'A+' | 'A' | 'B' | 'C' | 'D';
+
+export interface CategoryConfig {
+  weights: {
+    Q: number; // Quality of property (0-100)
+    F: number; // Features & layout (0-100)
+    L: number; // Location & mobility (0-100)
+    E: number; // Efficiency & charges (0-100)
+    P: number; // Quality/price ratio (0-100)
+    B: number; // Landlord reliability (0-100)
+  };
+  aplus_rules: string[]; // Rules that must pass for A+ grade
+  hard_rules: string[]; // Rules that cap score if failed
+}
+
+export interface RatingConfig {
+  categories: Record<PropertyCategory, CategoryConfig>;
+  baremes: {
+    features: {
+      bath_bed_ratio: Array<{ min_ratio: number; pts: number }>;
+      outdoor: Record<string, number>;
+      parking: Record<string, number>;
+      kitchen: Record<string, number>;
+      furniture: Record<string, number>;
+    };
+    quality: {
+      reno_year_weighting: Array<{ max_years: number; pts: number }>;
+      peb: Record<string, number>;
+      sound_insulation: number;
+      bath_kitchen_new: number;
+    };
+    location: {
+      transport_walking: Array<{ max_minutes: number; pts: number }>;
+      shops_walking: Array<{ max_minutes: number; pts: number }>;
+      safety_index: Array<{ min_score: number; pts: number }>;
+      noise_level: Array<{ max_db: number; pts: number }>;
+    };
+    efficiency: {
+      peb_score: Record<string, number>;
+      heating_type: Record<string, number>;
+      insulation_quality: Record<string, number>;
+      estimated_monthly_charges: Array<{ max_amount: number; pts: number }>;
+    };
+    landlord: {
+      sla_response: Array<{ max_hours: number; pts: number }>;
+      resolution_time: Array<{ max_hours: number; pts: number }>;
+      verified_reviews: Array<{ min_count: number; min_rating: number; pts: number }>;
+      unresolved_disputes: number;
+    };
+  };
+}
+
+/**
+ * Main Configuration
+ * Weights must sum to 1.0 per category
+ */
+export const PROPERTY_RATING_CONFIG: RatingConfig = {
+  categories: {
+    house: {
+      weights: {
+        Q: 0.22, // Quality - important for houses (maintenance, materials)
+        F: 0.24, // Features - critical (garden, parking, bathrooms)
+        L: 0.18, // Location
+        E: 0.12, // Efficiency
+        P: 0.14, // Price ratio
+        B: 0.10, // Landlord
+      },
+      aplus_rules: [
+        'bath_per_bed', // SDB ≥ chambres
+        'reno_recent_or_peb_good', // ≤5 years OR PEB A/B
+        'outdoor_present', // Garden OR terrace OR large yard
+        'parking_ok', // Private parking OR easy street
+      ],
+      hard_rules: ['compliance_required'], // Compliance issues cap at 59 (max C)
+    },
+
+    apartment: {
+      weights: {
+        Q: 0.24, // Quality - very important (isolation, finishes)
+        F: 0.22, // Features
+        L: 0.20, // Location - more important for apartments
+        E: 0.12, // Efficiency
+        P: 0.14, // Price ratio
+        B: 0.08, // Landlord
+      },
+      aplus_rules: [
+        'reno_recent_or_new_build', // ≤5 years OR new building
+        'balcony_or_terrace', // Outdoor space
+        'elevator_if_high_floor', // Elevator if floor ≥ 3
+        'sound_insulation', // Validated sound isolation
+      ],
+      hard_rules: ['compliance_required'],
+    },
+
+    studio: {
+      weights: {
+        Q: 0.28, // Quality - critical in small spaces
+        F: 0.20, // Features - optimization matters
+        L: 0.20, // Location
+        E: 0.12, // Efficiency
+        P: 0.14, // Price ratio
+        B: 0.06, // Landlord - less weight for studios
+      },
+      aplus_rules: [
+        'optimal_layout', // Smart space optimization
+        'sound_insulation', // Critical in studios
+        'quality_furniture', // Full, quality furniture
+        'outdoor_or_storage', // Balcony OR significant storage
+      ],
+      hard_rules: ['compliance_required'],
+    },
+
+    coliving_unit: {
+      weights: {
+        Q: 0.20, // Quality
+        F: 0.26, // Features - most critical (common areas, bathrooms)
+        L: 0.18, // Location
+        E: 0.12, // Efficiency
+        P: 0.14, // Price ratio
+        B: 0.10, // Landlord - important for coliving management
+      },
+      aplus_rules: [
+        'bath_per_bed', // 1 SDB per bedroom
+        'cleaning_included', // Common area cleaning service
+        'large_common_areas', // Generous shared spaces
+        'full_furnished', // Complete quality furniture
+      ],
+      hard_rules: ['compliance_required'],
+    },
+  },
+
+  baremes: {
+    features: {
+      bath_bed_ratio: [
+        { min_ratio: 1.0, pts: 15 }, // 1:1 ratio (ideal)
+        { min_ratio: 0.5, pts: 6 }, // 1:2 ratio
+        { min_ratio: 0.33, pts: 0 }, // 1:3 ratio
+        { min_ratio: 0.25, pts: -8 }, // <1:3 (penalty)
+      ],
+      outdoor: {
+        garden: 8,
+        terrace: 5,
+        balcony: 5,
+        courtyard: 4,
+        none: 0,
+      },
+      parking: {
+        private: 6, // Box or private spot
+        street_easy: 2, // Easy street parking
+        street_difficult: -3, // Difficult parking
+        none: 0,
+      },
+      kitchen: {
+        full_equipped: 6, // Full modern kitchen
+        standard: 2, // Standard kitchen
+        minimal: 0, // Basic/old kitchen
+      },
+      furniture: {
+        full_new: 6, // Complete, recent furniture
+        partial: 3, // Some furniture
+        none: 0, // Unfurnished
+      },
+    },
+
+    quality: {
+      reno_year_weighting: [
+        { max_years: 5, pts: 20 }, // Renovated ≤5 years ago
+        { max_years: 10, pts: 12 }, // 6-10 years
+        { max_years: 20, pts: 6 }, // 11-20 years
+        // Else: 0 points
+      ],
+      peb: {
+        'A++': 12,
+        'A+': 12,
+        A: 12,
+        B: 10,
+        C: 8,
+        D: 6,
+        E: 4,
+        F: 2,
+        G: 0,
+      },
+      sound_insulation: 6, // Bonus if validated
+      bath_kitchen_new: 6, // Bonus if recently renovated
+    },
+
+    location: {
+      transport_walking: [
+        { max_minutes: 5, pts: 20 }, // ≤5 min walk
+        { max_minutes: 10, pts: 15 }, // 6-10 min
+        { max_minutes: 15, pts: 10 }, // 11-15 min
+        { max_minutes: 20, pts: 5 }, // 16-20 min
+        // Else: 0 points
+      ],
+      shops_walking: [
+        { max_minutes: 5, pts: 10 }, // ≤5 min to shops
+        { max_minutes: 10, pts: 7 }, // 6-10 min
+        { max_minutes: 15, pts: 4 }, // 11-15 min
+        // Else: 0 points
+      ],
+      safety_index: [
+        { min_score: 80, pts: 15 }, // Very safe (0-100 scale)
+        { min_score: 60, pts: 10 }, // Safe
+        { min_score: 40, pts: 5 }, // Moderate
+        // Else: 0 points
+      ],
+      noise_level: [
+        { max_db: 50, pts: 10 }, // Quiet
+        { max_db: 60, pts: 6 }, // Moderate
+        { max_db: 70, pts: 2 }, // Noisy
+        // Else: 0 points
+      ],
+    },
+
+    efficiency: {
+      peb_score: {
+        'A++': 25,
+        'A+': 25,
+        A: 25,
+        B: 20,
+        C: 15,
+        D: 10,
+        E: 6,
+        F: 3,
+        G: 0,
+      },
+      heating_type: {
+        heat_pump: 8,
+        gas_condensing: 6,
+        electric: 4,
+        gas_standard: 2,
+        oil: 0,
+      },
+      insulation_quality: {
+        excellent: 10, // Double/triple glazing, walls insulated
+        good: 6,
+        average: 3,
+        poor: 0,
+      },
+      estimated_monthly_charges: [
+        { max_amount: 100, pts: 12 }, // ≤100€/month
+        { max_amount: 150, pts: 8 }, // 101-150€
+        { max_amount: 200, pts: 4 }, // 151-200€
+        // Else: 0 points
+      ],
+    },
+
+    landlord: {
+      sla_response: [
+        { max_hours: 24, pts: 8 }, // Response within 24h
+        { max_hours: 48, pts: 5 }, // Within 48h
+        { max_hours: 72, pts: 2 }, // Within 72h
+        // Else: 0 points
+      ],
+      resolution_time: [
+        { max_hours: 72, pts: 6 }, // Resolved within 3 days
+        { max_hours: 168, pts: 3 }, // Within 1 week
+        // Else: 0 points
+      ],
+      verified_reviews: [
+        { min_count: 5, min_rating: 4.5, pts: 6 }, // ≥5 reviews, ≥4.5★
+        { min_count: 3, min_rating: 4.0, pts: 3 }, // ≥3 reviews, ≥4.0★
+        // Else: 0 points
+      ],
+      unresolved_disputes: -10, // Penalty per unresolved dispute
+    },
+  },
+};
+
+/**
+ * Grade thresholds
+ */
+export const GRADE_THRESHOLDS = {
+  'A+': 90,
+  A: 80,
+  B: 70,
+  C: 60,
+  D: 0,
+} as const;
+
+/**
+ * Get grade from score
+ */
+export function getGradeFromScore(score: number, aplusRulesPassed: boolean): RatingGrade {
+  if (score >= GRADE_THRESHOLDS['A+'] && aplusRulesPassed) return 'A+';
+  if (score >= GRADE_THRESHOLDS.A) return 'A';
+  if (score >= GRADE_THRESHOLDS.B) return 'B';
+  if (score >= GRADE_THRESHOLDS.C) return 'C';
+  return 'D';
+}
+
+/**
+ * Get grade color
+ */
+export function getGradeColor(grade: RatingGrade): string {
+  switch (grade) {
+    case 'A+':
+      return '#10B981'; // Green
+    case 'A':
+      return '#3B82F6'; // Blue
+    case 'B':
+      return '#F59E0B'; // Orange
+    case 'C':
+      return '#EF4444'; // Red
+    case 'D':
+      return '#6B7280'; // Gray
+  }
+}
+
+/**
+ * Get grade description
+ */
+export function getGradeDescription(grade: RatingGrade): string {
+  switch (grade) {
+    case 'A+':
+      return 'Premium - Exceeds all quality standards';
+    case 'A':
+      return 'Excellent - High quality property';
+    case 'B':
+      return 'Good - Solid property with minor improvements possible';
+    case 'C':
+      return 'Average - Acceptable but improvements recommended';
+    case 'D':
+      return 'Below Average - Significant improvements needed';
+  }
+}
