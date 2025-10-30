@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import PublicHeader from '@/components/layout/PublicHeader';
 import Footer from '@/components/layout/Footer';
 import { Target, Users, Shield, Zap, Heart, TrendingUp, Award, Globe } from 'lucide-react';
@@ -200,11 +201,15 @@ export default function AboutPage() {
                   key={index}
                   className="bg-white rounded-xl border-2 border-gray-200 p-6 hover:border-purple-300 transition text-center"
                 >
-                  <img
-                    src={member.avatar}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4"
-                  />
+                  <div className="relative w-24 h-24 mx-auto mb-4">
+                    <Image
+                      src={member.avatar}
+                      alt={member.name}
+                      width={96}
+                      height={96}
+                      className="rounded-full object-cover"
+                    />
+                  </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-1">{member.name}</h3>
                   <p className="text-sm text-purple-600 font-semibold mb-3">{member.role}</p>
                   <p className="text-sm text-gray-600">{member.bio}</p>

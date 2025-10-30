@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import PublicHeader from '@/components/layout/PublicHeader';
 import Footer from '@/components/layout/Footer';
 import {
@@ -272,11 +273,15 @@ export default function OwnersPage() {
                   </div>
                   <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
                   <div className="flex items-center gap-3">
-                    <img
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full"
-                    />
+                    <div className="relative w-12 h-12">
+                      <Image
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    </div>
                     <div>
                       <p className="font-bold text-gray-900">{testimonial.name}</p>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
