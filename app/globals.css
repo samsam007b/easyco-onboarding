@@ -399,3 +399,25 @@ body.theme-resident ::selection {
   background-color: var(--resident-light);
   color: var(--gray-900);
 }
+
+/* ============================================
+   Background Carousel Animations
+   ============================================ */
+
+@keyframes scroll-slow {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-slow {
+  animation: scroll-slow linear infinite;
+}
+
+/* Radial gradient utility */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
