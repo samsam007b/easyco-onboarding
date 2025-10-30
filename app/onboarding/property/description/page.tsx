@@ -6,6 +6,7 @@ import { ArrowLeft, Home, FileText } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import PropertyPhotosUpload from '@/components/PropertyPhotosUpload';
 
 export default function PropertyDescription() {
   const router = useRouter();
@@ -13,15 +14,18 @@ export default function PropertyDescription() {
   const onboarding = getSection('onboarding');
   const common = getSection('common');
   const [description, setDescription] = useState('');
+  const [photos, setPhotos] = useState<string[]>([]);
 
   useEffect(() => {
     const saved = safeLocalStorage.get('propertyDescription', {}) as any;
     if (saved.description) setDescription(saved.description);
+    if (saved.photos) setPhotos(saved.photos);
   }, []);
 
   const handleContinue = () => {
     safeLocalStorage.set('propertyDescription', {
       description,
+      photos,
     });
     router.push('/onboarding/property/review');
   };
@@ -118,11 +122,13 @@ export default function PropertyDescription() {
               </div>
             </div>
 
-            {/* TODO: Add photo upload section later */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-sm text-gray-600">
-                {onboarding.property.description.photosComingSoon}
-              </p>
+            {/* Property Photos Upload */}
+            <div>
+              <PropertyPhotosUpload
+                maxPhotos={10}
+                onPhotosChange={setPhotos}
+                initialPhotos={photos}
+              />
             </div>
           </div>
 

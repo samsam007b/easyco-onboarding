@@ -16,12 +16,14 @@ export default function PropertyPricing() {
   const [monthlyRent, setMonthlyRent] = useState('');
   const [securityDeposit, setSecurityDeposit] = useState('');
   const [availableFrom, setAvailableFrom] = useState('');
+  const [minLeaseLength, setMinLeaseLength] = useState('6');
 
   useEffect(() => {
     const saved = safeLocalStorage.get('propertyPricing', {}) as any;
     if (saved.monthlyRent) setMonthlyRent(saved.monthlyRent);
     if (saved.securityDeposit) setSecurityDeposit(saved.securityDeposit);
     if (saved.availableFrom) setAvailableFrom(saved.availableFrom);
+    if (saved.minLeaseLength) setMinLeaseLength(saved.minLeaseLength);
   }, []);
 
   const handleContinue = () => {
@@ -34,6 +36,7 @@ export default function PropertyPricing() {
       monthlyRent: parseFloat(monthlyRent),
       securityDeposit: parseFloat(securityDeposit),
       availableFrom,
+      minLeaseLength: parseInt(minLeaseLength),
     });
     router.push('/onboarding/property/description');
   };
@@ -153,7 +156,27 @@ export default function PropertyPricing() {
               </div>
             </div>
 
-            {/* TODO: Add minimum lease length dropdown later */}
+            {/* Minimum Lease Length */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Minimum Lease Length
+              </label>
+              <select
+                value={minLeaseLength}
+                onChange={(e) => setMinLeaseLength(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all bg-white"
+              >
+                <option value="1">1 month</option>
+                <option value="3">3 months</option>
+                <option value="6">6 months</option>
+                <option value="9">9 months</option>
+                <option value="12">12 months (1 year)</option>
+                <option value="24">24 months (2 years)</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Tenants must commit to at least this duration
+              </p>
+            </div>
           </div>
 
           {/* Buttons */}
