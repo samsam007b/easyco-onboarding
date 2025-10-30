@@ -47,7 +47,13 @@ export default function PropertyCard({
     onFavoriteClick?.(property.id);
   };
 
-  const imageUrl = property.main_image || property.images?.[0] || '/placeholder-property.jpg';
+  // Generate placeholder image based on property type and location
+  const getPlaceholderImage = () => {
+    const seed = property.id || property.title;
+    return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(seed)}&backgroundColor=6E56CF,FFD249,FF6F3C`;
+  };
+
+  const imageUrl = property.main_image || property.images?.[0] || getPlaceholderImage();
 
   if (variant === 'compact') {
     return (

@@ -7,6 +7,8 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
+import PublicHeader from '@/components/layout/PublicHeader';
+import Footer from '@/components/layout/Footer';
 
 // ============================================================================
 // PERFORMANCE OPTIMIZATION: Dynamic Imports for Below-the-Fold Components
@@ -57,21 +59,17 @@ export default function Home() {
   const landing = getSection('landing');
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Header with Language Switcher */}
-      <header className="absolute top-0 right-0 p-6 z-50">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[var(--easy-purple)] transition"
-          >
-            {landing.hero.login}
-          </Link>
-          <LanguageSwitcher />
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Public Header */}
+      <PublicHeader />
 
-      {/* Hero Section with Search */}
+      {/* Language Switcher (positioned absolutely) */}
+      <div className="absolute top-20 right-6 z-40">
+        <LanguageSwitcher />
+      </div>
+
+      <main>
+        {/* Hero Section with Search */}
       <section className="pt-32 pb-16 px-6 bg-gradient-to-b from-purple-50 via-white to-gray-50">
         <div className="max-w-6xl mx-auto">
 
@@ -208,31 +206,13 @@ export default function Home() {
       {/* FAQ Section */}
       <FAQ />
 
+      </main>
+
       {/* Footer */}
-      <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto text-center space-y-4">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-            <Link href="/legal/privacy" className="hover:text-[var(--easy-purple)] transition">
-              {t('footer.privacy')}
-            </Link>
-            <Link href="/legal/terms" className="hover:text-[var(--easy-purple)] transition">
-              {t('footer.terms')}
-            </Link>
-            <Link href="/legal/mentions" className="hover:text-[var(--easy-purple)] transition">
-              {t('footer.mentions')}
-            </Link>
-            <Link href="/legal/cookies" className="hover:text-[var(--easy-purple)] transition">
-              {t('footer.cookies')}
-            </Link>
-          </div>
-          <p className="text-sm text-gray-500">
-            © 2025 EasyCo. {t('footer.copyright')}
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Resume Onboarding Modal */}
       <ResumeOnboardingModal />
-    </main>
+    </div>
   );
 }
