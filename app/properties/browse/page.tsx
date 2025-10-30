@@ -18,6 +18,7 @@ import PropertyCard from '@/components/PropertyCard';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
 import { useQuery } from '@tanstack/react-query';
+import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
 
 interface Property {
   id: string;
@@ -61,7 +62,7 @@ export default function PropertiesBrowsePageV2() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high'>('newest');
+  const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<Filters>({
     minPrice: 0,
@@ -101,6 +102,24 @@ export default function PropertiesBrowsePageV2() {
       };
     },
     enabled: isAuthenticated === true,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Fetch user preferences for matching (if authenticated)
+  const { data: userPreferences } = useQuery({
+    queryKey: ['user-preferences', userData?.id],
+    queryFn: async () => {
+      if (!userData?.id) return null;
+
+      const { data } = await supabase
+        .from('searcher_preferences')
+        .select('*')
+        .eq('user_id', userData.id)
+        .single();
+
+      return data as UserPreferences | null;
+    },
+    enabled: isAuthenticated === true && !!userData?.id,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -176,6 +195,58 @@ export default function PropertiesBrowsePageV2() {
     enabled: isAuthenticated !== null,
     staleTime: 2 * 60 * 1000,
   });
+
+  // Calculate match scores for properties (if user has preferences)
+  const propertiesWithScores = useMemo(() => {
+    if (!propertiesData?.properties) {
+      return [];
+    }
+
+    let properties = propertiesData.properties;
+
+    // Calculate match scores if authenticated and has preferences
+    if (isAuthenticated && userPreferences) {
+      properties = properties.map(property => {
+        try {
+          const propertyFeatures: PropertyFeatures = {
+            price: property.monthly_rent,
+            city: property.city,
+            neighborhood: property.neighborhood,
+            bedrooms: property.bedrooms,
+            bathrooms: property.bathrooms,
+            furnished: property.furnished || false,
+            balcony: property.balcony,
+            parking: property.parking,
+            available_from: property.available_from,
+            smoking_allowed: property.smoking_allowed,
+            pets_allowed: property.pets_allowed,
+          };
+
+          const matchResult = calculateMatchScore(userPreferences, propertyFeatures);
+
+          return {
+            ...property,
+            compatibilityScore: matchResult.score,
+            matchInsights: matchResult.insights,
+          };
+        } catch (error) {
+          console.error('Error calculating match score:', error);
+          return property;
+        }
+      });
+    }
+
+    // Apply client-side sorting for "best_match"
+    if (sortBy === 'best_match' && isAuthenticated && userPreferences) {
+      properties = [...properties].sort((a, b) => {
+        const scoreA = a.compatibilityScore || 0;
+        const scoreB = b.compatibilityScore || 0;
+        return scoreB - scoreA; // Descending order (best match first)
+      });
+    }
+
+    return properties;
+  }, [propertiesData?.properties, userPreferences, isAuthenticated, sortBy]);
 
   const handleSearch = useCallback((value: string) => {
     setSearchQuery(value);
@@ -292,6 +363,9 @@ export default function PropertiesBrowsePageV2() {
               onChange={(e) => handleSortChange(e.target.value as typeof sortBy)}
               className="px-4 py-2 border border-gray-300 rounded-lg"
             >
+              {isAuthenticated && userPreferences && (
+                <option value="best_match">🎯 Meilleur match</option>
+              )}
               <option value="newest">Plus récent</option>
               <option value="price_low">Prix: Croissant</option>
               <option value="price_high">Prix: Décroissant</option>
@@ -372,14 +446,15 @@ export default function PropertiesBrowsePageV2() {
         </div>
 
         {/* Properties Grid */}
-        {propertiesData && propertiesData.properties.length > 0 ? (
+        {propertiesWithScores && propertiesWithScores.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {propertiesData.properties.map((property) => (
+              {propertiesWithScores.map((property) => (
                 <PropertyCard
                   key={property.id}
                   property={property}
                   showCompatibilityScore={isAuthenticated}
+                  compatibilityScore={property.compatibilityScore}
                   variant="default"
                 />
               ))}
