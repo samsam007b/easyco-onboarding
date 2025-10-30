@@ -20,7 +20,8 @@ export default function ProfilePictureUpload({
 }: ProfilePictureUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
-  const { uploadImage, updateUserAvatar, uploadProgress, isUploading } = useImageUpload();
+  const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const { uploadImage, updateUserAvatar, deleteImage, uploadProgress, isUploading } = useImageUpload();
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -60,6 +61,9 @@ export default function ProfilePictureUpload({
         throw new Error('Failed to upload image');
       }
 
+      // Store the path for deletion later
+      setAvatarPath(result.path);
+
       // Then, update the user's avatar URL
       const success = await updateUserAvatar(userId, result.url);
       if (success) {
@@ -76,9 +80,26 @@ export default function ProfilePictureUpload({
   };
 
   const handleRemove = async () => {
-    // TODO: Implement avatar removal
-    setPreview(null);
-    toast.success('Profile picture removed');
+    try {
+      // Remove avatar from database
+      const success = await updateUserAvatar(userId, '');
+
+      if (success) {
+        // If we have the path, delete from storage
+        if (avatarPath) {
+          await deleteImage('avatars', avatarPath);
+        }
+
+        setPreview(null);
+        setAvatarPath(null);
+        toast.success('Profile picture removed');
+        onUploadSuccess?.('');
+      } else {
+        throw new Error('Failed to remove avatar');
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to remove profile picture');
+    }
   };
 
   const handleClick = () => {

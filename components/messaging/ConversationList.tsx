@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatMessageTime, type ConversationListItem } from '@/lib/services/messaging-service';
 import { MessageCircle, Archive, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useOnlineStatus } from '@/lib/hooks/use-online-status';
+import { useAuth } from '@/lib/auth/auth-context';
 
 interface ConversationListProps {
   conversations: ConversationListItem[];
@@ -22,7 +24,9 @@ export function ConversationList({
   showArchived = false,
 }: ConversationListProps) {
   const router = useRouter();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  const { isUserOnline } = useOnlineStatus(user?.id || null);
 
   // Filter conversations
   const filteredConversations = conversations.filter((conv) => {
@@ -118,8 +122,13 @@ function ConversationItem({ conversation, isSelected, onClick }: ConversationIte
           </div>
         )}
 
-        {/* Online indicator - TODO: implement online status */}
-        {/* <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div> */}
+        {/* Online indicator */}
+        {isUserOnline(conversation.other_user_id) && (
+          <div
+            className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"
+            title="Online"
+          />
+        )}
       </div>
 
       {/* Content */}
