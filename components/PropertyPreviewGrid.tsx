@@ -5,6 +5,7 @@ import Link from 'next/link';
 import PropertyCard from './PropertyCard';
 import { PropertyCardsGridSkeleton } from './PropertyCardSkeleton';
 import { ArrowRight } from 'lucide-react';
+import { createClient } from '@/lib/auth/supabase-client';
 
 interface Property {
   id: string;
@@ -42,105 +43,20 @@ export default function PropertyPreviewGrid({
 
   const fetchProperties = async () => {
     try {
-      // For now, use mock data. Replace with actual API call
-      const mockProperties: Property[] = [
-        {
-          id: '1',
-          title: 'Studio Moderne - Ixelles',
-          description: 'Magnifique studio entièrement rénové à proximité de l\'ULB',
-          city: 'Bruxelles',
-          neighborhood: 'Ixelles',
-          monthly_rent: 750,
-          bedrooms: 1,
-          property_type: 'Studio',
-          main_image: '/properties/studio-ixelles.jpg',
-          rating: 4.9,
-          reviews_count: 12,
-          views_count: 247,
-          available_from: '2025-12-01'
-        },
-        {
-          id: '2',
-          title: 'Colocation 3 Chambres - Etterbeek',
-          description: 'Grande colocation avec jardin, proche des transports',
-          city: 'Bruxelles',
-          neighborhood: 'Etterbeek',
-          monthly_rent: 550,
-          bedrooms: 3,
-          property_type: 'Colocation',
-          main_image: '/properties/coloc-etterbeek.jpg',
-          rating: 4.7,
-          reviews_count: 8,
-          views_count: 189,
-          available_from: '2025-11-15'
-        },
-        {
-          id: '3',
-          title: 'Appartement 2 Chambres - Saint-Gilles',
-          description: 'Appartement lumineux dans quartier animé',
-          city: 'Bruxelles',
-          neighborhood: 'Saint-Gilles',
-          monthly_rent: 900,
-          bedrooms: 2,
-          property_type: 'Appartement',
-          main_image: '/properties/appart-stgilles.jpg',
-          rating: 5.0,
-          reviews_count: 15,
-          views_count: 312,
-          available_from: '2025-11-01'
-        },
-        {
-          id: '4',
-          title: 'Chambre en Coloc - Schaerbeek',
-          description: 'Chambre meublée dans coloc sympa de 4 personnes',
-          city: 'Bruxelles',
-          neighborhood: 'Schaerbeek',
-          monthly_rent: 480,
-          bedrooms: 1,
-          property_type: 'Chambre',
-          main_image: '/properties/chambre-schaerbeek.jpg',
-          rating: 4.6,
-          reviews_count: 6,
-          views_count: 156,
-          available_from: '2025-12-15'
-        },
-        {
-          id: '5',
-          title: 'Studio Étudiant - Près ULB',
-          description: 'Studio parfait pour étudiant, à 5 min de l\'ULB',
-          city: 'Bruxelles',
-          neighborhood: 'Ixelles',
-          monthly_rent: 650,
-          bedrooms: 1,
-          property_type: 'Studio',
-          main_image: '/properties/studio-ulb.jpg',
-          rating: 4.8,
-          reviews_count: 10,
-          views_count: 278,
-          available_from: '2025-11-20'
-        },
-        {
-          id: '6',
-          title: 'Grande Coloc - Forest',
-          description: 'Maison spacieuse avec jardin, idéale pour groupe',
-          city: 'Bruxelles',
-          neighborhood: 'Forest',
-          monthly_rent: 520,
-          bedrooms: 4,
-          property_type: 'Maison',
-          main_image: '/properties/maison-forest.jpg',
-          rating: 4.9,
-          reviews_count: 14,
-          views_count: 203,
-          available_from: '2025-12-01'
-        },
-      ];
+      const supabase = createClient();
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Fetch featured/recent properties from Supabase
+      const { data, error, count } = await supabase
+        .from('properties')
+        .select('*', { count: 'exact' })
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-      setProperties(mockProperties.slice(0, limit));
-      setTotalCount(247); // Mock total
+      if (error) throw error;
+
+      setProperties(data || []);
+      setTotalCount(count || 0);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching properties:', error);
