@@ -26,6 +26,7 @@ export default function SearcherHeader({
 }: SearcherHeaderProps) {
   const pathname = usePathname();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const navLinks = [
     {
@@ -109,13 +110,85 @@ export default function SearcherHeader({
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            {/* Notifications */}
-            <button className="relative p-2 rounded-lg hover:bg-black/5 transition">
-              <Bell className="w-5 h-5 text-gray-700" />
-              {notifications > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+            {/* Notifications Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative p-2 rounded-lg hover:bg-black/5 transition"
+              >
+                <Bell className="w-5 h-5 text-gray-700" />
+                {notifications > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                )}
+              </button>
+
+              {/* Notifications Dropdown Menu */}
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <h3 className="font-semibold text-gray-900">Notifications</h3>
+                    {notifications > 0 && (
+                      <p className="text-xs text-gray-500">{notifications} nouvelles</p>
+                    )}
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications > 0 ? (
+                      <>
+                        {/* Mock notifications */}
+                        <Link
+                          href="/matching"
+                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
+                          onClick={() => setShowNotifications(false)}
+                        >
+                          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Heart className="w-5 h-5 text-green-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900">
+                              Nouveau match!
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              Tu as un nouveau match à 92% avec une coloc à Ixelles
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">Il y a 5 minutes</p>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/messages"
+                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
+                          onClick={() => setShowNotifications(false)}
+                        >
+                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <MessageCircle className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900">
+                              Nouveau message
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              Marie a répondu à ta demande
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">Il y a 1 heure</p>
+                          </div>
+                        </Link>
+                      </>
+                    ) : (
+                      <div className="px-4 py-8 text-center">
+                        <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                        <p className="text-sm text-gray-600">Aucune notification</p>
+                      </div>
+                    )}
+                  </div>
+                  {notifications > 0 && (
+                    <div className="px-4 py-2 border-t border-gray-100">
+                      <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+                        Tout marquer comme lu
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
-            </button>
+            </div>
 
             {/* Profile Dropdown */}
             <div className="relative">
