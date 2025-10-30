@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand, FileText, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
-import DashboardHeader from '@/components/DashboardHeader'
+import SearcherHeader from '@/components/layout/SearcherHeader'
 import { useRole } from '@/lib/role/role-context'
 import IconBadge from '@/components/IconBadge'
 import GroupManagement from '@/components/GroupManagement'
@@ -19,6 +19,7 @@ interface UserProfile {
   user_type: string
   onboarding_completed: boolean
   profile_data: any
+  avatar_url?: string
 }
 
 export default function SearcherDashboard() {
@@ -182,14 +183,15 @@ export default function SearcherDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <DashboardHeader
+      <SearcherHeader
         profile={{
           full_name: profile.full_name,
           email: profile.email,
-          profile_data: profile.profile_data
+          avatar_url: profile.avatar_url
         }}
-        avatarColor="#FFD700"
-        role="searcher"
+        notifications={0}
+        unreadMessages={0}
+        newMatches={0}
       />
 
       {/* Main Content */}

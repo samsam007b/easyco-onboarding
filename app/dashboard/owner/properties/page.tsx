@@ -9,13 +9,14 @@ import { Badge } from '@/components/ui/badge'
 import { Building2, Plus, Edit, Trash2, Eye, MapPin, Bed, Bath, DollarSign, Calendar } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
-import DashboardHeader from '@/components/DashboardHeader'
+import OwnerHeader from '@/components/layout/OwnerHeader'
 import { useRole } from '@/lib/role/role-context'
 
 interface UserProfile {
   full_name: string
   email: string
   profile_data: any
+  avatar_url?: string
 }
 
 export default function PropertiesManagement() {
@@ -141,10 +142,16 @@ export default function PropertiesManagement() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <DashboardHeader
-        profile={profile}
-        avatarColor="#4A148C"
-        role="owner"
+      <OwnerHeader
+        profile={{
+          full_name: profile.full_name,
+          email: profile.email,
+          avatar_url: profile.avatar_url
+        }}
+        notifications={0}
+        unreadMessages={0}
+        pendingApplications={0}
+        monthlyRevenue={3450}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
