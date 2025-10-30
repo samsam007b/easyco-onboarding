@@ -98,7 +98,7 @@ export default function SearcherHeader({
                   <Icon className="w-5 h-5" />
                   <span>{link.label}</span>
                   {link.badge && (
-                    <Badge variant="destructive" className="ml-1">
+                    <Badge variant="error" className="ml-1">
                       {link.badge}
                     </Badge>
                   )}
