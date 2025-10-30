@@ -27,6 +27,10 @@ import {
   ThumbsUp,
   ThumbsDown,
   Users,
+  Building2,
+  Filter,
+  CheckSquare,
+  Send,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -55,6 +59,10 @@ export default function OwnerApplicationsPage() {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | CombinedStatus>('all');
   const [filterType, setFilterType] = useState<'all' | ApplicationType>('all');
+  const [filterProperty, setFilterProperty] = useState<'all' | string>('all');
+  const [filterDate, setFilterDate] = useState<'all' | '7days' | '30days' | '90days'>('all');
+  const [selectedApplications, setSelectedApplications] = useState<Set<string>>(new Set());
+  const [properties, setProperties] = useState<any[]>([]);
 
   // Dialog states
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
@@ -99,6 +107,17 @@ export default function OwnerApplicationsPage() {
           email: userData?.email || user.email || '',
           profile_data: profileData || {}
         });
+
+        // Load owner properties
+        const { data: propertiesData } = await supabase
+          .from('properties')
+          .select('id, title')
+          .eq('owner_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (propertiesData) {
+          setProperties(propertiesData);
+        }
 
         await loadApplications(true); // true = as owner
       }
@@ -245,17 +264,35 @@ export default function OwnerApplicationsPage() {
     );
   };
 
+  // Helper function for date filtering
+  const isWithinDateRange = (dateStr: string | undefined) => {
+    if (!dateStr || filterDate === 'all') return true;
+
+    const appDate = new Date(dateStr);
+    const now = new Date();
+    const daysDiff = Math.floor((now.getTime() - appDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (filterDate === '7days') return daysDiff <= 7;
+    if (filterDate === '30days') return daysDiff <= 30;
+    if (filterDate === '90days') return daysDiff <= 90;
+    return true;
+  };
+
   // Filter applications
   const filteredIndividualApps = applications.filter((app) => {
     const statusMatch = filterStatus === 'all' || app.status === filterStatus;
     const typeMatch = filterType === 'all' || filterType === 'individual';
-    return statusMatch && typeMatch;
+    const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
+    const dateMatch = isWithinDateRange(app.created_at);
+    return statusMatch && typeMatch && propertyMatch && dateMatch;
   });
 
   const filteredGroupApps = groupApps.filter((app) => {
     const statusMatch = filterStatus === 'all' || app.status === filterStatus;
     const typeMatch = filterType === 'all' || filterType === 'group';
-    return statusMatch && typeMatch;
+    const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
+    const dateMatch = isWithinDateRange(app.created_at);
+    return statusMatch && typeMatch && propertyMatch && dateMatch;
   });
 
   // Calculate stats
@@ -373,7 +410,7 @@ export default function OwnerApplicationsPage() {
       </div>
 
       {/* Status Filters */}
-      <div className="flex gap-2 mb-6 overflow-x-auto">
+      <div className="flex gap-2 mb-4 overflow-x-auto">
         <Button
           variant={filterStatus === 'all' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('all')}
@@ -411,6 +448,90 @@ export default function OwnerApplicationsPage() {
         </Button>
       </div>
 
+      {/* Additional Filters Row */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        {/* Property Filter */}
+        <div className="flex-1">
+          <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <Building2 className="w-4 h-4" />
+            Filter by Property
+          </label>
+          <select
+            value={filterProperty}
+            onChange={(e) => setFilterProperty(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="all">All Properties</option>
+            {properties.map((property) => (
+              <option key={property.id} value={property.id}>
+                {property.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Date Filter */}
+        <div className="flex-1">
+          <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            Filter by Date
+          </label>
+          <select
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value as any)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="all">All Time</option>
+            <option value="7days">Last 7 Days</option>
+            <option value="30days">Last 30 Days</option>
+            <option value="90days">Last 90 Days</option>
+          </select>
+        </div>
+
+        {/* Selection Count & Bulk Actions */}
+        {selectedApplications.size > 0 && (
+          <div className="flex-1 flex items-end gap-2">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => {
+                const selectedArray = Array.from(selectedApplications);
+                // Bulk approve logic
+                toast.promise(
+                  Promise.all(selectedArray.map(id => {
+                    const isGroup = id.startsWith('group-');
+                    const actualId = isGroup ? id.replace('group-', '') : id;
+                    return isGroup
+                      ? updateGroupApplicationStatus(actualId, 'approved')
+                      : updateApplicationStatus(actualId, 'approved');
+                  })),
+                  {
+                    loading: `Approving ${selectedArray.length} applications...`,
+                    success: () => {
+                      setSelectedApplications(new Set());
+                      loadApplicationsData();
+                      return `${selectedArray.length} applications approved`;
+                    },
+                    error: 'Failed to approve applications',
+                  }
+                );
+              }}
+              className="flex items-center gap-2"
+            >
+              <CheckSquare className="w-4 h-4" />
+              Approve ({selectedApplications.size})
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSelectedApplications(new Set())}
+            >
+              Clear Selection
+            </Button>
+          </div>
+        )}
+      </div>
+
       {/* Applications List */}
       {filteredIndividualApps.length === 0 && filteredGroupApps.length === 0 ? (
         <Card>
@@ -431,6 +552,24 @@ export default function OwnerApplicationsPage() {
             <Card key={`group-${groupApp.id}`} className="hover:shadow-md transition-shadow border-l-4 border-l-purple-500">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                  {/* Checkbox for bulk selection */}
+                  <div className="flex items-start pt-1">
+                    <input
+                      type="checkbox"
+                      checked={selectedApplications.has(`group-${groupApp.id}`)}
+                      onChange={(e) => {
+                        const newSet = new Set(selectedApplications);
+                        if (e.target.checked) {
+                          newSet.add(`group-${groupApp.id}`);
+                        } else {
+                          newSet.delete(`group-${groupApp.id}`);
+                        }
+                        setSelectedApplications(newSet);
+                      }}
+                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    />
+                  </div>
+
                   {/* Left: Group Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
@@ -583,6 +722,24 @@ export default function OwnerApplicationsPage() {
             <Card key={`individual-${application.id}`} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                  {/* Checkbox for bulk selection */}
+                  <div className="flex items-start pt-1">
+                    <input
+                      type="checkbox"
+                      checked={selectedApplications.has(application.id)}
+                      onChange={(e) => {
+                        const newSet = new Set(selectedApplications);
+                        if (e.target.checked) {
+                          newSet.add(application.id);
+                        } else {
+                          newSet.delete(application.id);
+                        }
+                        setSelectedApplications(newSet);
+                      }}
+                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    />
+                  </div>
+
                   {/* Left: Application Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
