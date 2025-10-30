@@ -1,246 +1,359 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Zap } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
-import { SwipeCard } from '@/components/matching/SwipeCard';
-import { useUserMatching, type SwipeContext } from '@/lib/hooks/use-user-matching';
+import { useQuery } from '@tanstack/react-query';
+import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
+import SearcherHeader from '@/components/layout/SearcherHeader';
+import SwipeCard from '@/components/SwipeCard';
+import SwipeActions from '@/components/SwipeActions';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Heart, X, Info, Users, RotateCcw, Settings } from 'lucide-react';
-import { toast } from 'sonner';
+
+interface Property {
+  id: string;
+  title: string;
+  city: string;
+  neighborhood?: string;
+  monthly_rent: number;
+  bedrooms: number;
+  bathrooms: number;
+  main_image?: string;
+  images?: string[];
+  description?: string;
+  furnished?: boolean;
+  balcony?: boolean;
+  parking?: boolean;
+  available_from?: string;
+  smoking_allowed?: boolean;
+  pets_allowed?: boolean;
+  compatibilityScore?: number;
+}
+
+interface SwipeHistory {
+  propertyId: string;
+  action: 'pass' | 'like' | 'superlike';
+  timestamp: Date;
+}
 
 export default function SwipePage() {
   const router = useRouter();
   const supabase = createClient();
-  const [user, setUser] = useState<any>(null);
-  const [context, setContext] = useState<SwipeContext>('searcher_matching');
+  const [userId, setUserId] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [swipeHistory, setSwipeHistory] = useState<SwipeHistory[]>([]);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const {
-    currentUserProfile,
-    potentialMatches,
-    isLoading,
-    hasMore,
-    recordSwipe,
-    loadPotentialMatches,
-  } = useUserMatching(user?.id || '', context);
-
+  // Check authentication
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push('/login');
+        router.push('/auth?redirect=/matching/swipe');
         return;
       }
-      setUser(user);
+      setUserId(user.id);
     };
-
-    getUser();
+    checkAuth();
   }, [supabase, router]);
 
-  const handleSwipe = async (direction: 'left' | 'right') => {
-    const currentUser = potentialMatches[currentIndex];
-    if (!currentUser) return;
+  // Fetch user profile
+  const { data: userProfile } = useQuery({
+    queryKey: ['user-profile', userId],
+    queryFn: async () => {
+      if (!userId) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, email, avatar_url')
+        .eq('id', userId)
+        .single();
+      return data;
+    },
+    enabled: !!userId,
+  });
 
-    const action = direction === 'right' ? 'like' : 'pass';
-    const success = await recordSwipe(currentUser.user_id, action);
+  // Fetch user preferences
+  const { data: userPreferences } = useQuery({
+    queryKey: ['user-preferences', userId],
+    queryFn: async () => {
+      if (!userId) return null;
+      const { data } = await supabase
+        .from('searcher_preferences')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      return data as UserPreferences | null;
+    },
+    enabled: !!userId,
+  });
 
-    if (success) {
-      if (action === 'like') {
-        toast.success('Profile liked! 💚', {
-          description: "If they like you back, it's a match!",
-        });
+  // Fetch properties
+  const { data: properties, isLoading } = useQuery({
+    queryKey: ['swipe-properties', userId],
+    queryFn: async () => {
+      // Fetch properties
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) throw error;
+
+      // Get already swiped properties
+      const { data: swipedData } = await supabase
+        .from('property_likes')
+        .select('property_id')
+        .eq('user_id', userId);
+
+      const swipedIds = swipedData?.map(s => s.property_id) || [];
+
+      // Filter out already swiped
+      return (data || []).filter(p => !swipedIds.includes(p.id));
+    },
+    enabled: !!userId,
+  });
+
+  // Calculate match scores
+  const propertiesWithScores = useMemo(() => {
+    if (!properties || !userPreferences) return properties || [];
+
+    return properties.map(property => {
+      try {
+        const propertyFeatures: PropertyFeatures = {
+          price: property.monthly_rent,
+          city: property.city,
+          neighborhood: property.neighborhood,
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          furnished: property.furnished || false,
+          balcony: property.balcony,
+          parking: property.parking,
+          available_from: property.available_from,
+          smoking_allowed: property.smoking_allowed,
+          pets_allowed: property.pets_allowed,
+        };
+
+        const matchResult = calculateMatchScore(userPreferences, propertyFeatures);
+
+        return {
+          ...property,
+          compatibilityScore: matchResult.score,
+        };
+      } catch (error) {
+        return property;
       }
+    }).sort((a, b) => (b.compatibilityScore || 0) - (a.compatibilityScore || 0)); // Sort by best match first
+  }, [properties, userPreferences]);
 
-      // Move to next card
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      toast.error('Failed to record swipe. Please try again.');
+  const currentProperty = propertiesWithScores?.[currentIndex];
+
+  const handleSwipe = async (direction: 'left' | 'right', propertyId: string) => {
+    if (isAnimating) return;
+
+    setIsAnimating(true);
+    const action = direction === 'right' ? 'like' : 'pass';
+
+    // Save to history
+    setSwipeHistory(prev => [...prev, {
+      propertyId,
+      action,
+      timestamp: new Date(),
+    }]);
+
+    // Save to database
+    if (direction === 'right') {
+      await supabase.from('property_likes').insert({
+        user_id: userId,
+        property_id: propertyId,
+        liked: true,
+      });
+    }
+
+    // Move to next card
+    setTimeout(() => {
+      setCurrentIndex(prev => prev + 1);
+      setIsAnimating(false);
+    }, 300);
+  };
+
+  const handlePass = () => {
+    if (currentProperty) {
+      handleSwipe('left', currentProperty.id);
     }
   };
 
-  const handleLike = () => handleSwipe('right');
-  const handlePass = () => handleSwipe('left');
+  const handleLike = () => {
+    if (currentProperty) {
+      handleSwipe('right', currentProperty.id);
+    }
+  };
+
+  const handleSuperLike = async () => {
+    if (!currentProperty || isAnimating) return;
+
+    setIsAnimating(true);
+
+    // Save super like
+    await supabase.from('property_likes').insert({
+      user_id: userId,
+      property_id: currentProperty.id,
+      liked: true,
+      super_like: true,
+    });
+
+    setSwipeHistory(prev => [...prev, {
+      propertyId: currentProperty.id,
+      action: 'superlike',
+      timestamp: new Date(),
+    }]);
+
+    setTimeout(() => {
+      setCurrentIndex(prev => prev + 1);
+      setIsAnimating(false);
+    }, 300);
+  };
 
   const handleUndo = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-      toast.info('Undo successful');
-    }
+    if (swipeHistory.length === 0 || currentIndex === 0) return;
+
+    // Remove last action
+    const lastAction = swipeHistory[swipeHistory.length - 1];
+    setSwipeHistory(prev => prev.slice(0, -1));
+
+    // Delete from database
+    supabase.from('property_likes')
+      .delete()
+      .eq('user_id', userId)
+      .eq('property_id', lastAction.propertyId)
+      .then();
+
+    // Go back
+    setCurrentIndex(prev => prev - 1);
   };
 
-  const currentCard = potentialMatches[currentIndex];
-  const cardsRemaining = potentialMatches.length - currentIndex;
-
-  if (!user || isLoading) {
+  if (isLoading || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-yellow-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-purple-50">
+        {userProfile && <SearcherHeader profile={userProfile} />}
+        <div className="flex items-center justify-center h-[80vh]">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-gray-600">Chargement des propriétés...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!propertiesWithScores || propertiesWithScores.length === 0 || currentIndex >= propertiesWithScores.length) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-purple-50">
+        <SearcherHeader profile={userProfile} />
+        <div className="flex items-center justify-center h-[80vh]">
+          <div className="text-center max-w-md px-6">
+            <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Zap className="w-12 h-12 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Plus de propriétés ! 🎉
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Tu as vu toutes les propriétés disponibles. Reviens plus tard pour de nouvelles annonces !
+            </p>
+            <div className="flex flex-col gap-3">
+              <Button
+                onClick={() => router.push('/properties/browse')}
+                className="w-full"
+              >
+                Voir mes matchs
+              </Button>
+              <Button
+                onClick={() => router.push('/dashboard')}
+                variant="outline"
+                className="w-full"
+              >
+                Retour au dashboard
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-purple-50">
+      <SearcherHeader profile={userProfile} />
+
       {/* Header */}
-      <div className="max-w-md mx-auto mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-3xl font-bold text-[#4A148C]">Find Your Match</h1>
-            <p className="text-gray-600">
-              {context === 'searcher_matching'
-                ? 'Find co-searchers to find a place together'
-                : 'Find new roommates for your coliving'}
-            </p>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="flex items-center justify-between mb-6">
           <Button
             variant="ghost"
-            size="icon"
-            onClick={() => router.push('/matching/settings')}
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
           >
-            <Settings className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" />
+            Retour
           </Button>
-        </div>
 
-        {/* Context Switcher */}
-        <div className="flex gap-2 mb-4">
-          <Button
-            variant={context === 'searcher_matching' ? 'default' : 'outline'}
-            onClick={() => setContext('searcher_matching')}
-            className="flex-1"
-          >
-            <Users className="w-4 h-4 mr-2" />
-            Co-Searchers
-          </Button>
-          <Button
-            variant={context === 'resident_matching' ? 'default' : 'outline'}
-            onClick={() => setContext('resident_matching')}
-            className="flex-1"
-          >
-            <Heart className="w-4 h-4 mr-2" />
-            Roommates
-          </Button>
-        </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              {currentIndex + 1} / {propertiesWithScores.length}
+            </p>
+            <div className="flex items-center gap-2 mt-1">
+              <Zap className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+              <span className="text-sm font-medium text-gray-900">
+                {swipeHistory.filter(h => h.action === 'like' || h.action === 'superlike').length} likes
+              </span>
+            </div>
+          </div>
 
-        {/* Cards Remaining */}
-        <div className="flex items-center justify-between px-4 py-2 bg-white rounded-full shadow-sm">
-          <span className="text-sm text-gray-600">Cards remaining</span>
-          <span className="text-sm font-bold text-[#4A148C]">{cardsRemaining}</span>
+          <div className="w-20" /> {/* Spacer for alignment */}
         </div>
       </div>
 
-      {/* Card Stack */}
-      <div className="max-w-md mx-auto relative">
-        <div className="relative h-[600px] mb-6">
-          {!currentCard ? (
-            <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-              <div className="text-6xl mb-4">🎉</div>
-              <h3 className="text-2xl font-bold text-[#4A148C] mb-2">
-                You've seen everyone!
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Check back later for new profiles or adjust your preferences to see more matches.
-              </p>
-              <div className="flex gap-3">
-                <Button onClick={() => loadPotentialMatches()} variant="default">
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Reload
-                </Button>
-                <Button
-                  onClick={() => router.push('/matching/matches')}
-                  variant="outline"
-                >
-                  <Heart className="w-4 h-4 mr-2" />
-                  View Matches
-                </Button>
-              </div>
-            </Card>
-          ) : (
-            <>
-              {/* Next card preview (behind) */}
-              {potentialMatches[currentIndex + 1] && (
-                <div className="absolute inset-0 bg-white rounded-3xl shadow-lg scale-95 opacity-50"></div>
-              )}
-
-              {/* Current card */}
+      {/* Swipe Stack */}
+      <div className="max-w-2xl mx-auto px-6">
+        <div className="relative" style={{ height: '600px' }}>
+          <AnimatePresence>
+            {currentProperty && (
               <SwipeCard
-                user={currentCard}
+                key={currentProperty.id}
+                property={currentProperty}
                 onSwipe={handleSwipe}
-                onCardClick={() => {
-                  // TODO: Open full profile modal
-                  toast.info('Full profile view coming soon!');
-                }}
+                onSuperLike={handleSuperLike}
               />
-            </>
+            )}
+          </AnimatePresence>
+
+          {/* Preview next card */}
+          {propertiesWithScores[currentIndex + 1] && (
+            <div className="absolute inset-0 bg-white rounded-3xl shadow-xl transform scale-95 -z-10 opacity-50" />
           )}
         </div>
 
-        {/* Action Buttons */}
-        {currentCard && (
-          <div className="flex items-center justify-center gap-6">
-            {/* Pass Button */}
-            <button
-              onClick={handlePass}
-              className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
-              aria-label="Pass"
-            >
-              <X className="w-8 h-8 text-red-500" />
-            </button>
+        {/* Actions */}
+        <div className="mt-8 mb-12">
+          <SwipeActions
+            onPass={handlePass}
+            onLike={handleLike}
+            onSuperLike={handleSuperLike}
+            onUndo={handleUndo}
+            canUndo={swipeHistory.length > 0 && currentIndex > 0}
+          />
+        </div>
 
-            {/* Undo Button */}
-            <button
-              onClick={handleUndo}
-              disabled={currentIndex === 0}
-              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Undo"
-            >
-              <RotateCcw className="w-5 h-5 text-gray-600" />
-            </button>
-
-            {/* Info Button */}
-            <button
-              onClick={() => {
-                // TODO: Show compatibility details
-                toast.info('Compatibility details coming soon!');
-              }}
-              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
-              aria-label="Info"
-            >
-              <Info className="w-5 h-5 text-[#4A148C]" />
-            </button>
-
-            {/* Like Button */}
-            <button
-              onClick={handleLike}
-              className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-red-500 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
-              aria-label="Like"
-            >
-              <Heart className="w-8 h-8 text-white fill-current" />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Bottom Navigation */}
-      <div className="max-w-md mx-auto mt-8">
-        <div className="flex items-center justify-around py-4">
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/dashboard/searcher')}
-          >
-            Dashboard
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/matching/matches')}
-            className="relative"
-          >
-            <Heart className="w-5 h-5 mr-2" />
-            Matches
-          </Button>
+        {/* Instructions */}
+        <div className="text-center text-sm text-gray-500 mt-8">
+          <p>Swipe ou utilise les boutons pour choisir</p>
+          <p className="mt-1">
+            ← Passer | ⭐ Super Like | Aimer →
+          </p>
         </div>
       </div>
     </div>

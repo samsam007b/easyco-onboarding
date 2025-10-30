@@ -607,7 +607,9 @@ export default function PropertiesBrowsePageV2() {
                 bedrooms: null,
                 bathrooms: null,
                 propertyType: 'all',
-                city: ''
+                city: '',
+                amenities: [],
+                furnished: null
               });
               setSearchQuery('');
             }}>
