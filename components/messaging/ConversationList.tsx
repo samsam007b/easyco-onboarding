@@ -8,7 +8,7 @@ import { formatMessageTime, type ConversationListItem } from '@/lib/services/mes
 import { MessageCircle, Archive, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useOnlineStatus } from '@/lib/hooks/use-online-status';
-import { useAuth } from '@/lib/auth/auth-context';
+import { useAuth } from '@/lib/contexts/auth-context';
 
 interface ConversationListProps {
   conversations: ConversationListItem[];
@@ -85,6 +85,7 @@ export function ConversationList({
             conversation={conversation}
             isSelected={conversation.conversation_id === selectedConversationId}
             onClick={() => onSelectConversation(conversation.conversation_id)}
+            isUserOnline={isUserOnline}
           />
         ))}
       </div>
@@ -96,9 +97,10 @@ interface ConversationItemProps {
   conversation: ConversationListItem;
   isSelected: boolean;
   onClick: () => void;
+  isUserOnline: (userId: string) => boolean;
 }
 
-function ConversationItem({ conversation, isSelected, onClick }: ConversationItemProps) {
+function ConversationItem({ conversation, isSelected, onClick, isUserOnline }: ConversationItemProps) {
   const hasUnread = conversation.unread_count > 0;
 
   return (
