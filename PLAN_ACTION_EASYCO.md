@@ -1,9 +1,9 @@
 # Plan d'Action EasyCo MVP - Documentation Complète
 
 **Date de création**: 30 octobre 2025
-**Dernière mise à jour**: 30 octobre 2025 - Session 2
-**Statut du projet**: Phase 1 & 2 terminées (Design System + Dashboards + Marketing Pages)
-**Dernier commit**: `42d62c1` - Fix TypeScript literal type error
+**Dernière mise à jour**: 30 octobre 2025 - Session 3 (Continuation)
+**Statut du projet**: Phase 1 & 2 terminées (Design System + Dashboards + Marketing Pages + Legal Pages)
+**Dernier commit**: `eadce1e` - Add notifications dropdown to resident header and legal layout
 
 ---
 
@@ -898,11 +898,11 @@ CREATE TABLE matches (
 
 ```
 /components/layout/
-  ├── SearcherHeader.tsx ✅
-  ├── OwnerHeader.tsx ✅
-  ├── ResidentHeader.tsx ✅
-  ├── PublicHeader.tsx ⚠️ À créer (pour non-authentifiés)
-  └── Footer.tsx ⚠️ À créer
+  ├── SearcherHeader.tsx ✅ (avec notifications dropdown)
+  ├── OwnerHeader.tsx ✅ (avec notifications dropdown)
+  ├── ResidentHeader.tsx ✅ (avec notifications dropdown)
+  ├── PublicHeader.tsx ✅
+  └── Footer.tsx ✅
 ```
 
 ---
@@ -912,18 +912,20 @@ CREATE TABLE matches (
 ### Résolues ✅
 1. ~~Badge variant "destructive" n'existe pas~~ → Fixed avec variant="error"
 
+### Résolues récemment ✅
+1. ~~Mock data dans PropertyPreviewGrid~~ → Connecté à Supabase
+2. ~~Pas de photos pour propriétés~~ → DiceBear placeholders ajoutés
+3. ~~Headers sans notifications~~ → Notifications dropdowns ajoutés
+4. ~~Pages légales manquantes~~ → Toutes créées avec i18n
+
 ### En cours
-1. **Mock data partout** - PropertyPreviewGrid et browse page utilisent des données fictives
-   - **Action**: Créer queries Supabase réelles
-   - **Priorité**: HAUTE
-
-2. **Pas de vraies photos** - Les propriétés n'ont pas d'images réelles
-   - **Action**: Seed database avec vraies photos ou placeholders
-   - **Priorité**: MOYENNE
-
-3. **Matching algorithm manquant** - Scores de compatibilité sont fakés
+1. **Matching algorithm manquant** - Scores de compatibilité sont fakés
    - **Action**: Implémenter Phase 3.1
    - **Priorité**: HAUTE
+
+2. **Browse page filters** - Filtres avancés pourraient être améliorés
+   - **Action**: Ajouter plus de filtres (amenities, property features)
+   - **Priorité**: MOYENNE
 
 ### À surveiller
 1. **Performance images** - Pas d'optimisation Next.js Image
@@ -942,7 +944,56 @@ CREATE TABLE matches (
 
 ## 📝 Notes de Session
 
-### Session du 30 octobre 2025
+### Session 3 - 30 octobre 2025 (Continuation)
+
+**Travail accompli**:
+- ✅ Ajout notifications dropdown à ResidentHeader avec notifications spécifiques (tâches, balance, événements)
+- ✅ Création du legal layout réutilisable (PublicHeader + Footer)
+- ✅ Vérification des 4 pages légales existantes (Terms, Privacy, Mentions, Cookies)
+- ✅ Mise à jour PLAN_ACTION avec progression Session 2 & 3
+
+**Commits**:
+- `eadce1e` - feat: add notifications dropdown to resident header and legal layout
+
+**État actuel**:
+- Tous les headers (Searcher, Owner, Resident) ont maintenant des notifications dropdowns fonctionnelles
+- Infrastructure légale complète avec i18n
+- Footer correctement lié aux pages légales
+- Dev server fonctionne sans erreurs
+
+**Prochaines priorités**:
+1. Implémenter algorithme de matching basique (Phase 3.1)
+2. Améliorer les filtres de la browse page
+3. Optimiser les images avec Next.js Image component
+4. Tests mobile complets
+
+---
+
+### Session 2 - 30 octobre 2025
+
+**Travail accompli**:
+- ✅ Connexion PropertyPreviewGrid à Supabase (suppression mock data)
+- ✅ Création Owner Dashboard v2 avec KPIs financiers et graphiques
+- ✅ Création Searcher Dashboard v2 avec focus matching
+- ✅ Création Resident Dashboard v2 avec community hub
+- ✅ Création PublicHeader et Footer components
+- ✅ Création pages About et Owners (marketing)
+- ✅ Ajout notifications dropdowns à SearcherHeader et OwnerHeader
+- ✅ Fix TypeScript literal type error dans Resident Dashboard
+
+**Commits**:
+- `01700d3` - PropertyPreviewGrid Supabase connection
+- `8784683` - Dashboards v2 création
+- `19fddfe` - PublicHeader, Footer, StatCard components
+- `032a4c6` - About page
+- `bf726d6` - Owners page
+- `42d62c1` - Fix TypeScript literal type error
+- `a8720b6` - Update PLAN_ACTION
+- `3ac86de` - Add notifications to headers
+
+---
+
+### Session 1 - 30 octobre 2025
 
 **Travail accompli**:
 - ✅ Design system complet (3 rôles, CSS variables)
