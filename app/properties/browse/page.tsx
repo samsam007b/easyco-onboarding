@@ -48,10 +48,27 @@ interface Filters {
   bathrooms: number | null;
   propertyType: string;
   city: string;
+  amenities: string[];
+  furnished: boolean | null;
 }
 
 const ITEMS_PER_PAGE = 12;
 const GUEST_LIMIT = 20;
+
+const AMENITIES = [
+  { id: 'wifi', label: 'WiFi', icon: '📶' },
+  { id: 'parking', label: 'Parking', icon: '🚗' },
+  { id: 'balcony', label: 'Balcon', icon: '🌿' },
+  { id: 'terrace', label: 'Terrasse', icon: '🏡' },
+  { id: 'garden', label: 'Jardin', icon: '🌳' },
+  { id: 'elevator', label: 'Ascenseur', icon: '🛗' },
+  { id: 'dishwasher', label: 'Lave-vaisselle', icon: '🍽️' },
+  { id: 'washing_machine', label: 'Machine à laver', icon: '👕' },
+  { id: 'dryer', label: 'Sèche-linge', icon: '🔥' },
+  { id: 'air_conditioning', label: 'Climatisation', icon: '❄️' },
+  { id: 'heating', label: 'Chauffage', icon: '🔥' },
+  { id: 'pets_allowed', label: 'Animaux acceptés', icon: '🐕' },
+];
 
 export default function PropertiesBrowsePageV2() {
   const router = useRouter();
@@ -70,7 +87,9 @@ export default function PropertiesBrowsePageV2() {
     bedrooms: null,
     bathrooms: null,
     propertyType: 'all',
-    city: ''
+    city: '',
+    amenities: [],
+    furnished: null
   });
 
   // Check authentication status
@@ -429,6 +448,53 @@ export default function PropertiesBrowsePageV2() {
                   <option value="Appartement">Appartement</option>
                   <option value="Maison">Maison</option>
                 </select>
+              </div>
+
+              {/* Furnished Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Meublé
+                </label>
+                <select
+                  value={filters.furnished === null ? '' : filters.furnished.toString()}
+                  onChange={(e) => handleFilterChange({
+                    furnished: e.target.value === '' ? null : e.target.value === 'true'
+                  })}
+                  className="w-full px-3 py-2 border rounded-lg"
+                >
+                  <option value="">Peu importe</option>
+                  <option value="true">Oui</option>
+                  <option value="false">Non</option>
+                </select>
+              </div>
+
+              {/* Amenities Filter */}
+              <div className="md:col-span-3">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Équipements
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                  {AMENITIES.map((amenity) => (
+                    <button
+                      key={amenity.id}
+                      type="button"
+                      onClick={() => {
+                        const newAmenities = filters.amenities.includes(amenity.id)
+                          ? filters.amenities.filter(a => a !== amenity.id)
+                          : [...filters.amenities, amenity.id];
+                        handleFilterChange({ amenities: newAmenities });
+                      }}
+                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition ${
+                        filters.amenities.includes(amenity.id)
+                          ? 'bg-purple-100 border-purple-500 text-purple-700'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-purple-300'
+                      }`}
+                    >
+                      <span className="mr-1">{amenity.icon}</span>
+                      {amenity.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
