@@ -29,19 +29,53 @@ export function useNotifications(userId?: string) {
 
   // Load all notifications for the user
   const loadNotifications = useCallback(async () => {
-    // TEMPORARILY DISABLED: Persistent auth/CORS issues
-    // Will be debugged separately - not blocking other features
-    setNotifications([]);
-    setUnreadCount(0);
-    setIsLoading(false);
-    return;
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) throw error;
+
+      setNotifications(data || []);
+
+      // Count unread
+      const unread = (data || []).filter(n => !n.read).length;
+      setUnreadCount(unread);
+    } catch (error: any) {
+      console.error('Error loading notifications:', error);
+      setNotifications([]);
+      setUnreadCount(0);
+    } finally {
+      setIsLoading(false);
+    }
   }, [userId]);
 
   // Load only unread notifications count (for badge)
   const loadUnreadCount = useCallback(async () => {
-    // TEMPORARILY DISABLED: Persistent auth/CORS issues
-    setUnreadCount(0);
-    return;
+    if (!userId) return;
+
+    try {
+      const { count, error } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('read', false);
+
+      if (error) throw error;
+
+      setUnreadCount(count || 0);
+    } catch (error: any) {
+      console.error('Error loading unread count:', error);
+      setUnreadCount(0);
+    }
   }, [userId]);
 
   // Mark a notification as read
@@ -172,9 +206,46 @@ export function useNotifications(userId?: string) {
 
   // Subscribe to real-time notifications
   const subscribeToNotifications = useCallback(() => {
-    // TEMPORARILY DISABLED: Persistent auth/CORS issues
-    return;
-  }, [userId, channel]);
+    if (!userId || channel) return;
+
+    try {
+      const newChannel = supabase
+        .channel(`notifications:${userId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${userId}`,
+          },
+          (payload) => {
+            if (payload.eventType === 'INSERT') {
+              // Add new notification
+              setNotifications(prev => [payload.new as Notification, ...prev]);
+              if (!(payload.new as Notification).read) {
+                setUnreadCount(prev => prev + 1);
+              }
+            } else if (payload.eventType === 'UPDATE') {
+              // Update existing notification
+              setNotifications(prev =>
+                prev.map(n => (n.id === payload.new.id ? (payload.new as Notification) : n))
+              );
+              loadUnreadCount();
+            } else if (payload.eventType === 'DELETE') {
+              // Remove notification
+              setNotifications(prev => prev.filter(n => n.id !== payload.old.id));
+              loadUnreadCount();
+            }
+          }
+        )
+        .subscribe();
+
+      setChannel(newChannel);
+    } catch (error) {
+      console.error('Error subscribing to notifications:', error);
+    }
+  }, [userId, channel, loadUnreadCount]);
 
   // Unsubscribe from real-time notifications
   const unsubscribeFromNotifications = useCallback(() => {
