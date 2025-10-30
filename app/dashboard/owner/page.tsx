@@ -11,7 +11,7 @@ import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxi
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
 import { useLanguage } from '@/lib/i18n/use-language'
-import DashboardHeader from '@/components/DashboardHeader'
+import OwnerHeader from '@/components/layout/OwnerHeader'
 import { useRole } from '@/lib/role/role-context'
 import IconBadge from '@/components/IconBadge'
 
@@ -21,6 +21,7 @@ interface UserProfile {
   user_type: string
   onboarding_completed: boolean
   profile_data: any
+  avatar_url?: string
 }
 
 export default function OwnerDashboard() {
@@ -215,14 +216,16 @@ export default function OwnerDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <DashboardHeader
+      <OwnerHeader
         profile={{
           full_name: profile.full_name,
           email: profile.email,
-          profile_data: profile.profile_data
+          avatar_url: profile.avatar_url
         }}
-        avatarColor="#4A148C"
-        role="owner"
+        notifications={0}
+        unreadMessages={0}
+        pendingApplications={0}
+        monthlyRevenue={3450}
       />
 
       {/* Main Content */}

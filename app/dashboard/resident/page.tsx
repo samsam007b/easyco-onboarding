@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Users, Settings, LogOut, Edit, MapPin, MessageCircle, Hand, ClipboardList, Sparkles, Home, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
-import DashboardHeader from '@/components/DashboardHeader'
+import ResidentHeader from '@/components/layout/ResidentHeader'
 import { useRole } from '@/lib/role/role-context'
 import IconBadge from '@/components/IconBadge'
 
@@ -17,6 +17,7 @@ interface UserProfile {
   user_type: string
   onboarding_completed: boolean
   profile_data: any
+  avatar_url?: string
 }
 
 export default function ResidentDashboard() {
@@ -136,14 +137,17 @@ export default function ResidentDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <DashboardHeader
+      <ResidentHeader
         profile={{
           full_name: profile.full_name,
           email: profile.email,
-          profile_data: profile.profile_data
+          avatar_url: profile.avatar_url
         }}
-        avatarColor="#FF6F3C"
-        role="resident"
+        groupName="Ma Coloc"
+        notifications={0}
+        unreadMessages={0}
+        pendingTasks={0}
+        yourBalance={0}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
