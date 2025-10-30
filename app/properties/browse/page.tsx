@@ -461,7 +461,7 @@ export default function PropertiesBrowsePageV2() {
             </div>
 
             {/* Pagination (authenticated only) */}
-            {isAuthenticated && propertiesData.totalPages > 1 && (
+            {isAuthenticated && propertiesData && propertiesData.totalPages > 1 && (
               <div className="mt-8 flex items-center justify-center gap-2">
                 <Button
                   variant="outline"
