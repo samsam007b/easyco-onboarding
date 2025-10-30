@@ -39,6 +39,9 @@ export interface Message {
   deleted_by_recipient: boolean;
   edited: boolean;
   edited_at?: string;
+  image_url?: string;
+  image_width?: number;
+  image_height?: number;
   created_at: string;
 }
 

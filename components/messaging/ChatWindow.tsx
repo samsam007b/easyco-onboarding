@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, MoreVertical, Archive, Trash2, ArrowLeft } from 'lucide-react';
 import { formatMessageTime, type Message } from '@/lib/services/messaging-service';
+import { ImageUploadButton } from './ImageUploadButton';
+import { MessageImage } from './MessageImage';
+import { useMessageSound } from '@/lib/hooks/use-message-sound';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,19 +47,39 @@ export function ChatWindow({
 }: ChatWindowProps) {
   const [messageInput, setMessageInput] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<{
+    url: string;
+    width: number;
+    height: number;
+  } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const previousMessagesLengthRef = useRef(messages.length);
+  const { playSound } = useMessageSound();
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom when new messages arrive and play sound for incoming messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+
+    // Play sound for new incoming messages (not sent by current user)
+    if (messages.length > previousMessagesLengthRef.current) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage && lastMessage.sender_id !== currentUserId) {
+        playSound();
+      }
+    }
+
+    previousMessagesLengthRef.current = messages.length;
+  }, [messages, currentUserId, playSound]);
 
   const handleSendMessage = async () => {
-    if (!messageInput.trim() || isSending) return;
+    if ((!messageInput.trim() && !selectedImage) || isSending) return;
 
-    const content = messageInput.trim();
+    const content = messageInput.trim() || (selectedImage ? '📷 Image' : '');
+    const imageData = selectedImage;
+
     setMessageInput('');
+    setSelectedImage(null);
     setIsSending(true);
 
     try {
@@ -65,6 +88,7 @@ export function ChatWindow({
     } catch (error) {
       console.error('Error sending message:', error);
       setMessageInput(content); // Restore message on error
+      setSelectedImage(imageData); // Restore image on error
     } finally {
       setIsSending(false);
     }
@@ -198,17 +222,38 @@ export function ChatWindow({
       {/* Input */}
       <div className="p-4 border-t bg-white">
         <div className="flex items-end gap-2">
-          <Textarea
-            value={messageInput}
-            onChange={(e) => handleInputChange(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type a message..."
-            className="flex-1 min-h-[44px] max-h-32 resize-none rounded-2xl"
-            rows={1}
+          <ImageUploadButton
+            onImageSelected={(url, width, height) =>
+              setSelectedImage({ url, width, height })
+            }
+            onImageRemoved={() => setSelectedImage(null)}
+            disabled={isSending}
           />
+
+          <div className="flex-1">
+            {selectedImage && (
+              <div className="mb-2">
+                <MessageImage
+                  imageUrl={selectedImage.url}
+                  width={selectedImage.width}
+                  height={selectedImage.height}
+                />
+              </div>
+            )}
+
+            <Textarea
+              value={messageInput}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Type a message..."
+              className="min-h-[44px] max-h-32 resize-none rounded-2xl"
+              rows={1}
+            />
+          </div>
+
           <Button
             onClick={handleSendMessage}
-            disabled={!messageInput.trim() || isSending}
+            disabled={(!messageInput.trim() && !selectedImage) || isSending}
             className="rounded-full h-11 w-11 p-0 bg-purple-600 hover:bg-purple-700"
           >
             <Send className="h-5 w-5" />
@@ -272,7 +317,20 @@ function MessageBubble({
               : 'bg-white text-gray-900 border rounded-bl-sm'
           }`}
         >
-          <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+          {/* Image if present */}
+          {message.image_url && (
+            <MessageImage
+              imageUrl={message.image_url}
+              width={message.image_width}
+              height={message.image_height}
+            />
+          )}
+
+          {/* Text content */}
+          {message.content && (
+            <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+          )}
+
           {message.edited && (
             <span className="text-xs opacity-70 italic ml-2">(edited)</span>
           )}
