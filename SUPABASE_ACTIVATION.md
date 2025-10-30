@@ -139,6 +139,13 @@ END $$;
 -- 3. RPC FUNCTIONS FOR MESSAGING
 -- ============================================================================
 
+-- Drop existing functions if they exist (to avoid conflicts)
+DROP FUNCTION IF EXISTS get_or_create_conversation(UUID, UUID, TEXT, UUID);
+DROP FUNCTION IF EXISTS get_user_conversations(UUID);
+DROP FUNCTION IF EXISTS send_message(UUID, UUID, TEXT, TEXT, JSONB, TEXT);
+DROP FUNCTION IF EXISTS mark_conversation_read(UUID, UUID);
+DROP FUNCTION IF EXISTS clean_expired_typing_indicators();
+
 -- Function: Get or create conversation between two users
 CREATE OR REPLACE FUNCTION get_or_create_conversation(
   p_user1_id UUID,
