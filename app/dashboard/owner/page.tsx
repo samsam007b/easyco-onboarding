@@ -6,7 +6,8 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { getMyProperties } from '@/lib/property-helpers'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath, Hand, UserCircle, FileText, CreditCard, Check, ArrowLeft } from 'lucide-react'
+import { Home, Plus, Settings, LogOut, Edit, User, Building2, MapPin, Bed, Bath, Hand, UserCircle, FileText, CreditCard, Check, ArrowLeft, TrendingUp, BarChart3, PieChart } from 'lucide-react'
+import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
 import { useLanguage } from '@/lib/i18n/use-language'
@@ -171,6 +172,47 @@ export default function OwnerDashboard() {
 
   const completionPercentage = calculateProfileCompletion()
 
+  // Generate mock analytics data (in a real app, this would come from the database)
+  const generateRevenueData = () => {
+    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc']
+    const currentMonth = new Date().getMonth()
+    return months.map((month, index) => ({
+      month,
+      revenue: Math.floor(2000 + Math.random() * 1500 + (index - currentMonth) * 50),
+    })).slice(currentMonth).concat(months.slice(0, currentMonth).map((month, index) => ({
+      month,
+      revenue: Math.floor(2000 + Math.random() * 1500),
+    })))
+  }
+
+  const generateOccupationData = () => {
+    return properties.slice(0, 5).map(property => ({
+      name: property.title.length > 15 ? property.title.substring(0, 15) + '...' : property.title,
+      occupation: Math.floor(70 + Math.random() * 30),
+      revenue: property.monthly_rent || 0,
+    }))
+  }
+
+  const generateRevenueDistribution = () => {
+    const COLORS = ['#6E56CF', '#FFD249', '#FF6F3C', '#00C6AE', '#FF5C93']
+    return properties.slice(0, 5).map((property, index) => ({
+      name: property.title.length > 20 ? property.title.substring(0, 20) + '...' : property.title,
+      value: property.monthly_rent || 0,
+      color: COLORS[index % COLORS.length],
+    }))
+  }
+
+  const revenueData = generateRevenueData()
+  const occupationData = generateOccupationData()
+  const revenueDistribution = generateRevenueDistribution()
+
+  // Calculate KPIs
+  const totalRevenue = properties.reduce((sum, p) => sum + (p.monthly_rent || 0), 0)
+  const avgOccupation = occupationData.length > 0
+    ? Math.round(occupationData.reduce((sum, d) => sum + d.occupation, 0) / occupationData.length)
+    : 0
+  const totalProperties = properties.length
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       <DashboardHeader
@@ -230,6 +272,162 @@ export default function OwnerDashboard() {
             <p className="text-xs sm:text-sm text-gray-600">{dashboard.owner.updateYourPreferences}</p>
           </div>
         </div>
+
+        {/* Analytics Dashboard - Only show if there are properties */}
+        {properties.length > 0 && (
+          <div className="mb-6 sm:mb-8">
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-600">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-medium text-gray-600">Revenus Mensuels</h4>
+                  <TrendingUp className="w-5 h-5 text-purple-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">€{totalRevenue.toLocaleString()}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  <span className="text-green-600 font-medium">+12%</span> vs mois dernier
+                </p>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-medium text-gray-600">Taux d'Occupation</h4>
+                  <BarChart3 className="w-5 h-5 text-yellow-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">{avgOccupation}%</p>
+                <p className="text-xs text-gray-500 mt-1">Moyenne sur {totalProperties} propriétés</p>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-orange-500">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-medium text-gray-600">Propriétés Actives</h4>
+                  <Building2 className="w-5 h-5 text-orange-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">{totalProperties}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {properties.filter(p => p.status === 'published').length} publiées
+                </p>
+              </div>
+            </div>
+
+            {/* Charts Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Revenue Trend Chart */}
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-purple-600" />
+                  Évolution des Revenus (12 mois)
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={revenueData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="month" stroke="#666" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#666" style={{ fontSize: '12px' }} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '8px 12px',
+                      }}
+                      formatter={(value: number) => [`€${value}`, 'Revenus']}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="revenue"
+                      stroke="#6E56CF"
+                      strokeWidth={3}
+                      dot={{ fill: '#6E56CF', r: 4 }}
+                      activeDot={{ r: 6 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Occupation by Property Chart */}
+              {occupationData.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-yellow-600" />
+                    Taux d'Occupation par Propriété
+                  </h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={occupationData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis dataKey="name" stroke="#666" style={{ fontSize: '11px' }} />
+                      <YAxis stroke="#666" style={{ fontSize: '12px' }} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: 'white',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          padding: '8px 12px',
+                        }}
+                        formatter={(value: number) => [`${value}%`, 'Occupation']}
+                      />
+                      <Bar dataKey="occupation" fill="#FFD249" radius={[8, 8, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {/* Revenue Distribution Pie Chart */}
+              {revenueDistribution.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-lg p-6 lg:col-span-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <PieChart className="w-5 h-5 text-orange-600" />
+                    Répartition des Revenus par Propriété
+                  </h3>
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+                    <ResponsiveContainer width="100%" height={300} className="max-w-sm">
+                      <RePieChart>
+                        <Pie
+                          data={revenueDistribution}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${((percent as number) * 100).toFixed(0)}%`}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {revenueDistribution.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: 'white',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            padding: '8px 12px',
+                          }}
+                          formatter={(value: number) => [`€${value}`, 'Revenus']}
+                        />
+                      </RePieChart>
+                    </ResponsiveContainer>
+
+                    {/* Legend */}
+                    <div className="flex flex-col gap-2">
+                      {revenueDistribution.map((entry, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <div
+                            className="w-4 h-4 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: entry.color }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{entry.name}</p>
+                            <p className="text-xs text-gray-500">€{entry.value}/mois</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Profile Preview Card */}
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-6 sm:mb-8">
