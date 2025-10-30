@@ -162,8 +162,8 @@ export default function ResidentDashboardV2() {
   const myTasks = mockTasks.filter((t) => t.assigned_to === userId && t.status === 'pending');
   const pendingTasks = myTasks.length;
 
-  // Mock balance calculation
-  const yourBalance = -15; // You owe 15€
+  // Mock balance calculation (to be replaced with real data)
+  const yourBalance: number = -15; // You owe 15€
 
   const groupName = groupData?.name || 'Ma Coloc';
   const groupMembers = groupData?.members?.length || 4;
