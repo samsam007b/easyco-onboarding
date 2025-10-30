@@ -136,20 +136,7 @@ export default function ResidentDashboard() {
   const completionPercentage = calculateProfileCompletion()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <ResidentHeader
-        profile={{
-          full_name: profile.full_name,
-          email: profile.email,
-          avatar_url: profile.avatar_url
-        }}
-        groupName="Ma Coloc"
-        notifications={0}
-        unreadMessages={0}
-        pendingTasks={0}
-        yourBalance={0}
-      />
-
+    <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Back to Home Button */}
         <Button
@@ -305,6 +292,6 @@ export default function ResidentDashboard() {
           </div>
         </div>
       </main>
-    </div>
+    </>
   )
 }

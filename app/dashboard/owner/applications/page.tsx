@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
-import OwnerHeader from '@/components/layout/OwnerHeader';
 import { useRole } from '@/lib/role/role-context';
 import type { Application, GroupApplication } from '@/lib/hooks/use-applications';
 import {
@@ -322,22 +321,7 @@ export default function OwnerApplicationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      {profile && (
-        <OwnerHeader
-          profile={{
-            full_name: profile.full_name,
-            email: profile.email,
-            avatar_url: profile.avatar_url
-          }}
-          notifications={0}
-          unreadMessages={0}
-          pendingApplications={applications.filter(app => app.status === 'pending').length}
-          monthlyRevenue={3450}
-        />
-      )}
-
-      <PageContainer center>
+    <PageContainer center>
         <PageHeader
           title="Property Applications"
           description="Manage individual and group applications for your properties"
@@ -901,7 +885,6 @@ export default function OwnerApplicationsPage() {
           ))}
         </div>
       )}
-      </PageContainer>
 
       {/* Approve Confirmation Dialog */}
       <AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
@@ -953,6 +936,6 @@ export default function OwnerApplicationsPage() {
         confirmText="Reject"
         cancelText="Cancel"
       />
-    </div>
+    </PageContainer>
   );
 }

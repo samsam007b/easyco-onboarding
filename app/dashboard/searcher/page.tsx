@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Heart, Search, MessageCircle, Settings, LogOut, Edit, User, MapPin, DollarSign, ClipboardList, Sparkles, RotateCw, Home, Globe, Hand, FileText, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
-import SearcherHeader from '@/components/layout/SearcherHeader'
 import { useRole } from '@/lib/role/role-context'
 import IconBadge from '@/components/IconBadge'
 import GroupManagement from '@/components/GroupManagement'
@@ -182,18 +181,7 @@ export default function SearcherDashboard() {
   const completionPercentage = calculateProfileCompletion()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <SearcherHeader
-        profile={{
-          full_name: profile.full_name,
-          email: profile.email,
-          avatar_url: profile.avatar_url
-        }}
-        notifications={0}
-        unreadMessages={0}
-        newMatches={0}
-      />
-
+    <>
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Back to Home Button */}
@@ -494,6 +482,6 @@ export default function SearcherDashboard() {
           </div>
         </div>
       </main>
-    </div>
+    </>
   )
 }

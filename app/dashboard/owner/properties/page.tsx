@@ -141,19 +141,7 @@ export default function PropertiesManagement() {
   if (!profile) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
-      <OwnerHeader
-        profile={{
-          full_name: profile.full_name,
-          email: profile.email,
-          avatar_url: profile.avatar_url
-        }}
-        notifications={0}
-        unreadMessages={0}
-        pendingApplications={0}
-        monthlyRevenue={3450}
-      />
-
+    <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-lg p-6 sm:p-8 mb-6">
@@ -343,6 +331,6 @@ export default function PropertiesManagement() {
           </div>
         )}
       </main>
-    </div>
+    </>
   )
 }
