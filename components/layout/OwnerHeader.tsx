@@ -73,19 +73,19 @@ export default function OwnerHeader({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--owner-primary)] border-b border-purple-400/20 shadow-md">
+    <header className="sticky top-0 z-40 bg-white border-b-2 border-[var(--owner-primary)] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo + Role Badge */}
           <div className="flex items-center gap-4">
-            <Link href="/dashboard/owner" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
-                <HomeIcon className="w-6 h-6 text-[var(--owner-primary)]" />
+            <Link href="/dashboard/owner" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl border-2 border-[var(--owner-primary)] bg-white flex items-center justify-center group-hover:bg-[var(--owner-primary)] transition-colors">
+                <HomeIcon className="w-6 h-6 text-[var(--owner-primary)] group-hover:text-white transition-colors" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">EasyCo</h1>
-                <span className="text-xs font-medium text-purple-100">Propriétaire</span>
+                <h1 className="text-xl font-bold text-gray-900 group-hover:text-[var(--owner-primary)] transition-colors">EasyCo</h1>
+                <span className="text-xs font-medium text-gray-600">Propriétaire</span>
               </div>
             </Link>
           </div>
@@ -102,10 +102,10 @@ export default function OwnerHeader({
                     <button
                       onClick={() => setShowAnalyticsMenu(!showAnalyticsMenu)}
                       className={cn(
-                        'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all',
+                        'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all border-2 border-transparent',
                         isActive
-                          ? 'bg-white/20 text-white'
-                          : 'text-purple-100 hover:bg-white/10 hover:text-white'
+                          ? 'border-[var(--owner-primary)] text-[var(--owner-primary)] bg-[var(--owner-light)]'
+                          : 'text-gray-600 hover:text-[var(--owner-primary)] hover:border-[var(--owner-primary)]'
                       )}
                     >
                       <Icon className="w-5 h-5" />
@@ -149,10 +149,10 @@ export default function OwnerHeader({
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative',
+                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative border-2 border-transparent',
                     isActive
-                      ? 'bg-white/20 text-white'
-                      : 'text-purple-100 hover:bg-white/10 hover:text-white'
+                      ? 'border-[var(--owner-primary)] text-[var(--owner-primary)] bg-[var(--owner-light)]'
+                      : 'text-gray-600 hover:text-[var(--owner-primary)] hover:border-[var(--owner-primary)]'
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -171,11 +171,11 @@ export default function OwnerHeader({
           <div className="flex items-center gap-3">
             {/* Monthly Revenue (Quick Stat) */}
             {monthlyRevenue > 0 && (
-              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg">
-                <DollarSign className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white">
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border-2 border-[var(--owner-primary)] rounded-lg bg-[var(--owner-light)]">
+                <DollarSign className="w-4 h-4 text-[var(--owner-primary)]" />
+                <span className="text-sm font-semibold text-[var(--owner-primary)]">
                   €{monthlyRevenue.toLocaleString()}
-                  <span className="text-xs text-purple-200">/mois</span>
+                  <span className="text-xs text-gray-600">/mois</span>
                 </span>
               </div>
             )}
@@ -183,7 +183,7 @@ export default function OwnerHeader({
             {/* Add Property CTA */}
             <Link
               href="/properties/add"
-              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-[var(--owner-primary)] font-semibold rounded-lg hover:bg-gray-100 transition shadow-md"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-[var(--owner-primary)] text-white font-semibold rounded-lg hover:bg-[var(--owner-dark)] transition-colors shadow-md border-2 border-[var(--owner-primary)] hover:border-[var(--owner-dark)]"
             >
               <Plus className="w-4 h-4" />
               <span>Ajouter bien</span>
@@ -193,11 +193,11 @@ export default function OwnerHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-white/10 transition"
+                className="relative p-2 rounded-lg border-2 border-transparent hover:border-[var(--owner-primary)] transition-all group"
               >
-                <Bell className="w-5 h-5 text-white" />
+                <Bell className="w-5 h-5 text-gray-600 group-hover:text-[var(--owner-primary)] transition-colors" />
                 {notifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--owner-primary)] rounded-full animate-pulse" />
                 )}
               </button>
 
@@ -273,20 +273,20 @@ export default function OwnerHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition"
+                className="flex items-center gap-2 p-2 rounded-lg border-2 border-transparent hover:border-[var(--owner-primary)] transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 group-hover:border-[var(--owner-primary)] transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <User className="w-5 h-5 text-white" />
+                  <div className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-[var(--owner-primary)] bg-white flex items-center justify-center transition-colors">
+                    <User className="w-5 h-5 text-gray-600 group-hover:text-[var(--owner-primary)] transition-colors" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-white" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-[var(--owner-primary)] transition-colors" />
               </button>
 
               {/* Dropdown Menu */}
@@ -340,7 +340,7 @@ export default function OwnerHeader({
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="md:hidden flex items-center justify-around py-2 border-t border-purple-400/20">
+        <nav className="md:hidden flex items-center justify-around py-2 border-t-2 border-[var(--owner-primary)]">
           {navLinks.slice(0, 5).map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
@@ -351,7 +351,7 @@ export default function OwnerHeader({
                 href={link.href}
                 className={cn(
                   'flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition relative',
-                  isActive ? 'text-white' : 'text-purple-200'
+                  isActive ? 'text-[var(--owner-primary)]' : 'text-gray-600 hover:text-[var(--owner-primary)]'
                 )}
               >
                 <Icon className="w-5 h-5" />
@@ -366,16 +366,16 @@ export default function OwnerHeader({
       </div>
 
       {/* Quick Actions Bar (Optional - shows key stats) */}
-      <div className="hidden lg:block bg-[var(--owner-dark)] border-t border-purple-400/10">
+      <div className="hidden lg:block bg-[var(--owner-light)] border-t-2 border-[var(--owner-primary)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-6 text-purple-100">
-              <span>ROI Moyen: <strong className="text-white">8.2%</strong></span>
-              <span>Occupation: <strong className="text-white">96%</strong></span>
-              <span>Candidatures: <strong className="text-white">{pendingApplications}</strong></span>
+            <div className="flex items-center gap-6 text-gray-700">
+              <span>ROI Moyen: <strong className="text-[var(--owner-primary)]">8.2%</strong></span>
+              <span>Occupation: <strong className="text-[var(--owner-primary)]">96%</strong></span>
+              <span>Candidatures: <strong className="text-[var(--owner-primary)]">{pendingApplications}</strong></span>
             </div>
             <div className="flex items-center gap-2">
-              <Link href="/analytics/revenue" className="text-purple-200 hover:text-white transition text-xs">
+              <Link href="/analytics/revenue" className="text-gray-600 hover:text-[var(--owner-primary)] transition text-xs font-medium">
                 Voir détails →
               </Link>
             </div>

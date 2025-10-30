@@ -62,19 +62,19 @@ export default function SearcherHeader({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--searcher-primary)] border-b border-yellow-300/20 shadow-md">
+    <header className="sticky top-0 z-40 bg-white border-b-2 border-[var(--searcher-primary)] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo + Role Badge */}
           <div className="flex items-center gap-4">
-            <Link href="/dashboard/searcher" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
-                <Home className="w-6 h-6 text-[var(--searcher-primary)]" />
+            <Link href="/dashboard/searcher" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl border-2 border-[var(--searcher-primary)] bg-white flex items-center justify-center group-hover:bg-[var(--searcher-primary)] transition-colors">
+                <Home className="w-6 h-6 text-[var(--searcher-primary)] group-hover:text-white transition-colors" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">EasyCo</h1>
-                <span className="text-xs font-medium text-gray-700">Chercheur</span>
+                <h1 className="text-xl font-bold text-gray-900 group-hover:text-[var(--searcher-primary)] transition-colors">EasyCo</h1>
+                <span className="text-xs font-medium text-gray-600">Chercheur</span>
               </div>
             </Link>
           </div>
@@ -90,10 +90,10 @@ export default function SearcherHeader({
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative',
+                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative border-2 border-transparent',
                     isActive
-                      ? 'bg-black/10 text-gray-900'
-                      : 'text-gray-700 hover:bg-black/5 hover:text-gray-900'
+                      ? 'border-[var(--searcher-primary)] text-[var(--searcher-primary)] bg-[var(--searcher-light)]'
+                      : 'text-gray-600 hover:text-[var(--searcher-primary)] hover:border-[var(--searcher-primary)]'
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -114,11 +114,11 @@ export default function SearcherHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-black/5 transition"
+                className="relative p-2 rounded-lg border-2 border-transparent hover:border-[var(--searcher-primary)] transition-all group"
               >
-                <Bell className="w-5 h-5 text-gray-700" />
+                <Bell className="w-5 h-5 text-gray-600 group-hover:text-[var(--searcher-primary)] transition-colors" />
                 {notifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--searcher-primary)] rounded-full animate-pulse" />
                 )}
               </button>
 
@@ -194,20 +194,20 @@ export default function SearcherHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-black/5 transition"
+                className="flex items-center gap-2 p-2 rounded-lg border-2 border-transparent hover:border-[var(--searcher-primary)] transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 group-hover:border-[var(--searcher-primary)] transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
-                    <User className="w-5 h-5 text-gray-700" />
+                  <div className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-[var(--searcher-primary)] bg-white flex items-center justify-center transition-colors">
+                    <User className="w-5 h-5 text-gray-600 group-hover:text-[var(--searcher-primary)] transition-colors" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-gray-700" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-[var(--searcher-primary)] transition-colors" />
               </button>
 
               {/* Dropdown Menu */}
@@ -265,7 +265,7 @@ export default function SearcherHeader({
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="md:hidden flex items-center justify-around py-2 border-t border-yellow-300/20">
+        <nav className="md:hidden flex items-center justify-around py-2 border-t-2 border-[var(--searcher-primary)]">
           {navLinks.slice(0, 5).map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
@@ -276,7 +276,7 @@ export default function SearcherHeader({
                 href={link.href}
                 className={cn(
                   'flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition relative',
-                  isActive ? 'text-gray-900' : 'text-gray-600'
+                  isActive ? 'text-[var(--searcher-primary)]' : 'text-gray-600 hover:text-[var(--searcher-primary)]'
                 )}
               >
                 <Icon className="w-5 h-5" />
