@@ -1,8 +1,9 @@
 # Plan d'Action EasyCo MVP - Documentation Complète
 
 **Date de création**: 30 octobre 2025
-**Statut du projet**: Phase 1 terminée (Design System + Public Access)
-**Dernier commit**: `a7d474f` - Fix Badge variants
+**Dernière mise à jour**: 30 octobre 2025 - Session 2
+**Statut du projet**: Phase 1 & 2 terminées (Design System + Dashboards + Marketing Pages)
+**Dernier commit**: `42d62c1` - Fix TypeScript literal type error
 
 ---
 
@@ -180,11 +181,15 @@ const guestLimitedRoutes = [
 
 ---
 
-## 🚀 Phase 2 : Dashboards Role-Based (PRIORITAIRE)
+## 🚀 Phase 2 : Dashboards Role-Based (TERMINÉE ✅)
 
-### 2.1 Owner Dashboard - Focus FINTECH 💰
+**Status**: Implémentée et déployée
+**Commits**: `01700d3`, `8784683`, `032a4c6`, `42d62c1`
 
-**Fichier à créer**: `/app/dashboard/owner/page.tsx`
+### 2.1 Owner Dashboard v2 - Focus FINTECH 💰 ✅
+
+**Fichier créé**: `/app/dashboard/owner/v2/page.tsx`
+**Statut**: ✅ TERMINÉ
 
 #### KPIs en Haut
 ```tsx
