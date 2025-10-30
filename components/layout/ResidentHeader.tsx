@@ -72,19 +72,19 @@ export default function ResidentHeader({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--resident-primary)] border-b border-orange-400/20 shadow-md">
+    <header className="sticky top-0 z-40 bg-white border-b-2 border-[var(--resident-primary)] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo + Group Name */}
           <div className="flex items-center gap-4">
-            <Link href="/dashboard/resident" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
-                <Home className="w-6 h-6 text-[var(--resident-primary)]" />
+            <Link href="/dashboard/resident" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl border-2 border-[var(--resident-primary)] bg-white flex items-center justify-center group-hover:bg-[var(--resident-primary)] transition-colors">
+                <Home className="w-6 h-6 text-[var(--resident-primary)] group-hover:text-white transition-colors" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">EasyCo</h1>
-                <span className="text-xs font-medium text-orange-100">{groupName}</span>
+                <h1 className="text-xl font-bold text-gray-900 group-hover:text-[var(--resident-primary)] transition-colors">EasyCo</h1>
+                <span className="text-xs font-medium text-gray-600">{groupName}</span>
               </div>
             </Link>
           </div>
@@ -100,10 +100,10 @@ export default function ResidentHeader({
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative',
+                    'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all relative border-2 border-transparent',
                     isActive
-                      ? 'bg-white/20 text-white'
-                      : 'text-orange-100 hover:bg-white/10 hover:text-white'
+                      ? 'border-[var(--resident-primary)] text-[var(--resident-primary)] bg-[var(--resident-light)]'
+                      : 'text-gray-600 hover:text-[var(--resident-primary)] hover:border-[var(--resident-primary)]'
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -125,10 +125,10 @@ export default function ResidentHeader({
               <Link
                 href="/hub/finances"
                 className={cn(
-                  'hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition',
+                  'hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all border-2',
                   yourBalance > 0
-                    ? 'bg-green-500/20 text-white hover:bg-green-500/30'
-                    : 'bg-red-500/20 text-white hover:bg-red-500/30'
+                    ? 'bg-green-50 text-green-700 border-green-500 hover:bg-green-100'
+                    : 'bg-red-50 text-red-700 border-red-500 hover:bg-red-100'
                 )}
               >
                 <DollarSign className="w-4 h-4" />
@@ -143,21 +143,21 @@ export default function ResidentHeader({
             {/* Group Members Button */}
             <Link
               href="/hub/members"
-              className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
+              className="hidden sm:flex items-center gap-2 px-3 py-2 border-2 border-[var(--resident-primary)] bg-[var(--resident-light)] hover:bg-[var(--resident-primary)] rounded-lg transition-all group"
             >
-              <Users className="w-5 h-5 text-white" />
-              <span className="text-sm font-medium text-white">4 membres</span>
+              <Users className="w-5 h-5 text-[var(--resident-primary)] group-hover:text-white transition-colors" />
+              <span className="text-sm font-medium text-[var(--resident-primary)] group-hover:text-white transition-colors">4 membres</span>
             </Link>
 
             {/* Notifications Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-white/10 transition"
+                className="relative p-2 rounded-lg border-2 border-transparent hover:border-[var(--resident-primary)] transition-all group"
               >
-                <Bell className="w-5 h-5 text-white" />
+                <Bell className="w-5 h-5 text-gray-600 group-hover:text-[var(--resident-primary)] transition-colors" />
                 {notifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--resident-primary)] rounded-full animate-pulse" />
                 )}
               </button>
 
@@ -255,20 +255,20 @@ export default function ResidentHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition"
+                className="flex items-center gap-2 p-2 rounded-lg border-2 border-transparent hover:border-[var(--resident-primary)] transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 group-hover:border-[var(--resident-primary)] transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <User className="w-5 h-5 text-white" />
+                  <div className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-[var(--resident-primary)] bg-white flex items-center justify-center transition-colors">
+                    <User className="w-5 h-5 text-gray-600 group-hover:text-[var(--resident-primary)] transition-colors" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-white" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-[var(--resident-primary)] transition-colors" />
               </button>
 
               {/* Dropdown Menu */}
@@ -322,7 +322,7 @@ export default function ResidentHeader({
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="md:hidden flex items-center justify-around py-2 border-t border-orange-400/20">
+        <nav className="md:hidden flex items-center justify-around py-2 border-t-2 border-[var(--resident-primary)]">
           {navLinks.slice(0, 6).map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
@@ -333,7 +333,7 @@ export default function ResidentHeader({
                 href={link.href}
                 className={cn(
                   'flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition relative',
-                  isActive ? 'text-white' : 'text-orange-200'
+                  isActive ? 'text-[var(--resident-primary)]' : 'text-gray-600 hover:text-[var(--resident-primary)]'
                 )}
               >
                 <Icon className="w-5 h-5" />
@@ -348,16 +348,16 @@ export default function ResidentHeader({
       </div>
 
       {/* Quick Info Bar (Optional - shows quick stats) */}
-      <div className="hidden lg:block bg-[var(--resident-dark)] border-t border-orange-400/10">
+      <div className="hidden lg:block bg-[var(--resident-light)] border-t-2 border-[var(--resident-primary)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-6 text-orange-100">
-              <span>Tâches en cours: <strong className="text-white">{pendingTasks}</strong></span>
-              <span>Prochaine échéance: <strong className="text-white">Loyer 5 nov</strong></span>
-              <span>Membres actifs: <strong className="text-white">4/4</strong></span>
+            <div className="flex items-center gap-6 text-gray-700">
+              <span>Tâches en cours: <strong className="text-[var(--resident-primary)]">{pendingTasks}</strong></span>
+              <span>Prochaine échéance: <strong className="text-[var(--resident-primary)]">Loyer 5 nov</strong></span>
+              <span>Membres actifs: <strong className="text-[var(--resident-primary)]">4/4</strong></span>
             </div>
             <div className="flex items-center gap-2">
-              <Link href="/hub/calendar" className="text-orange-200 hover:text-white transition text-xs">
+              <Link href="/hub/calendar" className="text-gray-600 hover:text-[var(--resident-primary)] transition text-xs font-medium">
                 Voir calendrier →
               </Link>
             </div>
