@@ -2,17 +2,23 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { Home as HomeIcon, Users, Heart, Shield, Target, Zap } from 'lucide-react';
+import { Home as HomeIcon, Users, Heart, Shield, Target, Zap, Search as SearchIcon } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
+import PublicSearchBar from '@/components/PublicSearchBar';
 
 // ============================================================================
 // PERFORMANCE OPTIMIZATION: Dynamic Imports for Below-the-Fold Components
 // ============================================================================
-// These components are only visible after scrolling, so we lazy-load them
-// to reduce initial bundle size by ~30KB
-// ============================================================================
+
+const PropertyPreviewGrid = dynamic(() => import('@/components/PropertyPreviewGrid'), {
+  loading: () => (
+    <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="h-96 bg-gray-100 rounded-3xl animate-pulse" />
+    </div>
+  ),
+});
 
 const HowItWorks = dynamic(() => import('@/components/HowItWorks'), {
   loading: () => (
@@ -65,84 +71,82 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="flex items-center justify-center min-h-screen p-6">
-        <div className="max-w-4xl w-full text-center space-y-8">
+      {/* Hero Section with Search */}
+      <section className="pt-32 pb-16 px-6 bg-gradient-to-b from-purple-50 via-white to-gray-50">
+        <div className="max-w-6xl mx-auto">
 
-          {/* Logo */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-14 h-14 rounded-2xl bg-[var(--easy-purple)] flex items-center justify-center">
-              <HomeIcon className="w-8 h-8 text-white" />
+          {/* Logo and Title */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--easy-purple-900)] to-[var(--easy-purple-700)] flex items-center justify-center shadow-lg">
+                <HomeIcon className="w-9 h-9 text-white" />
+              </div>
+              <h1 className="text-4xl font-bold text-[var(--easy-purple-900)]">EasyCo</h1>
             </div>
-            <h1 className="text-3xl font-bold text-[var(--easy-purple)]">EasyCo</h1>
-          </div>
 
-          {/* Icon trio */}
-          <div className="flex items-center justify-center gap-4 py-4">
-            <div className="w-16 h-16 rounded-full bg-[var(--easy-yellow)] flex items-center justify-center">
-              <Users className="w-8 h-8 text-[var(--easy-purple)]" />
-            </div>
-            <div className="w-16 h-16 rounded-full bg-[var(--easy-purple)] flex items-center justify-center">
-              <Heart className="w-8 h-8 text-white" />
-            </div>
-            <div className="w-16 h-16 rounded-full bg-[var(--easy-yellow)] flex items-center justify-center">
-              <HomeIcon className="w-8 h-8 text-[var(--easy-purple)]" />
-            </div>
-          </div>
-
-          {/* Title and subtitle */}
-          <div className="space-y-3 max-w-2xl mx-auto">
-            <h2 className="text-4xl font-bold text-[var(--easy-purple)]">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               {landing.hero.title}
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 mb-2">
               {landing.hero.subtitle}
+            </p>
+
+            {/* Trust Strip */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 mt-6">
+              <div className="flex items-center gap-2">
+                <span className="text-green-500 font-bold">✓</span>
+                <span className="font-medium">{landing.trust.idVerified}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-500 font-bold">✓</span>
+                <span className="font-medium">{landing.trust.listingsVerified}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-500 font-bold">✓</span>
+                <span className="font-medium">{landing.trust.support}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Public Search Bar */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <PublicSearchBar variant="hero" />
+          </div>
+
+          {/* Or Create Account CTAs */}
+          <div className="text-center">
+            <p className="text-sm text-gray-500 mb-4">
+              Ou crée ton compte pour accéder à toutes les fonctionnalités
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/onboarding/searcher/basic-info"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--searcher-primary)] text-black font-semibold hover:bg-[var(--searcher-hover)] transition-all shadow-md hover:shadow-lg"
+              >
+                <SearchIcon className="w-5 h-5" />
+                {landing.hero.ctaSearcher}
+              </Link>
+
+              <Link
+                href="/onboarding/owner/basic-info"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--owner-primary)] text-white font-semibold hover:bg-[var(--owner-hover)] transition-all shadow-md hover:shadow-lg"
+              >
+                <HomeIcon className="w-5 h-5" />
+                {landing.hero.ctaOwner}
+              </Link>
+            </div>
+
+            {/* Social Proof */}
+            <p className="text-sm text-gray-500 mt-6">
+              {landing.socialProof.claim}
             </p>
           </div>
 
-          {/* Trust Strip */}
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 py-4">
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              {landing.trust.idVerified}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              {landing.trust.listingsVerified}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              {landing.trust.reporting}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              {landing.trust.support}
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-2xl mx-auto">
-            <Link
-              href="/onboarding/searcher/basic-info"
-              className="py-4 px-6 rounded-full bg-[var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
-            >
-              {landing.hero.ctaSearcher}
-            </Link>
-
-            <Link
-              href="/onboarding/owner/basic-info"
-              className="py-4 px-6 rounded-full bg-[var(--easy-purple)] text-white font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
-            >
-              {landing.hero.ctaOwner}
-            </Link>
-          </div>
-
-          {/* Social Proof */}
-          <p className="text-sm text-gray-400 pt-4">
-            {landing.socialProof.claim}
-          </p>
         </div>
       </section>
+
+      {/* Property Preview Grid */}
+      <PropertyPreviewGrid limit={6} />
 
       {/* Benefits Section */}
       <section className="py-20 px-6 bg-white">

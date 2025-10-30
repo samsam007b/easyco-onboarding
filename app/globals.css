@@ -7,37 +7,58 @@
    ============================================ */
 
 :root {
-  /* Brand Colors */
-  --easy-purple-900: #4A148C;   /* Primary actions, headers */
-  --easy-purple-700: #6A1B9A;   /* Hover states */
-  --easy-purple-500: #8E24AA;   /* Lighter purple */
-  --easy-purple-300: #BA68C8;   /* Very light purple */
-  --easy-purple-100: #E1BEE7;   /* Backgrounds, subtle highlights */
-  --easy-purple-50: #F3E5F5;    /* Lightest purple */
+  /* ============================================
+     Role-Specific Colors (Updated to match PRD)
+     ============================================ */
+
+  /* SEARCHER - Yellow (#FFD249) */
+  --searcher-primary: #FFD249;
+  --searcher-hover: #FFC107;
+  --searcher-light: #FFF9E6;
+  --searcher-dark: #F9A825;
+
+  /* OWNER - Mauve (#6E56CF) */
+  --owner-primary: #6E56CF;
+  --owner-hover: #5B45B8;
+  --owner-light: #F3F1FF;
+  --owner-dark: #4A148C;
+
+  /* RESIDENT - Orange (#FF6F3C) */
+  --resident-primary: #FF6F3C;
+  --resident-hover: #FF5722;
+  --resident-light: #FFF3EF;
+  --resident-dark: #E64A19;
+
+  /* Legacy Brand Colors (backward compatibility) */
+  --easy-purple-900: #6E56CF;   /* Primary Owner */
+  --easy-purple-700: #5B45B8;   /* Hover states */
+  --easy-purple-500: #8E7AD6;   /* Lighter purple */
+  --easy-purple-300: #BAB2E3;   /* Very light purple */
+  --easy-purple-100: #F3F1FF;   /* Backgrounds */
+  --easy-purple-50: #F9F8FF;    /* Lightest purple */
 
   --easy-yellow-600: #FFC107;   /* Hover states */
-  --easy-yellow-500: #FFD600;   /* Primary yellow (CTAs, accents) */
+  --easy-yellow-500: #FFD249;   /* Primary Searcher */
   --easy-yellow-400: #FFEB3B;   /* Lighter yellow */
-  --easy-yellow-100: #FFF9C4;   /* Backgrounds */
-  --easy-yellow-50: #FFFDE7;    /* Lightest yellow */
+  --easy-yellow-100: #FFF9E6;   /* Backgrounds */
+  --easy-yellow-50: #FFFEF0;    /* Lightest yellow */
+
+  --easy-orange-600: #FF5722;   /* Hover */
+  --easy-orange-500: #FF6F3C;   /* Primary Resident */
+  --easy-orange-400: #FF8C5C;   /* Lighter */
+  --easy-orange-100: #FFF3EF;   /* Backgrounds */
+  --easy-orange-50: #FFFAF8;    /* Lightest */
 
   /* Legacy support */
   --easy-purple: var(--easy-purple-900);
   --easy-yellow: var(--easy-yellow-500);
-
-  /* NEW: Resident Color */
-  --easy-orange-600: #E65A2B;   /* Hover */
-  --easy-orange-500: #FF6F3C;   /* Primary (Resident) */
-  --easy-orange-400: #FF8C5C;   /* Lighter */
-  --easy-orange-100: #FFE5DC;   /* Backgrounds */
-  --easy-orange-50: #FFF3EF;    /* Lightest */
   --easy-orange: var(--easy-orange-500);
 
-  /* Role-based Dynamic Variables (change based on active role) */
-  --role-primary: var(--easy-purple-900);
-  --role-light: rgba(74, 20, 140, 0.1);
-  --role-gradient-from: #4A148C;
-  --role-gradient-to: #6A1B9A;
+  /* Role-based Dynamic Variables (default: Owner) */
+  --role-primary: var(--owner-primary);
+  --role-hover: var(--owner-hover);
+  --role-light: var(--owner-light);
+  --role-dark: var(--owner-dark);
 
   /* Neutral Colors */
   --gray-900: #1A1A1A;          /* Text primary */
@@ -340,36 +361,41 @@ html {
    Role-Based Theming
    ============================================ */
 
-/* Searcher Theme (Yellow) */
+/* SEARCHER Theme (Yellow #FFD249) */
 body.theme-searcher {
-  --role-primary: var(--easy-yellow-500);
-  --role-light: rgba(255, 214, 0, 0.1);
-  --role-gradient-from: #FFD700;
-  --role-gradient-to: #FFC700;
+  --role-primary: var(--searcher-primary);
+  --role-hover: var(--searcher-hover);
+  --role-light: var(--searcher-light);
+  --role-dark: var(--searcher-dark);
 }
 
 body.theme-searcher ::selection {
-  background-color: var(--easy-yellow-100);
+  background-color: var(--searcher-light);
   color: var(--gray-900);
 }
 
-/* Owner Theme (Purple) - Default */
+/* OWNER Theme (Mauve #6E56CF) - Default */
 body.theme-owner {
-  --role-primary: var(--easy-purple-900);
-  --role-light: rgba(74, 20, 140, 0.1);
-  --role-gradient-from: #4A148C;
-  --role-gradient-to: #6A1B9A;
+  --role-primary: var(--owner-primary);
+  --role-hover: var(--owner-hover);
+  --role-light: var(--owner-light);
+  --role-dark: var(--owner-dark);
 }
 
-/* Resident Theme (Orange) */
+body.theme-owner ::selection {
+  background-color: var(--owner-light);
+  color: var(--owner-dark);
+}
+
+/* RESIDENT Theme (Orange #FF6F3C) */
 body.theme-resident {
-  --role-primary: var(--easy-orange-500);
-  --role-light: rgba(255, 111, 60, 0.1);
-  --role-gradient-from: #FF6F3C;
-  --role-gradient-to: #FF8C5C;
+  --role-primary: var(--resident-primary);
+  --role-hover: var(--resident-hover);
+  --role-light: var(--resident-light);
+  --role-dark: var(--resident-dark);
 }
 
 body.theme-resident ::selection {
-  background-color: var(--easy-orange-100);
+  background-color: var(--resident-light);
   color: var(--gray-900);
 }

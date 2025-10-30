@@ -73,6 +73,13 @@ export async function middleware(request: NextRequest) {
     '/consent',
     '/terms',
     '/privacy',
+    '/properties/browse', // Public property search
+    '/legal',
+  ]
+
+  // Guest-limited routes (accessible without auth but with limitations)
+  const guestLimitedRoutes = [
+    '/properties/', // Property detail pages (guest mode)
   ]
 
   const welcomeRoute = '/welcome'
@@ -147,6 +154,9 @@ export async function middleware(request: NextRequest) {
   // Check if current route is public
   const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route))
 
+  // Check if current route is guest-limited (accessible but with restrictions)
+  const isGuestLimitedRoute = guestLimitedRoutes.some(route => pathname.startsWith(route))
+
   // Check if current route is auth-only (login/signup)
   const isAuthOnlyRoute = authOnlyRoutes.some(route => pathname === route || pathname.startsWith(route))
 
@@ -184,6 +194,15 @@ export async function middleware(request: NextRequest) {
 
     // Fallback: If user exists but no userData found, redirect to welcome
     return NextResponse.redirect(new URL(welcomeRoute, request.url))
+  }
+
+  // Handle guest-limited routes (allow access but add guest mode header)
+  if (isGuestLimitedRoute && !user) {
+    // Allow access but mark as guest mode
+    const guestResponse = NextResponse.next()
+    guestResponse.headers.set('X-Guest-Mode', 'true')
+    guestResponse.headers.set('X-Guest-Limit', '20') // Limit results for guests
+    return guestResponse
   }
 
   // Handle unauthenticated users trying to access protected routes
