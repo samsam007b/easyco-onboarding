@@ -38,7 +38,7 @@ export function useOnlineStatus(userId: string | null) {
         const online = new Set<string>();
 
         Object.keys(state).forEach((presenceId) => {
-          const presences = state[presenceId] as OnlineUser[];
+          const presences = state[presenceId] as unknown as OnlineUser[];
           presences.forEach((presence) => {
             online.add(presence.userId);
           });
@@ -49,7 +49,7 @@ export function useOnlineStatus(userId: string | null) {
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
         setOnlineUsers((prev) => {
           const updated = new Set(prev);
-          newPresences.forEach((presence: OnlineUser) => {
+          (newPresences as unknown as OnlineUser[]).forEach((presence) => {
             updated.add(presence.userId);
           });
           return updated;
@@ -58,7 +58,7 @@ export function useOnlineStatus(userId: string | null) {
       .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
         setOnlineUsers((prev) => {
           const updated = new Set(prev);
-          leftPresences.forEach((presence: OnlineUser) => {
+          (leftPresences as unknown as OnlineUser[]).forEach((presence) => {
             updated.delete(presence.userId);
           });
           return updated;
