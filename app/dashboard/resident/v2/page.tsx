@@ -163,7 +163,7 @@ export default function ResidentDashboardV2() {
   const pendingTasks = myTasks.length;
 
   // Mock balance calculation (to be replaced with real data)
-  const yourBalance: number = -15; // You owe 15€
+  const yourBalance = -15 as number; // You owe 15€
 
   const groupName = groupData?.name || 'Ma Coloc';
   const groupMembers = groupData?.members?.length || 4;
