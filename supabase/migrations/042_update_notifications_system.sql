@@ -267,12 +267,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create trigger for new favorites
-DROP TRIGGER IF EXISTS trigger_notify_new_favorite ON favorites;
-CREATE TRIGGER trigger_notify_new_favorite
-  AFTER INSERT ON public.favorites
-  FOR EACH ROW
-  EXECUTE FUNCTION notify_new_favorite();
+-- Create trigger for new favorites (only if favorites table exists)
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'favorites') THEN
+    EXECUTE 'DROP TRIGGER IF EXISTS trigger_notify_new_favorite ON public.favorites';
+    EXECUTE 'CREATE TRIGGER trigger_notify_new_favorite
+      AFTER INSERT ON public.favorites
+      FOR EACH ROW
+      EXECUTE FUNCTION notify_new_favorite()';
+    RAISE NOTICE '✅ Created trigger on favorites table';
+  ELSE
+    RAISE NOTICE '⚠️  Favorites table does not exist - skipping trigger creation';
+  END IF;
+END $$;
 
 -- Function to clean up old read notifications (can be run periodically)
 CREATE OR REPLACE FUNCTION cleanup_old_notifications()
