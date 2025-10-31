@@ -124,16 +124,79 @@ export default function PropertiesBrowsePageV2() {
     }
   });
 
-  // Handle favorite click (show CTA for guests)
-  const handleFavoriteClick = useCallback((propertyId: string) => {
+  // Load user favorites
+  const [userFavorites, setUserFavorites] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      if (!isAuthenticated) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from('favorites')
+        .select('property_id')
+        .eq('user_id', user.id);
+
+      if (data) {
+        setUserFavorites(new Set(data.map(f => f.property_id)));
+      }
+    };
+
+    loadFavorites();
+  }, [isAuthenticated, supabase]);
+
+  // Handle favorite click (show CTA for guests, toggle for authenticated)
+  const handleFavoriteClick = useCallback(async (propertyId: string) => {
     if (!isAuthenticated) {
       setConversionModalType('favorite');
       setShowConversionModal(true);
       return;
     }
-    // TODO: Handle authenticated favorite logic
-    toast.success('Propriété ajoutée aux favoris !');
-  }, [isAuthenticated]);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const isFavorite = userFavorites.has(propertyId);
+
+    if (isFavorite) {
+      // Remove from favorites
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('property_id', propertyId);
+
+      if (error) {
+        toast.error('Erreur lors de la suppression');
+        return;
+      }
+
+      setUserFavorites(prev => {
+        const next = new Set(prev);
+        next.delete(propertyId);
+        return next;
+      });
+      toast.success('Retiré des favoris');
+    } else {
+      // Add to favorites
+      const { error } = await supabase
+        .from('favorites')
+        .insert({
+          user_id: user.id,
+          property_id: propertyId
+        });
+
+      if (error) {
+        toast.error('Erreur lors de l\'ajout');
+        return;
+      }
+
+      setUserFavorites(prev => new Set(prev).add(propertyId));
+      toast.success('Ajouté aux favoris !');
+    }
+  }, [isAuthenticated, userFavorites, supabase]);
 
   // Handle signup from conversion modal
   const handleSignup = useCallback(() => {
@@ -577,6 +640,7 @@ export default function PropertiesBrowsePageV2() {
                     compatibilityScore={property.compatibilityScore}
                     variant="default"
                     onFavoriteClick={handleFavoriteClick}
+                    isFavorite={userFavorites.has(property.id)}
                   />
                 );
               })}

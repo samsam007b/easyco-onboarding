@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Heart, Users, MessageCircle, Search, Bell, ChevronDown, LogOut, Settings, User } from 'lucide-react';
+import { Home, Heart, Users, MessageCircle, Search, Bell, ChevronDown, LogOut, Settings, User, Bookmark } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { createClient } from '@/lib/auth/supabase-client';
 
 interface SearcherHeaderProps {
   profile: {
@@ -27,6 +28,41 @@ export default function SearcherHeader({
   const pathname = usePathname();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const supabase = createClient();
+
+  // Load favorites count
+  useEffect(() => {
+    const loadFavoritesCount = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { count } = await supabase
+        .from('favorites')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      setFavoritesCount(count || 0);
+    };
+
+    loadFavoritesCount();
+
+    // Subscribe to changes
+    const channel = supabase
+      .channel('favorites-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'favorites'
+      }, () => {
+        loadFavoritesCount();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const navLinks = [
     {
@@ -40,6 +76,12 @@ export default function SearcherHeader({
       label: 'Explorer',
       icon: Search,
       badge: null,
+    },
+    {
+      href: '/dashboard/searcher/favorites',
+      label: 'Favoris',
+      icon: Bookmark,
+      badge: favoritesCount > 0 ? favoritesCount : null,
     },
     {
       href: '/matching',
