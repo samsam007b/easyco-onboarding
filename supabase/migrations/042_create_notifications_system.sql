@@ -30,15 +30,21 @@ CREATE TABLE IF NOT EXISTS public.notifications (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_notifications_user_id ON public.notifications(user_id);
-CREATE INDEX idx_notifications_user_unread ON public.notifications(user_id, is_read) WHERE is_read = false;
-CREATE INDEX idx_notifications_created_at ON public.notifications(created_at DESC);
-CREATE INDEX idx_notifications_type ON public.notifications(type);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON public.notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_unread ON public.notifications(user_id, is_read) WHERE is_read = false;
+CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON public.notifications(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_type ON public.notifications(type);
 
 -- Enable Row Level Security
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own notifications" ON public.notifications;
+DROP POLICY IF EXISTS "Users can update own notifications" ON public.notifications;
+DROP POLICY IF EXISTS "Users can delete own notifications" ON public.notifications;
+DROP POLICY IF EXISTS "Service role can insert notifications" ON public.notifications;
 
 -- Users can view their own notifications
 CREATE POLICY "Users can view own notifications"
