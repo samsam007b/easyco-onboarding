@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -142,10 +143,13 @@ export function ChatWindow({
           )}
 
           {otherUserPhoto ? (
-            <img
+            <Image
               src={otherUserPhoto}
               alt={otherUserName}
+              width={40}
+              height={40}
               className="w-10 h-10 rounded-full object-cover"
+              priority={false}
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
@@ -294,10 +298,13 @@ function MessageBubble({
         {showAvatar && !isSender && (
           <>
             {otherUserPhoto ? (
-              <img
+              <Image
                 src={otherUserPhoto}
                 alt={otherUserName}
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded-full object-cover"
+                priority={false}
               />
             ) : (
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-semibold">

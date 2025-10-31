@@ -63,6 +63,19 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
+  // Handle route redirects for standardization
+  const routeRedirects: Record<string, string> = {
+    '/properties/new': '/properties/add',
+    '/groups/new': '/groups/create',
+    '/auth/signup': '/signup',
+    '/auth/login': '/login',
+  }
+
+  // Check if current path needs redirection
+  if (routeRedirects[pathname]) {
+    return NextResponse.redirect(new URL(routeRedirects[pathname], request.url))
+  }
+
   // Define route categories
   const publicRoutes = [
     '/',

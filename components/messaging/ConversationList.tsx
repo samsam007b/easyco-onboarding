@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -113,10 +114,13 @@ function ConversationItem({ conversation, isSelected, onClick, isUserOnline }: C
       {/* Avatar */}
       <div className="relative flex-shrink-0">
         {conversation.other_user_photo ? (
-          <img
+          <Image
             src={conversation.other_user_photo}
             alt={conversation.other_user_name}
+            width={48}
+            height={48}
             className="w-12 h-12 rounded-full object-cover"
+            priority={false}
           />
         ) : (
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
