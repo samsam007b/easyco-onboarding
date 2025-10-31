@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Search, SlidersHorizontal, Lock } from 'lucide-react';
+import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
 import PropertyCard from '@/components/PropertyCard';
@@ -19,6 +20,9 @@ import PublicSearchBar from '@/components/PublicSearchBar';
 import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
+import { ConversionModal, type ConversionModalType } from '@/components/conversion/ConversionModal';
+import { useExitIntent } from '@/lib/hooks/use-exit-intent';
+import { useScrollTracker } from '@/lib/hooks/use-scroll-tracker';
 
 interface Property {
   id: string;
@@ -91,6 +95,50 @@ export default function PropertiesBrowsePageV2() {
     amenities: [],
     furnished: null
   });
+
+  // Conversion modals state
+  const [showConversionModal, setShowConversionModal] = useState(false);
+  const [conversionModalType, setConversionModalType] = useState<ConversionModalType>('scroll');
+
+  // Exit intent hook (only for guests)
+  useExitIntent({
+    enabled: isAuthenticated === false,
+    onExitIntent: () => {
+      setConversionModalType('exitIntent');
+      setShowConversionModal(true);
+    },
+    delay: 500
+  });
+
+  // Scroll tracker hook (show modal after viewing 5 properties)
+  const { trackView, viewedItemsCount } = useScrollTracker({
+    enabled: isAuthenticated === false,
+    threshold: 5,
+    onThresholdReached: () => {
+      setConversionModalType('scroll');
+      setShowConversionModal(true);
+      toast.info('Tu as vu plusieurs propriétés intéressantes ! 👀', {
+        description: 'Crée ton compte pour débloquer toutes les fonctionnalités',
+        duration: 5000
+      });
+    }
+  });
+
+  // Handle favorite click (show CTA for guests)
+  const handleFavoriteClick = useCallback((propertyId: string) => {
+    if (!isAuthenticated) {
+      setConversionModalType('favorite');
+      setShowConversionModal(true);
+      return;
+    }
+    // TODO: Handle authenticated favorite logic
+    toast.success('Propriété ajoutée aux favoris !');
+  }, [isAuthenticated]);
+
+  // Handle signup from conversion modal
+  const handleSignup = useCallback(() => {
+    router.push('/signup');
+  }, [router]);
 
   // Check authentication status
   useEffect(() => {
@@ -515,15 +563,23 @@ export default function PropertiesBrowsePageV2() {
         {propertiesWithScores && propertiesWithScores.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {propertiesWithScores.map((property) => (
-                <PropertyCard
-                  key={property.id}
-                  property={property}
-                  showCompatibilityScore={isAuthenticated}
-                  compatibilityScore={property.compatibilityScore}
-                  variant="default"
-                />
-              ))}
+              {propertiesWithScores.map((property, index) => {
+                // Track view for guests when they see properties
+                if (!isAuthenticated && index < 10) {
+                  setTimeout(() => trackView(), index * 100);
+                }
+
+                return (
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    showCompatibilityScore={isAuthenticated}
+                    compatibilityScore={property.compatibilityScore}
+                    variant="default"
+                    onFavoriteClick={handleFavoriteClick}
+                  />
+                );
+              })}
             </div>
 
             {/* Pagination (authenticated only) */}
@@ -618,6 +674,14 @@ export default function PropertiesBrowsePageV2() {
           </div>
         )}
       </main>
+
+      {/* Conversion Modal */}
+      <ConversionModal
+        isOpen={showConversionModal}
+        onClose={() => setShowConversionModal(false)}
+        type={conversionModalType}
+        onSignup={handleSignup}
+      />
     </div>
   );
 }
