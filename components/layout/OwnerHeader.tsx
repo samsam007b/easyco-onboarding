@@ -6,6 +6,7 @@ import { LayoutDashboard, TrendingUp, Home as HomeIcon, Users, MessageCircle, Pl
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { NotificationCenter } from '@/components/NotificationCenter';
 
 interface OwnerHeaderProps {
   profile: {
@@ -189,85 +190,8 @@ export default function OwnerHeader({
               <span>Ajouter bien</span>
             </Link>
 
-            {/* Notifications Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg border-2 border-transparent hover:border-[var(--owner-primary)] transition-all group"
-              >
-                <Bell className="w-5 h-5 text-gray-600 group-hover:text-[var(--owner-primary)] transition-colors" />
-                {notifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--owner-primary)] rounded-full animate-pulse" />
-                )}
-              </button>
-
-              {/* Notifications Dropdown Menu */}
-              {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-gray-100">
-                    <h3 className="font-semibold text-gray-900">Notifications</h3>
-                    {notifications > 0 && (
-                      <p className="text-xs text-gray-500">{notifications} nouvelles</p>
-                    )}
-                  </div>
-                  <div className="max-h-96 overflow-y-auto">
-                    {pendingApplications > 0 ? (
-                      <>
-                        {/* Mock notifications for owners */}
-                        <Link
-                          href="/applications"
-                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                          onClick={() => setShowNotifications(false)}
-                        >
-                          <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Users className="w-5 h-5 text-purple-600" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                              Nouvelle candidature
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              {pendingApplications} candidature{pendingApplications > 1 ? 's' : ''} en attente de review
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">Il y a 10 minutes</p>
-                          </div>
-                        </Link>
-                        <Link
-                          href="/analytics/revenue"
-                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                          onClick={() => setShowNotifications(false)}
-                        >
-                          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <DollarSign className="w-5 h-5 text-green-600" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                              Paiement reçu
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              €{Math.round(monthlyRevenue / 4)} de loyer pour Appart Ixelles
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">Il y a 2 heures</p>
-                          </div>
-                        </Link>
-                      </>
-                    ) : (
-                      <div className="px-4 py-8 text-center">
-                        <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                        <p className="text-sm text-gray-600">Aucune notification</p>
-                      </div>
-                    )}
-                  </div>
-                  {notifications > 0 && (
-                    <div className="px-4 py-2 border-t border-gray-100">
-                      <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
-                        Tout marquer comme lu
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+            {/* Notifications Center */}
+            <NotificationCenter />
 
             {/* Profile Dropdown */}
             <div className="relative">
