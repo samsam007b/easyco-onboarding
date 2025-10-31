@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Heart, Users, MessageCircle, Search, Bell, ChevronDown, LogOut, Settings, User, Bookmark } from 'lucide-react';
+import { Home, Heart, Users, MessageCircle, Search, Bell, ChevronDown, LogOut, Settings, User, Bookmark, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -275,6 +275,15 @@ export default function SearcherHeader({
                     >
                       <User className="w-5 h-5 text-gray-600" />
                       <span className="text-gray-700">Mon Profil</span>
+                    </Link>
+
+                    <Link
+                      href="/dashboard/searcher/saved-searches"
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition"
+                      onClick={() => setShowProfileMenu(false)}
+                    >
+                      <Save className="w-5 h-5 text-gray-600" />
+                      <span className="text-gray-700">Recherches Sauvegardées</span>
                     </Link>
 
                     <Link
