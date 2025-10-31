@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, SlidersHorizontal, Lock } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, Lock, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
@@ -23,6 +23,8 @@ import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from
 import { ConversionModal, type ConversionModalType } from '@/components/conversion/ConversionModal';
 import { useExitIntent } from '@/lib/hooks/use-exit-intent';
 import { useScrollTracker } from '@/lib/hooks/use-scroll-tracker';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 interface Property {
   id: string;
@@ -99,6 +101,10 @@ export default function PropertiesBrowsePageV2() {
   // Conversion modals state
   const [showConversionModal, setShowConversionModal] = useState(false);
   const [conversionModalType, setConversionModalType] = useState<ConversionModalType>('scroll');
+
+  // Save search modal state
+  const [showSaveSearchModal, setShowSaveSearchModal] = useState(false);
+  const [searchName, setSearchName] = useState('');
 
   // Exit intent hook (only for guests)
   useExitIntent({
@@ -202,6 +208,55 @@ export default function PropertiesBrowsePageV2() {
   const handleSignup = useCallback(() => {
     router.push('/signup');
   }, [router]);
+
+  // Handle save search
+  const handleSaveSearch = async () => {
+    if (!isAuthenticated) {
+      toast.error('Connecte-toi pour sauvegarder des recherches');
+      router.push('/login');
+      return;
+    }
+
+    if (!searchName.trim()) {
+      toast.error('Entre un nom pour cette recherche');
+      return;
+    }
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('saved_searches')
+        .insert({
+          user_id: user.id,
+          name: searchName,
+          filters: {
+            city: filters.city,
+            minPrice: filters.minPrice,
+            maxPrice: filters.maxPrice,
+            bedrooms: filters.bedrooms,
+            bathrooms: filters.bathrooms,
+            propertyType: filters.propertyType,
+            furnished: filters.furnished,
+            amenities: filters.amenities
+          }
+        });
+
+      if (error) {
+        console.error('Error saving search:', error);
+        toast.error('Erreur lors de la sauvegarde');
+        return;
+      }
+
+      toast.success('Recherche sauvegardée !');
+      setShowSaveSearchModal(false);
+      setSearchName('');
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Une erreur est survenue');
+    }
+  };
 
   // Check authentication status
   useEffect(() => {
@@ -479,14 +534,27 @@ export default function PropertiesBrowsePageV2() {
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              Filtres
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filtres
+              </Button>
+
+              {isAuthenticated && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowSaveSearchModal(true)}
+                  className="flex items-center gap-2 border-purple-300 text-purple-700 hover:bg-purple-50"
+                >
+                  <Save className="w-4 h-4" />
+                  Sauvegarder
+                </Button>
+              )}
+            </div>
 
             <select
               value={sortBy}
@@ -746,6 +814,70 @@ export default function PropertiesBrowsePageV2() {
         type={conversionModalType}
         onSignup={handleSignup}
       />
+
+      {/* Save Search Modal */}
+      <Dialog open={showSaveSearchModal} onOpenChange={setShowSaveSearchModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Save className="w-5 h-5 text-purple-600" />
+              Sauvegarder cette recherche
+            </DialogTitle>
+            <DialogDescription>
+              Donne un nom à cette recherche pour la retrouver facilement et recevoir des alertes quand de nouvelles propriétés correspondent à tes critères.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div>
+              <label htmlFor="search-name" className="block text-sm font-medium text-gray-700 mb-2">
+                Nom de la recherche
+              </label>
+              <Input
+                id="search-name"
+                type="text"
+                placeholder="Ex: Appart 2ch Paris Centre"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSaveSearch()}
+              />
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm font-medium text-gray-700 mb-2">Filtres actifs:</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                {filters.city && <li>📍 Ville: {filters.city}</li>}
+                {(filters.minPrice > 0 || filters.maxPrice < 3000) && (
+                  <li>💰 Prix: €{filters.minPrice} - €{filters.maxPrice}</li>
+                )}
+                {filters.bedrooms && <li>🛏️ Chambres: {filters.bedrooms}</li>}
+                {filters.bathrooms && <li>🚿 Salles de bain: {filters.bathrooms}</li>}
+                {filters.propertyType && filters.propertyType !== 'all' && <li>🏠 Type: {filters.propertyType}</li>}
+                {filters.furnished !== null && <li>✨ {filters.furnished ? 'Meublé' : 'Non meublé'}</li>}
+              </ul>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowSaveSearchModal(false);
+                setSearchName('');
+              }}
+              className="flex-1"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSaveSearch}
+              className="flex-1 bg-gradient-to-r from-purple-600 to-yellow-500 text-white"
+            >
+              Sauvegarder
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
