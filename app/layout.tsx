@@ -21,6 +21,10 @@ const WebVitalsReporter = dynamic(() => import('@/components/WebVitalsReporter')
   ssr: false,
 })
 
+const PWAInstallPrompt = dynamic(() => import('@/components/PWAInstallPrompt').then(mod => ({ default: mod.PWAInstallPrompt })), {
+  ssr: false,
+})
+
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
@@ -85,6 +89,17 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   category: 'Real Estate',
 
+  // PWA Configuration
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'EasyCo',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+
   // Verification (à ajouter quand disponibles)
   // verification: {
   //   google: 'your-google-verification-code',
@@ -95,6 +110,23 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
+      <head>
+        {/* PWA Meta Tags */}
+        <meta name="theme-color" content="#7c3aed" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="EasyCo" />
+
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+
+        {/* Favicon */}
+        <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-192x192.png" />
+      </head>
       <body className="min-h-screen">
         <Analytics />
         <WebVitalsReporter />
@@ -102,6 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Toaster position="top-right" />
           <CookieBanner />
+          <PWAInstallPrompt />
           <DevTools />
         </ClientProviders>
       </body>
