@@ -6,6 +6,7 @@ import { Home, CheckSquare, DollarSign, Calendar, Ticket, MessageCircle, Bell, C
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { NotificationCenter } from '@/components/NotificationCenter';
 
 interface ResidentHeaderProps {
   profile: {
@@ -149,107 +150,8 @@ export default function ResidentHeader({
               <span className="text-sm font-medium text-[var(--resident-primary)] group-hover:text-white transition-colors">4 membres</span>
             </Link>
 
-            {/* Notifications Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg border-2 border-transparent hover:border-[var(--resident-primary)] transition-all group"
-              >
-                <Bell className="w-5 h-5 text-gray-600 group-hover:text-[var(--resident-primary)] transition-colors" />
-                {notifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--resident-primary)] rounded-full animate-pulse" />
-                )}
-              </button>
-
-              {/* Notifications Dropdown Menu */}
-              {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-gray-100">
-                    <h3 className="font-semibold text-gray-900">Notifications</h3>
-                    {notifications > 0 && (
-                      <p className="text-xs text-gray-500">{notifications} nouvelles</p>
-                    )}
-                  </div>
-                  <div className="max-h-96 overflow-y-auto">
-                    {pendingTasks > 0 || yourBalance !== 0 ? (
-                      <>
-                        {/* Mock notifications for residents */}
-                        {pendingTasks > 0 && (
-                          <Link
-                            href="/hub/tasks"
-                            className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <CheckSquare className="w-5 h-5 text-orange-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                Tâches à faire
-                              </p>
-                              <p className="text-xs text-gray-600">
-                                {pendingTasks} tâche{pendingTasks > 1 ? 's' : ''} assignée{pendingTasks > 1 ? 's' : ''} à toi
-                              </p>
-                              <p className="text-xs text-gray-400 mt-1">À faire aujourd'hui</p>
-                            </div>
-                          </Link>
-                        )}
-                        {yourBalance < 0 && (
-                          <Link
-                            href="/hub/finances"
-                            className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <DollarSign className="w-5 h-5 text-red-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                Paiement en attente
-                              </p>
-                              <p className="text-xs text-gray-600">
-                                Tu dois €{Math.abs(yourBalance)} à la coloc
-                              </p>
-                              <p className="text-xs text-gray-400 mt-1">Échéance: 5 jours</p>
-                            </div>
-                          </Link>
-                        )}
-                        <Link
-                          href="/hub/calendar"
-                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                          onClick={() => setShowNotifications(false)}
-                        >
-                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Calendar className="w-5 h-5 text-blue-600" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                              Événement à venir
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              Soirée coloc ce vendredi à 20h
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">Dans 3 jours</p>
-                          </div>
-                        </Link>
-                      </>
-                    ) : (
-                      <div className="px-4 py-8 text-center">
-                        <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                        <p className="text-sm text-gray-600">Aucune notification</p>
-                      </div>
-                    )}
-                  </div>
-                  {notifications > 0 && (
-                    <div className="px-4 py-2 border-t border-gray-100">
-                      <button className="text-sm text-orange-600 hover:text-orange-700 font-medium">
-                        Tout marquer comme lu
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+            {/* Notifications Center */}
+            <NotificationCenter />
 
             {/* Profile Dropdown */}
             <div className="relative">
