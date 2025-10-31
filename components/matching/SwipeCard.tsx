@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { Heart, X, MapPin, Briefcase, Calendar, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +13,7 @@ interface SwipeCardProps {
   onCardClick?: () => void;
 }
 
-export function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
+export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
   const [exitX, setExitX] = useState(0);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-30, 30]);
@@ -36,7 +36,7 @@ export function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
     ? getCompatibilityQuality(user.compatibility_score)
     : null;
 
-  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 100;
 
     if (info.offset.x > threshold) {
@@ -48,7 +48,7 @@ export function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
       setExitX(-1000);
       onSwipe('left');
     }
-  };
+  }, [onSwipe]);
 
   return (
     <motion.div
@@ -232,4 +232,4 @@ export function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
       </div>
     </motion.div>
   );
-}
+});

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -277,22 +277,26 @@ export default function OwnerApplicationsPage() {
     return true;
   };
 
-  // Filter applications
-  const filteredIndividualApps = applications.filter((app) => {
-    const statusMatch = filterStatus === 'all' || app.status === filterStatus;
-    const typeMatch = filterType === 'all' || filterType === 'individual';
-    const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
-    const dateMatch = isWithinDateRange(app.created_at);
-    return statusMatch && typeMatch && propertyMatch && dateMatch;
-  });
+  // Filter applications with memoization for performance
+  const filteredIndividualApps = useMemo(() => {
+    return applications.filter((app) => {
+      const statusMatch = filterStatus === 'all' || app.status === filterStatus;
+      const typeMatch = filterType === 'all' || filterType === 'individual';
+      const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
+      const dateMatch = isWithinDateRange(app.created_at);
+      return statusMatch && typeMatch && propertyMatch && dateMatch;
+    });
+  }, [applications, filterStatus, filterType, filterProperty, filterDate]);
 
-  const filteredGroupApps = groupApps.filter((app) => {
-    const statusMatch = filterStatus === 'all' || app.status === filterStatus;
-    const typeMatch = filterType === 'all' || filterType === 'group';
-    const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
-    const dateMatch = isWithinDateRange(app.created_at);
-    return statusMatch && typeMatch && propertyMatch && dateMatch;
-  });
+  const filteredGroupApps = useMemo(() => {
+    return groupApps.filter((app) => {
+      const statusMatch = filterStatus === 'all' || app.status === filterStatus;
+      const typeMatch = filterType === 'all' || filterType === 'group';
+      const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
+      const dateMatch = isWithinDateRange(app.created_at);
+      return statusMatch && typeMatch && propertyMatch && dateMatch;
+    });
+  }, [groupApps, filterStatus, filterType, filterProperty, filterDate]);
 
   // Calculate stats
   const stats = {

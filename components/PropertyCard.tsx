@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, MapPin, Users, Home, Star } from 'lucide-react';
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 
 interface PropertyCardProps {
   property: {
@@ -29,7 +29,7 @@ interface PropertyCardProps {
   variant?: 'default' | 'compact';
 }
 
-export default function PropertyCard({
+function PropertyCard({
   property,
   showCompatibilityScore = false,
   compatibilityScore,
@@ -40,12 +40,12 @@ export default function PropertyCard({
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setLocalFavorite(!localFavorite);
     onFavoriteClick?.(property.id);
-  };
+  }, [localFavorite, property.id, onFavoriteClick]);
 
   // Generate placeholder image based on property type and location
   const getPlaceholderImage = () => {
@@ -242,3 +242,5 @@ export default function PropertyCard({
     </Link>
   );
 }
+
+export default memo(PropertyCard);
