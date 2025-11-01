@@ -215,7 +215,7 @@ export default function ModernResidentDashboard() {
       icon: DollarSign,
       gradient: 'from-yellow-500 to-yellow-700',
       bg: 'from-yellow-50 to-yellow-100/50',
-      action: () => router.push('/expenses'),
+      action: () => router.push('/hub/finances'),
     },
     {
       title: 'Ton Solde',
@@ -224,7 +224,7 @@ export default function ModernResidentDashboard() {
       icon: TrendingUp,
       gradient: stats.yourBalance > 0 ? 'from-emerald-500 to-emerald-700' : 'from-red-500 to-red-700',
       bg: stats.yourBalance > 0 ? 'from-emerald-50 to-emerald-100/50' : 'from-red-50 to-red-100/50',
-      action: () => router.push('/expenses'),
+      action: () => router.push('/hub/finances'),
     },
     {
       title: 'Colocataires',
@@ -233,6 +233,7 @@ export default function ModernResidentDashboard() {
       icon: Users,
       gradient: 'from-blue-500 to-blue-700',
       bg: 'from-blue-50 to-blue-100/50',
+      action: () => router.push('/hub/members'),
     },
   ];
 
@@ -274,11 +275,11 @@ export default function ModernResidentDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              onClick={'action' in card ? card.action as any : undefined}
+              onClick={card.action}
               className={cn(
-                "relative overflow-hidden rounded-3xl p-6 transition-all",
+                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
                 "bg-white shadow-lg hover:shadow-xl",
-                'action' in card && "cursor-pointer hover:scale-105 hover:ring-2 hover:ring-orange-500"
+                card.action && "hover:ring-2 hover:ring-orange-500"
               )}
             >
               {/* Gradient Background */}
@@ -396,8 +397,16 @@ export default function ModernResidentDashboard() {
 
               <div className="flex gap-3">
                 <Button
-                  onClick={() => router.push('/messages')}
+                  onClick={() => router.push('/hub/members')}
                   className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Voir les membres
+                </Button>
+                <Button
+                  onClick={() => router.push('/messages')}
+                  variant="outline"
+                  className="rounded-full"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Chat de groupe
@@ -422,6 +431,15 @@ export default function ModernResidentDashboard() {
               <Clock className="w-5 h-5 text-orange-600" />
               Tâches à Venir
             </h3>
+            <Button
+              onClick={() => router.push('/hub/tasks')}
+              variant="ghost"
+              size="sm"
+              className="rounded-full"
+            >
+              Tout voir
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </div>
 
           <div className="space-y-3">
@@ -463,6 +481,15 @@ export default function ModernResidentDashboard() {
               </motion.div>
             ))}
           </div>
+
+          <Button
+            onClick={() => router.push('/hub/tasks')}
+            variant="outline"
+            className="w-full mt-4 rounded-full"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Ajouter une tâche
+          </Button>
         </motion.div>
 
         {/* Recent Activity */}
