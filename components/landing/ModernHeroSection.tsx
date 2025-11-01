@@ -10,56 +10,57 @@ export default function ModernHeroSection() {
     <section className="relative pt-24 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
       {/* Pas de voile blanc - images en full HD */}
 
-      <div className="relative z-20 max-w-6xl mx-auto w-full">
+      <div className="relative z-20 max-w-4xl mx-auto w-full">
 
-        {/* Grand rectangle arrondi mauve avec logo et texte */}
+        {/* Container unifié mauve + blanc collés */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 rounded-[48px] shadow-2xl p-12 md:p-16 mb-12"
+          className="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 rounded-[40px] shadow-2xl overflow-hidden mb-12"
         >
-          {/* Logo Badge */}
+          {/* Section mauve avec logo et texte - Plus compact */}
+          <div className="p-8 md:p-10">
+            {/* Logo Badge - Plus petit */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex justify-center mb-6"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/30">
+                <Home className="w-8 h-8 text-white" />
+              </div>
+            </motion.div>
+
+            {/* Main Title - Plus compact */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-4xl md:text-5xl font-bold text-white text-center mb-2 leading-tight"
+            >
+              Trouve ta coloc
+            </motion.h1>
+
+            {/* Subtitle - Plus petit */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-lg md:text-xl text-white/90 text-center mb-0"
+            >
+              En quelques clics
+            </motion.p>
+          </div>
+
+          {/* Section blanche - Collée directement */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex justify-center mb-8"
-          >
-            <div className="w-24 h-24 rounded-3xl bg-white/20 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/30">
-              <Home className="w-12 h-12 text-white" />
-            </div>
-          </motion.div>
-
-          {/* Main Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-5xl md:text-7xl font-bold text-white text-center mb-4 leading-tight"
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="bg-white p-4"
           >
-            Trouve ta coloc
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl md:text-2xl text-white/90 text-center mb-0 max-w-3xl mx-auto"
-          >
-            En quelques clics
-          </motion.p>
-        </motion.div>
-
-        {/* Unified Search Card - Dans un fond blanc légèrement transparent */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="max-w-5xl mx-auto mb-12"
-        >
-          <div className="bg-white/95 backdrop-blur-xl rounded-[32px] shadow-2xl p-4 border border-white/50">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
               {/* Location Input */}
@@ -137,47 +138,37 @@ export default function ModernHeroSection() {
                 <span className="font-medium">Support 24/7</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
-        {/* CTA Section - Modern Pills */}
+        {/* CTA Section - Compact Pills */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
           className="text-center"
         >
-          <p className="text-sm text-white/80 mb-6 font-medium">
+          <p className="text-sm text-white/90 mb-4 font-medium">
             Ou commence directement
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
-            {/* Searcher CTA - Yellow Pill */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            {/* Searcher CTA - Yellow Pill Compact */}
             <Link href="/onboarding/searcher" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-gray-900 font-bold px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-base">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Search className="w-5 h-5" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-bold text-base">Je cherche une coloc</div>
-                    <div className="text-xs text-gray-800 opacity-90">Trouve ta communauté</div>
-                  </div>
+              <Button className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-gray-900 font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+                <div className="flex items-center gap-2">
+                  <Search className="w-5 h-5" />
+                  <span>Je cherche une coloc</span>
                 </div>
               </Button>
             </Link>
 
-            {/* Owner CTA - White Pill */}
+            {/* Owner CTA - White Pill Compact */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto group relative overflow-hidden bg-white hover:bg-white/90 text-purple-900 font-bold px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-base border-2 border-white/30">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                    <Home className="w-5 h-5 text-purple-700" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-bold text-base">Je loue mon bien</div>
-                    <div className="text-xs text-purple-600 opacity-90">En toute confiance</div>
-                  </div>
+              <Button className="w-full sm:w-auto group relative overflow-hidden bg-white hover:bg-white/90 text-purple-900 font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+                <div className="flex items-center gap-2">
+                  <Home className="w-5 h-5" />
+                  <span>Je loue mon bien</span>
                 </div>
               </Button>
             </Link>
