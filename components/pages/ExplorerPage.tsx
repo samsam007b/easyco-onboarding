@@ -54,7 +54,7 @@ export default function ExplorerPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-yellow-100">
+    <div className="min-h-screen bg-transparent">
       {/* Hero Section with Search */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

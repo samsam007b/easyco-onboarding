@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ExplorerPage from '@/components/pages/ExplorerPage';
 import ResidentsPage from '@/components/pages/ResidentsPage';
 import OwnersPage from '@/components/pages/OwnersPage';
+import { cn } from '@/lib/utils';
 
 interface SlidePageManagerProps {
   activePage: 'explorer' | 'residents' | 'owners' | null;
@@ -14,6 +15,13 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
     explorer: ExplorerPage,
     residents: ResidentsPage,
     owners: OwnersPage,
+  };
+
+  // Bordure colorée selon le rôle
+  const borderColors = {
+    explorer: 'border-yellow-500',
+    residents: 'border-purple-600',
+    owners: 'border-purple-600',
   };
 
   const PageComponent = activePage ? pageComponents[activePage] : null;
@@ -28,11 +36,16 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
           exit={{ y: '-100%', opacity: 0 }}
           transition={{
             type: 'spring',
-            stiffness: 300,
-            damping: 30,
-            duration: 0.6,
+            stiffness: 400,
+            damping: 35,
+            duration: 0.5,
           }}
-          className="fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto"
+          className={cn(
+            "fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto",
+            "border-4 rounded-t-3xl shadow-2xl",
+            "bg-gradient-to-b from-gray-50 to-white",
+            borderColors[activePage]
+          )}
           style={{
             scrollbarGutter: 'stable',
           }}
