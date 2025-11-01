@@ -204,54 +204,11 @@ export default function ModernResidentHeader({
               </Link>
             )}
 
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-orange-50 transition-all"
-              >
-                <Bell className="w-5 h-5 text-gray-700" />
-                {(pendingTasks > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-500 rounded-full border-2 border-white" />
-                )}
-              </button>
+            {/* Notifications - New NotificationBell Component */}
+            <NotificationBell />
 
-              {/* Notifications Dropdown */}
-              <AnimatePresence>
-                {showNotifications && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowNotifications(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-orange-200/50 py-2 z-20"
-                    >
-                      <div className="px-4 py-3 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
-                      </div>
-                      <div className="max-h-96 overflow-y-auto">
-                        {pendingTasks > 0 && (
-                          <Link
-                            href="/hub/tasks"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                              <CheckSquare className="w-5 h-5 text-yellow-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                {pendingTasks} tâche{pendingTasks > 1 ? 's' : ''} en attente
-                              </p>
-                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
-                            </div>
-                          </Link>
-                        )}
-                        {(pendingTasks === 0 && unreadMessages === 0) && (
+            {/* Old notifications kept for backward compatibility */}
+            {false && (pendingTasks === 0 && unreadMessages === 0) && (
                           <div className="px-4 py-8 text-center text-gray-500">
                             <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                             <p className="text-sm">Aucune notification</p>
