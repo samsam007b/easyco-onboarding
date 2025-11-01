@@ -286,7 +286,7 @@ export default function HubMembersPage() {
                     Message
                   </Button>
                   <Button
-                    className="border border-gray-300 bg-white text-gray-700"
+                    variant="outline"
                     size="sm"
                     className="rounded-full"
                   >
