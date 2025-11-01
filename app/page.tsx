@@ -1,13 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Home as HomeIcon, Users, Heart, Shield, Target, Zap, Search as SearchIcon } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
-import PublicHeader from '@/components/layout/PublicHeader';
+import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
+import SlidePageManager from '@/components/layout/SlidePageManager';
 import Footer from '@/components/layout/Footer';
 import InfinitePropertyCarousel from '@/components/landing/InfinitePropertyCarousel';
 
@@ -58,17 +59,18 @@ const FAQ = dynamic(() => import('@/components/FAQ'), {
 export default function Home() {
   const { t, getSection } = useLanguage();
   const landing = getSection('landing');
+  const [activePage, setActivePage] = useState<'explorer' | 'residents' | 'owners' | null>(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Public Header */}
-      <PublicHeader />
+      {/* Modern Header with slide page navigation */}
+      <ModernPublicHeader activePage={activePage} onNavigate={setActivePage} />
 
-      {/* Language Switcher (positioned absolutely) */}
-      <div className="absolute top-20 right-6 z-40">
-        <LanguageSwitcher />
-      </div>
+      {/* Slide Page Manager - shows Explorer/Residents/Owners pages */}
+      <SlidePageManager activePage={activePage} />
 
+      {/* Main landing content - only show when no slide page is active */}
+      {!activePage && (
       <main>
         {/* Hero Section with Search */}
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
@@ -211,8 +213,9 @@ export default function Home() {
       <FAQ />
 
       </main>
+      )}
 
-      {/* Footer */}
+      {/* Footer - always visible */}
       <Footer />
 
       {/* Resume Onboarding Modal */}
