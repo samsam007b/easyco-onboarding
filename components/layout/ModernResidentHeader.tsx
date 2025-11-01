@@ -207,20 +207,6 @@ export default function ModernResidentHeader({
             {/* Notifications - New NotificationBell Component */}
             <NotificationBell />
 
-            {/* Old notifications kept for backward compatibility */}
-            {false && (pendingTasks === 0 && unreadMessages === 0) && (
-                          <div className="px-4 py-8 text-center text-gray-500">
-                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">Aucune notification</p>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
-
             {/* Profile Menu */}
             <div className="relative">
               <button
