@@ -9,6 +9,7 @@ import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import SlidePageManager from '@/components/layout/SlidePageManager';
+import ModernHeroSection from '@/components/landing/ModernHeroSection';
 import Footer from '@/components/layout/Footer';
 import InfinitePropertyCarousel from '@/components/landing/InfinitePropertyCarousel';
 
@@ -72,82 +73,14 @@ export default function Home() {
       {/* Main landing content - only show when no slide page is active */}
       {!activePage && (
       <main>
-        {/* Hero Section with Search */}
-      <section className="relative pt-32 pb-16 px-6 overflow-hidden">
-        {/* Background Carousel - Infinite scrolling hero images */}
-        <InfinitePropertyCarousel speed={120} opacity={1} blur={0} />
+        {/* Hero Section with Background Carousel */}
+        <div className="relative">
+          {/* Background Carousel - Infinite scrolling hero images */}
+          <InfinitePropertyCarousel speed={120} opacity={1} blur={0} />
 
-        <div className="relative z-20 max-w-6xl mx-auto">
-
-          {/* Logo and Title */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--easy-purple-900)] to-[var(--easy-purple-700)] flex items-center justify-center shadow-lg">
-                <HomeIcon className="w-9 h-9 text-white" />
-              </div>
-              <h1 className="text-4xl font-bold text-[var(--easy-purple-900)]">EasyCo</h1>
-            </div>
-
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              {landing.hero.title}
-            </h2>
-            <p className="text-xl text-gray-600 mb-2">
-              {landing.hero.subtitle}
-            </p>
-
-            {/* Trust Strip */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 mt-6">
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 font-bold">✓</span>
-                <span className="font-medium">{landing.trust.idVerified}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 font-bold">✓</span>
-                <span className="font-medium">{landing.trust.listingsVerified}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 font-bold">✓</span>
-                <span className="font-medium">{landing.trust.support}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Public Search Bar */}
-          <div className="max-w-4xl mx-auto mb-8">
-            <PublicSearchBar variant="hero" />
-          </div>
-
-          {/* Or Create Account CTAs */}
-          <div className="text-center">
-            <p className="text-sm text-gray-500 mb-4">
-              Ou crée ton compte pour accéder à toutes les fonctionnalités
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/onboarding/searcher/basic-info"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--searcher-primary)] text-black font-semibold hover:bg-[var(--searcher-hover)] transition-all shadow-md hover:shadow-lg"
-              >
-                <SearchIcon className="w-5 h-5" />
-                {landing.hero.ctaSearcher}
-              </Link>
-
-              <Link
-                href="/onboarding/owner/basic-info"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--owner-primary)] text-white font-semibold hover:bg-[var(--owner-hover)] transition-all shadow-md hover:shadow-lg"
-              >
-                <HomeIcon className="w-5 h-5" />
-                {landing.hero.ctaOwner}
-              </Link>
-            </div>
-
-            {/* Social Proof */}
-            <p className="text-sm text-gray-500 mt-6">
-              {landing.socialProof.claim}
-            </p>
-          </div>
-
+          {/* Modern Hero Section */}
+          <ModernHeroSection />
         </div>
-      </section>
 
       {/* Property Preview Grid */}
       <PropertyPreviewGrid limit={6} />
