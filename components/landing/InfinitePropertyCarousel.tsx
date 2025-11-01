@@ -19,9 +19,9 @@ interface InfinitePropertyCarouselProps {
 }
 
 export default function InfinitePropertyCarousel({
-  speed = 40, // 40 seconds for a slow, smooth scroll (adjusted for 5 images)
-  opacity = 0.15,
-  blur = 4,
+  speed = 120, // 120 seconds for a very slow, premium scroll effect
+  opacity = 1,
+  blur = 0,
 }: InfinitePropertyCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -35,24 +35,20 @@ export default function InfinitePropertyCarousel({
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Gradient overlays for smooth edges */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
-
       {/* Scrolling container */}
       <div
         ref={carouselRef}
-        className="flex gap-6 h-full items-center"
+        className="flex gap-0 h-full items-center"
         style={{
           animation: `scroll-left ${speed}s linear infinite`,
           opacity,
-          filter: `blur(${blur}px)`,
+          filter: blur > 0 ? `blur(${blur}px)` : 'none',
         }}
       >
         {duplicatedImages.map((imageSrc, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 h-[400px] w-[600px] rounded-2xl overflow-hidden shadow-xl"
+            className="relative flex-shrink-0 h-full w-screen"
           >
             <Image
               src={imageSrc}
@@ -60,7 +56,7 @@ export default function InfinitePropertyCarousel({
               fill
               className="object-cover"
               priority={index < 4} // Priority load first few images
-              sizes="600px"
+              sizes="100vw"
             />
           </div>
         ))}
@@ -73,7 +69,7 @@ export default function InfinitePropertyCarousel({
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-600px * ${CAROUSEL_IMAGES.length} - 1.5rem * ${CAROUSEL_IMAGES.length}));
+            transform: translateX(calc(-100vw * ${CAROUSEL_IMAGES.length}));
           }
         }
       `}</style>

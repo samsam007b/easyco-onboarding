@@ -73,7 +73,7 @@ export default function Home() {
         {/* Hero Section with Search */}
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
         {/* Background Carousel - Infinite scrolling hero images */}
-        <InfinitePropertyCarousel speed={40} opacity={0.15} blur={4} />
+        <InfinitePropertyCarousel speed={120} opacity={1} blur={0} />
 
         <div className="relative z-20 max-w-6xl mx-auto">
 
