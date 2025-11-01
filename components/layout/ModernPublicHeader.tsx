@@ -74,27 +74,14 @@ export default function ModernPublicHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  <button
-                    onClick={() => handleNavClick(item.id)}
-                    className={cn(
-                      "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all relative",
-                      isActive
-                        ? "text-gray-900 font-semibold"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    )}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {item.label}
-                  </button>
-
-                  {/* Active indicator with connection visual */}
+                  {/* Active indicator with connection visual - BEHIND */}
                   {isActive && (
                     <>
                       {/* Glow effect */}
                       <motion.div
                         layoutId="active-nav-indicator"
                         className={cn(
-                          "absolute inset-0 rounded-xl",
+                          "absolute inset-0 rounded-xl -z-10",
                           item.color === 'yellow'
                             ? "bg-yellow-100"
                             : "bg-purple-100"
@@ -106,7 +93,7 @@ export default function ModernPublicHeader({
                       {/* Triangle pointer */}
                       <motion.div
                         className={cn(
-                          "absolute -bottom-3 left-1/2 -translate-x-1/2",
+                          "absolute -bottom-3 left-1/2 -translate-x-1/2 z-10",
                           "w-0 h-0 border-l-8 border-r-8 border-t-8",
                           "border-transparent",
                           item.color === 'yellow'
@@ -120,11 +107,19 @@ export default function ModernPublicHeader({
                     </>
                   )}
 
-                  {/* Button content above background */}
-                  <span className="relative z-10 flex items-center gap-2">
+                  {/* Button content */}
+                  <button
+                    onClick={() => handleNavClick(item.id)}
+                    className={cn(
+                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      isActive
+                        ? "text-gray-900 font-semibold"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                    )}
+                  >
                     <Icon className="w-4 h-4" />
                     {item.label}
-                  </span>
+                  </button>
                 </div>
               );
             })}

@@ -8,6 +8,9 @@ import { motion } from 'framer-motion';
 export default function ModernHeroSection() {
   return (
     <section className="relative pt-24 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-white/80 z-10" />
+
       <div className="relative z-20 max-w-6xl mx-auto w-full">
 
         {/* Logo Badge */}
