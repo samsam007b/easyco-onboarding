@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
-import ResidentHeader from '@/components/layout/ResidentHeader';
+import ModernResidentHeader from '@/components/layout/ModernResidentHeader';
 import { useRouter } from 'next/navigation';
+
+interface ResidentStats {
+  groupName: string;
+  pendingTasks: number;
+  yourBalance: number;
+  unreadMessages: number;
+  activeMembersCount: number;
+}
 
 export default function ResidentLayout({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<{
@@ -11,6 +19,13 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
     email: string;
     avatar_url?: string;
   } | null>(null);
+  const [stats, setStats] = useState<ResidentStats>({
+    groupName: 'Ma Coloc',
+    pendingTasks: 0,
+    yourBalance: 0,
+    unreadMessages: 0,
+    activeMembersCount: 0,
+  });
   const router = useRouter();
   const supabase = createClient();
 
@@ -32,30 +47,71 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
       if (userData) {
         setProfile(userData);
       }
+
+      // Load real stats
+      await loadStats(user.id);
     };
 
     loadProfile();
   }, [router, supabase]);
 
+  const loadStats = async (userId: string) => {
+    try {
+      // Get current property membership
+      const { data: propertyMember } = await supabase
+        .from('property_members')
+        .select(`
+          *,
+          properties (
+            id,
+            title
+          )
+        `)
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .single();
+
+      if (propertyMember && propertyMember.properties) {
+        const groupName = propertyMember.properties.title || 'Ma Coloc';
+
+        // Get members count (roommates)
+        const { count: membersCount } = await supabase
+          .from('property_members')
+          .select('*', { count: 'exact', head: true })
+          .eq('property_id', propertyMember.properties.id)
+          .eq('status', 'active');
+
+        setStats({
+          groupName,
+          pendingTasks: 3, // Mock for now - would come from tasks table
+          yourBalance: -45, // Mock for now - would come from expenses/payments
+          unreadMessages: 0, // Would come from messages table
+          activeMembersCount: membersCount || 0,
+        });
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
+
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--resident-primary)]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Chargement...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <>
-      <ResidentHeader
+      <ModernResidentHeader
         profile={profile}
-        groupName="Ma Coloc"
-        notifications={0}
-        unreadMessages={0}
-        pendingTasks={0}
-        yourBalance={0}
+        stats={stats}
       />
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30">
         {children}
       </div>
     </>
