@@ -20,7 +20,7 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
   // Bordure colorée selon le rôle
   const borderColors = {
     explorer: 'border-yellow-500',
-    residents: 'border-purple-600',
+    residents: 'border-orange-500',
     owners: 'border-purple-600',
   };
 

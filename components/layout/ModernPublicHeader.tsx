@@ -29,7 +29,7 @@ export default function ModernPublicHeader({
       id: 'residents' as const,
       label: 'Résidents',
       icon: Users,
-      color: 'purple'
+      color: 'orange'
     },
     {
       id: 'owners' as const,
@@ -83,6 +83,8 @@ export default function ModernPublicHeader({
                         "border-transparent",
                         item.color === 'yellow'
                           ? "border-t-yellow-500"
+                          : item.color === 'orange'
+                          ? "border-t-orange-500"
                           : "border-t-purple-600"
                       )}
                       initial={{ opacity: 0, y: -5 }}
@@ -100,6 +102,8 @@ export default function ModernPublicHeader({
                       isActive
                         ? item.color === 'yellow'
                           ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-lg"
+                          : item.color === 'orange'
+                          ? "bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-lg"
                           : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                     )}
