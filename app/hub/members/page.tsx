@@ -267,7 +267,7 @@ export default function HubMembersPage() {
                     <p className="text-xs font-medium text-gray-500 mb-2">Centres d'intérêt</p>
                     <div className="flex flex-wrap gap-2">
                       {member.interests.map((interest, idx) => (
-                        <Badge key={idx} className="border border-gray-300 bg-white text-gray-700" className="text-xs">
+                        <Badge key={idx} className="border border-gray-300 bg-white text-gray-700 text-xs">
                           {interest}
                         </Badge>
                       ))}
