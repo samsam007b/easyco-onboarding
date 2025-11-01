@@ -48,8 +48,14 @@ export default function ModernPublicHeader({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Glassmorphism background */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-white/80 border-b border-black/5" />
+      {/* Glassmorphism background - Changes color based on active page */}
+      <div className={cn(
+        "absolute inset-0 backdrop-blur-xl border-b transition-all duration-300",
+        !activePage && "bg-white/95 border-black/5",
+        activePage === 'explorer' && "bg-yellow-50/95 border-yellow-200/50",
+        activePage === 'residents' && "bg-orange-50/95 border-orange-200/50",
+        activePage === 'owners' && "bg-purple-50/95 border-purple-200/50"
+      )} />
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
