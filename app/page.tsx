@@ -9,19 +9,7 @@ import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import PublicHeader from '@/components/layout/PublicHeader';
 import Footer from '@/components/layout/Footer';
-import BackgroundCarousel from '@/components/BackgroundCarousel';
-
-// Background images for hero carousel
-// TODO: Add actual images to public/images/hero-backgrounds/
-// For now, carousel will gracefully degrade to gradient background
-const heroBackgrounds: string[] = [
-  // Uncomment when images are added:
-  // '/images/hero-backgrounds/interior-1.jpg',
-  // '/images/hero-backgrounds/interior-2.jpg',
-  // '/images/hero-backgrounds/interior-3.jpg',
-  // '/images/hero-backgrounds/interior-4.jpg',
-  // '/images/hero-backgrounds/interior-5.jpg',
-];
+import InfinitePropertyCarousel from '@/components/landing/InfinitePropertyCarousel';
 
 // ============================================================================
 // PERFORMANCE OPTIMIZATION: Dynamic Imports for Below-the-Fold Components
@@ -84,8 +72,8 @@ export default function Home() {
       <main>
         {/* Hero Section with Search */}
       <section className="relative pt-32 pb-16 px-6 overflow-hidden">
-        {/* Background Carousel */}
-        <BackgroundCarousel images={heroBackgrounds} speed={45} opacity={0.12} />
+        {/* Background Carousel - Infinite scrolling property images */}
+        <InfinitePropertyCarousel speed={120} opacity={0.15} blur={4} />
 
         <div className="relative z-20 max-w-6xl mx-auto">
 
