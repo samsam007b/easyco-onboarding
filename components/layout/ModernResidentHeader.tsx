@@ -108,7 +108,7 @@ export default function ModernResidentHeader({
   return (
     <header className="sticky top-0 z-50">
       {/* Glassmorphism Background */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-white/80 border-b border-purple-200/30" />
+      <div className="absolute inset-0 backdrop-blur-xl bg-white/80 border-b border-orange-200/30" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -119,14 +119,14 @@ export default function ModernResidentHeader({
             href="/dashboard/resident"
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-orange-600 via-orange-700 to-orange-900 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all">
               <Home className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-900 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-orange-900 bg-clip-text text-transparent">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-purple-600">{groupName}</span>
+              <span className="text-xs font-medium text-orange-600">{groupName}</span>
             </div>
           </Link>
 
@@ -142,7 +142,7 @@ export default function ModernResidentHeader({
                   {isActive && (
                     <motion.div
                       layoutId="resident-active-nav"
-                      className="absolute inset-0 bg-gradient-to-r from-purple-100 to-purple-50 rounded-xl -z-10"
+                      className="absolute inset-0 bg-gradient-to-r from-orange-100 to-orange-50 rounded-xl -z-10"
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
@@ -153,8 +153,8 @@ export default function ModernResidentHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-purple-900 font-semibold"
-                        : "text-gray-600 hover:text-purple-900 hover:bg-purple-50/50"
+                        ? "text-orange-900 font-semibold"
+                        : "text-gray-600 hover:text-orange-900 hover:bg-orange-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -196,10 +196,10 @@ export default function ModernResidentHeader({
             {activeMembersCount > 0 && (
               <Link
                 href="/hub/members"
-                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200/50 hover:shadow-md transition-all group"
+                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200/50 hover:shadow-md transition-all group"
               >
-                <Users className="w-4 h-4 text-purple-700" />
-                <span className="text-sm font-medium text-purple-900">{activeMembersCount} membres</span>
+                <Users className="w-4 h-4 text-orange-700" />
+                <span className="text-sm font-medium text-orange-900">{activeMembersCount} membres</span>
               </Link>
             )}
 
@@ -207,7 +207,7 @@ export default function ModernResidentHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-purple-50 transition-all"
+                className="relative p-2 rounded-xl hover:bg-orange-50 transition-all"
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(pendingTasks > 0 || unreadMessages > 0) && (
@@ -227,7 +227,7 @@ export default function ModernResidentHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-orange-200/50 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <h3 className="font-semibold text-gray-900">Notifications</h3>
@@ -236,7 +236,7 @@ export default function ModernResidentHeader({
                         {pendingTasks > 0 && (
                           <Link
                             href="/hub/tasks"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
@@ -267,20 +267,20 @@ export default function ModernResidentHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-purple-50 transition-all group"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-orange-50 transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center border-2 border-purple-200">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-600 to-orange-700 flex items-center justify-center border-2 border-orange-200">
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-purple-900 transition-colors hidden md:block" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-900 transition-colors hidden md:block" />
               </button>
 
               {/* Profile Dropdown */}
@@ -295,7 +295,7 @@ export default function ModernResidentHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-orange-200/50 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <p className="font-semibold text-gray-900">{profile.full_name}</p>
@@ -304,7 +304,7 @@ export default function ModernResidentHeader({
 
                       <Link
                         href="/dashboard/my-profile-resident"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <User className="w-5 h-5 text-gray-600" />
@@ -313,7 +313,7 @@ export default function ModernResidentHeader({
 
                       <Link
                         href="/hub/settings"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <Settings className="w-5 h-5 text-gray-600" />
@@ -338,7 +338,7 @@ export default function ModernResidentHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-purple-50 transition-all"
+              className="lg:hidden p-2 rounded-xl hover:bg-orange-50 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -356,7 +356,7 @@ export default function ModernResidentHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden border-t border-purple-200/50"
+              className="lg:hidden overflow-hidden border-t border-orange-200/50"
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
@@ -371,8 +371,8 @@ export default function ModernResidentHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                         isActive
-                          ? "bg-gradient-to-r from-purple-100 to-purple-50 text-purple-900 font-semibold"
-                          : "text-gray-700 hover:bg-purple-50"
+                          ? "bg-gradient-to-r from-orange-100 to-orange-50 text-orange-900 font-semibold"
+                          : "text-gray-700 hover:bg-orange-50"
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -395,26 +395,26 @@ export default function ModernResidentHeader({
 
       {/* Quick Stats Bar - Desktop Only */}
       {(pendingTasks > 0 || activeMembersCount > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-purple-50/50 to-transparent border-t border-purple-200/30">
+        <div className="hidden lg:block bg-gradient-to-r from-orange-50/50 to-transparent border-t border-orange-200/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-6 text-gray-700">
                 {pendingTasks > 0 && (
                   <span className="flex items-center gap-2">
                     <span className="text-gray-600">Tâches en cours:</span>
-                    <strong className="text-purple-900 font-bold">{pendingTasks}</strong>
+                    <strong className="text-orange-900 font-bold">{pendingTasks}</strong>
                   </span>
                 )}
                 {activeMembersCount > 0 && (
                   <span className="flex items-center gap-2">
                     <span className="text-gray-600">Membres actifs:</span>
-                    <strong className="text-purple-900 font-bold">{activeMembersCount}</strong>
+                    <strong className="text-orange-900 font-bold">{activeMembersCount}</strong>
                   </span>
                 )}
               </div>
               <Link
                 href="/hub/calendar"
-                className="text-purple-600 hover:text-purple-800 transition text-xs font-medium flex items-center gap-1"
+                className="text-orange-600 hover:text-orange-800 transition text-xs font-medium flex items-center gap-1"
               >
                 Voir calendrier
                 <Calendar className="w-3.5 h-3.5" />

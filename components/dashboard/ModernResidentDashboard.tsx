@@ -114,7 +114,7 @@ export default function ModernResidentDashboard() {
     {
       id: '3',
       icon: Check,
-      iconBgColor: 'bg-purple-100',
+      iconBgColor: 'bg-orange-100',
       title: 'Tâche complétée',
       subtitle: 'Nettoyage salle de bain',
       time: 'Hier'
@@ -204,8 +204,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradient: 'from-purple-500 to-purple-700',
-      bg: 'from-purple-50 to-purple-100/50',
+      gradient: 'from-orange-500 to-orange-700',
+      bg: 'from-orange-50 to-orange-100/50',
       progress: rentPercentage,
     },
     {
@@ -241,7 +241,7 @@ export default function ModernResidentDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600 font-medium">Chargement du hub...</p>
         </div>
       </div>
@@ -279,7 +279,7 @@ export default function ModernResidentDashboard() {
               className={cn(
                 "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
                 "bg-white shadow-lg hover:shadow-xl",
-                card.action && "hover:ring-2 hover:ring-purple-500"
+                card.action && "hover:ring-2 hover:ring-orange-500"
               )}
             >
               {/* Gradient Background */}
@@ -339,13 +339,13 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6 mb-8"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Home className="w-5 h-5 text-purple-600" />
+            <Home className="w-5 h-5 text-orange-600" />
             Ta Résidence
           </h3>
 
           <div className="flex flex-col md:flex-row gap-6">
             {/* Property Image */}
-            <div className="relative h-48 md:h-auto md:w-64 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl overflow-hidden flex-shrink-0">
+            <div className="relative h-48 md:h-auto md:w-64 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl overflow-hidden flex-shrink-0">
               {currentProperty.main_image ? (
                 <img
                   src={currentProperty.main_image}
@@ -354,7 +354,7 @@ export default function ModernResidentDashboard() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Home className="w-16 h-16 text-purple-400" />
+                  <Home className="w-16 h-16 text-orange-400" />
                 </div>
               )}
             </div>
@@ -374,7 +374,7 @@ export default function ModernResidentDashboard() {
                   <p className="text-sm font-medium text-gray-700 mb-2">Tes colocataires :</p>
                   <div className="flex flex-wrap gap-3">
                     {roommates.map((member: any, index: number) => (
-                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-full">
+                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-orange-50 rounded-full">
                         {member.users?.avatar_url ? (
                           <img
                             src={member.users.avatar_url}
@@ -382,7 +382,7 @@ export default function ModernResidentDashboard() {
                             className="w-6 h-6 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-xs text-white font-bold">
+                          <div className="w-6 h-6 rounded-full bg-orange-600 flex items-center justify-center text-xs text-white font-bold">
                             {member.users?.full_name?.charAt(0) || '?'}
                           </div>
                         )}
@@ -398,7 +398,7 @@ export default function ModernResidentDashboard() {
               <div className="flex gap-3">
                 <Button
                   onClick={() => router.push('/hub/members')}
-                  className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700"
+                  className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Voir les membres
@@ -428,7 +428,7 @@ export default function ModernResidentDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-purple-600" />
+              <Clock className="w-5 h-5 text-orange-600" />
               Tâches à Venir
             </h3>
             <Button
@@ -449,7 +449,7 @@ export default function ModernResidentDashboard() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + index * 0.05 }}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-purple-50 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <div className={cn(
@@ -500,7 +500,7 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
+            <Sparkles className="w-5 h-5 text-orange-600" />
             Activité Récente
           </h3>
 
@@ -535,7 +535,7 @@ export default function ModernResidentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-3xl shadow-lg p-6 text-white"
+        className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-3xl shadow-lg p-6 text-white"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -543,11 +543,11 @@ export default function ModernResidentDashboard() {
               <Heart className="w-5 h-5" />
               Bonheur de la Coloc
             </h3>
-            <p className="text-purple-200 text-sm">Basé sur l'activité et les interactions</p>
+            <p className="text-orange-200 text-sm">Basé sur l'activité et les interactions</p>
           </div>
           <div className="text-right">
             <p className="text-5xl font-bold">{stats.communityHappiness}%</p>
-            <p className="text-purple-200 text-sm mt-1">Excellent!</p>
+            <p className="text-orange-200 text-sm mt-1">Excellent!</p>
           </div>
         </div>
       </motion.div>
