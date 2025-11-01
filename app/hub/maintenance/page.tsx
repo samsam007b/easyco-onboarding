@@ -348,7 +348,7 @@ export default function HubMaintenancePage() {
                           <Badge className={getPriorityColor(ticket.priority)}>
                             {getPriorityLabel(ticket.priority)}
                           </Badge>
-                          <Badge variant="outline">
+                          <Badge className="border border-gray-300 bg-white text-gray-700">
                             {categoryInfo.label}
                           </Badge>
                         </div>
