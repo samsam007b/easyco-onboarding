@@ -65,9 +65,9 @@ export default function ModernSearcherDashboard() {
   };
 
   const kpiCards = [
-    { title: 'Favoris', value: stats.favoritesCount, icon: Bookmark, gradient: 'from-yellow-500 to-yellow-700', bg: 'from-yellow-50 to-yellow-100/50', action: () => router.push('/favorites') },
-    { title: 'Top Matchs', value: stats.topMatchesCount, icon: Heart, gradient: 'from-orange-500 to-orange-700', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/matching/properties') },
-    { title: 'Candidatures', value: stats.applicationsCount, icon: FileText, gradient: 'from-purple-500 to-purple-700', bg: 'from-purple-50 to-purple-100/50' },
+    { title: 'Favoris', value: stats.favoritesCount, icon: Bookmark, gradient: 'from-yellow-500 to-yellow-700', bg: 'from-yellow-50 to-yellow-100/50', action: () => router.push('/dashboard/searcher/favorites') },
+    { title: 'Top Matchs', value: stats.topMatchesCount, icon: Heart, gradient: 'from-orange-500 to-orange-700', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/top-matches') },
+    { title: 'Candidatures', value: stats.applicationsCount, icon: FileText, gradient: 'from-purple-500 to-purple-700', bg: 'from-purple-50 to-purple-100/50', action: () => router.push('/dashboard/searcher/my-applications') },
     { title: 'Profil Complété', value: `${stats.profileCompletion}%`, icon: TrendingUp, gradient: 'from-green-500 to-green-700', bg: 'from-green-50 to-green-100/50', action: () => router.push('/profile') },
   ];
 
@@ -93,8 +93,8 @@ export default function ModernSearcherDashboard() {
         {kpiCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={'action' in card ? card.action as any : undefined}
-              className={cn("relative overflow-hidden rounded-3xl p-6 transition-all bg-white shadow-lg hover:shadow-xl", 'action' in card && "cursor-pointer hover:scale-105 hover:ring-2 hover:ring-yellow-500")}>
+            <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={card.action}
+              className="relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105 bg-white shadow-lg hover:shadow-xl hover:ring-2 hover:ring-yellow-500">
               <div className={cn("absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20", `bg-gradient-to-br ${card.bg}`)} />
               <div className="relative z-10">
                 <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center mb-4", `bg-gradient-to-br ${card.gradient} shadow-lg`)}>
@@ -112,10 +112,10 @@ export default function ModernSearcherDashboard() {
         <h2 className="text-2xl font-bold mb-2">Prêt à trouver votre coloc ?</h2>
         <p className="mb-6 text-yellow-100">Explorez nos propriétés et trouvez celle qui vous correspond</p>
         <div className="flex gap-4">
-          <Button onClick={() => router.push('/properties')} className="bg-white text-yellow-700 hover:bg-yellow-50 rounded-full">
+          <Button onClick={() => router.push('/properties/browse')} className="bg-white text-yellow-700 hover:bg-yellow-50 rounded-full">
             <Search className="w-4 h-4 mr-2" />Explorer les propriétés
           </Button>
-          <Button onClick={() => router.push('/matching/properties')} variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-full">
+          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-full">
             <Heart className="w-4 h-4 mr-2" />Voir mes matchs
           </Button>
         </div>

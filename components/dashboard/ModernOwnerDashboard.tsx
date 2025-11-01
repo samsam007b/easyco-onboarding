@@ -184,6 +184,7 @@ export default function ModernOwnerDashboard() {
       icon: Users,
       gradient: 'from-yellow-500 to-yellow-700',
       bg: 'from-yellow-50 to-yellow-100/50',
+      action: () => router.push('/dashboard/owner/applications'),
     },
   ];
 
@@ -226,11 +227,11 @@ export default function ModernOwnerDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              onClick={'action' in card ? card.action as any : undefined}
+              onClick={card.action}
               className={cn(
-                "relative overflow-hidden rounded-3xl p-6 transition-all",
+                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
                 "bg-white shadow-lg hover:shadow-xl",
-                'action' in card && "cursor-pointer hover:scale-105 hover:ring-2 hover:ring-purple-500"
+                card.action && "hover:ring-2 hover:ring-purple-500"
               )}
             >
               {/* Gradient Background */}
@@ -507,7 +508,7 @@ export default function ModernOwnerDashboard() {
           <div className="text-center mt-6">
             <Button
               variant="outline"
-              onClick={() => router.push('/properties')}
+              onClick={() => router.push('/dashboard/owner/properties')}
               className="rounded-full"
             >
               Voir toutes les propriétés
