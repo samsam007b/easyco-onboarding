@@ -100,8 +100,8 @@ export default function ModernOwnerHeader({
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Glassmorphism Background */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-white/80 border-b border-purple-200/30" />
+      {/* Glassmorphism Background - Purple theme */}
+      <div className="absolute inset-0 backdrop-blur-xl bg-purple-50/95 border-b border-purple-200/50" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
