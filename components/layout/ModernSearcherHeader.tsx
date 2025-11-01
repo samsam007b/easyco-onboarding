@@ -138,8 +138,8 @@ export default function ModernSearcherHeader({
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Glassmorphism Background */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-white/80 border-b border-yellow-200/30" />
+      {/* Glassmorphism Background - Yellow theme */}
+      <div className="absolute inset-0 backdrop-blur-xl bg-yellow-50/95 border-b border-yellow-200/50" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
