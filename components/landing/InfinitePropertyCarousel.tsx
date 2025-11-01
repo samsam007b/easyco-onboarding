@@ -3,11 +3,14 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 
-// Generate array of 28 property images
-const PROPERTY_IMAGES = Array.from(
-  { length: 28 },
-  (_, i) => `/images/properties/property-${String(i + 1).padStart(2, '0')}.png`
-);
+// Array of 5 hero images from Pexel
+const CAROUSEL_IMAGES = [
+  '/images/hero/pexels-charlotte-may-5824520.jpg',
+  '/images/hero/pexels-jonathanborba-5570226.jpg',
+  '/images/hero/pexels-kseniachernaya-4740485.jpg',
+  '/images/hero/pexels-polina-zimmerman-3747425.jpg',
+  '/images/hero/pexels-solliefoto-298842.jpg',
+];
 
 interface InfinitePropertyCarouselProps {
   speed?: number; // Duration in seconds for one complete cycle
@@ -16,7 +19,7 @@ interface InfinitePropertyCarouselProps {
 }
 
 export default function InfinitePropertyCarousel({
-  speed = 120, // 120 seconds for a slow, smooth scroll
+  speed = 40, // 40 seconds for a slow, smooth scroll (adjusted for 5 images)
   opacity = 0.15,
   blur = 4,
 }: InfinitePropertyCarouselProps) {
@@ -28,7 +31,7 @@ export default function InfinitePropertyCarousel({
   }, []);
 
   // Duplicate the images array to create seamless loop
-  const duplicatedImages = [...PROPERTY_IMAGES, ...PROPERTY_IMAGES];
+  const duplicatedImages = [...CAROUSEL_IMAGES, ...CAROUSEL_IMAGES];
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -53,7 +56,7 @@ export default function InfinitePropertyCarousel({
           >
             <Image
               src={imageSrc}
-              alt={`Property ${(index % PROPERTY_IMAGES.length) + 1}`}
+              alt={`Property ${(index % CAROUSEL_IMAGES.length) + 1}`}
               fill
               className="object-cover"
               priority={index < 4} // Priority load first few images
@@ -70,7 +73,7 @@ export default function InfinitePropertyCarousel({
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-600px * ${PROPERTY_IMAGES.length} - 1.5rem * ${PROPERTY_IMAGES.length}));
+            transform: translateX(calc(-600px * ${CAROUSEL_IMAGES.length} - 1.5rem * ${CAROUSEL_IMAGES.length}));
           }
         }
       `}</style>
