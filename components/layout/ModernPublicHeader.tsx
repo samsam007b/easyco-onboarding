@@ -74,46 +74,33 @@ export default function ModernPublicHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active indicator with connection visual - BEHIND */}
+                  {/* Triangle pointer */}
                   {isActive && (
-                    <>
-                      {/* Glow effect */}
-                      <motion.div
-                        layoutId="active-nav-indicator"
-                        className={cn(
-                          "absolute inset-0 rounded-xl -z-10",
-                          item.color === 'yellow'
-                            ? "bg-yellow-100"
-                            : "bg-purple-100"
-                        )}
-                        initial={false}
-                        transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                      />
-
-                      {/* Triangle pointer */}
-                      <motion.div
-                        className={cn(
-                          "absolute -bottom-3 left-1/2 -translate-x-1/2 z-10",
-                          "w-0 h-0 border-l-8 border-r-8 border-t-8",
-                          "border-transparent",
-                          item.color === 'yellow'
-                            ? "border-t-yellow-500"
-                            : "border-t-purple-500"
-                        )}
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                      />
-                    </>
+                    <motion.div
+                      className={cn(
+                        "absolute -bottom-3 left-1/2 -translate-x-1/2 z-10",
+                        "w-0 h-0 border-l-8 border-r-8 border-t-8",
+                        "border-transparent",
+                        item.color === 'yellow'
+                          ? "border-t-yellow-500"
+                          : "border-t-purple-600"
+                      )}
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
                   )}
 
-                  {/* Button content */}
+                  {/* Button content - Colorisé complètement quand actif */}
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
                       isActive
-                        ? "text-gray-900 font-semibold"
+                        ? item.color === 'yellow'
+                          ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-lg"
+                          : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                     )}
                   >
