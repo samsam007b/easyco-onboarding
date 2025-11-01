@@ -203,7 +203,7 @@ export default function HubCalendarPage() {
             <div className="flex items-center gap-2">
               <Button
                 onClick={previousMonth}
-                variant="outline"
+                className="border border-gray-300 bg-white text-gray-700"
                 size="sm"
                 className="rounded-full"
               >
@@ -211,7 +211,7 @@ export default function HubCalendarPage() {
               </Button>
               <Button
                 onClick={() => setCurrentDate(new Date())}
-                variant="outline"
+                className="border border-gray-300 bg-white text-gray-700"
                 size="sm"
                 className="rounded-full"
               >
@@ -219,7 +219,7 @@ export default function HubCalendarPage() {
               </Button>
               <Button
                 onClick={nextMonth}
-                variant="outline"
+                className="border border-gray-300 bg-white text-gray-700"
                 size="sm"
                 className="rounded-full"
               >
