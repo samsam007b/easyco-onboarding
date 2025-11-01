@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import NotificationBell from '@/components/notifications/NotificationBell';
 import { createClient } from '@/lib/auth/supabase-client';
 
 interface ModernSearcherHeaderProps {
