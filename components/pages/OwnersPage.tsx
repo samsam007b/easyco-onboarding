@@ -10,7 +10,7 @@ export default function OwnersPage() {
     {
       icon: Shield,
       title: 'Locataires vérifiés',
-      description: 'Tous nos résidents passent par une vérification d identité et de solvabilité'
+      description: 'Tous nos résidents passent par une vérification d\'identité et de solvabilité'
     },
     {
       icon: TrendingUp,
@@ -25,7 +25,7 @@ export default function OwnersPage() {
     {
       icon: Headphones,
       title: 'Support dédié',
-      description: 'Une équipe à ton écoute 7j/7 pour t accompagner'
+      description: 'Une équipe à ton écoute 7j/7 pour t\'accompagner'
     },
   ];
 
@@ -61,7 +61,7 @@ export default function OwnersPage() {
             Loue ton bien en toute sérénité
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Gestion simplifiée, locataires vérifiés, revenus optimisés. Tout ce qu il te faut pour louer sans stress.
+            Gestion simplifiée, locataires vérifiés, revenus optimisés. Tout ce qu'il te faut pour louer sans stress.
           </p>
 
           <Link href="/onboarding/owner">

@@ -20,19 +20,19 @@ export default function ResidentsPage() {
     {
       icon: Calendar,
       title: 'Flexibilité totale',
-      description: 'Loyers mensuels, pas d engagements long-termes ou de frais cachés'
+      description: 'Loyers mensuels, pas d\'engagements long-termes ou de frais cachés'
     },
     {
       icon: TrendingUp,
       title: 'Économies garanties',
-      description: 'Jusqu à 40% d économies comparé à un studio individuel'
+      description: 'Jusqu\'à 40% d\'économies comparé à un studio individuel'
     },
   ];
 
   const steps = [
     { number: 1, title: 'Crée ton profil', description: 'Remplis ton profil en 5 minutes' },
     { number: 2, title: 'Trouve ton match', description: 'Notre algorithme te propose des colocataires compatibles' },
-    { number: 3, title: 'Visite et emménage', description: 'Rencontre tes futurs colocs et démarre l aventure' },
+    { number: 3, title: 'Visite et emménage', description: 'Rencontre tes futurs colocs et démarre l\'aventure' },
   ];
 
   return (
@@ -49,20 +49,20 @@ export default function ResidentsPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-500 to-purple-700 mb-6 shadow-2xl"
+            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500 to-orange-700 mb-6 shadow-2xl"
           >
             <Users className="w-10 h-10 text-white" />
           </motion.div>
 
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Vis l expérience coliving ultime
+            Vis l'expérience coliving ultime
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Trouve des colocataires compatibles, partage des moments uniques, et économise tout en vivant mieux.
           </p>
 
           <Link href="/onboarding/resident">
-            <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold px-10 py-4 rounded-full text-lg shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all">
+            <Button className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold px-10 py-4 rounded-full text-lg shadow-2xl hover:shadow-orange-500/50 hover:scale-105 transition-all">
               <Sparkles className="w-6 h-6 mr-2" />
               Devenir résident
             </Button>
@@ -83,7 +83,7 @@ export default function ResidentsPage() {
               Pourquoi rejoindre EasyCo ?
             </h2>
             <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Bien plus qu une simple colocation, c est une communauté qui te ressemble
+              Bien plus qu'une simple colocation, c'est une communauté qui te ressemble
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -95,10 +95,10 @@ export default function ResidentsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
-                    className="flex gap-4 p-6 rounded-2xl hover:bg-purple-50 transition-all group"
+                    className="flex gap-4 p-6 rounded-2xl hover:bg-orange-50 transition-all group"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                     </div>
@@ -130,7 +130,7 @@ export default function ResidentsPage() {
                 transition={{ delay: 0.6 + index * 0.1 }}
                 className="bg-white rounded-2xl p-6 shadow-lg flex items-center gap-6 hover:shadow-xl transition-all"
               >
-                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                   {step.number}
                 </div>
                 <div>
@@ -148,8 +148,8 @@ export default function ResidentsPage() {
             className="mt-12 text-center"
           >
             <Link href="/onboarding/resident">
-              <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold px-10 py-4 rounded-full text-lg shadow-2xl hover:scale-105 transition-all">
-                Commencer l aventure
+              <Button className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold px-10 py-4 rounded-full text-lg shadow-2xl hover:scale-105 transition-all">
+                Commencer l'aventure
               </Button>
             </Link>
           </motion.div>
