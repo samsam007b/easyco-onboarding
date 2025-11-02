@@ -104,19 +104,17 @@ export default function ModernPublicHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Triangle pointer */}
+                  {/* Triangle pointer - avec couleur du dégradé */}
                   {isActive && (
                     <motion.div
-                      className={cn(
-                        "absolute -bottom-3 left-1/2 -translate-x-1/2 z-10",
-                        "w-0 h-0 border-l-8 border-r-8 border-t-8",
-                        "border-transparent",
-                        item.color === 'yellow'
-                          ? "border-t-yellow-500"
+                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
+                      style={{
+                        borderTopColor: item.color === 'yellow'
+                          ? '#FFB85C'
                           : item.color === 'orange'
-                          ? "border-t-orange-500"
-                          : "border-t-purple-600"
-                      )}
+                          ? '#E8865D'
+                          : '#A67BB8'
+                      }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
@@ -124,25 +122,26 @@ export default function ModernPublicHeader({
                     />
                   )}
 
-                  {/* Button content - Dégradé extrait du logo quand actif */}
+                  {/* Button content - Texte en blanc avec effet hover dégradé */}
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all overflow-hidden",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
                       isActive
-                        ? "text-white shadow-lg grain-medium"
-                        : "text-white/80 hover:bg-white/10 text-hover-gradient"
-                    )}
-                    style={isActive ? {
-                      background: item.color === 'yellow'
-                        ? 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                        ? item.color === 'yellow'
+                          ? "text-active-searcher"
+                          : item.color === 'orange'
+                          ? "text-active-resident"
+                          : "text-active-owner"
+                        : item.color === 'yellow'
+                        ? "text-hover-searcher"
                         : item.color === 'orange'
-                        ? 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                        : 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
-                    } : undefined}
+                        ? "text-hover-resident"
+                        : "text-hover-owner"
+                    )}
                   >
-                    <Icon className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">{item.label}</span>
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
                   </button>
                 </div>
               );

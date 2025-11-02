@@ -720,6 +720,65 @@ body.theme-resident ::selection {
   -webkit-text-fill-color: transparent;
 }
 
+/* Text hover avec dégradés par rôle (extraits du logo) */
+.text-hover-searcher {
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.text-hover-searcher:hover {
+  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-hover-resident {
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.text-hover-resident:hover {
+  background: linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-hover-owner {
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.text-hover-owner:hover {
+  background: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Text actif avec dégradés par rôle (quand cliqué) */
+.text-active-searcher {
+  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-active-resident {
+  background: linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-active-owner {
+  background: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Header gris avec gradient et grain */
 .header-gray-slate {
   background: linear-gradient(135deg, #475569 0%, #64748B 100%);
