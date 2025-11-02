@@ -97,6 +97,8 @@
   --gradient-owner-medium: linear-gradient(135deg, #6E56CF 0%, #5B45B8 100%);
   --gradient-owner-dark: linear-gradient(135deg, #5B45B8 0%, #4A148C 100%);
   --gradient-owner-subtle: linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%);
+  --gradient-owner-cta: linear-gradient(135deg, #6E56CF 0%, #5B45B8 50%, #4A148C 100%); /* CTA fort */
+  --gradient-owner-vibrant: linear-gradient(135deg, #8E7AD6 0%, #7C4DFF 100%); /* Très visible */
 
   /* ============================================
      Grain Textures (NEW - Crayon/Organic Style)
@@ -679,6 +681,29 @@ body.theme-resident ::selection {
   background: var(--gradient-searcher-dark);
 }
 
+/* CTA Owner avec dégradé mauve + grain */
+.cta-owner {
+  background: var(--gradient-owner-cta);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-owner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.cta-owner:hover {
+  background: var(--gradient-owner-dark);
+}
+
 /* Header gris avec gradient et grain */
 .header-gray-slate {
   background: linear-gradient(135deg, #475569 0%, #64748B 100%);
@@ -742,7 +767,8 @@ body.theme-resident ::selection {
 .header-gray-slate > *,
 .header-gray-warm > *,
 .header-gray-graphite > *,
-.cta-searcher > * {
+.cta-searcher > *,
+.cta-owner > * {
   position: relative;
   z-index: 2;
 }

@@ -166,9 +166,9 @@ export default function ModernHeroSection() {
               </Button>
             </Link>
 
-            {/* Owner CTA - White Pill Compact */}
+            {/* Owner CTA - Purple Gradient with Grain */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto group relative overflow-hidden bg-white hover:bg-white/90 text-purple-900 font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+              <Button className="cta-owner w-full sm:w-auto group relative overflow-hidden text-white font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
                 <div className="flex items-center gap-2">
                   <Home className="w-5 h-5" />
                   <span>Je loue mon bien</span>
