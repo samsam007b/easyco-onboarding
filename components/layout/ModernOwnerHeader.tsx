@@ -120,14 +120,14 @@ export default function ModernOwnerHeader({
             href="/dashboard/owner"
             className="flex items-center gap-3 group"
           >
-            {/* Logo tricolore signature EasyCo */}
+            {/* Logo Owner avec dégradé extrait du logo original */}
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
               }}
             >
-              <Home className="w-5 h-5 text-white" />
+              <Home className="w-5 h-5 text-white relative z-10" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">

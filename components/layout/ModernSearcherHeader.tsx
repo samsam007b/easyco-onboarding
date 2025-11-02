@@ -158,12 +158,12 @@ export default function ModernSearcherHeader({
             className="flex items-center gap-3 group"
           >
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
               }}
             >
-              <Search className="w-5 h-5 text-white" />
+              <Search className="w-5 h-5 text-white relative z-10" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">

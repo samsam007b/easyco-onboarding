@@ -127,14 +127,14 @@ export default function ModernResidentHeader({
             href="/dashboard/resident"
             className="flex items-center gap-3 group"
           >
-            {/* Logo tricolore signature EasyCo */}
+            {/* Logo Resident avec dégradé extrait du logo original */}
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
               }}
             >
-              <Home className="w-5 h-5 text-white" />
+              <Home className="w-5 h-5 text-white relative z-10" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">
