@@ -109,6 +109,65 @@
   --role-light: var(--owner-light);
   --role-dark: var(--owner-dark);
 
+  /* ============================================
+     DESIGN SYSTEM PAR RÔLE
+     Palettes harmonieuses monochromes pour éviter l'arc-en-ciel
+     ============================================ */
+
+  /* 🟡 SEARCHER DESIGN SYSTEM - Jaune/Doré/Ambré */
+  --searcher-50: #FFFEF0;      /* Backgrounds très subtils */
+  --searcher-100: #FFF9E6;     /* Backgrounds légers */
+  --searcher-200: #FFF59D;     /* Hover backgrounds */
+  --searcher-300: #FFEB3B;     /* Borders, dividers */
+  --searcher-400: #FFD249;     /* Icons secondaires */
+  --searcher-500: #FFC107;     /* PRINCIPALE - Boutons, highlights */
+  --searcher-600: #F9A825;     /* Hover states actifs */
+  --searcher-700: #F57F17;     /* Textes importants */
+  --searcher-800: #E65100;     /* Headers, emphase */
+  --searcher-900: #BF360C;     /* Textes ultra-importants */
+
+  /* Couleurs complémentaires Searcher (pour variety) */
+  --searcher-accent: #FFB300;  /* Accent doré */
+  --searcher-muted: #FFF8DC;   /* Backgrounds désactivés */
+  --searcher-border: #FFE082;  /* Borders subtiles */
+  --searcher-shadow: rgba(255, 193, 7, 0.2); /* Ombres */
+
+  /* 🟠 RESIDENT DESIGN SYSTEM - Orange/Corail/Terracotta */
+  --resident-50: #FFFAF8;      /* Backgrounds très subtils */
+  --resident-100: #FFF3EF;     /* Backgrounds légers */
+  --resident-200: #FFB88C;     /* Hover backgrounds */
+  --resident-300: #FF8C5C;     /* Borders, dividers */
+  --resident-400: #FF6F3C;     /* Icons secondaires */
+  --resident-500: #FF5722;     /* PRINCIPALE - Boutons, highlights */
+  --resident-600: #E64A19;     /* Hover states actifs */
+  --resident-700: #D84315;     /* Textes importants */
+  --resident-800: #BF360C;     /* Headers, emphase */
+  --resident-900: #8D2A0E;     /* Textes ultra-importants */
+
+  /* Couleurs complémentaires Resident (pour variety) */
+  --resident-accent: #FF7043;  /* Accent corail */
+  --resident-muted: #FFCCBC;   /* Backgrounds désactivés */
+  --resident-border: #FFAB91;  /* Borders subtiles */
+  --resident-shadow: rgba(255, 87, 34, 0.2); /* Ombres */
+
+  /* 🟣 OWNER DESIGN SYSTEM - Mauve/Violet/Indigo */
+  --owner-50: #F9F8FF;         /* Backgrounds très subtils */
+  --owner-100: #F3F1FF;        /* Backgrounds légers */
+  --owner-200: #E0D9FF;        /* Hover backgrounds */
+  --owner-300: #BAB2E3;        /* Borders, dividers */
+  --owner-400: #8E7AD6;        /* Icons secondaires */
+  --owner-500: #6E56CF;        /* PRINCIPALE - Boutons, highlights */
+  --owner-600: #5B45B8;        /* Hover states actifs */
+  --owner-700: #4A148C;        /* Textes importants */
+  --owner-800: #38006B;        /* Headers, emphase */
+  --owner-900: #1A0033;        /* Textes ultra-importants */
+
+  /* Couleurs complémentaires Owner (pour variety) */
+  --owner-accent: #7C4DFF;     /* Accent violet vif */
+  --owner-muted: #D1C4E9;      /* Backgrounds désactivés */
+  --owner-border: #B39DDB;     /* Borders subtiles */
+  --owner-shadow: rgba(110, 86, 207, 0.2); /* Ombres */
+
   /* Neutral Colors */
   --gray-900: #1A1A1A;          /* Text primary */
   --gray-800: #2D2D2D;          /* Text secondary */
@@ -661,3 +720,113 @@ body.theme-resident ::selection {
   position: relative;
   z-index: 2;
 }
+
+/* ============================================
+   DESIGN SYSTEM PAR RÔLE - Classes Utilitaires
+   ============================================ */
+
+/* Classes de contexte pour switcher le design system */
+.role-searcher {
+  --role-50: var(--searcher-50);
+  --role-100: var(--searcher-100);
+  --role-200: var(--searcher-200);
+  --role-300: var(--searcher-300);
+  --role-400: var(--searcher-400);
+  --role-500: var(--searcher-500);
+  --role-600: var(--searcher-600);
+  --role-700: var(--searcher-700);
+  --role-800: var(--searcher-800);
+  --role-900: var(--searcher-900);
+  --role-accent: var(--searcher-accent);
+  --role-muted: var(--searcher-muted);
+  --role-border: var(--searcher-border);
+  --role-shadow: var(--searcher-shadow);
+}
+
+.role-resident {
+  --role-50: var(--resident-50);
+  --role-100: var(--resident-100);
+  --role-200: var(--resident-200);
+  --role-300: var(--resident-300);
+  --role-400: var(--resident-400);
+  --role-500: var(--resident-500);
+  --role-600: var(--resident-600);
+  --role-700: var(--resident-700);
+  --role-800: var(--resident-800);
+  --role-900: var(--resident-900);
+  --role-accent: var(--resident-accent);
+  --role-muted: var(--resident-muted);
+  --role-border: var(--resident-border);
+  --role-shadow: var(--resident-shadow);
+}
+
+.role-owner {
+  --role-50: var(--owner-50);
+  --role-100: var(--owner-100);
+  --role-200: var(--owner-200);
+  --role-300: var(--owner-300);
+  --role-400: var(--owner-400);
+  --role-500: var(--owner-500);
+  --role-600: var(--owner-600);
+  --role-700: var(--owner-700);
+  --role-800: var(--owner-800);
+  --role-900: var(--owner-900);
+  --role-accent: var(--owner-accent);
+  --role-muted: var(--owner-muted);
+  --role-border: var(--owner-border);
+  --role-shadow: var(--owner-shadow);
+}
+
+/* Background utilities */
+.bg-role-50 { background-color: var(--role-50); }
+.bg-role-100 { background-color: var(--role-100); }
+.bg-role-200 { background-color: var(--role-200); }
+.bg-role-300 { background-color: var(--role-300); }
+.bg-role-400 { background-color: var(--role-400); }
+.bg-role-500 { background-color: var(--role-500); }
+.bg-role-600 { background-color: var(--role-600); }
+.bg-role-700 { background-color: var(--role-700); }
+.bg-role-800 { background-color: var(--role-800); }
+.bg-role-900 { background-color: var(--role-900); }
+.bg-role-accent { background-color: var(--role-accent); }
+.bg-role-muted { background-color: var(--role-muted); }
+
+/* Text color utilities */
+.text-role-50 { color: var(--role-50); }
+.text-role-100 { color: var(--role-100); }
+.text-role-200 { color: var(--role-200); }
+.text-role-300 { color: var(--role-300); }
+.text-role-400 { color: var(--role-400); }
+.text-role-500 { color: var(--role-500); }
+.text-role-600 { color: var(--role-600); }
+.text-role-700 { color: var(--role-700); }
+.text-role-800 { color: var(--role-800); }
+.text-role-900 { color: var(--role-900); }
+.text-role-accent { color: var(--role-accent); }
+
+/* Border utilities */
+.border-role-50 { border-color: var(--role-50); }
+.border-role-100 { border-color: var(--role-100); }
+.border-role-200 { border-color: var(--role-200); }
+.border-role-300 { border-color: var(--role-300); }
+.border-role-400 { border-color: var(--role-400); }
+.border-role-500 { border-color: var(--role-500); }
+.border-role-600 { border-color: var(--role-600); }
+.border-role-700 { border-color: var(--role-700); }
+.border-role-800 { border-color: var(--role-800); }
+.border-role-900 { border-color: var(--role-900); }
+.border-role-accent { border-color: var(--role-accent); }
+.border-role-border { border-color: var(--role-border); }
+
+/* Hover utilities */
+.hover\:bg-role-100:hover { background-color: var(--role-100); }
+.hover\:bg-role-200:hover { background-color: var(--role-200); }
+.hover\:bg-role-500:hover { background-color: var(--role-500); }
+.hover\:bg-role-600:hover { background-color: var(--role-600); }
+
+.hover\:text-role-600:hover { color: var(--role-600); }
+.hover\:text-role-700:hover { color: var(--role-700); }
+.hover\:text-role-800:hover { color: var(--role-800); }
+
+.hover\:border-role-500:hover { border-color: var(--role-500); }
+.hover\:border-role-600:hover { border-color: var(--role-600); }
