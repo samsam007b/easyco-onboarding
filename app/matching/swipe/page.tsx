@@ -2,14 +2,8 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
-import Zap from 'lucide-react/dist/esm/icons/zap';
-
-// Lazy load Framer Motion components
-const AnimatePresence = dynamic(() => import('framer-motion').then(mod => ({ default: mod.AnimatePresence })), {
-  ssr: false,
-});
+import { ArrowLeft, Zap } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
