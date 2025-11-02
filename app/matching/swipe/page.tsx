@@ -143,9 +143,12 @@ export default function SwipePage() {
         return {
           ...property,
           compatibilityScore: matchResult.score,
-        };
+        } as typeof property & { compatibilityScore: number };
       } catch (error) {
-        return property;
+        return {
+          ...property,
+          compatibilityScore: 0,
+        } as typeof property & { compatibilityScore: number };
       }
     }).sort((a, b) => (b.compatibilityScore || 0) - (a.compatibilityScore || 0)); // Sort by best match first
   }, [properties, userPreferences]);
