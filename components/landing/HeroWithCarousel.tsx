@@ -42,7 +42,7 @@ export function HeroWithCarousel() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all"
+                  className="cta-searcher text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all text-white font-semibold"
                   onClick={() => router.push('/properties/browse')}
                 >
                   <Search className="w-5 h-5 mr-2" />

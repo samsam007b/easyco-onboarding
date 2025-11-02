@@ -79,6 +79,8 @@
   --gradient-searcher-medium: linear-gradient(135deg, #FFD249 0%, #FFC107 100%);
   --gradient-searcher-dark: linear-gradient(135deg, #FFC107 0%, #F9A825 100%);
   --gradient-searcher-subtle: linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%);
+  --gradient-searcher-cta: linear-gradient(135deg, #FFD249 0%, #FFC107 50%, #F9A825 100%); /* CTA fort */
+  --gradient-searcher-vibrant: linear-gradient(135deg, #FFEB3B 0%, #FFB300 100%); /* Très visible */
 
   /* Resident - Orange Gradient Variations */
   --gradient-resident: linear-gradient(135deg, #FF8C5C 0%, #FF6F3C 50%, #FF5722 100%);
@@ -654,6 +656,29 @@ body.theme-resident ::selection {
   pointer-events: none;
 }
 
+/* CTA Searcher avec dégradé jaune + grain */
+.cta-searcher {
+  background: var(--gradient-searcher-cta);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-searcher::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.cta-searcher:hover {
+  background: var(--gradient-searcher-dark);
+}
+
 /* Header gris avec gradient et grain */
 .header-gray-slate {
   background: linear-gradient(135deg, #475569 0%, #64748B 100%);
@@ -716,7 +741,8 @@ body.theme-resident ::selection {
 .gradient-searcher-grain > *,
 .header-gray-slate > *,
 .header-gray-warm > *,
-.header-gray-graphite > * {
+.header-gray-graphite > *,
+.cta-searcher > * {
   position: relative;
   z-index: 2;
 }
