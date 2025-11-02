@@ -56,10 +56,11 @@
 
   /* ============================================
      EasyCo Signature Gradient (Brand Identity)
+     Uses the 3 role colors: Owner → Resident → Searcher
      ============================================ */
-  --gradient-brand-start: #6E56CF;      /* Purple - Mauve */
-  --gradient-brand-middle: #B695E8;     /* Pink/Rose transition */
-  --gradient-brand-end: #FFB84D;        /* Orange/Yellow */
+  --gradient-brand-start: var(--owner-primary);      /* Mauve #6E56CF */
+  --gradient-brand-middle: var(--resident-primary);  /* Orange #FF6F3C */
+  --gradient-brand-end: var(--searcher-primary);     /* Yellow #FFD249 */
 
   /* Pre-built gradient utilities */
   --gradient-brand: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
