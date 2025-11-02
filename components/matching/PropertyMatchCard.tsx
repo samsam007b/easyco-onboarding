@@ -4,19 +4,17 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import {
-  MapPin,
-  Euro,
-  Calendar,
-  Heart,
-  X,
-  Eye,
-  TrendingUp,
-  Home,
-  Users,
-  Sparkles,
-} from 'lucide-react';
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
+import Euro from 'lucide-react/dist/esm/icons/euro';
+import Calendar from 'lucide-react/dist/esm/icons/calendar';
+import Heart from 'lucide-react/dist/esm/icons/heart';
+import X from 'lucide-react/dist/esm/icons/x';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Home from 'lucide-react/dist/esm/icons/home';
+import Users from 'lucide-react/dist/esm/icons/users';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 
 export interface PropertyMatch {
   id: string;
@@ -64,7 +62,36 @@ interface PropertyMatchCardProps {
   onViewDetails?: (matchId: string, propertyId: string) => void;
 }
 
-export function PropertyMatchCard({
+// Memoized helper functions outside component
+const getScoreColor = (score: number) => {
+  if (score >= 80) return 'text-green-600';
+  if (score >= 60) return 'text-yellow-600';
+  return 'text-orange-600';
+};
+
+const getScoreBgColor = (score: number) => {
+  if (score >= 80) return 'bg-green-100';
+  if (score >= 60) return 'bg-yellow-100';
+  return 'bg-orange-100';
+};
+
+const priceFormatter = new Intl.NumberFormat('fr-FR', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 0,
+});
+
+const formatPrice = (price: number) => priceFormatter.format(price);
+
+const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+};
+
+export const PropertyMatchCard = memo(function PropertyMatchCard({
   match,
   onContact,
   onHide,
@@ -74,35 +101,29 @@ export function PropertyMatchCard({
   const property = match.property;
   const owner = match.owner;
 
+  const toggleDetails = useCallback(() => {
+    setShowDetails(prev => !prev);
+  }, []);
+
+  const handleViewDetails = useCallback(() => {
+    if (onViewDetails && property) {
+      onViewDetails(match.id, property.id);
+    }
+  }, [onViewDetails, match.id, property]);
+
+  const handleContact = useCallback(() => {
+    if (onContact) {
+      onContact(match.id);
+    }
+  }, [onContact, match.id]);
+
+  const handleHide = useCallback(() => {
+    if (onHide) {
+      onHide(match.id);
+    }
+  }, [onHide, match.id]);
+
   if (!property) return null;
-
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-orange-600';
-  };
-
-  const getScoreBgColor = (score: number) => {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
-    return 'bg-orange-100';
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
 
   const scoreBreakdown = match.score_breakdown;
 
@@ -222,7 +243,7 @@ export function PropertyMatchCard({
 
         {/* Score Breakdown Toggle */}
         <button
-          onClick={() => setShowDetails(!showDetails)}
+          onClick={toggleDetails}
           className="w-full text-sm text-purple-600 hover:text-purple-800 font-medium mb-3 text-left flex items-center gap-2"
         >
           <TrendingUp className="w-4 h-4" />
@@ -319,11 +340,7 @@ export function PropertyMatchCard({
           <Button
             className="flex-1"
             variant="default"
-            onClick={() => {
-              if (onViewDetails) {
-                onViewDetails(match.id, property.id);
-              }
-            }}
+            onClick={handleViewDetails}
           >
             <Eye className="w-4 h-4 mr-2" />
             Voir le bien
@@ -333,11 +350,7 @@ export function PropertyMatchCard({
             <Button
               className="flex-1"
               variant="outline"
-              onClick={() => {
-                if (onContact) {
-                  onContact(match.id);
-                }
-              }}
+              onClick={handleContact}
             >
               <Heart className="w-4 h-4 mr-2" />
               Contacter
@@ -348,11 +361,7 @@ export function PropertyMatchCard({
             variant="ghost"
             size="icon"
             className="text-gray-400 hover:text-red-600"
-            onClick={() => {
-              if (onHide) {
-                onHide(match.id);
-              }
-            }}
+            onClick={handleHide}
           >
             <X className="w-5 h-5" />
           </Button>
@@ -360,4 +369,4 @@ export function PropertyMatchCard({
       </CardContent>
     </Card>
   );
-}
+});

@@ -96,6 +96,13 @@
   --gradient-owner-dark: linear-gradient(135deg, #5B45B8 0%, #4A148C 100%);
   --gradient-owner-subtle: linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%);
 
+  /* ============================================
+     Grain Textures (NEW - Crayon/Organic Style)
+     ============================================ */
+  --grain-url-subtle: url('/textures/grain-subtle.svg');
+  --grain-url-medium: url('/textures/grain-medium.svg');
+  --grain-url-strong: url('/textures/grain-strong.svg');
+
   /* Role-based Dynamic Variables (default: Owner) */
   --role-primary: var(--owner-primary);
   --role-hover: var(--owner-hover);
@@ -462,4 +469,140 @@ body.theme-resident ::selection {
 /* Radial gradient utility */
 .bg-gradient-radial {
   background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* ============================================
+   Grain Textures (Crayon/Organic Style)
+   ============================================ */
+
+/* Apply grain texture overlay to any element */
+.grain-subtle::after,
+.grain-medium::after,
+.grain-strong::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 1;
+  z-index: 1;
+}
+
+.grain-subtle::after {
+  background-image: var(--grain-url-subtle);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+.grain-medium::after {
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+.grain-strong::after {
+  background-image: var(--grain-url-strong);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+/* Ensure parent has position relative for absolute positioning */
+.grain-subtle,
+.grain-medium,
+.grain-strong {
+  position: relative;
+}
+
+/* Grain variants with different blend modes */
+.grain-multiply::after {
+  mix-blend-mode: multiply;
+}
+
+.grain-soft-light::after {
+  mix-blend-mode: soft-light;
+}
+
+.grain-hard-light::after {
+  mix-blend-mode: hard-light;
+}
+
+/* Combined gradient + grain utilities */
+.gradient-brand-grain {
+  background: var(--gradient-brand);
+}
+
+.gradient-brand-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Role-specific gradients with grain */
+.gradient-owner-grain {
+  background: var(--gradient-owner);
+  position: relative;
+}
+
+.gradient-owner-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.gradient-resident-grain {
+  background: var(--gradient-resident);
+  position: relative;
+}
+
+.gradient-resident-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.gradient-searcher-grain {
+  background: var(--gradient-searcher);
+  position: relative;
+}
+
+.gradient-searcher-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Ensure child content stays above grain */
+.grain-subtle > *,
+.grain-medium > *,
+.grain-strong > *,
+.gradient-brand-grain > *,
+.gradient-owner-grain > *,
+.gradient-resident-grain > *,
+.gradient-searcher-grain > * {
+  position: relative;
+  z-index: 2;
 }

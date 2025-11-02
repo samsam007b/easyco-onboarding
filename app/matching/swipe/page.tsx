@@ -1,9 +1,15 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Zap } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import Zap from 'lucide-react/dist/esm/icons/zap';
+
+// Lazy load Framer Motion components
+const AnimatePresence = dynamic(() => import('framer-motion').then(mod => ({ default: mod.AnimatePresence })), {
+  ssr: false,
+});
 import { createClient } from '@/lib/auth/supabase-client';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
@@ -74,7 +80,7 @@ export default function SwipePage() {
     enabled: !!userId,
   });
 
-  // Fetch user preferences
+  // Fetch user preferences - cached with React Query
   const { data: userPreferences } = useQuery({
     queryKey: ['user-preferences', userId],
     queryFn: async () => {
@@ -87,16 +93,17 @@ export default function SwipePage() {
       return data as UserPreferences | null;
     },
     enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 
-  // Fetch properties
+  // Fetch properties - optimized with selective column fetching
   const { data: properties, isLoading } = useQuery({
     queryKey: ['swipe-properties', userId],
     queryFn: async () => {
-      // Fetch properties
+      // Fetch only necessary columns for swipe view
       const { data, error } = await supabase
         .from('properties')
-        .select('*')
+        .select('id, title, city, neighborhood, monthly_rent, bedrooms, bathrooms, main_image, images, description, furnished, balcony, parking, available_from, smoking_allowed, pets_allowed')
         .eq('status', 'published')
         .order('created_at', { ascending: false })
         .limit(50);
@@ -151,7 +158,7 @@ export default function SwipePage() {
 
   const currentProperty = propertiesWithScores?.[currentIndex];
 
-  const handleSwipe = async (direction: 'left' | 'right', propertyId: string) => {
+  const handleSwipe = useCallback(async (direction: 'left' | 'right', propertyId: string) => {
     if (isAnimating) return;
 
     setIsAnimating(true);
@@ -178,21 +185,21 @@ export default function SwipePage() {
       setCurrentIndex(prev => prev + 1);
       setIsAnimating(false);
     }, 300);
-  };
+  }, [isAnimating, userId, supabase]);
 
-  const handlePass = () => {
+  const handlePass = useCallback(() => {
     if (currentProperty) {
       handleSwipe('left', currentProperty.id);
     }
-  };
+  }, [currentProperty, handleSwipe]);
 
-  const handleLike = () => {
+  const handleLike = useCallback(() => {
     if (currentProperty) {
       handleSwipe('right', currentProperty.id);
     }
-  };
+  }, [currentProperty, handleSwipe]);
 
-  const handleSuperLike = async () => {
+  const handleSuperLike = useCallback(async () => {
     if (!currentProperty || isAnimating) return;
 
     setIsAnimating(true);
@@ -202,7 +209,7 @@ export default function SwipePage() {
       user_id: userId,
       property_id: currentProperty.id,
       liked: true,
-      super_like: true,
+      super_link: true,
     });
 
     setSwipeHistory(prev => [...prev, {
@@ -215,9 +222,9 @@ export default function SwipePage() {
       setCurrentIndex(prev => prev + 1);
       setIsAnimating(false);
     }, 300);
-  };
+  }, [currentProperty, isAnimating, userId, supabase]);
 
-  const handleUndo = () => {
+  const handleUndo = useCallback(() => {
     if (swipeHistory.length === 0 || currentIndex === 0) return;
 
     // Remove last action
@@ -233,7 +240,7 @@ export default function SwipePage() {
 
     // Go back
     setCurrentIndex(prev => prev - 1);
-  };
+  }, [swipeHistory, currentIndex, userId, supabase]);
 
   if (isLoading || !userProfile) {
     return (
