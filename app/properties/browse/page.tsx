@@ -318,7 +318,7 @@ export default function PropertiesBrowsePageV2() {
       const { data } = await supabase
         .from('searcher_preferences')
         .select('*')
-        .eq('user_id', userData.id)
+        .eq('user_id', queryUserData.id)
         .single();
 
       return data as UserPreferences | null;
