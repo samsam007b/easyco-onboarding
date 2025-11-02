@@ -3,6 +3,7 @@
 import { LanguageProvider } from '@/lib/i18n/use-language';
 import { RoleProvider } from '@/lib/role/role-context';
 import { NotificationProvider } from '@/contexts/NotificationContext';
+import { MessagesProvider } from '@/contexts/MessagesContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -24,7 +25,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
       <LanguageProvider>
         <RoleProvider>
           <NotificationProvider>
-            {children}
+            <MessagesProvider>
+              {children}
+            </MessagesProvider>
           </NotificationProvider>
         </RoleProvider>
       </LanguageProvider>
