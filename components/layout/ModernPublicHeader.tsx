@@ -96,8 +96,8 @@ export default function ModernPublicHeader({
             <span className="text-xl font-bold text-white">EasyCo</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Navigation - Centré */}
+          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => {
               const isActive = activePage === item.id;
               const Icon = item.icon;
@@ -151,7 +151,24 @@ export default function ModernPublicHeader({
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language Switcher with Dropdown */}
+            {/* Se connecter */}
+            <Link href="/auth">
+              <Button
+                variant="ghost"
+                className="rounded-full font-medium text-white/90 hover:bg-white/10 text-hover-gradient"
+              >
+                Se connecter
+              </Button>
+            </Link>
+
+            {/* S'inscrire */}
+            <Link href="/signup">
+              <Button className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                S'inscrire
+              </Button>
+            </Link>
+
+            {/* Language Switcher with Dropdown - Déplacé à droite */}
             <div ref={langDropdownRef} className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
@@ -199,23 +216,6 @@ export default function ModernPublicHeader({
                 )}
               </AnimatePresence>
             </div>
-
-            {/* Se connecter */}
-            <Link href="/auth">
-              <Button
-                variant="ghost"
-                className="rounded-full font-medium text-white/90 hover:bg-white/10 text-hover-gradient"
-              >
-                Se connecter
-              </Button>
-            </Link>
-
-            {/* S'inscrire */}
-            <Link href="/signup">
-              <Button className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                S'inscrire
-              </Button>
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
