@@ -5,16 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useState, memo, useCallback } from 'react';
-import MapPin from 'lucide-react/dist/esm/icons/map-pin';
-import Euro from 'lucide-react/dist/esm/icons/euro';
-import Calendar from 'lucide-react/dist/esm/icons/calendar';
-import Heart from 'lucide-react/dist/esm/icons/heart';
-import X from 'lucide-react/dist/esm/icons/x';
-import Eye from 'lucide-react/dist/esm/icons/eye';
-import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
-import Home from 'lucide-react/dist/esm/icons/home';
-import Users from 'lucide-react/dist/esm/icons/users';
-import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
+import { MapPin, Euro, Calendar, Heart, X, Eye, TrendingUp, Home, Users, Sparkles } from 'lucide-react';
 
 export interface PropertyMatch {
   id: string;
