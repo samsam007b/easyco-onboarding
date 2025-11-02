@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// Bundle analyzer configuration
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -188,5 +193,5 @@ const sentryWebpackPluginOptions = {
   disableLogger: true,
 }
 
-// Export config wrapped with Sentry
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+// Export config wrapped with Bundle Analyzer and Sentry
+export default withBundleAnalyzer(withSentryConfig(nextConfig, sentryWebpackPluginOptions))
