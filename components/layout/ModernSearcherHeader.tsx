@@ -146,19 +146,31 @@ export default function ModernSearcherHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo + Badge */}
+          {/* Logo tricolore signature EasyCo */}
           <Link
             href="/dashboard/searcher"
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-500 via-yellow-600 to-orange-600 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all">
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+              }}
+            >
               <Search className="w-5 h-5 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-yellow-600">Chercheur</span>
+              <span
+                className="text-xs font-medium bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
+                }}
+              >
+                Chercheur
+              </span>
             </div>
           </Link>
 
@@ -170,11 +182,14 @@ export default function ModernSearcherHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active Indicator */}
+                  {/* Active Indicator avec dégradé jaune subtil */}
                   {isActive && (
                     <motion.div
                       layoutId="searcher-active-nav"
-                      className="absolute inset-0 bg-gradient-to-r from-yellow-100 to-orange-50 rounded-xl -z-10"
+                      className="absolute inset-0 rounded-xl -z-10"
+                      style={{
+                        background: 'linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%)'
+                      }}
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
@@ -192,7 +207,12 @@ export default function ModernSearcherHeader({
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
                     {item.badge && (
-                      <Badge variant="error" className="ml-1 bg-orange-500 hover:bg-orange-500 text-white border-0 h-5 min-w-[20px] px-1.5">
+                      <Badge
+                        className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
+                        style={{
+                          background: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
+                        }}
+                      >
                         {item.badge}
                       </Badge>
                     )}
@@ -204,11 +224,14 @@ export default function ModernSearcherHeader({
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            {/* Favorites Quick Access - Desktop Only */}
+            {/* Favorites Quick Access avec dégradé jaune subtil */}
             {favoritesCount > 0 && (
               <Link
                 href="/dashboard/searcher/favorites"
-                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200/50 hover:shadow-md transition-all"
+                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-yellow-200/50 hover:shadow-md transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%)'
+                }}
               >
                 <Bookmark className="w-4 h-4 text-yellow-700" />
                 <span className="text-sm font-medium text-yellow-900">{favoritesCount} favoris</span>
@@ -288,7 +311,12 @@ export default function ModernSearcherHeader({
                     className="w-8 h-8 rounded-full object-cover border-2 border-yellow-200 group-hover:border-yellow-400 transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center border-2 border-yellow-200">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-yellow-200"
+                    style={{
+                      background: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
+                    }}
+                  >
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
