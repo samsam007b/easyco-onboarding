@@ -196,7 +196,7 @@ export default function ResidentHeader({
                     </Link>
 
                     <Link
-                      href="/hub/settings"
+                      href="/settings"
                       className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition"
                       onClick={() => setShowProfileMenu(false)}
                     >
