@@ -18,7 +18,9 @@ import {
   DollarSign,
   Menu,
   X,
-  ChevronDown
+  ChevronDown,
+  CreditCard,
+  Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -84,6 +86,12 @@ export default function ModernOwnerHeader({
       href: '/dashboard/owner/finance',
       label: 'Finance',
       icon: DollarSign,
+    },
+    {
+      id: 'payments',
+      href: '/payments',
+      label: 'Paiements',
+      icon: CreditCard,
     },
     {
       id: 'messages',
