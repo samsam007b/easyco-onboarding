@@ -48,15 +48,8 @@ export default function ModernPublicHeader({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Glassmorphism background - Changes color based on active page */}
-      <div className={cn(
-        "absolute inset-0 backdrop-blur-xl border-b transition-all duration-300",
-        !activePage && "bg-white/95 border-black/5",
-        activePage === 'explorer' && "bg-yellow-50/95 border-yellow-200/50",
-        activePage === 'residents' && "bg-orange-50/95 border-orange-200/50",
-        activePage === 'owners' && "bg-purple-50/95 border-purple-200/50"
-      )} />
+    <header className="fixed top-0 left-0 right-0 z-50 header-gray-warm shadow-lg">
+      {/* Unified gray warm header with subtle grain texture */}
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -75,7 +68,7 @@ export default function ModernPublicHeader({
             >
               <Home className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">EasyCo</span>
+            <span className="text-xl font-bold text-white">EasyCo</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -117,7 +110,7 @@ export default function ModernPublicHeader({
                           : item.color === 'orange'
                           ? "bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-lg"
                           : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -131,7 +124,7 @@ export default function ModernPublicHeader({
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             {/* Language Switcher */}
-            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-all">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all">
               <Globe className="w-4 h-4" />
               <span className="font-medium">FR</span>
             </button>
@@ -140,7 +133,7 @@ export default function ModernPublicHeader({
             <Link href="/auth">
               <Button
                 variant="ghost"
-                className="rounded-full font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                className="rounded-full font-medium text-white/90 hover:text-white hover:bg-white/10"
               >
                 Se connecter
               </Button>
@@ -157,7 +150,7 @@ export default function ModernPublicHeader({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
+            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />

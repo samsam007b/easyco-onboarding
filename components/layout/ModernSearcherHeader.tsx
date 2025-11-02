@@ -145,9 +145,8 @@ export default function ModernSearcherHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50">
-      {/* Glassmorphism Background - Yellow theme */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-yellow-50/95 border-b border-yellow-200/50" />
+    <header className="sticky top-0 z-50 header-gray-warm shadow-lg">
+      {/* Unified gray warm header with subtle grain texture */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -167,15 +166,10 @@ export default function ModernSearcherHeader({
               <Search className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-white">
                 EasyCo
               </h1>
-              <span
-                className="text-xs font-medium bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
-                }}
-              >
+              <span className="text-xs font-medium text-white/70">
                 Chercheur
               </span>
             </div>
@@ -207,8 +201,8 @@ export default function ModernSearcherHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-orange-900 font-semibold"
-                        : "text-gray-600 hover:text-orange-900 hover:bg-yellow-50/50"
+                        ? "text-white font-semibold"
+                        : "text-white/70 hover:text-white hover:bg-white/10"
                     )}
                   >
                     <Icon className="w-4 h-4" />

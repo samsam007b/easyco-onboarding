@@ -108,9 +108,8 @@ export default function ModernOwnerHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50">
-      {/* Glassmorphism Background - Purple theme */}
-      <div className="absolute inset-0 backdrop-blur-xl bg-purple-50/95 border-b border-purple-200/50" />
+    <header className="sticky top-0 z-50 header-gray-warm shadow-lg">
+      {/* Unified gray warm header with subtle grain texture */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -131,15 +130,10 @@ export default function ModernOwnerHeader({
               <Home className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-900 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-white">
                 EasyCo
               </h1>
-              <span
-                className="text-xs font-medium bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
-                }}
-              >
+              <span className="text-xs font-medium text-white/70">
                 Propriétaire
               </span>
             </div>
@@ -153,14 +147,11 @@ export default function ModernOwnerHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active Indicator avec dégradé mauve subtil */}
+                  {/* Active Indicator with purple gradient on white bg */}
                   {isActive && (
                     <motion.div
                       layoutId="owner-active-nav"
-                      className="absolute inset-0 rounded-xl -z-10"
-                      style={{
-                        background: 'linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%)'
-                      }}
+                      className="absolute inset-0 rounded-xl -z-10 bg-white/20 shadow-sm"
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
@@ -171,8 +162,8 @@ export default function ModernOwnerHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-purple-900 font-semibold"
-                        : "text-gray-600 hover:text-purple-900 hover:bg-purple-50/50"
+                        ? "text-white font-semibold"
+                        : "text-white/70 hover:text-white hover:bg-white/10"
                     )}
                   >
                     <Icon className="w-4 h-4" />
