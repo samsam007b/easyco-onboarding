@@ -120,14 +120,27 @@ export default function ModernResidentHeader({
             href="/dashboard/resident"
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-orange-600 via-orange-700 to-orange-900 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all">
+            {/* Logo tricolore signature EasyCo */}
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+              }}
+            >
               <Home className="w-5 h-5 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-orange-900 bg-clip-text text-transparent">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-orange-600">{groupName}</span>
+              <span
+                className="text-xs font-medium bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #FF8C5C 0%, #FF6F3C 100%)'
+                }}
+              >
+                {groupName}
+              </span>
             </div>
           </Link>
 
@@ -139,11 +152,14 @@ export default function ModernResidentHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active Indicator */}
+                  {/* Active Indicator avec dégradé orange subtil */}
                   {isActive && (
                     <motion.div
                       layoutId="resident-active-nav"
-                      className="absolute inset-0 bg-gradient-to-r from-orange-100 to-orange-50 rounded-xl -z-10"
+                      className="absolute inset-0 rounded-xl -z-10"
+                      style={{
+                        background: 'linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%)'
+                      }}
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
@@ -161,7 +177,12 @@ export default function ModernResidentHeader({
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
                     {item.badge && (
-                      <Badge variant="error" className="ml-1 bg-yellow-500 hover:bg-yellow-500 text-white border-0 h-5 min-w-[20px] px-1.5">
+                      <Badge
+                        className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
+                        style={{
+                          background: 'linear-gradient(135deg, #FF6F3C 0%, #FF5722 100%)'
+                        }}
+                      >
                         {item.badge}
                       </Badge>
                     )}
@@ -193,11 +214,14 @@ export default function ModernResidentHeader({
               </Link>
             )}
 
-            {/* Group Members Button */}
+            {/* Group Members Button avec dégradé orange subtil */}
             {activeMembersCount > 0 && (
               <Link
                 href="/hub/members"
-                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200/50 hover:shadow-md transition-all group"
+                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-orange-200/50 hover:shadow-md transition-all group"
+                style={{
+                  background: 'linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%)'
+                }}
               >
                 <Users className="w-4 h-4 text-orange-700" />
                 <span className="text-sm font-medium text-orange-900">{activeMembersCount} membres</span>
@@ -220,7 +244,12 @@ export default function ModernResidentHeader({
                     className="w-8 h-8 rounded-full object-cover border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-600 to-orange-700 flex items-center justify-center border-2 border-orange-200">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200"
+                    style={{
+                      background: 'linear-gradient(135deg, #FF8C5C 0%, #FF6F3C 100%)'
+                    }}
+                  >
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
