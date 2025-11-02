@@ -378,39 +378,132 @@ export default function ProfilePage() {
     return null
   }
 
+  // Get role-specific colors
+  const getRoleColors = () => {
+    const role = userData.user_type
+    if (role === 'owner') return {
+      gradient: 'from-purple-50 via-white to-purple-50/30',
+      primary: 'purple',
+      header: 'bg-purple-50/95 border-purple-200/50'
+    }
+    if (role === 'resident') return {
+      gradient: 'from-orange-50 via-white to-orange-50/30',
+      primary: 'orange',
+      header: 'bg-orange-50/95 border-orange-200/50'
+    }
+    return {
+      gradient: 'from-yellow-50 via-white to-yellow-50/30',
+      primary: 'yellow',
+      header: 'bg-yellow-50/95 border-yellow-200/50'
+    }
+  }
+
+  const colors = getRoleColors()
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">EASY</span>
-            <span className="text-[#FFD600]">Co</span>
+    <div className={`min-h-screen bg-gradient-to-br ${colors.gradient}`}>
+      {/* Header with glassmorphism */}
+      <header className={`sticky top-0 z-40 backdrop-blur-xl ${colors.header} border-b`}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Mon Profil</h1>
+              <p className="text-sm text-gray-600 capitalize">{userData.user_type}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => {
+                  const role = activeRole || userData?.user_type || 'searcher'
+                  router.push(`/dashboard/${role}`)
+                }}
+                variant="outline"
+                className="rounded-full"
+              >
+                Retour au Dashboard
+              </Button>
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                className="flex items-center gap-2 rounded-full"
+              >
+                <LogOut className="w-4 h-4" />
+                Déconnexion
+              </Button>
+            </div>
           </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            className="flex items-center gap-2 rounded-full"
-          >
-            <LogOut className="w-4 h-4" />
-            Logout
-          </Button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-[#4A148C]">Profile Settings</h1>
-          <Button
-            onClick={() => {
-              const role = activeRole || userData?.user_type || 'searcher'
-              router.push(`/dashboard/${role}`)
-            }}
-            variant="outline"
-          >
-            Back to Dashboard
-          </Button>
+      <main className="max-w-7xl mx-auto px-6 py-8">
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Enhance Profile Card */}
+          <div className="lg:col-span-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-3xl shadow-xl p-8 text-white">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
+                <p className="text-purple-100 text-sm">
+                  Augmente tes chances de matching en complétant ton profil à 100%
+                </p>
+              </div>
+              <div className="bg-white/20 rounded-full px-4 py-2 backdrop-blur-sm">
+                <span className="text-white font-bold">
+                  {userData.onboarding_completed ? '100%' : '50%'}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              <Button
+                onClick={() => router.push(`/profile/enhance-${userData.user_type}`)}
+                className="bg-white text-purple-700 hover:bg-white/90 rounded-full font-semibold"
+              >
+                Perfectionner mon profil
+              </Button>
+              {userData.onboarding_completed && (
+                <Button
+                  onClick={handleResetOnboarding}
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 rounded-full"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refaire l'onboarding
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <h3 className="font-bold text-gray-900 mb-4">Statut du compte</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Email vérifié</span>
+                {userData.email_verified ? (
+                  <Check className="w-5 h-5 text-green-600" />
+                ) : (
+                  <X className="w-5 h-5 text-red-600" />
+                )}
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Onboarding</span>
+                {userData.onboarding_completed ? (
+                  <Check className="w-5 h-5 text-green-600" />
+                ) : (
+                  <X className="w-5 h-5 text-red-600" />
+                )}
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Photo de profil</span>
+                {userData.avatar_url ? (
+                  <Check className="w-5 h-5 text-green-600" />
+                ) : (
+                  <X className="w-5 h-5 text-red-600" />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">
