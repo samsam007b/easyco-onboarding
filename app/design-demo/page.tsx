@@ -305,7 +305,7 @@ export default function DesignDemoPage() {
                     <a href="#" className="hover:opacity-80">Propriétaires</a>
                     <a href="#" className="hover:opacity-80">Résidents</a>
                   </nav>
-                  <Button variant="secondary" size="sm">Connexion</Button>
+                  <Button variant="outline" size="sm">Connexion</Button>
                 </div>
               </div>
               <div className="bg-white p-4 text-center">
@@ -328,7 +328,7 @@ export default function DesignDemoPage() {
                     <a href="#" className="hover:opacity-80">Propriétaires</a>
                     <a href="#" className="hover:opacity-80">Résidents</a>
                   </nav>
-                  <Button variant="secondary" size="sm">Connexion</Button>
+                  <Button variant="outline" size="sm">Connexion</Button>
                 </div>
               </div>
               <div className="bg-white p-4 text-center">
@@ -351,7 +351,7 @@ export default function DesignDemoPage() {
                     <a href="#" className="hover:opacity-80">Propriétaires</a>
                     <a href="#" className="hover:opacity-80">Résidents</a>
                   </nav>
-                  <Button variant="secondary" size="sm">Connexion</Button>
+                  <Button variant="outline" size="sm">Connexion</Button>
                 </div>
               </div>
               <div className="bg-white p-4 text-center">
