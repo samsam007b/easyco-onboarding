@@ -95,7 +95,7 @@ export default function Home() {
               <div
                 className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
                 style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                 }}
               >
                 <Shield className="w-8 h-8 text-white" />
@@ -113,7 +113,7 @@ export default function Home() {
               <div
                 className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
                 style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                 }}
               >
                 <Target className="w-8 h-8 text-white" />
@@ -131,7 +131,7 @@ export default function Home() {
               <div
                 className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
                 style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                 }}
               >
                 <Zap className="w-8 h-8 text-white" />

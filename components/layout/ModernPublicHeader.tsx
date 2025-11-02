@@ -70,7 +70,7 @@ export default function ModernPublicHeader({
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all group-hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
               }}
             >
               <Home className="w-5 h-5 text-white" />

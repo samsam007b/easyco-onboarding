@@ -19,7 +19,7 @@ export default function ModernHeroSection() {
           transition={{ duration: 0.7 }}
           className="rounded-[40px] shadow-2xl overflow-hidden mb-12"
           style={{
-            background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+            background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
           }}
         >
           {/* Section mauve avec logo et texte - Plus compact */}
