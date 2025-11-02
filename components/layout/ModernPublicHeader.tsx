@@ -61,13 +61,18 @@ export default function ModernPublicHeader({
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo - Signature EasyCo Gradient */}
           <Link
             href="/"
             className="flex items-center gap-2 group"
             onClick={() => onNavigate?.(null)}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all group-hover:scale-105"
+              style={{
+                background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+              }}
+            >
               <Home className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900">EasyCo</span>

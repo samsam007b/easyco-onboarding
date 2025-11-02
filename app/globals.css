@@ -54,6 +54,18 @@
   --easy-yellow: var(--easy-yellow-500);
   --easy-orange: var(--easy-orange-500);
 
+  /* ============================================
+     EasyCo Signature Gradient (Brand Identity)
+     ============================================ */
+  --gradient-brand-start: #6E56CF;      /* Purple - Mauve */
+  --gradient-brand-middle: #B695E8;     /* Pink/Rose transition */
+  --gradient-brand-end: #FFB84D;        /* Orange/Yellow */
+
+  /* Pre-built gradient utilities */
+  --gradient-brand: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
+  --gradient-brand-horizontal: linear-gradient(90deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
+  --gradient-brand-vertical: linear-gradient(180deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
+
   /* Role-based Dynamic Variables (default: Owner) */
   --role-primary: var(--owner-primary);
   --role-hover: var(--owner-hover);
