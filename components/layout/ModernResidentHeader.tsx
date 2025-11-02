@@ -285,7 +285,7 @@ export default function ModernResidentHeader({
                       </Link>
 
                       <Link
-                        href="/hub/settings"
+                        href="/settings"
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
