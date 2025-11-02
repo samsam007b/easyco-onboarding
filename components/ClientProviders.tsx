@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/lib/i18n/use-language';
 import { RoleProvider } from '@/lib/role/role-context';
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { MessagesProvider } from '@/contexts/MessagesContext';
+import { PaymentProvider } from '@/contexts/PaymentContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -26,7 +27,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
         <RoleProvider>
           <NotificationProvider>
             <MessagesProvider>
-              {children}
+              <PaymentProvider>
+                {children}
+              </PaymentProvider>
             </MessagesProvider>
           </NotificationProvider>
         </RoleProvider>
