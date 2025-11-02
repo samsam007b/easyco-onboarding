@@ -304,7 +304,7 @@ export default function ModernOwnerHeader({
                       </div>
 
                       <Link
-                        href="/dashboard/my-profile-owner"
+                        href="/profile"
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
