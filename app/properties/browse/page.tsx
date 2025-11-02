@@ -14,7 +14,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Search, SlidersHorizontal, Lock, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import DashboardHeader from '@/components/DashboardHeader';
+import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
+import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import PropertyCard from '@/components/PropertyCard';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
@@ -83,6 +84,8 @@ export default function PropertiesBrowsePageV2() {
   const common = getSection('common');
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [userData, setUserData] = useState<{ full_name: string; email: string; avatar_url?: string } | null>(null);
+  const [searcherStats, setSearcherStats] = useState({ favoritesCount: 0, matchesCount: 0, unreadMessages: 0 });
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
@@ -263,12 +266,28 @@ export default function PropertiesBrowsePageV2() {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
+
+      if (user) {
+        // Load user data
+        const { data: usersData } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
+        if (usersData) {
+          setUserData(usersData);
+        }
+
+        // Load searcher stats
+        const { count: favCount } = await supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
+        setSearcherStats({
+          favoritesCount: favCount || 0,
+          matchesCount: 5, // Mock for now
+          unreadMessages: 0 // Mock for now
+        });
+      }
     };
     checkAuth();
   }, [supabase]);
 
-  // Fetch user data if authenticated
-  const { data: userData } = useQuery({
+  // Fetch user data if authenticated (for preferences)
+  const { data: queryUserData } = useQuery({
     queryKey: ['current-user'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -292,9 +311,9 @@ export default function PropertiesBrowsePageV2() {
 
   // Fetch user preferences for matching (if authenticated)
   const { data: userPreferences } = useQuery({
-    queryKey: ['user-preferences', userData?.id],
+    queryKey: ['user-preferences', queryUserData?.id],
     queryFn: async () => {
-      if (!userData?.id) return null;
+      if (!queryUserData?.id) return null;
 
       const { data } = await supabase
         .from('searcher_preferences')
@@ -304,7 +323,7 @@ export default function PropertiesBrowsePageV2() {
 
       return data as UserPreferences | null;
     },
-    enabled: isAuthenticated === true && !!userData?.id,
+    enabled: isAuthenticated === true && !!queryUserData?.id,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -467,34 +486,13 @@ export default function PropertiesBrowsePageV2() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      {isAuthenticated ? (
-        <DashboardHeader
-          profile={{
-            full_name: userData?.full_name || 'User',
-            email: userData?.email || ''
-          }}
+      {isAuthenticated && userData ? (
+        <ModernSearcherHeader
+          profile={userData}
+          stats={searcherStats}
         />
       ) : (
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link
-                href="/"
-                className="flex items-center gap-2 text-gray-600 hover:text-[var(--easy-purple-900)] transition"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span className="font-medium">Retour</span>
-              </Link>
-
-              <Link
-                href="/auth"
-                className="px-4 py-2 bg-[var(--easy-purple-900)] text-white font-semibold rounded-lg hover:bg-[var(--easy-purple-700)] transition"
-              >
-                Se connecter
-              </Link>
-            </div>
-          </div>
-        </header>
+        <ModernPublicHeader />
       )}
 
       {/* Guest Banner */}

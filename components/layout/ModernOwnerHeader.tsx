@@ -159,6 +159,7 @@ export default function ModernOwnerHeader({
 
                   <Link
                     href={item.href}
+                    prefetch={true}
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive

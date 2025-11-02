@@ -198,6 +198,7 @@ export default function ModernSearcherHeader({
 
                   <Link
                     href={item.href}
+                    prefetch={true}
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
@@ -442,37 +443,6 @@ export default function ModernSearcherHeader({
           )}
         </AnimatePresence>
       </div>
-
-      {/* Quick Stats Bar - Desktop Only */}
-      {(favoritesCount > 0 || matchesCount > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-yellow-50/50 to-transparent border-t border-yellow-200/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-6 text-gray-700">
-                {favoritesCount > 0 && (
-                  <span className="flex items-center gap-2">
-                    <span className="text-gray-600">Favoris:</span>
-                    <strong className="text-orange-900 font-bold">{favoritesCount}</strong>
-                  </span>
-                )}
-                {matchesCount > 0 && (
-                  <span className="flex items-center gap-2">
-                    <span className="text-gray-600">Top matchs:</span>
-                    <strong className="text-orange-900 font-bold">{matchesCount}</strong>
-                  </span>
-                )}
-              </div>
-              <Link
-                href="/dashboard/searcher/top-matches"
-                className="text-orange-600 hover:text-orange-800 transition text-xs font-medium flex items-center gap-1"
-              >
-                Voir mes matchs
-                <Heart className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
