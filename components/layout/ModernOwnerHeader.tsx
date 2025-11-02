@@ -113,14 +113,27 @@ export default function ModernOwnerHeader({
             href="/dashboard/owner"
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all">
+            {/* Logo tricolore signature EasyCo */}
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+              }}
+            >
               <Home className="w-5 h-5 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-900 bg-clip-text text-transparent">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-purple-600">Propriétaire</span>
+              <span
+                className="text-xs font-medium bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
+                }}
+              >
+                Propriétaire
+              </span>
             </div>
           </Link>
 
@@ -132,11 +145,14 @@ export default function ModernOwnerHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active Indicator */}
+                  {/* Active Indicator avec dégradé mauve subtil */}
                   {isActive && (
                     <motion.div
                       layoutId="owner-active-nav"
-                      className="absolute inset-0 bg-gradient-to-r from-purple-100 to-purple-50 rounded-xl -z-10"
+                      className="absolute inset-0 rounded-xl -z-10"
+                      style={{
+                        background: 'linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%)'
+                      }}
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
@@ -154,7 +170,12 @@ export default function ModernOwnerHeader({
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
                     {item.badge && (
-                      <Badge variant="error" className="ml-1 bg-yellow-500 hover:bg-yellow-500 text-white border-0 h-5 min-w-[20px] px-1.5">
+                      <Badge
+                        className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
+                        style={{
+                          background: 'linear-gradient(135deg, #6E56CF 0%, #5B45B8 100%)'
+                        }}
+                      >
                         {item.badge}
                       </Badge>
                     )}
@@ -277,7 +298,12 @@ export default function ModernOwnerHeader({
                     className="w-8 h-8 rounded-full object-cover border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center border-2 border-purple-200">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200"
+                    style={{
+                      background: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
+                    }}
+                  >
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
