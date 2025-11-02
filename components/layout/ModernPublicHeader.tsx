@@ -110,11 +110,11 @@ export default function ModernPublicHeader({
                           : item.color === 'orange'
                           ? "bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-lg"
                           : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg"
-                        : "text-white/80 hover:text-white hover:bg-white/10"
+                        : "text-white/80 hover:bg-white/10 text-hover-gradient"
                     )}
                   >
                     <Icon className="w-4 h-4" />
-                    {item.label}
+                    <span>{item.label}</span>
                   </button>
                 </div>
               );
@@ -124,7 +124,7 @@ export default function ModernPublicHeader({
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             {/* Language Switcher */}
-            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-all text-hover-gradient">
               <Globe className="w-4 h-4" />
               <span className="font-medium">FR</span>
             </button>
@@ -133,7 +133,7 @@ export default function ModernPublicHeader({
             <Link href="/auth">
               <Button
                 variant="ghost"
-                className="rounded-full font-medium text-white/90 hover:text-white hover:bg-white/10"
+                className="rounded-full font-medium text-white/90 hover:bg-white/10 text-hover-gradient"
               >
                 Se connecter
               </Button>

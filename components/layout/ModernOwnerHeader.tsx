@@ -163,7 +163,7 @@ export default function ModernOwnerHeader({
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
                         ? "text-white font-semibold"
-                        : "text-white/70 hover:text-white hover:bg-white/10"
+                        : "text-white/70 hover:bg-white/10 text-hover-gradient"
                     )}
                   >
                     <Icon className="w-4 h-4" />
