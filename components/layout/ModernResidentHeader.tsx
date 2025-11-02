@@ -18,7 +18,9 @@ import {
   Menu,
   X,
   ChevronDown,
-  TrendingUp
+  TrendingUp,
+  CreditCard,
+  Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -81,16 +83,16 @@ export default function ModernResidentHeader({
       badge: yourBalance !== 0 ? '!' : null,
     },
     {
+      id: 'payments',
+      href: '/payments',
+      label: 'Paiements',
+      icon: CreditCard,
+    },
+    {
       id: 'calendar',
       href: '/hub/calendar',
       label: 'Calendrier',
       icon: Calendar,
-    },
-    {
-      id: 'maintenance',
-      href: '/hub/maintenance',
-      label: 'Maintenance',
-      icon: Wrench,
     },
     {
       id: 'messages',
@@ -98,6 +100,12 @@ export default function ModernResidentHeader({
       label: 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
+    },
+    {
+      id: 'favorites',
+      href: '/favorites',
+      label: 'Favoris',
+      icon: Heart,
     },
   ];
 

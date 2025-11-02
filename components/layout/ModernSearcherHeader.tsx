@@ -18,7 +18,8 @@ import {
   ChevronDown,
   Bookmark,
   Save,
-  Sparkles
+  Sparkles,
+  CreditCard
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -122,6 +123,12 @@ export default function ModernSearcherHeader({
       href: '/dashboard/searcher/my-applications',
       label: 'Candidatures',
       icon: Sparkles,
+    },
+    {
+      id: 'payments',
+      href: '/payments',
+      label: 'Paiements',
+      icon: CreditCard,
     },
     {
       id: 'messages',
