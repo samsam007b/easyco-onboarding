@@ -91,221 +91,158 @@ export default function DesignDemoPage() {
             Le logo principal tricolore représente l'unité des 3 rôles.
           </p>
 
-          {/* SEARCHER - Yellow/Orange Variations */}
+          {/* SEARCHER - Dégradé extrait du logo original */}
           <div className="mb-12">
             <div className="bg-yellow-100/50 rounded-2xl p-6 mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                SEARCHER - Variations Jaune/Orangé
+                🟡 SEARCHER - Extrait du Logo Original
               </h3>
-              <p className="text-gray-700">Dominante jaune, reproduit l'effet visuel du logo principal</p>
+              <p className="text-gray-700">Zone jaune/orange du logo tricolore (partie droite)</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Option 1 - Dégradé chaud */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-yellow-300">
-                <div className="text-center mb-4">
+            <div className="bg-white rounded-2xl p-8 shadow-2xl border-4 border-yellow-400">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="text-center">
                   <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
+                    className="grain-medium w-32 h-32 mx-auto rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden"
                     style={{
-                      background: 'linear-gradient(135deg, #FF6F3C 0%, #FFB74D 50%, #FFD249 100%)'
+                      background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
                     }}
                   >
-                    <Home className="w-12 h-12 text-white" />
+                    <Home className="w-16 h-16 text-white" />
+                  </div>
+                  <Badge className="mt-4 bg-green-100 text-green-700 border-green-300 text-sm px-4 py-1">
+                    ✨ Logo Authentique
+                  </Badge>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-3">Dégradé Searcher</h4>
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    Extrait directement de la zone jaune/orange du logo tricolore. Garantit une cohérence parfaite.
+                  </p>
+                  <div className="bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] rounded-lg p-4 mb-3">
+                    <p className="text-white font-bold text-center drop-shadow-lg">Aperçu complet du dégradé</p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 text-xs font-mono">
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#FFA040' }}></div>
+                      <span className="text-gray-700">#FFA040</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#FFB85C' }}></div>
+                      <span className="text-gray-700">#FFB85C</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#FFD080' }}></div>
+                      <span className="text-gray-700">#FFD080</span>
+                    </div>
                   </div>
                 </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 1 - Dégradé Chaud</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Orange vif → Jaune-orangé → Jaune doré</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #FF6F3C → #FFB74D → #FFD249
-                </div>
-                <Badge className="w-full mt-3 bg-green-100 text-green-700 border-green-300">Recommandé ✨</Badge>
-              </div>
-
-              {/* Option 2 - Dégradé lumineux */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #F9A825 0%, #FFC107 50%, #FFD249 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 2 - Dégradé Lumineux</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Jaune-or → Jaune principal → Jaune clair</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #F9A825 → #FFC107 → #FFD249
-                </div>
-                <Badge className="w-full mt-3 bg-blue-100 text-blue-700 border-blue-300">Subtil</Badge>
-              </div>
-
-              {/* Option 3 - Dégradé audacieux */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #FF5722 0%, #FF9800 50%, #FFC107 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 3 - Dégradé Audacieux</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Orange intense → Orange vif → Jaune</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #FF5722 → #FF9800 → #FFC107
-                </div>
-                <Badge className="w-full mt-3 bg-orange-100 text-orange-700 border-orange-300">Contrasté</Badge>
               </div>
             </div>
           </div>
 
-          {/* RESIDENT - Orange/Coral Variations */}
+          {/* RESIDENT - Dégradé extrait du logo original */}
           <div className="mb-12">
             <div className="bg-orange-100/50 rounded-2xl p-6 mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
-                RESIDENT - Variations Orange/Corail
+                🟠 RESIDENT - Extrait du Logo Original
               </h3>
-              <p className="text-gray-700">Dominante orange, chaleureux et accueillant</p>
+              <p className="text-gray-700">Zone orange/corail du logo tricolore (partie centrale)</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Option 1 - Dégradé chaleureux */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-orange-300">
-                <div className="text-center mb-4">
+            <div className="bg-white rounded-2xl p-8 shadow-2xl border-4 border-orange-400">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="text-center">
                   <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
+                    className="grain-medium w-32 h-32 mx-auto rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden"
                     style={{
-                      background: 'linear-gradient(135deg, #FF6F3C 0%, #FF7043 50%, #FF5722 100%)'
+                      background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
                     }}
                   >
-                    <Home className="w-12 h-12 text-white" />
+                    <Home className="w-16 h-16 text-white" />
+                  </div>
+                  <Badge className="mt-4 bg-green-100 text-green-700 border-green-300 text-sm px-4 py-1">
+                    ✨ Logo Authentique
+                  </Badge>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-3">Dégradé Resident</h4>
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    Extrait directement de la zone orange/corail du logo tricolore. Chaleureux et accueillant.
+                  </p>
+                  <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] rounded-lg p-4 mb-3">
+                    <p className="text-white font-bold text-center drop-shadow-lg">Aperçu complet du dégradé</p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 text-xs font-mono">
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#D97B6F' }}></div>
+                      <span className="text-gray-700">#D97B6F</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#E8865D' }}></div>
+                      <span className="text-gray-700">#E8865D</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#FF8C4B' }}></div>
+                      <span className="text-gray-700">#FF8C4B</span>
+                    </div>
                   </div>
                 </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 1 - Chaleureux</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Orange corail → Orange vif → Orange intense</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #FF6F3C → #FF7043 → #FF5722
-                </div>
-                <Badge className="w-full mt-3 bg-green-100 text-green-700 border-green-300">Recommandé ✨</Badge>
-              </div>
-
-              {/* Option 2 - Dégradé terracotta */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #F4511E 0%, #FF6F3C 50%, #FF5722 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 2 - Terracotta</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Terracotta → Corail → Orange intense</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #F4511E → #FF6F3C → #FF5722
-                </div>
-                <Badge className="w-full mt-3 bg-blue-100 text-blue-700 border-blue-300">Élégant</Badge>
-              </div>
-
-              {/* Option 3 - Dégradé lumineux */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #FF9800 0%, #FF7043 50%, #FF5722 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 3 - Lumineux</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Orange clair → Orange moyen → Orange foncé</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #FF9800 → #FF7043 → #FF5722
-                </div>
-                <Badge className="w-full mt-3 bg-yellow-100 text-yellow-700 border-yellow-300">Joyeux</Badge>
               </div>
             </div>
           </div>
 
-          {/* OWNER - Purple/Violet Variations */}
+          {/* OWNER - Dégradé extrait du logo original */}
           <div className="mb-4">
             <div className="bg-purple-100/50 rounded-2xl p-6 mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <span className="w-3 h-3 bg-purple-600 rounded-full"></span>
-                OWNER - Variations Mauve/Violet
+                🟣 OWNER - Extrait du Logo Original
               </h3>
-              <p className="text-gray-700">Dominante mauve, professionnel et premium</p>
+              <p className="text-gray-700">Zone violette/mauve du logo tricolore (partie gauche)</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Option 1 - Dégradé royal */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-purple-300">
-                <div className="text-center mb-4">
+            <div className="bg-white rounded-2xl p-8 shadow-2xl border-4 border-purple-400">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="text-center">
                   <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
+                    className="grain-medium w-32 h-32 mx-auto rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden"
                     style={{
-                      background: 'linear-gradient(135deg, #6E56CF 0%, #5B45B8 50%, #4A148C 100%)'
+                      background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
                     }}
                   >
-                    <Home className="w-12 h-12 text-white" />
+                    <Home className="w-16 h-16 text-white" />
+                  </div>
+                  <Badge className="mt-4 bg-green-100 text-green-700 border-green-300 text-sm px-4 py-1">
+                    ✨ Logo Authentique
+                  </Badge>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-3">Dégradé Owner</h4>
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    Extrait directement de la zone violette/mauve du logo tricolore. Professionnel et premium.
+                  </p>
+                  <div className="bg-gradient-to-r from-[#7B5FB8] via-[#A67BB8] to-[#C98B9E] rounded-lg p-4 mb-3">
+                    <p className="text-white font-bold text-center drop-shadow-lg">Aperçu complet du dégradé</p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 text-xs font-mono">
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#7B5FB8' }}></div>
+                      <span className="text-gray-700">#7B5FB8</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#A67BB8' }}></div>
+                      <span className="text-gray-700">#A67BB8</span>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2 text-center">
+                      <div className="w-8 h-8 rounded mx-auto mb-1" style={{ background: '#C98B9E' }}></div>
+                      <span className="text-gray-700">#C98B9E</span>
+                    </div>
                   </div>
                 </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 1 - Royal</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Mauve clair → Violet moyen → Violet foncé</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #6E56CF → #5B45B8 → #4A148C
-                </div>
-                <Badge className="w-full mt-3 bg-green-100 text-green-700 border-green-300">Recommandé ✨</Badge>
-              </div>
-
-              {/* Option 2 - Dégradé indigo */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #4F46E5 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 2 - Indigo</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Violet clair → Indigo → Indigo foncé</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #7C3AED → #6366F1 → #4F46E5
-                </div>
-                <Badge className="w-full mt-3 bg-blue-100 text-blue-700 border-blue-300">Moderne</Badge>
-              </div>
-
-              {/* Option 3 - Dégradé améthyste */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <div className="text-center mb-4">
-                  <div
-                    className="grain-medium w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xl overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #9333EA 0%, #7C3AED 50%, #6D28D9 100%)'
-                    }}
-                  >
-                    <Home className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                <h4 className="font-bold text-gray-900 text-center mb-2">Option 3 - Améthyste</h4>
-                <p className="text-sm text-gray-600 text-center mb-3">Violet lumineux → Violet moyen → Violet profond</p>
-                <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
-                  #9333EA → #7C3AED → #6D28D9
-                </div>
-                <Badge className="w-full mt-3 bg-purple-100 text-purple-700 border-purple-300">Luxueux</Badge>
               </div>
             </div>
           </div>
