@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import Shield from 'lucide-react/dist/esm/icons/shield';
-import Target from 'lucide-react/dist/esm/icons/target';
-import Zap from 'lucide-react/dist/esm/icons/zap';
+import { Shield, Target, Zap } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
