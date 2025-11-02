@@ -595,6 +595,58 @@ body.theme-resident ::selection {
   pointer-events: none;
 }
 
+/* Header gris avec gradient et grain */
+.header-gray-slate {
+  background: linear-gradient(135deg, #475569 0%, #64748B 100%);
+  position: relative;
+}
+
+.header-gray-slate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-subtle);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.header-gray-warm {
+  background: linear-gradient(135deg, #57534E 0%, #78716C 100%);
+  position: relative;
+}
+
+.header-gray-warm::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-subtle);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.header-gray-graphite {
+  background: linear-gradient(135deg, #374151 0%, #4B5563 100%);
+  position: relative;
+}
+
+.header-gray-graphite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-subtle);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 /* Ensure child content stays above grain */
 .grain-subtle > *,
 .grain-medium > *,
@@ -602,7 +654,10 @@ body.theme-resident ::selection {
 .gradient-brand-grain > *,
 .gradient-owner-grain > *,
 .gradient-resident-grain > *,
-.gradient-searcher-grain > * {
+.gradient-searcher-grain > *,
+.header-gray-slate > *,
+.header-gray-warm > *,
+.header-gray-graphite > * {
   position: relative;
   z-index: 2;
 }
