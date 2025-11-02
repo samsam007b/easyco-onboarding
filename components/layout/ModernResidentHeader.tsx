@@ -154,16 +154,17 @@ export default function ModernResidentHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Active Indicator avec dégradé orange subtil */}
+                  {/* Triangle pointer - avec couleur du dégradé Resident */}
                   {isActive && (
                     <motion.div
-                      layoutId="resident-active-nav"
-                      className="absolute inset-0 rounded-xl -z-10"
+                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
-                        background: 'linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%)'
+                        borderTopColor: '#E8865D'
                       }}
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                   )}
 
@@ -173,8 +174,8 @@ export default function ModernResidentHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-white font-semibold"
-                        : "text-white/70 hover:bg-white/10 text-hover-gradient"
+                        ? "text-active-resident font-semibold"
+                        : "text-hover-resident"
                     )}
                   >
                     <Icon className="w-4 h-4" />
