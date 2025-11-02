@@ -67,6 +67,27 @@
   --gradient-brand-horizontal: linear-gradient(90deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
   --gradient-brand-vertical: linear-gradient(180deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
 
+  /* ============================================
+     Role-Specific Monochrome Gradients
+     Each role has its own gradient with light → dark variations
+     ============================================ */
+
+  /* Searcher - Yellow Gradient */
+  --gradient-searcher: linear-gradient(135deg, #FFEB3B 0%, #FFD249 50%, #FFC107 100%);
+  --gradient-searcher-soft: linear-gradient(135deg, #FFF9E6 0%, #FFEB3B 100%);
+
+  /* Resident - Orange Gradient Variations */
+  --gradient-resident: linear-gradient(135deg, #FF8C5C 0%, #FF6F3C 50%, #FF5722 100%);
+  --gradient-resident-soft: linear-gradient(135deg, #FFF3EF 0%, #FF8C5C 100%);
+  --gradient-resident-light: linear-gradient(135deg, #FFB88C 0%, #FF8C5C 100%);
+  --gradient-resident-medium: linear-gradient(135deg, #FF6F3C 0%, #FF5722 100%);
+  --gradient-resident-dark: linear-gradient(135deg, #FF5722 0%, #E64A19 100%);
+  --gradient-resident-subtle: linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%);
+
+  /* Owner - Mauve/Purple Gradient */
+  --gradient-owner: linear-gradient(135deg, #8E7AD6 0%, #6E56CF 50%, #5B45B8 100%);
+  --gradient-owner-soft: linear-gradient(135deg, #F3F1FF 0%, #8E7AD6 100%);
+
   /* Role-based Dynamic Variables (default: Owner) */
   --role-primary: var(--owner-primary);
   --role-hover: var(--owner-hover);
