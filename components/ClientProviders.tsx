@@ -5,6 +5,7 @@ import { RoleProvider } from '@/lib/role/role-context';
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { MessagesProvider } from '@/contexts/MessagesContext';
 import { PaymentProvider } from '@/contexts/PaymentContext';
+import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -28,7 +29,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <NotificationProvider>
             <MessagesProvider>
               <PaymentProvider>
-                {children}
+                <FavoritesProvider>
+                  {children}
+                </FavoritesProvider>
               </PaymentProvider>
             </MessagesProvider>
           </NotificationProvider>
