@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { Home as HomeIcon, Users, Heart, Shield, Target, Zap, Search as SearchIcon } from 'lucide-react';
+import Shield from 'lucide-react/dist/esm/icons/shield';
+import Target from 'lucide-react/dist/esm/icons/target';
+import Zap from 'lucide-react/dist/esm/icons/zap';
 import { useLanguage } from '@/lib/i18n/use-language';
 import ResumeOnboardingModal from '@/components/ResumeOnboardingModal';
 import PublicSearchBar from '@/components/PublicSearchBar';
@@ -92,8 +94,13 @@ export default function Home() {
 
             {/* Benefit 1: Verified */}
             <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div className="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-[var(--easy-purple)]" />
+              <div
+                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                }}
+              >
+                <Shield className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
                 {landing.benefits.verified.title}
@@ -105,8 +112,13 @@ export default function Home() {
 
             {/* Benefit 2: Compatibility */}
             <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center">
-                <Target className="w-8 h-8 text-[var(--easy-purple)]" />
+              <div
+                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                }}
+              >
+                <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
                 {landing.benefits.compatibility.title}
@@ -118,8 +130,13 @@ export default function Home() {
 
             {/* Benefit 3: Groups */}
             <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div className="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center">
-                <Zap className="w-8 h-8 text-[var(--easy-purple)]" />
+              <div
+                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+                }}
+              >
+                <Zap className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
                 {landing.benefits.groups.title}

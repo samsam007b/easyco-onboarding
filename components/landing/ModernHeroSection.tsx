@@ -12,24 +12,27 @@ export default function ModernHeroSection() {
 
       <div className="relative z-20 max-w-4xl mx-auto w-full">
 
-        {/* Container unifié mauve + blanc collés */}
+        {/* Container unifié avec dégradé signature EasyCo */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 rounded-[40px] shadow-2xl overflow-hidden mb-12"
+          className="rounded-[40px] shadow-2xl overflow-hidden mb-12"
+          style={{
+            background: 'linear-gradient(135deg, #6E56CF 0%, #B695E8 50%, #FFB84D 100%)'
+          }}
         >
           {/* Section mauve avec logo et texte - Plus compact */}
           <div className="p-8 md:p-10">
-            {/* Logo Badge - Plus petit */}
+            {/* Logo Badge - Signature gradient avec glassmorphism */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex justify-center mb-6"
             >
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/30">
-                <Home className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
+                <Home className="w-8 h-8 text-white drop-shadow-lg" />
               </div>
             </motion.div>
 
