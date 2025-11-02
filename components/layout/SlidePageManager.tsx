@@ -17,11 +17,11 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
     owners: OwnersPage,
   };
 
-  // Bordure colorée selon le rôle
-  const borderColors = {
-    explorer: 'border-yellow-500',
-    residents: 'border-orange-500',
-    owners: 'border-purple-600',
+  // Dégradés extraits du logo original pour chaque rôle
+  const borderGradients = {
+    explorer: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)',
+    residents: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)',
+    owners: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)',
   };
 
   const PageComponent = activePage ? pageComponents[activePage] : null;
@@ -40,16 +40,22 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
             damping: 35,
             duration: 0.5,
           }}
-          className={cn(
-            "fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto",
-            "border-4 rounded-t-3xl shadow-2xl",
-            "bg-gradient-to-b from-gray-50 to-white",
-            borderColors[activePage]
-          )}
+          className="fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto rounded-t-3xl shadow-2xl bg-gradient-to-b from-gray-50 to-white"
           style={{
             scrollbarGutter: 'stable',
+            border: '4px solid transparent',
+            backgroundClip: 'padding-box',
+            position: 'relative',
           }}
         >
+          {/* Bordure avec dégradé */}
+          <div
+            className="absolute inset-0 rounded-t-3xl -z-10"
+            style={{
+              background: borderGradients[activePage],
+              margin: '-4px',
+            }}
+          />
           <PageComponent />
         </motion.div>
       )}

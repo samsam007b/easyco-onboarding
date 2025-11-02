@@ -124,22 +124,25 @@ export default function ModernPublicHeader({
                     />
                   )}
 
-                  {/* Button content - Colorisé complètement quand actif */}
+                  {/* Button content - Dégradé extrait du logo quand actif */}
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all overflow-hidden",
                       isActive
-                        ? item.color === 'yellow'
-                          ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-lg"
-                          : item.color === 'orange'
-                          ? "bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-lg"
-                          : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg"
+                        ? "text-white shadow-lg grain-medium"
                         : "text-white/80 hover:bg-white/10 text-hover-gradient"
                     )}
+                    style={isActive ? {
+                      background: item.color === 'yellow'
+                        ? 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                        : item.color === 'orange'
+                        ? 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                        : 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
+                    } : undefined}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
+                    <Icon className="w-4 h-4 relative z-10" />
+                    <span className="relative z-10">{item.label}</span>
                   </button>
                 </div>
               );
