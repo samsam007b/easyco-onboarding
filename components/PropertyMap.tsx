@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { APIProvider, Map, AdvancedMarker, InfoWindow, Pin } from '@vis.gl/react-google-maps';
-import { Property } from '@/types/property';
+import { Property } from '@/types/property.types';
 import { MapPin, Home, Euro, Users, Maximize } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
