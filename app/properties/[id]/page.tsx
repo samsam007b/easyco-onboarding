@@ -16,6 +16,7 @@ import type { Property } from '@/types/property.types';
 import type { PropertyAmenity } from '@/lib/types/property';
 import { toast } from 'sonner';
 import { getOrCreateConversation } from '@/lib/services/messaging-service';
+import SinglePropertyMap from '@/components/SinglePropertyMap';
 
 export default function PropertyDetailsPage() {
   const router = useRouter();
@@ -475,6 +476,27 @@ export default function PropertyDetailsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Location Map */}
+          {property.latitude && property.longitude && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5" />
+                  Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <SinglePropertyMap
+                  latitude={property.latitude}
+                  longitude={property.longitude}
+                  title={property.title}
+                  address={`${property.address}, ${property.city} ${property.postal_code}`}
+                  className="w-full h-[400px] rounded-b-2xl overflow-hidden"
+                />
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Sidebar */}
