@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Calendar, Clock, Users, MessageSquare, Video, MapPin } from 'lucide-react';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { ScheduleTourInput } from '@/types/virtual-tours.types';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
 interface ScheduleTourModalProps {
@@ -35,7 +35,7 @@ export default function ScheduleTourModal({
   const [notes, setNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const virtualToursService = new VirtualToursService(supabase);
 
   const handleSubmit = async (e: React.FormEvent) => {
