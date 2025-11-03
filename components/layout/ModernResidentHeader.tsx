@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -20,7 +20,8 @@ import {
   ChevronDown,
   TrendingUp,
   CreditCard,
-  Heart
+  Heart,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -52,6 +53,15 @@ export default function ModernResidentHeader({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN'>('FR');
+
+  const langDropdownRef = useRef<HTMLDivElement>(null);
+
+  const languages = [
+    { code: 'FR', label: 'Français', flag: '🇫🇷' },
+    { code: 'EN', label: 'English', flag: '🇬🇧' },
+  ];
 
   const {
     groupName = 'Ma Coloc',
@@ -60,6 +70,23 @@ export default function ModernResidentHeader({
     unreadMessages = 0,
     activeMembersCount = 0
   } = stats;
+
+  // Click outside handler for language dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+
+    if (langDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [langDropdownOpen]);
 
   const navItems = [
     {
@@ -234,6 +261,55 @@ export default function ModernResidentHeader({
 
             {/* Notifications - New NotificationBell Component */}
             <NotificationBell />
+
+            {/* Language Switcher with Dropdown */}
+            <div ref={langDropdownRef} className="relative hidden md:block">
+              <button
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-orange-50 transition-all"
+              >
+                <Globe className="w-4 h-4" />
+                <span className="font-medium">{selectedLang}</span>
+                <ChevronDown className={cn(
+                  "w-3 h-3 transition-transform",
+                  langDropdownOpen && "rotate-180"
+                )} />
+              </button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {langDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden min-w-[160px] z-50"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setSelectedLang(lang.code as 'FR' | 'EN');
+                          setLangDropdownOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
+                          selectedLang === lang.code
+                            ? "bg-orange-50 text-orange-900 font-semibold"
+                            : "text-gray-700 hover:bg-gray-50"
+                        )}
+                      >
+                        <span className="text-lg">{lang.flag}</span>
+                        <span>{lang.label}</span>
+                        {selectedLang === lang.code && (
+                          <span className="ml-auto text-orange-600">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Profile Menu */}
             <div className="relative">

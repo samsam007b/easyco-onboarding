@@ -565,6 +565,7 @@ body.theme-resident ::selection {
   background-image: var(--grain-url-medium);
   background-size: 200px 200px;
   background-repeat: repeat;
+  opacity: 0.4;
 }
 
 .grain-strong::after {
@@ -810,7 +811,7 @@ body.theme-resident ::selection {
   background-size: 200px 200px;
   background-repeat: repeat;
   mix-blend-mode: overlay;
-  opacity: 0.7;
+  opacity: 0.3;
   pointer-events: none;
 }
 

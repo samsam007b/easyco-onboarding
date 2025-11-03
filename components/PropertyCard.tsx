@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, MapPin, Users, Home, Star } from 'lucide-react';
+import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface PropertyCardProps {
   property: {
@@ -37,6 +38,7 @@ function PropertyCard({
   isFavorite = false,
   variant = 'default'
 }: PropertyCardProps) {
+  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
 
@@ -46,6 +48,12 @@ function PropertyCard({
     setLocalFavorite(!localFavorite);
     onFavoriteClick?.(property.id);
   }, [localFavorite, property.id, onFavoriteClick]);
+
+  const handleBookVisit = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push(`/properties/${property.id}/book-visit`);
+  }, [property.id, router]);
 
   // Generate placeholder image based on property type and location
   const getPlaceholderImage = () => {
@@ -227,15 +235,24 @@ function PropertyCard({
                 </p>
               )}
             </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = `/properties/${property.id}`;
-              }}
-              className="px-4 py-2 bg-[var(--easy-purple-900)] text-white font-semibold rounded-lg hover:bg-[var(--easy-purple-700)] transition-colors"
-            >
-              Voir
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleBookVisit}
+                className="px-3 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all flex items-center gap-1"
+              >
+                <Calendar className="w-4 h-4" />
+                <span className="hidden sm:inline">Visite</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = `/properties/${property.id}`;
+                }}
+                className="px-4 py-2 bg-[var(--easy-purple-900)] text-white font-semibold rounded-lg hover:bg-[var(--easy-purple-700)] transition-colors"
+              >
+                Voir
+              </button>
+            </div>
           </div>
         </div>
       </div>
