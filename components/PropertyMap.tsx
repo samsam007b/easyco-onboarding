@@ -177,16 +177,18 @@ function PropertyInfoCard({ property }: { property: PropertyMarkerData }) {
           <div className="grid grid-cols-3 gap-2 text-xs text-gray-600">
             <div className="flex items-center">
               <Home className="w-3 h-3 mr-1" />
-              <span>{property.property_type}</span>
+              <span className="capitalize">{property.property_type}</span>
             </div>
             <div className="flex items-center">
               <Users className="w-3 h-3 mr-1" />
-              <span>{property.total_rooms} chambres</span>
+              <span>{property.bedrooms} ch.</span>
             </div>
-            <div className="flex items-center">
-              <Maximize className="w-3 h-3 mr-1" />
-              <span>{property.total_area}m²</span>
-            </div>
+            {property.surface_area && (
+              <div className="flex items-center">
+                <Maximize className="w-3 h-3 mr-1" />
+                <span>{property.surface_area}m²</span>
+              </div>
+            )}
           </div>
 
           <div className="pt-2 border-t border-gray-200">
