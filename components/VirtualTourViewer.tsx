@@ -171,9 +171,9 @@ export default function VirtualTourViewer({
           {/* Fullscreen Button */}
           <Button
             size="sm"
-            variant="secondary"
+            variant="outline"
             onClick={handleFullscreen}
-            className="absolute bottom-4 right-4 z-10 shadow-lg"
+            className="absolute bottom-4 right-4 z-10 shadow-lg bg-white"
           >
             <Maximize className="w-4 h-4" />
           </Button>
