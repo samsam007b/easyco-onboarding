@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 import PropertyMap from '@/components/PropertyMap';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -27,6 +27,9 @@ import { useExitIntent } from '@/lib/hooks/use-exit-intent';
 import { useScrollTracker } from '@/lib/hooks/use-scroll-tracker';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { AlertsService } from '@/lib/services/alerts-service';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 interface Property {
   id: string;
@@ -227,51 +230,29 @@ export default function PropertiesBrowsePageV2() {
     router.push('/signup');
   }, [router]);
 
-  // Handle save search
+  // Handle save search / create alert
   const handleSaveSearch = async () => {
     if (!isAuthenticated) {
-      toast.error('Connecte-toi pour sauvegarder des recherches');
+      toast.error('Connecte-toi pour créer des alertes');
       router.push('/login');
       return;
     }
 
     if (!searchName.trim()) {
-      toast.error('Entre un nom pour cette recherche');
+      toast.error('Entre un nom pour cette alerte');
       return;
     }
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      const alertsService = new AlertsService(supabase);
 
-      const { error } = await supabase
-        .from('saved_searches')
-        .insert({
-          user_id: user.id,
-          name: searchName,
-          filters: {
-            city: filters.city,
-            minPrice: filters.minPrice,
-            maxPrice: filters.maxPrice,
-            bedrooms: filters.bedrooms,
-            bathrooms: filters.bathrooms,
-            propertyType: filters.propertyType,
-            furnished: filters.furnished,
-            amenities: filters.amenities
-          }
-        });
+      await alertsService.createAlertFromFilters(searchName, filters);
 
-      if (error) {
-        console.error('Error saving search:', error);
-        toast.error('Erreur lors de la sauvegarde');
-        return;
-      }
-
-      toast.success('Recherche sauvegardée !');
+      toast.success('Alerte créée ! Tu recevras des notifications pour les nouvelles propriétés correspondantes 🔔');
       setShowSaveSearchModal(false);
       setSearchName('');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error creating alert:', error);
       toast.error('Une erreur est survenue');
     }
   };
@@ -561,10 +542,10 @@ export default function PropertiesBrowsePageV2() {
                 <Button
                   variant="outline"
                   onClick={() => setShowSaveSearchModal(true)}
-                  className="flex items-center gap-2 border-purple-300 text-purple-700 hover:bg-purple-50"
+                  className="flex items-center gap-2 border-yellow-300 text-yellow-700 hover:bg-yellow-50"
                 >
-                  <Save className="w-4 h-4" />
-                  Sauvegarder
+                  <Bell className="w-4 h-4" />
+                  Créer une alerte
                 </Button>
               )}
 
@@ -865,28 +846,28 @@ export default function PropertiesBrowsePageV2() {
         onSignup={handleSignup}
       />
 
-      {/* Save Search Modal */}
+      {/* Create Alert Modal */}
       <Dialog open={showSaveSearchModal} onOpenChange={setShowSaveSearchModal}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Save className="w-5 h-5 text-purple-600" />
-              Sauvegarder cette recherche
+              <Bell className="w-5 h-5 text-yellow-600" />
+              Créer une alerte
             </DialogTitle>
             <DialogDescription>
-              Donne un nom à cette recherche pour la retrouver facilement et recevoir des alertes quand de nouvelles propriétés correspondent à tes critères.
+              Nomme cette alerte pour recevoir des notifications instantanées quand de nouvelles propriétés correspondent à tes critères.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div>
               <label htmlFor="search-name" className="block text-sm font-medium text-gray-700 mb-2">
-                Nom de la recherche
+                Nom de l'alerte
               </label>
               <Input
                 id="search-name"
                 type="text"
-                placeholder="Ex: Appart 2ch Paris Centre"
+                placeholder="Ex: Appart 2ch Bruxelles Centre"
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSaveSearch()}
@@ -921,9 +902,10 @@ export default function PropertiesBrowsePageV2() {
             </Button>
             <Button
               onClick={handleSaveSearch}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-yellow-500 text-white"
+              className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 text-white"
             >
-              Sauvegarder
+              <Bell className="w-4 h-4 mr-2" />
+              Créer l'alerte
             </Button>
           </div>
         </DialogContent>

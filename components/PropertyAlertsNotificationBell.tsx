@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function NotificationBell() {
+export default function PropertyAlertsNotificationBell() {
   const router = useRouter();
   const supabase = createClient();
   const alertsService = new AlertsService(supabase);
