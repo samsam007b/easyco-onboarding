@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import BookVisitModal from './BookVisitModal';
 
 interface PropertyCardProps {
   property: {
@@ -13,6 +14,7 @@ interface PropertyCardProps {
     description?: string;
     city: string;
     neighborhood?: string;
+    address?: string;
     monthly_rent: number;
     bedrooms?: number;
     property_type: string;
@@ -22,6 +24,7 @@ interface PropertyCardProps {
     rating?: number;
     reviews_count?: number;
     available_from?: string;
+    owner_id?: string;
   };
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
@@ -41,6 +44,7 @@ function PropertyCard({
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
+  const [showBookVisitModal, setShowBookVisitModal] = useState(false);
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,8 +56,8 @@ function PropertyCard({
   const handleBookVisit = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    router.push(`/properties/${property.id}/book-visit`);
-  }, [property.id, router]);
+    setShowBookVisitModal(true);
+  }, []);
 
   // Generate placeholder image based on property type and location
   const getPlaceholderImage = () => {
@@ -136,13 +140,14 @@ function PropertyCard({
   }
 
   return (
-    <Link
-      href={`/properties/${property.id}`}
-      className="block group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
+    <>
+      <Link
+        href={`/properties/${property.id}`}
+        className="block group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
         {/* Image */}
         <div className="relative h-48 sm:h-56 bg-gray-200">
           <Image
@@ -257,6 +262,24 @@ function PropertyCard({
         </div>
       </div>
     </Link>
+
+    {/* Book Visit Modal */}
+    {showBookVisitModal && property.owner_id && (
+      <BookVisitModal
+        property={{
+          id: property.id,
+          title: property.title,
+          city: property.city,
+          address: property.address,
+          monthly_rent: property.monthly_rent,
+          main_image: property.main_image,
+        }}
+        ownerId={property.owner_id}
+        isOpen={showBookVisitModal}
+        onClose={() => setShowBookVisitModal(false)}
+      />
+    )}
+  </>
   );
 }
 
