@@ -12,13 +12,7 @@ import { Bell, Check, Trash2, Filter, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+// Removed Select imports - using button filters instead
 
 export default function NotificationsPage() {
   const router = useRouter();
@@ -184,16 +178,38 @@ export default function NotificationsPage() {
         {/* Filters */}
         <div className="flex items-center gap-3">
           <Filter className="w-4 h-4 text-gray-500" />
-          <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrer" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Toutes</SelectItem>
-              <SelectItem value="unread">Non lues</SelectItem>
-              <SelectItem value="read">Lues</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => setFilter('all')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                filter === 'all'
+                  ? 'bg-white shadow-sm text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Toutes
+            </button>
+            <button
+              onClick={() => setFilter('unread')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                filter === 'unread'
+                  ? 'bg-white shadow-sm text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Non lues
+            </button>
+            <button
+              onClick={() => setFilter('read')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                filter === 'read'
+                  ? 'bg-white shadow-sm text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Lues
+            </button>
+          </div>
         </div>
       </div>
 

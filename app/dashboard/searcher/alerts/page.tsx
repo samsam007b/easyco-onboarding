@@ -243,7 +243,7 @@ export default function AlertsPage() {
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Critères de recherche</h4>
                   <div className="flex flex-wrap gap-2">
                     {formatCriteria(alert).map((criterion, index) => (
-                      <Badge key={index} variant="outline" className="text-sm">
+                      <Badge key={index} variant="default" className="text-sm">
                         {criterion}
                       </Badge>
                     ))}
@@ -255,16 +255,16 @@ export default function AlertsPage() {
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Notifications</h4>
                   <div className="flex flex-wrap gap-2">
                     {alert.email_notifications && (
-                      <Badge variant="outline" className="text-sm">
+                      <Badge variant="default" className="text-sm">
                         📧 Email
                       </Badge>
                     )}
                     {alert.in_app_notifications && (
-                      <Badge variant="outline" className="text-sm">
+                      <Badge variant="default" className="text-sm">
                         🔔 In-app
                       </Badge>
                     )}
-                    <Badge variant="outline" className="text-sm">
+                    <Badge variant="default" className="text-sm">
                       📅 {getFrequencyLabel(alert.notification_frequency)}
                     </Badge>
                   </div>
