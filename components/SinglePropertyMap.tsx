@@ -23,12 +23,22 @@ export default function SinglePropertyMap({
 }: SinglePropertyMapProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
+  console.log('[SinglePropertyMap] Rendering with:', {
+    hasApiKey: !!apiKey,
+    apiKeyLength: apiKey?.length || 0,
+    latitude,
+    longitude,
+    title
+  });
+
   if (!apiKey) {
+    console.error('[SinglePropertyMap] Google Maps API key is missing!');
     return (
       <div className={`${className} bg-gray-100 rounded-2xl flex items-center justify-center`}>
         <div className="text-center">
           <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p className="text-gray-600">Google Maps API key not configured</p>
+          <p className="text-xs text-gray-500 mt-2">Check NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</p>
         </div>
       </div>
     );
@@ -36,8 +46,18 @@ export default function SinglePropertyMap({
 
   const position = { lat: latitude, lng: longitude };
 
+  const handleMapError = (error: any) => {
+    console.error('[SinglePropertyMap] Map error:', error);
+  };
+
   return (
-    <APIProvider apiKey={apiKey}>
+    <APIProvider
+      apiKey={apiKey}
+      onLoad={() => console.log('[SinglePropertyMap] Google Maps API loaded successfully')}
+      onError={(error) => {
+        console.error('[SinglePropertyMap] Google Maps API error:', error);
+      }}
+    >
       <div className={className}>
         <Map
           mapId="easyco-property-detail-map"
@@ -45,6 +65,8 @@ export default function SinglePropertyMap({
           defaultZoom={zoom}
           gestureHandling="greedy"
           disableDefaultUI={false}
+          onCameraChanged={(ev) => console.log('[SinglePropertyMap] Camera changed:', ev)}
+          onIdle={() => console.log('[SinglePropertyMap] Map idle - ready')}
           styles={[
             {
               featureType: 'poi',
