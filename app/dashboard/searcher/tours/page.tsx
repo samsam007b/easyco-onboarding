@@ -273,10 +273,10 @@ export default function ToursPage() {
                       </div>
 
                       {/* Notes */}
-                      {tour.notes && (
+                      {tour.user_notes && (
                         <div className="flex items-start gap-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">
                           <MessageSquare className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                          <p>{tour.notes}</p>
+                          <p>{tour.user_notes}</p>
                         </div>
                       )}
                     </div>
