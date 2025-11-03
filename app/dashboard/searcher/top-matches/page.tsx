@@ -61,7 +61,7 @@ export default function TopMatchesPage() {
 
   if (loading || matchingLoading) {
     return (
-      <PageContainer>
+      <PageContainer center maxWidth="2xl">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
@@ -74,7 +74,7 @@ export default function TopMatchesPage() {
 
   if (!userPreferences) {
     return (
-      <PageContainer>
+      <PageContainer center maxWidth="2xl">
         <div className="max-w-2xl mx-auto text-center py-12">
           <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -93,7 +93,7 @@ export default function TopMatchesPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer center maxWidth="2xl">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-6 h-6 text-[#4A148C]" />
