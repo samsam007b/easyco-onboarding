@@ -121,12 +121,6 @@ export default function ModernSearcherHeader({
 
   const navItems = [
     {
-      id: 'dashboard',
-      href: '/dashboard/searcher',
-      label: 'Accueil',
-      icon: Home,
-    },
-    {
       id: 'browse',
       href: '/properties/browse',
       label: 'Explorer',
