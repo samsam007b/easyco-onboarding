@@ -39,12 +39,24 @@ async function checkAdminAccess() {
   return user;
 }
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 async function fetchData() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing Supabase environment variables');
+    return {
+      users: [],
+      profiles: [],
+      properties: [],
+      groups: [],
+      applications: [],
+      notifications: []
+    };
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
   const [users, profiles, properties, groups, applications, notifications] = await Promise.all([
     supabase.from('users').select('id, email, full_name, user_type, onboarding_completed, created_at').order('created_at', { ascending: false }).limit(DB_LIMITS.USERS),
     supabase.from('user_profiles').select('*').order('created_at', { ascending: false }).limit(DB_LIMITS.PROFILES),
