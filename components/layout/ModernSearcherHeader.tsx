@@ -179,8 +179,8 @@ export default function ModernSearcherHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50 header-gray-warm shadow-lg">
-      {/* Unified gray warm header with subtle grain texture */}
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
+      {/* Modern glassmorphism header with white semi-transparent background */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -192,18 +192,18 @@ export default function ModernSearcherHeader({
             className="flex items-center gap-3 group"
           >
             <div
-              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
               style={{
                 background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
               }}
             >
-              <Search className="w-5 h-5 text-white relative z-10" />
+              <Search className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-xl font-bold text-gray-900">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-white/70">
+              <span className="text-xs font-medium text-orange-600">
                 Chercheur
               </span>
             </div>
@@ -237,8 +237,8 @@ export default function ModernSearcherHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-active-searcher font-semibold"
-                        : "text-hover-searcher"
+                        ? "text-orange-600 font-semibold bg-orange-50"
+                        : "text-gray-600 hover:text-orange-600 hover:bg-orange-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -261,17 +261,14 @@ export default function ModernSearcherHeader({
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            {/* Favorites Quick Access avec dégradé jaune subtil */}
+            {/* Favorites Quick Access */}
             {favoritesCount > 0 && (
               <Link
                 href="/dashboard/searcher/favorites"
-                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-yellow-200/50 hover:shadow-md transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%)'
-                }}
+                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
               >
-                <Bookmark className="w-4 h-4 text-yellow-700" />
-                <span className="text-sm font-medium text-yellow-900">{favoritesCount} favoris</span>
+                <Bookmark className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-medium text-orange-900">{favoritesCount} favoris</span>
               </Link>
             )}
 
@@ -279,7 +276,7 @@ export default function ModernSearcherHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-yellow-50 transition-all"
+                className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(matchesCount > 0 || unreadMessages > 0) && (
@@ -299,7 +296,7 @@ export default function ModernSearcherHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-yellow-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <h3 className="font-semibold text-gray-900">Notifications</h3>
@@ -308,7 +305,7 @@ export default function ModernSearcherHeader({
                         {matchesCount > 0 && (
                           <Link
                             href="/dashboard/searcher/top-matches"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-yellow-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
@@ -339,25 +336,25 @@ export default function ModernSearcherHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-yellow-50 transition-all group"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-yellow-200 group-hover:border-yellow-400 transition-colors"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
                   />
                 ) : (
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-yellow-200"
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200"
                     style={{
-                      background: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
+                      background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 100%)'
                     }}
                   >
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-900 transition-colors hidden md:block" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
               {/* Profile Dropdown */}
@@ -372,7 +369,7 @@ export default function ModernSearcherHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-yellow-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <p className="font-semibold text-gray-900">{profile.full_name}</p>
@@ -381,7 +378,7 @@ export default function ModernSearcherHeader({
 
                       <Link
                         href="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-yellow-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <User className="w-5 h-5 text-gray-600" />
@@ -390,7 +387,7 @@ export default function ModernSearcherHeader({
 
                       <Link
                         href="/dashboard/searcher/saved-searches"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-yellow-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <Save className="w-5 h-5 text-gray-600" />
@@ -399,7 +396,7 @@ export default function ModernSearcherHeader({
 
                       <Link
                         href="/settings"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-yellow-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <Settings className="w-5 h-5 text-gray-600" />
@@ -425,7 +422,7 @@ export default function ModernSearcherHeader({
             <div ref={langDropdownRef} className="relative hidden md:block">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-yellow-50 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{selectedLang}</span>
@@ -454,14 +451,14 @@ export default function ModernSearcherHeader({
                         className={cn(
                           "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
                           selectedLang === lang.code
-                            ? "bg-yellow-50 text-yellow-900 font-semibold"
+                            ? "bg-orange-50 text-orange-900 font-semibold"
                             : "text-gray-700 hover:bg-gray-50"
                         )}
                       >
                         <span className="text-lg">{lang.flag}</span>
                         <span>{lang.label}</span>
                         {selectedLang === lang.code && (
-                          <span className="ml-auto text-yellow-600">✓</span>
+                          <span className="ml-auto text-orange-600">✓</span>
                         )}
                       </button>
                     ))}
@@ -473,7 +470,7 @@ export default function ModernSearcherHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-yellow-50 transition-all"
+              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -491,7 +488,7 @@ export default function ModernSearcherHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden border-t border-yellow-200/50"
+              className="lg:hidden overflow-hidden border-t border-gray-200"
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
@@ -506,8 +503,8 @@ export default function ModernSearcherHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                         isActive
-                          ? "bg-gradient-to-r from-yellow-100 to-orange-50 text-orange-900 font-semibold"
-                          : "text-gray-700 hover:bg-yellow-50"
+                          ? "bg-orange-50 text-orange-900 font-semibold"
+                          : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
                       <div className="flex items-center gap-3">
