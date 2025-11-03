@@ -984,3 +984,141 @@ body.theme-resident ::selection {
 .nav-item-searcher.active .nav-icon {
   filter: brightness(0) saturate(100%) invert(65%) sepia(72%) saturate(536%) hue-rotate(340deg) brightness(103%) contrast(101%);
 }
+
+/* ============================================
+   DEMO DIRECTIONS PAGE - Styles spécifiques
+   ============================================ */
+
+/* Text gradients for demo */
+.text-gradient-brand-demo {
+  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 50%, #FFD080 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Grain overlay for demo */
+.grain-overlay-demo {
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Hybrid Navigation Hover Effect */
+.nav-item-hybrid {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item-hybrid:hover .nav-text {
+  background: linear-gradient(135deg, #FFD080 0%, #FFFEF0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* Interactive Card for Hybrid Demo */
+.card-interactive-demo {
+  transition: all 0.2s ease;
+}
+
+.card-interactive-demo:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-interactive-demo:active {
+  transform: scale(0.99);
+}
+
+/* Stat Cards for Hybrid Demo */
+.stat-card-demo {
+  transition: all 0.2s ease;
+}
+
+.stat-card-demo:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* CTA Buttons with Grain Texture - Searcher */
+.cta-searcher-demo {
+  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(255, 160, 64, 0.3);
+}
+
+.cta-searcher-demo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.cta-searcher-demo:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(255, 160, 64, 0.4);
+}
+
+/* CTA Buttons - Owner */
+.cta-owner-demo {
+  background: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(123, 95, 184, 0.3);
+}
+
+.cta-owner-demo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.cta-owner-demo:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(123, 95, 184, 0.4);
+}
+
+/* CTA Buttons - Brand (Tricolor) */
+.cta-brand-demo {
+  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 50%, #FFD080 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(123, 95, 184, 0.3);
+}
+
+.cta-brand-demo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-url-medium);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.cta-brand-demo:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(123, 95, 184, 0.4);
+}
