@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { APIProvider, Map, AdvancedMarker, InfoWindow } from '@vis.gl/react-google-maps';
 import { Property } from '@/types/property.types';
 import { DrawingShape, GeoLocation } from '@/types/geo-filters.types';
@@ -41,7 +41,6 @@ export default function AdvancedPropertyMap({
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [drawingShape, setDrawingShape] = useState<DrawingShape | null>(activeDrawing || null);
-  const mapRef = useRef<google.maps.Map | null>(null);
 
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -164,9 +163,6 @@ export default function AdvancedPropertyMap({
           gestureHandling="greedy"
           disableDefaultUI={false}
           clickableIcons={false}
-          onLoad={(map) => {
-            mapRef.current = map.map;
-          }}
           styles={[
             {
               featureType: 'poi',
