@@ -116,6 +116,29 @@ export class VirtualToursService {
   }
 
   /**
+   * Get property's virtual tour information
+   */
+  async getPropertyVirtualTourInfo(property_id: string) {
+    const { data, error } = await this.supabase
+      .from('properties')
+      .select(
+        'id, has_virtual_tour, virtual_tour_url, virtual_tour_type, tour_embed_code'
+      )
+      .eq('id', property_id)
+      .single();
+
+    if (error) throw error;
+
+    return {
+      property_id: data.id,
+      has_virtual_tour: data.has_virtual_tour || false,
+      virtual_tour_url: data.virtual_tour_url,
+      virtual_tour_type: data.virtual_tour_type,
+      tour_embed_code: data.tour_embed_code,
+    };
+  }
+
+  /**
    * Track virtual tour view
    */
   async trackVirtualTourView(

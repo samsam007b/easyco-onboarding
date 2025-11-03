@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users, MessageCircle, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,10 +12,14 @@ import { getPropertyById, deleteProperty, publishProperty, archiveProperty } fro
 import { createClient } from '@/lib/auth/supabase-client';
 import { useApplications } from '@/lib/hooks/use-applications';
 import ApplicationModal from '@/components/ApplicationModal';
+import VirtualTourViewer from '@/components/VirtualTourViewer';
+import ScheduleTourModal from '@/components/ScheduleTourModal';
 import type { Property } from '@/types/property.types';
 import type { PropertyAmenity } from '@/lib/types/property';
 import { toast } from 'sonner';
 import { getOrCreateConversation } from '@/lib/services/messaging-service';
+import { VirtualToursService } from '@/lib/services/virtual-tours-service';
+import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import SinglePropertyMap from '@/components/SinglePropertyMap';
 
 export default function PropertyDetailsPage() {
@@ -33,8 +37,12 @@ export default function PropertyDetailsPage() {
   const [residents, setResidents] = useState<Array<{ first_name: string; last_name: string; profile_photo_url?: string; date_of_birth?: string; occupation_status?: string; nationality?: string }>>([]);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [virtualTourInfo, setVirtualTourInfo] = useState<VirtualTourInfo | null>(null);
+  const [isScheduleTourModalOpen, setIsScheduleTourModalOpen] = useState(false);
 
   const { hasApplied } = useApplications(userId || undefined);
+  const supabase = createClient();
+  const virtualToursService = new VirtualToursService(supabase);
 
   useEffect(() => {
     loadProperty();
@@ -44,7 +52,6 @@ export default function PropertyDetailsPage() {
     setLoading(true);
 
     // Get current user
-    const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
@@ -113,12 +120,33 @@ export default function PropertyDetailsPage() {
         const applied = await hasApplied(propertyId);
         setAlreadyApplied(applied);
       }
+
+      // Load virtual tour info
+      try {
+        const tourInfo = await virtualToursService.getPropertyVirtualTourInfo(propertyId);
+        setVirtualTourInfo(tourInfo);
+      } catch (error) {
+        console.error('Error loading virtual tour info:', error);
+        // Set default no tour info
+        setVirtualTourInfo({
+          has_virtual_tour: false,
+          property_id: propertyId,
+        });
+      }
     } else {
       toast.error('Property not found');
       router.push('/dashboard/owner');
     }
 
     setLoading(false);
+  };
+
+  const handleVirtualTourView = (duration: number) => {
+    if (userId && virtualTourInfo?.has_virtual_tour) {
+      virtualToursService.trackVirtualTourView(propertyId, duration).catch((error) => {
+        console.error('Error tracking virtual tour view:', error);
+      });
+    }
   };
 
   const handleDelete = async () => {
@@ -477,6 +505,29 @@ export default function PropertyDetailsPage() {
             </CardContent>
           </Card>
 
+          {/* Virtual Tour */}
+          {virtualTourInfo && (
+            <div>
+              <VirtualTourViewer
+                tourInfo={virtualTourInfo}
+                propertyId={propertyId}
+                onViewEnd={handleVirtualTourView}
+              />
+              {!isOwner && (
+                <div className="mt-4 text-center">
+                  <Button
+                    size="lg"
+                    onClick={() => setIsScheduleTourModalOpen(true)}
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  >
+                    <Calendar className="w-5 h-5 mr-2" />
+                    Planifier une visite
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Location Map */}
           {property.latitude && property.longitude && (
             <Card>
@@ -738,6 +789,15 @@ export default function PropertyDetailsPage() {
           )}
         </div>
       </div>
+
+      {/* Schedule Tour Modal */}
+      <ScheduleTourModal
+        isOpen={isScheduleTourModalOpen}
+        onClose={() => setIsScheduleTourModalOpen(false)}
+        propertyId={propertyId}
+        propertyTitle={property.title}
+        hasVirtualTour={virtualTourInfo?.has_virtual_tour || false}
+      />
     </PageContainer>
   );
 }

@@ -1,4 +1,5 @@
 export interface VirtualTourInfo {
+  property_id: string;
   has_virtual_tour: boolean;
   virtual_tour_url?: string;
   virtual_tour_type?: 'matterport' | 'youtube360' | 'custom';
