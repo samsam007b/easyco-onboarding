@@ -235,14 +235,14 @@ export default function ModernSearcherHeader({
                     href={item.href}
                     prefetch={true}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      "nav-item-searcher relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-orange-600 font-semibold bg-orange-50"
-                        : "text-gray-600 hover:text-orange-600 hover:bg-orange-50/50"
+                        ? "active font-semibold bg-orange-50"
+                        : "text-gray-600 hover:bg-orange-50/50"
                     )}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
+                    <Icon className="nav-icon w-4 h-4" />
+                    <span className="nav-text">{item.label}</span>
                     {item.badge && (
                       <Badge
                         className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"

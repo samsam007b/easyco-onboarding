@@ -958,3 +958,29 @@ body.theme-resident ::selection {
 
 .hover\:border-role-500:hover { border-color: var(--role-500); }
 .hover\:border-role-600:hover { border-color: var(--role-600); }
+
+/* ============================================
+   Searcher Header Navigation Gradient Hover Effect
+   ============================================ */
+
+.nav-item-searcher {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-item-searcher:hover .nav-text,
+.nav-item-searcher.active .nav-text {
+  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-item-searcher .nav-icon {
+  transition: all 0.3s ease;
+}
+
+.nav-item-searcher:hover .nav-icon,
+.nav-item-searcher.active .nav-icon {
+  filter: brightness(0) saturate(100%) invert(65%) sepia(72%) saturate(536%) hue-rotate(340deg) brightness(103%) contrast(101%);
+}
