@@ -1,0 +1,198 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Bell } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { createClient } from '@/lib/auth/supabase-client';
+import { AlertsService } from '@/lib/services/alerts-service';
+import { PropertyNotification } from '@/types/alerts.types';
+import { useRouter } from 'next/navigation';
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+export default function NotificationBell() {
+  const router = useRouter();
+  const supabase = createClient();
+  const alertsService = new AlertsService(supabase);
+
+  const [notifications, setNotifications] = useState<PropertyNotification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    loadNotifications();
+    loadUnreadCount();
+
+    // Subscribe to real-time notifications
+    const channel = alertsService.subscribeToNotifications((notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+      setUnreadCount((prev) => prev + 1);
+    });
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, []);
+
+  const loadNotifications = async () => {
+    try {
+      const data = await alertsService.getUserNotifications(10);
+      setNotifications(data);
+    } catch (error) {
+      console.error('Error loading notifications:', error);
+    }
+  };
+
+  const loadUnreadCount = async () => {
+    try {
+      const count = await alertsService.getUnreadNotificationsCount();
+      setUnreadCount(count);
+    } catch (error) {
+      console.error('Error loading unread count:', error);
+    }
+  };
+
+  const handleNotificationClick = async (notification: PropertyNotification) => {
+    // Mark as read
+    if (!notification.is_read) {
+      await alertsService.markNotificationAsRead(notification.id);
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === notification.id ? { ...n, is_read: true, read_at: new Date().toISOString() } : n
+        )
+      );
+    }
+
+    // Navigate to property
+    setIsOpen(false);
+    router.push(`/properties/${notification.property_id}`);
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await alertsService.markAllNotificationsAsRead();
+      setUnreadCount(0);
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, is_read: true, read_at: new Date().toISOString() }))
+      );
+    } catch (error) {
+      console.error('Error marking all as read:', error);
+    }
+  };
+
+  const handleViewAll = () => {
+    setIsOpen(false);
+    router.push('/dashboard/searcher/notifications');
+  };
+
+  const getNotificationIcon = (type: PropertyNotification['type']) => {
+    switch (type) {
+      case 'new_property':
+        return '🏠';
+      case 'price_drop':
+        return '💰';
+      case 'status_change':
+        return '📝';
+      case 'new_match':
+        return '💖';
+      default:
+        return '🔔';
+    }
+  };
+
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative">
+          <Bell className="h-5 w-5" />
+          {unreadCount > 0 && (
+            <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+            >
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </Badge>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[380px]">
+        <div className="flex items-center justify-between p-3 border-b">
+          <h3 className="font-semibold">Notifications</h3>
+          {unreadCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleMarkAllAsRead}
+              className="text-xs text-blue-600 hover:text-blue-700"
+            >
+              Tout marquer comme lu
+            </Button>
+          )}
+        </div>
+
+        <div className="max-h-[400px] overflow-y-auto">
+          {notifications.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <Bell className="w-12 h-12 mx-auto mb-2 opacity-20" />
+              <p className="text-sm">Aucune notification</p>
+            </div>
+          ) : (
+            notifications.map((notification) => (
+              <DropdownMenuItem
+                key={notification.id}
+                onClick={() => handleNotificationClick(notification)}
+                className={`p-3 cursor-pointer ${
+                  !notification.is_read ? 'bg-blue-50 hover:bg-blue-100' : ''
+                }`}
+              >
+                <div className="flex gap-3 w-full">
+                  <div className="text-2xl flex-shrink-0">
+                    {getNotificationIcon(notification.type)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="font-medium text-sm text-gray-900 line-clamp-1">
+                        {notification.title}
+                      </p>
+                      {!notification.is_read && (
+                        <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1" />
+                      )}
+                    </div>
+                    {notification.message && (
+                      <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                        {notification.message}
+                      </p>
+                    )}
+                    <p className="text-xs text-gray-400 mt-1">
+                      {formatDistanceToNow(new Date(notification.created_at), {
+                        addSuffix: true,
+                        locale: fr,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </DropdownMenuItem>
+            ))
+          )}
+        </div>
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={handleViewAll}
+          className="p-3 text-center text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
+        >
+          Voir toutes les notifications
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
