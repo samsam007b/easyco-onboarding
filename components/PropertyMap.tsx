@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { APIProvider, Map, AdvancedMarker, InfoWindow, Pin } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, AdvancedMarker, InfoWindow } from '@vis.gl/react-google-maps';
 import { Property } from '@/types/property.types';
-import { MapPin, Home, Euro, Users, Maximize } from 'lucide-react';
+import { MapPin, Home, Users, Maximize } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import PropertyMarkerCard from './PropertyMarkerCard';
 
 interface PropertyMapProps {
   properties: Property[];
@@ -30,6 +31,7 @@ export default function PropertyMap({
   className = 'w-full h-[600px]',
 }: PropertyMapProps) {
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
+  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
@@ -81,12 +83,13 @@ export default function PropertyMap({
     setSelectedMarker(null);
   }, []);
 
-  // Get marker color based on property state
-  const getMarkerColor = (property: PropertyMarkerData): string => {
-    if (property.id === selectedPropertyId) return '#F59E0B'; // Amber
-    if (property.id === selectedMarker) return '#F59E0B'; // Amber
-    return '#3B82F6'; // Blue
-  };
+  const handleMarkerHover = useCallback((propertyId: string) => {
+    setHoveredMarker(propertyId);
+  }, []);
+
+  const handleMarkerLeave = useCallback(() => {
+    setHoveredMarker(null);
+  }, []);
 
   return (
     <APIProvider apiKey={apiKey}>
@@ -112,11 +115,14 @@ export default function PropertyMap({
                 position={property.position}
                 onClick={() => handleMarkerClick(property.id)}
               >
-                <Pin
-                  background={getMarkerColor(property)}
-                  borderColor="#fff"
-                  glyphColor="#fff"
-                  scale={property.id === selectedPropertyId || property.id === selectedMarker ? 1.3 : 1}
+                <PropertyMarkerCard
+                  imageUrl={property.main_image || '/placeholder-property.jpg'}
+                  price={property.monthly_rent}
+                  isSelected={property.id === selectedPropertyId || property.id === selectedMarker}
+                  isHovered={property.id === hoveredMarker}
+                  onClick={() => handleMarkerClick(property.id)}
+                  onMouseEnter={() => handleMarkerHover(property.id)}
+                  onMouseLeave={handleMarkerLeave}
                 />
               </AdvancedMarker>
 
