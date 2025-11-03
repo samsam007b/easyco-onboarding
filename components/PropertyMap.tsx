@@ -18,6 +18,7 @@ interface PropertyMapProps {
 
 interface PropertyMarkerData extends Property {
   position: { lat: number; lng: number };
+  is_featured?: boolean;
 }
 
 export default function PropertyMap({
