@@ -37,19 +37,24 @@ export default function ToursPage() {
   const loadTours = async () => {
     setIsLoading(true);
     try {
+      const allTours = await virtualToursService.getUserTours();
+      const now = new Date();
+
       if (filter === 'upcoming') {
-        const data = await virtualToursService.getUpcomingTours();
-        setTours(data);
+        const upcomingTours = allTours.filter(
+          (tour) =>
+            new Date(tour.scheduled_at) >= now &&
+            tour.status !== 'cancelled' &&
+            tour.status !== 'completed'
+        );
+        setTours(upcomingTours);
       } else if (filter === 'past') {
-        const allTours = await virtualToursService.getUserTours();
-        const now = new Date();
         const pastTours = allTours.filter(
           (tour) => new Date(tour.scheduled_at) < now || tour.status === 'completed'
         );
         setTours(pastTours);
       } else {
-        const data = await virtualToursService.getUserTours();
-        setTours(data);
+        setTours(allTours);
       }
     } catch (error) {
       console.error('Error loading tours:', error);
