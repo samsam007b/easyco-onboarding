@@ -326,7 +326,7 @@ export default function PropertyComparePage() {
                 </td>
                 {properties.map((property) => (
                   <td key={property.id} className="p-4 text-center">
-                    {property.parking ? (
+                    {property.amenities?.includes('parking') ? (
                       <Check className="w-6 h-6 text-green-600 mx-auto" />
                     ) : (
                       <X className="w-6 h-6 text-red-600 mx-auto" />
@@ -345,7 +345,7 @@ export default function PropertyComparePage() {
                 </td>
                 {properties.map((property) => (
                   <td key={property.id} className="p-4 text-center">
-                    {property.balcony ? (
+                    {property.amenities?.includes('balcony') ? (
                       <Check className="w-6 h-6 text-green-600 mx-auto" />
                     ) : (
                       <X className="w-6 h-6 text-red-600 mx-auto" />
