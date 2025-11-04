@@ -77,6 +77,10 @@ export default function PropertyCTASidebar({
     window.location.href = `/properties/${propertyId}/apply?room=${selectedRoom?.id}`;
   };
 
+  // Debug log
+  console.log('PropertyCTASidebar - owner prop:', owner);
+  console.log('PropertyCTASidebar - owner exists?', !!owner);
+
   return (
     <div className={cn("space-y-4", className)}>
       {/* Room Selection */}
