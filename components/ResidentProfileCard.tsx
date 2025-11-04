@@ -64,12 +64,12 @@ export default function ResidentProfileCard({
         <button
           onClick={() => setShowFullProfile(true)}
           className={cn(
-            "flex flex-col items-center gap-3 p-4 rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
+            "flex flex-col items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
             className
           )}
         >
           <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg ring-4 ring-white">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg ring-4 ring-white">
               {resident.profile_photo_url ? (
                 <img
                   src={resident.profile_photo_url}
@@ -77,19 +77,19 @@ export default function ResidentProfileCard({
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <User className="w-10 h-10 text-white" />
+                <User className="w-14 h-14 text-white" />
               )}
             </div>
             {resident.age && (
-              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-md ring-2 ring-white">
+              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-sm font-bold rounded-full w-9 h-9 flex items-center justify-center shadow-md ring-2 ring-white">
                 {resident.age}
               </div>
             )}
           </div>
-          <div className="text-center w-full space-y-1.5">
-            <p className="font-bold text-base text-gray-900">{resident.first_name}</p>
+          <div className="text-center w-full space-y-2">
+            <p className="font-bold text-lg text-gray-900">{resident.first_name}</p>
             {resident.occupation && (
-              <p className="text-xs text-gray-600 font-medium truncate px-2">{resident.occupation}</p>
+              <p className="text-sm text-gray-600 font-medium truncate px-2">{resident.occupation}</p>
             )}
             <div className="flex flex-wrap gap-1 justify-center">
               {resident.is_smoker && (
