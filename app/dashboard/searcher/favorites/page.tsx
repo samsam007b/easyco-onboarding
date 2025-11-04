@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Heart, MapPin, Trash2, Home, Users } from 'lucide-react';
 import PropertyCard from '@/components/PropertyCard';
 import { toast } from 'sonner';
+import { getResidentsForProperties } from '@/lib/services/rooms.service';
 
 interface Property {
   id: string;
@@ -38,6 +39,7 @@ export default function FavoritesPage() {
   const supabase = createClient();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [residentsData, setResidentsData] = useState<Map<string, any[]>>(new Map());
 
   useEffect(() => {
     loadFavorites();
@@ -95,6 +97,13 @@ export default function FavoritesPage() {
       })).filter(item => item.property); // Filter out favorites with deleted properties
 
       setFavorites(transformedData);
+
+      // Load residents for all properties
+      if (transformedData.length > 0) {
+        const propertyIds = transformedData.map(f => f.property.id);
+        const residents = await getResidentsForProperties(propertyIds);
+        setResidentsData(residents);
+      }
     } catch (error) {
       console.error('Error:', error);
       toast.error('Une erreur est survenue');
@@ -134,7 +143,7 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+      <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -148,7 +157,7 @@ export default function FavoritesPage() {
           </div>
 
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Chargement de vos favoris...</p>
           </div>
         </div>
@@ -157,7 +166,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -198,7 +207,7 @@ export default function FavoritesPage() {
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-purple-600 to-yellow-500 text-white"
+                className="bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-700 hover:to-orange-600"
               >
                 Découvrir des propriétés
               </Button>
@@ -207,30 +216,30 @@ export default function FavoritesPage() {
         ) : (
           <>
             {/* Summary Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <Card className="bg-white border-orange-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                      <Heart className="w-6 h-6 text-red-500" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <Heart className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-red-600 font-medium">Total favoris</p>
-                      <p className="text-2xl font-bold text-red-900">{favorites.length}</p>
+                      <p className="text-sm text-gray-600 font-medium">Total favoris</p>
+                      <p className="text-2xl font-bold text-gray-900">{favorites.length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+              <Card className="bg-white border-orange-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-purple-500" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <MapPin className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-purple-600 font-medium">Villes</p>
-                      <p className="text-2xl font-bold text-purple-900">
+                      <p className="text-sm text-gray-600 font-medium">Villes</p>
+                      <p className="text-2xl font-bold text-gray-900">
                         {new Set(favorites.map(f => f.property.city)).size}
                       </p>
                     </div>
@@ -238,15 +247,15 @@ export default function FavoritesPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
+              <Card className="bg-white border-orange-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                      <Home className="w-6 h-6 text-yellow-600" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <Home className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-yellow-600 font-medium">Prix moyen</p>
-                      <p className="text-2xl font-bold text-yellow-900">
+                      <p className="text-sm text-gray-600 font-medium">Prix moyen</p>
+                      <p className="text-2xl font-bold text-gray-900">
                         €{Math.round(favorites.reduce((sum, f) => sum + f.property.monthly_rent, 0) / favorites.length)}
                       </p>
                     </div>
@@ -257,23 +266,28 @@ export default function FavoritesPage() {
 
             {/* Favorites Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favorites.map((favorite) => (
-                <div key={favorite.id} className="relative">
-                  <PropertyCard
-                    property={favorite.property}
-                    variant="default"
-                    isFavorite={true}
-                    onFavoriteClick={handleFavoriteClick}
-                  />
-                  <div className="mt-2 text-xs text-gray-500 text-center">
-                    Ajouté le {new Date(favorite.created_at).toLocaleDateString('fr-FR', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}
+              {favorites.map((favorite) => {
+                const residents = residentsData.get(favorite.property.id) || [];
+
+                return (
+                  <div key={favorite.id} className="relative">
+                    <PropertyCard
+                      property={favorite.property}
+                      residents={residents}
+                      variant="default"
+                      isFavorite={true}
+                      onFavoriteClick={handleFavoriteClick}
+                    />
+                    <div className="mt-2 text-xs text-gray-500 text-center">
+                      Ajouté le {new Date(favorite.created_at).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
         )}
