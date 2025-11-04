@@ -226,7 +226,7 @@ export default function TopMatchesPage() {
                     neighborhood: property.neighborhood,
                     monthly_rent: property.price,
                     bedrooms: property.bedrooms,
-                    property_type: property.property_type || 'Colocation',
+                    property_type: 'Colocation',
                     main_image: property.images?.[0],
                     images: property.images,
                     available_from: property.available_from,
