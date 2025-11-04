@@ -83,18 +83,71 @@ export default function PropertyCTASidebar({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* CARTE TEST EN PREMIER */}
-      <Card className="bg-yellow-200 border-8 border-red-500 p-8">
-        <h1 className="text-4xl font-bold text-red-600">🔴 CARTE TEST EN PREMIER</h1>
-        <p className="text-2xl mt-4">Owner exists: {owner ? 'YES ✅' : 'NO ❌'}</p>
-        {owner && (
-          <div className="mt-4 text-xl">
-            <p>Nom: {owner.first_name} {owner.last_name}</p>
-            <p>Email: {owner.email}</p>
-            <p>Phone: {owner.phone}</p>
-          </div>
-        )}
-      </Card>
+      {/* Property Owner Card */}
+      {owner && (
+        <Card className="border-orange-200">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-base flex items-center gap-2">
+              <User className="w-5 h-5 text-orange-600" />
+              Votre contact propriétaire
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-start gap-3">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                {owner.profile_photo_url ? (
+                  <img
+                    src={owner.profile_photo_url}
+                    alt={`${owner.first_name} ${owner.last_name}`}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <User className="w-7 h-7 text-white" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 text-base">
+                  {owner.first_name} {owner.last_name}
+                </p>
+                {owner.company_name && (
+                  <div className="flex items-center gap-1 text-sm text-gray-600 mt-1">
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span className="truncate">{owner.company_name}</span>
+                  </div>
+                )}
+                {owner.email && (
+                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1.5">
+                    <Mail className="w-3.5 h-3.5" />
+                    <span className="truncate">{owner.email}</span>
+                  </div>
+                )}
+                {owner.phone && (
+                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>{owner.phone}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="font-medium">Vérifié</span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span className="font-medium">Réactif</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Room Selection */}
       <Card className="sticky top-24">
@@ -156,28 +209,6 @@ export default function PropertyCTASidebar({
               <Phone className="w-4 h-4 mr-2" />
               Contacter le propriétaire
             </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Property Owner Card - NOUVELLE VERSION SIMPLIFIÉE */}
-      <Card className="bg-white border-4 border-red-500">
-        <CardHeader>
-          <CardTitle className="text-lg font-bold text-red-600">
-            CARTE PROPRIÉTAIRE TEST
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <p className="text-sm">Owner exists: {owner ? 'YES' : 'NO'}</p>
-            {owner && (
-              <>
-                <p className="font-semibold">{owner.first_name} {owner.last_name}</p>
-                <p className="text-sm text-gray-600">{owner.email}</p>
-                <p className="text-sm text-gray-600">{owner.phone}</p>
-              </>
-            )}
-            {!owner && <p className="text-red-600">NO OWNER DATA!</p>}
           </div>
         </CardContent>
       </Card>
