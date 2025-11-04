@@ -149,7 +149,7 @@ export default function ResidentProfileCard({
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {resident.languages.map((lang, idx) => (
-                      <Badge key={idx} variant="outline" className="bg-orange-50 border-orange-200 text-orange-700">
+                      <Badge key={idx} variant="default" className="bg-orange-50 border-orange-200 text-orange-700">
                         {lang}
                       </Badge>
                     ))}
@@ -352,7 +352,7 @@ export default function ResidentProfileCard({
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {resident.languages.map((lang, idx) => (
-                    <Badge key={idx} variant="outline" className="bg-orange-50 border-orange-200 text-orange-700">
+                    <Badge key={idx} variant="default" className="bg-orange-50 border-orange-200 text-orange-700">
                       {lang}
                     </Badge>
                   ))}
