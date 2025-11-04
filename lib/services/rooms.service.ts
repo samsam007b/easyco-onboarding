@@ -167,57 +167,37 @@ export async function getPropertyLifestyleMetrics(
 export async function getPropertyResidents(propertyId: string): Promise<ResidentProfile[]> {
   const supabase = createClient();
 
-  // First get all occupied rooms for this property
-  const { data: occupiedRooms, error: roomsError } = await supabase
-    .from('property_rooms')
-    .select('current_occupant_id')
-    .eq('property_id', propertyId)
-    .not('current_occupant_id', 'is', null);
-
-  if (roomsError || !occupiedRooms) {
-    console.error('Error fetching occupied rooms:', roomsError);
-    return [];
-  }
-
-  const occupantIds = occupiedRooms
-    .map(room => room.current_occupant_id)
-    .filter(Boolean) as string[];
-
-  if (occupantIds.length === 0) {
-    return [];
-  }
-
-  // Fetch user profiles for these occupants
-  const { data: profiles, error: profilesError } = await supabase
-    .from('user_profiles')
+  // Fetch residents directly from property_residents table
+  const { data: residents, error } = await supabase
+    .from('property_residents')
     .select('*')
-    .in('user_id', occupantIds);
+    .eq('property_id', propertyId);
 
-  if (profilesError || !profiles) {
-    console.error('Error fetching resident profiles:', profilesError);
+  if (error || !residents) {
+    console.error('Error fetching residents:', error);
     return [];
   }
 
-  return profiles.map(profile => ({
-    id: profile.id,
-    user_id: profile.user_id,
-    first_name: profile.first_name,
-    last_name: profile.last_name,
-    age: profile.age,
-    profile_photo_url: profile.profile_photo_url,
-    occupation: profile.occupation,
-    occupation_status: profile.occupation_status,
-    nationality: profile.nationality,
-    languages: profile.languages,
-    bio: profile.bio,
-    interests: profile.interests,
-    cleanliness_preference: profile.cleanliness_preference,
-    noise_tolerance: profile.noise_tolerance,
-    sociability_level: profile.sociability_level,
-    is_smoker: profile.is_smoker,
-    has_pets: profile.has_pets,
-    move_in_date: profile.move_in_date,
-    room_id: profile.room_id
+  return residents.map(resident => ({
+    id: resident.id,
+    user_id: resident.id, // Using resident.id as user_id since they don't have user accounts
+    first_name: resident.first_name,
+    last_name: resident.last_name,
+    age: resident.age,
+    profile_photo_url: resident.photo_url,
+    occupation: resident.occupation,
+    occupation_status: null, // Not in property_residents table
+    nationality: null, // Not in property_residents table
+    languages: resident.languages,
+    bio: resident.bio,
+    interests: resident.interests,
+    cleanliness_preference: resident.cleanliness_level,
+    noise_tolerance: resident.noise_tolerance,
+    sociability_level: resident.social_preference,
+    is_smoker: resident.is_smoker,
+    has_pets: resident.has_pets,
+    move_in_date: resident.move_in_date,
+    room_id: null // Not tracked in property_residents
   }));
 }
 
