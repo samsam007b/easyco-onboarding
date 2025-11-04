@@ -66,7 +66,7 @@ export default function LifestyleCompatibilitySliders({
     <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Party className="w-5 h-5 text-orange-600" />
+          <Music className="w-5 h-5 text-orange-600" />
           Ambiance de la colocation
         </CardTitle>
         <p className="text-sm text-gray-600 mt-1">
