@@ -186,8 +186,8 @@ export async function getPropertyResidents(propertyId: string): Promise<Resident
     age: resident.age,
     profile_photo_url: resident.photo_url,
     occupation: resident.occupation,
-    occupation_status: null, // Not in property_residents table
-    nationality: null, // Not in property_residents table
+    occupation_status: undefined, // Not in property_residents table
+    nationality: undefined, // Not in property_residents table
     languages: resident.languages,
     bio: resident.bio,
     interests: resident.interests,
@@ -197,7 +197,7 @@ export async function getPropertyResidents(propertyId: string): Promise<Resident
     is_smoker: resident.is_smoker,
     has_pets: resident.has_pets,
     move_in_date: resident.move_in_date,
-    room_id: null // Not tracked in property_residents
+    room_id: undefined // Not tracked in property_residents
   }));
 }
 
