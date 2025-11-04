@@ -144,10 +144,10 @@ export default function CostBreakdownCard({
                     <span className="text-gray-700">€{costs.shared_living.breakdown.cleaning_supplies}</span>
                   </div>
                 )}
-                {costs.shared_living.breakdown.groceries !== undefined && costs.shared_living.breakdown.groceries > 0 && (
+                {costs.shared_living.breakdown.shared_groceries !== undefined && costs.shared_living.breakdown.shared_groceries > 0 && (
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">• Courses communes</span>
-                    <span className="text-gray-700">€{costs.shared_living.breakdown.groceries}</span>
+                    <span className="text-gray-700">€{costs.shared_living.breakdown.shared_groceries}</span>
                   </div>
                 )}
                 {costs.shared_living.breakdown.maintenance !== undefined && costs.shared_living.breakdown.maintenance > 0 && (

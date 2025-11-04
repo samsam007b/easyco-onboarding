@@ -3,7 +3,7 @@
 import { PropertyLifestyleMetrics } from '@/types/room.types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Party, Sparkles, Volume2, Users, Cigarette, Dog, UserCheck } from 'lucide-react';
+import { Music, Sparkles, Volume2, Users, Cigarette, Dog, UserCheck } from 'lucide-react';
 
 interface LifestyleCompatibilitySlidersProps {
   metrics: PropertyLifestyleMetrics;
@@ -27,7 +27,7 @@ export default function LifestyleCompatibilitySliders({
     {
       label: 'Ambiance',
       value: metrics.party_vibe,
-      icon: <Party className="w-5 h-5" />,
+      icon: <Music className="w-5 h-5" />,
       leftLabel: 'Calme',
       rightLabel: 'Festif',
       color: metrics.party_vibe > 7 ? 'from-purple-500 to-pink-500' : metrics.party_vibe > 4 ? 'from-blue-500 to-purple-500' : 'from-green-500 to-blue-500'
