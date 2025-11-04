@@ -322,12 +322,12 @@ export default function PropertyDetailsPage() {
                   {/* Residents Preview (Compact) */}
                   {residents.length > 0 && (
                     <div className="flex items-center gap-3">
-                      <Users className="w-5 h-5" />
-                      <div className="flex -space-x-3">
+                      <Users className="w-6 h-6" />
+                      <div className="flex -space-x-4">
                         {residents.slice(0, 5).map((resident, idx) => (
                           <div
                             key={idx}
-                            className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white flex items-center justify-center"
+                            className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-3 border-white shadow-lg flex items-center justify-center"
                           >
                             {resident.profile_photo_url ? (
                               <img
@@ -336,19 +336,19 @@ export default function PropertyDetailsPage() {
                                 className="w-full h-full rounded-full object-cover"
                               />
                             ) : (
-                              <span className="text-white text-xs font-bold">
+                              <span className="text-white text-sm font-bold">
                                 {resident.first_name.charAt(0)}{resident.last_name.charAt(0)}
                               </span>
                             )}
                           </div>
                         ))}
                         {residents.length > 5 && (
-                          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">+{residents.length - 5}</span>
+                          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border-3 border-white shadow-lg flex items-center justify-center">
+                            <span className="text-white text-sm font-bold">+{residents.length - 5}</span>
                           </div>
                         )}
                       </div>
-                      <span className="text-sm text-white/80">{residents.length} colocataire{residents.length > 1 ? 's' : ''}</span>
+                      <span className="text-base font-medium text-white/90">{residents.length} colocataire{residents.length > 1 ? 's' : ''}</span>
                     </div>
                   )}
                 </div>
