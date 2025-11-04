@@ -147,52 +147,27 @@ export default function PropertyCTASidebar({
         </CardContent>
       </Card>
 
-      {/* Property Owner Card */}
-      {owner && (
-        <>
-        {console.log('🎯 RENDERING OWNER CARD - owner data:', owner)}
-        <Card style={{ display: 'block', visibility: 'visible', opacity: 1, marginTop: '16px', backgroundColor: 'white', border: '2px solid red' }}>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <User className="w-5 h-5 text-orange-600" />
-              Propriétaire TEST
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-start gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center flex-shrink-0">
-                {owner.profile_photo_url ? (
-                  <img
-                    src={owner.profile_photo_url}
-                    alt={`${owner.first_name} ${owner.last_name}`}
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <User className="w-6 h-6 text-white" />
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900">
-                  {owner.first_name} {owner.last_name}
-                </p>
-                {owner.company_name && (
-                  <div className="flex items-center gap-1 text-sm text-gray-600 mt-1">
-                    <Building2 className="w-3 h-3" />
-                    <span className="truncate">{owner.company_name}</span>
-                  </div>
-                )}
-                {owner.email && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-                    <Mail className="w-3 h-3" />
-                    <span className="truncate">{owner.email}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        </>
-      )}
+      {/* Property Owner Card - NOUVELLE VERSION SIMPLIFIÉE */}
+      <Card className="bg-white border-4 border-red-500">
+        <CardHeader>
+          <CardTitle className="text-lg font-bold text-red-600">
+            CARTE PROPRIÉTAIRE TEST
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <p className="text-sm">Owner exists: {owner ? 'YES' : 'NO'}</p>
+            {owner && (
+              <>
+                <p className="font-semibold">{owner.first_name} {owner.last_name}</p>
+                <p className="text-sm text-gray-600">{owner.email}</p>
+                <p className="text-sm text-gray-600">{owner.phone}</p>
+              </>
+            )}
+            {!owner && <p className="text-red-600">NO OWNER DATA!</p>}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Property Info Summary */}
       <Card>
