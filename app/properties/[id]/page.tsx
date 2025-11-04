@@ -2,25 +2,36 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Euro, Bed, Bath, Maximize, Calendar, CheckCircle, XCircle, Edit, Trash2, Send, User, Mail, Phone, Users, MessageCircle, Video } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, CheckCircle, Edit, Trash2, Users, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageContainer } from '@/components/layout/PageContainer';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { getPropertyById, deleteProperty, publishProperty, archiveProperty } from '@/lib/property-helpers';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useApplications } from '@/lib/hooks/use-applications';
-import ApplicationModal from '@/components/ApplicationModal';
-import VirtualTourViewer from '@/components/VirtualTourViewer';
-import ScheduleTourModal from '@/components/ScheduleTourModal';
+import { getPropertyDetailsData } from '@/lib/services/rooms.service';
 import type { Property } from '@/types/property.types';
 import type { PropertyAmenity } from '@/lib/types/property';
+import type { RoomWithTotal, PropertyCosts, PropertyLifestyleMetrics, ResidentProfile } from '@/types/room.types';
 import { toast } from 'sonner';
-import { getOrCreateConversation } from '@/lib/services/messaging-service';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import SinglePropertyMap from '@/components/SinglePropertyMap';
+import VirtualTourViewer from '@/components/VirtualTourViewer';
+import LifestyleCompatibilitySliders from '@/components/LifestyleCompatibilitySliders';
+import ResidentProfileCard from '@/components/ResidentProfileCard';
+import PropertyCTASidebar from '@/components/PropertyCTASidebar';
+
+interface PropertyOwner {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email?: string;
+  phone?: string;
+  profile_photo_url?: string;
+  company_name?: string;
+}
 
 export default function PropertyDetailsPage() {
   const router = useRouter();
@@ -28,19 +39,18 @@ export default function PropertyDetailsPage() {
   const propertyId = params.id as string;
 
   const [property, setProperty] = useState<Property | null>(null);
+  const [rooms, setRooms] = useState<RoomWithTotal[]>([]);
+  const [costs, setCosts] = useState<PropertyCosts | null>(null);
+  const [lifestyleMetrics, setLifestyleMetrics] = useState<PropertyLifestyleMetrics | null>(null);
+  const [residents, setResidents] = useState<ResidentProfile[]>([]);
+  const [cheapestRoom, setCheapestRoom] = useState<RoomWithTotal | null>(null);
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useState<{ full_name: string; email: string; phone_number?: string } | null>(null);
-  const [ownerProfile, setOwnerProfile] = useState<{ first_name: string; last_name: string; profile_photo_url?: string; user_type?: string; phone_number?: string } | null>(null);
-  const [residents, setResidents] = useState<Array<{ first_name: string; last_name: string; profile_photo_url?: string; date_of_birth?: string; occupation_status?: string; nationality?: string }>>([]);
-  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [ownerProfile, setOwnerProfile] = useState<PropertyOwner | null>(null);
   const [virtualTourInfo, setVirtualTourInfo] = useState<VirtualTourInfo | null>(null);
-  const [isScheduleTourModalOpen, setIsScheduleTourModalOpen] = useState(false);
 
-  const { hasApplied } = useApplications(userId || undefined);
   const supabase = createClient();
   const virtualToursService = new VirtualToursService(supabase);
 
@@ -53,29 +63,8 @@ export default function PropertyDetailsPage() {
 
     // Get current user
     const { data: { user } } = await supabase.auth.getUser();
-
     if (user) {
       setUserId(user.id);
-
-      // Load user profile
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('full_name, phone_number')
-        .eq('user_id', user.id)
-        .single();
-
-      if (profile) {
-        setUserProfile({
-          full_name: profile.full_name || '',
-          email: user.email || '',
-          phone_number: profile.phone_number,
-        });
-      } else {
-        setUserProfile({
-          full_name: '',
-          email: user.email || '',
-        });
-      }
     }
 
     // Load property
@@ -85,40 +74,34 @@ export default function PropertyDetailsPage() {
       setProperty(result.data);
       setIsOwner(user?.id === result.data.owner_id);
 
+      // Load multi-room data
+      try {
+        const roomData = await getPropertyDetailsData(propertyId);
+        setRooms(roomData.rooms);
+        setCosts(roomData.costs);
+        setLifestyleMetrics(roomData.lifestyleMetrics);
+        setResidents(roomData.residents);
+        setCheapestRoom(roomData.cheapestRoom);
+      } catch (error) {
+        console.error('Error loading room data:', error);
+      }
+
       // Load owner profile
       const { data: owner } = await supabase
         .from('user_profiles')
-        .select('first_name, last_name, profile_photo_url, user_type, phone_number')
+        .select('first_name, last_name, profile_photo_url, phone_number')
         .eq('user_id', result.data.owner_id)
         .single();
 
       if (owner) {
-        setOwnerProfile(owner);
-      }
-
-      // Load residents (from property_members table)
-      const { data: propertyMembers } = await supabase
-        .from('property_members')
-        .select('user_id, role')
-        .eq('property_id', propertyId)
-        .eq('status', 'active');
-
-      if (propertyMembers && propertyMembers.length > 0) {
-        const residentIds = propertyMembers.map(m => m.user_id);
-        const { data: residentProfiles } = await supabase
-          .from('user_profiles')
-          .select('first_name, last_name, profile_photo_url, date_of_birth, occupation_status, nationality')
-          .in('user_id', residentIds);
-
-        if (residentProfiles) {
-          setResidents(residentProfiles);
-        }
-      }
-
-      // Check if user has already applied (only if not the owner)
-      if (user && user.id !== result.data.owner_id) {
-        const applied = await hasApplied(propertyId);
-        setAlreadyApplied(applied);
+        setOwnerProfile({
+          id: result.data.owner_id,
+          first_name: owner.first_name,
+          last_name: owner.last_name,
+          email: user?.email,
+          phone: owner.phone_number,
+          profile_photo_url: owner.profile_photo_url
+        });
       }
 
       // Load virtual tour info
@@ -127,7 +110,6 @@ export default function PropertyDetailsPage() {
         setVirtualTourInfo(tourInfo);
       } catch (error) {
         console.error('Error loading virtual tour info:', error);
-        // Set default no tour info
         setVirtualTourInfo({
           has_virtual_tour: false,
           property_id: propertyId,
@@ -135,7 +117,7 @@ export default function PropertyDetailsPage() {
       }
     } else {
       toast.error('Property not found');
-      router.push('/dashboard/owner');
+      router.push('/dashboard/searcher');
     }
 
     setLoading(false);
@@ -192,36 +174,6 @@ export default function PropertyDetailsPage() {
     setActionLoading(false);
   };
 
-  const handleContactOwner = async () => {
-    if (!userId || !property?.owner_id) {
-      toast.error('Unable to start conversation');
-      return;
-    }
-
-    if (userId === property.owner_id) {
-      toast.info('You are the owner of this property');
-      return;
-    }
-
-    setActionLoading(true);
-
-    const result = await getOrCreateConversation(
-      userId,
-      property.owner_id,
-      'property_inquiry',
-      propertyId
-    );
-
-    if (result.success && result.data) {
-      toast.success('Opening conversation...');
-      router.push(`/messages?conversation=${result.data}`);
-    } else {
-      toast.error('Failed to start conversation');
-    }
-
-    setActionLoading(false);
-  };
-
   const getStatusBadgeVariant = (status: string) => {
     const variants: Record<string, "default" | "success" | "warning"> = {
       published: 'success',
@@ -232,20 +184,7 @@ export default function PropertyDetailsPage() {
   };
 
   const getAmenityIcon = (amenity: PropertyAmenity) => {
-    // Simple check icon for now
     return <CheckCircle className="w-4 h-4 text-green-600" />;
-  };
-
-  const calculateAge = (dateOfBirth?: string): number | null => {
-    if (!dateOfBirth) return null;
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
   };
 
   const getImageUrl = (image: any): string => {
@@ -259,8 +198,8 @@ export default function PropertyDetailsPage() {
       <PageContainer>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
-            <p className="mt-4 text-gray-600">Loading property...</p>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+            <p className="mt-4 text-gray-600">Chargement de la propriété...</p>
           </div>
         </div>
       </PageContainer>
@@ -271,9 +210,9 @@ export default function PropertyDetailsPage() {
     return (
       <PageContainer>
         <div className="text-center py-12">
-          <p className="text-gray-600">Property not found</p>
-          <Button onClick={() => router.push('/dashboard/owner')} className="mt-4">
-            Back to Dashboard
+          <p className="text-gray-600">Propriété introuvable</p>
+          <Button onClick={() => router.push('/dashboard/searcher')} className="mt-4">
+            Retour au tableau de bord
           </Button>
         </div>
       </PageContainer>
@@ -281,48 +220,58 @@ export default function PropertyDetailsPage() {
   }
 
   return (
-    <PageContainer maxWidth="2xl">
-      {/* Header */}
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => router.back()}
-          className="mb-4"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
-        </Button>
+    <PageContainer maxWidth="full" padding="none">
+      {/* Header with Hero Image */}
+      <div className="relative">
+        {/* Hero Image */}
+        <div className="relative h-[500px] w-full overflow-hidden">
+          {property.images && property.images.length > 0 ? (
+            <>
+              <img
+                src={property.main_image || getImageUrl(property.images[0])}
+                alt={property.title}
+                className="w-full h-full object-cover"
+              />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            </>
+          ) : (
+            <div className="bg-gradient-to-br from-orange-100 to-orange-200 h-full flex items-center justify-center">
+              <Home className="w-32 h-32 text-orange-300" />
+            </div>
+          )}
 
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-gray-900">{property.title}</h1>
-              <Badge variant={getStatusBadgeVariant(property.status)}>
-                {property.status}
-              </Badge>
-            </div>
-            <div className="flex items-center gap-2 text-gray-600">
-              <MapPin className="w-4 h-4" />
-              <span>{property.address}, {property.city} {property.postal_code}</span>
-            </div>
+          {/* Back Button */}
+          <div className="absolute top-6 left-6">
+            <Button
+              variant="outline"
+              onClick={() => router.back()}
+              className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Retour
+            </Button>
           </div>
 
+          {/* Owner Actions */}
           {isOwner && (
-            <div className="flex gap-2">
+            <div className="absolute top-6 right-6 flex gap-2">
               <Button
                 variant="outline"
                 onClick={() => router.push(`/properties/edit/${property.id}`)}
                 disabled={actionLoading}
+                className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
               >
                 <Edit className="w-4 h-4 mr-2" />
-                Edit
+                Modifier
               </Button>
               {property.status === 'draft' && (
                 <Button
                   onClick={handlePublish}
                   disabled={actionLoading}
+                  className="bg-orange-600 hover:bg-orange-700"
                 >
-                  Publish
+                  Publier
                 </Button>
               )}
               {property.status === 'published' && (
@@ -330,474 +279,279 @@ export default function PropertyDetailsPage() {
                   variant="outline"
                   onClick={handleArchive}
                   disabled={actionLoading}
+                  className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
                 >
-                  Archive
+                  Archiver
                 </Button>
               )}
               <Button
                 variant="outline"
                 onClick={handleDelete}
                 disabled={actionLoading}
-                className="text-red-600 hover:text-red-700"
+                className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white text-red-600 hover:text-red-700"
               >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
+                <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           )}
-        </div>
-      </div>
 
-      {/* Image Gallery */}
-      <Card className="mb-6">
-        <CardContent className="p-0">
-          {property.images && property.images.length > 0 ? (
-            <div className="relative h-96 rounded-t-2xl overflow-hidden">
-              <img
-                src={property.main_image || getImageUrl(property.images[0])}
-                alt={property.title}
-                className="w-full h-full object-cover"
-              />
-              {property.images.length > 1 && (
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="flex gap-2 overflow-x-auto pb-2">
-                    {property.images.slice(1, 5).map((image, index) => (
-                      <img
-                        key={index}
-                        src={getImageUrl(image)}
-                        alt={`${property.title} - ${index + 2}`}
-                        className="w-20 h-20 object-cover rounded-lg border-2 border-white shadow-lg flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
-                      />
-                    ))}
-                    {property.images.length > 5 && (
-                      <div className="w-20 h-20 bg-black/50 rounded-lg border-2 border-white shadow-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-semibold">+{property.images.length - 5}</span>
+          {/* Property Title & Info - Overlaid on Image */}
+          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <h1 className="text-4xl font-bold">{property.title}</h1>
+                    <Badge variant={getStatusBadgeVariant(property.status)} className="text-sm">
+                      {property.status}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/90 mb-4">
+                    <MapPin className="w-5 h-5" />
+                    <span className="text-lg">{property.address}, {property.city} {property.postal_code}</span>
+                  </div>
+
+                  {/* Residents Preview (Compact) */}
+                  {residents.length > 0 && (
+                    <div className="flex items-center gap-3">
+                      <Users className="w-5 h-5" />
+                      <div className="flex -space-x-3">
+                        {residents.slice(0, 5).map((resident, idx) => (
+                          <div
+                            key={idx}
+                            className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white flex items-center justify-center"
+                          >
+                            {resident.profile_photo_url ? (
+                              <img
+                                src={resident.profile_photo_url}
+                                alt={`${resident.first_name} ${resident.last_name}`}
+                                className="w-full h-full rounded-full object-cover"
+                              />
+                            ) : (
+                              <span className="text-white text-xs font-bold">
+                                {resident.first_name.charAt(0)}{resident.last_name.charAt(0)}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                        {residents.length > 5 && (
+                          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">+{residents.length - 5}</span>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="bg-gray-200 h-96 flex items-center justify-center rounded-t-2xl">
-              <div className="text-center text-gray-500">
-                <p className="text-lg font-medium">No images yet</p>
-                <p className="text-sm">Upload images to showcase your property</p>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Overview */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Overview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 rounded-full">
-                    <Bed className="w-5 h-5 text-[#4A148C]" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Bedrooms</p>
-                    <p className="font-semibold">{property.bedrooms}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 rounded-full">
-                    <Bath className="w-5 h-5 text-[#4A148C]" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Bathrooms</p>
-                    <p className="font-semibold">{property.bathrooms}</p>
-                  </div>
-                </div>
-
-                {property.surface_area && (
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-purple-100 rounded-full">
-                      <Maximize className="w-5 h-5 text-[#4A148C]" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Surface</p>
-                      <p className="font-semibold">{property.surface_area} m²</p>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 rounded-full">
-                    <Calendar className="w-5 h-5 text-[#4A148C]" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Furnished</p>
-                    <p className="font-semibold">{property.furnished ? 'Yes' : 'No'}</p>
-                  </div>
-                </div>
-              </div>
-
-              {property.description && (
-                <div>
-                  <h4 className="font-semibold mb-2">Description</h4>
-                  <p className="text-gray-700 whitespace-pre-line">{property.description}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Amenities */}
-          {property.amenities && property.amenities.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Amenities</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {property.amenities.map((amenity) => (
-                    <div key={amenity} className="flex items-center gap-2">
-                      {getAmenityIcon(amenity)}
-                      <span className="capitalize">{amenity.replace('_', ' ')}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* House Rules */}
-          <Card>
-            <CardHeader>
-              <CardTitle>House Rules</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700">Smoking allowed</span>
-                  {property.smoking_allowed ? (
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-red-600" />
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700">Pets allowed</span>
-                  {property.pets_allowed ? (
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-red-600" />
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700">Couples allowed</span>
-                  {property.couples_allowed ? (
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-red-600" />
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Virtual Tour */}
-          {virtualTourInfo && (
-            <div>
-              <VirtualTourViewer
-                tourInfo={virtualTourInfo}
-                propertyId={propertyId}
-                onViewEnd={handleVirtualTourView}
-              />
-              {!isOwner && (
-                <div className="mt-4 text-center">
-                  <Button
-                    size="lg"
-                    onClick={() => setIsScheduleTourModalOpen(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                  >
-                    <Calendar className="w-5 h-5 mr-2" />
-                    Planifier une visite
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Location Map */}
-          {property.latitude && property.longitude && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5" />
-                  Location
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <SinglePropertyMap
-                  latitude={property.latitude}
-                  longitude={property.longitude}
-                  title={property.title}
-                  address={`${property.address}, ${property.city} ${property.postal_code}`}
-                  className="w-full h-[400px] rounded-b-2xl overflow-hidden"
-                />
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Pricing */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Pricing</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700">Monthly Rent</span>
-                  <span className="text-2xl font-bold text-[#4A148C]">
-                    €{property.monthly_rent.toLocaleString()}
-                  </span>
-                </div>
-
-                {property.charges !== undefined && property.charges > 0 && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Charges</span>
-                    <span className="font-semibold">€{property.charges.toLocaleString()}</span>
-                  </div>
-                )}
-
-                {property.deposit !== undefined && property.deposit !== null && property.deposit > 0 && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Deposit</span>
-                    <span className="font-semibold">€{property.deposit.toLocaleString()}</span>
-                  </div>
-                )}
-
-                <div className="pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">Total Monthly</span>
-                    <span className="text-xl font-bold">
-                      €{((property.monthly_rent || 0) + (property.charges || 0)).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Availability */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Availability</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-600">Status</p>
-                  <p className="font-semibold">
-                    {property.is_available ? 'Available' : 'Not Available'}
-                  </p>
-                </div>
-
-                {property.available_from && (
-                  <div>
-                    <p className="text-sm text-gray-600">Available from</p>
-                    <p className="font-semibold">
-                      {new Date(property.available_from).toLocaleDateString()}
-                    </p>
-                  </div>
-                )}
-
-                <div>
-                  <p className="text-sm text-gray-600">Minimum stay</p>
-                  <p className="font-semibold">
-                    {property.minimum_stay_months} {property.minimum_stay_months === 1 ? 'month' : 'months'}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Owner Card */}
-          {ownerProfile && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="w-5 h-5" />
-                  Owner
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-start gap-4 mb-4">
-                  {ownerProfile.profile_photo_url ? (
-                    <img
-                      src={ownerProfile.profile_photo_url}
-                      alt={`${ownerProfile.first_name} ${ownerProfile.last_name}`}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-purple-200"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center">
-                      <User className="w-8 h-8 text-[#4A148C]" />
+                      <span className="text-sm text-white/80">{residents.length} colocataire{residents.length > 1 ? 's' : ''}</span>
                     </div>
                   )}
-                  <div className="flex-1">
-                    <p className="font-semibold text-lg">{ownerProfile.first_name} {ownerProfile.last_name}</p>
-                    {ownerProfile.user_type && (
-                      <Badge variant="default" className="mt-1">
-                        {ownerProfile.user_type}
+                </div>
+
+                {/* Price Highlight */}
+                {cheapestRoom && (
+                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center min-w-[200px]">
+                    <p className="text-sm text-white/80 mb-1">À partir de</p>
+                    <p className="text-5xl font-bold text-white">€{cheapestRoom.price}</p>
+                    <p className="text-sm text-white/70 mt-1">/mois</p>
+                    {rooms.length > 1 && (
+                      <Badge className="mt-3 bg-orange-500 text-white border-0">
+                        {rooms.filter(r => r.is_available).length} chambre{rooms.filter(r => r.is_available).length > 1 ? 's' : ''} disponible{rooms.filter(r => r.is_available).length > 1 ? 's' : ''}
                       </Badge>
                     )}
-                    {ownerProfile.phone_number && !isOwner && (
-                      <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
-                        <Phone className="w-4 h-4" />
-                        <span>{ownerProfile.phone_number}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Contact Owner Button */}
-                {!isOwner && userId && (
-                  <Button
-                    className="w-full"
-                    variant="outline"
-                    onClick={handleContactOwner}
-                    disabled={actionLoading}
-                  >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    Contact Owner
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Residents Card */}
-          {residents.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Current Residents ({residents.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {residents.map((resident, index) => (
-                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-                      {resident.profile_photo_url ? (
-                        <img
-                          src={resident.profile_photo_url}
-                          alt={`${resident.first_name} ${resident.last_name}`}
-                          className="w-12 h-12 rounded-full object-cover border-2 border-purple-100"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
-                          <User className="w-6 h-6 text-[#4A148C]" />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold">{resident.first_name} {resident.last_name}</p>
-                        {calculateAge(resident.date_of_birth) && (
-                          <p className="text-sm text-gray-600">{calculateAge(resident.date_of_birth)} years old</p>
-                        )}
-                        {resident.occupation_status && (
-                          <p className="text-sm text-gray-600 capitalize">{resident.occupation_status.replace('_', ' ')}</p>
-                        )}
-                        {resident.nationality && (
-                          <Badge variant="default" size="sm" className="mt-1">
-                            {resident.nationality}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Property Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Property Info</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <p className="text-gray-600">Property Type</p>
-                  <p className="font-semibold capitalize">{property.property_type.replace('_', ' ')}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Created</p>
-                  <p className="font-semibold">
-                    {new Date(property.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                {property.published_at && (
-                  <div>
-                    <p className="text-gray-600">Published</p>
-                    <p className="font-semibold">
-                      {new Date(property.published_at).toLocaleDateString()}
-                    </p>
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Apply Button (for non-owners) */}
-          {!isOwner && property.status === 'published' && userId && userProfile && (
-            <>
-              {alreadyApplied ? (
-                <Button className="w-full" size="lg" disabled variant="outline">
-                  <CheckCircle className="w-5 h-5 mr-2" />
-                  Application Submitted
-                </Button>
-              ) : (
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={() => setIsApplicationModalOpen(true)}
-                >
-                  <Send className="w-5 h-5 mr-2" />
-                  Apply Now
-                </Button>
-              )}
-
-              {/* Application Modal */}
-              <ApplicationModal
-                isOpen={isApplicationModalOpen}
-                onClose={() => {
-                  setIsApplicationModalOpen(false);
-                  // Reload to update application status
-                  loadProperty();
-                }}
-                propertyId={propertyId}
-                propertyTitle={property.title}
-                userId={userId}
-                userProfile={userProfile}
-              />
-            </>
-          )}
+            </div>
+          </div>
         </div>
+
+        {/* Thumbnail Gallery */}
+        {property.images && property.images.length > 1 && (
+          <div className="bg-white border-b">
+            <div className="max-w-7xl mx-auto px-8 py-4">
+              <div className="flex gap-3 overflow-x-auto">
+                {property.images.slice(0, 8).map((image, index) => (
+                  <img
+                    key={index}
+                    src={getImageUrl(image)}
+                    alt={`${property.title} - ${index + 1}`}
+                    className="h-20 w-32 object-cover rounded-lg border-2 border-gray-200 hover:border-orange-500 transition-colors cursor-pointer flex-shrink-0"
+                  />
+                ))}
+                {property.images.length > 8 && (
+                  <div className="h-20 w-32 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center flex-shrink-0">
+                    <span className="text-gray-600 font-semibold">+{property.images.length - 8}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Schedule Tour Modal */}
-      <ScheduleTourModal
-        isOpen={isScheduleTourModalOpen}
-        onClose={() => setIsScheduleTourModalOpen(false)}
-        propertyId={propertyId}
-        propertyTitle={property.title}
-        hasVirtualTour={virtualTourInfo?.has_virtual_tour || false}
-      />
+      {/* Main Content */}
+      <div className="bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column - Main Content */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Overview */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Home className="w-5 h-5 text-orange-600" />
+                    Aperçu de la propriété
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-orange-100 rounded-full">
+                        <Bed className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Chambres</p>
+                        <p className="font-semibold">{property.bedrooms}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-orange-100 rounded-full">
+                        <Bath className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Salles de bain</p>
+                        <p className="font-semibold">{property.bathrooms}</p>
+                      </div>
+                    </div>
+
+                    {property.surface_area && (
+                      <div className="flex items-center gap-3">
+                        <div className="p-3 bg-orange-100 rounded-full">
+                          <Maximize className="w-5 h-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">Surface</p>
+                          <p className="font-semibold">{property.surface_area} m²</p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 bg-orange-100 rounded-full">
+                        <Calendar className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Meublé</p>
+                        <p className="font-semibold">{property.furnished ? 'Oui' : 'Non'}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {property.description && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-gray-900">Description</h4>
+                      <p className="text-gray-700 whitespace-pre-line leading-relaxed">{property.description}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Lifestyle Compatibility Sliders */}
+              {lifestyleMetrics && (
+                <LifestyleCompatibilitySliders metrics={lifestyleMetrics} />
+              )}
+
+              {/* Residents Section */}
+              {residents.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="w-5 h-5 text-orange-600" />
+                      Vos futurs colocataires ({residents.length})
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Découvrez les personnes avec qui vous pourriez partager cette colocation
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      {residents.map((resident, idx) => (
+                        <ResidentProfileCard
+                          key={idx}
+                          resident={resident}
+                          compact={true}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Amenities */}
+              {property.amenities && property.amenities.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Équipements</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {property.amenities.map((amenity) => (
+                        <div key={amenity} className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
+                          {getAmenityIcon(amenity)}
+                          <span className="capitalize text-sm">{amenity.replace('_', ' ')}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Virtual Tour */}
+              {virtualTourInfo && (
+                <VirtualTourViewer
+                  tourInfo={virtualTourInfo}
+                  propertyId={propertyId}
+                  onViewEnd={handleVirtualTourView}
+                />
+              )}
+
+              {/* Location Map */}
+              {property.latitude && property.longitude && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MapPin className="w-5 h-5 text-orange-600" />
+                      Localisation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <SinglePropertyMap
+                      latitude={property.latitude}
+                      longitude={property.longitude}
+                      title={property.title}
+                      address={`${property.address}, ${property.city} ${property.postal_code}`}
+                      className="w-full h-[400px] rounded-b-2xl overflow-hidden"
+                    />
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Right Column - CTA Sidebar */}
+            <div className="lg:col-span-1">
+              {rooms.length > 0 && costs && (
+                <PropertyCTASidebar
+                  rooms={rooms}
+                  costs={costs}
+                  propertyId={propertyId}
+                  propertyTitle={property.title}
+                  propertyAddress={`${property.address}, ${property.city} ${property.postal_code}`}
+                  owner={ownerProfile || undefined}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </PageContainer>
   );
 }
