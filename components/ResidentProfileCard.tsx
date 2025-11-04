@@ -64,12 +64,12 @@ export default function ResidentProfileCard({
         <button
           onClick={() => setShowFullProfile(true)}
           className={cn(
-            "flex flex-col items-center gap-2 p-3 rounded-lg bg-white border border-gray-200 hover:border-orange-300 hover:shadow-md transition-all",
+            "flex flex-col items-center gap-3 p-4 rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
             className
           )}
         >
           <div className="relative">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg ring-4 ring-white">
               {resident.profile_photo_url ? (
                 <img
                   src={resident.profile_photo_url}
@@ -77,20 +77,33 @@ export default function ResidentProfileCard({
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <User className="w-7 h-7 text-white" />
+                <User className="w-10 h-10 text-white" />
               )}
             </div>
             {resident.age && (
-              <div className="absolute -bottom-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-md ring-2 ring-white">
                 {resident.age}
               </div>
             )}
           </div>
-          <div className="text-center">
-            <p className="font-semibold text-sm text-gray-900">{resident.first_name}</p>
-            {resident.occupation_status && (
-              <p className="text-xs text-gray-600">{getOccupationStatusLabel(resident.occupation_status)}</p>
+          <div className="text-center w-full space-y-1.5">
+            <p className="font-bold text-base text-gray-900">{resident.first_name}</p>
+            {resident.occupation && (
+              <p className="text-xs text-gray-600 font-medium truncate px-2">{resident.occupation}</p>
             )}
+            <div className="flex flex-wrap gap-1 justify-center">
+              {resident.is_smoker && (
+                <Badge variant="outline" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600">🚬</Badge>
+              )}
+              {resident.has_pets && (
+                <Badge variant="outline" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600">🐾</Badge>
+              )}
+              {resident.languages && resident.languages.length > 0 && (
+                <Badge variant="outline" className="text-xs px-1.5 py-0 border-orange-200 text-orange-600">
+                  {resident.languages[0]}
+                </Badge>
+              )}
+            </div>
           </div>
         </button>
 
@@ -98,8 +111,8 @@ export default function ResidentProfileCard({
         <Dialog open={showFullProfile} onOpenChange={setShowFullProfile}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+              <DialogTitle className="flex items-center gap-4">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-xl ring-4 ring-orange-50">
                   {resident.profile_photo_url ? (
                     <img
                       src={resident.profile_photo_url}
@@ -107,12 +120,12 @@ export default function ResidentProfileCard({
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <User className="w-8 h-8 text-white" />
+                    <User className="w-12 h-12 text-white" />
                   )}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">{resident.first_name} {resident.last_name}</h3>
-                  {resident.age && <p className="text-sm text-gray-600">{resident.age} ans</p>}
+                  <h3 className="text-2xl font-bold text-gray-900">{resident.first_name} {resident.last_name}</h3>
+                  {resident.age && <p className="text-base text-gray-600 mt-1">{resident.age} ans</p>}
                 </div>
               </DialogTitle>
             </DialogHeader>
