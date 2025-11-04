@@ -30,6 +30,7 @@ import { Input } from '@/components/ui/input';
 import { AlertsService } from '@/lib/services/alerts-service';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { getResidentsForProperties } from '@/lib/services/rooms.service';
 
 interface Property {
   id: string;
@@ -396,6 +397,20 @@ export default function PropertiesBrowsePageV2() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // Fetch residents for all properties
+  const { data: residentsData } = useQuery({
+    queryKey: ['property-residents', propertiesData?.properties?.map(p => p.id)],
+    queryFn: async () => {
+      if (!propertiesData?.properties || propertiesData.properties.length === 0) {
+        return new Map();
+      }
+      const propertyIds = propertiesData.properties.map(p => p.id);
+      return await getResidentsForProperties(propertyIds);
+    },
+    enabled: !!propertiesData?.properties && propertiesData.properties.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
   // Calculate match scores for properties (if user has preferences)
   const propertiesWithScores = useMemo(() => {
     if (!propertiesData?.properties) {
@@ -721,10 +736,13 @@ export default function PropertiesBrowsePageV2() {
                     setTimeout(() => trackView(), index * 100);
                   }
 
+                  const residents = residentsData?.get(property.id) || [];
+
                   return (
                     <PropertyCard
                       key={property.id}
                       property={property}
+                      residents={residents}
                       showCompatibilityScore={isAuthenticated}
                       compatibilityScore={property.compatibilityScore}
                       variant="default"

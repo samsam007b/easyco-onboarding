@@ -7,6 +7,12 @@ import { useState, memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import BookVisitModal from './BookVisitModal';
 
+interface ResidentProfile {
+  id: string;
+  first_name: string;
+  profile_photo_url?: string;
+}
+
 interface PropertyCardProps {
   property: {
     id: string;
@@ -26,6 +32,7 @@ interface PropertyCardProps {
     available_from?: string;
     owner_id?: string;
   };
+  residents?: ResidentProfile[];
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
   onFavoriteClick?: (id: string) => void;
@@ -35,6 +42,7 @@ interface PropertyCardProps {
 
 function PropertyCard({
   property,
+  residents = [],
   showCompatibilityScore = false,
   compatibilityScore,
   onFavoriteClick,
@@ -95,9 +103,39 @@ function PropertyCard({
               />
             </button>
 
+            {/* Residents Photos */}
+            {residents && residents.length > 0 && (
+              <div className="absolute bottom-2 left-2 flex items-center gap-1">
+                <div className="flex -space-x-2">
+                  {residents.slice(0, 3).map((resident, index) => (
+                    <div
+                      key={resident.id}
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-md flex items-center justify-center"
+                      style={{ zIndex: 10 - index }}
+                    >
+                      {resident.profile_photo_url ? (
+                        <img
+                          src={resident.profile_photo_url}
+                          alt={resident.first_name}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <Users className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {residents.length > 3 && (
+                  <div className="w-8 h-8 rounded-full bg-gray-800/80 backdrop-blur-sm border-2 border-white text-white text-xs font-bold flex items-center justify-center shadow-md">
+                    +{residents.length - 3}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Compatibility Score Badge */}
             {showCompatibilityScore && compatibilityScore && (
-              <div className="absolute bottom-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+              <div className="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                 {compatibilityScore}% Match
               </div>
             )}
@@ -167,17 +205,49 @@ function PropertyCard({
             />
           </button>
 
+          {/* Residents Photos */}
+          {residents && residents.length > 0 && (
+            <div className="absolute bottom-3 left-3 flex items-center gap-2">
+              <div className="flex -space-x-3">
+                {residents.slice(0, 4).map((resident, index) => (
+                  <div
+                    key={resident.id}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-lg flex items-center justify-center"
+                    style={{ zIndex: 10 - index }}
+                  >
+                    {resident.profile_photo_url ? (
+                      <img
+                        src={resident.profile_photo_url}
+                        alt={resident.first_name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <Users className="w-5 h-5 text-white" />
+                    )}
+                  </div>
+                ))}
+              </div>
+              {residents.length > 4 && (
+                <div className="w-10 h-10 rounded-full bg-gray-900/80 backdrop-blur-sm border-2 border-white text-white text-xs font-bold flex items-center justify-center shadow-lg">
+                  +{residents.length - 4}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Compatibility Score Badge */}
           {showCompatibilityScore && compatibilityScore && (
-            <div className="absolute bottom-3 left-3 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+            <div className="absolute top-3 left-3 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
               <span className="text-xl">{compatibilityScore}%</span> Match
             </div>
           )}
 
           {/* Property Type Badge */}
-          <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
-            {property.property_type}
-          </div>
+          {!showCompatibilityScore && (
+            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
+              {property.property_type}
+            </div>
+          )}
         </div>
 
         {/* Content */}

@@ -202,6 +202,61 @@ export async function getPropertyResidents(propertyId: string): Promise<Resident
 }
 
 /**
+ * Get residents for multiple properties at once
+ */
+export async function getResidentsForProperties(propertyIds: string[]): Promise<Map<string, ResidentProfile[]>> {
+  const supabase = createClient();
+  const residentsMap = new Map<string, ResidentProfile[]>();
+
+  if (propertyIds.length === 0) {
+    return residentsMap;
+  }
+
+  // Fetch all residents for the given property IDs
+  const { data: residents, error } = await supabase
+    .from('property_residents')
+    .select('*')
+    .in('property_id', propertyIds);
+
+  if (error || !residents) {
+    console.error('Error fetching residents for properties:', error);
+    return residentsMap;
+  }
+
+  // Group residents by property_id
+  residents.forEach(resident => {
+    const propertyId = resident.property_id;
+    if (!residentsMap.has(propertyId)) {
+      residentsMap.set(propertyId, []);
+    }
+
+    residentsMap.get(propertyId)!.push({
+      id: resident.id,
+      user_id: resident.id,
+      first_name: resident.first_name,
+      last_name: resident.last_name,
+      age: resident.age,
+      profile_photo_url: resident.photo_url,
+      occupation: resident.occupation,
+      occupation_status: undefined,
+      nationality: undefined,
+      languages: resident.languages,
+      bio: resident.bio,
+      interests: resident.interests,
+      cleanliness_preference: resident.cleanliness_level,
+      noise_tolerance: resident.noise_tolerance,
+      sociability_level: resident.social_preference,
+      is_smoker: resident.is_smoker,
+      has_pets: resident.has_pets,
+      move_in_date: resident.move_in_date,
+      room_id: undefined
+    });
+  });
+
+  return residentsMap;
+}
+
+/**
  * Get the cheapest available room for a property
  */
 export async function getCheapestRoom(propertyId: string): Promise<RoomWithTotal | null> {

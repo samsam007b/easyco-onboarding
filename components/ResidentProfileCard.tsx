@@ -93,13 +93,13 @@ export default function ResidentProfileCard({
             )}
             <div className="flex flex-wrap gap-1 justify-center">
               {resident.is_smoker && (
-                <Badge variant="outline" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600">🚬</Badge>
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">🚬</Badge>
               )}
               {resident.has_pets && (
-                <Badge variant="outline" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600">🐾</Badge>
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">🐾</Badge>
               )}
               {resident.languages && resident.languages.length > 0 && (
-                <Badge variant="outline" className="text-xs px-1.5 py-0 border-orange-200 text-orange-600">
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-orange-200 text-orange-600 bg-orange-50">
                   {resident.languages[0]}
                 </Badge>
               )}
