@@ -87,21 +87,29 @@ export default function PropertyDetailsPage() {
       }
 
       // Load owner profile
-      const { data: owner } = await supabase
+      console.log('Loading owner profile for owner_id:', result.data.owner_id);
+      const { data: owner, error: ownerError } = await supabase
         .from('user_profiles')
         .select('first_name, last_name, profile_photo_url, phone_number')
         .eq('user_id', result.data.owner_id)
         .single();
 
+      console.log('Owner data:', owner);
+      console.log('Owner error:', ownerError);
+
       if (owner) {
-        setOwnerProfile({
+        const ownerData = {
           id: result.data.owner_id,
           first_name: owner.first_name,
           last_name: owner.last_name,
           email: user?.email,
           phone: owner.phone_number,
           profile_photo_url: owner.profile_photo_url
-        });
+        };
+        console.log('Setting owner profile:', ownerData);
+        setOwnerProfile(ownerData);
+      } else {
+        console.log('No owner data found or error occurred');
       }
 
       // Load virtual tour info
