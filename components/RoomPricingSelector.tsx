@@ -139,7 +139,7 @@ export default function RoomPricingSelector({
                 <div className="text-xs text-gray-500">/mois</div>
                 {isSelected && (
                   <div className="text-xs text-gray-600 mt-1">
-                    + €{room.utilities_total + room.shared_living_total} charges
+                    + €{room.utilities_share + room.shared_living_share} charges
                   </div>
                 )}
               </div>
