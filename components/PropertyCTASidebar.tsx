@@ -83,6 +83,19 @@ export default function PropertyCTASidebar({
 
   return (
     <div className={cn("space-y-4", className)}>
+      {/* CARTE TEST EN PREMIER */}
+      <Card className="bg-yellow-200 border-8 border-red-500 p-8">
+        <h1 className="text-4xl font-bold text-red-600">🔴 CARTE TEST EN PREMIER</h1>
+        <p className="text-2xl mt-4">Owner exists: {owner ? 'YES ✅' : 'NO ❌'}</p>
+        {owner && (
+          <div className="mt-4 text-xl">
+            <p>Nom: {owner.first_name} {owner.last_name}</p>
+            <p>Email: {owner.email}</p>
+            <p>Phone: {owner.phone}</p>
+          </div>
+        )}
+      </Card>
+
       {/* Room Selection */}
       <Card className="sticky top-24">
         <CardHeader>
