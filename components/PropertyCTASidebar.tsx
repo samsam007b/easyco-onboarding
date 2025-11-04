@@ -149,11 +149,13 @@ export default function PropertyCTASidebar({
 
       {/* Property Owner Card */}
       {owner && (
-        <Card>
+        <>
+        {console.log('🎯 RENDERING OWNER CARD - owner data:', owner)}
+        <Card style={{ display: 'block', visibility: 'visible', opacity: 1, marginTop: '16px', backgroundColor: 'white', border: '2px solid red' }}>
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <User className="w-5 h-5 text-orange-600" />
-              Propriétaire
+              Propriétaire TEST
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -189,6 +191,7 @@ export default function PropertyCTASidebar({
             </div>
           </CardContent>
         </Card>
+        </>
       )}
 
       {/* Property Info Summary */}
