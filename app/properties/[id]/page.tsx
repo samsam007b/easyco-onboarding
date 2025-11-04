@@ -546,6 +546,7 @@ export default function PropertyDetailsPage() {
                   propertyTitle={property.title}
                   propertyAddress={`${property.address}, ${property.city} ${property.postal_code}`}
                   owner={ownerProfile || undefined}
+                  hasVirtualTour={virtualTourInfo?.has_virtual_tour || false}
                 />
               )}
             </div>

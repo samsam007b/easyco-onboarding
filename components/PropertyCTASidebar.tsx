@@ -28,6 +28,7 @@ interface PropertyCTASidebarProps {
   propertyTitle: string;
   propertyAddress: string;
   owner?: PropertyOwner;
+  hasVirtualTour?: boolean;
   className?: string;
 }
 
@@ -38,6 +39,7 @@ export default function PropertyCTASidebar({
   propertyTitle,
   propertyAddress,
   owner,
+  hasVirtualTour = false,
   className
 }: PropertyCTASidebarProps) {
   const [selectedRoom, setSelectedRoom] = useState<RoomWithTotal | undefined>(
@@ -265,6 +267,7 @@ export default function PropertyCTASidebar({
           propertyTitle={propertyTitle}
           isOpen={showScheduleTour}
           onClose={() => setShowScheduleTour(false)}
+          hasVirtualTour={hasVirtualTour}
         />
       )}
 
