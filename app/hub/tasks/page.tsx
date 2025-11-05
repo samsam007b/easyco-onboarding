@@ -247,7 +247,7 @@ export default function HubTasksPage() {
             </div>
 
             <Button
-              className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle tâche
@@ -465,7 +465,7 @@ export default function HubTasksPage() {
                 : 'Ajoutez votre première tâche pour organiser votre coloc'
               }
             </p>
-            <Button className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700">
+            <Button className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
               <Plus className="w-4 h-4 mr-2" />
               Créer une tâche
             </Button>

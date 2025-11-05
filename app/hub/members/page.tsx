@@ -183,7 +183,7 @@ export default function HubMembersPage() {
             </div>
 
             <Button
-              className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
             >
               <UserPlus className="w-4 h-4 mr-2" />
               Inviter
@@ -202,7 +202,7 @@ export default function HubMembersPage() {
               className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all"
             >
               {/* Member Header */}
-              <div className="bg-gradient-to-br from-[#FFA040] to-[#FFB85C] p-6 text-white">
+              <div className="bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 text-white">
                 <div className="flex items-center gap-4 mb-4">
                   {member.avatar ? (
                     <img
@@ -279,7 +279,7 @@ export default function HubMembersPage() {
                 <div className="flex gap-2 pt-4 border-t border-gray-100">
                   <Button
                     onClick={() => router.push('/messages')}
-                    className="flex-1 rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+                    className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
                     size="sm"
                   >
                     <MessageCircle className="w-4 h-4 mr-2" />
@@ -314,7 +314,7 @@ export default function HubMembersPage() {
             <p className="text-gray-600 mb-6">
               Invitez des personnes à rejoindre votre colocation
             </p>
-            <Button className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700">
+            <Button className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
               <UserPlus className="w-4 h-4 mr-2" />
               Inviter des membres
             </Button>

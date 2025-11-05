@@ -234,7 +234,7 @@ export default function HubFinancesPage() {
             className="bg-white rounded-3xl shadow-lg p-6"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-white" />
               </div>
               <Badge>Ce mois</Badge>
@@ -305,7 +305,7 @@ export default function HubFinancesPage() {
               <h3 className="text-lg font-bold text-gray-900">Dépenses Récentes</h3>
               <Button
                 size="sm"
-                className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+                className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Ajouter

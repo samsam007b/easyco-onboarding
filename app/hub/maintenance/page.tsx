@@ -211,7 +211,7 @@ export default function HubMaintenancePage() {
             </div>
 
             <Button
-              className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouveau ticket
@@ -335,7 +335,7 @@ export default function HubMaintenancePage() {
                   ? 'Aucune demande terminée pour le moment'
                   : 'Créez votre première demande de maintenance'}
               </p>
-              <Button className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700">
+              <Button className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
                 <Plus className="w-4 h-4 mr-2" />
                 Nouvelle demande
               </Button>
