@@ -3,8 +3,9 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { MessageCircle, ArrowLeft } from 'lucide-react';
+import { MessageCircle, ArrowLeft, Users, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import DashboardHeader from '@/components/DashboardHeader';
 import { ConversationList } from '@/components/messaging/ConversationList';
 import { ChatWindow } from '@/components/messaging/ChatWindow';
@@ -21,6 +22,9 @@ import {
   type Message,
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+
+type MessageTab = 'residents' | 'applicants' | 'all';
 
 function MessagesContent() {
   const router = useRouter();
@@ -36,6 +40,7 @@ function MessagesContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
   const [showArchived, setShowArchived] = useState(false);
+  const [activeTab, setActiveTab] = useState<MessageTab>('all');
 
   // Load user data
   useEffect(() => {
@@ -265,6 +270,41 @@ function MessagesContent() {
     selectedConversation &&
     Array.from(typingUsers).some((id) => id !== userId);
 
+  // Filter conversations based on active tab (for owners only)
+  const getFilteredConversations = () => {
+    if (profile?.user_type !== 'owner') {
+      return conversations;
+    }
+
+    if (activeTab === 'all') {
+      return conversations;
+    }
+
+    // For now, we'll use conversation metadata to determine type
+    // In a real implementation, you'd have a 'conversation_type' field in the database
+    // residents: conversations with users who have active leases
+    // applicants: conversations with searchers/applicants
+
+    return conversations.filter((conv) => {
+      // This is a placeholder - you'll need to add proper logic based on your data structure
+      // For example, check if the other user is a resident of one of the owner's properties
+      if (activeTab === 'residents') {
+        // Filter for resident conversations
+        return conv.metadata?.isResident === true;
+      } else if (activeTab === 'applicants') {
+        // Filter for applicant/searcher conversations
+        return conv.metadata?.isResident !== true;
+      }
+      return true;
+    });
+  };
+
+  const filteredConversations = getFilteredConversations();
+
+  // Count conversations by type
+  const residentCount = conversations.filter(c => c.metadata?.isResident === true).length;
+  const applicantCount = conversations.filter(c => c.metadata?.isResident !== true).length;
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
@@ -293,7 +333,7 @@ function MessagesContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
@@ -302,7 +342,9 @@ function MessagesContent() {
                 Messages
               </h1>
               <p className="text-gray-600 text-lg">
-                Communiquez avec les propriétaires et résidents
+                {profile?.user_type === 'owner'
+                  ? 'Gérez vos conversations avec résidents et candidats'
+                  : 'Communiquez avec les propriétaires et résidents'}
               </p>
             </div>
             <div className="flex gap-2">
@@ -315,10 +357,62 @@ function MessagesContent() {
               </Button>
             </div>
           </div>
+
+          {/* Tabs for Owner */}
+          {profile?.user_type === 'owner' && (
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={activeTab === 'all' ? 'default' : 'outline'}
+                onClick={() => setActiveTab('all')}
+                size="sm"
+                className={cn(
+                  'rounded-full',
+                  activeTab === 'all' && 'bg-purple-600 hover:bg-purple-700'
+                )}
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Tous ({conversations.length})
+              </Button>
+              <Button
+                variant={activeTab === 'residents' ? 'default' : 'outline'}
+                onClick={() => setActiveTab('residents')}
+                size="sm"
+                className={cn(
+                  'rounded-full',
+                  activeTab === 'residents' && 'bg-purple-600 hover:bg-purple-700'
+                )}
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Résidents
+                {residentCount > 0 && (
+                  <Badge variant="secondary" className="ml-2 bg-purple-100 text-purple-900">
+                    {residentCount}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant={activeTab === 'applicants' ? 'default' : 'outline'}
+                onClick={() => setActiveTab('applicants')}
+                size="sm"
+                className={cn(
+                  'rounded-full',
+                  activeTab === 'applicants' && 'bg-purple-600 hover:bg-purple-700'
+                )}
+              >
+                <UserPlus className="w-4 h-4 mr-2" />
+                Candidats
+                {applicantCount > 0 && (
+                  <Badge variant="secondary" className="ml-2 bg-purple-100 text-purple-900">
+                    {applicantCount}
+                  </Badge>
+                )}
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Messages Container */}
-        {conversations.length === 0 && !showArchived ? (
+        {filteredConversations.length === 0 && !showArchived ? (
           <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -326,13 +420,24 @@ function MessagesContent() {
 
             <div className="relative z-10">
               <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                <MessageCircle className="w-10 h-10 text-white" />
+                {activeTab === 'residents' ? (
+                  <Users className="w-10 h-10 text-white" />
+                ) : activeTab === 'applicants' ? (
+                  <UserPlus className="w-10 h-10 text-white" />
+                ) : (
+                  <MessageCircle className="w-10 h-10 text-white" />
+                )}
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Aucune conversation
+                {activeTab === 'residents' && 'Aucun message de résidents'}
+                {activeTab === 'applicants' && 'Aucun message de candidats'}
+                {activeTab === 'all' && 'Aucune conversation'}
               </h3>
               <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
-                Commencez à discuter avec des propriétaires ou colocataires potentiels
+                {activeTab === 'residents' && 'Les messages de vos résidents apparaîtront ici'}
+                {activeTab === 'applicants' && 'Les demandes de visite et candidatures apparaîtront ici'}
+                {activeTab === 'all' && profile?.user_type === 'owner' && 'Vos conversations avec résidents et candidats apparaîtront ici'}
+                {activeTab === 'all' && profile?.user_type !== 'owner' && 'Commencez à discuter avec des propriétaires ou colocataires potentiels'}
               </p>
               {profile?.user_type === 'searcher' && (
                 <Button
@@ -358,7 +463,7 @@ function MessagesContent() {
               {/* Conversations List */}
               <div className={`${selectedConversationId ? 'hidden md:block' : ''} border-r border-gray-200`}>
                 <ConversationList
-                  conversations={conversations}
+                  conversations={filteredConversations}
                   selectedConversationId={selectedConversationId || undefined}
                   onSelectConversation={setSelectedConversationId}
                   showArchived={showArchived}
