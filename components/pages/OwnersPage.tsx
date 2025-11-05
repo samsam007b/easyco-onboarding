@@ -1,171 +1,230 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Building2, Shield, TrendingUp, Clock, FileCheck, Headphones } from 'lucide-react';
+import { Building2, Shield, TrendingUp, Clock, Headphones, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function OwnersPage() {
   const benefits = [
     {
-      icon: Shield,
-      title: 'Locataires vérifiés',
-      description: 'Tous nos résidents passent par une vérification d\'identité et de solvabilité'
-    },
-    {
       icon: TrendingUp,
       title: 'Revenus optimisés',
-      description: 'Augmente tes revenus locatifs de 20-30% avec le coliving'
+      description: 'Augmente tes revenus locatifs jusqu\'à 30% grâce au coliving. Notre modèle économique intelligent te permet de maximiser la rentabilité de ton bien tout en offrant des loyers abordables aux résidents.',
+      size: 'large' as const
+    },
+    {
+      icon: Shield,
+      title: 'Locataires vérifiés',
+      description: 'Tous nos résidents sont vérifiés',
+      size: 'small' as const
     },
     {
       icon: Clock,
       title: 'Gestion simplifiée',
-      description: 'Dashboard complet pour gérer paiements, maintenance et communication'
+      description: 'Dashboard complet et intuitif',
+      size: 'small' as const
     },
     {
       icon: Headphones,
-      title: 'Support dédié',
-      description: 'Une équipe à ton écoute 7j/7 pour t\'accompagner'
+      title: 'Support dédié 7j/7',
+      description: 'Une équipe à ton écoute pour t\'accompagner à chaque étape',
+      size: 'medium' as const
     },
   ];
 
-  const features = [
-    'Matching intelligent des colocataires',
-    'Contrats de location automatisés',
-    'Paiements sécurisés et automatiques',
-    'Gestion des maintenances',
-    'Assurance incluse',
-    'Facturation simplifiée',
+  const steps = [
+    { number: '01', title: 'Liste ton bien' },
+    { number: '02', title: 'On trouve tes locataires' },
+    { number: '03', title: 'Gère en toute sérénité' },
   ];
 
   return (
     <div className="min-h-screen bg-transparent">
-      {/* Hero Section */}
+      {/* Compact Hero */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="pt-20 pb-16 px-6"
+        className="pt-16 pb-8 px-6"
       >
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-700 mb-6 shadow-lg"
+            className="inline-flex items-center gap-2 mb-6"
           >
-            <Building2 className="w-7 h-7 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center shadow-lg">
+              <Building2 className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              Loue ton bien en toute sérénité
+            </h1>
           </motion.div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Loue ton bien en toute sérénité
-          </h1>
-          <p className="text-base text-gray-600 mb-8 max-w-2xl mx-auto">
-            Gestion simplifiée, locataires vérifiés, revenus optimisés. Tout ce qu'il te faut pour louer sans stress.
+          <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+            Gestion simplifiée, locataires vérifiés et revenus optimisés
           </p>
 
           <Link href="/signup">
-            <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
-              <Building2 className="w-5 h-5 mr-2" />
+            <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-6 py-2.5 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
               Lister mon bien
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>
       </motion.div>
 
-      {/* Benefits Section */}
-      <div className="pb-16 px-6">
+      {/* Bento Grid Benefits - Asymétrique */}
+      <div className="pb-12 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl shadow-lg p-8"
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-              Pourquoi choisir EasyCo ?
-            </h2>
-            <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-              La plateforme de coliving préférée des propriétaires
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Large Card - Spans 2 columns */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="md:col-span-2 md:row-span-2"
+            >
+              <div className="h-full bg-white/80 backdrop-blur-xl rounded-2xl p-8 shadow-lg border border-white/20 hover:shadow-xl transition-all group">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
+                    <TrendingUp className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      Revenus optimisés
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      Augmente tes revenus locatifs jusqu'à 30% grâce au coliving. Notre modèle économique intelligent te permet de maximiser la rentabilité de ton bien tout en offrant des loyers abordables aux résidents.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {benefits.map((benefit, index) => {
-                const Icon = benefit.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + index * 0.1 }}
-                    className="flex gap-4 p-6 rounded-xl hover:bg-purple-50 transition-all group"
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">{benefit.title}</h3>
-                      <p className="text-gray-600">{benefit.description}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
+            {/* Small Card 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="bg-white/60 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Locataires vérifiés
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Tous nos résidents sont vérifiés
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Small Card 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="bg-white/60 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Gestion simplifiée
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Dashboard complet et intuitif
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Medium Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="md:col-span-3"
+            >
+              <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all group">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <Headphones className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1">
+                      Support dédié 7j/7
+                    </h3>
+                    <p className="text-purple-50">
+                      Une équipe à ton écoute pour t'accompagner à chaque étape
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Features List */}
+      {/* Steps - Macaron Style */}
       <div className="pb-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            Fonctionnalités incluses
-          </h2>
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="bg-white rounded-2xl shadow-lg p-8"
+            className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + index * 0.05 }}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 transition-all"
-                >
-                  <FileCheck className="w-5 h-5 text-purple-600 flex-shrink-0" />
-                  <span className="text-gray-700 font-medium">{feature}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="mt-12 text-center bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-8 text-white shadow-lg"
-          >
-            <h3 className="text-xl font-bold mb-3">
-              Prêt à maximiser tes revenus locatifs ?
-            </h3>
-            <p className="text-purple-100 mb-6">
-              Rejoins des centaines de propriétaires qui font confiance à EasyCo
-            </p>
-            <Link href="/signup">
-              <Button className="bg-white text-purple-700 hover:bg-gray-100 font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                Commencer maintenant
-              </Button>
-            </Link>
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-lg">{step.number}</span>
+                  </div>
+                  <span className="font-semibold text-gray-900">{step.title}</span>
+                </div>
+                {index < steps.length - 1 && (
+                  <ArrowRight className="hidden md:block w-6 h-6 text-gray-400" />
+                )}
+              </div>
+            ))}
           </motion.div>
         </div>
       </div>
+
+      {/* CTA Final Full-Width */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="pb-16 px-6"
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-12 shadow-2xl">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+
+            <div className="relative text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Prêt à maximiser tes revenus locatifs ?
+              </h3>
+              <p className="text-purple-50 mb-8 max-w-2xl mx-auto">
+                Rejoins des centaines de propriétaires qui font confiance à EasyCo
+              </p>
+              <Link href="/signup">
+                <Button className="bg-white text-purple-700 hover:bg-gray-50 font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                  Commencer maintenant
+                  <Sparkles className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

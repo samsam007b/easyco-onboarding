@@ -135,8 +135,8 @@ export default function ModernOwnerHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50 header-gray-warm shadow-lg">
-      {/* Unified gray warm header with subtle grain texture */}
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-white/20 shadow-lg supports-[backdrop-filter]:bg-white/60">
+      {/* Modern glassmorphism header with frosted glass effect */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -147,20 +147,20 @@ export default function ModernOwnerHeader({
             href="/dashboard/owner"
             className="flex items-center gap-3 group"
           >
-            {/* Logo Owner avec dégradé extrait du logo original */}
+            {/* Logo Owner avec dégradé purple moderne */}
             <div
-              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
               style={{
                 background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
               }}
             >
-              <Home className="w-5 h-5 text-white relative z-10" />
+              <Home className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-xl font-bold text-gray-900">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-white/70">
+              <span className="text-xs font-medium text-purple-600">
                 Propriétaire
               </span>
             </div>
@@ -194,8 +194,8 @@ export default function ModernOwnerHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-active-owner font-semibold"
-                        : "text-hover-owner"
+                        ? "text-purple-900 font-semibold bg-purple-50"
+                        : "text-gray-600 hover:bg-purple-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -260,11 +260,11 @@ export default function ModernOwnerHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-purple-50 transition-all"
+                className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(pendingApplications > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-500 rounded-full border-2 border-white" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full border-2 border-white" />
                 )}
               </button>
 
@@ -280,7 +280,7 @@ export default function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <h3 className="font-semibold text-gray-900">Notifications</h3>
@@ -320,7 +320,7 @@ export default function ModernOwnerHeader({
             <div ref={langDropdownRef} className="relative hidden md:block">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-purple-50 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{selectedLang}</span>
@@ -337,7 +337,7 @@ export default function ModernOwnerHeader({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden min-w-[160px] z-50"
+                    className="absolute top-full mt-2 right-0 bg-white/95 backdrop-blur-2xl rounded-lg shadow-xl border border-white/20 overflow-hidden min-w-[160px] z-50"
                   >
                     {languages.map((lang) => (
                       <button
@@ -369,7 +369,7 @@ export default function ModernOwnerHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-purple-50 transition-all group"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
@@ -402,7 +402,7 @@ export default function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <p className="font-semibold text-gray-900">{profile.full_name}</p>
@@ -445,7 +445,7 @@ export default function ModernOwnerHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-purple-50 transition-all"
+              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
