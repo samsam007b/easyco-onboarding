@@ -144,36 +144,56 @@ export default function ModernHeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* CTA Section - Compact Pills */}
+        {/* CTA Section - Modern Pills */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
           className="text-center"
         >
-          <p className="text-sm text-white/90 mb-4 font-medium">
+          <p className="text-white/80 mb-6 font-medium text-base drop-shadow-lg">
             Ou commence directement
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            {/* Searcher CTA - Yellow Pill Compact */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Searcher CTA - Yellow Gradient Pill */}
             <Link href="/onboarding/searcher" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-gray-900 font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-                <div className="flex items-center gap-2">
-                  <Search className="w-5 h-5" />
-                  <span>Je cherche une coloc</span>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-gray-900 font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-yellow-500/50 transition-all"
+              >
+                {/* Shine effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+
+                <div className="relative flex items-center justify-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
+                    <Search className="w-4 h-4" />
+                  </div>
+                  <span className="text-base">Je cherche une coloc</span>
                 </div>
-              </Button>
+              </motion.button>
             </Link>
 
-            {/* Owner CTA - Purple Gradient with Grain */}
+            {/* Owner CTA - Purple Gradient Pill */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
-              <Button className="cta-owner w-full sm:w-auto group relative overflow-hidden text-white font-bold px-6 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-                <div className="flex items-center gap-2">
-                  <Home className="w-5 h-5" />
-                  <span>Je loue mon bien</span>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all"
+              >
+                {/* Shine effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+
+                <div className="relative flex items-center justify-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
+                    <Home className="w-4 h-4" />
+                  </div>
+                  <span className="text-base">Je loue mon bien</span>
                 </div>
-              </Button>
+              </motion.button>
             </Link>
           </div>
         </motion.div>
