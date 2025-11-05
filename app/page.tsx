@@ -85,63 +85,63 @@ export default function Home() {
       {/* Property Preview Grid */}
       <PropertyPreviewGrid limit={6} />
 
-      {/* Benefits Section */}
-      <section className="py-20 px-6 bg-white">
+      {/* Benefits Section - Modern Design */}
+      <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             {/* Benefit 1: Verified */}
-            <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div
-                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-                }}
-              >
-                <Shield className="w-8 h-8 text-white" />
+            <div className="relative group">
+              {/* Background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative text-center space-y-4 p-8 rounded-3xl border border-gray-200 hover:border-orange-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white">
+                <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-red-400 to-orange-500">
+                  <Shield className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+                  {landing.benefits.verified.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {landing.benefits.verified.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                {landing.benefits.verified.title}
-              </h3>
-              <p className="text-gray-600">
-                {landing.benefits.verified.description}
-              </p>
             </div>
 
             {/* Benefit 2: Compatibility */}
-            <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div
-                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-                }}
-              >
-                <Target className="w-8 h-8 text-white" />
+            <div className="relative group">
+              {/* Background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative text-center space-y-4 p-8 rounded-3xl border border-gray-200 hover:border-yellow-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white">
+                <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-orange-400 to-yellow-500">
+                  <Target className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+                  {landing.benefits.compatibility.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {landing.benefits.compatibility.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                {landing.benefits.compatibility.title}
-              </h3>
-              <p className="text-gray-600">
-                {landing.benefits.compatibility.description}
-              </p>
             </div>
 
             {/* Benefit 3: Groups */}
-            <div className="text-center space-y-4 p-6 rounded-2xl hover:shadow-lg transition">
-              <div
-                className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-                }}
-              >
-                <Zap className="w-8 h-8 text-white" />
+            <div className="relative group">
+              {/* Background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative text-center space-y-4 p-8 rounded-3xl border border-gray-200 hover:border-yellow-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white">
+                <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-yellow-400 to-amber-500">
+                  <Zap className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+                  {landing.benefits.groups.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {landing.benefits.groups.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                {landing.benefits.groups.title}
-              </h3>
-              <p className="text-gray-600">
-                {landing.benefits.groups.description}
-              </p>
             </div>
 
           </div>
