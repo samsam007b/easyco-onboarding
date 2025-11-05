@@ -534,20 +534,71 @@ export default function PropertiesBrowsePageV2() {
       )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Rich Search Bar */}
-        <div className="mb-8">
-          <PublicSearchBar variant="hero" />
+      <main className="min-h-screen">
+        {/* View Mode Toggle - CENTERED AT TOP */}
+        <div className="bg-gradient-to-br from-orange-50/50 via-white to-orange-50/30 py-8">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="flex justify-center mb-6">
+              <div className="inline-flex items-center bg-white rounded-full p-2 shadow-lg border border-orange-100">
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`px-6 py-3 rounded-full flex items-center gap-2 transition-all font-medium ${
+                    viewMode === 'list'
+                      ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
+                      : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/50'
+                  }`}
+                >
+                  <List className="w-5 h-5" />
+                  <span>Liste</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('map')}
+                  className={`px-6 py-3 rounded-full flex items-center gap-2 transition-all font-medium ${
+                    viewMode === 'map'
+                      ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
+                      : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/50'
+                  }`}
+                >
+                  <MapIcon className="w-5 h-5" />
+                  <span>Carte</span>
+                </button>
+                <button
+                  onClick={() => router.push('/matching/swipe')}
+                  className="px-6 py-3 rounded-full flex items-center gap-2 transition-all font-medium text-gray-600 hover:text-orange-600 hover:bg-orange-50/50"
+                >
+                  <Users className="w-5 h-5" />
+                  <span>People</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Hero Section - Only for list/map */}
+            {(viewMode === 'list' || viewMode === 'map') && (
+              <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] bg-clip-text text-transparent">
+                  Trouve ta colocation idéale
+                </h1>
+                <p className="text-lg text-gray-600 mb-8">
+                  {propertiesData?.totalCount || 0} colocations disponibles à Bruxelles
+                </p>
+
+                {/* Search Bar */}
+                <div className="max-w-2xl mx-auto">
+                  <PublicSearchBar variant="hero" />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        {/* Filters Bar */}
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex gap-2 flex-wrap">
               <Button
                 variant="outline"
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 border-orange-200 text-orange-700 hover:bg-orange-50"
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filtres
@@ -557,45 +608,12 @@ export default function PropertiesBrowsePageV2() {
                 <Button
                   variant="outline"
                   onClick={() => setShowSaveSearchModal(true)}
-                  className="flex items-center gap-2 border-yellow-300 text-yellow-700 hover:bg-yellow-50"
+                  className="flex items-center gap-2 border-orange-200 text-orange-700 hover:bg-orange-50"
                 >
                   <Bell className="w-4 h-4" />
                   Créer une alerte
                 </Button>
               )}
-
-              {/* View Mode Toggle - 3 options */}
-              <div className="flex items-center bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`px-4 py-2 rounded-md flex items-center gap-2 transition ${
-                    viewMode === 'list'
-                      ? 'bg-white shadow-sm text-gray-900'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <List className="w-4 h-4" />
-                  <span className="font-medium">Liste</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('map')}
-                  className={`px-4 py-2 rounded-md flex items-center gap-2 transition ${
-                    viewMode === 'map'
-                      ? 'bg-white shadow-sm text-gray-900'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <MapIcon className="w-4 h-4" />
-                  <span className="font-medium">Carte</span>
-                </button>
-                <button
-                  onClick={() => router.push('/matching/swipe')}
-                  className="px-4 py-2 rounded-md flex items-center gap-2 transition text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                >
-                  <Users className="w-4 h-4" />
-                  <span className="font-medium">People</span>
-                </button>
-              </div>
             </div>
 
             <select
@@ -719,17 +737,6 @@ export default function PropertiesBrowsePageV2() {
               </div>
             </div>
           )}
-        </div>
-
-        {/* Results Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Colocations à Bruxelles
-          </h1>
-          <p className="text-gray-600">
-            {!isAuthenticated && `${Math.min(propertiesData?.properties.length || 0, GUEST_LIMIT)} / `}
-            {propertiesData?.totalCount || 0} annonces disponibles
-          </p>
         </div>
 
         {/* Properties Grid, Map, or People View */}
