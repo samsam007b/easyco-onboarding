@@ -576,9 +576,9 @@ export default function PropertiesBrowsePageV2() {
             {(viewMode === 'list' || viewMode === 'map') && (
               <div className="text-center mb-8">
                 <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
-                  Trouve ton{' '}
+                  Trouves ton{' '}
                   <span className="bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] bg-clip-text text-transparent">
-                    chez-toi
+                    co-living idéal
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
