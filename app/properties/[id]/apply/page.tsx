@@ -201,7 +201,7 @@ export default function PropertyApplicationPage() {
           <p className="text-gray-600 mt-2">{property.title}</p>
           {room && (
             <p className="text-orange-600 font-medium mt-1">
-              Chambre sélectionnée: {room.name} - €{room.price}/mois
+              Chambre sélectionnée: {room.room_name || `Chambre ${room.room_number}`} - €{room.price}/mois
             </p>
           )}
         </div>
