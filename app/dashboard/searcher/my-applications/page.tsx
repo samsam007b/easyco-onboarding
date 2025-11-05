@@ -120,7 +120,7 @@ export default function MyApplicationsPage() {
       <PageContainer center>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
             <p className="mt-4 text-gray-600">Loading your applications...</p>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function MyApplicationsPage() {
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-gray-600">Total</p>
-            <p className="text-2xl font-bold text-[#4A148C]">{stats.total}</p>
+            <p className="text-2xl font-bold text-orange-600">{stats.total}</p>
           </CardContent>
         </Card>
         <Card>
@@ -251,7 +251,7 @@ export default function MyApplicationsPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h3
-                            className="text-lg font-semibold text-gray-900 hover:text-[#4A148C] cursor-pointer"
+                            className="text-lg font-semibold text-gray-900 hover:text-orange-600 cursor-pointer"
                             onClick={() =>
                               application.property?.id && router.push(`/properties/${application.property.id}`)
                             }

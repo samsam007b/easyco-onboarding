@@ -107,7 +107,7 @@ export default function PropertiesBrowsePageV2() {
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'list' | 'map' | 'people'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>();
   const [filters, setFilters] = useState<Filters>({
     minPrice: 0,
@@ -589,15 +589,11 @@ export default function PropertiesBrowsePageV2() {
                   <span className="font-medium">Carte</span>
                 </button>
                 <button
-                  onClick={() => setViewMode('people')}
-                  className={`px-4 py-2 rounded-md flex items-center gap-2 transition ${
-                    viewMode === 'people'
-                      ? 'bg-white shadow-sm text-gray-900'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                  onClick={() => router.push('/matching/swipe')}
+                  className="px-4 py-2 rounded-md flex items-center gap-2 transition text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 >
                   <Users className="w-4 h-4" />
-                  <span className="font-medium">Colocataires</span>
+                  <span className="font-medium">People</span>
                 </button>
               </div>
             </div>
@@ -763,7 +759,7 @@ export default function PropertiesBrowsePageV2() {
                   );
                 })}
               </div>
-            ) : viewMode === 'map' ? (
+            ) : (
               <div className="mb-8">
                 <PropertyMap
                   properties={propertiesWithScores}
@@ -771,52 +767,6 @@ export default function PropertiesBrowsePageV2() {
                   onPropertySelect={setSelectedPropertyId}
                   className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg"
                 />
-              </div>
-            ) : (
-              // People View - Show all residents from all properties
-              <div className="mb-8">
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                    <Users className="w-7 h-7 text-orange-600" />
-                    Colocataires disponibles
-                  </h2>
-                  <p className="text-gray-600 mb-6">
-                    Découvre les personnes avec qui tu pourrais partager une colocation
-                  </p>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                    {Array.from(residentsData?.values() || [])
-                      .flat()
-                      .map((resident) => (
-                        <div key={resident.id} className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200">
-                          <div className="relative">
-                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg ring-4 ring-white">
-                              {resident.profile_photo_url ? (
-                                <img
-                                  src={resident.profile_photo_url}
-                                  alt={resident.first_name}
-                                  className="w-full h-full rounded-full object-cover"
-                                />
-                              ) : (
-                                <Users className="w-10 h-10 text-white" />
-                              )}
-                            </div>
-                            {resident.age && (
-                              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-md ring-2 ring-white">
-                                {resident.age}
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-center w-full">
-                            <p className="font-bold text-sm text-gray-900 truncate">{resident.first_name}</p>
-                            {resident.occupation && (
-                              <p className="text-xs text-gray-600 truncate mt-1">{resident.occupation}</p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
               </div>
             )}
 

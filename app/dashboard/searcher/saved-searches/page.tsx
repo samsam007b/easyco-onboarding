@@ -153,10 +153,10 @@ export default function SavedSearchesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
             <p className="text-gray-600">Chargement...</p>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function SavedSearchesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -181,7 +181,7 @@ export default function SavedSearchesPage() {
 
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <Search className="w-8 h-8 text-purple-600" />
+                <Search className="w-8 h-8 text-orange-600" />
                 Mes Recherches Sauvegardées
               </h1>
               <p className="text-gray-600 mt-1">
@@ -192,7 +192,7 @@ export default function SavedSearchesPage() {
 
           <Button
             onClick={() => router.push('/properties/browse')}
-            className="bg-gradient-to-r from-purple-600 to-yellow-500 text-white gap-2"
+            className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white gap-2"
           >
             <Search className="w-4 h-4" />
             Nouvelle Recherche
@@ -203,8 +203,8 @@ export default function SavedSearchesPage() {
         {savedSearches.length === 0 ? (
           <Card className="border-2 border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-16">
-              <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <Search className="w-10 h-10 text-purple-600" />
+              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                <Search className="w-10 h-10 text-orange-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Aucune recherche sauvegardée
@@ -214,7 +214,7 @@ export default function SavedSearchesPage() {
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-purple-600 to-yellow-500 text-white"
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white"
               >
                 Créer une recherche
               </Button>
@@ -274,7 +274,7 @@ export default function SavedSearchesPage() {
 
                 <CardContent>
                   <Link href={buildSearchUrl(search.filters)}>
-                    <Button className="w-full gap-2 bg-gradient-to-r from-purple-600 to-yellow-500 text-white">
+                    <Button className="w-full gap-2 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white">
                       <Play className="w-4 h-4" />
                       Lancer cette recherche
                     </Button>

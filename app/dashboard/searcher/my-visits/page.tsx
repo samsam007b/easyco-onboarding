@@ -125,8 +125,8 @@ export default function MyVisitsPage() {
                   className="w-full h-48 md:h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-48 md:h-full bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center">
-                  <Home className="h-16 w-16 text-purple-300" />
+                <div className="w-full h-48 md:h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                  <Home className="h-16 w-16 text-orange-300" />
                 </div>
               )}
             </div>
@@ -153,7 +153,7 @@ export default function MyVisitsPage() {
               {/* Date & Time */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="flex items-center gap-2 text-gray-700">
-                  <Calendar className="h-5 w-5 text-purple-600" />
+                  <Calendar className="h-5 w-5 text-orange-600" />
                   <div>
                     <div className="text-xs text-gray-500">Date</div>
                     <div className="font-medium">
@@ -166,7 +166,7 @@ export default function MyVisitsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
-                  <Clock className="h-5 w-5 text-purple-600" />
+                  <Clock className="h-5 w-5 text-orange-600" />
                   <div>
                     <div className="text-xs text-gray-500">Time</div>
                     <div className="font-medium">
@@ -250,7 +250,7 @@ export default function MyVisitsPage() {
                       setSelectedVisit(visit);
                       setShowFeedbackModal(true);
                     }}
-                    className="rounded-xl bg-purple-600 hover:bg-purple-700"
+                    className="rounded-xl bg-orange-600 hover:bg-orange-700"
                   >
                     <Star className="h-4 w-4 mr-2" />
                     Leave Feedback
@@ -266,9 +266,9 @@ export default function MyVisitsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4" />
           <p className="text-gray-600">Loading your visits...</p>
         </div>
       </div>
@@ -276,7 +276,7 @@ export default function MyVisitsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
       {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -287,7 +287,7 @@ export default function MyVisitsPage() {
             </div>
             <Button
               onClick={() => router.push('/properties/browse')}
-              className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-2xl"
+              className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-purple-700 hover:to-purple-800 text-white rounded-2xl"
             >
               Browse Properties
             </Button>
@@ -304,9 +304,9 @@ export default function MyVisitsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Visits</p>
-                  <p className="text-3xl font-bold text-purple-600">{visits.length}</p>
+                  <p className="text-3xl font-bold text-orange-600">{visits.length}</p>
                 </div>
-                <Calendar className="h-12 w-12 text-purple-200" />
+                <Calendar className="h-12 w-12 text-orange-200" />
               </div>
             </CardContent>
           </Card>
@@ -360,7 +360,7 @@ export default function MyVisitsPage() {
                   </p>
                   <Button
                     onClick={() => router.push('/properties/browse')}
-                    className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl"
+                    className="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl"
                   >
                     Browse Properties
                   </Button>
@@ -430,7 +430,7 @@ export default function MyVisitsPage() {
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="What did you think about the property?"
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-600/20 outline-none"
                 />
               </div>
 
@@ -475,7 +475,7 @@ export default function MyVisitsPage() {
                 </Button>
                 <Button
                   onClick={handleAddFeedback}
-                  className="flex-1 bg-purple-600 hover:bg-purple-700 rounded-xl"
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl"
                 >
                   Submit Feedback
                 </Button>
