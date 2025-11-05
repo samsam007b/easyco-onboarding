@@ -73,8 +73,8 @@ export default function ModernPublicHeader({
   }, [langDropdownOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 header-gray-warm shadow-lg">
-      {/* Unified gray warm header with subtle grain texture */}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-white/20 shadow-lg supports-[backdrop-filter]:bg-white/60">
+      {/* Modern glassmorphism header with frosted glass effect */}
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -93,7 +93,7 @@ export default function ModernPublicHeader({
             >
               <Home className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">EasyCo</span>
+            <span className="text-xl font-bold text-gray-900">EasyCo</span>
           </Link>
 
           {/* Desktop Navigation - Centré */}
@@ -122,22 +122,18 @@ export default function ModernPublicHeader({
                     />
                   )}
 
-                  {/* Button content - Texte en blanc avec effet hover dégradé */}
+                  {/* Button content - Texte avec effet hover et état actif */}
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
                       isActive
                         ? item.color === 'yellow'
-                          ? "text-active-searcher"
+                          ? "text-yellow-700 bg-yellow-50"
                           : item.color === 'orange'
-                          ? "text-active-resident"
-                          : "text-active-owner"
-                        : item.color === 'yellow'
-                        ? "text-hover-searcher"
-                        : item.color === 'orange'
-                        ? "text-hover-resident"
-                        : "text-hover-owner"
+                          ? "text-orange-700 bg-orange-50"
+                          : "text-purple-700 bg-purple-50"
+                        : "text-gray-600 hover:bg-gray-100"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -154,7 +150,7 @@ export default function ModernPublicHeader({
             <Link href="/auth">
               <Button
                 variant="ghost"
-                className="rounded-full font-medium text-white/90 hover:bg-white/10 text-hover-gradient"
+                className="rounded-full font-medium text-gray-700 hover:bg-gray-100"
               >
                 Se connecter
               </Button>
@@ -171,7 +167,7 @@ export default function ModernPublicHeader({
             <div ref={langDropdownRef} className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/80 hover:bg-white/10 transition-all text-hover-gradient"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{selectedLang}</span>
@@ -220,7 +216,7 @@ export default function ModernPublicHeader({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition"
+            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -237,7 +233,7 @@ export default function ModernPublicHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-t border-gray-200"
+              className="md:hidden overflow-hidden border-t border-gray-200 bg-white"
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
