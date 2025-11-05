@@ -68,22 +68,7 @@ export default function OwnersPage() {
   ];
 
   return (
-    <div className="min-h-screen relative">
-      {/* Animated gradient background */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <motion.div
-          animate={{
-            background: [
-              'radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%)',
-              'radial-gradient(circle at 80% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%)',
-              'radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%)',
-            ],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0"
-        />
-      </div>
-
+    <div className="min-h-screen relative bg-white">
       {/* Split Hero Section */}
       <div className="pt-24 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
