@@ -90,12 +90,6 @@ export default function ModernOwnerHeader({
 
   const navItems = [
     {
-      id: 'dashboard',
-      href: '/dashboard/owner',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-    },
-    {
       id: 'properties',
       href: '/dashboard/owner/properties',
       label: 'Propriétés',
