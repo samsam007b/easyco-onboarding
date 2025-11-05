@@ -59,54 +59,51 @@ export default function PublicSearchBar({
   return (
     <form
       onSubmit={handleSearch}
-      className={`bg-white rounded-2xl shadow-2xl p-2 ${className}`}
+      className={`bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-shadow ${className}`}
     >
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+      <div className="flex items-center">
         {/* Location */}
-        <div className="flex items-center gap-3 px-4 py-3 md:border-r border-gray-200">
-          <MapPin className="w-5 h-5 text-[var(--easy-purple-900)] flex-shrink-0" />
-          <div className="flex-1">
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('landing.search.location') || 'Quartier'}
+        <div className="flex-1 px-6 py-4 border-r border-gray-200">
+          <div>
+            <label className="text-xs font-semibold text-gray-900 block mb-1">
+              Où
             </label>
             <input
               type="text"
-              placeholder={t('landing.search.locationPlaceholder') || 'Ixelles, Etterbeek...'}
+              placeholder="Ixelles, Etterbeek..."
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full outline-none text-sm text-gray-900 placeholder:text-gray-400"
+              className="w-full outline-none text-sm text-gray-600 placeholder:text-gray-400"
             />
           </div>
         </div>
 
         {/* Budget */}
-        <div className="flex items-center gap-3 px-4 py-3 md:border-r border-gray-200">
-          <Euro className="w-5 h-5 text-[var(--easy-purple-900)] flex-shrink-0" />
-          <div className="flex-1">
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('landing.search.budget') || 'Budget max'}
+        <div className="flex-1 px-6 py-4 border-r border-gray-200">
+          <div>
+            <label className="text-xs font-semibold text-gray-900 block mb-1">
+              Budget
             </label>
             <input
-              type="number"
+              type="text"
               placeholder="€800/mois"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
-              className="w-full outline-none text-sm text-gray-900 placeholder:text-gray-400"
+              className="w-full outline-none text-sm text-gray-600 placeholder:text-gray-400"
             />
           </div>
         </div>
 
         {/* Move-in Date */}
-        <div className="flex items-center gap-3 px-4 py-3 md:border-r border-gray-200">
-          <Calendar className="w-5 h-5 text-[var(--easy-purple-900)] flex-shrink-0" />
-          <div className="flex-1">
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('landing.search.date') || 'Date d\'emménagement'}
+        <div className="flex-1 px-6 py-4">
+          <div>
+            <label className="text-xs font-semibold text-gray-900 block mb-1">
+              Quand
             </label>
             <select
               value={moveInDate}
               onChange={(e) => setMoveInDate(e.target.value)}
-              className="w-full outline-none text-sm text-gray-900 bg-transparent cursor-pointer"
+              className="w-full outline-none text-sm text-gray-600 bg-transparent cursor-pointer"
             >
               <option value="">Flexible</option>
               <option value="asap">Dès que possible</option>
@@ -118,60 +115,15 @@ export default function PublicSearchBar({
         </div>
 
         {/* Search Button */}
-        <div className="flex items-center justify-center">
+        <div className="pr-2">
           <button
             type="submit"
-            className="w-full md:w-auto px-8 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-xl hover:bg-[var(--easy-purple-700)] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            className="p-4 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-full transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
           >
             <Search className="w-5 h-5" />
-            <span>{t('landing.search.button') || 'Rechercher'}</span>
+            <span className="font-semibold hidden lg:inline">Rechercher</span>
           </button>
         </div>
-      </div>
-
-      {/* Quick filters (below search bar) */}
-      <div className="flex flex-wrap items-center gap-2 px-4 pt-4 pb-2 border-t border-gray-100 mt-2">
-        <span className="text-xs text-gray-500">Recherches populaires :</span>
-        <button
-          type="button"
-          onClick={() => {
-            setLocation('Ixelles');
-            setBudget('700');
-          }}
-          className="px-3 py-1 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          Ixelles €700
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setLocation('Etterbeek');
-            setBudget('600');
-          }}
-          className="px-3 py-1 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          Etterbeek €600
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setLocation('ULB');
-            setMoveInDate('asap');
-          }}
-          className="px-3 py-1 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          Près ULB
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setBudget('500');
-            setMoveInDate('asap');
-          }}
-          className="px-3 py-1 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          Budget étudiant
-        </button>
       </div>
     </form>
   );
