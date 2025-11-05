@@ -3,18 +3,13 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 
-// Array of property images for the carousel
+// Array of 5 hero images from Pexel
 const CAROUSEL_IMAGES = [
-  '/images/carousel/figma-01.png',
-  '/images/carousel/figma-02.png',
-  '/images/carousel/figma-03.png',
-  '/images/carousel/figma-04.png',
-  '/images/carousel/figma-05.png',
-  '/images/carousel/figma-06.png',
-  '/images/carousel/figma-07.png',
-  '/images/carousel/figma-08.png',
-  '/images/carousel/figma-09.png',
-  '/images/carousel/figma-10.png',
+  '/images/hero/pexels-charlotte-may-5824520.jpg',
+  '/images/hero/pexels-jonathanborba-5570226.jpg',
+  '/images/hero/pexels-kseniachernaya-4740485.jpg',
+  '/images/hero/pexels-polina-zimmerman-3747425.jpg',
+  '/images/hero/pexels-solliefoto-298842.jpg',
 ];
 
 interface InfinitePropertyCarouselProps {
