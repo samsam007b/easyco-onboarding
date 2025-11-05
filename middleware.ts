@@ -101,7 +101,6 @@ export async function middleware(request: NextRequest) {
 
   const protectedRoutes = [
     '/dashboard',
-    '/home',
     '/profile',
     '/settings',
     '/searcher',
@@ -194,9 +193,9 @@ export async function middleware(request: NextRequest) {
         )
       }
 
-      // If onboarding completed and user has a role, redirect to their home page
+      // If onboarding completed and user has a role, redirect to their dashboard
       if (userData.onboarding_completed && userData.user_type) {
-        return NextResponse.redirect(new URL(`/home/${userData.user_type}`, request.url))
+        return NextResponse.redirect(new URL(`/dashboard/${userData.user_type}`, request.url))
       }
 
       // If onboarding completed but no role yet (edge case), go to welcome for role selection

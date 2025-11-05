@@ -24,7 +24,7 @@ export default function ReportIssuePage() {
     e.preventDefault();
     // TODO: Implement issue submission
     console.log('Issue:', formData);
-    router.push('/home/resident');
+    router.push('/dashboard/resident');
   };
 
   return (

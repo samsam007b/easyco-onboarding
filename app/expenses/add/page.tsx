@@ -24,7 +24,7 @@ export default function AddExpensePage() {
     e.preventDefault();
     // TODO: Implement expense submission
     console.log('Expense:', formData);
-    router.push('/home/resident');
+    router.push('/dashboard/resident');
   };
 
   return (

@@ -38,13 +38,16 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
         return;
       }
 
-      const { data: userData } = await supabase
+      const { data: userData, error: profileError } = await supabase
         .from('users')
         .select('full_name, email, avatar_url')
         .eq('id', user.id)
         .single();
 
-      if (userData) {
+      if (profileError) {
+        console.error('Error loading resident profile:', profileError);
+        // Continue with default profile instead of blocking
+      } else if (userData) {
         setProfile(userData);
       }
 

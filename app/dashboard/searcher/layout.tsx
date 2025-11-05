@@ -22,8 +22,12 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/login'); return; }
 
-      const { data: userData } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
-      if (userData) setProfile(userData);
+      const { data: userData, error: profileError } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
+      if (profileError) {
+        console.error('Error loading searcher profile:', profileError);
+      } else if (userData) {
+        setProfile(userData);
+      }
 
       const { count: favCount } = await supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
       setStats({ favoritesCount: favCount || 0, matchesCount: 5, unreadMessages: 0 });

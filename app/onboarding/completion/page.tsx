@@ -100,8 +100,8 @@ export default function OnboardingCompletionPage() {
       console.log('❌ No userType, cannot navigate');
       return;
     }
-    console.log('✅ Navigating to:', `/home/${userType}`);
-    router.replace(`/home/${userType}`);
+    console.log('✅ Navigating to:', `/dashboard/${userType}`);
+    router.replace(`/dashboard/${userType}`);
   };
 
   const handleEnhanceProfile = () => {
