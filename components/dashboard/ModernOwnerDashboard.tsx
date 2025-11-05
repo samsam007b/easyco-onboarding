@@ -190,17 +190,22 @@ export default function ModernOwnerDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 font-medium">Chargement du dashboard...</p>
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement du dashboard...</h3>
+          <p className="text-gray-600">Préparation de vos données</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -417,23 +422,29 @@ export default function ModernOwnerDashboard() {
         </div>
 
         {properties.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Building2 className="w-8 h-8 text-purple-600" />
+          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <Building2 className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-2xl font-bold text-gray-900 mb-3">
+                Commencez votre aventure immobilière
+              </h4>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
+                Ajoutez votre première propriété et commencez à gérer votre portefeuille en toute simplicité
+              </p>
+              <Button
+                onClick={() => router.push('/properties/add')}
+                className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Ajouter ma première propriété
+              </Button>
             </div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-2">
-              Aucune propriété
-            </h4>
-            <p className="text-gray-500 mb-6">
-              Ajoutez votre première propriété pour commencer
-            </p>
-            <Button
-              onClick={() => router.push('/properties/add')}
-              className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Ajouter une propriété
-            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -524,6 +535,7 @@ export default function ModernOwnerDashboard() {
           </div>
         )}
       </motion.div>
+      </div>
     </div>
   );
 }
