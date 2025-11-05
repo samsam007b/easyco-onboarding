@@ -55,22 +55,33 @@ export default function PropertyPreviewGrid({
 
       if (error) throw error;
 
-      // Replace Figma screenshots with real property photos from carousel folder
-      const propertiesWithImages = (data || []).map((property, index) => {
-        // Use a cycling index to distribute images across properties (max 22 carousel images)
-        const imageIndex = (index % 22) + 1;
-        const carouselImage = `/images/carousel/figma-${String(imageIndex).padStart(2, '0')}.png`;
+      // Replace Figma screenshots with real property photos from hero folder
+      const heroImages = [
+        '/images/hero/pexels-charlotte-may-5824520.jpg',
+        '/images/hero/pexels-jonathanborba-5570226.jpg',
+        '/images/hero/pexels-kseniachernaya-4740485.jpg',
+        '/images/hero/pexels-polina-zimmerman-3747425.jpg',
+        '/images/hero/pexels-solliefoto-298842.jpg',
+      ];
 
-        // Check if current image is a Figma screenshot (from /images/properties/)
-        const isFigmaScreenshot = property.main_image?.includes('/images/properties/property-');
+      const propertiesWithImages = (data || []).map((property, index) => {
+        // Use a cycling index to distribute images across properties (5 real hero images)
+        const imageIndex = index % 5;
+        const heroImage = heroImages[imageIndex];
+
+        // Check if current image is a Figma screenshot (from /images/properties/ or /images/carousel/)
+        const isFigmaScreenshot = property.main_image?.includes('/images/properties/property-') ||
+                                  property.main_image?.includes('/images/carousel/figma-');
 
         return {
           ...property,
-          // Replace Figma screenshots with real carousel images, otherwise keep existing image
-          main_image: (isFigmaScreenshot || !property.main_image) ? carouselImage : property.main_image,
-          images: property.images?.some((img: string) => img.includes('/images/properties/property-'))
-            ? [carouselImage]
-            : (property.images || [carouselImage])
+          // Replace Figma screenshots with real hero images, otherwise keep existing image
+          main_image: (isFigmaScreenshot || !property.main_image) ? heroImage : property.main_image,
+          images: property.images?.some((img: string) =>
+            img.includes('/images/properties/property-') || img.includes('/images/carousel/figma-')
+          )
+            ? [heroImage]
+            : (property.images || [heroImage])
         };
       });
 
