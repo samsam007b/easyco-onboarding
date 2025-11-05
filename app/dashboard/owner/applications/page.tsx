@@ -315,66 +315,62 @@ export default function OwnerApplicationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
-          <p className="mt-4 text-gray-600">Loading applications...</p>
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des candidatures...</h3>
+          <p className="text-gray-600">Préparation de vos données</p>
         </div>
       </div>
     );
   }
 
   return (
-    <PageContainer center>
-        <PageHeader
-          title="Property Applications"
-          description="Manage individual and group applications for your properties"
-        />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent mb-2">
+            Property Applications
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Manage individual and group applications for your properties
+          </p>
+        </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Total</p>
-            <p className="text-2xl font-bold text-[#4A148C]">{stats.total}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Individual</p>
-            <p className="text-2xl font-bold text-blue-600">{stats.individual}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Groups</p>
-            <p className="text-2xl font-bold text-purple-600">{stats.groups}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Pending</p>
-            <p className="text-2xl font-bold text-orange-600">{stats.pending}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Reviewing</p>
-            <p className="text-2xl font-bold text-blue-600">{stats.reviewing}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Approved</p>
-            <p className="text-2xl font-bold text-green-600">{stats.approved}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Rejected</p>
-            <p className="text-2xl font-bold text-red-600">{stats.rejected}</p>
-          </CardContent>
-        </Card>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Total</p>
+          <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
+        </div>
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Individual</p>
+          <p className="text-2xl font-bold text-blue-700">{stats.individual}</p>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Groups</p>
+          <p className="text-2xl font-bold text-purple-700">{stats.groups}</p>
+        </div>
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Pending</p>
+          <p className="text-2xl font-bold text-orange-700">{stats.pending}</p>
+        </div>
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Reviewing</p>
+          <p className="text-2xl font-bold text-blue-700">{stats.reviewing}</p>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Approved</p>
+          <p className="text-2xl font-bold text-green-700">{stats.approved}</p>
+        </div>
+        <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-sm text-gray-600 mb-1">Rejected</p>
+          <p className="text-2xl font-bold text-red-700">{stats.rejected}</p>
+        </div>
       </div>
 
       {/* Type Filters */}
@@ -383,6 +379,7 @@ export default function OwnerApplicationsPage() {
           variant={filterType === 'all' ? 'default' : 'outline'}
           onClick={() => setFilterType('all')}
           size="sm"
+          className={filterType === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           All Types ({stats.total})
         </Button>
@@ -390,6 +387,7 @@ export default function OwnerApplicationsPage() {
           variant={filterType === 'individual' ? 'default' : 'outline'}
           onClick={() => setFilterType('individual')}
           size="sm"
+          className={filterType === 'individual' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           Individual ({stats.individual})
         </Button>
@@ -397,6 +395,7 @@ export default function OwnerApplicationsPage() {
           variant={filterType === 'group' ? 'default' : 'outline'}
           onClick={() => setFilterType('group')}
           size="sm"
+          className={filterType === 'group' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           <Users className="w-4 h-4 mr-1" />
           Groups ({stats.groups})
@@ -409,6 +408,7 @@ export default function OwnerApplicationsPage() {
           variant={filterStatus === 'all' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('all')}
           size="sm"
+          className={filterStatus === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           All Status
         </Button>
@@ -416,6 +416,7 @@ export default function OwnerApplicationsPage() {
           variant={filterStatus === 'pending' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('pending')}
           size="sm"
+          className={filterStatus === 'pending' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           Pending ({stats.pending})
         </Button>
@@ -423,6 +424,7 @@ export default function OwnerApplicationsPage() {
           variant={filterStatus === 'reviewing' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('reviewing')}
           size="sm"
+          className={filterStatus === 'reviewing' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           Reviewing ({stats.reviewing})
         </Button>
@@ -430,6 +432,7 @@ export default function OwnerApplicationsPage() {
           variant={filterStatus === 'approved' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('approved')}
           size="sm"
+          className={filterStatus === 'approved' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           Approved ({stats.approved})
         </Button>
@@ -437,6 +440,7 @@ export default function OwnerApplicationsPage() {
           variant={filterStatus === 'rejected' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('rejected')}
           size="sm"
+          className={filterStatus === 'rejected' ? 'bg-purple-600 hover:bg-purple-700' : ''}
         >
           Rejected ({stats.rejected})
         </Button>
@@ -528,17 +532,23 @@ export default function OwnerApplicationsPage() {
 
       {/* Applications List */}
       {filteredIndividualApps.length === 0 && filteredGroupApps.length === 0 ? (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <Home className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No applications found
+        <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+          <div className="relative z-10">
+            <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+              <Home className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              Aucune candidature trouvée
             </h3>
-            <p className="text-gray-600">
-              Try adjusting your filters or wait for new applications
+            <p className="text-gray-600 mb-4 max-w-md mx-auto text-lg">
+              Essayez de modifier vos filtres ou attendez de nouvelles candidatures
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           {/* Group Applications */}
@@ -940,6 +950,7 @@ export default function OwnerApplicationsPage() {
         confirmText="Reject"
         cancelText="Cancel"
       />
-    </PageContainer>
+      </div>
+    </div>
   );
 }
