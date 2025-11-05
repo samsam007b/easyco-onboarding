@@ -153,10 +153,10 @@ export default function ModernSearcherHeader({
       icon: Sparkles,
     },
     {
-      id: 'payments',
-      href: '/payments',
-      label: 'Paiements',
-      icon: CreditCard,
+      id: 'groups',
+      href: '/groups',
+      label: 'Groupes',
+      icon: Users,
     },
     {
       id: 'messages',

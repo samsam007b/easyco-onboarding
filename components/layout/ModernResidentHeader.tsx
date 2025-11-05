@@ -142,8 +142,8 @@ export default function ModernResidentHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50 header-gray-warm shadow-lg">
-      {/* Unified gray warm header with subtle grain texture */}
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-white/20 shadow-lg supports-[backdrop-filter]:bg-white/60">
+      {/* Modern glassmorphism header with frosted glass effect */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
@@ -154,20 +154,20 @@ export default function ModernResidentHeader({
             href="/dashboard/resident"
             className="flex items-center gap-3 group"
           >
-            {/* Logo Resident avec gradient orange authentique */}
+            {/* Logo Resident avec gradient corail authentique */}
             <div
-              className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
               style={{
                 background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
               }}
             >
-              <Home className="w-5 h-5 text-white relative z-10" />
+              <Home className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-xl font-bold text-gray-900">
                 EasyCo
               </h1>
-              <span className="text-xs font-medium text-white/70">
+              <span className="text-xs font-medium bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
                 {groupName}
               </span>
             </div>
@@ -201,8 +201,8 @@ export default function ModernResidentHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
                       isActive
-                        ? "text-active-resident font-semibold"
-                        : "text-hover-resident"
+                        ? "bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent font-semibold"
+                        : "text-gray-600 hover:bg-orange-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -211,7 +211,7 @@ export default function ModernResidentHeader({
                       <Badge
                         className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
                         style={{
-                          background: 'linear-gradient(135deg, #FF6F3C 0%, #FF5722 100%)'
+                          background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 100%)'
                         }}
                       >
                         {item.badge}
@@ -266,7 +266,7 @@ export default function ModernResidentHeader({
             <div ref={langDropdownRef} className="relative hidden md:block">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-orange-50 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{selectedLang}</span>
@@ -283,7 +283,7 @@ export default function ModernResidentHeader({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden min-w-[160px] z-50"
+                    className="absolute top-full mt-2 right-0 bg-white/95 backdrop-blur-2xl rounded-lg shadow-xl border border-white/20 overflow-hidden min-w-[160px] z-50"
                   >
                     {languages.map((lang) => (
                       <button
@@ -315,7 +315,7 @@ export default function ModernResidentHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-orange-50 transition-all group"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
                 {profile.avatar_url ? (
                   <img
@@ -333,7 +333,7 @@ export default function ModernResidentHeader({
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
-                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-900 transition-colors hidden md:block" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
               {/* Profile Dropdown */}
@@ -348,7 +348,7 @@ export default function ModernResidentHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-orange-200/50 py-2 z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <p className="font-semibold text-gray-900">{profile.full_name}</p>
@@ -391,7 +391,7 @@ export default function ModernResidentHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-orange-50 transition-all"
+              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -409,7 +409,7 @@ export default function ModernResidentHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden border-t border-orange-200/50"
+              className="lg:hidden overflow-hidden border-t border-gray-200"
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
@@ -424,8 +424,8 @@ export default function ModernResidentHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                         isActive
-                          ? "bg-gradient-to-r from-orange-100 to-orange-50 text-orange-900 font-semibold"
-                          : "text-gray-700 hover:bg-orange-50"
+                          ? "bg-orange-50 font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent"
+                          : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -433,7 +433,7 @@ export default function ModernResidentHeader({
                         {item.label}
                       </div>
                       {item.badge && (
-                        <Badge variant="error" className="bg-yellow-500 hover:bg-yellow-500 text-white border-0">
+                        <Badge className="bg-gradient-to-r from-[#D97B6F] to-[#E8865D] hover:from-[#D97B6F] hover:to-[#E8865D] text-white border-0">
                           {item.badge}
                         </Badge>
                       )}
@@ -446,36 +446,6 @@ export default function ModernResidentHeader({
         </AnimatePresence>
       </div>
 
-      {/* Quick Stats Bar - Desktop Only */}
-      {(pendingTasks > 0 || activeMembersCount > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-orange-50/50 to-transparent border-t border-orange-200/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-6 text-gray-700">
-                {pendingTasks > 0 && (
-                  <span className="flex items-center gap-2">
-                    <span className="text-gray-600">Tâches en cours:</span>
-                    <strong className="text-orange-900 font-bold">{pendingTasks}</strong>
-                  </span>
-                )}
-                {activeMembersCount > 0 && (
-                  <span className="flex items-center gap-2">
-                    <span className="text-gray-600">Membres actifs:</span>
-                    <strong className="text-orange-900 font-bold">{activeMembersCount}</strong>
-                  </span>
-                )}
-              </div>
-              <Link
-                href="/hub/calendar"
-                className="text-orange-600 hover:text-orange-800 transition text-xs font-medium flex items-center gap-1"
-              >
-                Voir calendrier
-                <Calendar className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
