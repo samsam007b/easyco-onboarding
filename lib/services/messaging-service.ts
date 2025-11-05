@@ -54,6 +54,10 @@ export interface ConversationListItem {
   last_message_at?: string;
   unread_count: number;
   is_archived: boolean;
+  metadata?: {
+    isResident?: boolean;
+    [key: string]: any;
+  };
 }
 
 export interface SendMessageParams {
