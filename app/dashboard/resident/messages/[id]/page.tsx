@@ -319,7 +319,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-orange-50 to-orange-100">
+    <div className="flex flex-col bg-gradient-to-br from-orange-50/30 to-orange-100/30" style={{ height: 'calc(100vh - 64px)' }}>
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-4">
         <Button
