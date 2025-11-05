@@ -405,15 +405,16 @@ export default function PropertiesBrowsePageV2() {
       search: searchQuery.trim(),
     };
 
-    if (filters.minPrice > 0) params.minPrice = filters.minPrice;
-    if (filters.maxPrice < 5000) params.maxPrice = filters.maxPrice;
-    if (filters.bedrooms) params.bedrooms = filters.bedrooms;
-    if (filters.bathrooms) params.bathrooms = filters.bathrooms;
-    if (filters.propertyType !== 'all') params.propertyType = filters.propertyType;
-    if (filters.city) params.city = filters.city;
+    // Apply advanced filters
+    if (advancedFilters.priceRange.min > 0) params.minPrice = advancedFilters.priceRange.min;
+    if (advancedFilters.priceRange.max < 5000) params.maxPrice = advancedFilters.priceRange.max;
+    if (advancedFilters.bedrooms.min) params.bedrooms = advancedFilters.bedrooms.min;
+    if (advancedFilters.bathrooms.min) params.bathrooms = advancedFilters.bathrooms.min;
+    if (advancedFilters.propertyTypes.length > 0) params.propertyType = advancedFilters.propertyTypes[0];
+    if (advancedFilters.cities.length > 0) params.city = advancedFilters.cities[0];
 
     return params;
-  }, [currentPage, sortBy, searchQuery, filters, isAuthenticated]);
+  }, [currentPage, sortBy, searchQuery, advancedFilters, isAuthenticated]);
 
   // Fetch properties
   const { data: propertiesData, isLoading } = useQuery({
