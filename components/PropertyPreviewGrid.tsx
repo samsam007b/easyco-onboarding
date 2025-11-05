@@ -81,21 +81,34 @@ export default function PropertyPreviewGrid({
   }
 
   return (
-    <div className="py-12 px-6 bg-gray-50">
+    <div className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         {showHeader && (
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Colocations Populaires à Bruxelles
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Colocations Populaires à{' '}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                }}
+              >
+                Bruxelles
+              </span>
             </h2>
-            <p className="text-lg text-gray-600">
-              {totalCount} annonces vérifiées • Mises à jour en temps réel
+            <p className="text-base text-gray-600 flex items-center justify-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm font-medium">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                {totalCount} annonces vérifiées
+              </span>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-600">Mises à jour en temps réel</span>
             </p>
           </div>
         )}
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {properties.map((property) => (
             <PropertyCard
               key={property.id}
@@ -105,14 +118,19 @@ export default function PropertyPreviewGrid({
           ))}
         </div>
 
-        {/* CTA to view all */}
+        {/* CTA to view all - Modern gradient button */}
         <div className="text-center">
           <Link
             href="/properties/browse"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--easy-purple-900)] text-white font-semibold text-lg rounded-full hover:bg-[var(--easy-purple-700)] transition-all shadow-lg hover:shadow-xl"
+            className="group inline-flex items-center gap-3 px-8 py-5 text-white font-bold rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #6E56CF 0%, #9b87f5 100%)'
+            }}
           >
-            Voir toutes les {totalCount} annonces
-            <ArrowRight className="w-5 h-5" />
+            <span className="text-base">Voir toutes les {totalCount} annonces</span>
+            <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
+              <ArrowRight className="w-4 h-4" />
+            </div>
           </Link>
         </div>
       </div>
