@@ -79,9 +79,72 @@ export default function GroupsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* My Groups */}
+        {/* CTA Section - Create or Join Group */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Create Group CTA */}
+          <div
+            onClick={() => router.push('/groups/create')}
+            className="relative overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl p-8 cursor-pointer group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Plus className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Créer un groupe</h3>
+              <p className="text-orange-50 mb-6">
+                Rassemblez vos amis et cherchez un logement ensemble pour partager les frais
+              </p>
+              <div className="flex items-center gap-2 text-white font-medium group-hover:gap-3 transition-all">
+                <span>Commencer</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Join Group CTA */}
+          <div
+            onClick={() => router.push('/groups/browse')}
+            className="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-700 rounded-3xl p-8 cursor-pointer group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Rejoindre un groupe</h3>
+              <p className="text-purple-50 mb-6">
+                Trouvez des colocataires partageant vos critères et cherchez ensemble votre futur logement
+              </p>
+              <div className="flex items-center gap-2 text-white font-medium group-hover:gap-3 transition-all">
+                <span>Explorer</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* My Groups Dashboard */}
         <div>
-          <h2 className="text-2xl font-bold mb-4 text-gray-900">Mes Groupes ({myGroups.length})</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Mes Groupes</h2>
+              <p className="text-gray-600 mt-1">Gérez vos groupes de recherche actifs</p>
+            </div>
+            {myGroups.length > 0 && (
+              <div className="px-4 py-2 bg-orange-100 rounded-full">
+                <span className="text-orange-700 font-semibold">{myGroups.length} groupe{myGroups.length > 1 ? 's' : ''}</span>
+              </div>
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {myGroups.map((group) => (
               <Card
