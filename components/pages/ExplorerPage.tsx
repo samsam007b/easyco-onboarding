@@ -60,7 +60,7 @@ export default function ExplorerPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="pt-24 pb-12 px-6"
+        className="pt-20 pb-12 px-6"
       >
         <div className="max-w-6xl mx-auto">
           {/* Title */}
@@ -69,14 +69,14 @@ export default function ExplorerPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 mb-4 shadow-lg"
+              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 mb-4 shadow-lg"
             >
-              <Search className="w-8 h-8 text-white" />
+              <Search className="w-7 h-7 text-white" />
             </motion.div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Explore les colocations disponibles
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
               Parcours les propriétés sans compte. Inscris-toi pour contacter les propriétaires.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function ExplorerPage() {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-3xl shadow-2xl p-6 md:p-8"
+            className="bg-white rounded-2xl shadow-lg p-6 md:p-8"
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Location */}
@@ -101,7 +101,7 @@ export default function ExplorerPage() {
                     placeholder="Ville, quartier..."
                     value={searchFilters.location}
                     onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -118,7 +118,7 @@ export default function ExplorerPage() {
                     placeholder="€800/mois"
                     value={searchFilters.budget}
                     onChange={(e) => setSearchFilters({ ...searchFilters, budget: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -135,14 +135,14 @@ export default function ExplorerPage() {
                     placeholder="Flexible"
                     value={searchFilters.date}
                     onChange={(e) => setSearchFilters({ ...searchFilters, date: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
 
               {/* Search Button */}
               <div className="flex items-end">
-                <Button className="w-full h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all">
+                <Button className="w-full h-12 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all">
                   <Search className="w-5 h-5 mr-2" />
                   Rechercher
                 </Button>
@@ -188,7 +188,7 @@ export default function ExplorerPage() {
                   <button className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-50 transition-all">
                     <Heart className="w-5 h-5 text-gray-600 hover:text-red-500" />
                   </button>
-                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-yellow-400 rounded-full text-sm font-semibold text-gray-900">
+                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-amber-500 rounded-full text-sm font-semibold text-white">
                     €{property.price}/mois
                   </div>
                 </div>
@@ -214,10 +214,10 @@ export default function ExplorerPage() {
 
                   {/* CTA - Requires account */}
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    <Link href="/onboarding/searcher">
+                    <Link href="/signup">
                       <Button
                         variant="outline"
-                        className="w-full rounded-xl border-2 border-yellow-500 text-yellow-700 hover:bg-yellow-50 font-semibold"
+                        className="w-full rounded-xl border-2 border-orange-500 text-orange-700 hover:bg-orange-50 font-semibold"
                       >
                         Créer un compte pour contacter
                       </Button>
@@ -236,14 +236,14 @@ export default function ExplorerPage() {
             className="mt-12 text-center"
           >
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Plus de 100+ colocations disponibles
               </h3>
               <p className="text-gray-600 mb-6">
                 Inscris-toi gratuitement pour accéder à toutes les propriétés et contacter les propriétaires
               </p>
-              <Link href="/onboarding/searcher">
-                <Button className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+              <Link href="/signup">
+                <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-lg transition-all">
                   Commencer gratuitement
                 </Button>
               </Link>
