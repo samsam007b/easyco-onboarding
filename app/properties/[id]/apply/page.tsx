@@ -12,6 +12,7 @@ import { getPropertyDetailsData } from '@/lib/services/rooms.service';
 import type { Property } from '@/types/property.types';
 import type { RoomWithTotal } from '@/types/room.types';
 import { toast } from 'sonner';
+import { storageService } from '@/lib/services/storage-service';
 
 export default function PropertyApplicationPage() {
   const router = useRouter();
@@ -119,13 +120,55 @@ export default function PropertyApplicationPage() {
         return;
       }
 
-      // Upload documents if provided (placeholder - to be implemented with Supabase Storage)
+      // Upload documents if provided
       let idDocumentUrl = null;
       let proofOfIncomeUrl = null;
       let referenceLetterUrl = null;
 
-      // TODO: Implement actual file upload to Supabase Storage
-      // For now, we'll proceed without document URLs
+      if (documents.idDocument) {
+        const validation = storageService.validateFile(documents.idDocument);
+        if (!validation.valid) {
+          toast.error(`Pièce d'identité: ${validation.error}`);
+          return;
+        }
+        const result = await storageService.uploadApplicationDocument(documents.idDocument, user.id, 'id');
+        if (result.success) {
+          idDocumentUrl = result.url || null;
+        } else {
+          toast.error(`Erreur lors de l'upload de la pièce d'identité: ${result.error}`);
+          return;
+        }
+      }
+
+      if (documents.proofOfIncome) {
+        const validation = storageService.validateFile(documents.proofOfIncome);
+        if (!validation.valid) {
+          toast.error(`Justificatif de revenus: ${validation.error}`);
+          return;
+        }
+        const result = await storageService.uploadApplicationDocument(documents.proofOfIncome, user.id, 'income');
+        if (result.success) {
+          proofOfIncomeUrl = result.url || null;
+        } else {
+          toast.error(`Erreur lors de l'upload du justificatif de revenus: ${result.error}`);
+          return;
+        }
+      }
+
+      if (documents.referenceLetter) {
+        const validation = storageService.validateFile(documents.referenceLetter);
+        if (!validation.valid) {
+          toast.error(`Lettre de recommandation: ${validation.error}`);
+          return;
+        }
+        const result = await storageService.uploadApplicationDocument(documents.referenceLetter, user.id, 'reference');
+        if (result.success) {
+          referenceLetterUrl = result.url || null;
+        } else {
+          toast.error(`Erreur lors de l'upload de la lettre de recommandation: ${result.error}`);
+          return;
+        }
+      }
 
       // Create application
       const { data, error } = await supabase
