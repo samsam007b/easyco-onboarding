@@ -55,7 +55,14 @@ export default function PropertyPreviewGrid({
 
       if (error) throw error;
 
-      setProperties(data || []);
+      // Add fallback images from public folder if properties don't have images
+      const propertiesWithImages = (data || []).map((property, index) => ({
+        ...property,
+        main_image: property.main_image || `/images/properties/property-${String(index + 1).padStart(2, '0')}.png`,
+        images: property.images || [`/images/properties/property-${String(index + 1).padStart(2, '0')}.png`]
+      }));
+
+      setProperties(propertiesWithImages);
       setTotalCount(count || 0);
       setIsLoading(false);
     } catch (error) {
