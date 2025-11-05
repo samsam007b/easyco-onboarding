@@ -39,14 +39,14 @@ export default function GroupSelectionPage() {
       icon: UserCircle,
       title: 'Search Alone',
       description: 'Find and apply for properties individually',
-      gradient: 'from-purple-500 to-purple-600',
+      gradient: 'from-[#FFA040] to-[#FFB85C]',
     },
     {
       id: 'create_group' as SearchMode,
       icon: Users,
       title: 'Create a Group',
       description: 'Start a group and invite friends to search together',
-      gradient: 'from-yellow-500 to-yellow-600',
+      gradient: 'from-[#FFA040] to-[#FFB85C]',
     },
     {
       id: 'join_group' as SearchMode,
@@ -58,7 +58,7 @@ export default function GroupSelectionPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-8 px-4">
       {/* Language Switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
@@ -88,7 +88,7 @@ export default function GroupSelectionPage() {
                 className={`
                   relative bg-white rounded-3xl p-8 text-center transition-all duration-300
                   ${isSelected
-                    ? 'ring-4 ring-purple-500 shadow-2xl scale-105'
+                    ? 'ring-4 ring-orange-500 shadow-2xl scale-105'
                     : 'shadow-lg hover:shadow-xl hover:scale-102'
                   }
                 `}
@@ -97,7 +97,7 @@ export default function GroupSelectionPage() {
                 <div className={`
                   w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center
                   bg-gradient-to-br ${option.gradient}
-                  ${isSelected ? 'ring-4 ring-purple-200' : ''}
+                  ${isSelected ? 'ring-4 ring-orange-200' : ''}
                 `}>
                   <Icon className="w-10 h-10 text-white" />
                 </div>

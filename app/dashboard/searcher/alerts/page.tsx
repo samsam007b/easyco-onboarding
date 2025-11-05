@@ -142,7 +142,7 @@ export default function AlertsPage() {
               Recevez des notifications lorsqu'une propriété correspond à vos critères
             </p>
           </div>
-          <Button onClick={() => router.push('/properties/browse')} className="bg-gradient-to-r from-yellow-600 to-orange-600">
+          <Button onClick={() => router.push('/properties/browse')} className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]">
             <Plus className="w-4 h-4 mr-2" />
             Créer une alerte
           </Button>

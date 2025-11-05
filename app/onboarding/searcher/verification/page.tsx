@@ -82,8 +82,8 @@ export default function VerificationPage() {
           {/* Identity verification (KYC) */}
           <div className="p-5 rounded-xl bg-white border border-gray-200">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                <Upload className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                <Upload className="w-5 h-5 text-orange-600" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">
@@ -202,7 +202,7 @@ export default function VerificationPage() {
         <div className="space-y-3 mt-12">
           <button
             onClick={handleSaveProgress}
-            className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-orange-600 hover:to-orange-500 transition shadow-md hover:shadow-lg"
+            className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-[#FF8C30] hover:to-[#FFA548] transition shadow-md hover:shadow-lg"
           >
             {t('onboarding.verification.saveProgress')}
           </button>

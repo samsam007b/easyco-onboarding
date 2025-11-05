@@ -204,7 +204,7 @@ export default function ModernResidentDashboard() {
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradient: 'from-orange-500 to-orange-700',
+      gradient: 'from-[#FFA040] to-[#FFB85C]',
       bg: 'from-orange-50 to-orange-100/50',
       progress: rentPercentage,
     },
@@ -398,7 +398,7 @@ export default function ModernResidentDashboard() {
               <div className="flex gap-3">
                 <Button
                   onClick={() => router.push('/hub/members')}
-                  className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700"
+                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C]"
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Voir les membres
@@ -535,7 +535,7 @@ export default function ModernResidentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-3xl shadow-lg p-6 text-white"
+        className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] rounded-3xl shadow-lg p-6 text-white"
       >
         <div className="flex items-center justify-between">
           <div>

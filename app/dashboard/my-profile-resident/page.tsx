@@ -124,7 +124,7 @@ export default function MyProfileResidentPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loading}</p>
@@ -176,7 +176,7 @@ export default function MyProfileResidentPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
@@ -276,7 +276,7 @@ export default function MyProfileResidentPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                        section.hasData ? 'bg-green-100' : 'bg-purple-100'
+                        section.hasData ? 'bg-green-100' : 'bg-orange-100'
                       }`}>
                         <IconComponent className={`w-6 h-6 ${
                           section.hasData ? 'text-green-600' : 'text-[#4A148C]'

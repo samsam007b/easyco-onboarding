@@ -97,9 +97,9 @@ export default function ResidentPersonalityPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function ResidentPersonalityPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
@@ -138,14 +138,14 @@ export default function ResidentPersonalityPage() {
             <span className="text-sm text-gray-500">{resident.personality.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[#4A148C] h-2 rounded-full transition-all" style={{ width: '75%' }} />
+            <div className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] h-2 rounded-full transition-all" style={{ width: '75%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-2">
               {resident.personality.heading}
             </h1>
             <p className="text-gray-600">
@@ -167,11 +167,11 @@ export default function ResidentPersonalityPage() {
                   max="5"
                   value={introvertExtrovertScale}
                   onChange={(e) => setIntrovertExtrovertScale(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#4A148C]"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">Introvert</span>
-                  <span className="text-xl font-bold text-[#4A148C]">{getPersonalityLabel()}</span>
+                  <span className="text-xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">{getPersonalityLabel()}</span>
                   <span className="text-sm text-gray-500">Extrovert</span>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function ResidentPersonalityPage() {
                     onClick={() => setSociabilityLevel(option.value)}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       sociabilityLevel === option.value
-                        ? 'border-[#4A148C] bg-purple-50'
+                        ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
@@ -227,7 +227,7 @@ export default function ResidentPersonalityPage() {
                     onClick={() => setPreferredInteractionType(option.value)}
                     className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                       preferredInteractionType === option.value
-                        ? 'border-[#4A148C] bg-purple-50'
+                        ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
@@ -260,7 +260,7 @@ export default function ResidentPersonalityPage() {
                     onClick={() => setHomeActivityLevel(option.value)}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       homeActivityLevel === option.value
-                        ? 'border-[#4A148C] bg-purple-50'
+                        ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
                     }`}
                   >
@@ -284,7 +284,7 @@ export default function ResidentPersonalityPage() {
               disabled={!canContinue}
               className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
                 canContinue
-                  ? 'bg-[#FFD600] hover:bg-[#F57F17] text-black'
+                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

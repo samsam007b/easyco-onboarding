@@ -332,7 +332,7 @@ export default function ReviewPage() {
             </div>
           )}
         </div>
-        <button onClick={handleSubmit} disabled={isSubmitting} className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-orange-600 hover:to-orange-500 disabled:opacity-50 flex items-center justify-center gap-2">
+        <button onClick={handleSubmit} disabled={isSubmitting} className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-[#FF8C30] hover:to-[#FFA548] disabled:opacity-50 flex items-center justify-center gap-2">
           {isSubmitting ? (<><Loader2 className="w-5 h-5 animate-spin" />{t('onboarding.review.submitting')}</>) : (<><CheckCircle2 className="w-5 h-5" />{t('onboarding.review.submitMyProfile')}</>)}
         </button>
       </div>

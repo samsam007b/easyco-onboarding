@@ -221,7 +221,7 @@ export default function SearcherDashboardV2() {
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
-              <Users className="w-8 h-8 text-purple-500" />
+              <Users className="w-8 h-8 text-orange-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{totalGroups}</p>
             <p className="text-sm text-gray-600">Mes Groupes</p>
@@ -292,8 +292,8 @@ export default function SearcherDashboardV2() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-purple-600" />
+              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-orange-600" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-gray-900">Recommandations Pour Toi</h2>
@@ -358,8 +358,8 @@ export default function SearcherDashboardV2() {
                   className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Users className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <Users className="w-6 h-6 text-orange-600" />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">{group.name}</p>

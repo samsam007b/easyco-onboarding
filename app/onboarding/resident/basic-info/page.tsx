@@ -131,9 +131,9 @@ export default function ResidentBasicInfoPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ export default function ResidentBasicInfoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
@@ -156,8 +156,8 @@ export default function ResidentBasicInfoPage() {
             <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">EASY</span>
-            <span className="text-[#FFD600]">Co</span>
+            <span className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">EASY</span>
+            <span className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">Co</span>
           </div>
           <div className="w-20" />
         </div>
@@ -172,14 +172,14 @@ export default function ResidentBasicInfoPage() {
             <span className="text-sm text-gray-500">{resident.basicInfo.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[#4A148C] h-2 rounded-full" style={{ width: '25%' }} />
+            <div className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] h-2 rounded-full" style={{ width: '25%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-2">
               {resident.basicInfo.heading}
             </h1>
             <p className="text-gray-600">
@@ -201,7 +201,7 @@ export default function ResidentBasicInfoPage() {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder={resident.basicInfo.firstNamePlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function ResidentBasicInfoPage() {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder={resident.basicInfo.lastNamePlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function ResidentBasicInfoPage() {
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   max={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -252,7 +252,7 @@ export default function ResidentBasicInfoPage() {
                   value={nationality}
                   onChange={(e) => setNationality(e.target.value)}
                   placeholder={resident.basicInfo.nationalityPlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -269,7 +269,7 @@ export default function ResidentBasicInfoPage() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder={resident.basicInfo.phoneNumberPlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function ResidentBasicInfoPage() {
               disabled={!canContinue}
               className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
                 canContinue
-                  ? 'bg-[#FFD600] hover:bg-[#F57F17] text-black'
+                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

@@ -154,9 +154,9 @@ export default function ResidentLivingSituationPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function ResidentLivingSituationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
@@ -196,14 +196,14 @@ export default function ResidentLivingSituationPage() {
             <span className="text-sm text-gray-500">{resident.livingSituation.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[#4A148C] h-2 rounded-full transition-all" style={{ width: '100%' }} />
+            <div className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] h-2 rounded-full transition-all" style={{ width: '100%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-2">
               {resident.livingSituation.heading}
             </h1>
             <p className="text-gray-600">
@@ -225,7 +225,7 @@ export default function ResidentLivingSituationPage() {
                   value={currentCity}
                   onChange={(e) => setCurrentCity(e.target.value)}
                   placeholder={resident.livingSituation.currentCityPlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -242,7 +242,7 @@ export default function ResidentLivingSituationPage() {
                   value={moveInDate}
                   onChange={(e) => setMoveInDate(e.target.value)}
                   max={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function ResidentLivingSituationPage() {
                   placeholder={resident.livingSituation.bioPlaceholder}
                   rows={5}
                   maxLength={500}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all resize-none"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all resize-none"
                 />
               </div>
               <div className="flex justify-between items-center mt-2">
@@ -272,8 +272,8 @@ export default function ResidentLivingSituationPage() {
             </div>
 
             {/* Tips */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <h3 className="font-semibold text-[#4A148C] mb-2 flex items-center gap-2">
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+              <h3 className="font-semibold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-2 flex items-center gap-2">
                 <IconBadge icon={Lightbulb} variant="purple" size="sm" />
                 {resident.livingSituation.tipsTitle}
               </h3>
@@ -293,7 +293,7 @@ export default function ResidentLivingSituationPage() {
               disabled={!canComplete || isSaving}
               className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
                 canComplete && !isSaving
-                  ? 'bg-[#FFD600] hover:bg-[#F57F17] text-black'
+                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

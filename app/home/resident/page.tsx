@@ -146,7 +146,7 @@ export default function ResidentHomePage() {
       workspace: Home,
     };
     const Icon = icons[amenity] || Home;
-    return <Icon className="h-5 w-5 text-purple-700" />;
+    return <Icon className="h-5 w-5 text-orange-700" />;
   };
 
   const greeting = () => {
@@ -206,7 +206,7 @@ export default function ResidentHomePage() {
             icon={Users}
             label="Residents"
             value={stats.residentsCount}
-            iconBgColor="bg-purple-100"
+            iconBgColor="bg-orange-100"
           />
           <QuickStatsCard
             icon={DollarSign}

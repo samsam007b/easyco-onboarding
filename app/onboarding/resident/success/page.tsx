@@ -17,7 +17,7 @@ export default function ResidentSuccessPage() {
 
   // Show loading state during redirect
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C] mx-auto"></div>
         <p className="mt-4 text-gray-600">Redirection...</p>

@@ -287,7 +287,7 @@ export default function MyVisitsPage() {
             </div>
             <Button
               onClick={() => router.push('/properties/browse')}
-              className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-purple-700 hover:to-purple-800 text-white rounded-2xl"
+              className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl"
             >
               Browse Properties
             </Button>

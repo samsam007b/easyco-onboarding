@@ -144,7 +144,7 @@ export default function HubFinancesPage() {
             className="bg-white rounded-3xl shadow-lg p-6"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-white" />
               </div>
               <Badge>Ce mois</Badge>

@@ -133,14 +133,14 @@ export default function PersonalityResidentPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+    <main className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
       <div className="max-w-2xl mx-auto">
         {/* Back button */}
         <button
@@ -153,8 +153,8 @@ export default function PersonalityResidentPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <Heart className="w-5 h-5 text-purple-600" />
+            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+              <Heart className="w-5 h-5 text-orange-600" />
             </div>
             <h1 className="text-2xl font-bold text-[#4A148C]">
               Personality & Interests
@@ -186,7 +186,7 @@ export default function PersonalityResidentPage() {
               {hobbies.map((hobby) => (
                 <span
                   key={hobby}
-                  className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm flex items-center gap-2"
                 >
                   {hobby}
                   <button onClick={() => removeHobby(hobby)} className="hover:text-purple-900">
@@ -238,7 +238,7 @@ export default function PersonalityResidentPage() {
           </div>
 
           {/* Info callout */}
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-4 border border-purple-200">
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-4 border border-orange-200">
             <p className="text-sm text-gray-700">
               <strong>Tip:</strong> Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!
             </p>

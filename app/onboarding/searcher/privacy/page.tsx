@@ -57,7 +57,7 @@ export default function PrivacyPage() {
 
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-4">
             <Shield className="w-8 h-8 text-orange-600" />
           </div>
           <h1 className="text-2xl font-bold text-orange-600 mb-2">
@@ -168,7 +168,7 @@ export default function PrivacyPage() {
           disabled={!canContinue}
           className={`w-full py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

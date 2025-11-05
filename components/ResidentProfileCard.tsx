@@ -69,7 +69,7 @@ export default function ResidentProfileCard({
           )}
         >
           <div className="relative">
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg ring-4 ring-white">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center shadow-lg ring-4 ring-white">
               {resident.profile_photo_url ? (
                 <img
                   src={resident.profile_photo_url}
@@ -112,7 +112,7 @@ export default function ResidentProfileCard({
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-xl ring-4 ring-orange-50">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center shadow-xl ring-4 ring-orange-50">
                   {resident.profile_photo_url ? (
                     <img
                       src={resident.profile_photo_url}
@@ -223,8 +223,8 @@ export default function ResidentProfileCard({
 
                   {/* Sociability */}
                   {resident.sociability_level && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-purple-200">
-                      <Users className="w-5 h-5 text-purple-600" />
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-orange-200">
+                      <Users className="w-5 h-5 text-orange-600" />
                       <div>
                         <p className="text-xs text-gray-500">Sociabilité</p>
                         <p className="font-medium text-gray-900">{resident.sociability_level}/10</p>
@@ -271,7 +271,7 @@ export default function ResidentProfileCard({
     <Card className={cn("p-6", className)}>
       <div className="flex items-start gap-4">
         <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
             {resident.profile_photo_url ? (
               <img
                 src={resident.profile_photo_url}
@@ -315,7 +315,7 @@ export default function ResidentProfileCard({
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
                 {resident.profile_photo_url ? (
                   <img
                     src={resident.profile_photo_url}
@@ -426,8 +426,8 @@ export default function ResidentProfileCard({
 
                 {/* Sociability */}
                 {resident.sociability_level && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-purple-200">
-                    <Users className="w-5 h-5 text-purple-600" />
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-orange-200">
+                    <Users className="w-5 h-5 text-orange-600" />
                     <div>
                       <p className="text-xs text-gray-500">Sociabilité</p>
                       <p className="font-medium text-gray-900">{resident.sociability_level}/10</p>

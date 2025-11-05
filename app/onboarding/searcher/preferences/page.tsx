@@ -191,7 +191,7 @@ export default function PreferencesPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

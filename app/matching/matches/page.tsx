@@ -151,8 +151,8 @@ export default function MatchesPage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-purple-200 via-purple-100 to-yellow-100 flex items-center justify-center">
-                        <div className="text-5xl font-bold text-[#4A148C] opacity-30">
+                      <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-orange-50 flex items-center justify-center">
+                        <div className="text-5xl font-bold text-orange-600 opacity-30">
                           {match.first_name.charAt(0)}
                           {match.last_name.charAt(0)}
                         </div>

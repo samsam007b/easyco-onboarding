@@ -202,7 +202,7 @@ export default function HubMembersPage() {
               className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all"
             >
               {/* Member Header */}
-              <div className="bg-gradient-to-br from-orange-500 to-orange-700 p-6 text-white">
+              <div className="bg-gradient-to-br from-[#FFA040] to-[#FFB85C] p-6 text-white">
                 <div className="flex items-center gap-4 mb-4">
                   {member.avatar ? (
                     <img

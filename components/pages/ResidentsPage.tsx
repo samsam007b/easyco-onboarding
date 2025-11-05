@@ -49,7 +49,7 @@ export default function ResidentsPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500 to-orange-700 mb-6 shadow-2xl"
+            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-[#FFA040] to-[#FFB85C] mb-6 shadow-2xl"
           >
             <Users className="w-10 h-10 text-white" />
           </motion.div>
@@ -98,7 +98,7 @@ export default function ResidentsPage() {
                     className="flex gap-4 p-6 rounded-2xl hover:bg-orange-50 transition-all group"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                     </div>
@@ -130,7 +130,7 @@ export default function ResidentsPage() {
                 transition={{ delay: 0.6 + index * 0.1 }}
                 className="bg-white rounded-2xl p-6 shadow-lg flex items-center gap-6 hover:shadow-xl transition-all"
               >
-                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                   {step.number}
                 </div>
                 <div>

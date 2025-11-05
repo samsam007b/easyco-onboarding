@@ -91,7 +91,7 @@ export default function CommunityEventsResidentPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+    <main className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
       <div className="max-w-md mx-auto">
         {/* Back button */}
         <button
@@ -116,8 +116,8 @@ export default function CommunityEventsResidentPage() {
           {/* Event participation interest */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                <PartyPopper className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                <PartyPopper className="w-4 h-4 text-orange-600" />
               </div>
               Event participation interest
             </label>
@@ -199,10 +199,10 @@ export default function CommunityEventsResidentPage() {
           </div>
 
           {/* Community perks callout */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 border border-orange-200">
             <div className="flex gap-3">
               <div className="flex-shrink-0">
-                <Sparkles className="w-5 h-5 text-purple-600" />
+                <Sparkles className="w-5 h-5 text-orange-600" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Community Perks</h3>

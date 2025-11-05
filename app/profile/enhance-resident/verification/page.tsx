@@ -66,14 +66,14 @@ export default function VerificationResidentPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-6">
+    <main className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
       <div className="max-w-2xl mx-auto">
         {/* Back button */}
         <button
@@ -86,8 +86,8 @@ export default function VerificationResidentPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <Shield className="w-5 h-5 text-purple-600" />
+            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+              <Shield className="w-5 h-5 text-orange-600" />
             </div>
             <h1 className="text-2xl font-bold text-[#4A148C]">
               Profile Verification
@@ -158,8 +158,8 @@ export default function VerificationResidentPage() {
                   const Icon = benefit.icon;
                   return (
                     <div key={index} className="flex gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-purple-600" />
+                      <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-6 h-6 text-orange-600" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-1">{benefit.title}</h3>
@@ -171,7 +171,7 @@ export default function VerificationResidentPage() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-200">
+            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-orange-200">
               <h3 className="font-semibold text-gray-900 mb-2">What We'll Need</h3>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center gap-2">

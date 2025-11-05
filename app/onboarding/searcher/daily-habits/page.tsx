@@ -94,8 +94,8 @@ export default function DailyHabitsPage() {
           {/* Sleep time */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                <Moon className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                <Moon className="w-4 h-4 text-orange-600" />
               </div>
               {onboarding.dailyHabits.sleepTime}
             </label>
@@ -182,7 +182,7 @@ export default function DailyHabitsPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
