@@ -267,23 +267,21 @@ function MessagesContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
         <div className="text-center">
-          <div
-            className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
-            style={{
-              borderColor: 'transparent',
-              borderTopColor: getRoleColor(),
-            }}
-          />
-          <p className="text-gray-600">Chargement...</p>
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des messages...</h3>
+          <p className="text-gray-600">Préparation de vos conversations</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/20">
       {profile && (
         <DashboardHeader
           profile={profile}
@@ -292,26 +290,18 @@ function MessagesContent() {
         />
       )}
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div
-          className="rounded-3xl shadow-lg p-4 sm:p-8 mb-6 border border-gray-200"
-          style={{ background: getRoleGradient() }}
-        >
+        <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-                <div
-                  className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-                  }}
-                >
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 Messages
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-lg">
                 Communiquez avec les propriétaires et résidents
               </p>
             </div>
@@ -319,13 +309,9 @@ function MessagesContent() {
               <Button
                 variant={showArchived ? 'default' : 'outline'}
                 onClick={() => setShowArchived(!showArchived)}
-                className="rounded-full"
+                className={showArchived ? 'rounded-full bg-purple-600 hover:bg-purple-700' : 'rounded-full'}
               >
-                {showArchived ? 'Show Active' : 'Show Archived'}
-              </Button>
-              <Button onClick={() => router.back()} variant="outline" className="rounded-full">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
+                {showArchived ? 'Conversations Actives' : 'Afficher Archivées'}
               </Button>
             </div>
           </div>
@@ -333,37 +319,44 @@ function MessagesContent() {
 
         {/* Messages Container */}
         {conversations.length === 0 && !showArchived ? (
-          <div className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 sm:p-12 text-center">
-            <div
-              className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6"
-              style={{
-                background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-              }}
-            >
-              <MessageCircle className="w-10 h-10 text-white" />
+          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <MessageCircle className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                Aucune conversation
+              </h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
+                Commencez à discuter avec des propriétaires ou colocataires potentiels
+              </p>
+              {profile?.user_type === 'searcher' && (
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                >
+                  Explorer les propriétés
+                </Button>
+              )}
+              {profile?.user_type === 'resident' && (
+                <Button
+                  onClick={() => router.push('/matching/swipe')}
+                  className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                >
+                  Trouver des colocataires
+                </Button>
+              )}
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Aucune conversation
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Commencez à discuter avec des propriétaires ou colocataires potentiels
-            </p>
-            {profile?.user_type === 'searcher' && (
-              <Button onClick={() => router.push('/properties/browse')} className="rounded-full">
-                Explorer les propriétés
-              </Button>
-            )}
-            {profile?.user_type === 'resident' && (
-              <Button onClick={() => router.push('/matching/swipe')} className="rounded-full">
-                Trouver des colocataires
-              </Button>
-            )}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden h-[calc(100vh-300px)]">
+          <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden h-[calc(100vh-300px)]">
             <div className="grid md:grid-cols-3 h-full">
               {/* Conversations List */}
-              <div className={`${selectedConversationId ? 'hidden md:block' : ''} border-r`}>
+              <div className={`${selectedConversationId ? 'hidden md:block' : ''} border-r border-gray-200`}>
                 <ConversationList
                   conversations={conversations}
                   selectedConversationId={selectedConversationId || undefined}
@@ -390,18 +383,13 @@ function MessagesContent() {
                     onBack={() => setSelectedConversationId(null)}
                   />
                 ) : (
-                  <div className="flex-1 flex items-center justify-center bg-gray-50">
+                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                     <div className="text-center">
-                      <div
-                        className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6"
-                        style={{
-                          background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-                        }}
-                      >
+                      <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <MessageCircle className="w-10 h-10 text-white" />
                       </div>
-                      <p className="text-lg font-medium text-gray-900">Sélectionnez une conversation</p>
-                      <p className="text-sm mt-2 text-gray-600">
+                      <p className="text-lg font-bold text-gray-900 mb-2">Sélectionnez une conversation</p>
+                      <p className="text-sm text-gray-600">
                         Choisissez une conversation pour commencer à discuter
                       </p>
                     </div>
