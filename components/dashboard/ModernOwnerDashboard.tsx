@@ -205,12 +205,12 @@ export default function ModernOwnerDashboard() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-10"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent mb-2">
           Tableau de bord
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 text-lg">
           Vue d'ensemble de votre portefeuille immobilier
         </p>
       </motion.div>
@@ -229,14 +229,15 @@ export default function ModernOwnerDashboard() {
               transition={{ delay: index * 0.1 }}
               onClick={card.action}
               className={cn(
-                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
-                "bg-white shadow-lg hover:shadow-xl",
-                card.action && "hover:ring-2 hover:ring-purple-500"
+                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02]",
+                "bg-white shadow-md hover:shadow-2xl",
+                card.action && "hover:ring-2 hover:ring-purple-400"
               )}
             >
-              {/* Gradient Background */}
+              {/* Glassmorphism blur effects */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-purple-600/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
               <div className={cn(
-                "absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20",
+                "absolute bottom-0 left-0 w-24 h-24 rounded-full blur-2xl opacity-10",
                 `bg-gradient-to-br ${card.bg}`
               )} />
 
@@ -290,10 +291,12 @@ export default function ModernOwnerDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-3xl shadow-lg p-6"
+            className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
           >
             <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-purple-600" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-white" />
+              </div>
               Évolution Revenus & Dépenses
             </h3>
             <p className="text-sm text-gray-500 mb-6">12 derniers mois</p>
@@ -341,10 +344,12 @@ export default function ModernOwnerDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-white rounded-3xl shadow-lg p-6"
+              className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-purple-600" />
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
                 Taux d'Occupation
               </h3>
               <p className="text-sm text-gray-500 mb-6">Par propriété</p>
@@ -387,12 +392,14 @@ export default function ModernOwnerDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white rounded-3xl shadow-lg p-6"
+        className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-purple-600" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                <Building2 className="w-4 h-4 text-white" />
+              </div>
               Mes Propriétés
             </h3>
             <p className="text-sm text-gray-500 mt-1">
@@ -437,7 +444,7 @@ export default function ModernOwnerDashboard() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05 }}
                 onClick={() => router.push(`/properties/${property.id}`)}
-                className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer"
+                className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02]"
               >
                 {/* Status Badge */}
                 <Badge

@@ -463,7 +463,7 @@ export default function ModernOwnerHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden border-t border-purple-200/50"
+              className="lg:hidden overflow-hidden border-t border-gray-200"
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
@@ -478,8 +478,8 @@ export default function ModernOwnerHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                         isActive
-                          ? "bg-gradient-to-r from-purple-100 to-purple-50 text-purple-900 font-semibold"
-                          : "text-gray-700 hover:bg-purple-50"
+                          ? "bg-purple-50 text-purple-900 font-semibold"
+                          : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -495,7 +495,7 @@ export default function ModernOwnerHeader({
                   );
                 })}
 
-                <div className="pt-4 mt-2 border-t border-purple-200/50">
+                <div className="pt-4 mt-2 border-t border-gray-200">
                   <Link href="/properties/add" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold">
                       <Plus className="w-4 h-4 mr-2" />
@@ -511,7 +511,7 @@ export default function ModernOwnerHeader({
 
       {/* Quick Stats Bar - Desktop Only */}
       {(occupation > 0 || pendingApplications > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-purple-50/50 to-transparent border-t border-purple-200/30">
+        <div className="hidden lg:block bg-gradient-to-r from-purple-50/30 to-transparent border-t border-gray-200/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-6 text-gray-700">
