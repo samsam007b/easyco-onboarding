@@ -113,7 +113,7 @@ export default function SwipePage() {
           <Button
             variant={context === 'searcher_matching' ? 'default' : 'outline'}
             onClick={() => setContext('searcher_matching')}
-            className={`flex-1 ${context === 'searcher_matching' ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600' : ''}`}
+            className={`flex-1 ${context === 'searcher_matching' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}`}
           >
             <Users className="w-4 h-4 mr-2" />
             Chercheurs
@@ -121,7 +121,7 @@ export default function SwipePage() {
           <Button
             variant={context === 'resident_matching' ? 'default' : 'outline'}
             onClick={() => setContext('resident_matching')}
-            className={`flex-1 ${context === 'resident_matching' ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600' : ''}`}
+            className={`flex-1 ${context === 'resident_matching' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}`}
           >
             <Heart className="w-4 h-4 mr-2" />
             Colocataires
@@ -152,7 +152,7 @@ export default function SwipePage() {
               <div className="flex gap-3">
                 <Button
                   onClick={() => loadPotentialMatches()}
-                  className="bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-700 hover:to-orange-600"
+                  className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
                 >
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Recharger

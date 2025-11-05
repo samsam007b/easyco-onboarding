@@ -94,7 +94,7 @@ export default function TopMatchesPage() {
             </p>
             <Button
               onClick={() => router.push('/dashboard/settings')}
-              className="bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-700 hover:to-orange-600"
+              className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
             >
               <Settings className="w-4 h-4 mr-2" />
               Configurer mes préférences
@@ -202,7 +202,7 @@ export default function TopMatchesPage() {
                 </Button>
                 <Button
                   onClick={() => router.push('/properties/browse')}
-                  className="bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-700 hover:to-orange-600"
+                  className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
                 >
                   Explorer toutes les propriétés
                 </Button>

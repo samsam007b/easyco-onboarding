@@ -207,7 +207,7 @@ export default function FavoritesPage() {
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-700 hover:to-orange-600"
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
               >
                 Découvrir des propriétés
               </Button>
