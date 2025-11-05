@@ -31,6 +31,7 @@ import { AlertsService } from '@/lib/services/alerts-service';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
+import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
 
 interface Property {
   id: string;
@@ -65,6 +66,7 @@ interface Property {
   owner_id?: string;
 }
 
+// Legacy interface - kept for compatibility with alerts service
 interface Filters {
   minPrice: number;
   maxPrice: number;
@@ -78,21 +80,6 @@ interface Filters {
 
 const ITEMS_PER_PAGE = 12;
 const GUEST_LIMIT = 20;
-
-const AMENITIES = [
-  { id: 'wifi', label: 'WiFi', icon: '📶' },
-  { id: 'parking', label: 'Parking', icon: '🚗' },
-  { id: 'balcony', label: 'Balcon', icon: '🌿' },
-  { id: 'terrace', label: 'Terrasse', icon: '🏡' },
-  { id: 'garden', label: 'Jardin', icon: '🌳' },
-  { id: 'elevator', label: 'Ascenseur', icon: '🛗' },
-  { id: 'dishwasher', label: 'Lave-vaisselle', icon: '🍽️' },
-  { id: 'washing_machine', label: 'Machine à laver', icon: '👕' },
-  { id: 'dryer', label: 'Sèche-linge', icon: '🔥' },
-  { id: 'air_conditioning', label: 'Climatisation', icon: '❄️' },
-  { id: 'heating', label: 'Chauffage', icon: '🔥' },
-  { id: 'pets_allowed', label: 'Animaux acceptés', icon: '🐕' },
-];
 
 export default function PropertiesBrowsePageV2() {
   const router = useRouter();
@@ -109,15 +96,33 @@ export default function PropertiesBrowsePageV2() {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>();
-  const [filters, setFilters] = useState<Filters>({
-    minPrice: 0,
-    maxPrice: 5000,
-    bedrooms: null,
-    bathrooms: null,
-    propertyType: 'all',
-    city: '',
+  // Advanced filters state
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
+    priceRange: { min: 0, max: 5000 },
+    cities: [],
+    neighborhoods: [],
+    propertyTypes: [],
+    bedrooms: { min: null, max: null },
+    bathrooms: { min: null, max: null },
+    furnished: null,
+    availableFrom: '',
+    minStayMonths: null,
+    smoking: 'flexible',
+    pets: 'flexible',
+    cleanlinessLevel: { min: 1, max: 10 },
+    socialLevel: [],
+    wakeUpTime: [],
+    sleepTime: [],
+    workSchedule: [],
+    ageRange: { min: 18, max: 65 },
+    genderMix: [],
+    occupationTypes: [],
+    languages: [],
+    guestFrequency: [],
+    musicHabits: [],
+    cookingFrequency: [],
     amenities: [],
-    furnished: null
+    minMatchScore: 0,
   });
 
   // Conversion modals state
@@ -231,6 +236,61 @@ export default function PropertiesBrowsePageV2() {
     router.push('/signup');
   }, [router]);
 
+  // Calculate active filters count
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (advancedFilters.cities.length > 0) count++;
+    if (advancedFilters.propertyTypes.length > 0) count++;
+    if (advancedFilters.priceRange.min > 0 || advancedFilters.priceRange.max < 5000) count++;
+    if (advancedFilters.bedrooms.min !== null) count++;
+    if (advancedFilters.furnished !== null) count++;
+    if (advancedFilters.smoking !== 'flexible') count++;
+    if (advancedFilters.pets !== 'flexible') count++;
+    if (advancedFilters.socialLevel.length > 0) count++;
+    if (advancedFilters.wakeUpTime.length > 0) count++;
+    if (advancedFilters.sleepTime.length > 0) count++;
+    if (advancedFilters.workSchedule.length > 0) count++;
+    if (advancedFilters.genderMix.length > 0) count++;
+    if (advancedFilters.occupationTypes.length > 0) count++;
+    if (advancedFilters.guestFrequency.length > 0) count++;
+    if (advancedFilters.musicHabits.length > 0) count++;
+    if (advancedFilters.cookingFrequency.length > 0) count++;
+    if (advancedFilters.amenities.length > 0) count++;
+    if (advancedFilters.minMatchScore > 0) count++;
+    return count;
+  }, [advancedFilters]);
+
+  // Reset filters
+  const handleResetFilters = () => {
+    setAdvancedFilters({
+      priceRange: { min: 0, max: 5000 },
+      cities: [],
+      neighborhoods: [],
+      propertyTypes: [],
+      bedrooms: { min: null, max: null },
+      bathrooms: { min: null, max: null },
+      furnished: null,
+      availableFrom: '',
+      minStayMonths: null,
+      smoking: 'flexible',
+      pets: 'flexible',
+      cleanlinessLevel: { min: 1, max: 10 },
+      socialLevel: [],
+      wakeUpTime: [],
+      sleepTime: [],
+      workSchedule: [],
+      ageRange: { min: 18, max: 65 },
+      genderMix: [],
+      occupationTypes: [],
+      languages: [],
+      guestFrequency: [],
+      musicHabits: [],
+      cookingFrequency: [],
+      amenities: [],
+      minMatchScore: 0,
+    });
+  };
+
   // Handle save search / create alert
   const handleSaveSearch = async () => {
     if (!isAuthenticated) {
@@ -247,7 +307,19 @@ export default function PropertiesBrowsePageV2() {
     try {
       const alertsService = new AlertsService(supabase);
 
-      await alertsService.createAlertFromFilters(searchName, filters);
+      // Convert advanced filters to old format for compatibility
+      const legacyFilters = {
+        minPrice: advancedFilters.priceRange.min,
+        maxPrice: advancedFilters.priceRange.max,
+        bedrooms: advancedFilters.bedrooms.min,
+        bathrooms: advancedFilters.bathrooms.min,
+        propertyType: advancedFilters.propertyTypes[0] || 'all',
+        city: advancedFilters.cities[0] || '',
+        amenities: advancedFilters.amenities,
+        furnished: advancedFilters.furnished
+      };
+
+      await alertsService.createAlertFromFilters(searchName, legacyFilters);
 
       toast.success('Alerte créée ! Tu recevras des notifications pour les nouvelles propriétés correspondantes 🔔');
       setShowSaveSearchModal(false);
@@ -468,10 +540,11 @@ export default function PropertiesBrowsePageV2() {
     setCurrentPage(1);
   }, []);
 
-  const handleFilterChange = useCallback((newFilters: Partial<Filters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-    setCurrentPage(1);
-  }, []);
+  // Legacy filter change handler - no longer needed with AdvancedFilters
+  // const handleFilterChange = useCallback((newFilters: Partial<Filters>) => {
+  //   setFilters(prev => ({ ...prev, ...newFilters }));
+  //   setCurrentPage(1);
+  // }, []);
 
   const handleSortChange = useCallback((newSort: typeof sortBy) => {
     setSortBy(newSort);
@@ -609,10 +682,15 @@ export default function PropertiesBrowsePageV2() {
               <Button
                 variant="outline"
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 border-orange-200 text-orange-700 hover:bg-orange-50"
+                className="flex items-center gap-2 border-orange-200 text-orange-700 hover:bg-orange-50 relative"
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filtres
+                {activeFiltersCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-orange-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
               </Button>
 
               {isAuthenticated && (
@@ -641,114 +719,18 @@ export default function PropertiesBrowsePageV2() {
             </select>
           </div>
 
-          {showFilters && (
-            <div className="mt-6 pt-6 border-t grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fourchette de prix
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={filters.minPrice}
-                    onChange={(e) => handleFilterChange({ minPrice: Number(e.target.value) })}
-                    className="w-full px-3 py-2 border rounded-lg"
-                    placeholder="Min"
-                  />
-                  <span>-</span>
-                  <input
-                    type="number"
-                    value={filters.maxPrice}
-                    onChange={(e) => handleFilterChange({ maxPrice: Number(e.target.value) })}
-                    className="w-full px-3 py-2 border rounded-lg"
-                    placeholder="Max"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Chambres
-                </label>
-                <select
-                  value={filters.bedrooms || ''}
-                  onChange={(e) => handleFilterChange({ bedrooms: e.target.value ? Number(e.target.value) : null })}
-                  className="w-full px-3 py-2 border rounded-lg"
-                >
-                  <option value="">Toutes</option>
-                  <option value="1">1+</option>
-                  <option value="2">2+</option>
-                  <option value="3">3+</option>
-                  <option value="4">4+</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Type de bien
-                </label>
-                <select
-                  value={filters.propertyType}
-                  onChange={(e) => handleFilterChange({ propertyType: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-lg"
-                >
-                  <option value="all">Tous</option>
-                  <option value="Studio">Studio</option>
-                  <option value="Colocation">Colocation</option>
-                  <option value="Appartement">Appartement</option>
-                  <option value="Maison">Maison</option>
-                </select>
-              </div>
-
-              {/* Furnished Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Meublé
-                </label>
-                <select
-                  value={filters.furnished === null ? '' : filters.furnished.toString()}
-                  onChange={(e) => handleFilterChange({
-                    furnished: e.target.value === '' ? null : e.target.value === 'true'
-                  })}
-                  className="w-full px-3 py-2 border rounded-lg"
-                >
-                  <option value="">Peu importe</option>
-                  <option value="true">Oui</option>
-                  <option value="false">Non</option>
-                </select>
-              </div>
-
-              {/* Amenities Filter */}
-              <div className="md:col-span-3">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Équipements
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                  {AMENITIES.map((amenity) => (
-                    <button
-                      key={amenity.id}
-                      type="button"
-                      onClick={() => {
-                        const newAmenities = filters.amenities.includes(amenity.id)
-                          ? filters.amenities.filter(a => a !== amenity.id)
-                          : [...filters.amenities, amenity.id];
-                        handleFilterChange({ amenities: newAmenities });
-                      }}
-                      className={`px-3 py-2 rounded-lg border text-sm font-medium transition ${
-                        filters.amenities.includes(amenity.id)
-                          ? 'bg-purple-100 border-purple-500 text-purple-700'
-                          : 'bg-white border-gray-300 text-gray-700 hover:border-purple-300'
-                      }`}
-                    >
-                      <span className="mr-1">{amenity.icon}</span>
-                      {amenity.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Advanced Filters Modal */}
+        {showFilters && (
+          <AdvancedFilters
+            filters={advancedFilters}
+            onFiltersChange={setAdvancedFilters}
+            onClose={() => setShowFilters(false)}
+            onReset={handleResetFilters}
+            activeFiltersCount={activeFiltersCount}
+          />
+        )}
 
         {/* Properties Grid, Map, or People View */}
         {propertiesWithScores && propertiesWithScores.length > 0 ? (
