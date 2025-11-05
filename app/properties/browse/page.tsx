@@ -846,16 +846,7 @@ export default function PropertiesBrowsePageV2() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Aucune annonce trouvée</h3>
             <p className="text-gray-600 mb-4">Essaye d'ajuster tes filtres ou ta recherche</p>
             <Button onClick={() => {
-              setFilters({
-                minPrice: 0,
-                maxPrice: 5000,
-                bedrooms: null,
-                bathrooms: null,
-                propertyType: 'all',
-                city: '',
-                amenities: [],
-                furnished: null
-              });
+              handleResetFilters();
               setSearchQuery('');
             }}>
               Réinitialiser les filtres
@@ -903,14 +894,14 @@ export default function PropertiesBrowsePageV2() {
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-sm font-medium text-gray-700 mb-2">Filtres actifs:</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                {filters.city && <li>📍 Ville: {filters.city}</li>}
-                {(filters.minPrice > 0 || filters.maxPrice < 3000) && (
-                  <li>💰 Prix: €{filters.minPrice} - €{filters.maxPrice}</li>
+                {advancedFilters.cities.length > 0 && <li>📍 Villes: {advancedFilters.cities.join(', ')}</li>}
+                {(advancedFilters.priceRange.min > 0 || advancedFilters.priceRange.max < 5000) && (
+                  <li>💰 Prix: €{advancedFilters.priceRange.min} - €{advancedFilters.priceRange.max}</li>
                 )}
-                {filters.bedrooms && <li>🛏️ Chambres: {filters.bedrooms}</li>}
-                {filters.bathrooms && <li>🚿 Salles de bain: {filters.bathrooms}</li>}
-                {filters.propertyType && filters.propertyType !== 'all' && <li>🏠 Type: {filters.propertyType}</li>}
-                {filters.furnished !== null && <li>✨ {filters.furnished ? 'Meublé' : 'Non meublé'}</li>}
+                {advancedFilters.bedrooms.min && <li>🛏️ Chambres: {advancedFilters.bedrooms.min}+</li>}
+                {advancedFilters.bathrooms.min && <li>🚿 Salles de bain: {advancedFilters.bathrooms.min}+</li>}
+                {advancedFilters.propertyTypes.length > 0 && <li>🏠 Types: {advancedFilters.propertyTypes.join(', ')}</li>}
+                {advancedFilters.furnished !== null && <li>✨ {advancedFilters.furnished ? 'Meublé' : 'Non meublé'}</li>}
               </ul>
             </div>
           </div>
