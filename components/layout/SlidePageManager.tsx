@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import ExplorerPage from '@/components/pages/ExplorerPage';
 import ResidentsPage from '@/components/pages/ResidentsPage';
 import OwnersPage from '@/components/pages/OwnersPage';
@@ -26,38 +27,62 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
 
   const PageComponent = activePage ? pageComponents[activePage] : null;
 
+  // Block body scroll when page is active
+  useEffect(() => {
+    if (activePage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [activePage]);
+
   return (
     <AnimatePresence mode="wait">
       {activePage && PageComponent && (
-        <motion.div
-          key={activePage}
-          initial={{ y: '-100%', opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: '-100%', opacity: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 400,
-            damping: 35,
-            duration: 0.5,
-          }}
-          className="fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto rounded-t-3xl shadow-2xl bg-gradient-to-b from-gray-50 to-white"
-          style={{
-            scrollbarGutter: 'stable',
-            border: '4px solid transparent',
-            backgroundClip: 'padding-box',
-            position: 'relative',
-          }}
-        >
-          {/* Bordure avec dégradé */}
-          <div
-            className="absolute inset-0 rounded-t-3xl -z-10"
-            style={{
-              background: borderGradients[activePage],
-              margin: '-4px',
-            }}
+        <>
+          {/* Backdrop overlay */}
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
           />
-          <PageComponent />
-        </motion.div>
+
+          {/* Slide page content */}
+          <motion.div
+            key={activePage}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{
+              duration: 0.4,
+              ease: [0.32, 0.72, 0, 1], // Custom easing for smooth premium feel
+            }}
+            className="fixed top-16 left-0 right-0 bottom-0 z-50 overflow-y-auto"
+          >
+            <div className="min-h-full bg-gradient-to-b from-gray-50 to-white rounded-t-3xl shadow-2xl relative"
+              style={{
+                border: '4px solid transparent',
+                backgroundClip: 'padding-box',
+              }}
+            >
+              {/* Bordure avec dégradé */}
+              <div
+                className="absolute inset-0 rounded-t-3xl -z-10 pointer-events-none"
+                style={{
+                  background: borderGradients[activePage],
+                  margin: '-4px',
+                }}
+              />
+              <PageComponent />
+            </div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
