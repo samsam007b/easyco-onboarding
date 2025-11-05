@@ -43,14 +43,14 @@ export default function PrivacyPage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-5/6 transition-all" />
+            <div className="h-full bg-orange-600 w-5/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
@@ -58,9 +58,9 @@ export default function PrivacyPage() {
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-8">
           <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-            <Shield className="w-8 h-8 text-[color:var(--easy-purple)]" />
+            <Shield className="w-8 h-8 text-orange-600" />
           </div>
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {t('onboarding.privacy.title')}
           </h1>
           <p className="text-gray-600">
@@ -72,12 +72,12 @@ export default function PrivacyPage() {
         <div className="space-y-4 mb-6">
 
           {/* Terms & Conditions */}
-          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-[color:var(--easy-purple)] transition">
+          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
             <input
               type="checkbox"
               checked={acceptTerms}
               onChange={(e) => setAcceptTerms(e.target.checked)}
-              className="mt-0.5 w-5 h-5 text-[color:var(--easy-purple)] rounded focus:ring-2 focus:ring-purple-100"
+              className="mt-0.5 w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-100"
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {t('onboarding.privacy.reviewTerms')}{' '}
-                <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="text-[color:var(--easy-purple)] underline">
+                <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="text-orange-600 underline">
                   {t('onboarding.privacy.termsOfService')}
                 </a>
               </p>
@@ -94,12 +94,12 @@ export default function PrivacyPage() {
           </label>
 
           {/* Privacy Policy */}
-          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-[color:var(--easy-purple)] transition">
+          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
             <input
               type="checkbox"
               checked={readPrivacy}
               onChange={(e) => setReadPrivacy(e.target.checked)}
-              className="mt-0.5 w-5 h-5 text-[color:var(--easy-purple)] rounded focus:ring-2 focus:ring-purple-100"
+              className="mt-0.5 w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-100"
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {t('onboarding.privacy.learnProtection')}{' '}
-                <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[color:var(--easy-purple)] underline">
+                <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-orange-600 underline">
                   {t('onboarding.privacy.personalData')}
                 </a>
               </p>
@@ -116,12 +116,12 @@ export default function PrivacyPage() {
           </label>
 
           {/* Data processing */}
-          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-[color:var(--easy-purple)] transition">
+          <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
             <input
               type="checkbox"
               checked={consentData}
               onChange={(e) => setConsentData(e.target.checked)}
-              className="mt-0.5 w-5 h-5 text-[color:var(--easy-purple)] rounded focus:ring-2 focus:ring-purple-100"
+              className="mt-0.5 w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-100"
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-1">
@@ -140,7 +140,7 @@ export default function PrivacyPage() {
               type="checkbox"
               checked={agreeMatching}
               onChange={(e) => setAgreeMatching(e.target.checked)}
-              className="mt-0.5 w-5 h-5 text-[color:var(--easy-purple)] rounded focus:ring-2 focus:ring-purple-100"
+              className="mt-0.5 w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-100"
             />
             <div className="flex-1">
               <div className="font-medium text-gray-900 flex items-center gap-2">
@@ -168,7 +168,7 @@ export default function PrivacyPage() {
           disabled={!canContinue}
           className={`w-full py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

@@ -47,21 +47,21 @@ export default function HomeLifestylePage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-3/6 transition-all" />
+            <div className="h-full bg-orange-600 w-3/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {t('onboarding.homeLifestyle.title')}
           </h1>
           <p className="text-gray-600">
@@ -73,7 +73,7 @@ export default function HomeLifestylePage() {
         <div className="space-y-6">
 
           {/* Cleanliness preference */}
-          <div className="p-4 rounded-xl bg-purple-50 border border-purple-200">
+          <div className="p-4 rounded-xl bg-orange-50 border border-orange-200">
             <label className="block text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-purple-600" />
@@ -102,7 +102,7 @@ export default function HomeLifestylePage() {
             <select
               value={guestFrequency}
               onChange={(e) => setGuestFrequency(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="never">{t('onboarding.homeLifestyle.never')}</option>
@@ -123,7 +123,7 @@ export default function HomeLifestylePage() {
             <select
               value={musicHabits}
               onChange={(e) => setMusicHabits(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="quiet">{t('onboarding.homeLifestyle.quietEnvironment')}</option>
@@ -145,7 +145,7 @@ export default function HomeLifestylePage() {
               <button
                 onClick={() => setHasPets(!hasPets)}
                 className={`relative w-14 h-8 rounded-full transition ${
-                  hasPets ? 'bg-[color:var(--easy-purple)]' : 'bg-gray-300'
+                  hasPets ? 'bg-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
@@ -161,7 +161,7 @@ export default function HomeLifestylePage() {
                 type="text"
                 value={petType}
                 onChange={(e) => setPetType(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
                 placeholder={t('onboarding.homeLifestyle.petTypePlaceholder')}
               />
             )}
@@ -178,7 +178,7 @@ export default function HomeLifestylePage() {
             <select
               value={cookingFrequency}
               onChange={(e) => setCookingFrequency(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="never">{t('onboarding.homeLifestyle.neverRarely')}</option>
@@ -195,7 +195,7 @@ export default function HomeLifestylePage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

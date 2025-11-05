@@ -145,7 +145,7 @@ export default function BasicInfoPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loadingInfo}</p>
         </div>
       </div>
@@ -164,21 +164,21 @@ export default function BasicInfoPage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-1/6 transition-all" />
+            <div className="h-full bg-orange-600 w-1/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {onboarding.basicInfo.title}
           </h1>
           <p className="text-gray-600">
@@ -190,10 +190,10 @@ export default function BasicInfoPage() {
 
         {/* Dependent Profile Badge */}
         {profileType === 'dependent' && (
-          <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-xl flex items-center gap-3">
-            <Users className="w-5 h-5 text-[color:var(--easy-purple)]" />
+          <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl flex items-center gap-3">
+            <Users className="w-5 h-5 text-orange-600" />
             <div>
-              <p className="text-sm font-medium text-[color:var(--easy-purple)]">
+              <p className="text-sm font-medium text-orange-600">
                 {onboarding.basicInfo.dependentBadgeTitle}
               </p>
               <p className="text-xs text-gray-600">
@@ -216,7 +216,7 @@ export default function BasicInfoPage() {
                 type="text"
                 value={profileName}
                 onChange={(e) => setProfileName(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
                 placeholder={onboarding.basicInfo.profileNamePlaceholder}
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -244,7 +244,7 @@ export default function BasicInfoPage() {
                     onClick={() => setRelationship(option.value as any)}
                     className={`p-4 rounded-xl border-2 transition text-left ${
                       relationship === option.value
-                        ? 'border-[color:var(--easy-purple)] bg-purple-50'
+                        ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -267,7 +267,7 @@ export default function BasicInfoPage() {
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={onboarding.basicInfo.firstNamePlaceholder}
             />
           </div>
@@ -281,7 +281,7 @@ export default function BasicInfoPage() {
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={onboarding.basicInfo.lastNamePlaceholder}
             />
           </div>
@@ -295,7 +295,7 @@ export default function BasicInfoPage() {
               type="date"
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={onboarding.basicInfo.dateOfBirthPlaceholder}
             />
           </div>
@@ -310,7 +310,7 @@ export default function BasicInfoPage() {
               type="text"
               value={nationality}
               onChange={(e) => setNationality(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={onboarding.basicInfo.nationalityPlaceholder}
             />
           </div>
@@ -335,7 +335,7 @@ export default function BasicInfoPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

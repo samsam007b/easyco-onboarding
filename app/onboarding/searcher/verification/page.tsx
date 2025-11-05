@@ -55,7 +55,7 @@ export default function VerificationPage() {
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
@@ -68,7 +68,7 @@ export default function VerificationPage() {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {t('onboarding.verification.title')}
           </h1>
           <p className="text-gray-600">
@@ -105,7 +105,7 @@ export default function VerificationPage() {
               />
               <label
                 htmlFor="id-upload"
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-[color:var(--easy-purple)] text-white font-medium cursor-pointer hover:opacity-90 transition"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-orange-600 text-white font-medium cursor-pointer hover:opacity-90 transition"
               >
                 <Upload className="w-4 h-4" />
                 {idDocument ? t('onboarding.verification.changeId') : t('onboarding.verification.uploadId')}
@@ -161,7 +161,7 @@ export default function VerificationPage() {
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition mb-3"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition mb-3"
               placeholder="+33 6 12 34 56 78"
             />
 
@@ -202,7 +202,7 @@ export default function VerificationPage() {
         <div className="space-y-3 mt-12">
           <button
             onClick={handleSaveProgress}
-            className="w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+            className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-orange-600 hover:to-orange-500 transition shadow-md hover:shadow-lg"
           >
             {t('onboarding.verification.saveProgress')}
           </button>

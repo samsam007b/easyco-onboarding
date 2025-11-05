@@ -42,21 +42,21 @@ export default function SocialVibePage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-4/6 transition-all" />
+            <div className="h-full bg-orange-600 w-4/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {t('onboarding.socialVibe.title')}
           </h1>
           <p className="text-gray-600">
@@ -78,7 +78,7 @@ export default function SocialVibePage() {
             <select
               value={socialEnergy}
               onChange={(e) => setSocialEnergy(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="introvert">{t('onboarding.socialVibe.introvert')}</option>
@@ -99,7 +99,7 @@ export default function SocialVibePage() {
             <select
               value={opennessToSharing}
               onChange={(e) => setOpennessToSharing(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="private">{t('onboarding.socialVibe.private')}</option>
@@ -120,7 +120,7 @@ export default function SocialVibePage() {
             <select
               value={communicationStyle}
               onChange={(e) => setCommunicationStyle(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="direct">{t('onboarding.socialVibe.directStraightforward')}</option>
@@ -141,7 +141,7 @@ export default function SocialVibePage() {
             <select
               value={culturalOpenness}
               onChange={(e) => setCulturalOpenness(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               <option value="prefer-similar">{t('onboarding.socialVibe.preferSimilar')}</option>
@@ -158,7 +158,7 @@ export default function SocialVibePage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

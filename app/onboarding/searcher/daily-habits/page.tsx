@@ -46,21 +46,21 @@ export default function DailyHabitsPage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-2/6 transition-all" />
+            <div className="h-full bg-orange-600 w-2/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {onboarding.dailyHabits.title}
           </h1>
           <p className="text-gray-600">
@@ -82,7 +82,7 @@ export default function DailyHabitsPage() {
             <select
               value={wakeUpTime}
               onChange={(e) => setWakeUpTime(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{onboarding.dailyHabits.select}</option>
               <option value="early">{onboarding.dailyHabits.early5to7}</option>
@@ -102,7 +102,7 @@ export default function DailyHabitsPage() {
             <select
               value={sleepTime}
               onChange={(e) => setSleepTime(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{onboarding.dailyHabits.select}</option>
               <option value="early">{onboarding.dailyHabits.early9to10}</option>
@@ -122,7 +122,7 @@ export default function DailyHabitsPage() {
             <select
               value={workSchedule}
               onChange={(e) => setWorkSchedule(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{onboarding.dailyHabits.select}</option>
               <option value="traditional">{onboarding.dailyHabits.traditional9to5}</option>
@@ -143,7 +143,7 @@ export default function DailyHabitsPage() {
             <select
               value={sportFrequency}
               onChange={(e) => setSportFrequency(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{onboarding.dailyHabits.select}</option>
               <option value="daily">{onboarding.dailyHabits.daily}</option>
@@ -164,7 +164,7 @@ export default function DailyHabitsPage() {
             <button
               onClick={() => setIsSmoker(!isSmoker)}
               className={`relative w-14 h-8 rounded-full transition ${
-                isSmoker ? 'bg-[color:var(--easy-purple)]' : 'bg-gray-300'
+                isSmoker ? 'bg-orange-600' : 'bg-gray-300'
               }`}
             >
               <div
@@ -182,7 +182,7 @@ export default function DailyHabitsPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

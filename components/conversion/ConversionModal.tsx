@@ -32,8 +32,8 @@ const modalConfig = {
   },
   application: {
     icon: Home,
-    iconColor: 'text-[#4A148C]',
-    iconBg: 'bg-purple-50',
+    iconColor: 'text-orange-600',
+    iconBg: 'bg-orange-50',
     title: 'Prêt à postuler ? 🏠',
     description: 'Crée ton compte en 2 minutes pour postuler et augmenter tes chances de trouver la coloc parfaite.',
     benefits: [
@@ -47,8 +47,8 @@ const modalConfig = {
   },
   exitIntent: {
     icon: Sparkles,
-    iconColor: 'text-yellow-500',
-    iconBg: 'bg-yellow-50',
+    iconColor: 'text-orange-500',
+    iconBg: 'bg-orange-50',
     title: 'Attends ! Ne pars pas sans ton bonus 🎁',
     description: 'Inscris-toi maintenant et reçois des recommandations personnalisées basées sur les propriétés que tu as consultées.',
     benefits: [
@@ -132,7 +132,7 @@ export function ConversionModal({ isOpen, onClose, type, onSignup }: ConversionM
         <div className="space-y-3">
           <Button
             onClick={handleSignup}
-            className="w-full bg-gradient-to-r from-[#4A148C] to-[#7B1FA2] hover:from-[#6A1B9A] hover:to-[#8E24AA] text-white rounded-2xl h-12 text-base font-semibold shadow-lg shadow-purple-500/30"
+            className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-orange-600 hover:to-orange-500 text-white rounded-2xl h-12 text-base font-semibold shadow-lg shadow-orange-500/30"
           >
             {config.ctaText}
             <ArrowRight className="ml-2 w-5 h-5" />

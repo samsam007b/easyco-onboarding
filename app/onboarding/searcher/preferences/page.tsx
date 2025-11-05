@@ -44,14 +44,14 @@ export default function PreferencesPage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-full transition-all" />
+            <div className="h-full bg-orange-600 w-full transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
@@ -62,7 +62,7 @@ export default function PreferencesPage() {
             <Settings className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-1">
+            <h1 className="text-2xl font-bold text-orange-600 mb-1">
               {t('onboarding.preferences.title')}
             </h1>
             <p className="text-gray-600">
@@ -127,7 +127,7 @@ export default function PreferencesPage() {
               type="text"
               value={preferredDistrict}
               onChange={(e) => setPreferredDistrict(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={t('onboarding.preferences.districtPlaceholder')}
             />
             <p className="text-sm text-gray-500 mt-1">
@@ -150,7 +150,7 @@ export default function PreferencesPage() {
               <button
                 onClick={() => setOpenToLivingWithPets(!openToLivingWithPets)}
                 className={`relative w-14 h-8 rounded-full transition ${
-                  openToLivingWithPets ? 'bg-[color:var(--easy-purple)]' : 'bg-gray-300'
+                  openToLivingWithPets ? 'bg-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
@@ -172,7 +172,7 @@ export default function PreferencesPage() {
               <button
                 onClick={() => setAcceptSmokersInHouse(!acceptSmokersInHouse)}
                 className={`relative w-14 h-8 rounded-full transition ${
-                  acceptSmokersInHouse ? 'bg-[color:var(--easy-purple)]' : 'bg-gray-300'
+                  acceptSmokersInHouse ? 'bg-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
@@ -191,7 +191,7 @@ export default function PreferencesPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

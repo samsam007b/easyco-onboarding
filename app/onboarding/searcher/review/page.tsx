@@ -272,17 +272,17 @@ export default function ReviewPage() {
           <LanguageSwitcher />
         </div>
 
-        <button onClick={() => router.back()} className="mb-6 text-[color:var(--easy-purple)]">
+        <button onClick={() => router.back()} className="mb-6 text-orange-600">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[color:var(--easy-purple)] mb-2">{t('onboarding.review.title')}</h1>
+          <h1 className="text-3xl font-bold text-orange-600 mb-2">{t('onboarding.review.title')}</h1>
           <p className="text-gray-600">{t('onboarding.review.subtitle')}</p>
         </div>
         <div className="space-y-4 mb-8">
           {data.basicInfo && Object.keys(data.basicInfo).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">{t('onboarding.review.basicInfoSection')}</h2>
+              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.basicInfoSection')}</h2>
               <dl className="space-y-2 text-sm">
                 {data.basicInfo.firstName && <div className="flex justify-between"><dt>{t('onboarding.review.firstNameLabel')}</dt><dd className="font-medium">{data.basicInfo.firstName}</dd></div>}
                 {data.basicInfo.lastName && <div className="flex justify-between"><dt>{t('onboarding.review.lastNameLabel')}</dt><dd className="font-medium">{data.basicInfo.lastName}</dd></div>}
@@ -294,7 +294,7 @@ export default function ReviewPage() {
           )}
           {data.dailyHabits && Object.keys(data.dailyHabits).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">{t('onboarding.review.dailyHabitsSection')}</h2>
+              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.dailyHabitsSection')}</h2>
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between"><dt>{t('onboarding.review.wakeUpLabel')}</dt><dd className="font-medium capitalize">{data.dailyHabits.wakeUpTime}</dd></div>
                 <div className="flex justify-between"><dt>{t('onboarding.review.sleepLabel')}</dt><dd className="font-medium capitalize">{data.dailyHabits.sleepTime}</dd></div>
@@ -304,7 +304,7 @@ export default function ReviewPage() {
           )}
           {data.idealColiving && Object.keys(data.idealColiving).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">{t('onboarding.review.idealColivingSection')}</h2>
+              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.idealColivingSection')}</h2>
               <dl className="space-y-2 text-sm">
                 {data.idealColiving.colivingSize && <div className="flex justify-between"><dt>{t('onboarding.review.colivingSizeLabel')}</dt><dd className="font-medium capitalize">{data.idealColiving.colivingSize}</dd></div>}
                 {data.idealColiving.genderMix && <div className="flex justify-between"><dt>{t('onboarding.review.genderMixLabel')}</dt><dd className="font-medium capitalize">{data.idealColiving.genderMix.replace(/-/g, ' ')}</dd></div>}
@@ -315,7 +315,7 @@ export default function ReviewPage() {
           )}
           {data.preferences && Object.keys(data.preferences).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">{t('onboarding.review.preferencesSection')}</h2>
+              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.preferencesSection')}</h2>
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between"><dt>{t('onboarding.review.budgetLabel')}</dt><dd className="font-medium">€{data.preferences.budgetMin} - €{data.preferences.budgetMax}</dd></div>
                 <div className="flex justify-between"><dt>{t('onboarding.review.districtLabel')}</dt><dd className="font-medium">{data.preferences.preferredDistrict || t('onboarding.review.any')}</dd></div>
@@ -324,7 +324,7 @@ export default function ReviewPage() {
           )}
           {data.verification && data.verification.phoneNumber && (
             <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-3">{t('onboarding.review.verificationSection')}</h2>
+              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.verificationSection')}</h2>
               <dl className="space-y-2 text-sm">
                 {data.verification.phoneNumber && <div className="flex justify-between"><dt>{t('onboarding.review.phoneLabel')}</dt><dd className="font-medium">{data.verification.phoneNumber}</dd></div>}
                 {data.verification.idDocument && <div className="flex justify-between"><dt>{t('onboarding.review.idDocumentLabel')}</dt><dd className="font-medium">{t('onboarding.review.uploaded')}</dd></div>}
@@ -332,7 +332,7 @@ export default function ReviewPage() {
             </div>
           )}
         </div>
-        <button onClick={handleSubmit} disabled={isSubmitting} className="w-full py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
+        <button onClick={handleSubmit} disabled={isSubmitting} className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-orange-600 hover:to-orange-500 disabled:opacity-50 flex items-center justify-center gap-2">
           {isSubmitting ? (<><Loader2 className="w-5 h-5 animate-spin" />{t('onboarding.review.submitting')}</>) : (<><CheckCircle2 className="w-5 h-5" />{t('onboarding.review.submitMyProfile')}</>)}
         </button>
       </div>

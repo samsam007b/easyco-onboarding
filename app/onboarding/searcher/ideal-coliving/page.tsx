@@ -59,21 +59,21 @@ export default function IdealColivingPage() {
         {/* Progress bar */}
         <div className="mb-6">
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] w-5/6 transition-all" />
+            <div className="h-full bg-orange-600 w-5/6 transition-all" />
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
+          className="mb-6 text-orange-600 hover:opacity-70 transition"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
+          <h1 className="text-2xl font-bold text-orange-600 mb-2">
             {t('onboarding.idealColiving.title')}
           </h1>
           <p className="text-gray-600">
@@ -99,7 +99,7 @@ export default function IdealColivingPage() {
                   onClick={() => setColivingSize(size.value)}
                   className={`p-4 rounded-xl border-2 transition-all text-center ${
                     colivingSize === size.value
-                      ? 'border-[color:var(--easy-purple)] bg-purple-50'
+                      ? 'border-orange-500 bg-orange-50'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
@@ -107,7 +107,7 @@ export default function IdealColivingPage() {
                     <IconBadge icon={size.icon} variant={size.variant} size="lg" />
                   </div>
                   <div className={`font-semibold text-sm mb-1 ${
-                    colivingSize === size.value ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
+                    colivingSize === size.value ? 'text-orange-600' : 'text-gray-900'
                   }`}>
                     {size.label}
                   </div>
@@ -128,7 +128,7 @@ export default function IdealColivingPage() {
             <select
               value={genderMix}
               onChange={(e) => setGenderMix(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
             >
               <option value="">{t('onboarding.dailyHabits.select')}</option>
               {genderMixOptions.map((option) => (
@@ -150,7 +150,7 @@ export default function IdealColivingPage() {
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-gray-600">{t('onboarding.idealColiving.minAge')}</span>
-                <span className="text-lg font-bold text-[color:var(--easy-purple)]">{minAge}</span>
+                <span className="text-lg font-bold text-orange-600">{minAge}</span>
               </div>
               <input
                 type="range"
@@ -158,7 +158,7 @@ export default function IdealColivingPage() {
                 max="65"
                 value={minAge}
                 onChange={(e) => setMinAge(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[color:var(--easy-purple)]"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
               />
             </div>
 
@@ -166,7 +166,7 @@ export default function IdealColivingPage() {
             <div className="mb-2">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-gray-600">{t('onboarding.idealColiving.maxAge')}</span>
-                <span className="text-lg font-bold text-[color:var(--easy-purple)]">{maxAge}</span>
+                <span className="text-lg font-bold text-orange-600">{maxAge}</span>
               </div>
               <input
                 type="range"
@@ -174,7 +174,7 @@ export default function IdealColivingPage() {
                 max="65"
                 value={maxAge}
                 onChange={(e) => setMaxAge(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[color:var(--easy-purple)]"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
               />
             </div>
 
@@ -191,7 +191,7 @@ export default function IdealColivingPage() {
             </label>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">{t('onboarding.idealColiving.needPrivacy')}</span>
-              <span className="text-lg font-bold text-[color:var(--easy-purple)]">{sharedSpaceImportance}/10</span>
+              <span className="text-lg font-bold text-orange-600">{sharedSpaceImportance}/10</span>
               <span className="text-sm text-gray-600">{t('onboarding.idealColiving.loveCommunal')}</span>
             </div>
             <input
@@ -200,7 +200,7 @@ export default function IdealColivingPage() {
               max="10"
               value={sharedSpaceImportance}
               onChange={(e) => setSharedSpaceImportance(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[color:var(--easy-purple)]"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
             />
             <p className="text-sm text-gray-500 mt-3">
               {t('onboarding.idealColiving.sharedSpaceHelp')}
@@ -215,7 +215,7 @@ export default function IdealColivingPage() {
           disabled={!canContinue}
           className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
             canContinue
-              ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
+              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-orange-600 hover:to-orange-500 hover:shadow-lg'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

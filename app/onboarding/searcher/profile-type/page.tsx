@@ -85,7 +85,7 @@ export default function ProfileTypePage() {
               onClick={() => setProfileType('self')}
               className={`w-full p-6 rounded-2xl border-2 transition-all text-left hover:shadow-md ${
                 profileType === 'self'
-                  ? 'border-[#4A148C] bg-purple-50 shadow-md'
+                  ? 'border-[#4A148C] bg-orange-50 shadow-md'
                   : 'border-gray-300 hover:border-gray-400'
               }`}
             >
@@ -119,7 +119,7 @@ export default function ProfileTypePage() {
               onClick={() => setProfileType('dependent')}
               className={`w-full p-6 rounded-2xl border-2 transition-all text-left hover:shadow-md ${
                 profileType === 'dependent'
-                  ? 'border-[#4A148C] bg-purple-50 shadow-md'
+                  ? 'border-[#4A148C] bg-orange-50 shadow-md'
                   : 'border-gray-300 hover:border-gray-400'
               }`}
             >
