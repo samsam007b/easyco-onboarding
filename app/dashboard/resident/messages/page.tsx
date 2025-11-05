@@ -104,7 +104,7 @@ export default function MessagesPage() {
           const unreadCount = unreadData?.find((u: any) => u.conversation_id === conv.id)?.unread_count || 0;
 
           // For direct conversations, get the other user
-          let otherUser = null;
+          let otherUser: Conversation['other_user'] = undefined;
           let participantsCount = 0;
 
           if (conv.type === 'direct') {

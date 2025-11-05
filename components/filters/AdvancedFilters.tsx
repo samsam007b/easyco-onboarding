@@ -6,13 +6,13 @@ import { Badge } from '@/components/ui/badge';
 import { RangeSlider } from '@/components/ui/range-slider';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from '@/components/ui/select';
 import {
   Accordion,
   AccordionContent,
@@ -355,57 +355,49 @@ export function AdvancedFilters({
                   <div>
                     <Label className="text-sm font-medium mb-2 block">Chambres (min-max)</Label>
                     <div className="flex gap-2">
-                      <Select
+                      <select
                         value={filters.bedrooms.min?.toString() || 'any'}
-                        onValueChange={(value) =>
+                        onChange={(e) =>
                           updateFilters({
                             bedrooms: {
                               ...filters.bedrooms,
-                              min: value === 'any' ? null : parseInt(value),
+                              min: e.target.value === 'any' ? null : parseInt(e.target.value),
                             },
                           })
                         }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Peu importe</SelectItem>
-                          {[1, 2, 3, 4, 5, 6].map((num) => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num}+
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        <option value="any">Peu importe</option>
+                        {[1, 2, 3, 4, 5, 6].map((num) => (
+                          <option key={num} value={num.toString()}>
+                            {num}+
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
                   <div>
                     <Label className="text-sm font-medium mb-2 block">Salles de bain (min)</Label>
-                    <Select
+                    <select
                       value={filters.bathrooms.min?.toString() || 'any'}
-                      onValueChange={(value) =>
+                      onChange={(e) =>
                         updateFilters({
                           bathrooms: {
                             ...filters.bathrooms,
-                            min: value === 'any' ? null : parseInt(value),
+                            min: e.target.value === 'any' ? null : parseInt(e.target.value),
                           },
                         })
                       }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="any">Peu importe</SelectItem>
-                        {[1, 2, 3, 4].map((num) => (
-                          <SelectItem key={num} value={num.toString()}>
-                            {num}+
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="any">Peu importe</option>
+                      {[1, 2, 3, 4].map((num) => (
+                        <option key={num} value={num.toString()}>
+                          {num}+
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="flex items-center justify-between">
