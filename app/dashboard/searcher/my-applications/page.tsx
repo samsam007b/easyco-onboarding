@@ -22,6 +22,8 @@ import {
   MessageSquare,
   Eye,
   Trash2,
+  FileText,
+  Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -130,10 +132,17 @@ export default function MyApplicationsPage() {
 
   return (
     <PageContainer center>
-      <PageHeader
-        title="My Applications"
-        description="Track your property applications"
-      />
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+            <FileText className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Mes Candidatures</h1>
+            <p className="text-gray-600">Suis l'état de tes candidatures</p>
+          </div>
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -169,52 +178,65 @@ export default function MyApplicationsPage() {
           variant={filterStatus === 'all' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('all')}
           size="sm"
+          className={filterStatus === 'all' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          All ({stats.total})
+          Toutes ({stats.total})
         </Button>
         <Button
           variant={filterStatus === 'pending' || filterStatus === 'reviewing' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('pending')}
           size="sm"
+          className={filterStatus === 'pending' || filterStatus === 'reviewing' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Pending ({stats.pending})
+          En attente ({stats.pending})
         </Button>
         <Button
           variant={filterStatus === 'approved' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('approved')}
           size="sm"
+          className={filterStatus === 'approved' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Approved ({stats.approved})
+          Approuvées ({stats.approved})
         </Button>
         <Button
           variant={filterStatus === 'rejected' ? 'default' : 'outline'}
           onClick={() => setFilterStatus('rejected')}
           size="sm"
+          className={filterStatus === 'rejected' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Rejected ({stats.rejected})
+          Rejetées ({stats.rejected})
         </Button>
       </div>
 
       {/* Applications List */}
       {filteredApplications.length === 0 ? (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <Home className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {filterStatus === 'all' ? 'No applications yet' : `No ${filterStatus} applications`}
+        <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+
+          <div className="relative flex flex-col items-center justify-center py-20 px-8">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
+              <FileText className="w-12 h-12 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-3">
+              {filterStatus === 'all' ? 'Aucune candidature pour le moment' : `Aucune candidature ${filterStatus === 'pending' ? 'en attente' : filterStatus}`}
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-lg text-gray-600 text-center max-w-md mb-8">
               {filterStatus === 'all'
-                ? 'Start browsing properties and apply to the ones you like'
-                : 'Try selecting a different filter'}
+                ? 'Commence à explorer les propriétés et postule à celles qui te plaisent'
+                : 'Essaie de sélectionner un autre filtre'}
             </p>
             {filterStatus === 'all' && (
-              <Button onClick={() => router.push('/properties/browse')}>
-                Browse Properties
+              <Button
+                onClick={() => router.push('/properties/browse')}
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                Explorer les propriétés
               </Button>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           {filteredApplications.map((application) => (
