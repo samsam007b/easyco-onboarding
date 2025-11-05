@@ -39,7 +39,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="header-gray-warm text-white shadow-lg">
+    <footer className="bg-white border-t border-gray-200 shadow-lg">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
@@ -50,27 +50,27 @@ export default function Footer() {
                 <span className="text-white font-bold text-xl">E</span>
               </div>
               <span className="text-2xl font-bold">
-                <span className="text-purple-400">Easy</span>
-                <span className="text-yellow-400">Co</span>
+                <span className="text-purple-600">Easy</span>
+                <span className="text-yellow-600">Co</span>
               </span>
             </div>
-            <p className="text-white/70 mb-4 leading-relaxed">
+            <p className="text-gray-600 mb-4 leading-relaxed">
               La plateforme moderne pour trouver ta colocation idéale à Bruxelles.
               Matching intelligent, groupes de recherche et gestion simplifiée.
             </p>
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm text-white/80">
-                <MapPin className="w-4 h-4 text-white/90" />
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <MapPin className="w-4 h-4 text-gray-500" />
                 <span>Bruxelles, Belgique</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-white/80">
-                <Mail className="w-4 h-4 text-white/90" />
-                <a href="mailto:contact@easyco.be" className="hover:text-white transition">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Mail className="w-4 h-4 text-gray-500" />
+                <a href="mailto:contact@easyco.be" className="hover:text-purple-600 transition">
                   contact@easyco.be
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-sm text-white/80">
-                <Phone className="w-4 h-4 text-white/90" />
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Phone className="w-4 h-4 text-gray-500" />
                 <span>+32 2 123 45 67</span>
               </div>
             </div>
@@ -78,13 +78,13 @@ export default function Footer() {
 
           {/* Company Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Entreprise</h3>
+            <h3 className="text-gray-900 font-semibold mb-4">Entreprise</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-white transition text-sm"
+                    className="text-gray-600 hover:text-purple-600 transition text-sm"
                   >
                     {link.label}
                   </Link>
@@ -95,13 +95,13 @@ export default function Footer() {
 
           {/* Searchers Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Chercheurs</h3>
+            <h3 className="text-gray-900 font-semibold mb-4">Chercheurs</h3>
             <ul className="space-y-2">
               {footerLinks.searchers.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-white transition text-sm"
+                    className="text-gray-600 hover:text-purple-600 transition text-sm"
                   >
                     {link.label}
                   </Link>
@@ -112,13 +112,13 @@ export default function Footer() {
 
           {/* Owners Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Propriétaires</h3>
+            <h3 className="text-gray-900 font-semibold mb-4">Propriétaires</h3>
             <ul className="space-y-2">
               {footerLinks.owners.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-white transition text-sm"
+                    className="text-gray-600 hover:text-purple-600 transition text-sm"
                   >
                     {link.label}
                   </Link>
@@ -129,13 +129,13 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Légal</h3>
+            <h3 className="text-gray-900 font-semibold mb-4">Légal</h3>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-white transition text-sm"
+                    className="text-gray-600 hover:text-purple-600 transition text-sm"
                   >
                     {link.label}
                   </Link>
@@ -146,21 +146,21 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="border-t border-white/20 pt-8 mb-8">
+        <div className="border-t border-gray-200 pt-8 mb-8">
           <div className="max-w-md">
-            <h3 className="text-white font-semibold mb-2">
+            <h3 className="text-gray-900 font-semibold mb-2">
               Reste informé 📬
             </h3>
-            <p className="text-white/70 text-sm mb-4">
+            <p className="text-gray-600 text-sm mb-4">
               Reçois nos dernières annonces et conseils directement par email
             </p>
             <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="ton@email.com"
-                className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition"
+                className="flex-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition"
               />
-              <button className="px-6 py-2 bg-white/20 hover:bg-white/30 text-white font-semibold rounded-lg transition">
+              <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg">
                 S'abonner
               </button>
             </div>
@@ -168,8 +168,8 @@ export default function Footer() {
         </div>
 
         {/* Social Links */}
-        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/70 text-sm">
+        <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-600 text-sm">
             © {currentYear} EasyCo. Tous droits réservés.
           </p>
           <div className="flex items-center gap-4">
@@ -179,7 +179,7 @@ export default function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition"
+                className="w-10 h-10 bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-600 rounded-lg flex items-center justify-center transition"
                 aria-label={social.label}
               >
                 <social.icon className="w-5 h-5" />
@@ -190,9 +190,9 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="bg-black/20 py-4">
+      <div className="bg-gray-50 border-t border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/60">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
             <div className="flex items-center gap-4">
               <span>🇧🇪 Belgique</span>
               <span>•</span>
