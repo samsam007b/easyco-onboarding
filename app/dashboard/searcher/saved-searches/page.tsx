@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Search, Bell, BellOff, Trash2, Play, Edit, MapPin, Home, DollarSign } from 'lucide-react';
+import { ArrowLeft, Search, Bell, BellOff, Trash2, Play, Edit, MapPin, Home, DollarSign, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -181,7 +181,9 @@ export default function SavedSearchesPage() {
 
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <Search className="w-8 h-8 text-orange-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                  <Search className="w-6 h-6 text-white" />
+                </div>
                 Mes Recherches Sauvegardées
               </h1>
               <p className="text-gray-600 mt-1">
@@ -192,7 +194,7 @@ export default function SavedSearchesPage() {
 
           <Button
             onClick={() => router.push('/properties/browse')}
-            className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white gap-2"
+            className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] gap-2"
           >
             <Search className="w-4 h-4" />
             Nouvelle Recherche
@@ -201,25 +203,29 @@ export default function SavedSearchesPage() {
 
         {/* Empty State */}
         {savedSearches.length === 0 ? (
-          <Card className="border-2 border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-                <Search className="w-10 h-10 text-orange-600" />
+          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
+                <Search className="w-12 h-12 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-3xl font-bold text-gray-900 mb-3">
                 Aucune recherche sauvegardée
               </h3>
-              <p className="text-gray-600 text-center max-w-md mb-6">
+              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
                 Sauvegarde tes recherches pour recevoir des alertes quand de nouvelles propriétés correspondent à tes critères
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white"
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
               >
+                <Sparkles className="w-5 h-5 mr-2" />
                 Créer une recherche
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ) : (
           <div className="space-y-4">
             {savedSearches.map((search) => (
@@ -274,7 +280,7 @@ export default function SavedSearchesPage() {
 
                 <CardContent>
                   <Link href={buildSearchUrl(search.filters)}>
-                    <Button className="w-full gap-2 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white">
+                    <Button className="w-full gap-2 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]">
                       <Play className="w-4 h-4" />
                       Lancer cette recherche
                     </Button>

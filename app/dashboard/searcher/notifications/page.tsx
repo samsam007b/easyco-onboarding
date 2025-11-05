@@ -8,7 +8,7 @@ import { PropertyNotification } from '@/types/alerts.types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Bell, Check, Trash2, Filter, ArrowLeft } from 'lucide-react';
+import { Bell, Check, Trash2, Filter, ArrowLeft, Home, DollarSign, FileText, Heart, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -90,15 +90,15 @@ export default function NotificationsPage() {
   const getNotificationIcon = (type: PropertyNotification['type']) => {
     switch (type) {
       case 'new_property':
-        return '🏠';
+        return Home;
       case 'price_drop':
-        return '💰';
+        return DollarSign;
       case 'status_change':
-        return '📝';
+        return FileText;
       case 'new_match':
-        return '💖';
+        return Heart;
       default:
-        return '🔔';
+        return Bell;
     }
   };
 
@@ -130,7 +130,7 @@ export default function NotificationsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-yellow-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-gray-600">Chargement des notifications...</p>
           </div>
         </div>
@@ -153,7 +153,12 @@ export default function NotificationsPage() {
 
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Notifications</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                <Bell className="w-6 h-6 text-white" />
+              </div>
+              Notifications
+            </h1>
             <p className="text-gray-600">
               {unreadCount > 0 ? (
                 <>{unreadCount} notification{unreadCount > 1 ? 's' : ''} non lue{unreadCount > 1 ? 's' : ''}</>
@@ -167,7 +172,7 @@ export default function NotificationsPage() {
             <Button
               onClick={handleMarkAllAsRead}
               variant="outline"
-              className="text-blue-600 border-blue-300 hover:bg-blue-50"
+              className="text-orange-600 border-orange-300 hover:bg-orange-50"
             >
               <Check className="w-4 h-4 mr-2" />
               Tout marquer comme lu
@@ -216,39 +221,50 @@ export default function NotificationsPage() {
       {/* Notifications List */}
       <div className="space-y-3">
         {filteredNotifications.length === 0 ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
+                <Bell className="w-12 h-12 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-3">
                 {filter === 'unread' ? 'Aucune notification non lue' : 'Aucune notification'}
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
                 {filter === 'unread'
-                  ? 'Tu es à jour ! 🎉'
-                  : 'Tu recevras des notifications quand de nouvelles propriétés correspondent à tes alertes.'}
+                  ? 'Tu es à jour !'
+                  : 'Tu recevras des notifications quand de nouvelles propriétés correspondent à tes alertes'}
               </p>
-              <Button onClick={() => router.push('/dashboard/searcher/alerts')}>
-                <Bell className="w-4 h-4 mr-2" />
+              <Button
+                onClick={() => router.push('/dashboard/searcher/alerts')}
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
                 Gérer mes alertes
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ) : (
           filteredNotifications.map((notification) => {
             const badge = getNotificationBadge(notification.type);
+            const IconComponent = getNotificationIcon(notification.type);
             return (
               <Card
                 key={notification.id}
                 className={`cursor-pointer transition-all hover:shadow-md ${
-                  !notification.is_read ? 'bg-blue-50 border-blue-200' : ''
+                  !notification.is_read ? 'bg-orange-50 border-orange-200' : ''
                 }`}
                 onClick={() => handleNotificationClick(notification)}
               >
                 <CardContent className="p-4">
                   <div className="flex gap-4">
                     {/* Icon */}
-                    <div className="text-3xl flex-shrink-0">
-                      {getNotificationIcon(notification.type)}
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
                     </div>
 
                     {/* Content */}
@@ -259,7 +275,7 @@ export default function NotificationsPage() {
                             {notification.title}
                           </h3>
                           {!notification.is_read && (
-                            <div className="w-2 h-2 bg-blue-600 rounded-full" />
+                            <div className="w-2 h-2 bg-orange-600 rounded-full" />
                           )}
                         </div>
                         <Badge className={badge.color}>
