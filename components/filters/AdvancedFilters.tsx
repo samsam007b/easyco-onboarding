@@ -290,7 +290,7 @@ export function AdvancedFilters({
                     {CITIES.map((city) => (
                       <Badge
                         key={city}
-                        variant={filters.cities.includes(city) ? 'default' : 'outline'}
+                        variant={filters.cities.includes(city) ? 'default' : 'secondary'}
                         className={`cursor-pointer transition ${
                           filters.cities.includes(city)
                             ? 'bg-orange-600 hover:bg-orange-700'
@@ -437,7 +437,7 @@ export function AdvancedFilters({
                       ].map((option) => (
                         <Badge
                           key={option.value}
-                          variant={filters.smoking === option.value ? 'default' : 'outline'}
+                          variant={filters.smoking === option.value ? 'default' : 'secondary'}
                           className={`cursor-pointer flex-1 justify-center ${
                             filters.smoking === option.value
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -467,7 +467,7 @@ export function AdvancedFilters({
                       ].map((option) => (
                         <Badge
                           key={option.value}
-                          variant={filters.pets === option.value ? 'default' : 'outline'}
+                          variant={filters.pets === option.value ? 'default' : 'secondary'}
                           className={`cursor-pointer flex-1 justify-center ${
                             filters.pets === option.value
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -515,7 +515,7 @@ export function AdvancedFilters({
                       {SOCIAL_LEVELS.map((level) => (
                         <Badge
                           key={level.value}
-                          variant={filters.socialLevel.includes(level.value) ? 'default' : 'outline'}
+                          variant={filters.socialLevel.includes(level.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.socialLevel.includes(level.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -603,7 +603,7 @@ export function AdvancedFilters({
                       {WORK_SCHEDULES.map((schedule) => (
                         <Badge
                           key={schedule.value}
-                          variant={filters.workSchedule.includes(schedule.value) ? 'default' : 'outline'}
+                          variant={filters.workSchedule.includes(schedule.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.workSchedule.includes(schedule.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -657,7 +657,7 @@ export function AdvancedFilters({
                       {GENDER_MIX.map((gender) => (
                         <Badge
                           key={gender.value}
-                          variant={filters.genderMix.includes(gender.value) ? 'default' : 'outline'}
+                          variant={filters.genderMix.includes(gender.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.genderMix.includes(gender.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -682,7 +682,7 @@ export function AdvancedFilters({
                       {OCCUPATION_TYPES.map((occupation) => (
                         <Badge
                           key={occupation.value}
-                          variant={filters.occupationTypes.includes(occupation.value) ? 'default' : 'outline'}
+                          variant={filters.occupationTypes.includes(occupation.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.occupationTypes.includes(occupation.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -720,7 +720,7 @@ export function AdvancedFilters({
                       {GUEST_FREQUENCY.map((freq) => (
                         <Badge
                           key={freq.value}
-                          variant={filters.guestFrequency.includes(freq.value) ? 'default' : 'outline'}
+                          variant={filters.guestFrequency.includes(freq.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.guestFrequency.includes(freq.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -748,7 +748,7 @@ export function AdvancedFilters({
                       {MUSIC_HABITS.map((habit) => (
                         <Badge
                           key={habit.value}
-                          variant={filters.musicHabits.includes(habit.value) ? 'default' : 'outline'}
+                          variant={filters.musicHabits.includes(habit.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.musicHabits.includes(habit.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
@@ -776,7 +776,7 @@ export function AdvancedFilters({
                       {COOKING_FREQUENCY.map((freq) => (
                         <Badge
                           key={freq.value}
-                          variant={filters.cookingFrequency.includes(freq.value) ? 'default' : 'outline'}
+                          variant={filters.cookingFrequency.includes(freq.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.cookingFrequency.includes(freq.value)
                               ? 'bg-orange-600 hover:bg-orange-700'
