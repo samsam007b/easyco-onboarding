@@ -75,7 +75,7 @@ export default function MaintenancePage() {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => router.push('/home/owner')}
+                onClick={() => router.push('/dashboard/owner')}
                 className="rounded-full"
               >
                 <ChevronLeft className="h-5 w-5" />

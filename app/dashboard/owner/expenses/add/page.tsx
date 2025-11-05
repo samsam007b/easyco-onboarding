@@ -25,7 +25,7 @@ export default function AddOwnerExpensePage() {
     e.preventDefault();
     // TODO: Implement expense submission
     console.log('Owner Expense:', formData);
-    router.push('/home/owner');
+    router.push('/dashboard/owner');
   };
 
   return (

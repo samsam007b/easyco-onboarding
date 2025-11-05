@@ -29,7 +29,7 @@ export default function FinanceReportPage() {
             <Button
               variant="outline"
               size="icon"
-              onClick={() => router.push('/home/owner')}
+              onClick={() => router.push('/dashboard/owner')}
               className="rounded-full hover:scale-105 transition-transform"
             >
               <ChevronLeft className="h-5 w-5" />
