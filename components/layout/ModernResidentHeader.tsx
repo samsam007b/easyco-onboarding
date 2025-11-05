@@ -199,14 +199,19 @@ export default function ModernResidentHeader({
                     href={item.href}
                     prefetch={true}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all group",
                       isActive
                         ? "bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent font-semibold"
                         : "text-gray-600 hover:bg-orange-50/50"
                     )}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
+                    <Icon className={cn(
+                      "w-4 h-4 transition-all",
+                      isActive ? "" : "group-hover:text-[#E8865D]"
+                    )} />
+                    <span className={cn(
+                      isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#D97B6F] group-hover:via-[#E8865D] group-hover:to-[#FF8C4B] group-hover:bg-clip-text group-hover:text-transparent"
+                    )}>{item.label}</span>
                     {item.badge && (
                       <Badge
                         className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
@@ -422,15 +427,20 @@ export default function ModernResidentHeader({
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={cn(
-                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
+                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all group",
                         isActive
                           ? "bg-orange-50 font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent"
                           : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className="w-5 h-5" />
-                        {item.label}
+                        <Icon className={cn(
+                          "w-5 h-5 transition-all",
+                          isActive ? "" : "group-hover:text-[#E8865D]"
+                        )} />
+                        <span className={cn(
+                          isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#D97B6F] group-hover:via-[#E8865D] group-hover:to-[#FF8C4B] group-hover:bg-clip-text group-hover:text-transparent"
+                        )}>{item.label}</span>
                       </div>
                       {item.badge && (
                         <Badge className="bg-gradient-to-r from-[#D97B6F] to-[#E8865D] hover:from-[#D97B6F] hover:to-[#E8865D] text-white border-0">
