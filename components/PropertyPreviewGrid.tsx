@@ -55,14 +55,22 @@ export default function PropertyPreviewGrid({
 
       if (error) throw error;
 
-      // Add fallback images from carousel folder (real property photos) if properties don't have images
+      // Replace Figma screenshots with real property photos from carousel folder
       const propertiesWithImages = (data || []).map((property, index) => {
         // Use a cycling index to distribute images across properties (max 22 carousel images)
         const imageIndex = (index % 22) + 1;
+        const carouselImage = `/images/carousel/figma-${String(imageIndex).padStart(2, '0')}.png`;
+
+        // Check if current image is a Figma screenshot (from /images/properties/)
+        const isFigmaScreenshot = property.main_image?.includes('/images/properties/property-');
+
         return {
           ...property,
-          main_image: property.main_image || `/images/carousel/figma-${String(imageIndex).padStart(2, '0')}.png`,
-          images: property.images || [`/images/carousel/figma-${String(imageIndex).padStart(2, '0')}.png`]
+          // Replace Figma screenshots with real carousel images, otherwise keep existing image
+          main_image: (isFigmaScreenshot || !property.main_image) ? carouselImage : property.main_image,
+          images: property.images?.some((img: string) => img.includes('/images/properties/property-'))
+            ? [carouselImage]
+            : (property.images || [carouselImage])
         };
       });
 
