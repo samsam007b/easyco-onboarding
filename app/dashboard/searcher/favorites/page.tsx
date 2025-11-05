@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Heart, MapPin, Trash2, Home, Users } from 'lucide-react';
+import { ArrowLeft, Heart, MapPin, Trash2, Home, Users, Star, Sparkles } from 'lucide-react';
 import PropertyCard from '@/components/PropertyCard';
 import { toast } from 'sonner';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
@@ -182,7 +182,9 @@ export default function FavoritesPage() {
 
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <Heart className="w-8 h-8 text-red-500 fill-red-500" />
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                  <Heart className="w-6 h-6 text-white fill-white" />
+                </div>
                 Mes Favoris
               </h1>
               <p className="text-gray-600 mt-1">
@@ -194,25 +196,31 @@ export default function FavoritesPage() {
 
         {/* Empty State */}
         {favorites.length === 0 ? (
-          <Card className="border-2 border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                <Heart className="w-10 h-10 text-red-500" />
+          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
+                <Heart className="w-12 h-12 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-3xl font-bold text-gray-900 mb-3">
                 Aucun favori pour le moment
               </h3>
-              <p className="text-gray-600 text-center max-w-md mb-6">
-                Sauvegarde tes propriétés préférées en cliquant sur le cœur pour les retrouver facilement ici
+              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+                Sauvegarde tes propriétés préférées en cliquant sur le cœur
+                <Heart className="w-4 h-4 inline-block mx-1 text-orange-600" />
+                pour les retrouver facilement ici
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
               >
+                <Sparkles className="w-5 h-5 mr-2" />
                 Découvrir des propriétés
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ) : (
           <>
             {/* Summary Stats */}
