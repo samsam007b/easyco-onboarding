@@ -353,7 +353,7 @@ export default function ResidentMatchingPage() {
                         <p className="text-xs text-gray-500 mb-1">Langues</p>
                         <div className="flex flex-wrap gap-1">
                           {match.match_details.languages.slice(0, 3).map((lang, i) => (
-                            <Badge key={i} variant="outline" className="text-xs">
+                            <Badge key={i} variant="secondary" className="text-xs">
                               {typeof lang === 'string' ? lang : (lang as any).display || ''}
                             </Badge>
                           ))}
