@@ -129,10 +129,14 @@ export default function PropertiesManagement() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading properties...</p>
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des propriétés...</h3>
+          <p className="text-gray-600">Préparation de vos annonces</p>
         </div>
       </div>
     )
