@@ -575,16 +575,27 @@ export default function PropertiesBrowsePageV2() {
             {/* Hero Section - Only for list/map */}
             {(viewMode === 'list' || viewMode === 'map') && (
               <div className="text-center mb-8">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] bg-clip-text text-transparent">
-                  Trouve ta colocation idéale
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
+                  Trouve ton{' '}
+                  <span className="bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] bg-clip-text text-transparent">
+                    chez-toi
+                  </span>
                 </h1>
-                <p className="text-lg text-gray-600 mb-8">
-                  {propertiesData?.totalCount || 0} colocations disponibles à Bruxelles
+                <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+                  Des colocations où tu te sentiras bien, entouré·e de personnes qui te ressemblent
                 </p>
 
                 {/* Search Bar */}
-                <div className="max-w-2xl mx-auto">
+                <div className="max-w-3xl mx-auto">
                   <PublicSearchBar variant="hero" />
+                </div>
+
+                {/* Stats bar */}
+                <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
+                  <span className="font-medium text-orange-600">{propertiesData?.totalCount || 0}</span>
+                  <span>logements disponibles</span>
+                  <span className="text-gray-300">•</span>
+                  <span>À partir de 400€/mois</span>
                 </div>
               </div>
             )}
