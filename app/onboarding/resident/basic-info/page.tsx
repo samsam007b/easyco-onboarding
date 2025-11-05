@@ -133,7 +133,7 @@ export default function ResidentBasicInfoPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#E8865D] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
@@ -156,8 +156,8 @@ export default function ResidentBasicInfoPage() {
             <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
-            <span className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">EASY</span>
-            <span className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">Co</span>
+            <span className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">EASY</span>
+            <span className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">Co</span>
           </div>
           <div className="w-20" />
         </div>
@@ -172,14 +172,14 @@ export default function ResidentBasicInfoPage() {
             <span className="text-sm text-gray-500">{resident.basicInfo.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] h-2 rounded-full" style={{ width: '25%' }} />
+            <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] h-2 rounded-full" style={{ width: '25%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-2">
               {resident.basicInfo.heading}
             </h1>
             <p className="text-gray-600">
@@ -295,7 +295,7 @@ export default function ResidentBasicInfoPage() {
               disabled={!canContinue}
               className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
                 canContinue
-                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:opacity-90 text-white'
+                  ? 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

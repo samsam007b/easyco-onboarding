@@ -27,6 +27,7 @@ interface MaintenanceTicket {
   priority: 'low' | 'medium' | 'high' | 'urgent';
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   createdBy: string;
+  createdByName?: string;
   createdAt: string;
   updatedAt: string;
   assignedTo?: string;
@@ -47,73 +48,76 @@ export default function HubMaintenancePage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'in_progress' | 'completed'>('all');
-  const [tickets, setTickets] = useState<MaintenanceTicket[]>([
-    {
-      id: '1',
-      title: 'Fuite d\'eau salle de bain',
-      description: 'Le robinet de la douche fuit depuis hier soir. L\'eau coule en continu même quand le robinet est fermé.',
-      category: 'plumbing',
-      priority: 'high',
-      status: 'in_progress',
-      createdBy: 'Sarah',
-      createdAt: '2024-11-01T10:30:00',
-      updatedAt: '2024-11-01T14:00:00',
-      assignedTo: 'Plombier Pro',
-      comments: [
-        { author: 'Plombier Pro', text: 'Je passe demain matin pour réparer', date: '2024-11-01T14:00:00' }
-      ]
-    },
-    {
-      id: '2',
-      title: 'Chauffage ne fonctionne pas',
-      description: 'Le radiateur de la chambre 2 ne chauffe plus du tout.',
-      category: 'heating',
-      priority: 'urgent',
-      status: 'pending',
-      createdBy: 'Marc',
-      createdAt: '2024-11-02T08:00:00',
-      updatedAt: '2024-11-02T08:00:00'
-    },
-    {
-      id: '3',
-      title: 'Lave-vaisselle ne démarre plus',
-      description: 'Lorsqu\'on appuie sur le bouton start, rien ne se passe.',
-      category: 'appliance',
-      priority: 'medium',
-      status: 'pending',
-      createdBy: 'Julie',
-      createdAt: '2024-10-31T16:00:00',
-      updatedAt: '2024-10-31T16:00:00'
-    },
-    {
-      id: '4',
-      title: 'Ampoule grillée couloir',
-      description: 'L\'ampoule du couloir est grillée, besoin d\'en changer une.',
-      category: 'electrical',
-      priority: 'low',
-      status: 'completed',
-      createdBy: 'Sarah',
-      createdAt: '2024-10-28T12:00:00',
-      updatedAt: '2024-10-29T10:00:00',
-      assignedTo: 'Marc'
-    }
-  ]);
+  const [tickets, setTickets] = useState<MaintenanceTicket[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    checkAuth();
+    loadTickets();
   }, []);
 
-  const checkAuth = async () => {
+  const loadTickets = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
       }
+
+      setCurrentUserId(user.id);
+
+      // Get user's property_id
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!profile?.property_id) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch maintenance requests
+      const { data: ticketsData, error } = await supabase
+        .from('maintenance_requests')
+        .select('*')
+        .eq('property_id', profile.property_id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Fetch user names
+      const userIds = [...new Set(ticketsData.map(t => t.reported_by))];
+      const { data: usersData } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .in('user_id', userIds);
+
+      const userMap = new Map(
+        usersData?.map(u => [u.user_id, `${u.first_name} ${u.last_name}`])
+      );
+
+      // Enrich tickets
+      const enrichedTickets = ticketsData.map(ticket => ({
+        id: ticket.id,
+        title: ticket.title,
+        description: ticket.description,
+        category: ticket.category as any,
+        priority: ticket.priority as any,
+        status: ticket.status as any,
+        createdBy: ticket.reported_by,
+        createdByName: ticket.reported_by === user.id ? 'Toi' : userMap.get(ticket.reported_by) || 'Inconnu',
+        createdAt: ticket.created_at,
+        updatedAt: ticket.updated_at,
+        assignedTo: ticket.assigned_to || undefined,
+        images: ticket.images || []
+      }));
+
+      setTickets(enrichedTickets);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error checking auth:', error);
-      router.push('/login');
+      console.error('Error loading tickets:', error);
+      setIsLoading(false);
     }
   };
 
@@ -316,11 +320,32 @@ export default function HubMaintenancePage() {
 
         {/* Tickets List */}
         <div className="space-y-4">
-          <AnimatePresence>
-            {filteredTickets.map((ticket, index) => {
-              const categoryInfo = getCategoryInfo(ticket.category);
+          {filteredTickets.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-3xl shadow-lg p-12 text-center"
+            >
+              <Wrench className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Aucune demande {filter !== 'all' && filter}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {filter === 'completed'
+                  ? 'Aucune demande terminée pour le moment'
+                  : 'Créez votre première demande de maintenance'}
+              </p>
+              <Button className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700">
+                <Plus className="w-4 h-4 mr-2" />
+                Nouvelle demande
+              </Button>
+            </motion.div>
+          ) : (
+            <AnimatePresence>
+              {filteredTickets.map((ticket, index) => {
+                const categoryInfo = getCategoryInfo(ticket.category);
 
-              return (
+                return (
                 <motion.div
                   key={ticket.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -358,7 +383,7 @@ export default function HubMaintenancePage() {
                       <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600 mb-3">
                         <div className="flex items-center gap-1">
                           <User className="w-3 h-3" />
-                          Créé par {ticket.createdBy}
+                          Créé par {ticket.createdByName || 'Inconnu'}
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
@@ -415,35 +440,10 @@ export default function HubMaintenancePage() {
                   </div>
                 </motion.div>
               );
-            })}
-          </AnimatePresence>
+              })}
+            </AnimatePresence>
+          )}
         </div>
-
-        {/* Empty State */}
-        {filteredTickets.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl shadow-lg p-12 text-center"
-          >
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Wrench className="w-8 h-8 text-orange-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Aucun ticket {filter !== 'all' && filter}
-            </h3>
-            <p className="text-gray-600 mb-6">
-              {filter === 'completed'
-                ? 'Aucune réparation terminée pour le moment'
-                : 'Créez votre premier ticket pour signaler un problème'
-              }
-            </p>
-            <Button className="rounded-full bg-gradient-to-r from-orange-600 to-orange-700">
-              <Plus className="w-4 h-4 mr-2" />
-              Créer un ticket
-            </Button>
-          </motion.div>
-        )}
       </div>
     </div>
   );

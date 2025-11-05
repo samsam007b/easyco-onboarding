@@ -23,10 +23,15 @@ interface Expense {
   id: string;
   title: string;
   amount: number;
-  paidBy: string;
-  splitBetween: string[];
+  paid_by_id: string;
+  paid_by_name?: string;
+  category: string;
   date: string;
   status: 'paid' | 'pending';
+  property_id: string;
+  description?: string;
+  split_count?: number;
+  your_share?: number;
 }
 
 interface Balance {
@@ -39,64 +44,149 @@ export default function HubFinancesPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
-  const [expenses, setExpenses] = useState<Expense[]>([
-    {
-      id: '1',
-      title: 'Courses Carrefour',
-      amount: 120.50,
-      paidBy: 'Sarah',
-      splitBetween: ['Sarah', 'Marc', 'Julie', 'Toi'],
-      date: '2024-11-01',
-      status: 'paid'
-    },
-    {
-      id: '2',
-      title: 'Internet Fibre',
-      amount: 40,
-      paidBy: 'Toi',
-      splitBetween: ['Sarah', 'Marc', 'Julie', 'Toi'],
-      date: '2024-10-30',
-      status: 'pending'
-    },
-    {
-      id: '3',
-      title: 'Netflix Premium',
-      amount: 17.99,
-      paidBy: 'Marc',
-      splitBetween: ['Marc', 'Julie', 'Toi'],
-      date: '2024-10-28',
-      status: 'paid'
-    }
-  ]);
-
-  const [balances, setBalances] = useState<Balance[]>([
-    { userId: '1', userName: 'Sarah', amount: -30.12 },
-    { userId: '2', userName: 'Marc', amount: 15.00 },
-    { userId: '3', userName: 'Julie', amount: -5.99 }
-  ]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [balances, setBalances] = useState<Balance[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    checkAuth();
+    loadData();
   }, []);
 
-  const checkAuth = async () => {
+  const loadData = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
       }
+
+      setCurrentUserId(user.id);
+
+      // Get user's property_id
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!profile?.property_id) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch expenses with user names
+      const { data: expensesData, error: expensesError } = await supabase
+        .from('expenses')
+        .select(`
+          id,
+          title,
+          amount,
+          paid_by_id,
+          category,
+          date,
+          status,
+          property_id,
+          description,
+          expense_splits (
+            user_id,
+            amount_owed
+          )
+        `)
+        .eq('property_id', profile.property_id)
+        .order('date', { ascending: false })
+        .limit(10);
+
+      if (expensesError) throw expensesError;
+
+      // Fetch user names for paid_by_id
+      const userIds = expensesData?.map(exp => exp.paid_by_id) || [];
+      const { data: usersData } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .in('user_id', userIds);
+
+      const userMap = new Map(
+        usersData?.map(u => [u.user_id, `${u.first_name} ${u.last_name}`])
+      );
+
+      // Enrich expenses with user names and calculate splits
+      const enrichedExpenses = expensesData?.map(exp => {
+        const splitCount = exp.expense_splits?.length || 1;
+        const yourSplit = exp.expense_splits?.find(s => s.user_id === user.id);
+
+        return {
+          id: exp.id,
+          title: exp.title,
+          amount: exp.amount,
+          paid_by_id: exp.paid_by_id,
+          paid_by_name: exp.paid_by_id === user.id ? 'Toi' : userMap.get(exp.paid_by_id) || 'Inconnu',
+          category: exp.category,
+          date: exp.date,
+          status: exp.status as 'paid' | 'pending',
+          property_id: exp.property_id,
+          description: exp.description,
+          split_count: splitCount,
+          your_share: yourSplit?.amount_owed || (exp.amount / splitCount)
+        };
+      }) || [];
+
+      setExpenses(enrichedExpenses);
+
+      // Calculate balances (simplified version)
+      // In a real app, you'd want a more sophisticated balance calculation
+      const balanceMap = new Map<string, { name: string; amount: number }>();
+
+      expensesData?.forEach(exp => {
+        const splits = exp.expense_splits || [];
+        splits.forEach(split => {
+          if (split.user_id !== user.id) {
+            const current = balanceMap.get(split.user_id) || { name: '', amount: 0 };
+
+            // If I paid and they owe me
+            if (exp.paid_by_id === user.id) {
+              current.amount += split.amount_owed;
+            }
+            // If they paid and I owe them
+            else if (exp.paid_by_id === split.user_id) {
+              const mySplit = splits.find(s => s.user_id === user.id);
+              if (mySplit) {
+                current.amount -= mySplit.amount_owed;
+              }
+            }
+
+            balanceMap.set(split.user_id, current);
+          }
+        });
+      });
+
+      // Fetch user names for balances
+      const balanceUserIds = Array.from(balanceMap.keys());
+      const { data: balanceUsers } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .in('user_id', balanceUserIds);
+
+      const balanceList: Balance[] = balanceUserIds.map(userId => {
+        const userData = balanceUsers?.find(u => u.user_id === userId);
+        const balanceData = balanceMap.get(userId)!;
+
+        return {
+          userId,
+          userName: userData ? `${userData.first_name} ${userData.last_name}` : 'Inconnu',
+          amount: balanceData.amount
+        };
+      }).filter(b => Math.abs(b.amount) > 0.01); // Filter out zero balances
+
+      setBalances(balanceList);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error checking auth:', error);
-      router.push('/login');
+      console.error('Error loading data:', error);
+      setIsLoading(false);
     }
   };
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-  const yourShare = expenses.reduce((sum, exp) =>
-    sum + (exp.splitBetween.includes('Toi') ? exp.amount / exp.splitBetween.length : 0), 0
-  );
+  const yourShare = expenses.reduce((sum, exp) => sum + (exp.your_share || 0), 0);
   const totalBalance = balances.reduce((sum, bal) => sum + bal.amount, 0);
 
   if (isLoading) {
@@ -223,10 +313,14 @@ export default function HubFinancesPage() {
             </div>
 
             <div className="space-y-3">
-              {expenses.map((expense, index) => {
-                const shareAmount = expense.amount / expense.splitBetween.length;
-
-                return (
+              {expenses.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <DollarSign className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                  <p>Aucune dépense enregistrée</p>
+                  <p className="text-sm mt-1">Ajoutez votre première dépense pour commencer</p>
+                </div>
+              ) : (
+                expenses.map((expense, index) => (
                   <motion.div
                     key={expense.id}
                     initial={{ opacity: 0, x: -20 }}
@@ -241,10 +335,10 @@ export default function HubFinancesPage() {
                       <div>
                         <p className="font-medium text-gray-900">{expense.title}</p>
                         <p className="text-xs text-gray-500">
-                          Payé par {expense.paidBy} • {new Date(expense.date).toLocaleDateString('fr-FR')}
+                          Payé par {expense.paid_by_name} • {new Date(expense.date).toLocaleDateString('fr-FR')}
                         </p>
                         <p className="text-xs text-gray-600 mt-1">
-                          Ta part: €{shareAmount.toFixed(2)}
+                          Ta part: €{(expense.your_share || 0).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -255,8 +349,8 @@ export default function HubFinancesPage() {
                       </Badge>
                     </div>
                   </motion.div>
-                );
-              })}
+                ))
+              )}
             </div>
           </motion.div>
 
@@ -270,7 +364,14 @@ export default function HubFinancesPage() {
             <h3 className="text-lg font-bold text-gray-900 mb-6">Soldes Entre Colocataires</h3>
 
             <div className="space-y-3">
-              {balances.map((balance, index) => (
+              {balances.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                  <p>Aucun solde à afficher</p>
+                  <p className="text-sm mt-1">Tous les comptes sont équilibrés</p>
+                </div>
+              ) : (
+                balances.map((balance, index) => (
                 <motion.div
                   key={balance.userId}
                   initial={{ opacity: 0, x: -20 }}
@@ -306,7 +407,8 @@ export default function HubFinancesPage() {
                     )}
                   </div>
                 </motion.div>
-              ))}
+                ))
+              )}
             </div>
           </motion.div>
         </div>

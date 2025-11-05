@@ -26,7 +26,9 @@ interface Task {
   priority: 'low' | 'medium' | 'high';
   status: 'todo' | 'in_progress' | 'completed';
   assignedTo?: string;
+  assignedToName?: string;
   createdBy: string;
+  createdByName?: string;
   createdAt: string;
 }
 
@@ -34,100 +36,134 @@ export default function HubTasksPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      title: 'Payer le loyer',
-      description: 'Virement à faire avant le 5 du mois',
-      dueDate: '2024-11-05',
-      priority: 'high',
-      status: 'todo',
-      assignedTo: 'Tous',
-      createdBy: 'Sarah',
-      createdAt: '2024-10-25'
-    },
-    {
-      id: '2',
-      title: 'Nettoyage cuisine',
-      description: 'Grand nettoyage hebdomadaire',
-      dueDate: '2024-11-03',
-      priority: 'medium',
-      status: 'in_progress',
-      assignedTo: 'Marc',
-      createdBy: 'Julie',
-      createdAt: '2024-11-01'
-    },
-    {
-      id: '3',
-      title: 'Réunion mensuelle',
-      description: 'Discuter des règles et des dépenses',
-      dueDate: '2024-11-08',
-      priority: 'medium',
-      status: 'todo',
-      assignedTo: 'Tous',
-      createdBy: 'Sarah',
-      createdAt: '2024-10-30'
-    },
-    {
-      id: '4',
-      title: 'Sortir les poubelles',
-      description: 'Jour de collecte',
-      dueDate: '2024-11-02',
-      priority: 'low',
-      status: 'completed',
-      assignedTo: 'Julie',
-      createdBy: 'Marc',
-      createdAt: '2024-11-01'
-    },
-    {
-      id: '5',
-      title: 'Réparer lave-vaisselle',
-      description: 'Contacter le réparateur',
-      dueDate: '2024-11-10',
-      priority: 'high',
-      status: 'todo',
-      assignedTo: 'Sarah',
-      createdBy: 'Sarah',
-      createdAt: '2024-10-31'
-    }
-  ]);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'todo' | 'in_progress' | 'completed'>('all');
 
   useEffect(() => {
-    checkAuth();
+    loadTasks();
   }, []);
 
-  const checkAuth = async () => {
+  const loadTasks = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
       }
+
+      setCurrentUserId(user.id);
+
+      // Get user's property_id
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!profile?.property_id) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch tasks
+      const { data: tasksData, error } = await supabase
+        .from('tasks')
+        .select('*')
+        .eq('property_id', profile.property_id)
+        .order('due_date', { ascending: true });
+
+      if (error) throw error;
+
+      // Fetch user names
+      const userIds = [
+        ...new Set([
+          ...tasksData.map(t => t.created_by),
+          ...tasksData.map(t => t.assigned_to).filter(Boolean)
+        ])
+      ];
+
+      const { data: usersData } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .in('user_id', userIds);
+
+      const userMap = new Map(
+        usersData?.map(u => [u.user_id, `${u.first_name} ${u.last_name}`])
+      );
+
+      // Enrich tasks with user names
+      const enrichedTasks = tasksData.map(task => ({
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        dueDate: task.due_date,
+        priority: task.priority as 'low' | 'medium' | 'high',
+        status: task.status as 'todo' | 'in_progress' | 'completed',
+        assignedTo: task.assigned_to,
+        assignedToName: task.assigned_to
+          ? (task.assigned_to === user.id ? 'Toi' : userMap.get(task.assigned_to) || 'Inconnu')
+          : 'Non assigné',
+        createdBy: task.created_by,
+        createdByName: task.created_by === user.id ? 'Toi' : userMap.get(task.created_by) || 'Inconnu',
+        createdAt: task.created_at
+      }));
+
+      setTasks(enrichedTasks);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error checking auth:', error);
-      router.push('/login');
+      console.error('Error loading tasks:', error);
+      setIsLoading(false);
     }
   };
 
-  const toggleTaskStatus = (taskId: string) => {
-    setTasks(tasks.map(task => {
-      if (task.id === taskId) {
-        let newStatus: 'todo' | 'in_progress' | 'completed' = 'todo';
-        if (task.status === 'todo') newStatus = 'in_progress';
-        else if (task.status === 'in_progress') newStatus = 'completed';
-        else newStatus = 'todo';
+  const toggleTaskStatus = async (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
 
-        return { ...task, status: newStatus };
-      }
-      return task;
-    }));
+    let newStatus: 'todo' | 'in_progress' | 'completed' = 'todo';
+    if (task.status === 'todo') newStatus = 'in_progress';
+    else if (task.status === 'in_progress') newStatus = 'completed';
+    else newStatus = 'todo';
+
+    // Optimistic update
+    setTasks(tasks.map(t =>
+      t.id === taskId ? { ...t, status: newStatus } : t
+    ));
+
+    // Update in database
+    const { error } = await supabase
+      .from('tasks')
+      .update({
+        status: newStatus,
+        completed_at: newStatus === 'completed' ? new Date().toISOString() : null
+      })
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error updating task:', error);
+      // Revert optimistic update
+      setTasks(tasks.map(t =>
+        t.id === taskId ? task : t
+      ));
+    }
   };
 
-  const deleteTask = (taskId: string) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
+  const deleteTask = async (taskId: string) => {
+    // Optimistic update
+    setTasks(tasks.filter(t => t.id !== taskId));
+
+    // Delete from database
+    const { error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error deleting task:', error);
+      // Reload tasks
+      loadTasks();
+    }
   };
 
   const filteredTasks = filter === 'all'
@@ -397,12 +433,10 @@ export default function HubTasksPage() {
                         </div>
 
                         {/* Assigned To */}
-                        {task.assignedTo && (
-                          <div className="flex items-center gap-1 text-xs text-gray-600">
-                            <User className="w-3 h-3" />
-                            <span>{task.assignedTo}</span>
-                          </div>
-                        )}
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                          <User className="w-3 h-3" />
+                          <span>{task.assignedToName || 'Non assigné'}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

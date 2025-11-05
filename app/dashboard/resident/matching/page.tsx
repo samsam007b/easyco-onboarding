@@ -156,7 +156,7 @@ export default function ResidentMatchingPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-[#E8865D] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600 font-medium">Recherche de colocataires compatibles...</p>
         </div>
       </div>
@@ -173,7 +173,7 @@ export default function ResidentMatchingPage() {
         >
           <div className="bg-white rounded-3xl shadow-xl p-8">
             <Sparkles className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent mb-4">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-4">
               Plus de profils pour le moment
             </h2>
             <p className="text-gray-600 mb-6">
@@ -190,7 +190,7 @@ export default function ResidentMatchingPage() {
               </Button>
               <Button
                 onClick={() => router.push('/dashboard/resident/matching/preferences')}
-                className="flex-1 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C]"
+                className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Préférences
@@ -218,7 +218,7 @@ export default function ResidentMatchingPage() {
           >
             <ChevronLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
             Trouve ton coloc
           </h1>
           <Button
@@ -288,7 +288,7 @@ export default function ResidentMatchingPage() {
                     {/* Compatibility Badge */}
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2">
                       <Star className="w-5 h-5 text-orange-600" />
-                      <span className="font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
+                      <span className="font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
                         {match.compatibility_score}%
                       </span>
                     </div>
@@ -390,7 +390,7 @@ export default function ResidentMatchingPage() {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => handleSwipe('right', currentMatch.matched_user_id)}
-          className="w-20 h-20 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity"
+          className="w-20 h-20 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity"
         >
           <Heart className="w-10 h-10 text-white" />
         </motion.button>

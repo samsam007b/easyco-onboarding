@@ -158,7 +158,7 @@ export default function ModernResidentHeader({
             <div
               className="grain-medium w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 100%)'
+                background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
               }}
             >
               <Home className="w-5 h-5 text-white relative z-10" />
@@ -186,7 +186,7 @@ export default function ModernResidentHeader({
                     <motion.div
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
-                        borderTopColor: '#FFA040'
+                        borderTopColor: '#E8865D'
                       }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -327,7 +327,7 @@ export default function ModernResidentHeader({
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200"
                     style={{
-                      background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 100%)'
+                      background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
                     }}
                   >
                     <User className="w-4 h-4 text-white" />

@@ -27,8 +27,10 @@ interface CalendarEvent {
   time: string;
   location?: string;
   attendees: string[];
+  attendeeNames?: string[];
   color: string;
   createdBy: string;
+  createdByName?: string;
 }
 
 const MONTHS = [
@@ -38,63 +40,114 @@ const MONTHS = [
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
+const EVENT_COLORS = ['bg-purple-500', 'bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-red-500'];
+
 export default function HubCalendarPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [events, setEvents] = useState<CalendarEvent[]>([
-    {
-      id: '1',
-      title: 'Réunion mensuelle',
-      description: 'Discussion sur le budget et les règles',
-      date: '2024-11-08',
-      time: '19:00',
-      location: 'Salon',
-      attendees: ['Tous'],
-      color: 'bg-purple-500',
-      createdBy: 'Sarah'
-    },
-    {
-      id: '2',
-      title: 'Inspection annuelle',
-      description: 'Visite du propriétaire',
-      date: '2024-11-15',
-      time: '14:00',
-      location: 'Appartement',
-      attendees: ['Tous'],
-      color: 'bg-red-500',
-      createdBy: 'Propriétaire'
-    },
-    {
-      id: '3',
-      title: 'Soirée jeux',
-      description: 'Soirée conviviale entre colocataires',
-      date: '2024-11-22',
-      time: '20:00',
-      location: 'Salon',
-      attendees: ['Sarah', 'Marc', 'Julie'],
-      color: 'bg-green-500',
-      createdBy: 'Marc'
-    }
-  ]);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    loadEvents();
+  }, [currentDate]);
 
-  const checkAuth = async () => {
+  const loadEvents = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
       }
+
+      setCurrentUserId(user.id);
+
+      // Get user's property_id
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!profile?.property_id) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Get month range
+      const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+      // Fetch events for the current month with attendees
+      const { data: eventsData, error } = await supabase
+        .from('calendar_events')
+        .select(`
+          id,
+          title,
+          description,
+          start_time,
+          end_time,
+          location,
+          created_by,
+          event_attendees (
+            user_id
+          )
+        `)
+        .eq('property_id', profile.property_id)
+        .gte('start_time', startDate.toISOString())
+        .lte('start_time', endDate.toISOString())
+        .order('start_time', { ascending: true });
+
+      if (error) throw error;
+
+      // Fetch user names
+      const userIds = [
+        ...new Set([
+          ...eventsData.map(e => e.created_by),
+          ...eventsData.flatMap(e => e.event_attendees?.map((a: any) => a.user_id) || [])
+        ])
+      ];
+
+      const { data: usersData } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .in('user_id', userIds);
+
+      const userMap = new Map(
+        usersData?.map(u => [u.user_id, `${u.first_name} ${u.last_name}`])
+      );
+
+      // Enrich events
+      const enrichedEvents = eventsData.map((event, index) => {
+        const startTime = new Date(event.start_time);
+        const attendeeIds = event.event_attendees?.map((a: any) => a.user_id) || [];
+        const attendeeNames = attendeeIds.map(id =>
+          id === user.id ? 'Toi' : userMap.get(id) || 'Inconnu'
+        );
+
+        return {
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          date: startTime.toISOString().split('T')[0],
+          time: startTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+          location: event.location,
+          attendees: attendeeIds,
+          attendeeNames,
+          color: EVENT_COLORS[index % EVENT_COLORS.length],
+          createdBy: event.created_by,
+          createdByName: event.created_by === user.id ? 'Toi' : userMap.get(event.created_by) || 'Inconnu'
+        };
+      });
+
+      setEvents(enrichedEvents);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error checking auth:', error);
-      router.push('/login');
+      console.error('Error loading events:', error);
+      setIsLoading(false);
     }
   };
 
@@ -305,9 +358,16 @@ export default function HubCalendarPage() {
           </h3>
 
           <div className="space-y-3">
-            {events
-              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-              .map((event, index) => (
+            {events.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                <p>Aucun événement prévu</p>
+                <p className="text-sm mt-1">Ajoutez votre premier événement au calendrier</p>
+              </div>
+            ) : (
+              events
+                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                .map((event, index) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -341,7 +401,9 @@ export default function HubCalendarPage() {
                       )}
                       <div className="flex items-center gap-1">
                         <Users className="w-3 h-3" />
-                        {event.attendees.join(', ')}
+                        {event.attendeeNames && event.attendeeNames.length > 0
+                          ? event.attendeeNames.join(', ')
+                          : 'Aucun participant'}
                       </div>
                     </div>
                   </div>
@@ -355,7 +417,8 @@ export default function HubCalendarPage() {
                     </Button>
                   </div>
                 </motion.div>
-              ))}
+                ))
+              )}
           </div>
         </motion.div>
       </div>
