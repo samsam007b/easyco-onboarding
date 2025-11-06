@@ -526,6 +526,36 @@ export const translations = {
       nl: 'Home',
       de: 'Startseite',
     },
+    explorer: {
+      fr: 'Explorer',
+      en: 'Explore',
+      nl: 'Verkennen',
+      de: 'Erkunden',
+    },
+    residents: {
+      fr: 'Résidents',
+      en: 'Residents',
+      nl: 'Bewoners',
+      de: 'Bewohner',
+    },
+    owners: {
+      fr: 'Propriétaires',
+      en: 'Owners',
+      nl: 'Eigenaren',
+      de: 'Eigentümer',
+    },
+    login: {
+      fr: 'Se connecter',
+      en: 'Sign In',
+      nl: 'Inloggen',
+      de: 'Anmelden',
+    },
+    signup: {
+      fr: 'S\'inscrire',
+      en: 'Sign Up',
+      nl: 'Aanmelden',
+      de: 'Registrieren',
+    },
     howItWorks: {
       fr: 'Comment ça marche',
       en: 'How it works',

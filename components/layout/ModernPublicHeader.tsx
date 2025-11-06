@@ -18,7 +18,8 @@ export default function ModernPublicHeader({
   activePage = null,
   onNavigate
 }: ModernPublicHeaderProps) {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, getSection } = useLanguage();
+  const nav = getSection('nav');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
@@ -32,19 +33,19 @@ export default function ModernPublicHeader({
   const navItems = [
     {
       id: 'explorer' as const,
-      label: 'Explorer',
+      label: nav.explorer,
       icon: Search,
       color: 'yellow'
     },
     {
       id: 'residents' as const,
-      label: 'Résidents',
+      label: nav.residents,
       icon: Users,
       color: 'orange'
     },
     {
       id: 'owners' as const,
-      label: 'Propriétaires',
+      label: nav.owners,
       icon: Building2,
       color: 'purple'
     },
@@ -159,7 +160,7 @@ export default function ModernPublicHeader({
                 variant="ghost"
                 className="rounded-full font-medium text-gray-700 hover:bg-gray-100"
               >
-                Se connecter
+                {nav.login}
               </Button>
             </Link>
 
@@ -171,7 +172,7 @@ export default function ModernPublicHeader({
                   background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                 }}
               >
-                S'inscrire
+                {nav.signup}
               </Button>
             </Link>
 
@@ -278,7 +279,7 @@ export default function ModernPublicHeader({
                       variant="outline"
                       className="w-full rounded-full border-purple-600 text-purple-600"
                     >
-                      Se connecter
+                      {nav.login}
                     </Button>
                   </Link>
                   <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
@@ -288,7 +289,7 @@ export default function ModernPublicHeader({
                         background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                       }}
                     >
-                      S'inscrire
+                      {nav.signup}
                     </Button>
                   </Link>
                 </div>
