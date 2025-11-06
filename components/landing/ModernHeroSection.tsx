@@ -167,7 +167,7 @@ export default function ModernHeroSection() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-full sm:w-auto group relative overflow-hidden text-gray-900 font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all"
+                className="w-full sm:w-auto group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
                 }}
