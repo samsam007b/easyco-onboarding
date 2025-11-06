@@ -102,7 +102,7 @@ export default function ModernPublicHeader({
                 backgroundImage: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
               }}
             >
-              EASYCO
+              EasyCo
             </span>
           </Link>
 
