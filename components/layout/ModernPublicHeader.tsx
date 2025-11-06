@@ -7,6 +7,7 @@ import NotificationBell from '@/components/notifications/NotificationBell';
 import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ModernPublicHeaderProps {
   activePage?: 'explorer' | 'residents' | 'owners' | null;
@@ -17,16 +18,16 @@ export default function ModernPublicHeader({
   activePage = null,
   onNavigate
 }: ModernPublicHeaderProps) {
+  const { language, setLanguage } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN' | 'NL' | 'DE'>('FR');
 
   const languages = [
-    { code: 'FR', label: 'Français', flag: '🇫🇷' },
-    { code: 'EN', label: 'English', flag: '🇬🇧' },
-    { code: 'NL', label: 'Nederlands', flag: '🇳🇱' },
-    { code: 'DE', label: 'Deutsch', flag: '🇩🇪' },
-  ];
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+    { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
+    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  ] as const;
 
   const navItems = [
     {
@@ -181,7 +182,7 @@ export default function ModernPublicHeader({
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
-                <span className="font-medium">{selectedLang}</span>
+                <span className="font-medium">{language.toUpperCase()}</span>
                 <ChevronDown className={cn(
                   "w-3 h-3 transition-transform",
                   langDropdownOpen && "rotate-180"
@@ -201,19 +202,19 @@ export default function ModernPublicHeader({
                       <button
                         key={lang.code}
                         onClick={() => {
-                          setSelectedLang(lang.code as 'FR' | 'EN' | 'NL' | 'DE');
+                          setLanguage(lang.code);
                           setLangDropdownOpen(false);
                         }}
                         className={cn(
                           "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
-                          selectedLang === lang.code
+                          language === lang.code
                             ? "bg-purple-50 text-purple-900 font-semibold"
                             : "text-gray-700 hover:bg-gray-50"
                         )}
                       >
                         <span className="text-lg">{lang.flag}</span>
                         <span>{lang.label}</span>
-                        {selectedLang === lang.code && (
+                        {language === lang.code && (
                           <span className="ml-auto text-purple-600">✓</span>
                         )}
                       </button>
