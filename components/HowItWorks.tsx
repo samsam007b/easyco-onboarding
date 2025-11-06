@@ -96,7 +96,7 @@ export default function HowItWorks() {
         <div className="text-center mt-16">
           <a
             href="/signup"
-            className="inline-block px-10 py-5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg"
+            className="inline-block px-10 py-5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg"
           >
             {howItWorks.cta}
           </a>
