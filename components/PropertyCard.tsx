@@ -313,7 +313,10 @@ function PropertyCard({
             <div className="flex gap-2">
               <button
                 onClick={handleBookVisit}
-                className="px-3 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all flex items-center gap-1"
+                className="px-4 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+                style={{
+                  background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                }}
               >
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">Visite</span>
@@ -323,7 +326,10 @@ function PropertyCard({
                   e.preventDefault();
                   window.location.href = `/properties/${property.id}`;
                 }}
-                className="px-4 py-2 bg-[var(--easy-purple-900)] text-white font-semibold rounded-lg hover:bg-[var(--easy-purple-700)] transition-colors"
+                className="px-5 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
+                }}
               >
                 Voir
               </button>
