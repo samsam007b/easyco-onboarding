@@ -33,18 +33,24 @@ export default function ModernHeroSection() {
 
       <div className="relative z-20 max-w-4xl mx-auto w-full">
 
-        {/* Container unifié avec dégradé signature EasyCo */}
+        {/* Container unifié avec dégradé signature EasyCo et glassmorphism */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="rounded-[40px] shadow-2xl overflow-hidden mb-12"
-          style={{
-            background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-          }}
+          className="rounded-[40px] shadow-2xl overflow-hidden mb-12 relative"
         >
+          {/* Gradient background with glassmorphism effect */}
+          <div className="absolute inset-0"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.95) 0%, rgba(255, 111, 60, 0.95) 50%, rgba(255, 210, 73, 0.95) 100%)',
+                 backdropFilter: 'blur(20px) saturate(180%)',
+                 WebkitBackdropFilter: 'blur(20px) saturate(180%)'
+               }}
+          />
+
           {/* Section mauve avec logo et texte - Plus compact */}
-          <div className="p-8 md:p-10">
+          <div className="p-8 md:p-10 relative z-10">
             {/* Logo Badge - Signature gradient avec glassmorphism */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -83,7 +89,7 @@ export default function ModernHeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="bg-white p-4"
+            className="bg-white p-4 relative z-10"
             style={{ overflow: 'visible' }}
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
