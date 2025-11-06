@@ -61,10 +61,10 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
 
   const loadStats = async (userId: string) => {
     try {
-      // Get properties
+      // Get properties with all needed fields in one query
       const { data: properties } = await supabase
         .from('properties')
-        .select('id, monthly_rent, status')
+        .select('id, monthly_rent, status, available_rooms')
         .eq('owner_id', userId);
 
       if (properties) {
@@ -88,30 +88,21 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           pendingApplications = count || 0;
         }
 
-        // Calculate real occupation from property_members
+        // Calculate real occupation from property_members (optimized - no N+1 queries)
+        const publishedProperties = properties.filter(p => p.status === 'published');
+        const totalRooms = publishedProperties.reduce((sum, p) => sum + (p.available_rooms || 0), 0);
+
+        // Get all occupied rooms count in one query
         let occupiedRooms = 0;
-        let totalRooms = 0;
+        if (publishedProperties.length > 0) {
+          const publishedIds = publishedProperties.map(p => p.id);
+          const { count: occupiedCount } = await supabase
+            .from('property_members')
+            .select('*', { count: 'exact', head: true })
+            .in('property_id', publishedIds)
+            .eq('status', 'active');
 
-        for (const property of properties.filter(p => p.status === 'published')) {
-          // Get total available rooms for this property
-          const { data: propertyData } = await supabase
-            .from('properties')
-            .select('available_rooms')
-            .eq('id', property.id)
-            .single();
-
-          if (propertyData?.available_rooms) {
-            totalRooms += propertyData.available_rooms;
-
-            // Count occupied rooms (active members)
-            const { count: occupiedCount } = await supabase
-              .from('property_members')
-              .select('*', { count: 'exact', head: true })
-              .eq('property_id', property.id)
-              .eq('status', 'active');
-
-            occupiedRooms += occupiedCount || 0;
-          }
+          occupiedRooms = occupiedCount || 0;
         }
 
         const occupation = totalRooms > 0 ? Math.round((occupiedRooms / totalRooms) * 100) : 0;

@@ -32,18 +32,34 @@ export default function AddOwnerExpensePage() {
     const loadProperties = async () => {
       if (!user) return;
 
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('properties')
-        .select('id, title')
-        .eq('owner_id', user.id)
-        .eq('status', 'published');
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('properties')
+          .select('id, title')
+          .eq('owner_id', user.id)
+          .eq('status', 'published');
 
-      if (!error && data) {
-        setProperties(data);
-        if (data.length === 1) {
-          setFormData(prev => ({ ...prev, property: data[0].id }));
+        if (error) {
+          logger.supabaseError('load owner properties for expense form', error, { userId: user.id });
+          setError('Impossible de charger vos propriétés. Veuillez réessayer.');
+          return;
         }
+
+        if (data) {
+          setProperties(data);
+          if (data.length === 0) {
+            logger.warn('Owner has no published properties for expense', { userId: user.id });
+            setError('Vous devez avoir une propriété publiée pour ajouter des dépenses.');
+          } else if (data.length === 1) {
+            // Auto-select if only one property
+            setFormData(prev => ({ ...prev, property: data[0].id }));
+            logger.debug('Auto-selected single property for expense', { propertyId: data[0].id });
+          }
+        }
+      } catch (err) {
+        logger.error('Failed to load properties for expense form', err, { userId: user.id });
+        setError('Une erreur est survenue lors du chargement de vos propriétés.');
       }
     };
 
