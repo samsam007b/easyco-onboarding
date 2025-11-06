@@ -123,34 +123,28 @@ export default function BudgetRangePicker({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed z-[9999] bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 min-w-[320px]"
+            className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-4 min-w-[300px]"
             style={{
               top: `${pickerPosition.top}px`,
               left: `${pickerPosition.left}px`
             }}
           >
-            <div className="space-y-6">
-              {/* Header */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Budget mensuel</h3>
-                <p className="text-xs text-gray-500">Sélectionnez votre fourchette de prix</p>
-              </div>
-
+            <div className="space-y-4">
               {/* Budget Display */}
               <div className="flex items-center justify-between">
                 <div className="text-center">
-                  <div className="text-xs text-gray-500 mb-1">Minimum</div>
-                  <div className="text-lg font-bold text-purple-700">€{minValue}</div>
+                  <div className="text-xs text-gray-500 mb-0.5">Min</div>
+                  <div className="text-base font-bold text-purple-700">€{minValue}</div>
                 </div>
-                <div className="text-gray-400">—</div>
+                <div className="text-gray-400 text-sm">—</div>
                 <div className="text-center">
-                  <div className="text-xs text-gray-500 mb-1">Maximum</div>
-                  <div className="text-lg font-bold text-purple-700">€{maxValue}</div>
+                  <div className="text-xs text-gray-500 mb-0.5">Max</div>
+                  <div className="text-base font-bold text-purple-700">€{maxValue}</div>
                 </div>
               </div>
 
               {/* Dual Range Slider */}
-              <div className="relative pt-2 pb-6">
+              <div className="relative pt-2 pb-4">
                 {/* Track */}
                 <div className="absolute top-1/2 left-0 right-0 h-2 -translate-y-1/2 bg-gray-200 rounded-full" />
 
@@ -190,41 +184,38 @@ export default function BudgetRangePicker({
               </div>
 
               {/* Quick Budget Presets */}
-              <div>
-                <div className="text-xs text-gray-500 mb-2">Budgets populaires</div>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { min: 400, max: 600, label: '€400-600' },
-                    { min: 600, max: 800, label: '€600-800' },
-                    { min: 800, max: 1000, label: '€800-1000' },
-                    { min: 1000, max: 1500, label: '€1k-1.5k' }
-                  ].map((preset) => (
-                    <button
-                      key={preset.label}
-                      onClick={() => {
-                        setMinValue(preset.min);
-                        setMaxValue(preset.max);
-                        if (onBudgetChange) {
-                          onBudgetChange(preset.min, preset.max);
-                        }
-                      }}
-                      className={cn(
-                        "px-3 py-1.5 text-xs font-medium rounded-full transition-all",
-                        minValue === preset.min && maxValue === preset.max
-                          ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      )}
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { min: 400, max: 600, label: '400-600' },
+                  { min: 600, max: 800, label: '600-800' },
+                  { min: 800, max: 1000, label: '800-1k' },
+                  { min: 1000, max: 1500, label: '1k-1.5k' }
+                ].map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() => {
+                      setMinValue(preset.min);
+                      setMaxValue(preset.max);
+                      if (onBudgetChange) {
+                        onBudgetChange(preset.min, preset.max);
+                      }
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 text-xs font-medium rounded-full transition-all",
+                      minValue === preset.min && maxValue === preset.max
+                        ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    )}
+                  >
+                    €{preset.label}
+                  </button>
+                ))}
               </div>
 
               {/* Apply Button */}
               <button
                 onClick={handleApply}
-                className="w-full py-3 px-4 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                className="w-full py-2 px-4 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all text-sm"
                 style={{
                   background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
                 }}

@@ -117,7 +117,7 @@ export default function DatePicker({
 
     // Empty cells for days before month starts
     for (let i = 0; i < adjustedFirstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-8" />);
+      days.push(<div key={`empty-${i}`} className="h-7" />);
     }
 
     // Days of the month
@@ -139,7 +139,7 @@ export default function DatePicker({
           onClick={() => !isPast && handleDateClick(day)}
           disabled={isPast}
           className={cn(
-            "h-8 w-8 rounded-full text-sm font-medium transition-all",
+            "h-7 w-7 rounded-full text-xs font-medium transition-all",
             isSelected
               ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md scale-110"
               : isToday
@@ -180,37 +180,37 @@ export default function DatePicker({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed z-[9999] bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 min-w-[280px]"
+            className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-3 min-w-[260px]"
             style={{
               top: `${calendarPosition.top}px`,
               left: `${calendarPosition.left}px`
             }}
           >
             {/* Month navigation */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <button
                 onClick={handlePreviousMonth}
                 className="p-1 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
+                <ChevronLeft className="w-4 h-4 text-gray-600" />
               </button>
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 text-sm">
                 {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
               </span>
               <button
                 onClick={handleNextMonth}
                 className="p-1 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
+                <ChevronRight className="w-4 h-4 text-gray-600" />
               </button>
             </div>
 
             {/* Day names */}
-            <div className="grid grid-cols-7 gap-1 mb-2">
+            <div className="grid grid-cols-7 gap-1 mb-1">
               {dayNames.map((day) => (
                 <div
                   key={day}
-                  className="h-8 flex items-center justify-center text-xs font-semibold text-gray-500"
+                  className="h-6 flex items-center justify-center text-[10px] font-semibold text-gray-500"
                 >
                   {day}
                 </div>
@@ -218,14 +218,14 @@ export default function DatePicker({
             </div>
 
             {/* Calendar days */}
-            <div className="grid grid-cols-7 gap-1 mb-3">
+            <div className="grid grid-cols-7 gap-1 mb-2">
               {renderCalendarDays()}
             </div>
 
             {/* Flexible option */}
             <button
               onClick={handleFlexibleClick}
-              className="w-full py-2 px-4 rounded-lg text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
+              className="w-full py-1.5 px-3 rounded-lg text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
             >
               Flexible
             </button>
