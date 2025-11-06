@@ -9,9 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/lib/contexts/auth-context';
 
 export default function ReportIssuePage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -20,11 +25,58 @@ export default function ReportIssuePage() {
     location: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement issue submission
-    console.log('Issue:', formData);
-    router.push('/dashboard/resident');
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      if (!user) {
+        setError('Vous devez être connecté pour signaler un problème');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const supabase = createClient();
+
+      // Get user's property_id from property_members table
+      const { data: memberData, error: memberError } = await supabase
+        .from('property_members')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (memberError || !memberData) {
+        setError('Vous devez être membre d\'une propriété pour signaler des problèmes');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Insert maintenance request
+      const { error: insertError } = await supabase
+        .from('maintenance_requests')
+        .insert({
+          property_id: memberData.property_id,
+          created_by: user.id,
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          priority: formData.priority,
+          location: formData.location || null,
+          status: 'open'
+        });
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      // Success - redirect to dashboard
+      router.push('/dashboard/resident');
+    } catch (err) {
+      console.error('Error submitting issue:', err);
+      setError('Erreur lors du signalement. Veuillez réessayer.');
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -59,6 +111,11 @@ export default function ReportIssuePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Label htmlFor="title">Issue Title</Label>
@@ -157,9 +214,10 @@ export default function ReportIssuePage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl disabled:opacity-50"
                 >
-                  Submit Report
+                  {isSubmitting ? 'Envoi en cours...' : 'Submit Report'}
                 </Button>
               </div>
             </form>

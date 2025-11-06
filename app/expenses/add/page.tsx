@@ -9,9 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/lib/contexts/auth-context';
 
 export default function AddExpensePage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
@@ -20,11 +25,59 @@ export default function AddExpensePage() {
     date: new Date().toISOString().split('T')[0],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement expense submission
-    console.log('Expense:', formData);
-    router.push('/dashboard/resident');
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      if (!user) {
+        setError('Vous devez être connecté pour ajouter une dépense');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const supabase = createClient();
+
+      // Get user's property_id from property_members table
+      const { data: memberData, error: memberError } = await supabase
+        .from('property_members')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (memberError || !memberData) {
+        setError('Vous devez être membre d\'une propriété pour ajouter des dépenses');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Insert expense
+      const { error: insertError } = await supabase
+        .from('expenses')
+        .insert({
+          property_id: memberData.property_id,
+          created_by: user.id,
+          title: formData.title,
+          description: formData.description || null,
+          amount: parseFloat(formData.amount),
+          category: formData.category,
+          date: formData.date,
+          status: 'pending',
+          split_type: 'equal'
+        });
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      // Success - redirect to dashboard
+      router.push('/dashboard/resident');
+    } catch (err) {
+      console.error('Error submitting expense:', err);
+      setError('Erreur lors de l\'ajout de la dépense. Veuillez réessayer.');
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -59,6 +112,11 @@ export default function AddExpensePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Label htmlFor="title">Title</Label>
@@ -139,9 +197,10 @@ export default function AddExpensePage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl disabled:opacity-50"
                 >
-                  Add Expense
+                  {isSubmitting ? 'Ajout en cours...' : 'Add Expense'}
                 </Button>
               </div>
             </form>

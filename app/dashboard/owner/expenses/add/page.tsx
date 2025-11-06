@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,9 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/lib/contexts/auth-context';
 
 export default function AddOwnerExpensePage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [properties, setProperties] = useState<Array<{ id: string; title: string }>>([]);
   const [formData, setFormData] = useState({
     property: '',
     title: '',
@@ -21,11 +27,74 @@ export default function AddOwnerExpensePage() {
     date: new Date().toISOString().split('T')[0],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const loadProperties = async () => {
+      if (!user) return;
+
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('properties')
+        .select('id, title')
+        .eq('owner_id', user.id)
+        .eq('status', 'published');
+
+      if (!error && data) {
+        setProperties(data);
+        if (data.length === 1) {
+          setFormData(prev => ({ ...prev, property: data[0].id }));
+        }
+      }
+    };
+
+    loadProperties();
+  }, [user]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement expense submission
-    console.log('Owner Expense:', formData);
-    router.push('/dashboard/owner');
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      if (!user) {
+        setError('Vous devez être connecté pour ajouter une dépense');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!formData.property) {
+        setError('Veuillez sélectionner une propriété');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const supabase = createClient();
+
+      // Insert expense for owner's property
+      const { error: insertError } = await supabase
+        .from('expenses')
+        .insert({
+          property_id: formData.property,
+          created_by: user.id,
+          title: formData.title,
+          description: formData.description || null,
+          amount: parseFloat(formData.amount),
+          category: formData.category,
+          date: formData.date,
+          status: 'approved', // Owner expenses are auto-approved
+          split_type: 'equal'
+        });
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      // Success - redirect to dashboard
+      router.push('/dashboard/owner');
+    } catch (err) {
+      console.error('Error submitting expense:', err);
+      setError('Erreur lors de l\'ajout de la dépense. Veuillez réessayer.');
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,20 +129,22 @@ export default function AddOwnerExpensePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Select
                   label="Property"
                   value={formData.property}
                   onChange={(e) => setFormData({ ...formData, property: e.target.value })}
-                  options={[
-                    { value: 'prop1', label: 'Brussels Centre Apartment' },
-                    { value: 'prop2', label: 'Ixelles Coliving' },
-                    { value: 'prop3', label: 'Etterbeek Studio' },
-                  ]}
-                  placeholder="Select property"
+                  options={properties.map(p => ({ value: p.id, label: p.title }))}
+                  placeholder={properties.length === 0 ? "No properties found" : "Select property"}
                   required
                   className="rounded-xl"
+                  disabled={properties.length === 0}
                 />
               </div>
 
@@ -158,9 +229,10 @@ export default function AddOwnerExpensePage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-purple-900 hover:bg-purple-950 rounded-xl"
+                  disabled={isSubmitting || properties.length === 0}
+                  className="flex-1 bg-purple-900 hover:bg-purple-950 rounded-xl disabled:opacity-50"
                 >
-                  Add Expense
+                  {isSubmitting ? 'Ajout en cours...' : 'Add Expense'}
                 </Button>
               </div>
             </form>
