@@ -33,19 +33,49 @@ export default function ModernHeroSection() {
 
       <div className="relative z-20 max-w-4xl mx-auto w-full">
 
-        {/* Container unifié avec dégradé signature EasyCo et glassmorphism */}
+        {/* Container unifié avec effet verre trempé coloré */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="rounded-[40px] shadow-2xl overflow-hidden mb-12 relative"
+          className="rounded-[40px] shadow-2xl overflow-visible mb-12 relative"
+          style={{
+            transform: 'translateZ(0)',
+            perspective: '1000px'
+          }}
         >
-          {/* Gradient background with glassmorphism effect */}
-          <div className="absolute inset-0"
+          {/* Verre trempé avec gradient subtil et effet 3D */}
+          <div className="absolute inset-0 rounded-[40px] overflow-hidden"
                style={{
-                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.95) 0%, rgba(255, 111, 60, 0.95) 50%, rgba(255, 210, 73, 0.95) 100%)',
-                 backdropFilter: 'blur(20px) saturate(180%)',
-                 WebkitBackdropFilter: 'blur(20px) saturate(180%)'
+                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.15) 0%, rgba(255, 111, 60, 0.12) 50%, rgba(255, 210, 73, 0.15) 100%)',
+                 backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+                 WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
+                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.3), inset 0 -2px 30px rgba(110, 86, 207, 0.2)',
+               }}
+          />
+
+          {/* Réfraction lumineuse sur les bords - effet prismatique */}
+          <div className="absolute inset-0 rounded-[40px]"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(110, 86, 207, 0.3) 100%)',
+                 mixBlendMode: 'overlay'
+               }}
+          />
+
+          {/* Reflet lumineux haut gauche */}
+          <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-[40px]"
+               style={{
+                 background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
+                 mixBlendMode: 'soft-light'
+               }}
+          />
+
+          {/* Bordure extérieure avec effet de réfraction */}
+          <div className="absolute -inset-[2px] rounded-[42px] pointer-events-none"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(110, 86, 207, 0.4) 25%, rgba(255, 111, 60, 0.4) 50%, rgba(255, 210, 73, 0.4) 75%, rgba(255, 255, 255, 0.6) 100%)',
+                 filter: 'blur(1px)',
+                 opacity: 0.6
                }}
           />
 
