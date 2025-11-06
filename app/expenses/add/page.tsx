@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useAuth } from '@/lib/contexts/auth-context';
+import { logger } from '@/lib/utils/logger';
 
 export default function AddExpensePage() {
   const router = useRouter();
@@ -72,9 +73,10 @@ export default function AddExpensePage() {
       }
 
       // Success - redirect to dashboard
+      logger.info('Expense added successfully', { title: formData.title, amount: formData.amount });
       router.push('/dashboard/resident');
     } catch (err) {
-      console.error('Error submitting expense:', err);
+      logger.error('Failed to submit expense', err, { formData });
       setError('Erreur lors de l\'ajout de la dépense. Veuillez réessayer.');
       setIsSubmitting(false);
     }

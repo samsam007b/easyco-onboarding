@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import ModernResidentHeader from '@/components/layout/ModernResidentHeader';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/lib/utils/logger';
 
 interface ResidentStats {
   groupName: string;
@@ -45,7 +46,7 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
         .single();
 
       if (profileError) {
-        console.error('Error loading resident profile:', profileError);
+        logger.supabaseError('load resident profile', profileError, { userId: user.id });
         // Continue with default profile instead of blocking
       } else if (userData) {
         setProfile(userData);
@@ -84,16 +85,53 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
           .eq('property_id', propertyMember.properties.id)
           .eq('status', 'active');
 
+        // Get pending maintenance requests count
+        const { count: pendingTasksCount } = await supabase
+          .from('maintenance_requests')
+          .select('*', { count: 'exact', head: true })
+          .eq('property_id', propertyMember.properties.id)
+          .eq('status', 'open');
+
+        // Calculate user's balance from expenses
+        const { data: expensesData } = await supabase
+          .from('expenses')
+          .select('amount, split_type, created_by')
+          .eq('property_id', propertyMember.properties.id)
+          .eq('status', 'approved');
+
+        let yourBalance = 0;
+        if (expensesData && membersCount) {
+          expensesData.forEach(expense => {
+            if (expense.split_type === 'equal') {
+              const shareAmount = expense.amount / membersCount;
+              if (expense.created_by === userId) {
+                // User paid, others owe them
+                yourBalance += expense.amount - shareAmount;
+              } else {
+                // User owes their share
+                yourBalance -= shareAmount;
+              }
+            }
+          });
+        }
+
+        // Get unread messages count
+        const { count: unreadCount } = await supabase
+          .from('conversations')
+          .select('*, messages!inner(*)', { count: 'exact', head: true })
+          .eq('messages.read', false)
+          .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`);
+
         setStats({
           groupName,
-          pendingTasks: 3, // Mock for now - would come from tasks table
-          yourBalance: -45, // Mock for now - would come from expenses/payments
-          unreadMessages: 0, // Would come from messages table
+          pendingTasks: pendingTasksCount || 0,
+          yourBalance: Math.round(yourBalance),
+          unreadMessages: unreadCount || 0,
           activeMembersCount: membersCount || 0,
         });
       }
     } catch (error) {
-      console.error('Error loading stats:', error);
+      logger.error('Failed to load resident stats', error, { userId });
     }
   };
 

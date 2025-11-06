@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useAuth } from '@/lib/contexts/auth-context';
+import { logger } from '@/lib/utils/logger';
 
 export default function ReportIssuePage() {
   const router = useRouter();
@@ -71,9 +72,10 @@ export default function ReportIssuePage() {
       }
 
       // Success - redirect to dashboard
+      logger.info('Issue reported successfully', { title: formData.title, priority: formData.priority });
       router.push('/dashboard/resident');
     } catch (err) {
-      console.error('Error submitting issue:', err);
+      logger.error('Failed to submit issue', err, { formData });
       setError('Erreur lors du signalement. Veuillez réessayer.');
       setIsSubmitting(false);
     }

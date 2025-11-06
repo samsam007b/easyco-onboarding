@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/lib/utils/logger';
 
 interface SearcherStats {
   favoritesCount: number;
@@ -24,13 +25,36 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
 
       const { data: userData, error: profileError } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
       if (profileError) {
-        console.error('Error loading searcher profile:', profileError);
+        logger.supabaseError('load searcher profile', profileError, { userId: user.id });
       } else if (userData) {
         setProfile(userData);
       }
 
-      const { count: favCount } = await supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
-      setStats({ favoritesCount: favCount || 0, matchesCount: 5, unreadMessages: 0 });
+      // Get favorites count
+      const { count: favCount } = await supabase
+        .from('favorites')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      // Get matches count from user_matching_scores (70%+ compatibility)
+      const { count: matchCount } = await supabase
+        .from('user_matching_scores')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .gte('compatibility_score', 70);
+
+      // Get unread messages count from conversations
+      const { count: unreadCount } = await supabase
+        .from('conversations')
+        .select('*, messages!inner(*)', { count: 'exact', head: true })
+        .eq('messages.read', false)
+        .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`);
+
+      setStats({
+        favoritesCount: favCount || 0,
+        matchesCount: matchCount || 0,
+        unreadMessages: unreadCount || 0
+      });
     };
     loadProfile();
   }, [router, supabase]);

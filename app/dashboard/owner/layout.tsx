@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import ModernOwnerHeader from '@/components/layout/ModernOwnerHeader';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/lib/utils/logger';
 
 interface OwnerStats {
   monthlyRevenue: number;
@@ -45,7 +46,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         .single();
 
       if (profileError) {
-        console.error('Error loading owner profile:', profileError);
+        logger.supabaseError('load owner profile', profileError, { userId: user.id });
         // Continue with default profile instead of blocking
       } else if (userData) {
         setProfile(userData);
@@ -87,24 +88,67 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           pendingApplications = count || 0;
         }
 
-        // Calculate average occupation (mock for now - would need tenants table)
-        const occupation = properties.filter(p => p.status === 'published').length > 0
-          ? Math.round((properties.filter(p => p.status === 'rented').length / properties.filter(p => p.status === 'published').length) * 100)
+        // Calculate real occupation from property_members
+        let occupiedRooms = 0;
+        let totalRooms = 0;
+
+        for (const property of properties.filter(p => p.status === 'published')) {
+          // Get total available rooms for this property
+          const { data: propertyData } = await supabase
+            .from('properties')
+            .select('available_rooms')
+            .eq('id', property.id)
+            .single();
+
+          if (propertyData?.available_rooms) {
+            totalRooms += propertyData.available_rooms;
+
+            // Count occupied rooms (active members)
+            const { count: occupiedCount } = await supabase
+              .from('property_members')
+              .select('*', { count: 'exact', head: true })
+              .eq('property_id', property.id)
+              .eq('status', 'active');
+
+            occupiedRooms += occupiedCount || 0;
+          }
+        }
+
+        const occupation = totalRooms > 0 ? Math.round((occupiedRooms / totalRooms) * 100) : 0;
+
+        // Get actual expenses to calculate realistic ROI
+        const { data: expensesData } = await supabase
+          .from('expenses')
+          .select('amount')
+          .in('property_id', propertyIds)
+          .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+        const monthlyExpenses = expensesData?.reduce((sum, e) => sum + e.amount, 0) || 0;
+        const netRevenue = monthlyRevenue - monthlyExpenses;
+
+        // Calculate ROI (annual net revenue / estimated property value * 100)
+        const estimatedPropertyValue = properties.length * 150000;
+        const roi = estimatedPropertyValue > 0
+          ? Number((netRevenue * 12 / estimatedPropertyValue * 100).toFixed(1))
           : 0;
 
-        // Calculate ROI (simplified - revenue / assumed property value * 100)
-        const roi = properties.length > 0 ? Number((monthlyRevenue * 12 / (properties.length * 150000) * 100).toFixed(1)) : 0;
+        // Get unread messages count
+        const { count: unreadCount } = await supabase
+          .from('conversations')
+          .select('*, messages!inner(*)', { count: 'exact', head: true })
+          .eq('messages.read', false)
+          .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`);
 
         setStats({
           monthlyRevenue,
           roi,
           occupation,
           pendingApplications,
-          unreadMessages: 0, // Would come from messages table
+          unreadMessages: unreadCount || 0,
         });
       }
     } catch (error) {
-      console.error('Error loading stats:', error);
+      logger.error('Failed to load owner stats', error, { userId });
     }
   };
 
