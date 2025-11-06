@@ -47,10 +47,10 @@ export default function ModernHeroSection() {
           {/* Verre trempé avec gradient subtil et effet 3D */}
           <div className="absolute inset-0 rounded-[40px] overflow-hidden"
                style={{
-                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.15) 0%, rgba(255, 111, 60, 0.12) 50%, rgba(255, 210, 73, 0.15) 100%)',
-                 backdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
-                 WebkitBackdropFilter: 'blur(60px) saturate(200%) brightness(1.1)',
-                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.3), inset 0 -2px 30px rgba(110, 86, 207, 0.2)',
+                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.25) 0%, rgba(255, 111, 60, 0.22) 50%, rgba(255, 210, 73, 0.25) 100%)',
+                 backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+                 WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(110, 86, 207, 0.3)',
                }}
           />
 
@@ -119,7 +119,7 @@ export default function ModernHeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="bg-white p-4 relative z-10"
+            className="bg-white p-4 relative z-10 rounded-b-[40px]"
             style={{ overflow: 'visible' }}
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
