@@ -133,7 +133,11 @@ export default function ModernPublicHeader({
                           : item.color === 'orange'
                           ? "text-orange-700 bg-orange-50"
                           : "text-purple-700 bg-purple-50"
-                        : "text-gray-600 hover:bg-gray-100"
+                        : item.color === 'yellow'
+                        ? "text-gray-600 hover:text-yellow-700 hover:bg-yellow-50"
+                        : item.color === 'orange'
+                        ? "text-gray-600 hover:text-orange-700 hover:bg-orange-50"
+                        : "text-gray-600 hover:text-purple-700 hover:bg-purple-50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -156,9 +160,14 @@ export default function ModernPublicHeader({
               </Button>
             </Link>
 
-            {/* S'inscrire */}
+            {/* S'inscrire - Dégradé du logo (généraliste pour tous) */}
             <Link href="/signup">
-              <Button className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all">
+              <Button
+                className="rounded-full text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                }}
+              >
                 S'inscrire
               </Button>
             </Link>
@@ -270,7 +279,12 @@ export default function ModernPublicHeader({
                     </Button>
                   </Link>
                   <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white">
+                    <Button
+                      className="w-full rounded-full text-white font-semibold"
+                      style={{
+                        background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                      }}
+                    >
                       S'inscrire
                     </Button>
                   </Link>
