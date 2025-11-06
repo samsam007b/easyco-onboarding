@@ -132,12 +132,11 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           ? Number((netRevenue * 12 / estimatedPropertyValue * 100).toFixed(1))
           : 0;
 
-        // Get unread messages count
-        const { count: unreadCount } = await supabase
-          .from('conversations')
-          .select('*, messages!inner(*)', { count: 'exact', head: true })
-          .eq('messages.read', false)
-          .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`);
+        // Get unread messages count using database function
+        const { data: unreadData } = await supabase
+          .rpc('get_unread_count', { user_uuid: userId });
+
+        const unreadCount = unreadData || 0;
 
         setStats({
           monthlyRevenue,

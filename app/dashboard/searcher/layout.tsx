@@ -43,12 +43,11 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
         .eq('user_id', user.id)
         .gte('compatibility_score', 70);
 
-      // Get unread messages count from conversations
-      const { count: unreadCount } = await supabase
-        .from('conversations')
-        .select('*, messages!inner(*)', { count: 'exact', head: true })
-        .eq('messages.read', false)
-        .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`);
+      // Get unread messages count using database function
+      const { data: unreadData } = await supabase
+        .rpc('get_unread_count', { user_uuid: user.id });
+
+      const unreadCount = unreadData || 0;
 
       setStats({
         favoritesCount: favCount || 0,

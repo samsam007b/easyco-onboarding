@@ -4,8 +4,17 @@ import Link from 'next/link';
 import { Search, Home, MapPin, Euro, Calendar, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
 
 export default function ModernHeroSection() {
+  const [selectedLocation, setSelectedLocation] = useState('');
+
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+    if (place.formatted_address) {
+      setSelectedLocation(place.formatted_address);
+    }
+  };
   return (
     <section className="relative pt-24 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
       {/* Pas de voile blanc - images en full HD */}
@@ -67,18 +76,16 @@ export default function ModernHeroSection() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
               {/* Location Input */}
-              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all cursor-pointer group">
+              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Où ?
                 </label>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Ville, quartier..."
-                    className="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
-                  />
-                </div>
+                <GooglePlacesAutocomplete
+                  onPlaceSelect={handlePlaceSelect}
+                  placeholder="Ville, quartier..."
+                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"
+                  inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                />
               </div>
 
               {/* Budget Input */}
