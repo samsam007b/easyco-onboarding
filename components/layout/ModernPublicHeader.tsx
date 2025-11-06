@@ -19,11 +19,13 @@ export default function ModernPublicHeader({
 }: ModernPublicHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN'>('FR');
+  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN' | 'NL' | 'DE'>('FR');
 
   const languages = [
     { code: 'FR', label: 'Français', flag: '🇫🇷' },
     { code: 'EN', label: 'English', flag: '🇬🇧' },
+    { code: 'NL', label: 'Nederlands', flag: '🇳🇱' },
+    { code: 'DE', label: 'Deutsch', flag: '🇩🇪' },
   ];
 
   const navItems = [
@@ -199,7 +201,7 @@ export default function ModernPublicHeader({
                       <button
                         key={lang.code}
                         onClick={() => {
-                          setSelectedLang(lang.code as 'FR' | 'EN');
+                          setSelectedLang(lang.code as 'FR' | 'EN' | 'NL' | 'DE');
                           setLangDropdownOpen(false);
                         }}
                         className={cn(
