@@ -78,8 +78,9 @@ export default function ModernHeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
             className="bg-white p-4"
+            style={{ overflow: 'visible' }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
 
               {/* Location Input */}
               <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group">

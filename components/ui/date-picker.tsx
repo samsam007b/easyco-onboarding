@@ -23,9 +23,10 @@ export default function DatePicker({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close calendar when clicking outside
+  // Calculate calendar position and close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -33,12 +34,27 @@ export default function DatePicker({
       }
     };
 
+    const updatePosition = () => {
+      if (containerRef.current && isOpen) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setCalendarPosition({
+          top: rect.bottom + 8,
+          left: rect.left
+        });
+      }
+    };
+
     if (isOpen) {
+      updatePosition();
       document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
     };
   }, [isOpen]);
 
@@ -164,7 +180,11 @@ export default function DatePicker({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full mt-2 left-0 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 min-w-[280px]"
+            className="fixed z-[9999] bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 min-w-[280px]"
+            style={{
+              top: `${calendarPosition.top}px`,
+              left: `${calendarPosition.left}px`
+            }}
           >
             {/* Month navigation */}
             <div className="flex items-center justify-between mb-4">
