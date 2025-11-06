@@ -7,10 +7,12 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
 import DatePicker from '@/components/ui/date-picker';
+import BudgetRangePicker from '@/components/ui/budget-range-picker';
 
 export default function ModernHeroSection() {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
 
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     if (place.formatted_address) {
@@ -20,6 +22,10 @@ export default function ModernHeroSection() {
 
   const handleDateSelect = (date: Date | null) => {
     setSelectedDate(date);
+  };
+
+  const handleBudgetChange = (min: number, max: number) => {
+    setBudgetRange({ min, max });
   };
   return (
     <section className="relative pt-24 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
@@ -96,18 +102,18 @@ export default function ModernHeroSection() {
               </div>
 
               {/* Budget Input */}
-              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all cursor-pointer group border-l-0 md:border-l border-gray-200">
+              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Budget
                 </label>
-                <div className="flex items-center gap-2">
-                  <Euro className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="€800/mois"
-                    className="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
-                  />
-                </div>
+                <BudgetRangePicker
+                  onBudgetChange={handleBudgetChange}
+                  placeholder="€800/mois"
+                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"
+                  inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                  minBudget={0}
+                  maxBudget={2000}
+                />
               </div>
 
               {/* Date Input */}
