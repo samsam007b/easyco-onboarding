@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Star, Info, Sparkles, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import PropertyMap from '@/components/PropertyMap';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -32,6 +32,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
 import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
+import { PropertySwipeCard } from '@/components/matching/PropertySwipeCard';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Property {
   id: string;
@@ -94,7 +96,13 @@ export default function PropertiesBrowsePageV2() {
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'map' | 'matching'>('list');
+
+  // Matching mode state
+  const [matchingIndex, setMatchingIndex] = useState(0);
+  const [swipeHistory, setSwipeHistory] = useState<Array<{ propertyId: string; action: 'left' | 'right' | 'super' }>>([]);
+  const [likedProperties, setLikedProperties] = useState<Set<string>>(new Set());
+  const [passedProperties, setPassedProperties] = useState<Set<string>>(new Set());
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>();
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
@@ -637,11 +645,15 @@ export default function PropertiesBrowsePageV2() {
                   <span>Carte</span>
                 </button>
                 <button
-                  onClick={() => router.push('/matching/swipe')}
-                  className="px-6 py-3 rounded-full flex items-center gap-2 transition-all font-medium text-gray-600 hover:text-orange-600 hover:bg-orange-50/50"
+                  onClick={() => setViewMode('matching')}
+                  className={`px-6 py-3 rounded-full flex items-center gap-2 transition-all font-medium ${
+                    viewMode === 'matching'
+                      ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
+                      : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/50'
+                  }`}
                 >
-                  <Users className="w-5 h-5" />
-                  <span>People</span>
+                  <Heart className="w-5 h-5" />
+                  <span>Matching</span>
                 </button>
               </div>
             </div>
@@ -733,7 +745,7 @@ export default function PropertiesBrowsePageV2() {
           />
         )}
 
-        {/* Properties Grid, Map, or People View */}
+        {/* Properties Grid, Map, or Matching View */}
         {propertiesWithScores && propertiesWithScores.length > 0 ? (
           <>
             {viewMode === 'list' ? (
@@ -760,7 +772,7 @@ export default function PropertiesBrowsePageV2() {
                   );
                 })}
               </div>
-            ) : (
+            ) : viewMode === 'map' ? (
               <div className="mb-8">
                 <PropertyMap
                   properties={propertiesWithScores}
@@ -769,10 +781,230 @@ export default function PropertiesBrowsePageV2() {
                   className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg"
                 />
               </div>
+            ) : (
+              // Matching Mode
+              <div className="max-w-lg mx-auto px-4">
+                {/* Stats Bar */}
+                <div className="mb-6 flex items-center justify-between px-6 py-4 bg-white rounded-2xl shadow-lg">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-orange-600">{likedProperties.size}</p>
+                    <p className="text-xs text-gray-600">❤️ J'aime</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-gray-900">{propertiesWithScores.length - matchingIndex}</p>
+                    <p className="text-xs text-gray-600">🏠 Restants</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-red-500">{passedProperties.size}</p>
+                    <p className="text-xs text-gray-600">✖️ Passés</p>
+                  </div>
+                </div>
+
+                {/* Card Stack */}
+                <div className="relative h-[650px] mb-6">
+                  {matchingIndex >= propertiesWithScores.length ? (
+                    // No more cards
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute inset-0 bg-white rounded-3xl shadow-2xl flex flex-col items-center justify-center p-8 text-center"
+                    >
+                      <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
+                        <Sparkles className="w-12 h-12 text-white" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                        Bravo ! 🎉
+                      </h3>
+                      <p className="text-gray-600 mb-6 max-w-sm">
+                        Tu as vu tous les logements disponibles. Reviens plus tard pour découvrir de nouvelles annonces !
+                      </p>
+                      <div className="flex flex-col gap-3 w-full max-w-xs">
+                        <Button
+                          onClick={() => {
+                            setMatchingIndex(0);
+                            setSwipeHistory([]);
+                          }}
+                          className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+                          size="lg"
+                        >
+                          <RotateCcw className="w-5 h-5 mr-2" />
+                          Recommencer
+                        </Button>
+                        <Button
+                          onClick={() => router.push('/dashboard/searcher/favorites')}
+                          variant="outline"
+                          size="lg"
+                          className="w-full"
+                        >
+                          <Heart className="w-5 h-5 mr-2" />
+                          Voir mes coups de cœur ({likedProperties.size})
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <>
+                      {/* Preview cards (behind) */}
+                      {[2, 1].map((offset) => {
+                        const previewIndex = matchingIndex + offset;
+                        if (previewIndex >= propertiesWithScores.length) return null;
+                        return (
+                          <PropertySwipeCard
+                            key={`preview-${propertiesWithScores[previewIndex].id}`}
+                            property={propertiesWithScores[previewIndex]}
+                            compatibilityScore={propertiesWithScores[previewIndex].compatibilityScore}
+                            residents={residentsData?.get(propertiesWithScores[previewIndex].id) || []}
+                            onSwipe={() => {}}
+                            isPreview={true}
+                            index={offset}
+                          />
+                        );
+                      })}
+
+                      {/* Current card */}
+                      <PropertySwipeCard
+                        key={propertiesWithScores[matchingIndex].id}
+                        property={propertiesWithScores[matchingIndex]}
+                        compatibilityScore={propertiesWithScores[matchingIndex].compatibilityScore}
+                        residents={residentsData?.get(propertiesWithScores[matchingIndex].id) || []}
+                        onSwipe={(direction) => {
+                          const currentProperty = propertiesWithScores[matchingIndex];
+
+                          // Record swipe in history
+                          setSwipeHistory(prev => [...prev, {
+                            propertyId: currentProperty.id,
+                            action: direction
+                          }]);
+
+                          // Update liked/passed sets
+                          if (direction === 'right' || direction === 'super') {
+                            setLikedProperties(prev => new Set(prev).add(currentProperty.id));
+                            handleFavoriteClick(currentProperty.id);
+                            toast.success(direction === 'super' ? '⭐ Super Like !' : '❤️ Ajouté aux favoris !', {
+                              description: currentProperty.title
+                            });
+                          } else {
+                            setPassedProperties(prev => new Set(prev).add(currentProperty.id));
+                          }
+
+                          // Move to next
+                          setTimeout(() => setMatchingIndex(prev => prev + 1), 300);
+                        }}
+                        onCardClick={() => {
+                          // Open property details
+                          router.push(`/properties/${propertiesWithScores[matchingIndex].id}`);
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                {matchingIndex < propertiesWithScores.length && (
+                  <div className="flex items-center justify-center gap-4 mb-6">
+                    {/* Pass */}
+                    <button
+                      onClick={() => {
+                        const currentProperty = propertiesWithScores[matchingIndex];
+                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'left' }]);
+                        setPassedProperties(prev => new Set(prev).add(currentProperty.id));
+                        setMatchingIndex(prev => prev + 1);
+                      }}
+                      className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                    >
+                      <X className="w-8 h-8 text-red-500" />
+                    </button>
+
+                    {/* Undo */}
+                    <button
+                      onClick={() => {
+                        if (swipeHistory.length > 0 && matchingIndex > 0) {
+                          const lastSwipe = swipeHistory[swipeHistory.length - 1];
+                          setSwipeHistory(prev => prev.slice(0, -1));
+                          setLikedProperties(prev => {
+                            const next = new Set(prev);
+                            next.delete(lastSwipe.propertyId);
+                            return next;
+                          });
+                          setPassedProperties(prev => {
+                            const next = new Set(prev);
+                            next.delete(lastSwipe.propertyId);
+                            return next;
+                          });
+                          setMatchingIndex(prev => prev - 1);
+                          toast.info('↩️ Action annulée');
+                        }
+                      }}
+                      disabled={swipeHistory.length === 0 || matchingIndex === 0}
+                      className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <RotateCcw className="w-6 h-6 text-gray-600" />
+                    </button>
+
+                    {/* Super Like */}
+                    <button
+                      onClick={() => {
+                        const currentProperty = propertiesWithScores[matchingIndex];
+                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'super' }]);
+                        setLikedProperties(prev => new Set(prev).add(currentProperty.id));
+                        handleFavoriteClick(currentProperty.id);
+                        toast.success('⭐ Super Like !', {
+                          description: currentProperty.title
+                        });
+                        setMatchingIndex(prev => prev + 1);
+                      }}
+                      className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                    >
+                      <Star className="w-6 h-6 text-white fill-current" />
+                    </button>
+
+                    {/* Like */}
+                    <button
+                      onClick={() => {
+                        const currentProperty = propertiesWithScores[matchingIndex];
+                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'right' }]);
+                        setLikedProperties(prev => new Set(prev).add(currentProperty.id));
+                        handleFavoriteClick(currentProperty.id);
+                        toast.success('❤️ Ajouté aux favoris !', {
+                          description: currentProperty.title
+                        });
+                        setMatchingIndex(prev => prev + 1);
+                      }}
+                      className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                    >
+                      <Heart className="w-8 h-8 text-white fill-current" />
+                    </button>
+                  </div>
+                )}
+
+                {/* Quick Filters */}
+                {matchingIndex < propertiesWithScores.length && (
+                  <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                    <button
+                      onClick={() => setShowFilters(true)}
+                      className="px-4 py-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow flex items-center gap-2"
+                    >
+                      <SlidersHorizontal className="w-4 h-4" />
+                      Filtres
+                    </button>
+                    {isAuthenticated && (
+                      <button
+                        onClick={() => setSortBy('best_match')}
+                        className={cn(
+                          "px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all flex items-center gap-2",
+                          sortBy === 'best_match' ? 'bg-orange-500 text-white' : 'bg-white'
+                        )}
+                      >
+                        <TrendingUp className="w-4 h-4" />
+                        Meilleur match
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
 
-            {/* Pagination (authenticated only) */}
-            {isAuthenticated && propertiesData && propertiesData.totalPages > 1 && (
+            {/* Pagination (authenticated only, not in matching mode) */}
+            {isAuthenticated && viewMode !== 'matching' && propertiesData && propertiesData.totalPages > 1 && (
               <div className="mt-8 flex items-center justify-center gap-2">
                 <Button
                   variant="outline"
