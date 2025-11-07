@@ -277,8 +277,8 @@ body {
    ============================================ */
 
 html {
-  /* Fond blanc pour l'overscroll avec le logo animé */
-  background: #ffffff;
+  /* Fond jaune dégradé pour l'overscroll */
+  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
   position: relative;
   /* Permet un overscroll plus grand */
   overscroll-behavior: contain;
@@ -297,12 +297,12 @@ html::before {
   justify-content: center;
   font-size: 5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 35%, #FFA040 65%, #FFD080 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: white;
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2);
   pointer-events: none;
-  z-index: -1;
+  z-index: 9999;
   animation: logoFloat 3s ease-in-out infinite;
 }
 
