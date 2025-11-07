@@ -152,7 +152,7 @@ export default function GroupsPage() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
-                  onClick={() => router.push('/groups/create')}
+                  onClick={() => router.push('/dashboard/searcher/groups/create')}
                   className="bg-white text-orange-600 hover:bg-orange-50 font-semibold px-8 py-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all gap-2 group"
                   size="lg"
                 >
@@ -285,7 +285,7 @@ export default function GroupsPage() {
                     Créez votre premier groupe et commencez à chercher un logement avec d'autres personnes
                   </p>
                   <Button
-                    onClick={() => router.push('/groups/create')}
+                    onClick={() => router.push('/dashboard/searcher/groups/create')}
                     className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl px-6 gap-2"
                   >
                     <Plus className="h-5 w-5" />
