@@ -50,7 +50,7 @@ export default function PropertyMarkerCard({
         </div>
 
         {/* Price Badge - with glassmorphism */}
-        <div className="relative px-2 py-1.5 overflow-hidden">
+        <div className="relative px-2 py-1.5 overflow-hidden bg-gradient-to-br from-gray-50/50 to-white/50">
           {/* Glassmorphism background */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
                style={{
@@ -58,7 +58,7 @@ export default function PropertyMarkerCard({
                  backdropFilter: 'blur(40px) saturate(150%)'
                }}
           />
-          <div className="absolute inset-0 border-t border-white/30" />
+          <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
 
           <div className="relative text-sm font-bold text-gray-900 text-center">
             {price}€

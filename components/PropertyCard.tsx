@@ -161,7 +161,7 @@ function PropertyCard({
             </p>
 
             {/* Price section with glassmorphism */}
-            <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
+            <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden bg-gradient-to-br from-gray-50/50 to-white/50">
               {/* Glassmorphism background */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
                    style={{
@@ -169,7 +169,7 @@ function PropertyCard({
                      backdropFilter: 'blur(40px) saturate(150%)'
                    }}
               />
-              <div className="absolute inset-0 border-t border-white/30" />
+              <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
 
               <div className="relative flex items-center justify-between">
                 <span className="text-sm font-bold text-gray-900">
@@ -310,7 +310,7 @@ function PropertyCard({
           )}
 
           {/* Footer: Price and CTA - with glassmorphism */}
-          <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
+          <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden bg-gradient-to-br from-gray-50/50 to-white/50">
             {/* Glassmorphism background */}
             <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
                  style={{
@@ -318,7 +318,7 @@ function PropertyCard({
                    backdropFilter: 'blur(40px) saturate(150%)'
                  }}
             />
-            <div className="absolute inset-0 border-t border-white/30" />
+            <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
 
             <div className="relative flex items-center justify-between">
               <div>

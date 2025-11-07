@@ -327,7 +327,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
         )}
 
         {/* Action Buttons - with glassmorphism */}
-        <div className="relative -mx-5 -mb-5 mt-4 px-5 py-4 rounded-b-2xl overflow-hidden">
+        <div className="relative -mx-5 -mb-5 mt-4 px-5 py-4 rounded-b-2xl overflow-hidden bg-gradient-to-br from-gray-50/50 to-white/50">
           {/* Glassmorphism background */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
                style={{
@@ -335,7 +335,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
                  backdropFilter: 'blur(40px) saturate(150%)'
                }}
           />
-          <div className="absolute inset-0 border-t border-white/30" />
+          <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
 
           <div className="relative flex gap-2">
             <Button
