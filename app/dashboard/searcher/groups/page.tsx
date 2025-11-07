@@ -408,6 +408,7 @@ export default function GroupsPage() {
               </div>
             </div>
           </section>
+        </div>
     </div>
   );
 }
