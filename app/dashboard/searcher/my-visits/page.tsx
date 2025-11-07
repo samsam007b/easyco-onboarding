@@ -53,15 +53,29 @@ export default function MyVisitsPage() {
   const pastVisits = getPastVisits();
 
   // Convert visits to calendar events
-  const calendarEvents: CalendarEvent[] = [...upcomingVisits, ...pastVisits].map((visit) => ({
-    id: visit.id,
-    title: visit.property?.title || 'Visite',
-    description: visit.property?.address || '',
-    start: new Date(visit.scheduled_at),
-    end: visit.scheduled_at ? new Date(new Date(visit.scheduled_at).getTime() + 60 * 60 * 1000) : undefined, // 1 hour duration
-    location: visit.property?.address,
-    color: visit.status === 'confirmed' ? 'orange' : visit.status === 'completed' ? 'green' : visit.status === 'cancelled' ? 'red' : 'blue',
-  }));
+  const calendarEvents: CalendarEvent[] = [...upcomingVisits, ...pastVisits].map((visit) => {
+    // Determine color based on status
+    let color: 'orange' | 'blue' | 'green' | 'red' | 'purple' = 'blue';
+    if (visit.status === 'confirmed') {
+      color = 'orange';
+    } else if (visit.status === 'completed') {
+      color = 'green';
+    } else if (visit.status === 'cancelled_by_visitor' || visit.status === 'cancelled_by_owner') {
+      color = 'red';
+    } else if (visit.status === 'no_show') {
+      color = 'purple';
+    }
+
+    return {
+      id: visit.id,
+      title: visit.property?.title || 'Visite',
+      description: visit.property?.address || '',
+      start: new Date(visit.scheduled_at),
+      end: visit.scheduled_at ? new Date(new Date(visit.scheduled_at).getTime() + 60 * 60 * 1000) : undefined, // 1 hour duration
+      location: visit.property?.address,
+      color,
+    };
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
