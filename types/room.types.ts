@@ -1,5 +1,7 @@
 // Room and Pricing Types for EasyCo Platform
 
+import { PropertyRoomAesthetics } from './room-aesthetics.types';
+
 export interface PropertyRoom {
   id: string;
   property_id: string;
@@ -71,6 +73,7 @@ export interface RoomWithTotal extends PropertyRoom {
   total_monthly_cost: number; // room price + utilities + shared living
   utilities_share: number;
   shared_living_share: number;
+  aesthetics?: PropertyRoomAesthetics; // Optional aesthetic data
 }
 
 export interface PropertyLifestyleMetrics {
