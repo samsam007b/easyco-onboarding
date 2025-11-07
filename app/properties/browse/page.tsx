@@ -793,28 +793,70 @@ export default function PropertiesBrowsePageV2() {
                 />
               </div>
             ) : (
-              // Matching Mode
+              // People Mode - Find co-searchers to form groups
               <div className="max-w-lg mx-auto px-4">
+                {/* Header */}
+                <div className="text-center mb-8">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-3">
+                    Trouve tes futurs{' '}
+                    <span className="bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] bg-clip-text text-transparent">
+                      colocataires
+                    </span>
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-md mx-auto">
+                    Swipe pour créer ton groupe de colocation idéal
+                  </p>
+                </div>
+
                 {/* Stats Bar */}
-                <div className="mb-6 flex items-center justify-between px-6 py-4 bg-white rounded-2xl shadow-lg">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-orange-600">{likedProperties.size}</p>
-                    <p className="text-xs text-gray-600">❤️ J'aime</p>
+                <div className="mb-6 flex items-center justify-center gap-4">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md">
+                    <Heart className="w-4 h-4 text-orange-600" />
+                    <span className="text-sm font-semibold text-gray-700">{matchingIndex} vus</span>
                   </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900">{propertiesWithScores.length - matchingIndex}</p>
-                    <p className="text-xs text-gray-600">🏠 Restants</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-red-500">{passedProperties.size}</p>
-                    <p className="text-xs text-gray-600">✖️ Passés</p>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md">
+                    <Users className="w-4 h-4 text-orange-600" />
+                    <span className="text-sm font-semibold text-gray-700">{potentialMatches.length - matchingIndex} restants</span>
                   </div>
                 </div>
 
                 {/* Card Stack */}
                 <div className="relative h-[650px] mb-6">
-                  {matchingIndex >= propertiesWithScores.length ? (
-                    // No more cards
+                  {!isAuthenticated ? (
+                    // Must be logged in
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute inset-0 bg-white rounded-3xl shadow-2xl flex flex-col items-center justify-center p-8 text-center"
+                    >
+                      <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
+                        <Lock className="w-12 h-12 text-white" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                        Connecte-toi
+                      </h3>
+                      <p className="text-gray-600 mb-6 max-w-sm">
+                        Crée ton compte pour rencontrer des colocataires compatibles et former ton groupe !
+                      </p>
+                      <Link href="/auth/signup">
+                        <Button
+                          className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+                          size="lg"
+                        >
+                          Créer mon compte gratuit
+                        </Button>
+                      </Link>
+                    </motion.div>
+                  ) : isLoadingMatches ? (
+                    // Loading
+                    <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <p className="text-gray-600 font-medium">Chargement des profils...</p>
+                      </div>
+                    </div>
+                  ) : matchingIndex >= potentialMatches.length ? (
+                    // No more profiles
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -827,82 +869,78 @@ export default function PropertiesBrowsePageV2() {
                         Bravo ! 🎉
                       </h3>
                       <p className="text-gray-600 mb-6 max-w-sm">
-                        Tu as vu tous les logements disponibles. Reviens plus tard pour découvrir de nouvelles annonces !
+                        Tu as vu tous les profils disponibles. Reviens plus tard pour découvrir de nouveaux chercheurs de coloc !
                       </p>
                       <div className="flex flex-col gap-3 w-full max-w-xs">
                         <Button
                           onClick={() => {
                             setMatchingIndex(0);
-                            setSwipeHistory([]);
+                            loadPotentialMatches();
                           }}
                           className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
                           size="lg"
                         >
                           <RotateCcw className="w-5 h-5 mr-2" />
-                          Recommencer
+                          Recharger
                         </Button>
                         <Button
-                          onClick={() => router.push('/dashboard/searcher/favorites')}
+                          onClick={() => router.push('/matching/matches')}
                           variant="outline"
                           size="lg"
                           className="w-full"
                         >
                           <Heart className="w-5 h-5 mr-2" />
-                          Voir mes coups de cœur ({likedProperties.size})
+                          Voir mes matchs
                         </Button>
                       </div>
                     </motion.div>
                   ) : (
                     <>
-                      {/* Preview cards (behind) */}
-                      {[2, 1].map((offset) => {
+                      {/* Preview cards (behind) - Blurred stack effect */}
+                      {[1, 2].map((offset) => {
                         const previewIndex = matchingIndex + offset;
-                        if (previewIndex >= propertiesWithScores.length) return null;
+                        if (previewIndex >= potentialMatches.length) return null;
                         return (
-                          <PropertySwipeCard
-                            key={`preview-${propertiesWithScores[previewIndex].id}`}
-                            property={propertiesWithScores[previewIndex]}
-                            compatibilityScore={propertiesWithScores[previewIndex].compatibilityScore}
-                            residents={residentsData?.get(propertiesWithScores[previewIndex].id) || []}
-                            onSwipe={() => {}}
-                            isPreview={true}
-                            index={offset}
-                          />
+                          <div
+                            key={`preview-${previewIndex}`}
+                            className={cn(
+                              "absolute inset-0 rounded-3xl shadow-2xl overflow-hidden pointer-events-none transition-all duration-300",
+                              offset === 1 ? "scale-[0.95] opacity-40 blur-sm translate-y-2" : "scale-[0.90] opacity-20 blur-md translate-y-4"
+                            )}
+                            style={{
+                              zIndex: -offset,
+                            }}
+                          >
+                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200" />
+                          </div>
                         );
                       })}
 
                       {/* Current card */}
-                      <PropertySwipeCard
-                        key={propertiesWithScores[matchingIndex].id}
-                        property={propertiesWithScores[matchingIndex]}
-                        compatibilityScore={propertiesWithScores[matchingIndex].compatibilityScore}
-                        residents={residentsData?.get(propertiesWithScores[matchingIndex].id) || []}
-                        onSwipe={(direction) => {
-                          const currentProperty = propertiesWithScores[matchingIndex];
+                      <SwipeCard
+                        key={potentialMatches[matchingIndex].user_id}
+                        user={potentialMatches[matchingIndex]}
+                        onSwipe={async (direction) => {
+                          const currentUser = potentialMatches[matchingIndex];
+                          const action = direction === 'right' ? 'like' : 'pass';
 
-                          // Record swipe in history
-                          setSwipeHistory(prev => [...prev, {
-                            propertyId: currentProperty.id,
-                            action: direction
-                          }]);
+                          // Record swipe
+                          const success = await recordSwipe(currentUser.user_id, action);
 
-                          // Update liked/passed sets
-                          if (direction === 'right' || direction === 'super') {
-                            setLikedProperties(prev => new Set(prev).add(currentProperty.id));
-                            handleFavoriteClick(currentProperty.id);
-                            toast.success(direction === 'super' ? '⭐ Super Like !' : '❤️ Ajouté aux favoris !', {
-                              description: currentProperty.title
-                            });
+                          if (success) {
+                            if (action === 'like') {
+                              toast.success('👍 Profil liké !', {
+                                description: `${currentUser.first_name} ${currentUser.last_name}`
+                              });
+                            }
+                            // Move to next
+                            setTimeout(() => setMatchingIndex(prev => prev + 1), 200);
                           } else {
-                            setPassedProperties(prev => new Set(prev).add(currentProperty.id));
+                            toast.error('Erreur lors de l\'enregistrement');
                           }
-
-                          // Move to next
-                          setTimeout(() => setMatchingIndex(prev => prev + 1), 300);
                         }}
                         onCardClick={() => {
-                          // Open property details
-                          router.push(`/properties/${propertiesWithScores[matchingIndex].id}`);
+                          toast.info('Profil complet bientôt disponible !');
                         }}
                       />
                     </>
@@ -910,105 +948,59 @@ export default function PropertiesBrowsePageV2() {
                 </div>
 
                 {/* Action Buttons */}
-                {matchingIndex < propertiesWithScores.length && (
+                {isAuthenticated && matchingIndex < potentialMatches.length && (
                   <div className="flex items-center justify-center gap-4 mb-6">
                     {/* Pass */}
                     <button
-                      onClick={() => {
-                        const currentProperty = propertiesWithScores[matchingIndex];
-                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'left' }]);
-                        setPassedProperties(prev => new Set(prev).add(currentProperty.id));
-                        setMatchingIndex(prev => prev + 1);
+                      onClick={async () => {
+                        const currentUser = potentialMatches[matchingIndex];
+                        const success = await recordSwipe(currentUser.user_id, 'pass');
+                        if (success) {
+                          setMatchingIndex(prev => prev + 1);
+                        }
                       }}
                       className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
                     >
                       <X className="w-8 h-8 text-red-500" />
                     </button>
 
-                    {/* Undo */}
+                    {/* Undo - Not available in this version */}
                     <button
                       onClick={() => {
-                        if (swipeHistory.length > 0 && matchingIndex > 0) {
-                          const lastSwipe = swipeHistory[swipeHistory.length - 1];
-                          setSwipeHistory(prev => prev.slice(0, -1));
-                          setLikedProperties(prev => {
-                            const next = new Set(prev);
-                            next.delete(lastSwipe.propertyId);
-                            return next;
-                          });
-                          setPassedProperties(prev => {
-                            const next = new Set(prev);
-                            next.delete(lastSwipe.propertyId);
-                            return next;
-                          });
-                          setMatchingIndex(prev => prev - 1);
-                          toast.info('↩️ Action annulée');
-                        }
+                        toast.info('Retour en arrière bientôt disponible');
                       }}
-                      disabled={swipeHistory.length === 0 || matchingIndex === 0}
+                      disabled={matchingIndex === 0}
                       className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       <RotateCcw className="w-6 h-6 text-gray-600" />
                     </button>
 
-                    {/* Super Like */}
+                    {/* Info */}
                     <button
                       onClick={() => {
-                        const currentProperty = propertiesWithScores[matchingIndex];
-                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'super' }]);
-                        setLikedProperties(prev => new Set(prev).add(currentProperty.id));
-                        handleFavoriteClick(currentProperty.id);
-                        toast.success('⭐ Super Like !', {
-                          description: currentProperty.title
-                        });
-                        setMatchingIndex(prev => prev + 1);
+                        toast.info('Détails de compatibilité bientôt disponibles !');
                       }}
-                      className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                      className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
                     >
-                      <Star className="w-6 h-6 text-white fill-current" />
+                      <Info className="w-6 h-6 text-orange-600" />
                     </button>
 
                     {/* Like */}
                     <button
-                      onClick={() => {
-                        const currentProperty = propertiesWithScores[matchingIndex];
-                        setSwipeHistory(prev => [...prev, { propertyId: currentProperty.id, action: 'right' }]);
-                        setLikedProperties(prev => new Set(prev).add(currentProperty.id));
-                        handleFavoriteClick(currentProperty.id);
-                        toast.success('❤️ Ajouté aux favoris !', {
-                          description: currentProperty.title
-                        });
-                        setMatchingIndex(prev => prev + 1);
+                      onClick={async () => {
+                        const currentUser = potentialMatches[matchingIndex];
+                        const success = await recordSwipe(currentUser.user_id, 'like');
+                        if (success) {
+                          toast.success('👍 Profil liké !', {
+                            description: `${currentUser.first_name} ${currentUser.last_name}`
+                          });
+                          setMatchingIndex(prev => prev + 1);
+                        }
                       }}
                       className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
                     >
                       <Heart className="w-8 h-8 text-white fill-current" />
                     </button>
-                  </div>
-                )}
-
-                {/* Quick Filters */}
-                {matchingIndex < propertiesWithScores.length && (
-                  <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                    <button
-                      onClick={() => setShowFilters(true)}
-                      className="px-4 py-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow flex items-center gap-2"
-                    >
-                      <SlidersHorizontal className="w-4 h-4" />
-                      Filtres
-                    </button>
-                    {isAuthenticated && (
-                      <button
-                        onClick={() => setSortBy('best_match')}
-                        className={cn(
-                          "px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all flex items-center gap-2",
-                          sortBy === 'best_match' ? 'bg-orange-500 text-white' : 'bg-white'
-                        )}
-                      >
-                        <TrendingUp className="w-4 h-4" />
-                        Meilleur match
-                      </button>
-                    )}
                   </div>
                 )}
               </div>

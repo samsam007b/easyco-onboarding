@@ -8,9 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { createClient } from '@/lib/auth/supabase-client';
-import { useAuth } from '@/lib/contexts/auth-context';
 import { logger } from '@/lib/utils/logger';
-import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 
 interface Group {
   id: string;
@@ -25,64 +23,23 @@ interface Group {
   created_at: string;
 }
 
-interface SearcherStats {
-  favoritesCount: number;
-  matchesCount: number;
-  unreadMessages: number;
-}
-
 export default function GroupsPage() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [profile, setProfile] = useState<{ full_name: string; email: string; avatar_url?: string } | null>(null);
-  const [stats, setStats] = useState<SearcherStats>({ favoritesCount: 0, matchesCount: 0, unreadMessages: 0 });
   const [myGroups, setMyGroups] = useState<Group[]>([]);
   const [discoverGroups, setDiscoverGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      if (!user) {
-        router.push('/login');
-        return;
-      }
-
       try {
         const supabase = createClient();
 
-        // Load profile
-        const { data: userData, error: profileError } = await supabase
-          .from('users')
-          .select('full_name, email, avatar_url')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) {
-          logger.supabaseError('load user profile for groups', profileError, { userId: user.id });
-        } else if (userData) {
-          setProfile(userData);
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          router.push('/login');
+          return;
         }
-
-        // Load stats
-        const { count: favCount } = await supabase
-          .from('favorites')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id);
-
-        const { count: matchCount } = await supabase
-          .from('user_matching_scores')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .gte('compatibility_score', 70);
-
-        const { data: unreadData } = await supabase
-          .rpc('get_unread_count', { user_uuid: user.id });
-
-        setStats({
-          favoritesCount: favCount || 0,
-          matchesCount: matchCount || 0,
-          unreadMessages: unreadData || 0
-        });
 
         // Load user's groups from group_members table
         const { data: groupMemberships, error: membershipsError } = await supabase
@@ -161,9 +118,9 @@ export default function GroupsPage() {
     return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
   };
 
-  if (isLoading || !profile) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600 font-medium">Chargement...</p>
@@ -173,10 +130,7 @@ export default function GroupsPage() {
   }
 
   return (
-    <>
-      <ModernSearcherHeader profile={profile} stats={stats} />
-
-      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 relative overflow-hidden">
           <div className="absolute inset-0">
@@ -454,8 +408,6 @@ export default function GroupsPage() {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }

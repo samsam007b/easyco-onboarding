@@ -154,7 +154,7 @@ export default function ModernSearcherHeader({
     },
     {
       id: 'groups',
-      href: '/groups',
+      href: '/dashboard/searcher/groups',
       label: 'Groupes',
       icon: Users,
     },
