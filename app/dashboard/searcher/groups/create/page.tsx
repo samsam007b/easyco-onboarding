@@ -17,7 +17,8 @@ import {
   Search,
   Home,
   ChevronRight,
-  Info
+  Info,
+  Settings
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -157,52 +158,47 @@ export default function CreateGroupPage() {
 
   return (
     <>
-      <main className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
-          </div>
+      <main className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-5xl mx-auto">
 
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            {/* Back button */}
-            <button
-              onClick={() => router.push('/dashboard/searcher/groups')}
-              className="mb-6 text-white/90 hover:text-white transition flex items-center gap-2 group"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium">Retour aux groupes</span>
-            </button>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => router.push('/dashboard/searcher/groups')}
+                className="gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Retour
+              </Button>
 
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl mb-6">
-                <Sparkles className="w-10 h-10 text-white" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  Créer un Groupe
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  Trouvez des colocataires et cherchez ensemble
+                </p>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Créer un Groupe
-              </h1>
-              <p className="text-xl text-orange-50 max-w-2xl mx-auto">
-                Trouvez des colocataires, partagez les frais et cherchez le logement parfait ensemble
-              </p>
             </div>
           </div>
-        </div>
 
-        {/* Main Content */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {/* Form Section */}
             <div className="lg:col-span-2 space-y-6">
 
               {/* Basic Info */}
-              <div className="bg-white rounded-3xl p-8 shadow-lg border border-orange-100">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-xl flex items-center justify-center">
                     <Users className="w-5 h-5 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900">Informations de base</h2>
+                  <h2 className="text-xl font-bold text-gray-900">Informations de base</h2>
                 </div>
 
                 <div className="space-y-5">
@@ -233,7 +229,7 @@ export default function CreateGroupPage() {
                       placeholder="Parlez de votre groupe, vos intérêts, votre style de vie..."
                       rows={4}
                       maxLength={500}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition text-base"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FFA040] focus:ring-2 focus:ring-orange-100 outline-none transition text-base"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       {description.length}/500 caractères
@@ -242,7 +238,7 @@ export default function CreateGroupPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Nombre maximum de membres: <span className="text-orange-600 text-lg">{maxMembers}</span>
+                      Nombre maximum de membres: <span className="text-[#FFA040] text-lg font-bold">{maxMembers}</span>
                     </label>
                     <input
                       type="range"
@@ -250,9 +246,9 @@ export default function CreateGroupPage() {
                       max="10"
                       value={maxMembers}
                       onChange={(e) => setMaxMembers(parseInt(e.target.value))}
-                      className="w-full h-3 bg-orange-100 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       style={{
-                        background: `linear-gradient(to right, #FB923C 0%, #FB923C ${((maxMembers - 2) / 8) * 100}%, #FED7AA ${((maxMembers - 2) / 8) * 100}%, #FED7AA 100%)`
+                        background: `linear-gradient(to right, #FFA040 0%, #FFA040 ${((maxMembers - 2) / 8) * 100}%, #E5E7EB ${((maxMembers - 2) / 8) * 100}%, #E5E7EB 100%)`
                       }}
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-2">
@@ -264,15 +260,19 @@ export default function CreateGroupPage() {
               </div>
 
               {/* Group Settings */}
-              <div className="bg-white rounded-3xl p-8 shadow-lg border border-orange-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Paramètres du groupe</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-xl flex items-center justify-center">
+                    <Settings className="w-5 h-5 text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Paramètres du groupe</h2>
+                </div>
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-5 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl border border-orange-100">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         Ouvert aux nouveaux membres
-                        <Info className="w-4 h-4 text-gray-400" />
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
                         Permettre aux autres de trouver et rejoindre votre groupe
@@ -280,23 +280,22 @@ export default function CreateGroupPage() {
                     </div>
                     <button
                       onClick={() => setIsOpen(!isOpen)}
-                      className={`relative w-16 h-9 rounded-full transition-all ${
-                        isOpen ? 'bg-gradient-to-r from-orange-400 to-orange-500' : 'bg-gray-300'
+                      className={`relative w-14 h-8 rounded-full transition-all ${
+                        isOpen ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C]' : 'bg-gray-300'
                       }`}
                     >
                       <div
-                        className={`absolute top-1 w-7 h-7 bg-white rounded-full shadow-md transition-all ${
+                        className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all ${
                           isOpen ? 'right-1' : 'left-1'
                         }`}
                       />
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between p-5 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl border border-orange-100">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         Nécessite une approbation
-                        <Info className="w-4 h-4 text-gray-400" />
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
                         Examiner les demandes avant que les membres ne rejoignent
@@ -304,12 +303,12 @@ export default function CreateGroupPage() {
                     </div>
                     <button
                       onClick={() => setRequiresApproval(!requiresApproval)}
-                      className={`relative w-16 h-9 rounded-full transition-all ${
-                        requiresApproval ? 'bg-gradient-to-r from-orange-400 to-orange-500' : 'bg-gray-300'
+                      className={`relative w-14 h-8 rounded-full transition-all ${
+                        requiresApproval ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C]' : 'bg-gray-300'
                       }`}
                     >
                       <div
-                        className={`absolute top-1 w-7 h-7 bg-white rounded-full shadow-md transition-all ${
+                        className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all ${
                           requiresApproval ? 'right-1' : 'left-1'
                         }`}
                       />
@@ -319,8 +318,8 @@ export default function CreateGroupPage() {
               </div>
 
               {/* Group Preferences */}
-              <div className="bg-white rounded-3xl p-8 shadow-lg border border-orange-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Préférences du groupe</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">Préférences de recherche</h2>
                 <p className="text-sm text-gray-600 mb-6">
                   Aidez à trouver des propriétés qui correspondent à vos critères
                 </p>
@@ -329,7 +328,7 @@ export default function CreateGroupPage() {
                   {/* Budget */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <Euro className="w-5 h-5 text-orange-600" />
+                      <Euro className="w-4 h-4 text-[#FFA040]" />
                       Budget par personne (€/mois)
                     </label>
                     <div className="grid grid-cols-2 gap-4">
@@ -359,7 +358,7 @@ export default function CreateGroupPage() {
                   {/* Preferred Cities */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <MapPin className="w-5 h-5 text-orange-600" />
+                      <MapPin className="w-4 h-4 text-[#FFA040]" />
                       Villes préférées
                     </label>
                     <div className="flex gap-2 mb-3">
@@ -373,7 +372,7 @@ export default function CreateGroupPage() {
                       />
                       <Button
                         onClick={addCity}
-                        className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-6 whitespace-nowrap"
+                        className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white px-6 whitespace-nowrap"
                       >
                         Ajouter
                       </Button>
@@ -383,13 +382,13 @@ export default function CreateGroupPage() {
                         {preferredCities.map((city) => (
                           <span
                             key={city}
-                            className="px-4 py-2 bg-gradient-to-br from-orange-100 to-yellow-100 text-orange-700 rounded-full text-sm font-medium flex items-center gap-2 border border-orange-200"
+                            className="px-3 py-2 bg-orange-50 text-[#FFA040] rounded-full text-sm font-medium flex items-center gap-2 border border-orange-100"
                           >
                             <MapPin className="w-3 h-3" />
                             {city}
                             <button
                               onClick={() => removeCity(city)}
-                              className="hover:text-orange-900 ml-1 font-bold"
+                              className="hover:text-orange-700 ml-1 font-bold text-base"
                             >
                               ×
                             </button>
@@ -402,7 +401,7 @@ export default function CreateGroupPage() {
                   {/* Move-in Date */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <CalendarDays className="w-5 h-5 text-orange-600" />
+                      <CalendarDays className="w-4 h-4 text-[#FFA040]" />
                       Date d'emménagement souhaitée
                     </label>
                     <Input
@@ -421,7 +420,7 @@ export default function CreateGroupPage() {
                 <Button
                   onClick={() => router.push('/dashboard/searcher/groups')}
                   variant="outline"
-                  className="flex-1 py-6 text-base border-2 border-orange-200 hover:bg-orange-50 text-gray-700 rounded-2xl"
+                  className="flex-1 py-6 text-base border-2 rounded-xl"
                   disabled={isCreating}
                 >
                   Annuler
@@ -429,7 +428,7 @@ export default function CreateGroupPage() {
                 <Button
                   onClick={handleCreateGroup}
                   disabled={isCreating || !groupName.trim()}
-                  className="flex-1 py-6 text-base bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-500 hover:via-orange-600 hover:to-orange-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all font-semibold"
+                  className="flex-1 py-6 text-base bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold"
                 >
                   {isCreating ? (
                     <>
@@ -451,9 +450,9 @@ export default function CreateGroupPage() {
               <div className="sticky top-6 space-y-6">
 
                 {/* Group Preview */}
-                <div className="bg-white rounded-3xl p-6 shadow-lg border-2 border-orange-200">
+                <div className="bg-white rounded-2xl p-6 shadow-lg border border-orange-100">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-[#FFA040] rounded-full animate-pulse" />
                     <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
                       Aperçu du groupe
                     </h3>
@@ -461,7 +460,7 @@ export default function CreateGroupPage() {
 
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center shadow-md">
                         <Users className="h-6 w-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -483,7 +482,7 @@ export default function CreateGroupPage() {
                     <div className="space-y-2 pt-2">
                       {preferredCities.length > 0 && (
                         <div className="flex items-start gap-2 text-sm">
-                          <MapPin className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                          <MapPin className="h-4 w-4 text-[#FFA040] mt-0.5 flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {preferredCities.join(', ')}
                           </span>
@@ -492,7 +491,7 @@ export default function CreateGroupPage() {
 
                       {(budgetMin || budgetMax) && (
                         <div className="flex items-center gap-2 text-sm">
-                          <Euro className="h-4 w-4 text-orange-600 flex-shrink-0" />
+                          <Euro className="h-4 w-4 text-[#FFA040] flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {formatBudget(budgetMin, budgetMax)}
                           </span>
@@ -501,7 +500,7 @@ export default function CreateGroupPage() {
 
                       {moveInDate && (
                         <div className="flex items-center gap-2 text-sm">
-                          <CalendarDays className="h-4 w-4 text-orange-600 flex-shrink-0" />
+                          <CalendarDays className="h-4 w-4 text-[#FFA040] flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {new Date(moveInDate).toLocaleDateString('fr-FR', {
                               month: 'long',
@@ -514,12 +513,12 @@ export default function CreateGroupPage() {
 
                     <div className="flex gap-2 pt-2">
                       {isOpen && (
-                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                        <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-100">
                           Ouvert
                         </span>
                       )}
                       {requiresApproval && (
-                        <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                        <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-100">
                           Sur approbation
                         </span>
                       )}
@@ -528,27 +527,27 @@ export default function CreateGroupPage() {
                 </div>
 
                 {/* Benefits */}
-                <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl p-6 border border-orange-100">
+                <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
                   <div className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-[#FFA040] flex-shrink-0 mt-0.5" />
                     <div className="text-sm text-gray-700">
                       <p className="font-semibold mb-2">Que se passe-t-il ensuite ?</p>
                       <ul className="space-y-2 text-gray-600">
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                          <span>Vous recevrez un code d'invitation partageable</span>
+                          <ChevronRight className="w-4 h-4 text-[#FFA040] flex-shrink-0 mt-0.5" />
+                          <span>Vous recevrez un code d'invitation</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-[#FFA040] flex-shrink-0 mt-0.5" />
                           <span>Invitez des amis ou trouvez des membres</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                          <span>Cherchez des propriétés ensemble</span>
+                          <ChevronRight className="w-4 h-4 text-[#FFA040] flex-shrink-0 mt-0.5" />
+                          <span>Cherchez ensemble</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                          <span>Postulez en groupe avec des profils combinés</span>
+                          <ChevronRight className="w-4 h-4 text-[#FFA040] flex-shrink-0 mt-0.5" />
+                          <span>Postulez en groupe</span>
                         </li>
                       </ul>
                     </div>
@@ -584,12 +583,12 @@ export default function CreateGroupPage() {
                   Code d'invitation
                 </p>
                 <div className="flex items-center justify-center gap-3 mb-3">
-                  <code className="text-3xl font-bold text-orange-600 tracking-wider bg-white px-6 py-3 rounded-xl border-2 border-orange-300">
+                  <code className="text-3xl font-bold text-[#FFA040] tracking-wider bg-white px-6 py-3 rounded-xl border-2 border-orange-300">
                     {inviteCode}
                   </code>
                 </div>
                 <p className="text-xs text-gray-600">
-                  Partagez ce code avec vos amis pour les inviter à rejoindre le groupe
+                  Partagez ce code avec vos amis pour les inviter
                 </p>
               </div>
             </div>
@@ -602,7 +601,7 @@ export default function CreateGroupPage() {
 
               <Button
                 onClick={() => router.push(`/groups/${createdGroup.id}`)}
-                className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white rounded-2xl py-6 text-base font-semibold shadow-lg gap-2 group"
+                className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl py-6 text-base font-semibold shadow-lg gap-2 group"
               >
                 <Users className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 Voir mon groupe
@@ -613,16 +612,16 @@ export default function CreateGroupPage() {
                 <Button
                   onClick={() => router.push('/dashboard/searcher')}
                   variant="outline"
-                  className="border-2 border-orange-200 hover:bg-orange-50 text-gray-700 rounded-2xl py-4 gap-2"
+                  className="border-2 rounded-2xl py-4 gap-2"
                 >
                   <Search className="w-4 h-4" />
-                  Chercher un logement
+                  Chercher
                 </Button>
 
                 <Button
                   onClick={() => router.push('/dashboard/searcher/groups')}
                   variant="outline"
-                  className="border-2 border-orange-200 hover:bg-orange-50 text-gray-700 rounded-2xl py-4 gap-2"
+                  className="border-2 rounded-2xl py-4 gap-2"
                 >
                   <Home className="w-4 h-4" />
                   Mes groupes
@@ -638,7 +637,7 @@ export default function CreateGroupPage() {
                   <p className="font-semibold text-blue-900 mb-1">Conseil</p>
                   <p className="text-gray-600">
                     Invitez au moins 2-3 personnes pour commencer. Plus votre groupe est complet,
-                    plus vous aurez de chances de trouver le logement idéal rapidement !
+                    plus vous aurez de chances de trouver rapidement !
                   </p>
                 </div>
               </div>
