@@ -142,8 +142,15 @@ export default function ModernResidentHeader({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-2xl border-b border-white/20 shadow-lg supports-[backdrop-filter]:bg-white/60">
-      {/* Modern glassmorphism header with frosted glass effect */}
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Glassmorphism background with gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+           style={{
+             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+             backdropFilter: 'blur(40px) saturate(150%)'
+           }}
+      />
+      <div className="absolute inset-0 border-b border-white/30 shadow-lg" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Header Row */}
