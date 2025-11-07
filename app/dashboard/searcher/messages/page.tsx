@@ -12,7 +12,9 @@ import {
   Archive,
   Building2,
   UserCircle2,
-  UsersRound
+  UsersRound,
+  UserPlus,
+  Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +36,7 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-type SearcherMessageTab = 'all' | 'owners' | 'searchers' | 'groups';
+type SearcherMessageTab = 'all' | 'owners' | 'searchers' | 'groups' | 'requests';
 
 function SearcherMessagesContent() {
   const router = useRouter();
@@ -51,6 +53,7 @@ function SearcherMessagesContent() {
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
   const [showArchived, setShowArchived] = useState(false);
   const [activeTab, setActiveTab] = useState<SearcherMessageTab>('all');
+  const [pendingRequests, setPendingRequests] = useState<any[]>([]);
 
   // Load user data
   useEffect(() => {
@@ -63,6 +66,13 @@ function SearcherMessagesContent() {
       loadConversations();
     }
   }, [userId]);
+
+  // Load pending requests when conversations are loaded
+  useEffect(() => {
+    if (userId && conversations.length >= 0) {
+      loadPendingRequests();
+    }
+  }, [userId, conversations.length]);
 
   // Handle URL conversation parameter
   useEffect(() => {
@@ -138,6 +148,71 @@ function SearcherMessagesContent() {
       setConversations(result.data);
     } else {
       console.error('Error loading conversations:', result.error);
+    }
+
+    // Load pending message requests from matches
+    await loadPendingRequests();
+  };
+
+  const loadPendingRequests = async () => {
+    if (!userId) return;
+
+    try {
+      // Get matches where user hasn't started a conversation yet
+      const { data: matches, error } = await supabase
+        .from('matches')
+        .select(`
+          id,
+          created_at,
+          user1_id,
+          user2_id,
+          users!matches_user1_id_fkey (
+            id,
+            full_name,
+            user_profiles (
+              profile_photo
+            )
+          ),
+          users2:users!matches_user2_id_fkey (
+            id,
+            full_name,
+            user_profiles (
+              profile_photo
+            )
+          )
+        `)
+        .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
+        .eq('status', 'matched')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading pending requests:', error);
+        return;
+      }
+
+      // Filter out matches that already have conversations
+      const existingConversationUserIds = new Set(
+        conversations.map(c => c.other_user_id)
+      );
+
+      const requests = matches?.filter((match: any) => {
+        const otherId = match.user1_id === userId ? match.user2_id : match.user1_id;
+        return !existingConversationUserIds.has(otherId);
+      }).map((match: any) => {
+        const isUser1 = match.user1_id === userId;
+        const otherUser = isUser1 ? match.users2 : match.users;
+        return {
+          match_id: match.id,
+          user_id: otherUser?.id,
+          user_name: otherUser?.full_name,
+          user_photo: otherUser?.user_profiles?.profile_photo,
+          matched_at: match.created_at,
+        };
+      }) || [];
+
+      setPendingRequests(requests);
+    } catch (error) {
+      console.error('Error loading pending requests:', error);
     }
   };
 
@@ -417,11 +492,180 @@ function SearcherMessagesContent() {
                 </Badge>
               )}
             </Button>
+
+            <Button
+              variant={activeTab === 'requests' ? 'default' : 'outline'}
+              onClick={() => setActiveTab('requests')}
+              size="sm"
+              className={cn(
+                'rounded-full',
+                activeTab === 'requests' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+              )}
+            >
+              <UserPlus className="w-4 h-4 mr-2" />
+              Demandes
+              {pendingRequests.length > 0 && (
+                <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
+                  {pendingRequests.length}
+                </Badge>
+              )}
+            </Button>
           </div>
         </div>
 
         {/* Messages Container */}
-        {filteredConversations.length === 0 && !showArchived ? (
+        {activeTab === 'requests' ? (
+          /* Pending Requests View */
+          pendingRequests.length === 0 ? (
+            <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50/30 rounded-3xl p-12 text-center">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/20 to-yellow-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-orange-300/10 to-yellow-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+              <div className="relative z-10">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                  <UserPlus className="w-10 h-10 text-white" />
+                </div>
+
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Aucune demande de contact
+                </h3>
+
+                <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
+                  Les personnes avec qui vous avez matché et qui n'ont pas encore de conversation avec vous apparaîtront ici
+                </p>
+
+                <Button
+                  onClick={() => router.push('/dashboard/searcher/top-matches')}
+                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Trouver des colocataires
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <UserPlus className="w-5 h-5 text-[#FFA040]" />
+                  Demandes de contact ({pendingRequests.length})
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  Ces personnes ont matché avec vous et souhaitent peut-être vous contacter
+                </p>
+
+                <div className="space-y-4">
+                  {pendingRequests.map((request: any) => (
+                    <div
+                      key={request.match_id}
+                      className="group relative bg-gradient-to-br from-orange-50/50 to-yellow-50/50 hover:from-orange-50 hover:to-yellow-50 rounded-2xl p-6 border border-orange-100 hover:border-orange-200 transition-all hover:shadow-lg"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1">
+                          {/* Avatar */}
+                          <div className="relative">
+                            {request.user_photo ? (
+                              <img
+                                src={request.user_photo}
+                                alt={request.user_name}
+                                className="w-16 h-16 rounded-full object-cover ring-2 ring-orange-200"
+                              />
+                            ) : (
+                              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center ring-2 ring-orange-200">
+                                <UserCircle2 className="w-8 h-8 text-white" />
+                              </div>
+                            )}
+                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center ring-2 ring-white">
+                              <Heart className="w-3 h-3 text-white fill-white" />
+                            </div>
+                          </div>
+
+                          {/* User Info */}
+                          <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                              {request.user_name}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-3">
+                              Match depuis {new Date(request.matched_at).toLocaleDateString('fr-FR', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: new Date(request.matched_at).getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
+                              })}
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-orange-700 bg-orange-100/50 rounded-full px-3 py-1 w-fit">
+                              <Heart className="w-3.5 h-3.5 fill-orange-700" />
+                              <span className="font-medium">Match confirmé</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex flex-col gap-2">
+                          <Button
+                            onClick={async () => {
+                              if (!userId || !request.user_id) return;
+
+                              try {
+                                // Create a new conversation
+                                const { data: newConv, error } = await supabase
+                                  .from('conversations')
+                                  .insert({
+                                    created_by: userId,
+                                    metadata: {
+                                      conversationType: 'searcher_match',
+                                      userType: 'searcher',
+                                      matchId: request.match_id
+                                    }
+                                  })
+                                  .select()
+                                  .single();
+
+                                if (error) throw error;
+
+                                // Add participants
+                                await supabase
+                                  .from('conversation_participants')
+                                  .insert([
+                                    { conversation_id: newConv.id, user_id: userId, is_read: true },
+                                    { conversation_id: newConv.id, user_id: request.user_id, is_read: false }
+                                  ]);
+
+                                toast.success('Conversation créée !');
+
+                                // Reload conversations and requests
+                                await loadConversations();
+                                await loadPendingRequests();
+
+                                // Switch to the new conversation
+                                setSelectedConversationId(newConv.id);
+                                setActiveTab('searchers');
+                              } catch (error) {
+                                console.error('Error creating conversation:', error);
+                                toast.error('Échec de la création de la conversation');
+                              }
+                            }}
+                            className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-6 py-2 shadow-md hover:shadow-lg transition-all hover:scale-105"
+                          >
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Envoyer un message
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => router.push(`/dashboard/searcher/top-matches?user=${request.user_id}`)}
+                            className="rounded-full border-orange-200 hover:bg-orange-50 text-gray-700"
+                          >
+                            Voir le profil
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )
+        ) : filteredConversations.length === 0 && !showArchived ? (
           <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50/30 rounded-3xl p-12 text-center">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/20 to-yellow-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -435,6 +679,8 @@ function SearcherMessagesContent() {
                   <UserCircle2 className="w-10 h-10 text-white" />
                 ) : activeTab === 'groups' ? (
                   <UsersRound className="w-10 h-10 text-white" />
+                ) : activeTab === 'requests' ? (
+                  <UserPlus className="w-10 h-10 text-white" />
                 ) : (
                   <MessageCircle className="w-10 h-10 text-white" />
                 )}
@@ -444,6 +690,7 @@ function SearcherMessagesContent() {
                 {activeTab === 'owners' && 'Aucun message avec des propriétaires'}
                 {activeTab === 'searchers' && 'Aucun match'}
                 {activeTab === 'groups' && 'Aucune conversation de groupe'}
+                {activeTab === 'requests' && 'Aucune demande de contact'}
                 {activeTab === 'all' && 'Aucune conversation'}
               </h3>
 
@@ -451,6 +698,7 @@ function SearcherMessagesContent() {
                 {activeTab === 'owners' && 'Postulez à des propriétés pour commencer à échanger avec les propriétaires'}
                 {activeTab === 'searchers' && 'Vos matchs avec d\'autres chercheurs de colocation apparaîtront ici'}
                 {activeTab === 'groups' && 'Créez ou rejoignez un groupe pour chercher ensemble'}
+                {activeTab === 'requests' && 'Les personnes avec qui vous avez matché et qui n\'ont pas encore de conversation avec vous apparaîtront ici'}
                 {activeTab === 'all' && 'Vos conversations apparaîtront ici'}
               </p>
 
@@ -481,6 +729,16 @@ function SearcherMessagesContent() {
                 >
                   <UsersRound className="w-5 h-5 mr-2" />
                   Gérer mes groupes
+                </Button>
+              )}
+
+              {activeTab === 'requests' && (
+                <Button
+                  onClick={() => router.push('/dashboard/searcher/top-matches')}
+                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Trouver des colocataires
                 </Button>
               )}
             </div>
