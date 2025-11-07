@@ -244,25 +244,25 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
           {/* Content Area - with glassmorphism */}
           <div className="relative h-[45%] overflow-hidden">
-            {/* Animated background lights */}
-            <div className="absolute inset-0">
-              <div className="absolute top-0 left-1/4 w-40 h-40 bg-orange-200/30 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-0 right-1/3 w-48 h-48 bg-purple-200/20 rounded-full blur-3xl"
+            {/* Animated background lights - MORE VISIBLE */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
+              <div className="absolute top-0 left-1/4 w-40 h-40 bg-orange-300/60 rounded-full blur-2xl animate-pulse" />
+              <div className="absolute bottom-0 right-1/3 w-48 h-48 bg-purple-300/50 rounded-full blur-2xl"
                    style={{ animation: 'float 8s ease-in-out infinite' }} />
-              <div className="absolute top-1/2 left-1/2 w-44 h-44 bg-yellow-100/25 rounded-full blur-3xl"
+              <div className="absolute top-1/2 left-1/2 w-44 h-44 bg-yellow-200/50 rounded-full blur-2xl"
                    style={{ animation: 'float 6s ease-in-out infinite reverse' }} />
             </div>
 
             {/* Glassmorphism layer */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/50 backdrop-blur-2xl backdrop-saturate-150 z-10"
                  style={{
                    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                    backdropFilter: 'blur(40px) saturate(150%)'
                  }}
             />
-            <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
+            <div className="absolute inset-0 border-t border-white/30 shadow-lg z-10" />
 
-            <div className="relative p-6 overflow-y-auto h-full">
+            <div className="relative z-20 p-6 overflow-y-auto h-full">
               {/* Core Info - Always Visible */}
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {coreInfo.map((info, idx) => (

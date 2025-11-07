@@ -162,25 +162,25 @@ function PropertyCard({
 
             {/* Price section with glassmorphism */}
             <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
-              {/* Animated background lights */}
-              <div className="absolute inset-0">
-                <div className="absolute top-0 left-1/4 w-24 h-24 bg-orange-200/30 rounded-full blur-2xl animate-pulse" />
-                <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-purple-200/20 rounded-full blur-3xl"
+              {/* Animated background lights - MORE VISIBLE */}
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
+                <div className="absolute top-0 left-1/4 w-24 h-24 bg-orange-300/60 rounded-full blur-xl animate-pulse" />
+                <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-purple-300/50 rounded-full blur-2xl"
                      style={{ animation: 'float 8s ease-in-out infinite' }} />
-                <div className="absolute top-1/2 left-1/2 w-28 h-28 bg-yellow-100/25 rounded-full blur-2xl"
+                <div className="absolute top-1/2 left-1/2 w-28 h-28 bg-yellow-200/50 rounded-full blur-xl"
                      style={{ animation: 'float 6s ease-in-out infinite reverse' }} />
               </div>
 
               {/* Glassmorphism layer */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+              <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/50 backdrop-blur-2xl backdrop-saturate-150 z-10"
                    style={{
                      WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                      backdropFilter: 'blur(40px) saturate(150%)'
                    }}
               />
-              <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
+              <div className="absolute inset-0 border-t border-white/30 shadow-lg z-10" />
 
-              <div className="relative flex items-center justify-between">
+              <div className="relative z-20 flex items-center justify-between">
                 <span className="text-sm font-bold text-gray-900">
                   €{property.monthly_rent}
                   <span className="text-xs text-gray-500 font-normal">/mois</span>
@@ -320,25 +320,25 @@ function PropertyCard({
 
           {/* Footer: Price and CTA - with glassmorphism */}
           <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
-            {/* Animated background lights */}
-            <div className="absolute inset-0">
-              <div className="absolute top-0 left-1/4 w-32 h-32 bg-orange-200/30 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-purple-200/20 rounded-full blur-3xl"
+            {/* Animated background lights - MORE VISIBLE */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
+              <div className="absolute top-0 left-1/4 w-32 h-32 bg-orange-300/60 rounded-full blur-2xl animate-pulse" />
+              <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-purple-300/50 rounded-full blur-2xl"
                    style={{ animation: 'float 8s ease-in-out infinite' }} />
-              <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-yellow-100/25 rounded-full blur-3xl"
+              <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-yellow-200/50 rounded-full blur-2xl"
                    style={{ animation: 'float 6s ease-in-out infinite reverse' }} />
             </div>
 
             {/* Glassmorphism layer */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/50 backdrop-blur-2xl backdrop-saturate-150 z-10"
                  style={{
                    WebkitBackdropFilter: 'blur(40px) saturate(150%)',
                    backdropFilter: 'blur(40px) saturate(150%)'
                  }}
             />
-            <div className="absolute inset-0 border-t border-white/30 shadow-lg" />
+            <div className="absolute inset-0 border-t border-white/30 shadow-lg z-10" />
 
-            <div className="relative flex items-center justify-between">
+            <div className="relative z-20 flex items-center justify-between">
               <div>
                 <span className="text-2xl font-bold text-gray-900">
                   €{property.monthly_rent}
