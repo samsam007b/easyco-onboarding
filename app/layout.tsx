@@ -112,7 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <head>
         {/* PWA Meta Tags */}
-        <meta name="theme-color" content="#7c3aed" />
+        <meta name="theme-color" content="#fb923c" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
