@@ -149,19 +149,28 @@ export default function ModernResidentHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo EasyCo with gradient text */}
+          {/* Logo + Group Name */}
           <Link
             href="/dashboard/resident"
-            className="flex items-center group"
+            className="flex items-center gap-3 group"
           >
-            <span
-              className="text-2xl font-bold bg-clip-text text-transparent"
+            {/* Logo Resident avec gradient corail authentique */}
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
               style={{
-                backgroundImage: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
               }}
             >
-              EasyCo
-            </span>
+              <Home className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">
+                EasyCo
+              </h1>
+              <span className="text-xs font-medium bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
+                {groupName}
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
