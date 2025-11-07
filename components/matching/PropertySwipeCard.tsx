@@ -244,13 +244,14 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
           {/* Content Area - with glassmorphism */}
           <div className="relative h-[45%] overflow-hidden">
-            {/* Animated background lights - MORE VISIBLE */}
+            {/* Animated background lights - Slow right to left */}
             <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-              <div className="absolute top-0 left-1/4 w-40 h-40 bg-orange-300/60 rounded-full blur-2xl animate-pulse" />
+              <div className="absolute top-0 left-1/4 w-40 h-40 bg-orange-300/60 rounded-full blur-2xl"
+                   style={{ animation: 'float 20s ease-in-out infinite' }} />
               <div className="absolute bottom-0 right-1/3 w-48 h-48 bg-purple-300/50 rounded-full blur-2xl"
-                   style={{ animation: 'float 8s ease-in-out infinite' }} />
+                   style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
               <div className="absolute top-1/2 left-1/2 w-44 h-44 bg-yellow-200/50 rounded-full blur-2xl"
-                   style={{ animation: 'float 6s ease-in-out infinite reverse' }} />
+                   style={{ animation: 'float 22s ease-in-out infinite 10s' }} />
             </div>
 
             {/* Glassmorphism layer */}

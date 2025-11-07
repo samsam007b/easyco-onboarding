@@ -51,11 +51,12 @@ export default function PropertyMarkerCard({
 
         {/* Price Badge - with glassmorphism */}
         <div className="relative px-2 py-1.5 overflow-hidden">
-          {/* Animated background lights - MORE VISIBLE */}
+          {/* Animated background lights - Slow right to left */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-            <div className="absolute top-0 left-1/4 w-16 h-16 bg-orange-300/60 rounded-full blur-xl animate-pulse" />
+            <div className="absolute top-0 left-1/4 w-16 h-16 bg-orange-300/60 rounded-full blur-xl"
+                 style={{ animation: 'float 20s ease-in-out infinite' }} />
             <div className="absolute bottom-0 right-1/4 w-20 h-20 bg-purple-300/50 rounded-full blur-xl"
-                 style={{ animation: 'float 8s ease-in-out infinite' }} />
+                 style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
           </div>
 
           {/* Glassmorphism layer */}
