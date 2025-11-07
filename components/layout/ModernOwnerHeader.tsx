@@ -143,28 +143,19 @@ export default function ModernOwnerHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo + Badge */}
+          {/* Logo */}
           <Link
             href="/dashboard/owner"
-            className="flex items-center gap-3 group"
+            className="flex items-center group"
           >
-            {/* Logo Owner avec dégradé purple moderne */}
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
+            <span
+              className="text-2xl font-bold bg-clip-text text-transparent"
               style={{
-                background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
+                backgroundImage: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
               }}
             >
-              <Home className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">
-                EasyCo
-              </h1>
-              <span className="text-xs font-medium text-purple-600">
-                Propriétaire
-              </span>
-            </div>
+              EasyCo
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

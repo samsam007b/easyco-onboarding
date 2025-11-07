@@ -187,27 +187,19 @@ export default function ModernSearcherHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo tricolore signature EasyCo */}
+          {/* Logo */}
           <Link
             href="/dashboard/searcher"
-            className="flex items-center gap-3 group"
+            className="flex items-center group"
           >
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all"
+            <span
+              className="text-2xl font-bold bg-clip-text text-transparent"
               style={{
-                background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                backgroundImage: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
               }}
             >
-              <Search className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">
-                EasyCo
-              </h1>
-              <span className="text-xs font-medium text-orange-600">
-                Chercheur
-              </span>
-            </div>
+              EasyCo
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
