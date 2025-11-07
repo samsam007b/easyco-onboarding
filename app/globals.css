@@ -278,18 +278,20 @@ body {
 
 html {
   /* Fond blanc pour l'overscroll avec le logo animé */
-  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
+  background: #ffffff;
   position: relative;
+  /* Permet un overscroll plus grand */
+  overscroll-behavior: contain;
 }
 
 /* Zone au-dessus de la page (overscroll top) avec logo EasyCo */
 html::before {
   content: 'EasyCo';
   position: fixed;
-  top: -100vh;
+  top: -200vh;
   left: 0;
   right: 0;
-  height: 100vh;
+  height: 200vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -300,26 +302,14 @@ html::before {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   pointer-events: none;
-  z-index: 9999;
-  animation: logoFloat 2s ease-in-out infinite;
+  z-index: -1;
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
-/* Zone en dessous de la page (overscroll bottom) avec icône maison */
+/* Zone en dessous de la page (overscroll bottom) - DÉSACTIVÉE pour éviter le rectangle blanc */
 html::after {
-  content: '🏠';
-  position: fixed;
-  bottom: -100vh;
-  left: 0;
-  right: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
-  pointer-events: none;
-  z-index: 9999;
-  animation: houseFloat 2s ease-in-out infinite;
+  content: '';
+  display: none;
 }
 
 @keyframes gradientShift {
@@ -339,16 +329,7 @@ html::after {
     transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-20px) scale(1.05);
-  }
-}
-
-@keyframes houseFloat {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-15px) scale(1.03);
+    transform: translateY(-30px) scale(1.08);
   }
 }
 
