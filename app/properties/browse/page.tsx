@@ -20,6 +20,9 @@ import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import PropertyCard from '@/components/PropertyCard';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
+import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
+import DatePicker from '@/components/ui/date-picker';
+import BudgetRangePicker from '@/components/ui/budget-range-picker';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
 import { ConversionModal, type ConversionModalType } from '@/components/conversion/ConversionModal';
@@ -108,6 +111,11 @@ export default function PropertiesBrowsePageV2() {
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'matching'>('list');
+
+  // Hero search states
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
 
   // Matching mode state
   const [matchingIndex, setMatchingIndex] = useState(0);
@@ -560,6 +568,44 @@ export default function PropertiesBrowsePageV2() {
     setCurrentPage(1);
   }, []);
 
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+    if (place.formatted_address) {
+      setSelectedLocation(place.formatted_address);
+      // Extract city from place and apply to filters
+      const cityComponent = place.address_components?.find(c => c.types.includes('locality'));
+      if (cityComponent) {
+        setAdvancedFilters(prev => ({
+          ...prev,
+          cities: [cityComponent.long_name]
+        }));
+      }
+    }
+  };
+
+  const handleDateSelect = (date: Date | null) => {
+    setSelectedDate(date);
+    if (date) {
+      setAdvancedFilters(prev => ({
+        ...prev,
+        availableFrom: date.toISOString().split('T')[0]
+      }));
+    }
+  };
+
+  const handleBudgetChange = (min: number, max: number) => {
+    setBudgetRange({ min, max });
+    setAdvancedFilters(prev => ({
+      ...prev,
+      priceRange: { min, max }
+    }));
+  };
+
+  const handleHeroSearch = () => {
+    // Apply the hero search filters to the advanced filters
+    // Filters are already applied through the handlers above
+    setCurrentPage(1);
+  };
+
   // Legacy filter change handler - no longer needed with AdvancedFilters
   // const handleFilterChange = useCallback((newFilters: Partial<Filters>) => {
   //   setFilters(prev => ({ ...prev, ...newFilters }));
@@ -682,9 +728,96 @@ export default function PropertiesBrowsePageV2() {
                   Des colocations où tu te sentiras bien, entouré·e de personnes qui te ressemblent
                 </p>
 
-                {/* Search Bar */}
-                <div className="max-w-3xl mx-auto">
-                  <PublicSearchBar variant="hero" />
+                {/* Advanced Search Hero */}
+                <div className="max-w-4xl mx-auto mb-6">
+                  <div className="rounded-[32px] shadow-xl overflow-visible">
+                    {/* Glassmorphism container with gradient */}
+                    <div className="relative overflow-hidden rounded-[32px]"
+                         style={{
+                           background: 'linear-gradient(135deg, rgba(255, 160, 64, 0.25) 0%, rgba(255, 184, 92, 0.22) 50%, rgba(255, 208, 128, 0.25) 100%)',
+                           backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+                           WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+                           boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(255, 160, 64, 0.3)',
+                         }}
+                    >
+                      {/* Light refraction effect */}
+                      <div className="absolute inset-0 rounded-[32px]"
+                           style={{
+                             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(255, 160, 64, 0.3) 100%)',
+                             mixBlendMode: 'overlay'
+                           }}
+                      />
+
+                      {/* Top left light reflection */}
+                      <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-[32px]"
+                           style={{
+                             background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
+                             mixBlendMode: 'soft-light'
+                           }}
+                      />
+
+                      {/* White section with search inputs */}
+                      <div className="bg-white/95 backdrop-blur-sm p-4 relative z-10 rounded-[32px]">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
+
+                          {/* Location Input */}
+                          <div className="p-4 rounded-2xl hover:bg-orange-50/50 transition-all group">
+                            <label className="block text-xs font-semibold text-gray-900 mb-1">
+                              Où ?
+                            </label>
+                            <GooglePlacesAutocomplete
+                              onPlaceSelect={handlePlaceSelect}
+                              placeholder="Ville, quartier..."
+                              iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
+                              inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                            />
+                          </div>
+
+                          {/* Budget Input */}
+                          <div className="p-4 rounded-2xl hover:bg-orange-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+                            <label className="block text-xs font-semibold text-gray-900 mb-1">
+                              Budget
+                            </label>
+                            <BudgetRangePicker
+                              onBudgetChange={handleBudgetChange}
+                              placeholder="€800/mois"
+                              iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
+                              inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                              minBudget={0}
+                              maxBudget={5000}
+                            />
+                          </div>
+
+                          {/* Date Input */}
+                          <div className="p-4 rounded-2xl hover:bg-orange-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+                            <label className="block text-xs font-semibold text-gray-900 mb-1">
+                              Quand ?
+                            </label>
+                            <DatePicker
+                              onDateSelect={handleDateSelect}
+                              placeholder="Flexible"
+                              iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
+                              inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                            />
+                          </div>
+
+                          {/* Search Button */}
+                          <div className="p-2 flex items-center justify-center">
+                            <Button
+                              onClick={handleHeroSearch}
+                              className="w-full h-full text-gray-900 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                              style={{
+                                background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                              }}
+                            >
+                              <Search className="w-5 h-5 mr-2" />
+                              Rechercher
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Stats bar */}
