@@ -673,17 +673,20 @@ function SearcherMessagesContent() {
 
             <div className="relative z-10">
               <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                {activeTab === 'owners' ? (
-                  <Building2 className="w-10 h-10 text-white" />
-                ) : activeTab === 'searchers' ? (
-                  <UserCircle2 className="w-10 h-10 text-white" />
-                ) : activeTab === 'groups' ? (
-                  <UsersRound className="w-10 h-10 text-white" />
-                ) : activeTab === 'requests' ? (
-                  <UserPlus className="w-10 h-10 text-white" />
-                ) : (
-                  <MessageCircle className="w-10 h-10 text-white" />
-                )}
+                {(() => {
+                  switch (activeTab) {
+                    case 'owners':
+                      return <Building2 className="w-10 h-10 text-white" />;
+                    case 'searchers':
+                      return <UserCircle2 className="w-10 h-10 text-white" />;
+                    case 'groups':
+                      return <UsersRound className="w-10 h-10 text-white" />;
+                    case 'requests':
+                      return <UserPlus className="w-10 h-10 text-white" />;
+                    default:
+                      return <MessageCircle className="w-10 h-10 text-white" />;
+                  }
+                })()}
               </div>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
