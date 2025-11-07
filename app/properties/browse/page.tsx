@@ -608,7 +608,7 @@ export default function PropertiesBrowsePageV2() {
       )}
 
       {/* Main Content */}
-      <main className="min-h-screen">
+      <main className="min-h-screen pt-24">
         {/* View Mode Toggle - CENTERED AT TOP */}
         <div className="bg-gradient-to-br from-orange-50/50 via-white to-orange-50/30 py-8">
           <div className="max-w-3xl mx-auto px-6">

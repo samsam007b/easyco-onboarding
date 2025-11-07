@@ -123,7 +123,9 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
         profile={profile}
         stats={stats}
       />
-      {children}
+      <div className="min-h-screen pt-24">
+        {children}
+      </div>
     </>
   );
 }

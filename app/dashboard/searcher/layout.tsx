@@ -60,5 +60,5 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
 
   if (!profile) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white"><div className="text-center"><div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" /><p className="text-gray-600 font-medium">Chargement...</p></div></div>;
 
-  return (<><ModernSearcherHeader profile={profile} stats={stats} /><div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">{children}</div></>);
+  return (<><ModernSearcherHeader profile={profile} stats={stats} /><div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">{children}</div></>);
 }
