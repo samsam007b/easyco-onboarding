@@ -363,22 +363,14 @@ export default function ModernOwnerHeader({
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
-                {profile.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
-                  />
-                ) : (
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200"
-                    style={{
-                      background: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
-                    }}
-                  >
-                    <User className="w-4 h-4 text-white" />
-                  </div>
-                )}
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
+                  style={{
+                    background: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
+                  }}
+                >
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-purple-900 transition-colors hidden md:block" />
               </button>
 

@@ -320,22 +320,14 @@ export default function ModernResidentHeader({
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
-                {profile.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt={profile.full_name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
-                  />
-                ) : (
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200"
-                    style={{
-                      background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                    }}
-                  >
-                    <User className="w-4 h-4 text-white" />
-                  </div>
-                )}
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
+                  style={{
+                    background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                  }}
+                >
+                  <Users className="w-4 h-4 text-white" />
+                </div>
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
