@@ -33,7 +33,10 @@ import { Label } from '@/components/ui/label';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
 import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
 import { PropertySwipeCard } from '@/components/matching/PropertySwipeCard';
+import { SwipeCard } from '@/components/matching/SwipeCard';
+import { useUserMatching } from '@/lib/hooks/use-user-matching';
 import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface Property {
   id: string;
@@ -90,8 +93,16 @@ export default function PropertiesBrowsePageV2() {
   const common = getSection('common');
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [userData, setUserData] = useState<{ full_name: string; email: string; avatar_url?: string } | null>(null);
+  const [userData, setUserData] = useState<{ id: string; full_name: string; email: string; avatar_url?: string } | null>(null);
   const [searcherStats, setSearcherStats] = useState({ favoritesCount: 0, matchesCount: 0, unreadMessages: 0 });
+
+  // User matching hook for People mode
+  const {
+    potentialMatches,
+    isLoading: isLoadingMatches,
+    recordSwipe,
+    loadPotentialMatches
+  } = useUserMatching(userData?.id || '', 'searcher_matching');
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
@@ -348,7 +359,7 @@ export default function PropertiesBrowsePageV2() {
         // Load user data
         const { data: usersData } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
         if (usersData) {
-          setUserData(usersData);
+          setUserData({ ...usersData, id: user.id });
         }
 
         // Load searcher stats
@@ -652,8 +663,8 @@ export default function PropertiesBrowsePageV2() {
                       : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/50'
                   }`}
                 >
-                  <Heart className="w-5 h-5" />
-                  <span>Matching</span>
+                  <Users className="w-5 h-5" />
+                  <span>People</span>
                 </button>
               </div>
             </div>
