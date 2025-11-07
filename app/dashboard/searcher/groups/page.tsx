@@ -130,9 +130,9 @@ export default function GroupsPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 relative overflow-hidden">
+    <>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 -mt-8">
           <div className="absolute inset-0">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
@@ -171,10 +171,10 @@ export default function GroupsPage() {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
 
           {/* My Groups Section */}
           <section>
@@ -408,7 +408,7 @@ export default function GroupsPage() {
               </div>
             </div>
           </section>
-        </div>
-    </div>
+      </div>
+    </>
   );
 }
