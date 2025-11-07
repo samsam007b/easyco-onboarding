@@ -67,6 +67,66 @@ function SearcherMessagesContent() {
     }
   };
 
+  // Helper function to get empty state title
+  const getEmptyStateTitle = (tab: SearcherMessageTab) => {
+    switch (tab) {
+      case 'owners': return 'Aucun message avec des propriétaires';
+      case 'searchers': return 'Aucun match';
+      case 'groups': return 'Aucune conversation de groupe';
+      case 'requests': return 'Aucune demande de contact';
+      default: return 'Aucune conversation';
+    }
+  };
+
+  // Helper function to get empty state description
+  const getEmptyStateDescription = (tab: SearcherMessageTab) => {
+    switch (tab) {
+      case 'owners': return 'Postulez à des propriétés pour commencer à échanger avec les propriétaires';
+      case 'searchers': return 'Vos matchs avec d\'autres chercheurs de colocation apparaîtront ici';
+      case 'groups': return 'Créez ou rejoignez un groupe pour chercher ensemble';
+      case 'requests': return 'Les personnes avec qui vous avez matché et qui n\'ont pas encore de conversation avec vous apparaîtront ici';
+      default: return 'Vos conversations apparaîtront ici';
+    }
+  };
+
+  // Helper function to render empty state action button
+  const renderEmptyStateAction = (tab: SearcherMessageTab) => {
+    const buttonClass = "rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105";
+
+    switch (tab) {
+      case 'owners':
+        return (
+          <Button onClick={() => router.push('/dashboard/searcher')} className={buttonClass}>
+            <Search className="w-5 h-5 mr-2" />
+            Explorer les propriétés
+          </Button>
+        );
+      case 'searchers':
+        return (
+          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} className={buttonClass}>
+            <Users className="w-5 h-5 mr-2" />
+            Trouver des colocataires
+          </Button>
+        );
+      case 'groups':
+        return (
+          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
+            <UsersRound className="w-5 h-5 mr-2" />
+            Gérer mes groupes
+          </Button>
+        );
+      case 'requests':
+        return (
+          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} className={buttonClass}>
+            <Heart className="w-5 h-5 mr-2" />
+            Voir mes matchs
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
   // Load user data
   useEffect(() => {
     loadUserData();
@@ -689,60 +749,14 @@ function SearcherMessagesContent() {
               </div>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                {activeTab === 'owners' && 'Aucun message avec des propriétaires'}
-                {activeTab === 'searchers' && 'Aucun match'}
-                {activeTab === 'groups' && 'Aucune conversation de groupe'}
-                {activeTab === 'requests' && 'Aucune demande de contact'}
-                {activeTab === 'all' && 'Aucune conversation'}
+                {getEmptyStateTitle(activeTab)}
               </h3>
 
               <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
-                {activeTab === 'owners' && 'Postulez à des propriétés pour commencer à échanger avec les propriétaires'}
-                {activeTab === 'searchers' && 'Vos matchs avec d\'autres chercheurs de colocation apparaîtront ici'}
-                {activeTab === 'groups' && 'Créez ou rejoignez un groupe pour chercher ensemble'}
-                {activeTab === 'requests' && 'Les personnes avec qui vous avez matché et qui n\'ont pas encore de conversation avec vous apparaîtront ici'}
-                {activeTab === 'all' && 'Vos conversations apparaîtront ici'}
+                {getEmptyStateDescription(activeTab)}
               </p>
 
-              {activeTab === 'owners' && (
-                <Button
-                  onClick={() => router.push('/dashboard/searcher')}
-                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                >
-                  <Search className="w-5 h-5 mr-2" />
-                  Explorer les propriétés
-                </Button>
-              )}
-
-              {activeTab === 'searchers' && (
-                <Button
-                  onClick={() => router.push('/dashboard/searcher/top-matches')}
-                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Trouver des colocataires
-                </Button>
-              )}
-
-              {activeTab === 'groups' && (
-                <Button
-                  onClick={() => router.push('/dashboard/searcher/groups')}
-                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                >
-                  <UsersRound className="w-5 h-5 mr-2" />
-                  Gérer mes groupes
-                </Button>
-              )}
-
-              {activeTab === 'requests' && (
-                <Button
-                  onClick={() => router.push('/dashboard/searcher/top-matches')}
-                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Trouver des colocataires
-                </Button>
-              )}
+              {renderEmptyStateAction(activeTab)}
             </div>
           </div>
         ) : (
