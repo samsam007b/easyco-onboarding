@@ -29,6 +29,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import { createClient } from '@/lib/auth/supabase-client';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ModernSearcherHeaderProps {
   profile: {
@@ -50,19 +52,13 @@ export default function ModernSearcherHeader({
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const { getSection } = useLanguage();
+  const nav = getSection('dashboard').searcher.header;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(stats.favoritesCount || 0);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN'>('FR');
-
-  const langDropdownRef = useRef<HTMLDivElement>(null);
-
-  const languages = [
-    { code: 'FR', label: 'Français', flag: '🇫🇷' },
-    { code: 'EN', label: 'English', flag: '🇬🇧' },
-  ];
 
   const {
     matchesCount = 0,
@@ -102,66 +98,49 @@ export default function ModernSearcherHeader({
     };
   }, []);
 
-  // Click outside handler for language dropdown
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
-        setLangDropdownOpen(false);
-      }
-    };
-
-    if (langDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [langDropdownOpen]);
-
   const navItems = [
     {
       id: 'browse',
       href: '/properties/browse',
-      label: 'Explorer',
+      label: nav.browse,
       icon: Search,
     },
     {
       id: 'favorites',
       href: '/dashboard/searcher/favorites',
-      label: 'Favoris',
+      label: nav.favorites,
       icon: Bookmark,
       badge: favoritesCount > 0 ? favoritesCount : null,
     },
     {
       id: 'matches',
       href: '/dashboard/searcher/top-matches',
-      label: 'Matchs',
+      label: nav.matches,
       icon: Heart,
       badge: matchesCount > 0 ? matchesCount : null,
     },
     {
       id: 'visits',
       href: '/dashboard/searcher/my-visits',
-      label: 'Visites',
+      label: nav.visits,
       icon: Calendar,
     },
     {
       id: 'applications',
       href: '/dashboard/searcher/my-applications',
-      label: 'Candidatures',
+      label: nav.applications,
       icon: Sparkles,
     },
     {
       id: 'groups',
       href: '/dashboard/searcher/groups',
-      label: 'Groupes',
+      label: nav.groups,
       icon: Users,
     },
     {
       id: 'messages',
       href: '/messages',
-      label: 'Messages',
+      label: nav.messages,
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
     },
@@ -403,53 +382,9 @@ export default function ModernSearcherHeader({
               </AnimatePresence>
             </div>
 
-            {/* Language Switcher with Dropdown */}
-            <div ref={langDropdownRef} className="relative hidden md:block">
-              <button
-                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
-              >
-                <Globe className="w-4 h-4" />
-                <span className="font-medium">{selectedLang}</span>
-                <ChevronDown className={cn(
-                  "w-3 h-3 transition-transform",
-                  langDropdownOpen && "rotate-180"
-                )} />
-              </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {langDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white/95 backdrop-blur-2xl rounded-lg shadow-xl border border-white/20 overflow-hidden min-w-[160px] z-50"
-                  >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setSelectedLang(lang.code as 'FR' | 'EN');
-                          setLangDropdownOpen(false);
-                        }}
-                        className={cn(
-                          "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
-                          selectedLang === lang.code
-                            ? "bg-orange-50 text-orange-900 font-semibold"
-                            : "text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        <span className="text-lg">{lang.flag}</span>
-                        <span>{lang.label}</span>
-                        {selectedLang === lang.code && (
-                          <span className="ml-auto text-orange-600">✓</span>
-                        )}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Language Switcher */}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
             </div>
 
             {/* Mobile Menu Toggle */}

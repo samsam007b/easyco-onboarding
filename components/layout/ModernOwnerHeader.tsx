@@ -28,6 +28,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface ModernOwnerHeaderProps {
   profile: {
@@ -53,15 +54,6 @@ export default function ModernOwnerHeader({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<'FR' | 'EN'>('FR');
-
-  const langDropdownRef = useRef<HTMLDivElement>(null);
-
-  const languages = [
-    { code: 'FR', label: 'Français', flag: '🇫🇷' },
-    { code: 'EN', label: 'English', flag: '🇬🇧' },
-  ];
 
   const {
     monthlyRevenue = 0,
@@ -70,23 +62,6 @@ export default function ModernOwnerHeader({
     pendingApplications = 0,
     unreadMessages = 0
   } = stats;
-
-  // Click outside handler for language dropdown
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
-        setLangDropdownOpen(false);
-      }
-    };
-
-    if (langDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [langDropdownOpen]);
 
   const navItems = [
     {
@@ -308,53 +283,9 @@ export default function ModernOwnerHeader({
               </AnimatePresence>
             </div>
 
-            {/* Language Switcher with Dropdown */}
-            <div ref={langDropdownRef} className="relative hidden md:block">
-              <button
-                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
-              >
-                <Globe className="w-4 h-4" />
-                <span className="font-medium">{selectedLang}</span>
-                <ChevronDown className={cn(
-                  "w-3 h-3 transition-transform",
-                  langDropdownOpen && "rotate-180"
-                )} />
-              </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {langDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white/95 backdrop-blur-2xl rounded-lg shadow-xl border border-white/20 overflow-hidden min-w-[160px] z-50"
-                  >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setSelectedLang(lang.code as 'FR' | 'EN');
-                          setLangDropdownOpen(false);
-                        }}
-                        className={cn(
-                          "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
-                          selectedLang === lang.code
-                            ? "bg-purple-50 text-purple-900 font-semibold"
-                            : "text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        <span className="text-lg">{lang.flag}</span>
-                        <span>{lang.label}</span>
-                        {selectedLang === lang.code && (
-                          <span className="ml-auto text-purple-600">✓</span>
-                        )}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Language Switcher */}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
             </div>
 
             {/* Profile Menu */}
