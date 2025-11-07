@@ -82,8 +82,8 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
               quality={85}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-purple-200 via-purple-100 to-yellow-100 flex items-center justify-center">
-              <div className="text-6xl font-bold text-[#4A148C] opacity-30">
+            <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
+              <div className="text-6xl font-bold text-orange-600 opacity-30">
                 {user.first_name.charAt(0)}
                 {user.last_name.charAt(0)}
               </div>
@@ -100,7 +100,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
                 <span className="text-2xl">{compatibilityQuality.emoji}</span>
                 <div>
                   <p className="text-xs font-semibold text-gray-600">Match Score</p>
-                  <p className="text-lg font-bold text-[#4A148C]">{user.compatibility_score}%</p>
+                  <p className="text-lg font-bold text-orange-600">{user.compatibility_score}%</p>
                 </div>
               </div>
             </div>
@@ -205,7 +205,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
           {user.min_budget && user.max_budget && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-xs font-semibold text-gray-600 mb-1">Budget Range</p>
-              <p className="text-sm font-semibold text-[#4A148C]">
+              <p className="text-sm font-semibold text-orange-600">
                 €{user.min_budget} - €{user.max_budget}/month
               </p>
             </div>
