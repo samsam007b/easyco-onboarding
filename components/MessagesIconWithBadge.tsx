@@ -18,8 +18,11 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
   const [userRole, setUserRole] = useState<string | null>(role || null);
 
   useEffect(() => {
-    // If role not provided, fetch it
-    if (!role) {
+    // Update userRole when role prop changes
+    if (role) {
+      setUserRole(role);
+    } else {
+      // If role not provided, fetch it
       loadUserRole();
     }
   }, [role]);
