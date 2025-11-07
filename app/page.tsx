@@ -63,7 +63,7 @@ export default function Home() {
   const [activePage, setActivePage] = useState<'explorer' | 'residents' | 'owners' | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Modern Header with slide page navigation */}
       <ModernPublicHeader activePage={activePage} onNavigate={setActivePage} />
 
