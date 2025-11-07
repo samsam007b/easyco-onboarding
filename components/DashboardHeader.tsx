@@ -49,7 +49,7 @@ export default function DashboardHeader({ profile, avatarColor, role }: Dashboar
 
           {/* Right: Messages, Notifications & Settings */}
           <div className="flex items-center gap-2">
-            {userId && <MessagesIconWithBadge userId={userId} />}
+            {userId && <MessagesIconWithBadge userId={userId} role={role} />}
             {userId && <NotificationsDropdown userId={userId} />}
             <button
               onClick={() => router.push('/profile')}

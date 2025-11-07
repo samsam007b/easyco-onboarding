@@ -3,15 +3,26 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
+import { createClient } from '@/lib/auth/supabase-client';
 import { getTotalUnreadCount, subscribeToConversationList } from '@/lib/services/messaging-service';
 
 interface MessagesIconWithBadgeProps {
   userId: string;
+  role?: 'searcher' | 'owner' | 'resident';
 }
 
-export default function MessagesIconWithBadge({ userId }: MessagesIconWithBadgeProps) {
+export default function MessagesIconWithBadge({ userId, role }: MessagesIconWithBadgeProps) {
   const router = useRouter();
+  const supabase = createClient();
   const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [userRole, setUserRole] = useState<string | null>(role || null);
+
+  useEffect(() => {
+    // If role not provided, fetch it
+    if (!role) {
+      loadUserRole();
+    }
+  }, [role]);
 
   useEffect(() => {
     // Initial load
@@ -23,6 +34,22 @@ export default function MessagesIconWithBadge({ userId }: MessagesIconWithBadgeP
     return cleanup;
   }, [userId]);
 
+  const loadUserRole = async () => {
+    try {
+      const { data: userData } = await supabase
+        .from('users')
+        .select('user_type')
+        .eq('id', userId)
+        .single();
+
+      if (userData?.user_type) {
+        setUserRole(userData.user_type);
+      }
+    } catch (error) {
+      console.error('Error loading user role:', error);
+    }
+  };
+
   const loadUnreadCount = async () => {
     const result = await getTotalUnreadCount(userId);
     if (result.success && result.data !== undefined) {
@@ -30,9 +57,23 @@ export default function MessagesIconWithBadge({ userId }: MessagesIconWithBadgeP
     }
   };
 
+  const getMessagesUrl = () => {
+    // Route to role-specific messages page
+    switch (userRole) {
+      case 'searcher':
+        return '/dashboard/searcher/messages';
+      case 'owner':
+        return '/messages'; // Keep generic for now, will be updated later
+      case 'resident':
+        return '/dashboard/resident/messages';
+      default:
+        return '/messages'; // Fallback to generic
+    }
+  };
+
   return (
     <button
-      onClick={() => router.push('/messages')}
+      onClick={() => router.push(getMessagesUrl())}
       className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
       aria-label="Messages"
     >
