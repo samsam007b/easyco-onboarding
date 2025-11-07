@@ -55,6 +55,18 @@ function SearcherMessagesContent() {
   const [activeTab, setActiveTab] = useState<SearcherMessageTab>('all');
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
 
+  // Helper function to render the correct icon based on active tab
+  const renderTabIcon = (tab: SearcherMessageTab) => {
+    const iconProps = { className: "w-10 h-10 text-white" };
+    switch (tab) {
+      case 'owners': return <Building2 {...iconProps} />;
+      case 'searchers': return <UserCircle2 {...iconProps} />;
+      case 'groups': return <UsersRound {...iconProps} />;
+      case 'requests': return <UserPlus {...iconProps} />;
+      default: return <MessageCircle {...iconProps} />;
+    }
+  };
+
   // Load user data
   useEffect(() => {
     loadUserData();
@@ -673,11 +685,7 @@ function SearcherMessagesContent() {
 
             <div className="relative z-10">
               <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                {activeTab === 'owners' && <Building2 className="w-10 h-10 text-white" />}
-                {activeTab === 'searchers' && <UserCircle2 className="w-10 h-10 text-white" />}
-                {activeTab === 'groups' && <UsersRound className="w-10 h-10 text-white" />}
-                {activeTab === 'requests' && <UserPlus className="w-10 h-10 text-white" />}
-                {activeTab === 'all' && <MessageCircle className="w-10 h-10 text-white" />}
+                {renderTabIcon(activeTab)}
               </div>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
