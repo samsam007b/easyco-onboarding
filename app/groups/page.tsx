@@ -1,286 +1,461 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Plus, ChevronLeft, MessageCircle, MapPin } from 'lucide-react';
+import { Users, Plus, MessageCircle, MapPin, Euro, Calendar, Search, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { createClient } from '@/lib/auth/supabase-client';
+import { useAuth } from '@/lib/contexts/auth-context';
+import { logger } from '@/lib/utils/logger';
+import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
+
+interface Group {
+  id: string;
+  name: string;
+  description: string | null;
+  created_by: string;
+  budget_min: number | null;
+  budget_max: number | null;
+  preferred_location: string | null;
+  move_in_date: string | null;
+  member_count?: number;
+  created_at: string;
+}
+
+interface SearcherStats {
+  favoritesCount: number;
+  matchesCount: number;
+  unreadMessages: number;
+}
 
 export default function GroupsPage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const [profile, setProfile] = useState<{ full_name: string; email: string; avatar_url?: string } | null>(null);
+  const [stats, setStats] = useState<SearcherStats>({ favoritesCount: 0, matchesCount: 0, unreadMessages: 0 });
+  const [myGroups, setMyGroups] = useState<Group[]>([]);
+  const [discoverGroups, setDiscoverGroups] = useState<Group[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock groups data
-  const myGroups = [
-    {
-      id: '1',
-      name: 'Brussels Co-living Seekers',
-      members: 4,
-      budget: '€600-800',
-      location: 'Brussels',
-      avatars: [
-        'https://i.pravatar.cc/150?img=1',
-        'https://i.pravatar.cc/150?img=2',
-        'https://i.pravatar.cc/150?img=3',
-      ],
-    },
-  ];
+  useEffect(() => {
+    const loadData = async () => {
+      if (!user) {
+        router.push('/login');
+        return;
+      }
 
-  const invitations = [
-    {
-      id: '2',
-      name: 'Ixelles House Hunters',
-      members: 3,
-      budget: '€700-900',
-      location: 'Ixelles',
-      invitedBy: 'Sophie M.',
-      avatars: [
-        'https://i.pravatar.cc/150?img=4',
-        'https://i.pravatar.cc/150?img=5',
-      ],
-    },
-  ];
+      try {
+        const supabase = createClient();
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-lg border-b border-orange-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => router.back()}
-                className="rounded-full border-orange-200 hover:bg-orange-50"
-              >
-                <ChevronLeft className="h-5 w-5 text-orange-600" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">Mes Groupes</h1>
-                  <p className="text-gray-600 mt-1">Recherchez un logement ensemble</p>
-                </div>
-              </div>
-            </div>
-            <Button
-              className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl gap-2 shadow-lg hover:shadow-xl transition-all"
-              onClick={() => router.push('/groups/create')}
-            >
-              <Plus className="h-5 w-5" />
-              Créer un groupe
-            </Button>
-          </div>
+        // Load profile
+        const { data: userData, error: profileError } = await supabase
+          .from('users')
+          .select('full_name, email, avatar_url')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) {
+          logger.supabaseError('load user profile for groups', profileError, { userId: user.id });
+        } else if (userData) {
+          setProfile(userData);
+        }
+
+        // Load stats
+        const { count: favCount } = await supabase
+          .from('favorites')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id);
+
+        const { count: matchCount } = await supabase
+          .from('user_matching_scores')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .gte('compatibility_score', 70);
+
+        const { data: unreadData } = await supabase
+          .rpc('get_unread_count', { user_uuid: user.id });
+
+        setStats({
+          favoritesCount: favCount || 0,
+          matchesCount: matchCount || 0,
+          unreadMessages: unreadData || 0
+        });
+
+        // Load user's groups from group_members table
+        const { data: groupMemberships, error: membershipsError } = await supabase
+          .from('group_members')
+          .select('group_id, groups(*)')
+          .eq('user_id', user.id)
+          .eq('status', 'active');
+
+        if (!membershipsError && groupMemberships) {
+          const userGroups = groupMemberships.map(m => m.groups).filter(Boolean) as any[];
+
+          // Get member counts for each group
+          const groupsWithCounts = await Promise.all(
+            userGroups.map(async (group: any) => {
+              const { count } = await supabase
+                .from('group_members')
+                .select('*', { count: 'exact', head: true })
+                .eq('group_id', group.id)
+                .eq('status', 'active');
+
+              return { ...group, member_count: count || 0 };
+            })
+          );
+
+          setMyGroups(groupsWithCounts);
+        }
+
+        // Load discover groups (public groups user is not part of)
+        const { data: allGroups, error: groupsError } = await supabase
+          .from('groups')
+          .select('*')
+          .eq('is_public', true)
+          .limit(6);
+
+        if (!groupsError && allGroups) {
+          // Filter out groups user is already in
+          const userGroupIds = new Set(myGroups.map(g => g.id));
+          const filteredGroups = allGroups.filter(g => !userGroupIds.has(g.id));
+
+          // Get member counts
+          const groupsWithCounts = await Promise.all(
+            filteredGroups.map(async (group: any) => {
+              const { count } = await supabase
+                .from('group_members')
+                .select('*', { count: 'exact', head: true })
+                .eq('group_id', group.id)
+                .eq('status', 'active');
+
+              return { ...group, member_count: count || 1 };
+            })
+          );
+
+          setDiscoverGroups(groupsWithCounts);
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        logger.error('Failed to load groups page data', error, { userId: user?.id });
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [user, router]);
+
+  const formatBudget = (min: number | null, max: number | null) => {
+    if (!min && !max) return 'Budget flexible';
+    if (!min) return `Jusqu'à €${max}`;
+    if (!max) return `À partir de €${min}`;
+    return `€${min}-${max}`;
+  };
+
+  const formatMoveInDate = (date: string | null) => {
+    if (!date) return 'Flexible';
+    const d = new Date(date);
+    return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+  };
+
+  if (isLoading || !profile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Chargement...</p>
         </div>
       </div>
+    );
+  }
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* CTA Section - Create or Join Group */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Create Group CTA */}
-          <div
-            onClick={() => router.push('/groups/create')}
-            className="relative overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl p-8 cursor-pointer group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl translate-y-1/2 -translate-x-1/2"></div>
+  return (
+    <>
+      <ModernSearcherHeader profile={profile} stats={stats} />
 
-            <div className="relative">
-              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Plus className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Créer un groupe</h3>
-              <p className="text-orange-50 mb-6">
-                Rassemblez vos amis et cherchez un logement ensemble pour partager les frais
-              </p>
-              <div className="flex items-center gap-2 text-white font-medium group-hover:gap-3 transition-all">
-                <span>Commencer</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </div>
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
           </div>
 
-          {/* Join Group CTA */}
-          <div
-            onClick={() => router.push('/groups/browse')}
-            className="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-700 rounded-3xl p-8 cursor-pointer group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl translate-y-1/2 -translate-x-1/2"></div>
-
-            <div className="relative">
-              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Users className="w-8 h-8 text-white" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl mb-6">
+                <Users className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Rejoindre un groupe</h3>
-              <p className="text-purple-50 mb-6">
-                Trouvez des colocataires partageant vos critères et cherchez ensemble votre futur logement
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Recherchez en Groupe
+              </h1>
+              <p className="text-xl text-orange-50 max-w-2xl mx-auto mb-8">
+                Trouvez des colocataires, partagez les frais et cherchez le logement parfait ensemble
               </p>
-              <div className="flex items-center gap-2 text-white font-medium group-hover:gap-3 transition-all">
-                <span>Explorer</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  onClick={() => router.push('/groups/create')}
+                  className="bg-white text-orange-600 hover:bg-orange-50 font-semibold px-8 py-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all gap-2 group"
+                  size="lg"
+                >
+                  <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                  Créer un groupe
+                </Button>
+                <Button
+                  onClick={() => router.push('/groups/browse')}
+                  variant="outline"
+                  className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 font-semibold px-8 py-6 rounded-2xl gap-2"
+                  size="lg"
+                >
+                  <Search className="w-5 h-5" />
+                  Parcourir les groupes
+                </Button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* My Groups Dashboard */}
-        <div>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Mes Groupes</h2>
-              <p className="text-gray-600 mt-1">Gérez vos groupes de recherche actifs</p>
-            </div>
-            {myGroups.length > 0 && (
-              <div className="px-4 py-2 bg-orange-100 rounded-full">
-                <span className="text-orange-700 font-semibold">{myGroups.length} groupe{myGroups.length > 1 ? 's' : ''}</span>
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+          {/* My Groups Section */}
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900">Mes Groupes</h2>
+                <p className="text-gray-600 mt-1">Vos groupes de recherche actifs</p>
               </div>
-            )}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {myGroups.map((group) => (
-              <Card
-                key={group.id}
-                className="rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer border-orange-100 hover:border-orange-300"
-                onClick={() => router.push(`/groups/${group.id}/settings`)}
-              >
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
-                      <Users className="h-4 w-4 text-white" />
-                    </div>
-                    <span className="text-gray-900">{group.name}</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex -space-x-2">
-                      {group.avatars.map((avatar, idx) => (
-                        <Avatar key={idx} className="border-2 border-white ring-2 ring-orange-100">
-                          <AvatarImage src={avatar} />
-                          <AvatarFallback>M</AvatarFallback>
-                        </Avatar>
-                      ))}
-                      <div className="w-10 h-10 rounded-full border-2 border-white ring-2 ring-orange-100 bg-orange-100 flex items-center justify-center">
-                        <span className="text-sm font-semibold text-orange-700">
-                          +{group.members - group.avatars.length}
+              {myGroups.length > 0 && (
+                <Badge className="bg-orange-100 text-orange-700 px-4 py-2 text-base hover:bg-orange-100">
+                  {myGroups.length} {myGroups.length > 1 ? 'groupes' : 'groupe'}
+                </Badge>
+              )}
+            </div>
+
+            {myGroups.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {myGroups.map((group) => (
+                  <Card
+                    key={group.id}
+                    className="rounded-3xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-orange-100 hover:border-orange-300 group overflow-hidden"
+                    onClick={() => router.push(`/groups/${group.id}`)}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                    <CardHeader className="relative">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
+                            <Users className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
+                              {group.name}
+                            </CardTitle>
+                            <p className="text-sm text-gray-500">{group.member_count} membres</p>
+                          </div>
+                        </div>
+                      </div>
+                      {group.description && (
+                        <p className="text-sm text-gray-600 line-clamp-2 mt-2">
+                          {group.description}
+                        </p>
+                      )}
+                    </CardHeader>
+
+                    <CardContent className="relative space-y-3">
+                      {group.preferred_location && (
+                        <div className="flex items-center gap-2 text-sm text-gray-700">
+                          <MapPin className="h-4 w-4 text-orange-600" />
+                          <span className="font-medium">{group.preferred_location}</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2 text-sm text-gray-700">
+                        <Euro className="h-4 w-4 text-orange-600" />
+                        <span className="font-medium">
+                          {formatBudget(group.budget_min, group.budget_max)}
                         </span>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 text-orange-600" />
-                      {group.location}
-                    </div>
-                    <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100">
-                      {group.budget}
-                    </Badge>
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-xl gap-2 border-orange-200 hover:bg-orange-50 text-orange-700"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        router.push('/messages');
-                      }}
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      Chat du groupe
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
-        {/* Group Invitations */}
-        {invitations.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4 text-gray-900">
-              Invitations aux groupes ({invitations.length})
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {invitations.map((group) => (
-                <Card key={group.id} className="rounded-2xl shadow-lg border-orange-100">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
-                        <Users className="h-4 w-4 text-white" />
-                      </div>
-                      <span className="text-gray-900">{group.name}</span>
-                    </CardTitle>
-                    <p className="text-sm text-gray-600">Invité par {group.invitedBy}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex -space-x-2 mb-3">
-                        {group.avatars.map((avatar, idx) => (
-                          <Avatar key={idx} className="border-2 border-white ring-2 ring-orange-100">
-                            <AvatarImage src={avatar} />
-                            <AvatarFallback>M</AvatarFallback>
-                          </Avatar>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <MapPin className="h-4 w-4 text-orange-600" />
-                        {group.location}
-                      </div>
-                      <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100">
-                        {group.budget}
-                      </Badge>
-                      <div className="flex gap-2 mt-4">
-                        <Button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl">
-                          Accepter
+                      {group.move_in_date && (
+                        <div className="flex items-center gap-2 text-sm text-gray-700">
+                          <Calendar className="h-4 w-4 text-orange-600" />
+                          <span className="font-medium">{formatMoveInDate(group.move_in_date)}</span>
+                        </div>
+                      )}
+
+                      <div className="pt-3 flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/groups/${group.id}/chat`);
+                          }}
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          Chat
                         </Button>
                         <Button
                           variant="outline"
-                          className="flex-1 rounded-xl border-orange-200 hover:bg-orange-50"
+                          size="sm"
+                          className="flex-1 rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/groups/${group.id}/settings`);
+                          }}
                         >
-                          Refuser
+                          Paramètres
                         </Button>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {myGroups.length === 0 && invitations.length === 0 && (
-          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
-
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
-                <Users className="w-12 h-12 text-white" />
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                Aucun groupe pour le moment
-              </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
-                Créez ou rejoignez un groupe pour chercher un logement ensemble
-              </p>
-              <Button
-                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all gap-2"
-                onClick={() => router.push('/groups/create')}
-              >
-                <Plus className="h-5 w-5" />
-                Créer votre premier groupe
-              </Button>
+            ) : (
+              <Card className="rounded-3xl border-2 border-dashed border-orange-200 bg-gradient-to-br from-orange-50/50 to-white">
+                <CardContent className="flex flex-col items-center justify-center py-16">
+                  <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                    <Users className="w-10 h-10 text-orange-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Aucun groupe pour le moment
+                  </h3>
+                  <p className="text-gray-600 text-center max-w-md mb-6">
+                    Créez votre premier groupe et commencez à chercher un logement avec d'autres personnes
+                  </p>
+                  <Button
+                    onClick={() => router.push('/groups/create')}
+                    className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl px-6 gap-2"
+                  >
+                    <Plus className="h-5 w-5" />
+                    Créer un groupe
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </section>
+
+          {/* Discover Groups Section */}
+          {discoverGroups.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900">Groupes à découvrir</h2>
+                  <p className="text-gray-600 mt-1">Rejoignez des groupes qui correspondent à vos critères</p>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => router.push('/groups/browse')}
+                  className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
+                >
+                  Voir tout
+                  <TrendingUp className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {discoverGroups.map((group) => (
+                  <Card
+                    key={group.id}
+                    className="rounded-3xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-purple-100 hover:border-purple-300 group overflow-hidden"
+                    onClick={() => router.push(`/groups/${group.id}`)}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                    <CardHeader className="relative">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-md">
+                          <Users className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                            {group.name}
+                          </CardTitle>
+                          <p className="text-sm text-gray-500">{group.member_count} membres</p>
+                        </div>
+                      </div>
+                      {group.description && (
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {group.description}
+                        </p>
+                      )}
+                    </CardHeader>
+
+                    <CardContent className="relative space-y-3">
+                      {group.preferred_location && (
+                        <div className="flex items-center gap-2 text-sm text-gray-700">
+                          <MapPin className="h-4 w-4 text-purple-600" />
+                          <span className="font-medium">{group.preferred_location}</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2 text-sm text-gray-700">
+                        <Euro className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium">
+                          {formatBudget(group.budget_min, group.budget_max)}
+                        </span>
+                      </div>
+
+                      <Button
+                        className="w-full bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white rounded-xl mt-4"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/groups/${group.id}/join`);
+                        }}
+                      >
+                        Rejoindre ce groupe
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Why Search in Groups - Benefits Section */}
+          <section className="bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 md:p-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              Pourquoi chercher en groupe ?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <Euro className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Économisez</h3>
+                <p className="text-gray-600">
+                  Partagez les frais et trouvez un logement plus abordable ensemble
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Rencontrez</h3>
+                <p className="text-gray-600">
+                  Trouvez des personnes qui partagent vos critères et votre style de vie
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Plus de chances</h3>
+                <p className="text-gray-600">
+                  Augmentez vos chances de trouver le logement parfait rapidement
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
