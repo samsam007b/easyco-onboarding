@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar } from '@/components/ui/calendar';
+import { EventCalendar, type CalendarEvent } from '@/components/ui/event-calendar';
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -26,7 +26,6 @@ import {
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { fr } from 'date-fns/locale';
 
 export default function MyVisitsPage() {
   const router = useRouter();
@@ -45,7 +44,6 @@ export default function MyVisitsPage() {
   const [rating, setRating] = useState(5);
   const [feedback, setFeedback] = useState('');
   const [wasHelpful, setWasHelpful] = useState(true);
-  const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     fetchMyVisits();
@@ -53,6 +51,17 @@ export default function MyVisitsPage() {
 
   const upcomingVisits = getUpcomingVisits();
   const pastVisits = getPastVisits();
+
+  // Convert visits to calendar events
+  const calendarEvents: CalendarEvent[] = [...upcomingVisits, ...pastVisits].map((visit) => ({
+    id: visit.id,
+    title: visit.property?.title || 'Visite',
+    description: visit.property?.address || '',
+    start: new Date(visit.scheduled_at),
+    end: visit.scheduled_at ? new Date(new Date(visit.scheduled_at).getTime() + 60 * 60 * 1000) : undefined, // 1 hour duration
+    location: visit.property?.address,
+    color: visit.status === 'confirmed' ? 'orange' : visit.status === 'completed' ? 'green' : visit.status === 'cancelled' ? 'red' : 'blue',
+  }));
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -391,7 +400,7 @@ export default function MyVisitsPage() {
           </TabsContent>
         </Tabs>
 
-        {/* Calendar Section */}
+        {/* Interactive Calendar Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -407,40 +416,25 @@ export default function MyVisitsPage() {
                 <div>
                   <CardTitle className="text-xl">Calendrier des visites</CardTitle>
                   <p className="text-sm text-gray-600 mt-1">
-                    Visualisez vos visites programmées
+                    Cliquez sur une date pour voir les détails des visites
                   </p>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="flex justify-center">
-                <Calendar
-                  mode="multiple"
-                  selected={upcomingVisits.map(v => new Date(v.scheduled_at))}
-                  month={selectedMonth}
-                  onMonthChange={setSelectedMonth}
-                  locale={fr}
-                  className="rounded-md border"
-                  modifiers={{
-                    booked: upcomingVisits.map(v => new Date(v.scheduled_at)),
-                  }}
-                  modifiersClassNames={{
-                    booked: 'bg-orange-600 text-white hover:bg-orange-700',
-                  }}
-                />
-              </div>
-
-              {/* Legend */}
-              <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-orange-600"></div>
-                  <span className="text-sm text-gray-600">Visite programmée</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-orange-100"></div>
-                  <span className="text-sm text-gray-600">Aujourd'hui</span>
-                </div>
-              </div>
+              <EventCalendar
+                events={calendarEvents}
+                onEventClick={(event) => {
+                  // Find the visit associated with this event
+                  const visit = visits.find(v => v.id === event.id);
+                  if (visit) {
+                    toast.info(`Visite: ${event.title}`);
+                  }
+                }}
+                onDateClick={(date) => {
+                  console.log('Date clicked:', date);
+                }}
+              />
             </CardContent>
           </Card>
         </motion.div>
