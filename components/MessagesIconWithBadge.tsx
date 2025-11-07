@@ -61,22 +61,29 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
   };
 
   const getMessagesUrl = () => {
-    // Route to role-specific messages page
+    // Route to role-specific messages page - no generic fallback
     switch (userRole) {
       case 'searcher':
         return '/dashboard/searcher/messages';
       case 'owner':
-        return '/messages'; // Keep generic for now, will be updated later
+        return '/dashboard/owner/messages'; // Will be created later
       case 'resident':
         return '/dashboard/resident/messages';
       default:
-        return '/messages'; // Fallback to generic
+        // Fallback to searcher if role not yet loaded
+        return '/dashboard/searcher/messages';
     }
+  };
+
+  const handleClick = () => {
+    const url = getMessagesUrl();
+    console.log('Messages icon clicked - Role:', userRole, 'URL:', url);
+    router.push(url);
   };
 
   return (
     <button
-      onClick={() => router.push(getMessagesUrl())}
+      onClick={handleClick}
       className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
       aria-label="Messages"
     >
