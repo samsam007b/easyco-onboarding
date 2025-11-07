@@ -160,16 +160,28 @@ function PropertyCard({
               {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
             </p>
 
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-gray-900">
-                €{property.monthly_rent}
-                <span className="text-xs text-gray-500 font-normal">/mois</span>
-              </span>
-              {property.bedrooms && (
-                <span className="text-xs text-gray-500">
-                  {property.bedrooms} {property.bedrooms > 1 ? 'chambres' : 'chambre'}
+            {/* Price section with glassmorphism */}
+            <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
+              {/* Glassmorphism background */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+                   style={{
+                     WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                     backdropFilter: 'blur(40px) saturate(150%)'
+                   }}
+              />
+              <div className="absolute inset-0 border-t border-white/30" />
+
+              <div className="relative flex items-center justify-between">
+                <span className="text-sm font-bold text-gray-900">
+                  €{property.monthly_rent}
+                  <span className="text-xs text-gray-500 font-normal">/mois</span>
                 </span>
-              )}
+                {property.bedrooms && (
+                  <span className="text-xs text-gray-500">
+                    {property.bedrooms} {property.bedrooms > 1 ? 'chambres' : 'chambre'}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -297,42 +309,53 @@ function PropertyCard({
             </p>
           )}
 
-          {/* Footer: Price and CTA */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-            <div>
-              <span className="text-2xl font-bold text-gray-900">
-                €{property.monthly_rent}
-              </span>
-              <span className="text-sm text-gray-500">/mois</span>
-              {property.available_from && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Dispo {new Date(property.available_from).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}
-                </p>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleBookVisit}
-                className="px-4 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-                style={{
-                  background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-                }}
-              >
-                <Calendar className="w-4 h-4" />
-                <span className="hidden sm:inline">Visite</span>
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = `/properties/${property.id}`;
-                }}
-                className="px-5 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
-                }}
-              >
-                Voir
-              </button>
+          {/* Footer: Price and CTA - with glassmorphism */}
+          <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
+            {/* Glassmorphism background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+                 style={{
+                   WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                   backdropFilter: 'blur(40px) saturate(150%)'
+                 }}
+            />
+            <div className="absolute inset-0 border-t border-white/30" />
+
+            <div className="relative flex items-center justify-between">
+              <div>
+                <span className="text-2xl font-bold text-gray-900">
+                  €{property.monthly_rent}
+                </span>
+                <span className="text-sm text-gray-500">/mois</span>
+                {property.available_from && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Dispo {new Date(property.available_from).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleBookVisit}
+                  className="px-4 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+                  style={{
+                    background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
+                  }}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span className="hidden sm:inline">Visite</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = `/properties/${property.id}`;
+                  }}
+                  className="px-5 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
+                  }}
+                >
+                  Voir
+                </button>
+              </div>
             </div>
           </div>
         </div>

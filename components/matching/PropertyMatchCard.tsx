@@ -326,36 +326,47 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Button
-            className="flex-1"
-            variant="default"
-            onClick={handleViewDetails}
-          >
-            <Eye className="w-4 h-4 mr-2" />
-            Voir le bien
-          </Button>
+        {/* Action Buttons - with glassmorphism */}
+        <div className="relative -mx-5 -mb-5 mt-4 px-5 py-4 rounded-b-2xl overflow-hidden">
+          {/* Glassmorphism background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+               style={{
+                 WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                 backdropFilter: 'blur(40px) saturate(150%)'
+               }}
+          />
+          <div className="absolute inset-0 border-t border-white/30" />
 
-          {match.status !== 'contacted' && (
+          <div className="relative flex gap-2">
             <Button
               className="flex-1"
-              variant="outline"
-              onClick={handleContact}
+              variant="default"
+              onClick={handleViewDetails}
             >
-              <Heart className="w-4 h-4 mr-2" />
-              Contacter
+              <Eye className="w-4 h-4 mr-2" />
+              Voir le bien
             </Button>
-          )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:text-red-600"
-            onClick={handleHide}
-          >
-            <X className="w-5 h-5" />
-          </Button>
+            {match.status !== 'contacted' && (
+              <Button
+                className="flex-1"
+                variant="outline"
+                onClick={handleContact}
+              >
+                <Heart className="w-4 h-4 mr-2" />
+                Contacter
+              </Button>
+            )}
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-400 hover:text-red-600"
+              onClick={handleHide}
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

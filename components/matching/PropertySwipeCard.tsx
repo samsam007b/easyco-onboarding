@@ -242,20 +242,30 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             </button>
           </div>
 
-          {/* Content Area */}
-          <div className="h-[45%] p-6 overflow-y-auto">
-            {/* Core Info - Always Visible */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {coreInfo.map((info, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl"
-                >
-                  <info.icon className={cn("w-5 h-5", info.color)} />
-                  <span className="text-sm font-semibold text-gray-700">{info.label}</span>
-                </div>
-              ))}
-            </div>
+          {/* Content Area - with glassmorphism */}
+          <div className="relative h-[45%] overflow-hidden">
+            {/* Glassmorphism background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+                 style={{
+                   WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                   backdropFilter: 'blur(40px) saturate(150%)'
+                 }}
+            />
+            <div className="absolute inset-0 border-t border-white/30" />
+
+            <div className="relative p-6 overflow-y-auto h-full">
+              {/* Core Info - Always Visible */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {coreInfo.map((info, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl"
+                  >
+                    <info.icon className={cn("w-5 h-5", info.color)} />
+                    <span className="text-sm font-semibold text-gray-700">{info.label}</span>
+                  </div>
+                ))}
+              </div>
 
             {/* Residents Preview */}
             {residents.length > 0 && (
@@ -327,6 +337,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               <span>Voir tous les détails</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
+            </div>
           </div>
 
           {/* Swipe Indicators */}

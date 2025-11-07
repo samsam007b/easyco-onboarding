@@ -49,9 +49,18 @@ export default function PropertyMarkerCard({
           />
         </div>
 
-        {/* Price Badge */}
-        <div className="px-2 py-1.5 bg-white">
-          <div className="text-sm font-bold text-gray-900 text-center">
+        {/* Price Badge - with glassmorphism */}
+        <div className="relative px-2 py-1.5 overflow-hidden">
+          {/* Glassmorphism background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
+               style={{
+                 WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                 backdropFilter: 'blur(40px) saturate(150%)'
+               }}
+          />
+          <div className="absolute inset-0 border-t border-white/30" />
+
+          <div className="relative text-sm font-bold text-gray-900 text-center">
             {price}€
           </div>
         </div>
