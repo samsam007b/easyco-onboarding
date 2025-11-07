@@ -89,41 +89,47 @@ export default function MatchesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-yellow-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A148C]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Chargement...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.push('/matching/swipe')}
+            onClick={() => router.back()}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-[#4A148C]">Your Matches</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Tes Matchs</h1>
             <p className="text-gray-600">
-              {matches.length} {matches.length === 1 ? 'match' : 'matches'}
+              {matches.length} {matches.length === 1 ? 'match' : 'matchs'}
             </p>
           </div>
         </div>
 
         {/* No Matches State */}
         {matches.length === 0 ? (
-          <Card className="p-12 text-center">
+          <Card className="p-12 text-center rounded-3xl border-2 border-dashed border-orange-200 bg-gradient-to-br from-orange-50/50 to-white">
             <div className="text-6xl mb-4">💔</div>
-            <h3 className="text-2xl font-bold text-[#4A148C] mb-2">No matches yet</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">No matches yet</h3>
             <p className="text-gray-600 mb-6">
               Start swiping to find your perfect roommates or co-searchers!
             </p>
-            <Button onClick={() => router.push('/matching/swipe')} variant="default">
+            <Button
+              onClick={() => router.push('/properties/browse')}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+            >
               <Users className="w-4 h-4 mr-2" />
               Start Swiping
             </Button>
@@ -137,10 +143,10 @@ export default function MatchesPage() {
               return (
                 <Card
                   key={match.user_id}
-                  className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                  className="overflow-hidden hover:shadow-xl transition-all cursor-pointer rounded-3xl border border-orange-100 hover:border-orange-300"
                   onClick={() => {
                     // TODO: Open chat or profile
-                    toast.info('Chat functionality coming soon!');
+                    toast.info('Fonctionnalité de chat bientôt disponible !');
                   }}
                 >
                   <div className="relative h-64 overflow-hidden">
@@ -151,7 +157,7 @@ export default function MatchesPage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-orange-50 flex items-center justify-center">
+                      <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
                         <div className="text-5xl font-bold text-orange-600 opacity-30">
                           {match.first_name.charAt(0)}
                           {match.last_name.charAt(0)}
@@ -160,7 +166,7 @@ export default function MatchesPage() {
                     )}
 
                     {/* Match Badge */}
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full shadow-lg">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full shadow-lg">
                       <div className="flex items-center gap-1">
                         <Heart className="w-3 h-3 fill-current" />
                         <span className="text-xs font-bold">Match</span>
@@ -169,7 +175,7 @@ export default function MatchesPage() {
                   </div>
 
                   <CardContent className="p-4">
-                    <h3 className="text-xl font-bold text-[#4A148C] mb-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">
                       {match.first_name} {match.last_name}
                       {age && <span className="text-lg font-normal ml-2">{age}</span>}
                     </h3>
@@ -207,16 +213,15 @@ export default function MatchesPage() {
 
                     {/* Action Button */}
                     <Button
-                      className="w-full"
-                      variant="default"
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
                       onClick={(e) => {
                         e.stopPropagation();
                         // TODO: Open chat
-                        toast.info('Chat functionality coming soon!');
+                        toast.info('Fonctionnalité de chat bientôt disponible !');
                       }}
                     >
                       <MessageCircle className="w-4 h-4 mr-2" />
-                      Send Message
+                      Envoyer un message
                     </Button>
                   </CardContent>
                 </Card>
