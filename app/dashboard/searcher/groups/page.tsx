@@ -97,13 +97,13 @@ export default function GroupsPage() {
 
         setIsLoading(false);
       } catch (error) {
-        logger.error('Failed to load groups page data', error, { userId: user?.id });
+        logger.error('Failed to load groups page data', error);
         setIsLoading(false);
       }
     };
 
     loadData();
-  }, [user, router]);
+  }, [router]);
 
   const formatBudget = (min: number | null, max: number | null) => {
     if (!min && !max) return 'Budget flexible';
