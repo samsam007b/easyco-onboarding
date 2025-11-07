@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
-import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home, MapPin } from 'lucide-react';
+import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home, MapPin, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -17,6 +17,7 @@ interface DashboardStats {
   topMatchesCount: number;
   applicationsCount: number;
   profileCompletion: number;
+  unreadMessages: number;
 }
 
 export default function ModernSearcherDashboard() {
@@ -28,6 +29,7 @@ export default function ModernSearcherDashboard() {
     topMatchesCount: 0,
     applicationsCount: 0,
     profileCompletion: 0,
+    unreadMessages: 0,
   });
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -82,11 +84,19 @@ export default function ModernSearcherDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('applicant_id', user.id);
 
+      // Load unread messages count
+      const { count: unreadCount } = await supabase
+        .from('conversation_participants')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+
       setStats({
         favoritesCount: favCount || 0,
         topMatchesCount: 5, // Mock - would calculate from matching
         applicationsCount: appCount || 0,
         profileCompletion: 85, // Mock - would calculate from profile
+        unreadMessages: unreadCount || 0,
       });
     } catch (error) {
       console.error('Error loading dashboard:', error);
@@ -96,10 +106,10 @@ export default function ModernSearcherDashboard() {
   };
 
   const kpiCards = [
+    { title: 'Messages', value: stats.unreadMessages, icon: MessageCircle, gradient: 'from-[#FFA040] to-[#FFB85C]', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/messages') },
     { title: 'Favoris', value: stats.favoritesCount, icon: Bookmark, gradient: 'from-orange-400 to-orange-600', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/favorites') },
-    { title: 'Top Matchs', value: stats.topMatchesCount, icon: Heart, gradient: 'from-[#FFA040] to-[#FFB85C]', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/top-matches') },
-    { title: 'Candidatures', value: stats.applicationsCount, icon: FileText, gradient: 'from-orange-500 to-orange-700', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/my-applications') },
-    { title: 'Profil Complété', value: `${stats.profileCompletion}%`, icon: TrendingUp, gradient: 'from-green-500 to-green-700', bg: 'from-green-50 to-green-100/50', action: () => router.push('/profile') },
+    { title: 'Top Matchs', value: stats.topMatchesCount, icon: Heart, gradient: 'from-orange-500 to-orange-700', bg: 'from-orange-50 to-orange-100/50', action: () => router.push('/dashboard/searcher/top-matches') },
+    { title: 'Candidatures', value: stats.applicationsCount, icon: FileText, gradient: 'from-[#FFB85C] to-[#FFD080]', bg: 'from-yellow-50 to-yellow-100/50', action: () => router.push('/dashboard/searcher/my-applications') },
   ];
 
   if (isLoading) {
