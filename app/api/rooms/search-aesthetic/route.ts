@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 import { AestheticSearchFilters } from '@/types/room-aesthetics.types';
 
