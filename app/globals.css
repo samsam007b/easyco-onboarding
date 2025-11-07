@@ -277,35 +277,49 @@ body {
    ============================================ */
 
 html {
-  /* Dégradé animé jaune searcher pour l'overscroll */
-  background: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
-  background-size: 200% 200%;
-  animation: gradientShift 8s ease infinite;
+  /* Fond blanc pour l'overscroll avec le logo animé */
+  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
   position: relative;
 }
 
+/* Zone au-dessus de la page (overscroll top) avec logo EasyCo */
 html::before {
-  content: '';
+  content: 'EasyCo';
   position: fixed;
   top: -100vh;
   left: 0;
   right: 0;
   height: 100vh;
-  background: radial-gradient(circle at 50% 100%, rgba(255, 210, 128, 0.3) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 35%, #FFA040 65%, #FFD080 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   pointer-events: none;
-  z-index: -1;
+  z-index: 9999;
+  animation: logoFloat 2s ease-in-out infinite;
 }
 
+/* Zone en dessous de la page (overscroll bottom) avec icône maison */
 html::after {
-  content: '';
+  content: '🏠';
   position: fixed;
   bottom: -100vh;
   left: 0;
   right: 0;
   height: 100vh;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 210, 128, 0.3) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
   pointer-events: none;
-  z-index: -1;
+  z-index: 9999;
+  animation: houseFloat 2s ease-in-out infinite;
 }
 
 @keyframes gradientShift {
@@ -317,6 +331,24 @@ html::after {
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes houseFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.03);
   }
 }
 
