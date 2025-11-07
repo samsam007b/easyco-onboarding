@@ -334,7 +334,7 @@ export default function MyVisitsPage() {
                   <p className="text-sm text-gray-600">Total Visits</p>
                   <p className="text-3xl font-bold text-orange-600">{visits.length}</p>
                 </div>
-                <Calendar className="h-12 w-12 text-orange-200" />
+                <CalendarIcon className="h-12 w-12 text-orange-200" />
               </div>
             </CardContent>
           </Card>
@@ -381,7 +381,7 @@ export default function MyVisitsPage() {
             {upcomingVisits.length === 0 ? (
               <Card className="rounded-2xl shadow-lg">
                 <CardContent className="p-12 text-center">
-                  <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <CalendarIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No upcoming visits</h3>
                   <p className="text-gray-600 mb-6">
                     Book a visit to view properties you're interested in
