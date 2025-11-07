@@ -7,8 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar } from '@/components/ui/calendar';
 import {
-  Calendar,
+  Calendar as CalendarIcon,
   Clock,
   MapPin,
   Video,
@@ -19,10 +20,13 @@ import {
   MessageCircle,
   Star,
   Home,
+  Bell,
+  TrendingUp,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { fr } from 'date-fns/locale';
 
 export default function MyVisitsPage() {
   const router = useRouter();
@@ -41,6 +45,7 @@ export default function MyVisitsPage() {
   const [rating, setRating] = useState(5);
   const [feedback, setFeedback] = useState('');
   const [wasHelpful, setWasHelpful] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     fetchMyVisits();
@@ -385,6 +390,197 @@ export default function MyVisitsPage() {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Calendar Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-8"
+        >
+          <Card className="rounded-2xl shadow-lg overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-100/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
+                  <CalendarIcon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Calendrier des visites</CardTitle>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Visualisez vos visites programmées
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="flex justify-center">
+                <Calendar
+                  mode="multiple"
+                  selected={upcomingVisits.map(v => new Date(v.scheduled_at))}
+                  month={selectedMonth}
+                  onMonthChange={setSelectedMonth}
+                  locale={fr}
+                  className="rounded-md border"
+                  modifiers={{
+                    booked: upcomingVisits.map(v => new Date(v.scheduled_at)),
+                  }}
+                  modifiersClassNames={{
+                    booked: 'bg-orange-600 text-white hover:bg-orange-700',
+                  }}
+                />
+              </div>
+
+              {/* Legend */}
+              <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-orange-600"></div>
+                  <span className="text-sm text-gray-600">Visite programmée</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-orange-100"></div>
+                  <span className="text-sm text-gray-600">Aujourd'hui</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Important Announcements */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-8 space-y-4"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Bell className="w-6 h-6 text-orange-600" />
+            Annonces importantes
+          </h2>
+
+          {/* Upcoming visits reminder */}
+          {upcomingVisits.length > 0 && (
+            <Card className="rounded-2xl shadow-lg border-l-4 border-l-orange-600">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <AlertCircle className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Prochaines visites à venir
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      Vous avez {upcomingVisits.length} visite{upcomingVisits.length > 1 ? 's' : ''} programmée{upcomingVisits.length > 1 ? 's' : ''}.
+                      Pensez à bien noter les dates et heures !
+                    </p>
+                    <div className="space-y-2">
+                      {upcomingVisits.slice(0, 3).map((visit) => {
+                        const visitDate = new Date(visit.scheduled_at);
+                        return (
+                          <div
+                            key={visit.id}
+                            className="flex items-center gap-3 text-sm bg-orange-50 rounded-lg p-3"
+                          >
+                            <CalendarIcon className="w-4 h-4 text-orange-600" />
+                            <span className="font-medium text-gray-900">
+                              {visitDate.toLocaleDateString('fr-FR', {
+                                weekday: 'long',
+                                day: 'numeric',
+                                month: 'long',
+                              })}
+                            </span>
+                            <Clock className="w-4 h-4 text-orange-600 ml-2" />
+                            <span className="text-gray-700">
+                              {visitDate.toLocaleTimeString('fr-FR', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </span>
+                            <span className="text-gray-600 ml-auto">
+                              {visit.property?.title}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Tips for visits */}
+          <Card className="rounded-2xl shadow-lg border-l-4 border-l-blue-600">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <TrendingUp className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Conseils pour vos visites
+                  </h3>
+                  <ul className="space-y-2 text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span>Préparez vos questions à l'avance pour ne rien oublier</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span>Vérifiez l'état des équipements et des installations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span>N'hésitez pas à discuter avec les colocataires actuels</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span>Prenez des photos pour comparer les logements plus tard</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Leave feedback reminder */}
+          {pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length > 0 && (
+            <Card className="rounded-2xl shadow-lg border-l-4 border-l-green-600">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Star className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Partagez votre expérience
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      Vous avez {pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length} visite
+                      {pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length > 1 ? 's' : ''} en attente d'évaluation.
+                      Votre avis aide les autres chercheurs et améliore la qualité du service.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        const firstVisitWithoutFeedback = pastVisits.find(
+                          v => v.status === 'completed' && !v.visitor_rating
+                        );
+                        if (firstVisitWithoutFeedback) {
+                          setSelectedVisit(firstVisitWithoutFeedback);
+                          setShowFeedbackModal(true);
+                        }
+                      }}
+                      className="bg-green-600 hover:bg-green-700 rounded-xl"
+                    >
+                      <Star className="w-4 h-4 mr-2" />
+                      Laisser un avis
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </motion.div>
       </div>
 
       {/* Feedback Modal */}
