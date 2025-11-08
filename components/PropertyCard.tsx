@@ -6,6 +6,8 @@ import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import BookVisitModal from './BookVisitModal';
+import RoomsDropdown from './RoomsDropdown';
+import { RoomWithTotal } from '@/types/room.types';
 
 interface ResidentProfile {
   id: string;
@@ -33,6 +35,7 @@ interface PropertyCardProps {
     owner_id?: string;
   };
   residents?: ResidentProfile[];
+  rooms?: RoomWithTotal[];
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
   onFavoriteClick?: (id: string) => void;
@@ -43,6 +46,7 @@ interface PropertyCardProps {
 function PropertyCard({
   property,
   residents = [],
+  rooms,
   showCompatibilityScore = false,
   compatibilityScore,
   onFavoriteClick,
@@ -201,8 +205,7 @@ function PropertyCard({
 
   return (
     <>
-      <Link
-        href={`/properties/${property.id}`}
+      <div
         className="block group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -319,6 +322,11 @@ function PropertyCard({
             </p>
           )}
 
+          {/* Rooms Dropdown */}
+          {rooms && rooms.length > 0 && (
+            <RoomsDropdown rooms={rooms} propertyId={property.id} />
+          )}
+
           {/* Footer: Price and CTA - with glassmorphism */}
           <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
             {/* Animated background lights - Slow right to left */}
@@ -380,7 +388,7 @@ function PropertyCard({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
 
     {/* Book Visit Modal */}
     {showBookVisitModal && property.owner_id && (
