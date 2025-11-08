@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import DOMPurify from 'isomorphic-dompurify';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -156,7 +157,12 @@ export default function VirtualTourViewer({
           {tourInfo.tour_embed_code ? (
             <div
               className="absolute inset-0"
-              dangerouslySetInnerHTML={{ __html: tourInfo.tour_embed_code }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(tourInfo.tour_embed_code, {
+                  ADD_TAGS: ['iframe'],
+                  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+                })
+              }}
             />
           ) : tourInfo.virtual_tour_url ? (
             <iframe

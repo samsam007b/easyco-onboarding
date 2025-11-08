@@ -130,7 +130,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [user, supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Load specific conversation with all messages
   const loadConversation = useCallback(async (conversationId: string) => {
@@ -194,7 +195,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       console.error('Error loading conversation:', error);
       toast.error('Failed to load conversation');
     }
-  }, [user, supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Send a message
   const sendMessage = useCallback(async (params: SendMessageParams): Promise<Message | null> => {
@@ -240,7 +242,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       toast.error('Failed to send message');
       return null;
     }
-  }, [user, supabase, activeConversation, loadConversations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, activeConversation?.id, loadConversations]);
 
   // Create a new conversation
   const createConversation = useCallback(async (params: CreateConversationParams): Promise<Conversation | null> => {
@@ -290,7 +293,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       toast.error('Failed to create conversation');
       return null;
     }
-  }, [user, supabase, sendMessage, loadConversations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, sendMessage, loadConversations]);
 
   // Mark conversation as read
   const markAsRead = useCallback(async (conversationId: string) => {
@@ -319,7 +323,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error marking as read:', error);
     }
-  }, [user, supabase, conversations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, conversations]);
 
   // Archive conversation
   const archiveConversation = useCallback(async (conversationId: string) => {
@@ -344,7 +349,8 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       console.error('Error archiving conversation:', error);
       toast.error('Failed to archive conversation');
     }
-  }, [user, supabase, activeConversation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, activeConversation?.id]);
 
   // Subscribe to real-time messages
   useEffect(() => {
@@ -376,14 +382,16 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, supabase, activeConversation, loadConversation, loadConversations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, activeConversation?.id]);
 
   // Load conversations on mount
   useEffect(() => {
     if (user) {
       loadConversations();
     }
-  }, [user, loadConversations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   const value: MessagesContextValue = {
     conversations,

@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Demo page showcasing the Aesthetic Room Search system
  * Navigate to /aesthetic-demo to see it in action
