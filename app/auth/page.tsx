@@ -122,11 +122,11 @@ function AuthContent() {
       if (data.user) {
         toast.success(t('auth.login.success.welcomeBack'));
 
-        // Check if user has a role (use maybeSingle instead of single to avoid error)
-        const { data: profile, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('user_type')
-          .eq('user_id', data.user.id)
+        // Check if user has a role from users table (not user_profiles)
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('user_type, onboarding_completed')
+          .eq('id', data.user.id)
           .maybeSingle();
 
         // If redirect specified, use it
@@ -135,7 +135,7 @@ function AuthContent() {
           return;
         }
 
-        const userType = profile?.user_type;
+        const userType = userData?.user_type;
 
         // Redirect based on user type
         if (userType === 'searcher') {
