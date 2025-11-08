@@ -43,7 +43,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         .from('users')
         .select('full_name, email, avatar_url')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         logger.supabaseError('load owner profile', profileError, { userId: user.id });
