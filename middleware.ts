@@ -177,12 +177,12 @@ export async function middleware(request: NextRequest) {
 
   // Handle authenticated users trying to access auth-only routes
   if (user && isAuthOnlyRoute) {
-    // Get user data to determine redirect
-    const { data: userData } = await supabase
+    // Get user data to determine redirect (use maybeSingle to avoid errors)
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('user_type, onboarding_completed')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     if (userData) {
       // If onboarding not completed, redirect to onboarding
