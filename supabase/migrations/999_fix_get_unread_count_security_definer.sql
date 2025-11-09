@@ -6,6 +6,9 @@
 -- Issue: RLS policy on conversation_participants causes infinite loop when called with SECURITY INVOKER
 -- Solution: Change to SECURITY DEFINER so function runs with creator's permissions (bypasses RLS)
 
+-- Drop existing function first (it may have a different return type)
+DROP FUNCTION IF EXISTS get_unread_count(UUID);
+
 CREATE OR REPLACE FUNCTION get_unread_count(target_user_id UUID)
 RETURNS INTEGER
 LANGUAGE plpgsql
