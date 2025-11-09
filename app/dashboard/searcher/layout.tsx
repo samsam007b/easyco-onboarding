@@ -54,7 +54,7 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
 
       // Get unread messages count using database function
       const { data: unreadData, error: unreadError } = await supabase
-        .rpc('get_unread_count', { user_uuid: user.id });
+        .rpc('get_unread_count', { target_user_id: user.id });
 
       if (unreadError) {
         logger.supabaseError('get unread count', unreadError, { userId: user.id });
