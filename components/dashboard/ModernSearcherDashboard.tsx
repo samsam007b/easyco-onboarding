@@ -185,12 +185,20 @@ export default function ModernSearcherDashboard() {
                   <label className="block text-xs font-semibold text-gray-900 mb-1">
                     Où ?
                   </label>
-                  <GooglePlacesAutocomplete
+                  {/* TEMPORARILY DISABLED: Testing if Google Maps conflict causes crash */}
+                  <input
+                    type="text"
+                    placeholder="Ville, quartier..."
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    className="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
+                  />
+                  {/* <GooglePlacesAutocomplete
                     onPlaceSelect={handlePlaceSelect}
                     placeholder="Ville, quartier..."
                     iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
                     inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
-                  />
+                  /> */}
                 </div>
 
                 {/* Budget Input */}
