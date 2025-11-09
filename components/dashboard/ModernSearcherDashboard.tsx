@@ -8,7 +8,8 @@ import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home,
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
+// TEMPORARILY DISABLED: GooglePlacesAutocomplete causes crash in production
+// import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 
