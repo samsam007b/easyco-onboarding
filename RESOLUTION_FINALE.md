@@ -97,7 +97,7 @@ Si le champ de recherche de ville ne fonctionne toujours pas:
 1. Vercel Dashboard → Settings → Environment Variables
 2. Add New Variable:
    - Name: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-   - Value: AIzaSyDMfdC_TfviPX6fx5mQs09s-N7zstSQMVc
+   - Value: [VOTRE CLÉ GOOGLE MAPS API]
    - Environments: Cocher Production, Preview, Development
 3. Save
 4. Redéployer (Deployments → ... → Redeploy)
