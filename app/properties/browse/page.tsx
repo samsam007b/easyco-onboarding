@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Star, Info, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Star, Info, Sparkles, TrendingUp, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 // import PropertyMap from '@/components/PropertyMap';
 import { useLanguage } from '@/lib/i18n/use-language';
