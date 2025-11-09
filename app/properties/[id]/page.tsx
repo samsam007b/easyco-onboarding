@@ -17,7 +17,7 @@ import type { RoomWithTotal, PropertyCosts, PropertyLifestyleMetrics, ResidentPr
 import { toast } from 'sonner';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
-import SinglePropertyMap from '@/components/SinglePropertyMap';
+// import SinglePropertyMap from '@/components/SinglePropertyMap';
 import VirtualTourViewer from '@/components/VirtualTourViewer';
 import LifestyleCompatibilitySliders from '@/components/LifestyleCompatibilitySliders';
 import ResidentProfileCard from '@/components/ResidentProfileCard';

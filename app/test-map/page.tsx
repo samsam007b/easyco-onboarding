@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import SinglePropertyMap from '@/components/SinglePropertyMap';
+// import SinglePropertyMap from '@/components/SinglePropertyMap';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function TestMapPage() {
