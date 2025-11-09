@@ -5495,6 +5495,68 @@ export const translations = {
         nl: 'Zoeker Dashboard',
         de: 'Suchenden-Dashboard',
       },
+      header: {
+        browse: {
+          fr: 'Explorer',
+          en: 'Browse',
+          nl: 'Verkennen',
+          de: 'Durchsuchen',
+        },
+        favorites: {
+          fr: 'Favoris',
+          en: 'Favorites',
+          nl: 'Favorieten',
+          de: 'Favoriten',
+        },
+        matches: {
+          fr: 'Matchs',
+          en: 'Matches',
+          nl: 'Matches',
+          de: 'Matches',
+        },
+        visits: {
+          fr: 'Visites',
+          en: 'Visits',
+          nl: 'Bezoeken',
+          de: 'Besuche',
+        },
+        applications: {
+          fr: 'Candidatures',
+          en: 'Applications',
+          nl: 'Aanvragen',
+          de: 'Bewerbungen',
+        },
+        groups: {
+          fr: 'Groupes',
+          en: 'Groups',
+          nl: 'Groepen',
+          de: 'Gruppen',
+        },
+        messages: {
+          fr: 'Messages',
+          en: 'Messages',
+          nl: 'Berichten',
+          de: 'Nachrichten',
+        },
+        profile: {
+          fr: 'Profil',
+          en: 'Profile',
+          nl: 'Profiel',
+          de: 'Profil',
+        },
+        settings: {
+          fr: 'Paramètres',
+          en: 'Settings',
+          nl: 'Instellingen',
+          de: 'Einstellungen',
+        },
+        logout: {
+          fr: 'Déconnexion',
+          en: 'Logout',
+          nl: 'Uitloggen',
+          de: 'Abmelden',
+        },
+      },
       welcome: {
         fr: 'Bienvenue,',
         en: 'Welcome back,',

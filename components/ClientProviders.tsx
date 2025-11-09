@@ -7,10 +7,7 @@ import { MessagesProvider } from '@/contexts/MessagesContext';
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { APIProvider } from '@vis.gl/react-google-maps';
 import { useState } from 'react';
-
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   // Create React Query client with optimized settings
@@ -26,22 +23,20 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
   }));
 
   return (
-    <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
-      <QueryClientProvider client={queryClient}>
-        <LanguageProvider>
-          <RoleProvider>
-            <NotificationProvider>
-              <MessagesProvider>
-                <PaymentProvider>
-                  <FavoritesProvider>
-                    {children}
-                  </FavoritesProvider>
-                </PaymentProvider>
-              </MessagesProvider>
-            </NotificationProvider>
-          </RoleProvider>
-        </LanguageProvider>
-      </QueryClientProvider>
-    </APIProvider>
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <RoleProvider>
+          <NotificationProvider>
+            <MessagesProvider>
+              <PaymentProvider>
+                <FavoritesProvider>
+                  {children}
+                </FavoritesProvider>
+              </PaymentProvider>
+            </MessagesProvider>
+          </NotificationProvider>
+        </RoleProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
   );
 }
