@@ -31,21 +31,34 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
       }
 
       // Get favorites count
-      const { count: favCount } = await supabase
+      const { count: favCount, error: favError } = await supabase
         .from('favorites')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id);
 
-      // Get matches count from user_matching_scores (70%+ compatibility)
-      const { count: matchCount } = await supabase
-        .from('user_matching_scores')
+      if (favError) {
+        logger.supabaseError('load favorites count', favError, { userId: user.id });
+      }
+
+      // Get matches count from user_matches (70%+ compatibility)
+      const { count: matchCount, error: matchError } = await supabase
+        .from('user_matches')
         .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .gte('compatibility_score', 70);
+        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
+        .gte('compatibility_score', 70)
+        .eq('is_active', true);
+
+      if (matchError) {
+        logger.supabaseError('load matches count', matchError, { userId: user.id });
+      }
 
       // Get unread messages count using database function
-      const { data: unreadData } = await supabase
+      const { data: unreadData, error: unreadError } = await supabase
         .rpc('get_unread_count', { user_uuid: user.id });
+
+      if (unreadError) {
+        logger.supabaseError('get unread count', unreadError, { userId: user.id });
+      }
 
       const unreadCount = unreadData || 0;
 

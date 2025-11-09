@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MapPin } from 'lucide-react';
+import { useGoogleMaps } from '@/lib/hooks/use-google-maps';
 
 interface GooglePlacesAutocompleteProps {
   onPlaceSelect?: (place: google.maps.places.PlaceResult) => void;
@@ -22,50 +23,50 @@ export default function GooglePlacesAutocomplete({
 }: GooglePlacesAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { loaded, google: googleMaps, error } = useGoogleMaps();
 
   useEffect(() => {
-    // Load Google Maps script
-    const loadGoogleMapsScript = () => {
-      if (typeof window !== 'undefined' && !window.google) {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
-        script.async = true;
-        script.defer = true;
-        script.onload = () => setIsLoaded(true);
-        document.head.appendChild(script);
-      } else if (window.google) {
-        setIsLoaded(true);
-      }
-    };
+    // Wait for Google Maps to load
+    if (!loaded || !inputRef.current || !googleMaps) return;
 
-    loadGoogleMapsScript();
-  }, []);
+    // Verify that Places API is available
+    if (!googleMaps.maps?.places?.Autocomplete) {
+      console.error('Google Maps Places API not available');
+      return;
+    }
 
-  useEffect(() => {
-    if (!isLoaded || !inputRef.current) return;
+    try {
+      // Initialize Google Places Autocomplete
+      autocompleteRef.current = new googleMaps.maps.places.Autocomplete(inputRef.current, {
+        types: ['(cities)'],
+        componentRestrictions: { country: ['be', 'fr', 'nl', 'de'] }, // Belgium, France, Netherlands, Germany
+        fields: ['address_components', 'formatted_address', 'geometry', 'name', 'place_id']
+      });
 
-    // Initialize Google Places Autocomplete
-    autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
-      types: ['(cities)'],
-      componentRestrictions: { country: ['be', 'fr', 'nl', 'de'] }, // Belgium, France, Netherlands, Germany
-      fields: ['address_components', 'formatted_address', 'geometry', 'name', 'place_id']
-    });
+      // Listen for place selection
+      const listener = autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (place && onPlaceSelect) {
+          onPlaceSelect(place);
+        }
+      });
 
-    // Listen for place selection
-    const listener = autocompleteRef.current.addListener('place_changed', () => {
-      const place = autocompleteRef.current?.getPlace();
-      if (place && onPlaceSelect) {
-        onPlaceSelect(place);
-      }
-    });
+      return () => {
+        if (listener && googleMaps.maps?.event) {
+          googleMaps.maps.event.removeListener(listener);
+        }
+      };
+    } catch (err) {
+      console.error('Error initializing Google Places Autocomplete:', err);
+    }
+  }, [loaded, googleMaps, onPlaceSelect]);
 
-    return () => {
-      if (listener) {
-        google.maps.event.removeListener(listener);
-      }
-    };
-  }, [isLoaded, onPlaceSelect]);
+  // Determine placeholder text based on loading state
+  const getPlaceholder = () => {
+    if (error) return 'Erreur de chargement';
+    if (!loaded) return 'Chargement...';
+    return placeholder;
+  };
 
   return (
     <div className={className}>
@@ -74,9 +75,11 @@ export default function GooglePlacesAutocomplete({
         <input
           ref={inputRef}
           type="text"
-          placeholder={placeholder}
+          placeholder={getPlaceholder()}
           defaultValue={defaultValue}
           className={inputClassName}
+          disabled={!loaded || !!error}
+          title={error || undefined}
         />
       </div>
     </div>
