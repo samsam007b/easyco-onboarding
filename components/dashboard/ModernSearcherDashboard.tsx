@@ -8,8 +8,7 @@ import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home,
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-// TEMPORARILY DISABLED: GooglePlacesAutocomplete causes crash in production
-// import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
+import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 
@@ -186,20 +185,12 @@ export default function ModernSearcherDashboard() {
                   <label className="block text-xs font-semibold text-gray-900 mb-1">
                     Où ?
                   </label>
-                  {/* TEMPORARILY DISABLED: Testing if Google Maps conflict causes crash */}
-                  <input
-                    type="text"
-                    placeholder="Ville, quartier..."
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
-                  />
-                  {/* <GooglePlacesAutocomplete
+                  <SafeGooglePlacesAutocomplete
                     onPlaceSelect={handlePlaceSelect}
                     placeholder="Ville, quartier..."
                     iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
                     inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
-                  /> */}
+                  />
                 </div>
 
                 {/* Budget Input */}

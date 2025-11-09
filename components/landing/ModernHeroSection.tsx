@@ -5,7 +5,7 @@ import { Search, Home, MapPin, Euro, Calendar, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
+import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 
@@ -136,7 +136,7 @@ export default function ModernHeroSection() {
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Où ?
                 </label>
-                <GooglePlacesAutocomplete
+                <SafeGooglePlacesAutocomplete
                   onPlaceSelect={handlePlaceSelect}
                   placeholder="Ville, quartier..."
                   iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"

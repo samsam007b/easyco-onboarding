@@ -13,14 +13,14 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Star, Info, Sparkles, TrendingUp, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
-// import PropertyMap from '@/components/PropertyMap';
+import SafePropertyMap from '@/components/SafePropertyMap';
 import { useLanguage } from '@/lib/i18n/use-language';
 import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import PropertyCard from '@/components/PropertyCard';
 import PublicSearchBar from '@/components/PublicSearchBar';
 import { PropertyCardsGridSkeleton } from '@/components/PropertyCardSkeleton';
-import GooglePlacesAutocomplete from '@/components/ui/google-places-autocomplete';
+import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 import { useQuery } from '@tanstack/react-query';
@@ -765,7 +765,7 @@ export default function PropertiesBrowsePageV2() {
                             <label className="block text-xs font-semibold text-gray-900 mb-1">
                               Où ?
                             </label>
-                            <GooglePlacesAutocomplete
+                            <SafeGooglePlacesAutocomplete
                               onPlaceSelect={handlePlaceSelect}
                               placeholder="Ville, quartier..."
                               iconClassName="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors"
@@ -918,20 +918,12 @@ export default function PropertiesBrowsePageV2() {
               </div>
             ) : viewMode === 'map' ? (
               <div className="mb-8">
-                {/* TEMPORARILY DISABLED: PropertyMap causes build issues */}
-                <div className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <MapPin className="w-16 h-16 text-orange-400 mx-auto mb-4" />
-                    <p className="text-gray-600 font-medium mb-2">Carte temporairement indisponible</p>
-                    <p className="text-sm text-gray-500">La vue carte sera réactivée prochainement</p>
-                  </div>
-                </div>
-                {/* <PropertyMap
+                <SafePropertyMap
                   properties={propertiesWithScores}
-                  selectedPropertyId={selectedPropertyId}
-                  onPropertySelect={setSelectedPropertyId}
+                  selectedPropertyId={selectedPropertyId || null}
+                  onPropertySelect={(id) => setSelectedPropertyId(id || undefined)}
                   className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg"
-                /> */}
+                />
               </div>
             ) : (
               // People Mode - Find co-searchers to form groups

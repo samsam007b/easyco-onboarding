@@ -32,6 +32,7 @@
     "@upstash/ratelimit": "^2.0.6",
     "@upstash/redis": "^1.35.6",
     "@use-gesture/react": "^10.3.1",
+    "@vis.gl/react-google-maps": "^1.7.1",
     "cldr-core": "^47.0.0",
     "cldr-localenames-full": "^47.0.0",
     "cldrjs": "^0.5.5",

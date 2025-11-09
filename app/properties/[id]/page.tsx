@@ -17,7 +17,7 @@ import type { RoomWithTotal, PropertyCosts, PropertyLifestyleMetrics, ResidentPr
 import { toast } from 'sonner';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
-// import SinglePropertyMap from '@/components/SinglePropertyMap';
+import SafeSinglePropertyMap from '@/components/SafeSinglePropertyMap';
 import VirtualTourViewer from '@/components/VirtualTourViewer';
 import LifestyleCompatibilitySliders from '@/components/LifestyleCompatibilitySliders';
 import ResidentProfileCard from '@/components/ResidentProfileCard';
@@ -532,23 +532,13 @@ export default function PropertyDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0">
-                    {/* TEMPORARILY DISABLED: SinglePropertyMap causes build issues */}
-                    <div className="w-full h-[400px] rounded-b-2xl overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <MapPin className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-                        <p className="text-gray-600 font-medium mb-2">Carte temporairement indisponible</p>
-                        <p className="text-sm text-gray-500">
-                          {property.address}, {property.city} {property.postal_code}
-                        </p>
-                      </div>
-                    </div>
-                    {/* <SinglePropertyMap
+                    <SafeSinglePropertyMap
                       latitude={property.latitude}
                       longitude={property.longitude}
                       title={property.title}
-                      address={`${property.address}, ${property.city} ${property.postal_code}`}
+                      address={`${property.address}, {property.city} ${property.postal_code}`}
                       className="w-full h-[400px] rounded-b-2xl overflow-hidden"
-                    /> */}
+                    />
                   </CardContent>
                 </Card>
               )}
