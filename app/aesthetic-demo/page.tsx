@@ -3,7 +3,12 @@
  * Navigate to /aesthetic-demo to see it in action
  */
 
+'use client';
+
 import { AestheticRoomSearch } from '@/components/listings/AestheticRoomSearch';
+
+// Force dynamic rendering to prevent SSG timeout
+export const dynamic = 'force-dynamic';
 
 export default function AestheticDemoPage() {
   return (
