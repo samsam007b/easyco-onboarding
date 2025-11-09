@@ -30,26 +30,40 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
         setProfile(userData);
       }
 
-      // Get favorites count
-      const { count: favCount, error: favError } = await supabase
-        .from('favorites')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id);
+      // Get favorites count - SAFE: Never crash even if table doesn't exist
+      let favCount = 0;
+      try {
+        const result = await supabase
+          .from('favorites')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id);
 
-      if (favError) {
-        logger.supabaseError('load favorites count', favError, { userId: user.id });
+        if (result.error) {
+          logger.supabaseError('load favorites count', result.error, { userId: user.id });
+        } else {
+          favCount = result.count || 0;
+        }
+      } catch (err) {
+        console.error('Favorites count failed:', err);
       }
 
-      // Get matches count from user_matches (70%+ compatibility)
-      const { count: matchCount, error: matchError } = await supabase
-        .from('user_matches')
-        .select('*', { count: 'exact', head: true })
-        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
-        .gte('compatibility_score', 70)
-        .eq('is_active', true);
+      // Get matches count - SAFE: Never crash even if table doesn't exist
+      let matchCount = 0;
+      try {
+        const result = await supabase
+          .from('user_matches')
+          .select('*', { count: 'exact', head: true })
+          .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
+          .gte('compatibility_score', 70)
+          .eq('is_active', true);
 
-      if (matchError) {
-        logger.supabaseError('load matches count', matchError, { userId: user.id });
+        if (result.error) {
+          logger.supabaseError('load matches count', result.error, { userId: user.id });
+        } else {
+          matchCount = result.count || 0;
+        }
+      } catch (err) {
+        console.error('Matches count failed:', err);
       }
 
       // Get unread messages count using database function
