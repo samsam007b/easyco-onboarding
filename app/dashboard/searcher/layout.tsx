@@ -53,14 +53,17 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
       }
 
       // Get unread messages count using database function
-      const { data: unreadData, error: unreadError } = await supabase
-        .rpc('get_unread_count', { target_user_id: user.id });
+      // TEMPORARILY DISABLED: RLS infinite recursion error on conversation_participants
+      // See PRODUCTION_ISSUE_ANALYSIS.md for details
+      // const { data: unreadData, error: unreadError } = await supabase
+      //   .rpc('get_unread_count', { target_user_id: user.id });
 
-      if (unreadError) {
-        logger.supabaseError('get unread count', unreadError, { userId: user.id });
-      }
+      // if (unreadError) {
+      //   logger.supabaseError('get unread count', unreadError, { userId: user.id });
+      // }
 
-      const unreadCount = unreadData || 0;
+      // const unreadCount = unreadData || 0;
+      const unreadCount = 0; // TEMPORARY: Set to 0 until RLS policy is fixed
 
       setStats({
         favoritesCount: favCount || 0,
