@@ -918,12 +918,20 @@ export default function PropertiesBrowsePageV2() {
               </div>
             ) : viewMode === 'map' ? (
               <div className="mb-8">
-                <PropertyMap
+                {/* TEMPORARILY DISABLED: PropertyMap causes build issues */}
+                <div className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <MapPin className="w-16 h-16 text-orange-400 mx-auto mb-4" />
+                    <p className="text-gray-600 font-medium mb-2">Carte temporairement indisponible</p>
+                    <p className="text-sm text-gray-500">La vue carte sera réactivée prochainement</p>
+                  </div>
+                </div>
+                {/* <PropertyMap
                   properties={propertiesWithScores}
                   selectedPropertyId={selectedPropertyId}
                   onPropertySelect={setSelectedPropertyId}
                   className="w-full h-[700px] rounded-2xl overflow-hidden shadow-lg"
-                />
+                /> */}
               </div>
             ) : (
               // People Mode - Find co-searchers to form groups

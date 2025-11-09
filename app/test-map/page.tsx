@@ -44,13 +44,22 @@ export default function TestMapPage() {
           <CardTitle>Test Map</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <SinglePropertyMap
+          {/* TEMPORARILY DISABLED: SinglePropertyMap causes build issues */}
+          <div className="w-full h-[500px] rounded-b-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+            <div className="text-center p-8">
+              <p className="text-gray-600 font-medium mb-2">Carte temporairement indisponible</p>
+              <p className="text-sm text-gray-500">Test Location - Brussels Center</p>
+              <p className="text-sm text-gray-500">Grand Place, 1000 Bruxelles</p>
+              <p className="text-xs text-gray-400 mt-4">Coordinates: 50.8503, 4.3517</p>
+            </div>
+          </div>
+          {/* <SinglePropertyMap
             latitude={50.8503}
             longitude={4.3517}
             title="Test Location - Brussels Center"
             address="Grand Place, 1000 Bruxelles"
             className="w-full h-[500px] rounded-b-2xl overflow-hidden"
-          />
+          /> */}
         </CardContent>
       </Card>
 

@@ -532,13 +532,23 @@ export default function PropertyDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0">
-                    <SinglePropertyMap
+                    {/* TEMPORARILY DISABLED: SinglePropertyMap causes build issues */}
+                    <div className="w-full h-[400px] rounded-b-2xl overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <MapPin className="w-12 h-12 text-orange-400 mx-auto mb-4" />
+                        <p className="text-gray-600 font-medium mb-2">Carte temporairement indisponible</p>
+                        <p className="text-sm text-gray-500">
+                          {property.address}, {property.city} {property.postal_code}
+                        </p>
+                      </div>
+                    </div>
+                    {/* <SinglePropertyMap
                       latitude={property.latitude}
                       longitude={property.longitude}
                       title={property.title}
                       address={`${property.address}, ${property.city} ${property.postal_code}`}
                       className="w-full h-[400px] rounded-b-2xl overflow-hidden"
-                    />
+                    /> */}
                   </CardContent>
                 </Card>
               )}
