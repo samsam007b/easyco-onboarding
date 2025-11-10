@@ -58,13 +58,6 @@ const nextConfig = {
       'recharts',
       'date-fns',
     ],
-    // Optimiser les fonts
-    optimizeFonts: true,
-    // Réduire les logs de build
-    logging: {
-      level: 'error',
-      fullUrl: false,
-    },
   },
 
   // ============================================================================
@@ -168,13 +161,30 @@ const nextConfig = {
     // Alias pour imports simplifiés
     config.resolve.alias['@'] = path.resolve(__dirname)
 
+    // Fix for Google Maps API and browser-only libraries in SSR build
+    if (isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      }
+
+      // Provide polyfill for 'self' in server-side build
+      config.plugins = config.plugins || []
+      config.plugins.push(
+        new config.webpack.DefinePlugin({
+          self: 'undefined',
+        })
+      )
+    }
+
     // Optimisations de production
     if (!dev) {
       // Tree shaking agressif
       config.optimization = {
         ...config.optimization,
         usedExports: true,
-        sideEffects: false,
         // Meilleure compression des modules
         moduleIds: 'deterministic',
         // Split chunks optimisé
