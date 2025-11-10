@@ -169,58 +169,16 @@ const nextConfig = {
         net: false,
         tls: false,
       }
-
-      // Provide polyfill for 'self' in server-side build
-      config.plugins = config.plugins || []
-      config.plugins.push(
-        new webpack.DefinePlugin({
-          self: 'undefined',
-        })
-      )
     }
 
     // Optimisations de production
-    if (!dev) {
-      // Tree shaking agressif
+    if (!dev && !isServer) {
+      // Tree shaking agressif (client-side uniquement)
       config.optimization = {
         ...config.optimization,
         usedExports: true,
         // Meilleure compression des modules
         moduleIds: 'deterministic',
-        // Split chunks optimisé
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            // Vendor chunk pour les grosses libs
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name(module) {
-                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)?.[1]
-                return `vendor.${packageName?.replace('@', '')}`
-              },
-              priority: 10,
-              reuseExistingChunk: true,
-            },
-            // Chunk séparé pour Radix UI
-            radix: {
-              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-              name: 'radix-ui',
-              priority: 20,
-            },
-            // Chunk séparé pour React Query
-            reactQuery: {
-              test: /[\\/]node_modules[\\/]@tanstack[\\/]react-query[\\/]/,
-              name: 'react-query',
-              priority: 20,
-            },
-            // Chunk séparé pour Supabase
-            supabase: {
-              test: /[\\/]node_modules[\\/]@supabase[\\/]/,
-              name: 'supabase',
-              priority: 20,
-            },
-          },
-        },
       }
     }
 
