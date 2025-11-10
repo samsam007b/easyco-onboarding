@@ -169,6 +169,15 @@ const nextConfig = {
         net: false,
         tls: false,
       }
+
+      // Add banner to inject 'self' polyfill at the top of server bundle
+      config.plugins.push(
+        new webpack.BannerPlugin({
+          banner: 'if (typeof self === "undefined") { globalThis.self = globalThis; }',
+          raw: true,
+          entryOnly: false
+        })
+      )
     }
 
     // Optimisations de production
