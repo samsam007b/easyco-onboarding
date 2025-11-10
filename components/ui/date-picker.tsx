@@ -163,8 +163,9 @@ export default function DatePicker({
     return days;
   };
 
-  const calendarContent = isOpen ? (
+  const calendarContent = (
     <motion.div
+      key="date-picker"
       initial={{ opacity: 0, y: -10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -219,7 +220,7 @@ export default function DatePicker({
         Flexible
       </button>
     </motion.div>
-  ) : null;
+  );
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
@@ -237,10 +238,11 @@ export default function DatePicker({
         />
       </div>
 
-      {mounted && (
+      {mounted && createPortal(
         <AnimatePresence>
-          {calendarContent && createPortal(calendarContent, document.body)}
-        </AnimatePresence>
+          {isOpen && calendarContent}
+        </AnimatePresence>,
+        document.body
       )}
     </div>
   );

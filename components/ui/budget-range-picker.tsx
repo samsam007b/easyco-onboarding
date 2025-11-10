@@ -106,8 +106,9 @@ export default function BudgetRangePicker({
     return ((maxValue - minBudget) / (maxBudget - minBudget)) * 100;
   };
 
-  const popupContent = isOpen ? (
+  const popupContent = (
     <motion.div
+      key="budget-picker"
       initial={{ opacity: 0, y: -10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -213,7 +214,7 @@ export default function BudgetRangePicker({
         </button>
       </div>
     </motion.div>
-  ) : null;
+  );
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
@@ -231,10 +232,11 @@ export default function BudgetRangePicker({
         />
       </div>
 
-      {mounted && (
+      {mounted && createPortal(
         <AnimatePresence>
-          {popupContent && createPortal(popupContent, document.body)}
-        </AnimatePresence>
+          {isOpen && popupContent}
+        </AnimatePresence>,
+        document.body
       )}
     </div>
   );
