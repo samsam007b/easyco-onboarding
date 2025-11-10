@@ -11,28 +11,21 @@ DROP FUNCTION IF EXISTS get_unread_count(UUID);
 
 CREATE OR REPLACE FUNCTION get_unread_count(target_user_id UUID)
 RETURNS INTEGER
-LANGUAGE plpgsql
+LANGUAGE sql
 SECURITY DEFINER  -- Run with creator's permissions, not caller's (bypasses RLS)
 SET search_path = public  -- Security: Explicitly set search path
 AS $$
-DECLARE
-  unread_count INTEGER;
-BEGIN
   -- Count unread messages where:
   -- 1. User is a participant in the conversation
   -- 2. Message was sent by someone else
-  -- 3. Message has not been read
-  SELECT COUNT(DISTINCT m.id)
-  INTO unread_count
+  -- 3. Message created after user's last_read_at timestamp
+  SELECT COUNT(*)::INTEGER
   FROM messages m
   INNER JOIN conversation_participants cp
     ON cp.conversation_id = m.conversation_id
   WHERE cp.user_id = target_user_id
     AND m.sender_id != target_user_id
-    AND m.read = false;
-
-  RETURN COALESCE(unread_count, 0);
-END;
+    AND m.created_at > cp.last_read_at;
 $$;
 
 -- Grant execute permission to authenticated users

@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { PropertyRoom, RoomWithTotal } from '@/types/room.types';
 import { PropertyRoomAesthetics } from '@/types/room-aesthetics.types';
 import { Badge } from '@/components/ui/badge';
-import { Check, Bed, Maximize, Calendar, BathIcon } from 'lucide-react';
+import { Check, Bed, Maximize, Calendar, BathIcon, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import RoomAesthetics from './RoomAestheticsDropdown';
+import RoomDetailsModal from './RoomDetailsModal';
 
 interface RoomWithAesthetics extends RoomWithTotal {
   aesthetics?: PropertyRoomAesthetics;
@@ -26,6 +27,7 @@ export default function RoomPricingSelector({
   showFeatures = true
 }: RoomPricingSelectorProps) {
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [selectedRoomForModal, setSelectedRoomForModal] = useState<RoomWithAesthetics | null>(null);
 
   // Find cheapest and soonest available rooms
   const cheapestRoom = rooms.reduce((min, room) =>
@@ -162,8 +164,20 @@ export default function RoomPricingSelector({
               </div>
             </button>
 
-            {/* Aesthetics Dropdown */}
-            {room.aesthetics && (
+            {/* View Details Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedRoomForModal(room);
+              }}
+              className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
+            >
+              <Eye className="w-4 h-4" />
+              <span className="text-sm font-medium">Voir tous les détails</span>
+            </button>
+
+            {/* Aesthetics Dropdown (kept for backward compatibility) */}
+            {room.aesthetics && false && (
               <RoomAesthetics
                 aesthetics={room.aesthetics}
                 isOpen={isDropdownOpen}
@@ -173,6 +187,25 @@ export default function RoomPricingSelector({
           </div>
         );
       })}
+
+      {/* Room Details Modal */}
+      {selectedRoomForModal && (
+        <RoomDetailsModal
+          isOpen={!!selectedRoomForModal}
+          onClose={() => setSelectedRoomForModal(null)}
+          room={{
+            id: selectedRoomForModal.id,
+            name: selectedRoomForModal.room_name || `Chambre ${selectedRoomForModal.room_number}`,
+            size: selectedRoomForModal.size_sqm || 0,
+            price: selectedRoomForModal.price,
+            has_private_bathroom: selectedRoomForModal.has_private_bathroom || false,
+            has_balcony: selectedRoomForModal.has_balcony || false,
+            floor_level: selectedRoomForModal.floor_number,
+            available_from: selectedRoomForModal.available_from || new Date().toISOString(),
+            aesthetics: selectedRoomForModal.aesthetics,
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -1,0 +1,335 @@
+'use client';
+
+import { X, Sun, Thermometer, Palette, Heart, Bed, Wind, Volume2, Sparkles, Home, Maximize } from 'lucide-react';
+import {
+  PropertyRoomAesthetics,
+  DESIGN_STYLE_LABELS,
+  HEATING_TYPE_LABELS,
+  FURNITURE_STYLE_LABELS,
+  ROOM_ATMOSPHERE_LABELS,
+  SUN_EXPOSURE_LABELS,
+  getRatingLabel,
+  getDesignStyleIcon,
+} from '@/types/room-aesthetics.types';
+
+interface RoomDetailsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  room: {
+    id: string;
+    name: string;
+    size: number;
+    price: number;
+    has_private_bathroom: boolean;
+    has_balcony: boolean;
+    floor_level?: number;
+    available_from: string;
+    aesthetics?: PropertyRoomAesthetics;
+  };
+}
+
+export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsModalProps) {
+  if (!isOpen) return null;
+
+  const aesthetics = room.aesthetics;
+
+  // Helper function to render rating bars
+  const renderRating = (rating: number, label: string) => (
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-gray-600">{label}</span>
+      <div className="flex items-center gap-2">
+        <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full transition-all"
+            style={{ width: `${(rating / 10) * 100}%` }}
+          />
+        </div>
+        <span className="text-sm font-medium text-orange-600 w-8">{rating}/10</span>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div
+          className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{room.name}</h2>
+              <p className="text-sm text-gray-500 mt-1">
+                {room.size}m² · {room.price}€/mois
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 space-y-6">
+            {/* Basic Info Section */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-xl">
+                <Maximize className="w-5 h-5 text-orange-600" />
+                <div>
+                  <p className="text-xs text-gray-600">Surface</p>
+                  <p className="font-semibold text-gray-900">{room.size} m²</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
+                <Home className="w-5 h-5 text-blue-600" />
+                <div>
+                  <p className="text-xs text-gray-600">Étage</p>
+                  <p className="font-semibold text-gray-900">
+                    {room.floor_level ? `${room.floor_level}e` : 'Non spécifié'}
+                  </p>
+                </div>
+              </div>
+
+              {room.has_balcony && (
+                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl">
+                  <Sparkles className="w-5 h-5 text-green-600" />
+                  <div>
+                    <p className="text-xs text-gray-600">Extras</p>
+                    <p className="font-semibold text-gray-900">Balcon</p>
+                  </div>
+                </div>
+              )}
+
+              {room.has_private_bathroom && (
+                <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-xl">
+                  <Sparkles className="w-5 h-5 text-purple-600" />
+                  <div>
+                    <p className="text-xs text-gray-600">Salle de bain</p>
+                    <p className="font-semibold text-gray-900">Privée</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Aesthetics Section */}
+            {aesthetics && (
+              <>
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-orange-600" />
+                    Ambiance & Confort
+                  </h3>
+
+                  <div className="space-y-4">
+                    {/* Natural Light */}
+                    {aesthetics.natural_light_rating && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Sun className="w-4 h-4 text-yellow-600" />
+                          <span className="text-sm font-medium text-gray-900">Lumière naturelle</span>
+                        </div>
+                        {renderRating(aesthetics.natural_light_rating, 'Luminosité')}
+                        {aesthetics.sun_exposure && (
+                          <p className="text-sm text-gray-600 ml-6">
+                            Exposition: {SUN_EXPOSURE_LABELS[aesthetics.sun_exposure]}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Heating */}
+                    {aesthetics.heating_type && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Thermometer className="w-4 h-4 text-red-600" />
+                          <span className="text-sm font-medium text-gray-900">Chauffage</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6">
+                          Type: {HEATING_TYPE_LABELS[aesthetics.heating_type]}
+                        </p>
+                        {aesthetics.heating_quality_rating && (
+                          renderRating(aesthetics.heating_quality_rating, 'Qualité')
+                        )}
+                      </div>
+                    )}
+
+                    {/* Design Style */}
+                    {aesthetics.design_style && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Palette className="w-4 h-4 text-purple-600" />
+                          <span className="text-sm font-medium text-gray-900">Style design</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6">
+                          {DESIGN_STYLE_LABELS[aesthetics.design_style]}
+                        </p>
+                        {aesthetics.color_palette && (
+                          <p className="text-sm text-gray-500 ml-6">
+                            Palette: {aesthetics.color_palette}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Room Atmosphere */}
+                    {aesthetics.room_atmosphere && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Heart className="w-4 h-4 text-pink-600" />
+                          <span className="text-sm font-medium text-gray-900">Atmosphère</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6">
+                          {ROOM_ATMOSPHERE_LABELS[aesthetics.room_atmosphere]}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Furniture */}
+                    {aesthetics.furniture_style && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Bed className="w-4 h-4 text-indigo-600" />
+                          <span className="text-sm font-medium text-gray-900">Mobilier</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6">
+                          Style: {FURNITURE_STYLE_LABELS[aesthetics.furniture_style]}
+                        </p>
+                        {aesthetics.furniture_condition && (
+                          <p className="text-sm text-gray-600 ml-6">
+                            Condition: {aesthetics.furniture_condition === 'new' ? 'Neuf' :
+                                       aesthetics.furniture_condition === 'excellent' ? 'Excellent' :
+                                       aesthetics.furniture_condition === 'good' ? 'Bon' :
+                                       aesthetics.furniture_condition === 'fair' ? 'Correct' : 'À remplacer'}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Air Quality */}
+                    {aesthetics.air_quality_rating && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Wind className="w-4 h-4 text-cyan-600" />
+                          <span className="text-sm font-medium text-gray-900">Qualité de l'air</span>
+                        </div>
+                        {renderRating(aesthetics.air_quality_rating, 'Qualité')}
+                      </div>
+                    )}
+
+                    {/* Noise Insulation */}
+                    {aesthetics.noise_insulation_rating && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Volume2 className="w-4 h-4 text-gray-600" />
+                          <span className="text-sm font-medium text-gray-900">Isolation phonique</span>
+                        </div>
+                        {renderRating(aesthetics.noise_insulation_rating, 'Isolation')}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Special Features */}
+                {(aesthetics.has_plants ||
+                  aesthetics.has_artwork ||
+                  aesthetics.has_mood_lighting ||
+                  aesthetics.has_smart_home_features) && (
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Caractéristiques spéciales
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {aesthetics.has_plants && (
+                        <span className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                          🌿 Plantes
+                        </span>
+                      )}
+                      {aesthetics.has_artwork && (
+                        <span className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                          🎨 Artwork
+                        </span>
+                      )}
+                      {aesthetics.has_mood_lighting && (
+                        <span className="px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
+                          💡 Éclairage d'ambiance
+                        </span>
+                      )}
+                      {aesthetics.has_smart_home_features && (
+                        <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                          🏠 Smart Home
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Additional Info */}
+                {(aesthetics.flooring_type || aesthetics.ceiling_height_cm) && (
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Informations complémentaires
+                    </h3>
+                    <div className="space-y-2">
+                      {aesthetics.flooring_type && (
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Sol:</span> {aesthetics.flooring_type}
+                        </p>
+                      )}
+                      {aesthetics.ceiling_height_cm && (
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Hauteur sous plafond:</span>{' '}
+                          {(aesthetics.ceiling_height_cm / 100).toFixed(2)}m
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* No Aesthetics Message */}
+            {!aesthetics && (
+              <div className="text-center py-8">
+                <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500">
+                  Les détails d'ambiance de cette chambre ne sont pas encore disponibles
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 rounded-b-2xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Disponible à partir du</p>
+                <p className="font-semibold text-gray-900">
+                  {new Date(room.available_from).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Prix mensuel</p>
+                <p className="text-2xl font-bold text-orange-600">{room.price}€</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
