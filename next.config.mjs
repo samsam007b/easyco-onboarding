@@ -157,7 +157,7 @@ const nextConfig = {
   // CONFIGURATION WEBPACK
   // ============================================================================
 
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { dev, isServer, webpack }) => {
     // Alias pour imports simplifiés
     config.resolve.alias['@'] = path.resolve(__dirname)
 
@@ -173,7 +173,7 @@ const nextConfig = {
       // Provide polyfill for 'self' in server-side build
       config.plugins = config.plugins || []
       config.plugins.push(
-        new config.webpack.DefinePlugin({
+        new webpack.DefinePlugin({
           self: 'undefined',
         })
       )
