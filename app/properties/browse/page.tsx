@@ -38,21 +38,15 @@ import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters
 import { PropertySwipeCard } from '@/components/matching/PropertySwipeCard';
 import { SwipeCard } from '@/components/matching/SwipeCard';
 import { useUserMatching } from '@/lib/hooks/use-user-matching';
-import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+
+// Note: framer-motion doit être importé normalement car utilisé dans les hooks useExitIntent/useScrollTracker
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Lazy load heavy components
 const SafePropertyMap = dynamic(() => import('@/components/SafePropertyMap'), {
   ssr: false,
   loading: () => <div className="h-full w-full bg-gray-100 animate-pulse rounded-lg" />
-});
-
-const AnimatePresence = dynamic(() => import('framer-motion').then(mod => ({ default: mod.AnimatePresence })), {
-  ssr: false
-});
-
-const motion = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion })) as any, {
-  ssr: false
 });
 
 interface Property {
