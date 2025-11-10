@@ -84,15 +84,19 @@ export default function ModernSearcherDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('applicant_id', user.id);
 
-      // Load unread messages count
-      // TEMPORARILY DISABLED: Direct query to conversation_participants causes RLS infinite recursion
-      // This should use get_unread_count RPC instead (once RLS is fixed)
-      // const { count: unreadCount } = await supabase
-      //   .from('conversation_participants')
-      //   .select('*', { count: 'exact', head: true })
-      //   .eq('user_id', user.id)
-      //   .eq('is_read', false);
-      const unreadCount = 0; // TEMPORARY: Set to 0 until RLS policy is fixed
+      // Load unread messages count using RPC function
+      // FIXED: Now uses get_unread_count RPC with SECURITY DEFINER
+      let unreadCount = 0;
+      try {
+        const { data: unreadData, error: unreadError } = await supabase
+          .rpc('get_unread_count', { target_user_id: user.id });
+
+        if (!unreadError && unreadData !== null) {
+          unreadCount = unreadData;
+        }
+      } catch (err) {
+        console.error('Unread count failed:', err);
+      }
 
       setStats({
         favoritesCount: favCount || 0,
