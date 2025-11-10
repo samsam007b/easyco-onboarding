@@ -738,21 +738,23 @@ export default function PropertiesBrowsePageV2() {
 
                 {/* Advanced Search Hero */}
                 <div className="max-w-4xl mx-auto mb-6">
-                  <div className="rounded-[32px] shadow-xl overflow-visible">
+                  <div className="rounded-[32px] shadow-xl" style={{ overflow: 'visible' }}>
                     {/* Glassmorphism container with gradient */}
-                    <div className="relative overflow-hidden rounded-[32px]"
+                    <div className="relative rounded-[32px]"
                          style={{
                            background: 'linear-gradient(135deg, rgba(255, 160, 64, 0.25) 0%, rgba(255, 184, 92, 0.22) 50%, rgba(255, 208, 128, 0.25) 100%)',
                            backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
                            WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
                            boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(255, 160, 64, 0.3)',
+                           overflow: 'hidden'
                          }}
                     >
                       {/* Light refraction effect */}
                       <div className="absolute inset-0 rounded-[32px]"
                            style={{
                              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(255, 160, 64, 0.3) 100%)',
-                             mixBlendMode: 'overlay'
+                             mixBlendMode: 'overlay',
+                             overflow: 'hidden'
                            }}
                       />
 
@@ -760,13 +762,14 @@ export default function PropertiesBrowsePageV2() {
                       <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-[32px]"
                            style={{
                              background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
-                             mixBlendMode: 'soft-light'
+                             mixBlendMode: 'soft-light',
+                             overflow: 'hidden'
                            }}
                       />
 
                       {/* White section with search inputs */}
                       <div className="bg-white/95 backdrop-blur-sm p-4 relative z-10 rounded-[32px]">
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
                           {/* Location Input */}
                           <div className="p-4 rounded-2xl hover:bg-orange-50/50 transition-all group">

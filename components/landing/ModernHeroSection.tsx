@@ -38,19 +38,21 @@ export default function ModernHeroSection() {
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="rounded-[40px] shadow-2xl overflow-visible mb-12 relative"
+          className="rounded-[40px] shadow-2xl mb-12 relative"
           style={{
             transform: 'translateZ(0)',
-            perspective: '1000px'
+            perspective: '1000px',
+            overflow: 'visible'
           }}
         >
           {/* Verre trempé avec gradient subtil et effet 3D */}
-          <div className="absolute inset-0 rounded-[40px] overflow-hidden"
+          <div className="absolute inset-0 rounded-[40px]"
                style={{
                  background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.25) 0%, rgba(255, 111, 60, 0.22) 50%, rgba(255, 210, 73, 0.25) 100%)',
                  backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
                  WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
                  boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(110, 86, 207, 0.3)',
+                 overflow: 'hidden'
                }}
           />
 
@@ -58,7 +60,8 @@ export default function ModernHeroSection() {
           <div className="absolute inset-0 rounded-[40px]"
                style={{
                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(110, 86, 207, 0.3) 100%)',
-                 mixBlendMode: 'overlay'
+                 mixBlendMode: 'overlay',
+                 overflow: 'hidden'
                }}
           />
 
@@ -66,7 +69,8 @@ export default function ModernHeroSection() {
           <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-[40px]"
                style={{
                  background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
-                 mixBlendMode: 'soft-light'
+                 mixBlendMode: 'soft-light',
+                 overflow: 'hidden'
                }}
           />
 
@@ -75,7 +79,8 @@ export default function ModernHeroSection() {
                style={{
                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(110, 86, 207, 0.4) 25%, rgba(255, 111, 60, 0.4) 50%, rgba(255, 210, 73, 0.4) 75%, rgba(255, 255, 255, 0.6) 100%)',
                  filter: 'blur(1px)',
-                 opacity: 0.6
+                 opacity: 0.6,
+                 overflow: 'hidden'
                }}
           />
 
@@ -127,9 +132,8 @@ export default function ModernHeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
             className="bg-white p-4 relative z-10 rounded-b-[40px]"
-            style={{ overflow: 'visible' }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-2" style={{ overflow: 'visible' }}>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
               {/* Location Input */}
               <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group">
