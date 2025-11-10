@@ -9,11 +9,11 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Search, SlidersHorizontal, Lock, Save, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Star, Info, Sparkles, TrendingUp, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
-import SafePropertyMap from '@/components/SafePropertyMap';
 import { useLanguage } from '@/lib/i18n/use-language';
 import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
@@ -40,6 +40,20 @@ import { SwipeCard } from '@/components/matching/SwipeCard';
 import { useUserMatching } from '@/lib/hooks/use-user-matching';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+
+// Lazy load heavy components
+const SafePropertyMap = dynamic(() => import('@/components/SafePropertyMap'), {
+  ssr: false,
+  loading: () => <div className="h-full w-full bg-gray-100 animate-pulse rounded-lg" />
+});
+
+const AnimatePresence = dynamic(() => import('framer-motion').then(mod => ({ default: mod.AnimatePresence })), {
+  ssr: false
+});
+
+const motion = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion })) as any, {
+  ssr: false
+});
 
 interface Property {
   id: string;

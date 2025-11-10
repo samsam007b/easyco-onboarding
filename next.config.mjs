@@ -46,7 +46,25 @@ const nextConfig = {
       'sonner',
       'react-hook-form',
       'zod',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-slider',
+      'recharts',
+      'date-fns',
     ],
+    // Optimiser les fonts
+    optimizeFonts: true,
+    // Réduire les logs de build
+    logging: {
+      level: 'error',
+      fullUrl: false,
+    },
   },
 
   // ============================================================================
@@ -157,6 +175,42 @@ const nextConfig = {
         ...config.optimization,
         usedExports: true,
         sideEffects: false,
+        // Meilleure compression des modules
+        moduleIds: 'deterministic',
+        // Split chunks optimisé
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            // Vendor chunk pour les grosses libs
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module) {
+                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)?.[1]
+                return `vendor.${packageName?.replace('@', '')}`
+              },
+              priority: 10,
+              reuseExistingChunk: true,
+            },
+            // Chunk séparé pour Radix UI
+            radix: {
+              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+              name: 'radix-ui',
+              priority: 20,
+            },
+            // Chunk séparé pour React Query
+            reactQuery: {
+              test: /[\\/]node_modules[\\/]@tanstack[\\/]react-query[\\/]/,
+              name: 'react-query',
+              priority: 20,
+            },
+            // Chunk séparé pour Supabase
+            supabase: {
+              test: /[\\/]node_modules[\\/]@supabase[\\/]/,
+              name: 'supabase',
+              priority: 20,
+            },
+          },
+        },
       }
     }
 

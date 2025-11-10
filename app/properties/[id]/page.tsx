@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, CheckCircle, Edit, Trash2, Users, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,11 +18,26 @@ import type { RoomWithTotal, PropertyCosts, PropertyLifestyleMetrics, ResidentPr
 import { toast } from 'sonner';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
-import SafeSinglePropertyMap from '@/components/SafeSinglePropertyMap';
-import VirtualTourViewer from '@/components/VirtualTourViewer';
-import LifestyleCompatibilitySliders from '@/components/LifestyleCompatibilitySliders';
-import ResidentProfileCard from '@/components/ResidentProfileCard';
 import PropertyCTASidebar from '@/components/PropertyCTASidebar';
+
+// Lazy load heavy components
+const SafeSinglePropertyMap = dynamic(() => import('@/components/SafeSinglePropertyMap'), {
+  ssr: false,
+  loading: () => <div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />
+});
+
+const VirtualTourViewer = dynamic(() => import('@/components/VirtualTourViewer'), {
+  ssr: false,
+  loading: () => <div className="h-96 w-full bg-gray-100 animate-pulse rounded-lg" />
+});
+
+const LifestyleCompatibilitySliders = dynamic(() => import('@/components/LifestyleCompatibilitySliders'), {
+  ssr: false
+});
+
+const ResidentProfileCard = dynamic(() => import('@/components/ResidentProfileCard'), {
+  ssr: false
+});
 
 interface PropertyOwner {
   id: string;
