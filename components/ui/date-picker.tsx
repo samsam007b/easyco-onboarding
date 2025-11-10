@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -24,7 +25,12 @@ export default function DatePicker({
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Calculate calendar position and close when clicking outside
   useEffect(() => {
@@ -157,6 +163,64 @@ export default function DatePicker({
     return days;
   };
 
+  const calendarContent = isOpen ? (
+    <motion.div
+      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+      className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-3 min-w-[260px]"
+      style={{
+        top: `${calendarPosition.top}px`,
+        left: `${calendarPosition.left}px`
+      }}
+    >
+      {/* Month navigation */}
+      <div className="flex items-center justify-between mb-3">
+        <button
+          onClick={handlePreviousMonth}
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4 text-gray-600" />
+        </button>
+        <span className="font-semibold text-gray-900 text-sm">
+          {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+        </span>
+        <button
+          onClick={handleNextMonth}
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <ChevronRight className="w-4 h-4 text-gray-600" />
+        </button>
+      </div>
+
+      {/* Day names */}
+      <div className="grid grid-cols-7 gap-1 mb-1">
+        {dayNames.map((day) => (
+          <div
+            key={day}
+            className="h-6 flex items-center justify-center text-[10px] font-semibold text-gray-500"
+          >
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar days */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {renderCalendarDays()}
+      </div>
+
+      {/* Flexible option */}
+      <button
+        onClick={handleFlexibleClick}
+        className="w-full py-1.5 px-3 rounded-lg text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
+      >
+        Flexible
+      </button>
+    </motion.div>
+  ) : null;
+
   return (
     <div ref={containerRef} className={cn("relative", className)}>
       <div
@@ -173,65 +237,11 @@ export default function DatePicker({
         />
       </div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-3 min-w-[260px]"
-            style={{
-              top: `${calendarPosition.top}px`,
-              left: `${calendarPosition.left}px`
-            }}
-          >
-            {/* Month navigation */}
-            <div className="flex items-center justify-between mb-3">
-              <button
-                onClick={handlePreviousMonth}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4 text-gray-600" />
-              </button>
-              <span className="font-semibold text-gray-900 text-sm">
-                {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-              </span>
-              <button
-                onClick={handleNextMonth}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ChevronRight className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-
-            {/* Day names */}
-            <div className="grid grid-cols-7 gap-1 mb-1">
-              {dayNames.map((day) => (
-                <div
-                  key={day}
-                  className="h-6 flex items-center justify-center text-[10px] font-semibold text-gray-500"
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
-
-            {/* Calendar days */}
-            <div className="grid grid-cols-7 gap-1 mb-2">
-              {renderCalendarDays()}
-            </div>
-
-            {/* Flexible option */}
-            <button
-              onClick={handleFlexibleClick}
-              className="w-full py-1.5 px-3 rounded-lg text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
-            >
-              Flexible
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mounted && (
+        <AnimatePresence>
+          {calendarContent && createPortal(calendarContent, document.body)}
+        </AnimatePresence>
+      )}
     </div>
   );
 }
