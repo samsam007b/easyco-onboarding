@@ -401,14 +401,14 @@ export default function ProfilePage() {
   const colors = getRoleColors()
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${colors.gradient}`}>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30">
       {/* Header with glassmorphism */}
-      <header className={`sticky top-0 z-40 backdrop-blur-xl ${colors.header} border-b`}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-purple-200/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Mon Profil</h1>
-              <p className="text-sm text-gray-600 capitalize">{userData.user_type}</p>
+              <h1 className="text-3xl font-bold text-gray-900">Mon Profil</h1>
+              <p className="text-gray-600 mt-1 capitalize">{userData.user_type}</p>
             </div>
             <div className="flex items-center gap-3">
               <Button
@@ -435,11 +435,11 @@ export default function ProfilePage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Enhance Profile Card */}
-          <div className="lg:col-span-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-3xl shadow-xl p-8 text-white">
+          <div className="lg:col-span-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
@@ -475,7 +475,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
             <h3 className="font-bold text-gray-900 mb-4">Statut du compte</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -508,7 +508,7 @@ export default function ProfilePage() {
 
         <div className="space-y-6">
           {/* Profile Picture */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Picture</h2>
             <ProfilePictureUpload
               userId={userData.id}
@@ -528,7 +528,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Personal Information */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h2>
 
             <div className="space-y-4">
@@ -604,7 +604,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Role Management */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Role</h2>
 
             <div className="space-y-4">
@@ -663,7 +663,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Security - Same as before */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Security</h2>
 
             {!showChangePassword ? (
@@ -800,7 +800,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Danger Zone - Same but with new API */}
-          <div className="bg-white rounded-3xl shadow-sm p-6 border border-red-200">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-red-200 hover:border-red-300">
             <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
 
             {!showDeleteConfirm ? (
