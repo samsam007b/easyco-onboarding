@@ -35,7 +35,7 @@ export default function WelcomePage() {
         .from('users')
         .select('full_name, email, user_type, onboarding_completed')
         .eq('id', authUser.id)
-        .single();
+        .maybeSingle();
 
       // If user already has a role configured and completed onboarding, redirect to their dashboard
       if (userData?.user_type && userData?.onboarding_completed) {
@@ -72,7 +72,7 @@ export default function WelcomePage() {
       .from('users')
       .select('onboarding_completed, user_type')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     // If user hasn't completed onboarding for this role, redirect to onboarding
     if (!userData?.onboarding_completed || userData.user_type !== role) {

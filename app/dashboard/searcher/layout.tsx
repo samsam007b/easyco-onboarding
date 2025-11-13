@@ -23,7 +23,7 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/login'); return; }
 
-      const { data: userData, error: profileError } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).single();
+      const { data: userData, error: profileError } = await supabase.from('users').select('full_name, email, avatar_url').eq('id', user.id).maybeSingle();
       if (profileError) {
         logger.supabaseError('load searcher profile', profileError, { userId: user.id });
       } else if (userData) {

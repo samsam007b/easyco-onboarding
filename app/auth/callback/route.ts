@@ -31,24 +31,26 @@ export async function GET(request: NextRequest) {
     const { data: { session }, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
     if (exchangeError) {
-      // FIXME: Use logger.error('Error exchanging code for session:', exchangeError)
+      console.error('[OAuth Callback] Error exchanging code:', exchangeError)
       return NextResponse.redirect(
-        new URL(`/login?error=${encodeURIComponent(exchangeError.message)}`, requestUrl.origin)
+        new URL(`/auth?error=${encodeURIComponent(exchangeError.message)}`, requestUrl.origin)
       )
     }
 
     if (!session?.user) {
-      return NextResponse.redirect(new URL('/login?error=no_session', requestUrl.origin))
+      console.error('[OAuth Callback] No session or user after exchange')
+      return NextResponse.redirect(new URL('/auth?error=no_session', requestUrl.origin))
     }
 
     const user = session.user
+    console.log('[OAuth Callback] User authenticated:', user.email)
 
     // Get or create user record in our custom users table
     let { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     // If user doesn't exist in our users table, the trigger should have created it
     // But let's check and handle edge cases
@@ -61,7 +63,7 @@ export async function GET(request: NextRequest) {
         .from('users')
         .select('*')
         .eq('id', user.id)
-        .single()
+        .maybeSingle()
 
       if (retryError || !retryData) {
         // If still not found, create manually
@@ -124,7 +126,7 @@ export async function GET(request: NextRequest) {
           .from('users')
           .select('*')
           .eq('id', user.id)
-          .single()
+          .maybeSingle()
 
         if (refreshedData) {
           userData = refreshedData

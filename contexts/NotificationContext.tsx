@@ -74,7 +74,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     } finally {
       setIsLoading(false);
     }
-  }, [supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const initNotifications = async () => {
@@ -107,7 +108,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     };
 
     initNotifications();
-  }, [supabase, loadNotifications]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const markAsRead = async (notificationId: string) => {
     try {
