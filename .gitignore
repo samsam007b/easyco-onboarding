@@ -26,3 +26,12 @@ pnpm-debug.log*
 test-results/
 playwright-report/
 playwright/.cache/
+
+# Capacitor / iOS
+ios/App/Pods/
+ios/App/build/
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
+android/
+.capacitor/

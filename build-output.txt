@@ -1,0 +1,83 @@
+npm warn config optional Use `--omit=optional` to exclude optional dependencies, or
+npm warn config `--include=optional` to include them.
+npm warn config
+npm warn config       Default value does install optional deps unless otherwise omitted.
+
+> easyco-onboarding-supabase-v3_1@0.3.1 build
+> next build
+
+ ⚠ Invalid next.config.mjs options detected: 
+ ⚠     Unrecognized key(s) in object: 'optimizeFonts', 'logging' at "experimental"
+ ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+  ▲ Next.js 14.2.33
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · instrumentationHook
+
+   Creating an optimized production build ...
+[@sentry/nextjs] It appears you've configured a `sentry.server.config.ts` file. Please ensure to put this file's content into the `register()` function of a Next.js instrumentation file instead. To ensure correct functionality of the SDK, `Sentry.init` must be called inside of an instrumentation file. Learn more about setting up an instrumentation file in Next.js: https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation. You can safely delete the `sentry.server.config.ts` file afterward.
+[@sentry/nextjs] It appears you've configured a `sentry.edge.config.ts` file. Please ensure to put this file's content into the `register()` function of a Next.js instrumentation file instead. To ensure correct functionality of the SDK, `Sentry.init` must be called inside of an instrumentation file. Learn more about setting up an instrumentation file in Next.js: https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation. You can safely delete the `sentry.edge.config.ts` file afterward.
+[@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (185kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (118kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings
+
+./lib/languages/language-utils.ts
+Module not found: Can't resolve 'cldr-localenames-full/main' in '/Users/samuelbaudon/easyco-onboarding/lib/languages'
+
+Import trace for requested module:
+./lib/languages/language-utils.ts
+./components/LanguagesChipInput.tsx
+./app/onboarding/searcher/basic-info/page.tsx
+
+./node_modules/framer-motion/dist/cjs/feature-bundle-v2Gb94eA.js
+Module not found: Can't resolve '@emotion/is-prop-valid' in '/Users/samuelbaudon/easyco-onboarding/node_modules/framer-motion/dist/cjs'
+
+Import trace for requested module:
+./node_modules/framer-motion/dist/cjs/feature-bundle-v2Gb94eA.js
+./node_modules/framer-motion/dist/cjs/index.js
+./app/properties/browse/page.tsx
+
+./lib/languages/language-utils.ts
+Module not found: Can't resolve 'cldr-localenames-full/main' in '/Users/samuelbaudon/easyco-onboarding/lib/languages'
+
+Import trace for requested module:
+./lib/languages/language-utils.ts
+./components/LanguagesChipInput.tsx
+./app/onboarding/resident/basic-info/page.tsx
+
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+A Node.js API is used (process.versions at line: 32) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+./node_modules/@supabase/realtime-js/dist/module/index.js
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+./node_modules/@supabase/supabase-js/dist/module/index.js
+A Node.js API is used (process.version at line: 24) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/properties/browse/page.tsx:41:10
+Type error: Import declaration conflicts with local declaration of 'AnimatePresence'.
+
+[0m [90m 39 |[39m [36mimport[39m { [33mSwipeCard[39m } [36mfrom[39m [32m'@/components/matching/SwipeCard'[39m[33m;[39m[0m
+[0m [90m 40 |[39m [36mimport[39m { useUserMatching } [36mfrom[39m [32m'@/lib/hooks/use-user-matching'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 41 |[39m [36mimport[39m { [33mAnimatePresence[39m[33m,[39m motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m[0m
+[0m [90m    |[39m          [31m[1m^[22m[39m[0m
+[0m [90m 42 |[39m [36mimport[39m { cn } [36mfrom[39m [32m'@/lib/utils'[39m[33m;[39m[0m
+[0m [90m 43 |[39m[0m
+[0m [90m 44 |[39m [90m// Lazy load heavy components[39m[0m
+Next.js build worker exited with code: 1 and signal: null
