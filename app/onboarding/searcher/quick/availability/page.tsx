@@ -7,6 +7,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
+import { handleSupabaseError, handleValidationError, ErrorCode } from '@/lib/utils/error-handler';
 
 export default function QuickAvailabilityPage() {
   const router = useRouter();
@@ -59,7 +60,7 @@ export default function QuickAvailabilityPage() {
   const handleNext = async () => {
     // Validation
     if (!moveInDate && moveInFlexibility !== 'asap') {
-      toast.error('La date d\'emménagement est requise');
+      handleValidationError('moveInDate', ErrorCode.VALIDATION_REQUIRED_FIELD);
       return;
     }
 
@@ -70,7 +71,10 @@ export default function QuickAvailabilityPage() {
       today.setHours(0, 0, 0, 0);
 
       if (selectedDate < today) {
-        toast.error('La date d\'emménagement ne peut pas être dans le passé');
+        handleValidationError('moveInDate', ErrorCode.VALIDATION_INVALID_DATE, {
+          reason: 'Date in the past',
+          selectedDate: moveInDate,
+        });
         return;
       }
     }
@@ -80,38 +84,57 @@ export default function QuickAvailabilityPage() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
 
-      if (user) {
-        // Save to matching profile
-        const { error: matchingError } = await supabase
-          .from('user_matching_profiles')
-          .upsert(
-            {
-              user_id: user.id,
-              desired_move_in_date: moveInFlexibility === 'asap' ? new Date().toISOString().split('T')[0] : moveInDate,
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: 'user_id' }
-          );
+      if (!user) {
+        handleSupabaseError(
+          new Error('No authenticated user'),
+          ErrorCode.AUTH_NO_USER
+        );
+        return;
+      }
 
-        if (matchingError) throw matchingError;
-
-        // Mark Quick Start as completed
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .update({
-            onboarding_completed: true,
+      // Save to matching profile
+      const { error: matchingError } = await supabase
+        .from('user_matching_profiles')
+        .upsert(
+          {
+            user_id: user.id,
+            desired_move_in_date: moveInFlexibility === 'asap' ? new Date().toISOString().split('T')[0] : moveInDate,
             updated_at: new Date().toISOString(),
-          })
-          .eq('user_id', user.id);
+          },
+          { onConflict: 'user_id' }
+        );
 
-        if (profileError) throw profileError;
+      if (matchingError) {
+        handleSupabaseError(matchingError, ErrorCode.SAVE_PROFILE_FAILED, {
+          table: 'user_matching_profiles',
+          userId: user.id,
+        });
+        return;
+      }
+
+      // Mark Quick Start as completed
+      const { error: profileError } = await supabase
+        .from('user_profiles')
+        .update({
+          onboarding_completed: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) {
+        handleSupabaseError(profileError, ErrorCode.UPDATE_FAILED, {
+          table: 'user_profiles',
+          userId: user.id,
+        });
+        return;
       }
 
       // Navigate to completion page
       router.push('/onboarding/searcher/quick/complete');
     } catch (error: any) {
-      console.error('Error saving:', error);
-      toast.error(error.message || 'Erreur lors de la sauvegarde');
+      handleSupabaseError(error, ErrorCode.SAVE_FAILED, {
+        step: 'quick-availability',
+      });
     } finally {
       setIsLoading(false);
     }
