@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Toaster } from 'sonner'
 import { ClientProviders } from '@/components/ClientProviders'
 import dynamic from 'next/dynamic'
+import SkipLink from '@/components/accessibility/SkipLink'
 
 // Lazy load des composants non-critiques pour améliorer les performances
 const Analytics = dynamic(() => import('@/components/Analytics'), {
@@ -128,6 +129,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-192x192.png" />
       </head>
       <body className="min-h-screen">
+        <SkipLink />
         <Analytics />
         <WebVitalsReporter />
         <ClientProviders>

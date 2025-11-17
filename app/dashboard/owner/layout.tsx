@@ -159,9 +159,9 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         profile={profile}
         stats={stats}
       />
-      <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30 pt-24">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30 pt-24">
         {children}
-      </div>
+      </main>
     </>
   );
 }

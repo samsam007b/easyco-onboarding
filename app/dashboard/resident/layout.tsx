@@ -151,9 +151,9 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
         profile={profile}
         stats={stats}
       />
-      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">
         {children}
-      </div>
+      </main>
     </>
   );
 }

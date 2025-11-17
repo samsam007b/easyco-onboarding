@@ -1232,3 +1232,226 @@ body.theme-resident ::selection {
   transform: scale(1.02);
   box-shadow: 0 20px 25px -5px rgba(123, 95, 184, 0.4);
 }
+
+/* ============================================
+   Accessibility Enhancements
+   ============================================ */
+
+/* Focus Visible - WCAG 2.1 Level AA (2.4.7) */
+/* Clear focus indicators for keyboard navigation */
+*:focus-visible {
+  outline: 3px solid #FF6F3C;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 3px solid #FF6F3C;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 111, 60, 0.2);
+}
+
+/* Screen Reader Only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible for sr-only (e.g., skip links) */
+.sr-only:focus-visible {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 1rem 1.5rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Reduced Motion - WCAG 2.1 Level AA (2.3.3) */
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  /* Increase border visibility */
+  button,
+  input,
+  textarea,
+  select {
+    border-width: 2px;
+    border-color: currentColor;
+  }
+
+  /* Enhance focus indicators */
+  *:focus-visible {
+    outline-width: 4px;
+  }
+}
+
+/* Skip Link Styling */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #FF6F3C;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Ensure sufficient color contrast - WCAG AA (4.5:1) */
+/* Override low-contrast text */
+.text-gray-400 {
+  color: #6b7280; /* AA compliant */
+}
+
+.text-gray-500 {
+  color: #4b5563; /* AA compliant */
+}
+
+/* Disabled state should still be distinguishable */
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading state accessibility */
+[aria-busy="true"] {
+  cursor: wait;
+}
+
+/* Improve link underlines for readability */
+a:not(.btn):not([role="button"]) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:not(.btn):not([role="button"]):hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Form label association indicator */
+label {
+  cursor: pointer;
+}
+
+label:has(+ input:focus-visible),
+label:has(+ textarea:focus-visible),
+label:has(+ select:focus-visible) {
+  color: #FF6F3C;
+  font-weight: 600;
+}
+
+/* Required field indicator */
+label:has([required])::after,
+label:has([aria-required="true"])::after {
+  content: " *";
+  color: #ef4444;
+  font-weight: bold;
+}
+
+/* Error state accessibility */
+[aria-invalid="true"] {
+  border-color: #ef4444 !important;
+  border-width: 2px !important;
+}
+
+[aria-invalid="true"]:focus-visible {
+  outline-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Touch target size - WCAG 2.1 Level AAA (2.5.5) */
+/* Minimum 44x44px for touch targets */
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+[role="button"],
+[role="link"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Exception for inline text links */
+a:not([role="button"]) {
+  min-height: auto;
+  min-width: auto;
+}
+
+/* Spacing for touch targets */
+button + button,
+a[role="button"] + a[role="button"] {
+  margin-left: 8px;
+}
+
+/* Dark mode accessibility */
+@media (prefers-color-scheme: dark) {
+  /* Adjust focus color for dark mode */
+  *:focus-visible {
+    outline-color: #FFD080;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    box-shadow: 0 0 0 4px rgba(255, 208, 128, 0.3);
+  }
+}
+
+/* Print accessibility */
+@media print {
+  /* Show URLs for links */
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  /* Hide decorative elements */
+  [aria-hidden="true"],
+  [role="presentation"] {
+    display: none !important;
+  }
+}

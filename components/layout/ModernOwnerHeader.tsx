@@ -221,6 +221,9 @@ export default function ModernOwnerHeader({
               <button
                 onClick={() => setShowQuickActions(!showQuickActions)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-purple-50 transition-all border border-gray-200 hover:border-purple-300"
+                aria-label="Menu actions rapides"
+                aria-expanded={showQuickActions}
+                aria-haspopup="true"
               >
                 <Zap className="w-4 h-4 text-purple-600" />
                 <span>Actions Rapides</span>
@@ -327,6 +330,9 @@ export default function ModernOwnerHeader({
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
+                aria-label={`Notifications${(pendingApplications > 0 || unreadMessages > 0) ? ` (${pendingApplications + unreadMessages} non lues)` : ''}`}
+                aria-expanded={showNotifications}
+                aria-haspopup="true"
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(pendingApplications > 0 || unreadMessages > 0) && (
@@ -392,6 +398,9 @@ export default function ModernOwnerHeader({
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
+                aria-label="Menu profil"
+                aria-expanded={showProfileMenu}
+                aria-haspopup="true"
               >
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
@@ -460,6 +469,9 @@ export default function ModernOwnerHeader({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
+              aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -479,7 +491,7 @@ export default function ModernOwnerHeader({
               exit={{ height: 0, opacity: 0 }}
               className="lg:hidden overflow-hidden border-t border-gray-200"
             >
-              <nav className="py-4 flex flex-col gap-2">
+              <nav id="mobile-navigation" className="py-4 flex flex-col gap-2" aria-label="Navigation mobile">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
