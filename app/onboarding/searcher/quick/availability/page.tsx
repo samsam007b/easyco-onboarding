@@ -146,7 +146,12 @@ export default function QuickAvailabilityPage() {
 
   const steps = generateStepsArray('quick', 3);
 
-  const flexibilityOptions = [
+  const flexibilityOptions: Array<{
+    id: 'asap' | 'exact' | 'flexible';
+    label: string;
+    description: string;
+    icon: string;
+  }> = [
     {
       id: 'asap',
       label: 'Dès que possible',
@@ -196,7 +201,7 @@ export default function QuickAvailabilityPage() {
               {flexibilityOptions.map((option) => (
                 <button
                   key={option.id}
-                  onClick={() => setMoveInFlexibility(option.id as any)}
+                  onClick={() => setMoveInFlexibility(option.id)}
                   className={`
                     p-4 rounded-xl border-2 transition-all text-left
                     ${moveInFlexibility === option.id
