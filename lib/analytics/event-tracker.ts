@@ -18,6 +18,7 @@
 
 import { canUseAnalytics } from '@/lib/consent/cookie-consent';
 import { validateEventProperties, validateUserProperties } from './event-validator';
+import { retryQueue } from './retry-queue';
 
 // ============================================================================
 // EVENT ENUMS - Type-safe event names
@@ -377,8 +378,14 @@ async function sendToCustomAnalytics(eventData: any): Promise<void> {
       keepalive: true,
     });
   } catch (error) {
-    // Silently fail - don't let analytics errors affect user experience
-    console.error('Custom analytics error:', error);
+    // Add to retry queue for automatic retry with exponential backoff
+    if (typeof window !== 'undefined') {
+      retryQueue.add(eventData.event, eventData);
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Custom analytics error (added to retry queue):', error);
+    }
   }
 }
 
