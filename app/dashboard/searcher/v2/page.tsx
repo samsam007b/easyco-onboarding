@@ -81,33 +81,69 @@ export default function SearcherDashboardV2() {
     enabled: !!userId,
   });
 
-  // Fetch matches (mock for now, will connect to matching algorithm)
-  const { data: matchesData } = useQuery({
+  // Fetch real matches from the matching algorithm
+  const { data: matchesData, isLoading: matchesLoading, refetch: refetchMatches } = useQuery({
     queryKey: ['searcher-matches', userId],
     queryFn: async () => {
       if (!userId) return [];
 
-      // TODO: Replace with real matching algorithm
-      // For now, fetch some random published properties as "matches"
-      const { data: properties, error } = await supabase
-        .from('properties')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
-        .limit(10);
+      try {
+        // Try to fetch existing matches from the API
+        const response = await fetch('/api/matching/matches?limit=20&minScore=60&includeStats=false');
 
-      if (error) return [];
+        if (!response.ok) {
+          console.error('Failed to fetch matches:', response.statusText);
+          return [];
+        }
 
-      // Simulate compatibility scores
-      return properties?.map((p, index) => ({
-        id: `match-${p.id}`,
-        property_id: p.id,
-        score: 95 - index * 5, // Mock scores from 95 to 50
-        property: p,
-      })) || [];
+        const data = await response.json();
+
+        // If no matches found, generate new ones
+        if (!data.matches || data.matches.length === 0) {
+          console.log('No matches found, generating new ones...');
+
+          const generateResponse = await fetch('/api/matching/generate', {
+            method: 'POST',
+          });
+
+          if (generateResponse.ok) {
+            const generateData = await generateResponse.json();
+            console.log(`Generated ${generateData.matchesGenerated} new matches`);
+
+            // Fetch matches again after generation
+            const retryResponse = await fetch('/api/matching/matches?limit=20&minScore=60&includeStats=false');
+            if (retryResponse.ok) {
+              const retryData = await retryResponse.json();
+              return formatMatchesData(retryData.matches || []);
+            }
+          }
+        }
+
+        return formatMatchesData(data.matches || []);
+      } catch (error) {
+        console.error('Error fetching matches:', error);
+        return [];
+      }
     },
     enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnWindowFocus: false,
   });
+
+  // Helper function to format matches data for compatibility with existing UI
+  const formatMatchesData = (matches: any[]) => {
+    return matches.map((match) => ({
+      id: match.id,
+      property_id: match.property_id,
+      score: Math.round(match.total_score), // Use real match score
+      property: match.property,
+      match_reason: match.match_reason,
+      budget_score: match.budget_score,
+      location_score: match.location_score,
+      lifestyle_score: match.lifestyle_score,
+      status: match.status,
+    }));
+  };
 
   // Fetch favorites
   const { data: favoritesData } = useQuery({
@@ -255,15 +291,63 @@ export default function SearcherDashboardV2() {
             </Link>
           </div>
 
-          {topMatches.length > 0 ? (
+          {matchesLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : topMatches.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {topMatches.map((match) => (
-                <div key={match.id} className="relative">
-                  {/* Compatibility Score Badge */}
-                  <div className="absolute top-4 right-4 z-10 bg-green-500 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    <span className="font-bold">{match.score}%</span>
+                <div key={match.id} className="relative group">
+                  {/* Compatibility Score Badge with Tooltip */}
+                  <div className="absolute top-4 right-4 z-20">
+                    <div
+                      className="bg-green-500 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1 cursor-help"
+                      title={match.match_reason || 'Score de compatibilité basé sur vos préférences'}
+                    >
+                      <TrendingUp className="w-4 h-4" />
+                      <span className="font-bold">{match.score}%</span>
+                    </div>
+
+                    {/* Detailed Tooltip on Hover */}
+                    {match.match_reason && (
+                      <div className="invisible group-hover:visible absolute top-full right-0 mt-2 w-64 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl z-30">
+                        <div className="space-y-2">
+                          <p className="font-semibold border-b border-gray-700 pb-2">
+                            Pourquoi ce match?
+                          </p>
+                          <p className="text-gray-300">{match.match_reason}</p>
+
+                          {/* Score Breakdown */}
+                          {(match.budget_score || match.location_score || match.lifestyle_score) && (
+                            <div className="border-t border-gray-700 pt-2 mt-2 space-y-1">
+                              {match.budget_score && (
+                                <div className="flex justify-between">
+                                  <span className="text-gray-400">Budget:</span>
+                                  <span className="text-green-400">{Math.round(match.budget_score)}%</span>
+                                </div>
+                              )}
+                              {match.location_score && (
+                                <div className="flex justify-between">
+                                  <span className="text-gray-400">Localisation:</span>
+                                  <span className="text-blue-400">{Math.round(match.location_score)}%</span>
+                                </div>
+                              )}
+                              {match.lifestyle_score && (
+                                <div className="flex justify-between">
+                                  <span className="text-gray-400">Lifestyle:</span>
+                                  <span className="text-purple-400">{Math.round(match.lifestyle_score)}%</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        {/* Arrow pointing up */}
+                        <div className="absolute -top-2 right-4 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-gray-900" />
+                      </div>
+                    )}
                   </div>
+
                   <PropertyCard
                     property={match.property}
                     showCompatibilityScore={false}
