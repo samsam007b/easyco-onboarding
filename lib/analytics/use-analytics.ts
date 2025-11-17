@@ -620,7 +620,13 @@ export function useTimeOnPage() {
 // ============================================================================
 
 export function useScrollDepth() {
+  const pathname = usePathname();
   const trackedDepths = useRef<Set<number>>(new Set());
+
+  // Reset tracked depths when navigating to a new page
+  useEffect(() => {
+    trackedDepths.current.clear();
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
