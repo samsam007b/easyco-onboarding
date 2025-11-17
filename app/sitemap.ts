@@ -13,7 +13,7 @@ import { createClient } from '@/lib/auth/supabase-server';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://easyco.be';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Static pages
   const staticPages = [
