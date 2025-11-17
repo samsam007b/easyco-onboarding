@@ -10,6 +10,9 @@ import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import EmptyState from '@/components/ui/EmptyState';
+import { SkeletonPropertyCard, SkeletonDashboard } from '@/components/ui/Skeleton';
+import { useIsMobile } from '@/lib/hooks/use-media-query';
+import { useMobileOptimizedQuery, useShouldSimplifyUI } from '@/lib/hooks/use-mobile-optimization';
 import {
   Heart,
   Users,
@@ -35,6 +38,11 @@ export default function SearcherDashboardV2() {
   const router = useRouter();
   const supabase = createClient();
   const [userId, setUserId] = useState<string | null>(null);
+
+  // Mobile optimization hooks
+  const isMobile = useIsMobile();
+  const shouldSimplify = useShouldSimplifyUI();
+  const queryConfig = useMobileOptimizedQuery();
 
   // Check authentication
   useEffect(() => {
@@ -83,14 +91,15 @@ export default function SearcherDashboardV2() {
   });
 
   // Fetch real matches from the matching algorithm
+  // Use mobile-optimized limit: mobile=6, tablet=12, desktop=20
   const { data: matchesData, isLoading: matchesLoading, refetch: refetchMatches } = useQuery({
-    queryKey: ['searcher-matches', userId],
+    queryKey: ['searcher-matches', userId, queryConfig.limit],
     queryFn: async () => {
       if (!userId) return [];
 
       try {
-        // Try to fetch existing matches from the API
-        const response = await fetch('/api/matching/matches?limit=20&minScore=60&includeStats=false');
+        // Try to fetch existing matches from the API with mobile-optimized limit
+        const response = await fetch(`/api/matching/matches?limit=${queryConfig.limit}&minScore=60&includeStats=false`);
 
         if (!response.ok) {
           console.error('Failed to fetch matches:', response.statusText);
@@ -127,7 +136,7 @@ export default function SearcherDashboardV2() {
       }
     },
     enabled: !!userId,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: queryConfig.staleTime, // Mobile-optimized: mobile=5min, desktop=1min
     refetchOnWindowFocus: false,
   });
 
@@ -146,9 +155,9 @@ export default function SearcherDashboardV2() {
     }));
   };
 
-  // Fetch favorites
+  // Fetch favorites (mobile-optimized limit)
   const { data: favoritesData } = useQuery({
-    queryKey: ['searcher-favorites', userId],
+    queryKey: ['searcher-favorites', userId, isMobile],
     queryFn: async () => {
       if (!userId) return [];
 
@@ -157,12 +166,13 @@ export default function SearcherDashboardV2() {
         .select('*, property:properties(*)')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(6);
+        .limit(isMobile ? 3 : 6); // Show fewer on mobile
 
       if (error) return [];
       return data || [];
     },
     enabled: !!userId,
+    staleTime: queryConfig.staleTime,
   });
 
   // Fetch user's groups (mock for now)
@@ -189,13 +199,25 @@ export default function SearcherDashboardV2() {
   const totalFavorites = favoritesData?.length || 0;
   const totalGroups = groupsData?.length || 0;
 
+  // Show skeleton screen while loading
   if (!userId || !profile) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Chargement...</p>
-        </div>
+      <div className="min-h-screen bg-gray-50">
+        <SearcherHeader
+          profile={{
+            full_name: 'Loading...',
+            email: '',
+            avatar_url: undefined,
+          }}
+          stats={{
+            favoritesCount: 0,
+            matchesCount: 0,
+            unreadMessages: 0,
+          }}
+        />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <SkeletonDashboard />
+        </main>
       </div>
     );
   }
@@ -293,11 +315,13 @@ export default function SearcherDashboardV2() {
           </div>
 
           {matchesLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
+            <div className={`grid gap-6 ${shouldSimplify ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+              {Array.from({ length: shouldSimplify ? 2 : 3 }).map((_, i) => (
+                <SkeletonPropertyCard key={i} />
+              ))}
             </div>
           ) : topMatches.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className={`grid gap-6 ${shouldSimplify ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
               {topMatches.map((match) => (
                 <div key={match.id} className="relative group">
                   {/* Compatibility Score Badge with Tooltip */}
