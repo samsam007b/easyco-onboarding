@@ -17,6 +17,7 @@
  */
 
 import { canUseAnalytics } from '@/lib/consent/cookie-consent';
+import { validateEventProperties, validateUserProperties } from './event-validator';
 
 // ============================================================================
 // EVENT ENUMS - Type-safe event names
@@ -179,9 +180,12 @@ export function trackEvent(
     return;
   }
 
+  // Validate and sanitize properties to prevent PII leakage
+  const sanitizedProperties = properties ? validateEventProperties(properties) : {};
+
   // Don't track in development mode
   if (process.env.NODE_ENV === 'development') {
-    console.log('📊 [Analytics]', eventName, properties);
+    console.log('📊 [Analytics]', eventName, sanitizedProperties);
     return;
   }
 
@@ -194,22 +198,22 @@ export function trackEvent(
     user_agent: navigator.userAgent,
     screen_width: window.screen.width,
     screen_height: window.screen.height,
-    ...properties,
+    ...sanitizedProperties,
   };
 
   // Google Analytics 4 (gtag)
   if (typeof window.gtag !== 'undefined') {
-    window.gtag('event', eventName, properties);
+    window.gtag('event', eventName, sanitizedProperties);
   }
 
   // PostHog
   if (typeof window.posthog !== 'undefined') {
-    window.posthog.capture(eventName, properties);
+    window.posthog.capture(eventName, sanitizedProperties);
   }
 
   // Mixpanel
   if (typeof window.mixpanel !== 'undefined') {
-    window.mixpanel.track(eventName, properties);
+    window.mixpanel.track(eventName, sanitizedProperties);
   }
 
   // Custom analytics endpoint (optional)
@@ -246,24 +250,27 @@ export function identifyUser(
     return;
   }
 
+  // Validate and sanitize user properties to prevent PII leakage
+  const sanitizedProperties = userProperties ? validateUserProperties(userProperties) : {};
+
   // Google Analytics 4
   if (typeof window.gtag !== 'undefined') {
     window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '', {
       user_id: userId,
     });
-    window.gtag('set', 'user_properties', userProperties);
+    window.gtag('set', 'user_properties', sanitizedProperties);
   }
 
   // PostHog
   if (typeof window.posthog !== 'undefined') {
-    window.posthog.identify(userId, userProperties);
+    window.posthog.identify(userId, sanitizedProperties);
   }
 
   // Mixpanel
   if (typeof window.mixpanel !== 'undefined') {
     window.mixpanel.identify(userId);
-    if (userProperties) {
-      window.mixpanel.people.set(userProperties);
+    if (Object.keys(sanitizedProperties).length > 0) {
+      window.mixpanel.people.set(sanitizedProperties);
     }
   }
 }

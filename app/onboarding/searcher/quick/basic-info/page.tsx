@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, User } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -23,15 +23,7 @@ export default function QuickBasicInfoPage() {
   // Analytics tracking
   const { trackStepCompleted, trackOnboardingStarted } = useOnboardingFunnel('quick');
 
-  useEffect(() => {
-    loadExistingData();
-
-    // Track that user started the Quick Start onboarding
-    trackOnboardingStarted();
-    trackQuickStartFunnel.modeSelected({ mode: 'quick' });
-  }, []);
-
-  const loadExistingData = async () => {
+  const loadExistingData = useCallback(async () => {
     try {
       // Load from localStorage first
       const saved = safeLocalStorage.get('quickBasicInfo', {}) as any;
@@ -61,7 +53,15 @@ export default function QuickBasicInfoPage() {
     } catch (error) {
       console.error('Error loading data:', error);
     }
-  };
+  }, [supabase]);
+
+  useEffect(() => {
+    loadExistingData();
+
+    // Track that user started the Quick Start onboarding
+    trackOnboardingStarted();
+    trackQuickStartFunnel.modeSelected({ mode: 'quick' });
+  }, [loadExistingData, trackOnboardingStarted]);
 
   // Auto-save to localStorage
   useEffect(() => {
