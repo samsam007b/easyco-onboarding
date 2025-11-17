@@ -7,6 +7,8 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
+import { useOnboardingFunnel } from '@/lib/analytics/use-analytics';
+import { trackQuickStartFunnel } from '@/lib/analytics/funnels';
 
 export default function QuickBasicInfoPage() {
   const router = useRouter();
@@ -18,8 +20,15 @@ export default function QuickBasicInfoPage() {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
 
+  // Analytics tracking
+  const { trackStepCompleted, trackOnboardingStarted } = useOnboardingFunnel('quick');
+
   useEffect(() => {
     loadExistingData();
+
+    // Track that user started the Quick Start onboarding
+    trackOnboardingStarted();
+    trackQuickStartFunnel.modeSelected({ mode: 'quick' });
   }, []);
 
   const loadExistingData = async () => {
@@ -126,6 +135,13 @@ export default function QuickBasicInfoPage() {
 
         if (error) throw error;
       }
+
+      // Track step completion
+      trackStepCompleted('basic_info', 1);
+      trackQuickStartFunnel.basicInfoCompleted({
+        has_nationality: !!nationality,
+        age_range: age < 25 ? '18-24' : age < 35 ? '25-34' : age < 45 ? '35-44' : '45+',
+      });
 
       // Navigate to next step
       router.push('/onboarding/searcher/quick/budget-location');
