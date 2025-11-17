@@ -209,11 +209,9 @@ export default function SearcherDashboardV2() {
             email: '',
             avatar_url: undefined,
           }}
-          stats={{
-            favoritesCount: 0,
-            matchesCount: 0,
-            unreadMessages: 0,
-          }}
+          notifications={0}
+          unreadMessages={0}
+          newMatches={0}
         />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <SkeletonDashboard />
