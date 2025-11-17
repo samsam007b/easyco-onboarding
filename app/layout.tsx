@@ -11,7 +11,7 @@ const Analytics = dynamic(() => import('@/components/Analytics'), {
   ssr: false, // Ne pas render côté serveur (client-only)
 })
 
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
+const CookieConsentBanner = dynamic(() => import('@/components/CookieConsentBanner'), {
   ssr: false,
 })
 
@@ -140,7 +140,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ClientProviders>
           {children}
           <Toaster position="top-right" />
-          <CookieBanner />
+          <CookieConsentBanner />
           <PWAInstallPrompt />
           <DevTools />
         </ClientProviders>

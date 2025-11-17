@@ -1,9 +1,10 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { usePageTracking } from '@/lib/analytics/use-analytics';
+import { canUseAnalytics, hasConsentResponse } from '@/lib/consent/cookie-consent';
 
 // Analytics Provider IDs
 // TODO: Replace with actual IDs when available
@@ -27,27 +28,49 @@ if (!isValidGAId(GA_MEASUREMENT_ID)) {
 export default function Analytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [hasAnalyticsConsent, setHasAnalyticsConsent] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
 
-  // Use our custom page tracking hook
+  // Check for consent on mount and listen for changes
+  useEffect(() => {
+    // Initial consent check
+    const checkConsent = () => {
+      const hasConsent = canUseAnalytics();
+      setHasAnalyticsConsent(hasConsent);
+      setConsentChecked(true);
+    };
+
+    checkConsent();
+
+    // Listen for consent changes
+    const handleConsentChange = () => {
+      checkConsent();
+    };
+
+    window.addEventListener('consentChanged', handleConsentChange);
+    return () => window.removeEventListener('consentChanged', handleConsentChange);
+  }, []);
+
+  // Use our custom page tracking hook (only if consent given)
   usePageTracking();
 
   // Track pageviews on route changes (GA4 specific)
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
+    if (hasAnalyticsConsent && typeof window !== 'undefined' && (window as any).gtag) {
       const url = pathname + searchParams.toString();
       (window as any).gtag('config', GA_MEASUREMENT_ID, {
         page_path: url,
       });
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, hasAnalyticsConsent]);
 
-  // Don't load analytics in development
+  // Don't load analytics in development or without consent
   const isDevelopment = process.env.NODE_ENV === 'development';
   const hasValidGA = isValidGAId(GA_MEASUREMENT_ID);
   const hasPostHog = !!POSTHOG_API_KEY;
   const hasMixpanel = !!MIXPANEL_TOKEN;
 
-  if (isDevelopment) {
+  if (isDevelopment || !consentChecked || !hasAnalyticsConsent) {
     return null;
   }
 

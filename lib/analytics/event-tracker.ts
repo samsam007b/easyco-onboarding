@@ -3,6 +3,7 @@
  *
  * Supports Google Analytics 4, PostHog, and Mixpanel
  * Provides type-safe event tracking with pre-defined event categories
+ * GDPR/RGPD compliant - checks user consent before tracking
  *
  * Usage:
  * ```ts
@@ -14,6 +15,8 @@
  * });
  * ```
  */
+
+import { canUseAnalytics } from '@/lib/consent/cookie-consent';
 
 // ============================================================================
 // EVENT ENUMS - Type-safe event names
@@ -163,12 +166,18 @@ export interface UserProperties {
 
 /**
  * Track a custom event across all analytics providers
+ * GDPR/RGPD compliant - only tracks if user has given consent
  */
 export function trackEvent(
   eventName: string,
   properties?: EventProperties
 ): void {
   if (typeof window === 'undefined') return;
+
+  // Check for user consent (RGPD compliance)
+  if (!canUseAnalytics()) {
+    return;
+  }
 
   // Don't track in development mode
   if (process.env.NODE_ENV === 'development') {
@@ -224,12 +233,18 @@ export function trackPageView(
 
 /**
  * Identify a user across all analytics providers
+ * GDPR/RGPD compliant - only tracks if user has given consent
  */
 export function identifyUser(
   userId: string,
   userProperties?: UserProperties
 ): void {
   if (typeof window === 'undefined') return;
+
+  // Check for user consent (RGPD compliance)
+  if (!canUseAnalytics()) {
+    return;
+  }
 
   // Google Analytics 4
   if (typeof window.gtag !== 'undefined') {
