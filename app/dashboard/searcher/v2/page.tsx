@@ -9,6 +9,7 @@ import SearcherHeader from '@/components/layout/SearcherHeader';
 import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import EmptyState from '@/components/ui/EmptyState';
 import {
   Heart,
   Users,
@@ -357,18 +358,22 @@ export default function SearcherDashboardV2() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-yellow-600" />
-              </div>
-              <p className="text-gray-600 mb-2">Aucun match pour le moment</p>
-              <p className="text-sm text-gray-500 mb-6">
-                Complete ton profil pour obtenir des recommandations personnalisées
-              </p>
-              <Link href="/profile">
-                <Button>Compléter mon profil</Button>
-              </Link>
-            </div>
+            <EmptyState
+              icon={Heart}
+              title="Aucun match pour le moment"
+              description="Notre algorithme IA cherche les meilleures options pour toi. Complete ton profil pour obtenir des recommandations personnalisées dès maintenant!"
+              illustration="search"
+              variant="colorful"
+              primaryAction={{
+                label: "Compléter mon profil",
+                onClick: () => router.push('/profile/enhance'),
+                icon: Sparkles,
+              }}
+              secondaryAction={{
+                label: "Parcourir les propriétés",
+                onClick: () => router.push('/properties/browse'),
+              }}
+            />
           )}
         </div>
 
