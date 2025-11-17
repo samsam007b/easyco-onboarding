@@ -12,11 +12,11 @@
  * </button>
  */
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 interface VisuallyHiddenProps {
   children: ReactNode;
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
 }
 
 export default function VisuallyHidden({
