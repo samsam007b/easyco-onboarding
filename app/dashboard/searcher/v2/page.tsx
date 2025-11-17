@@ -10,7 +10,7 @@ import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import EmptyState from '@/components/ui/EmptyState';
-import { SkeletonPropertyCard, SkeletonDashboard } from '@/components/ui/Skeleton';
+import { SkeletonPropertyCard, SkeletonDashboard } from '@/components/ui/skeleton';
 import { useIsMobile } from '@/lib/hooks/use-media-query';
 import { useMobileOptimizedQuery, useShouldSimplifyUI } from '@/lib/hooks/use-mobile-optimization';
 import {
