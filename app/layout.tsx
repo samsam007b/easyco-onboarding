@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import { ClientProviders } from '@/components/ClientProviders'
 import dynamic from 'next/dynamic'
 import SkipLink from '@/components/accessibility/SkipLink'
+import { OrganizationStructuredData, WebsiteStructuredData } from '@/components/seo/StructuredData'
 
 // Lazy load des composants non-critiques pour améliorer les performances
 const Analytics = dynamic(() => import('@/components/Analytics'), {
@@ -127,6 +128,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Favicon */}
         <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-192x192.png" />
+
+        {/* Structured Data (JSON-LD) for SEO */}
+        <OrganizationStructuredData />
+        <WebsiteStructuredData />
       </head>
       <body className="min-h-screen">
         <SkipLink />
