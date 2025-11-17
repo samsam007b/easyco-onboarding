@@ -64,7 +64,7 @@ export default function QuickAvailabilityPage() {
 
   const handleNext = async () => {
     // Validation
-    if (!moveInDate && moveInFlexibility !== 'asap') {
+    if (!moveInDate && (moveInFlexibility as MoveInFlexibility) !== 'asap') {
       handleValidationError('moveInDate', ErrorCode.VALIDATION_REQUIRED_FIELD);
       return;
     }
@@ -103,7 +103,7 @@ export default function QuickAvailabilityPage() {
         .upsert(
           {
             user_id: user.id,
-            desired_move_in_date: moveInFlexibility === 'asap' ? new Date().toISOString().split('T')[0] : moveInDate,
+            desired_move_in_date: (moveInFlexibility as MoveInFlexibility) === 'asap' ? new Date().toISOString().split('T')[0] : moveInDate,
             updated_at: new Date().toISOString(),
           },
           { onConflict: 'user_id' }
@@ -224,7 +224,7 @@ export default function QuickAvailabilityPage() {
           </div>
 
           {/* Date Picker (shown if not ASAP) */}
-          {moveInFlexibility !== 'asap' && (
+          {(moveInFlexibility as MoveInFlexibility) !== 'asap' && (
             <div>
               <label htmlFor="moveInDate" className="block text-sm font-semibold text-gray-700 mb-2">
                 Date d'emménagement souhaitée <span className="text-red-500">*</span>
@@ -238,7 +238,7 @@ export default function QuickAvailabilityPage() {
                   onChange={(e) => setMoveInDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-                  required={moveInFlexibility !== 'asap'}
+                  required={(moveInFlexibility as MoveInFlexibility) !== 'asap'}
                 />
               </div>
               {moveInDate && (
@@ -255,7 +255,7 @@ export default function QuickAvailabilityPage() {
           )}
 
           {/* ASAP Message */}
-          {moveInFlexibility === 'asap' && (
+          {(moveInFlexibility as MoveInFlexibility) === 'asap' && (
             <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
               <p className="text-sm text-green-800 font-medium">
                 🏃 Super! Nous te montrerons les logements disponibles immédiatement.
