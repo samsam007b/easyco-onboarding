@@ -9,13 +9,16 @@ import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import { handleSupabaseError, handleValidationError, ErrorCode } from '@/lib/utils/error-handler';
 
+// Define type for move-in flexibility
+type MoveInFlexibility = 'asap' | 'exact' | 'flexible';
+
 export default function QuickAvailabilityPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
 
   const [moveInDate, setMoveInDate] = useState('');
-  const [moveInFlexibility, setMoveInFlexibility] = useState<'flexible' | 'exact' | 'asap'>('flexible');
+  const [moveInFlexibility, setMoveInFlexibility] = useState<MoveInFlexibility>('flexible');
 
   useEffect(() => {
     loadExistingData();
@@ -26,7 +29,9 @@ export default function QuickAvailabilityPage() {
       // Load from localStorage
       const saved = safeLocalStorage.get('quickAvailability', {}) as any;
       if (saved.moveInDate) setMoveInDate(saved.moveInDate);
-      if (saved.moveInFlexibility) setMoveInFlexibility(saved.moveInFlexibility);
+      if (saved.moveInFlexibility) {
+        setMoveInFlexibility(saved.moveInFlexibility as MoveInFlexibility);
+      }
 
       // Load from database
       const { data: { user } } = await supabase.auth.getUser();
@@ -147,7 +152,7 @@ export default function QuickAvailabilityPage() {
   const steps = generateStepsArray('quick', 3);
 
   const flexibilityOptions: Array<{
-    id: 'asap' | 'exact' | 'flexible';
+    id: MoveInFlexibility;
     label: string;
     description: string;
     icon: string;
