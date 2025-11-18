@@ -174,8 +174,8 @@ export default function ModernSearcherHeader({
           >
             <svg
               width="100"
-              height="25"
-              viewBox="0 0 400 100"
+              height="28"
+              viewBox="0 0 400 110"
               className="transition-transform group-hover:scale-105"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -188,7 +188,7 @@ export default function ModernSearcherHeader({
               </defs>
               <text
                 x="0"
-                y="70"
+                y="75"
                 fontSize="80"
                 fontWeight="700"
                 fontFamily="system-ui, -apple-system, sans-serif"
