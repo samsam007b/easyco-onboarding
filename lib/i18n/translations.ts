@@ -51,16 +51,16 @@ export const translations = {
     benefits: {
       verified: {
         title: {
-          fr: 'Vérifications Systématiques',
-          en: 'Systematic Verification',
-          nl: 'Systematische Verificatie',
-          de: 'Systematische Überprüfung',
+          fr: 'Vérification d\'identité',
+          en: 'Identity Verification',
+          nl: 'Identiteitsverificatie',
+          de: 'Identitätsverifizierung',
         },
         description: {
-          fr: 'Identité et annonces vérifiées manuellement. Toute annonce signalée retirée sous 24h.',
-          en: 'Manually verified identities and listings. Any reported listing removed within 24h.',
-          nl: 'Handmatig geverifieerde identiteiten en advertenties. Gemelde advertenties binnen 24u verwijderd.',
-          de: 'Manuell verifizierte Identitäten und Anzeigen. Gemeldete Anzeigen innerhalb von 24h entfernt.',
+          fr: 'Vérification d\'identité par KYC. Tous les signalements sont vérifiés et traités sous 24h.',
+          en: 'KYC identity verification. All reports are verified and processed within 24h.',
+          nl: 'KYC-identiteitsverificatie. Alle meldingen worden binnen 24u geverifieerd en verwerkt.',
+          de: 'KYC-Identitätsverifizierung. Alle Meldungen werden innerhalb von 24h verifiziert und bearbeitet.',
         },
       },
       compatibility: {

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Home, MapPin, Euro, Calendar, Users } from 'lucide-react';
+import { Search, Home, MapPin, Euro, Calendar, Users, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -270,7 +270,7 @@ export default function ModernHeroSection() {
 
                 <div className="relative flex items-center justify-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
-                    <Home className="w-4 h-4" />
+                    <Building2 className="w-4 h-4" />
                   </div>
                   <span className="text-base">Je loue mon bien</span>
                 </div>

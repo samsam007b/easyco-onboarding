@@ -90,16 +90,16 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {/* Benefit 1: Verified */}
+            {/* Benefit 1: Verified - Purple theme for Owner focus */}
             <div className="relative group">
               {/* Background gradient on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-              <div className="relative text-center space-y-4 p-8 rounded-3xl border border-gray-200 hover:border-orange-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white">
-                <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-red-400 to-orange-500">
+              <div className="relative text-center space-y-4 p-8 rounded-3xl border border-gray-200 hover:border-purple-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-white">
+                <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-purple-400 to-pink-500">
                   <Shield className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   {landing.benefits.verified.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
