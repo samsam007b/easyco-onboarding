@@ -197,35 +197,45 @@ export default function ModernPublicHeader({
                 )} />
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu - Premium Minimalist */}
               <AnimatePresence>
                 {langDropdownOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden min-w-[160px] z-50"
+                    className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-50"
                   >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code);
-                          setLangDropdownOpen(false);
-                        }}
-                        className={cn(
-                          "w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors",
-                          language === lang.code
-                            ? "bg-purple-50 text-purple-900 font-semibold"
-                            : "text-gray-700 hover:bg-gray-50"
+                    {languages.map((lang, index) => (
+                      <div key={lang.code}>
+                        <button
+                          onClick={() => {
+                            setLanguage(lang.code);
+                            setLangDropdownOpen(false);
+                          }}
+                          className={cn(
+                            "w-full flex items-center justify-between px-5 py-3 text-sm transition-all group",
+                            language === lang.code
+                              ? "bg-gray-50"
+                              : "hover:bg-gray-50"
+                          )}
+                        >
+                          <span className={cn(
+                            "font-medium transition-all",
+                            language === lang.code
+                              ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
+                              : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                          )}>
+                            {lang.label}
+                          </span>
+                          {language === lang.code && (
+                            <span className="text-purple-600 text-xs">✓</span>
+                          )}
+                        </button>
+                        {index < languages.length - 1 && (
+                          <div className="h-px bg-gray-100 mx-3" />
                         )}
-                      >
-                        <span className="text-lg">{lang.flag}</span>
-                        <span>{lang.label}</span>
-                        {language === lang.code && (
-                          <span className="ml-auto text-purple-600">✓</span>
-                        )}
-                      </button>
+                      </div>
                     ))}
                   </motion.div>
                 )}
