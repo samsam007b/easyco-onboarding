@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
   Bell,
   Check,
   CheckCheck,
