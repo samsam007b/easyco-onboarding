@@ -116,6 +116,12 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  // Admin routes - let them handle their own auth checks
+  // This prevents middleware from interfering with admin redirects
+  if (pathname.startsWith('/admin')) {
+    return response
+  }
+
   // Define public API routes that don't require authentication
   const publicApiRoutes = [
     '/api/auth/login',
