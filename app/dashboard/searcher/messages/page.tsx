@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import DashboardHeader from '@/components/DashboardHeader';
 import { ConversationList } from '@/components/messaging/ConversationList';
 import { ChatWindow } from '@/components/messaging/ChatWindow';
 import {
@@ -456,14 +455,6 @@ function SearcherMessagesContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50/20 via-white to-yellow-50/20">
-      {profile && (
-        <DashboardHeader
-          profile={profile}
-          avatarColor="#FFA040"
-          role="searcher"
-        />
-      )}
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
