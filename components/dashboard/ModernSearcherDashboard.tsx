@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
-import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home, MapPin, MessageCircle } from 'lucide-react';
+import { Heart, Search, FileText, TrendingUp, Bookmark, Users, ArrowRight, Home, MapPin, MessageCircle, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,9 @@ import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutoco
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import PropertyCard from '@/components/PropertyCard';
+import { useMatching } from '@/lib/hooks/use-matching';
+import { Progress } from '@/components/ui/progress';
 
 interface DashboardStats {
   favoritesCount: number;
@@ -25,6 +28,7 @@ export default function ModernSearcherDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   const [stats, setStats] = useState<DashboardStats>({
     favoritesCount: 0,
     topMatchesCount: 0,
@@ -36,9 +40,32 @@ export default function ModernSearcherDashboard() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
 
+  // Use matching hook to get top matches
+  const {
+    propertiesWithMatches,
+    isLoading: matchesLoading,
+    loadPropertiesWithMatches,
+    getTopMatches
+  } = useMatching(userId || undefined);
+
   useEffect(() => {
     loadDashboardData();
   }, []);
+
+  // Load matches when userId is available
+  useEffect(() => {
+    if (userId) {
+      loadPropertiesWithMatches();
+    }
+  }, [userId, loadPropertiesWithMatches]);
+
+  // Update topMatchesCount when matches are loaded
+  useEffect(() => {
+    if (!matchesLoading && propertiesWithMatches.length > 0) {
+      const topMatchesCount = getTopMatches(70).length;
+      setStats(prev => ({ ...prev, topMatchesCount }));
+    }
+  }, [propertiesWithMatches, matchesLoading, getTopMatches]);
 
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     if (place.formatted_address) {
@@ -73,6 +100,8 @@ export default function ModernSearcherDashboard() {
         return;
       }
 
+      setUserId(user.id);
+
       // Load favorites count
       const { count: favCount } = await supabase
         .from('favorites')
@@ -86,7 +115,6 @@ export default function ModernSearcherDashboard() {
         .eq('applicant_id', user.id);
 
       // Load unread messages count using RPC function
-      // FIXED: Now uses get_unread_count RPC with SECURITY DEFINER
       let unreadCount = 0;
       try {
         const { data: unreadData, error: unreadError } = await supabase
@@ -99,11 +127,31 @@ export default function ModernSearcherDashboard() {
         console.error('Unread count failed:', err);
       }
 
+      // Calculate profile completion
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      let profileCompletion = 0;
+      if (profile) {
+        const fields = [
+          profile.first_name, profile.last_name, profile.date_of_birth,
+          profile.occupation, profile.bio, profile.profile_photo_url,
+          profile.min_budget, profile.max_budget, profile.preferred_cities,
+          profile.cleanliness_level, profile.noise_tolerance,
+          profile.smoking !== undefined, profile.pets !== undefined
+        ];
+        const completedFields = fields.filter(field => field !== null && field !== undefined && field !== '').length;
+        profileCompletion = Math.round((completedFields / fields.length) * 100);
+      }
+
       setStats({
         favoritesCount: favCount || 0,
-        topMatchesCount: 5, // Mock - would calculate from matching
+        topMatchesCount: 0, // Will be updated after matches load
         applicationsCount: appCount || 0,
-        profileCompletion: 85, // Mock - would calculate from profile
+        profileCompletion,
         unreadMessages: unreadCount || 0,
       });
     } catch (error) {
@@ -131,12 +179,55 @@ export default function ModernSearcherDashboard() {
     );
   }
 
+  // Get top matches for display
+  const topMatches = getTopMatches(70).slice(0, 4);
+  const hasActivity = stats.favoritesCount > 0 || stats.applicationsCount > 0 || stats.unreadMessages > 0 || topMatches.length > 0;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
         <p className="text-gray-600">Trouvez votre colocation idéale</p>
       </motion.div>
+
+      {/* Profile Completion Indicator */}
+      {stats.profileCompletion < 100 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-6 p-5 bg-gradient-to-r from-purple-50 to-orange-50 rounded-2xl border border-purple-100"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              {stats.profileCompletion >= 80 ? (
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              ) : (
+                <AlertCircle className="w-6 h-6 text-orange-600" />
+              )}
+              <div>
+                <h3 className="font-semibold text-gray-900">
+                  Profil complété à {stats.profileCompletion}%
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {stats.profileCompletion >= 80
+                    ? 'Excellent ! Votre profil est presque complet.'
+                    : 'Complétez votre profil pour obtenir de meilleurs matchs'}
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/dashboard/my-profile')}
+              className="flex-shrink-0"
+            >
+              Compléter
+            </Button>
+          </div>
+          <Progress value={stats.profileCompletion} className="h-2" />
+        </motion.div>
+      )}
 
       {/* Search Hero Section */}
       <motion.div
@@ -267,18 +358,99 @@ export default function ModernSearcherDashboard() {
         })}
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-gradient-to-r from-[#FFA040] via-[#FFB85C] to-[#FFD080] rounded-3xl shadow-lg p-8 text-white mb-8">
-        <h2 className="text-2xl font-bold mb-2">Prêt à trouver votre coloc ?</h2>
-        <p className="mb-6 text-orange-50">Explorez nos propriétés et trouvez celle qui vous correspond</p>
-        <div className="flex gap-4">
-          <Button onClick={() => router.push('/properties/browse')} className="bg-white text-orange-600 hover:bg-orange-50 rounded-full">
-            <Search className="w-4 h-4 mr-2" />Explorer les propriétés
-          </Button>
-          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-full">
-            <Heart className="w-4 h-4 mr-2" />Voir mes matchs
-          </Button>
+      {/* Top Matches Section */}
+      {topMatches.length > 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-6 h-6 text-orange-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Vos meilleurs matchs</h2>
+            </div>
+            {stats.topMatchesCount > 4 && (
+              <Button
+                variant="outline"
+                onClick={() => router.push('/dashboard/searcher/top-matches')}
+              >
+                Voir tous ({stats.topMatchesCount})
+              </Button>
+            )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {topMatches.map((match, index) => (
+              <motion.div
+                key={match.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+              >
+                <PropertyCard
+                  property={{
+                    id: match.id,
+                    title: match.title,
+                    description: match.description,
+                    city: match.city,
+                    neighborhood: match.neighborhood,
+                    monthly_rent: match.price,
+                    bedrooms: match.bedrooms,
+                    property_type: match.furnished ? 'Meublé' : 'Non meublé',
+                    images: match.images,
+                    available_from: match.available_from
+                  }}
+                  variant="compact"
+                  showCompatibilityScore
+                  compatibilityScore={match.matchResult ? Math.round(match.matchResult.score) : undefined}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      ) : !matchesLoading && hasActivity === false ? (
+        /* Empty State - No activity */
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-center py-12 px-6 bg-gradient-to-br from-purple-50 via-orange-50 to-yellow-50 rounded-3xl mb-8"
+        >
+          <div className="max-w-md mx-auto">
+            <Home className="w-16 h-16 text-orange-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Bienvenue sur EasyCo !
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Commencez votre recherche pour trouver la colocation idéale qui vous correspond.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={() => router.push('/properties/browse')}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Explorer les propriétés
+              </Button>
+              {stats.profileCompletion < 80 && (
+                <Button
+                  variant="outline"
+                  onClick={() => router.push('/dashboard/my-profile')}
+                >
+                  Compléter mon profil
+                </Button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      ) : matchesLoading ? (
+        /* Loading State */
+        <div className="text-center py-12">
+          <LoadingHouse size={48} />
+          <p className="text-gray-600 mt-4">Recherche de matchs en cours...</p>
         </div>
-      </motion.div>
+      ) : null}
     </div>
   );
 }
