@@ -132,7 +132,7 @@ export default function PaymentsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center pt-20">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <LoadingHouse size={64} />
           <p className="text-gray-600">Chargement...</p>
         </div>
       </div>

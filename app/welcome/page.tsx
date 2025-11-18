@@ -7,6 +7,7 @@ import { Search, Home as HomeIcon, Key, ArrowRight, Settings, LogOut } from 'luc
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useRole } from '@/lib/role/role-context';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function WelcomePage() {
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function WelcomePage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <LoadingHouse size={64} />
           <p className="text-gray-600">{welcome.loading || 'Loading...'}</p>
         </div>
       </div>

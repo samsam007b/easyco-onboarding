@@ -10,6 +10,7 @@ import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X } from 'lucide-react
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 type AuthMode = 'login' | 'signup';
 
@@ -304,7 +305,7 @@ function AuthContent() {
             >
               {isGoogleLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-[#4A148C] border-t-transparent rounded-full animate-spin mr-2" />
+                  <LoadingHouse size={20} />
                   {mode === 'login' ? t('auth.login.signingInGoogle') : 'Signing up with Google...'}
                 </>
               ) : (
@@ -500,7 +501,7 @@ function AuthContent() {
               <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    <LoadingHouse size={20} />
                     {mode === 'login' ? t('auth.login.signingIn') : t('auth.signup.creatingAccount')}
                   </>
                 ) : (
@@ -532,7 +533,7 @@ export default function AuthPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+        <LoadingHouse size={64} />
       </div>
     }>
       <AuthContent />

@@ -105,7 +105,7 @@ export default function OwnerAbout() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[color:var(--easy-purple)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <LoadingHouse size={64} />
           <p className="text-gray-600">{t('onboarding.owner.about.loading')}</p>
         </div>
       </div>

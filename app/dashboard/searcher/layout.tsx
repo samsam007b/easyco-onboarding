@@ -91,7 +91,7 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
     loadProfile();
   }, [router, supabase]);
 
-  if (!profile) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white"><div className="text-center"><div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" /><p className="text-gray-600 font-medium">Chargement...</p></div></div>;
+  if (!profile) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white"><div className="text-center"><LoadingHouse size={64} /><p className="text-gray-600 font-medium">Chargement...</p></div></div>;
 
   return (<><ModernSearcherHeader profile={profile} stats={stats} /><main id="main-content" className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">{children}</main></>);
 }

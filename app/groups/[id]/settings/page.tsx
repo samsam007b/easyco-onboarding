@@ -262,7 +262,7 @@ export default function GroupSettingsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+        <LoadingHouse size={64} />
       </div>
     );
   }

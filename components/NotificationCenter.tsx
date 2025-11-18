@@ -123,7 +123,7 @@ export function NotificationCenter() {
         <ScrollArea className="h-[400px]">
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
+              <LoadingHouse size={32} />
             </div>
           ) : notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 px-4 text-center">

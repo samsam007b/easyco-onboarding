@@ -155,7 +155,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
           <div className="max-h-96 overflow-y-auto">
             {isLoading ? (
               <div className="p-8 text-center">
-                <div className="w-8 h-8 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto" />
+                <LoadingHouse size={32} />
               </div>
             ) : notifications.length === 0 ? (
               <div className="p-8 text-center">

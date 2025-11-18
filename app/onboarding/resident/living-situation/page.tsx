@@ -156,7 +156,7 @@ export default function ResidentLivingSituationPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#E8865D] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <LoadingHouse size={64} />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>
@@ -299,7 +299,7 @@ export default function ResidentLivingSituationPage() {
             >
               {isSaving ? (
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-5 h-5 border-2 border-gray-400 border-t-gray-700 rounded-full animate-spin" />
+                  <LoadingHouse size={20} />
                   <span>{resident.livingSituation.completing}</span>
                 </div>
               ) : (

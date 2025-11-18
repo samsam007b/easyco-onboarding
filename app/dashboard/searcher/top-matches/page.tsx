@@ -72,7 +72,7 @@ export default function TopMatchesPage() {
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <LoadingHouse size={48} />
             <p className="text-gray-600">Recherche de vos meilleurs matchs...</p>
           </div>
         </div>

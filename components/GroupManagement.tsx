@@ -276,7 +276,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
   if (isLoading) {
     return (
       <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-        <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <LoadingHouse size={48} />
         <p className="text-gray-600">Loading group...</p>
       </div>
     );

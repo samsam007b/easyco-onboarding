@@ -156,7 +156,7 @@ export default function SavedSearchesPage() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+            <LoadingHouse size={48} />
             <p className="text-gray-600">Chargement...</p>
           </div>
         </div>

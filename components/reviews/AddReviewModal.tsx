@@ -230,10 +230,10 @@ export default function AddReviewModal({
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
               >
                 {submitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Publication...
-                  </>
+                  <div className="flex items-center gap-2">
+                    <LoadingHouse size={16} />
+                    <span>Publication...</span>
+                  </div>
                 ) : (
                   'Publier l\'avis'
                 )}

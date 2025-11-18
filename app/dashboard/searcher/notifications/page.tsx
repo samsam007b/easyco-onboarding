@@ -130,7 +130,7 @@ export default function NotificationsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <LoadingHouse size={64} />
             <p className="text-gray-600">Chargement des notifications...</p>
           </div>
         </div>

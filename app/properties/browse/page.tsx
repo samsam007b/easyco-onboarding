@@ -995,7 +995,7 @@ export default function PropertiesBrowsePageV2() {
                     // Loading
                     <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl flex items-center justify-center">
                       <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <LoadingHouse size={64} />
                         <p className="text-gray-600 font-medium">Chargement des profils...</p>
                       </div>
                     </div>

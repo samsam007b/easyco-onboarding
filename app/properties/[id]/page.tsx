@@ -222,7 +222,7 @@ export default function PropertyDetailsPage() {
       <PageContainer>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+            <LoadingHouse size={48} />
             <p className="mt-4 text-gray-600">Chargement de la propriété...</p>
           </div>
         </div>

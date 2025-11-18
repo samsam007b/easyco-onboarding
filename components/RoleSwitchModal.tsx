@@ -137,7 +137,7 @@ export default function RoleSwitchModal({
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <LoadingHouse size={16} />
                   <span>Switching...</span>
                 </div>
               ) : (

@@ -328,7 +328,7 @@ function JoinGroupContent() {
 
             {isLoadingOpenGroups && (
               <div className="text-center py-8">
-                <div className="w-12 h-12 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin mx-auto" />
+                <LoadingHouse size={48} />
               </div>
             )}
 
@@ -385,7 +385,7 @@ export default function JoinGroupPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+        <LoadingHouse size={64} />
       </div>
     }>
       <JoinGroupContent />
