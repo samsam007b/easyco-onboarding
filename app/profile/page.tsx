@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
@@ -83,6 +83,9 @@ export default function ProfilePage() {
 
   // Reset onboarding dialog state
   const [showResetOnboardingDialog, setShowResetOnboardingDialog] = useState(false)
+
+  // Profile completion dropdown state
+  const [showCompletionDetails, setShowCompletionDetails] = useState(false)
 
   const supabase = createClient()
 
@@ -415,7 +418,34 @@ export default function ProfilePage() {
   }
 
   const colors = getRoleColors()
-  const profileCompletion = userData.onboarding_completed ? 100 : 50
+
+  // Calculate comprehensive profile completion
+  const calculateProfileCompletion = () => {
+    let completed = 0
+    const total = 6 // 6 sections total
+
+    // 1. Basic profile (name + avatar)
+    if (userData?.full_name && userData?.avatar_url) completed++
+
+    // 2. Financial info
+    if (userProfile?.financial_info) completed++
+
+    // 3. Community preferences
+    if (userProfile?.community_preferences) completed++
+
+    // 4. Extended personality
+    if (userProfile?.extended_personality) completed++
+
+    // 5. Advanced preferences
+    if (userProfile?.advanced_preferences) completed++
+
+    // 6. Profile verification
+    if (userProfile?.verification_status === 'verified') completed++
+
+    return Math.round((completed / total) * 100)
+  }
+
+  const profileCompletion = calculateProfileCompletion()
 
   // Tab content components
   const tabs = [
@@ -698,192 +728,218 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Gamified Profile Completion */}
+                {/* Compact Profile Completion - Just below Personal Info */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 p-[2px] shadow-2xl mb-6"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`bg-gradient-to-br from-purple-50/50 to-pink-50/50 backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
                 >
-                  {/* Animated gradient border */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 opacity-75 animate-pulse" />
-
-                  <div className="relative bg-gradient-to-br from-purple-50 via-white to-pink-50 rounded-[30px] p-8">
-                    {/* Decorative elements */}
-                    <div className="absolute top-4 right-4 w-32 h-32 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl" />
-                    <div className="absolute bottom-4 left-4 w-24 h-24 bg-gradient-to-br from-purple-200/20 to-pink-200/20 rounded-full blur-2xl" />
-
-                    <div className="relative z-10">
-                      <div className="flex flex-col lg:flex-row items-center gap-8">
-                        {/* Left: Circular Progress */}
-                        <div className="flex-shrink-0">
-                          <div className="relative">
-                            {/* Outer glow effect */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl opacity-50" />
-
-                            {/* Main progress circle */}
-                            <div className="relative w-40 h-40">
-                              <svg className="w-40 h-40 transform -rotate-90">
-                                {/* Background circle */}
-                                <circle
-                                  cx="80"
-                                  cy="80"
-                                  r="70"
-                                  fill="none"
-                                  stroke="#e5e7eb"
-                                  strokeWidth="8"
-                                />
-                                {/* Progress circle */}
-                                <circle
-                                  cx="80"
-                                  cy="80"
-                                  r="70"
-                                  fill="none"
-                                  stroke="url(#profileGradient)"
-                                  strokeWidth="8"
-                                  strokeLinecap="round"
-                                  strokeDasharray={`${2 * Math.PI * 70}`}
-                                  strokeDashoffset={`${2 * Math.PI * 70 * (1 - profileCompletion / 100)}`}
-                                  className="transition-all duration-1000 ease-out"
-                                />
-                                <defs>
-                                  <linearGradient id="profileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#9333ea" />
-                                    <stop offset="50%" stopColor="#ec4899" />
-                                    <stop offset="100%" stopColor="#f97316" />
-                                  </linearGradient>
-                                </defs>
-                              </svg>
-
-                              {/* Center content */}
-                              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${colors.gradient} flex items-center justify-center shadow-xl mb-1`}>
-                                  {profileCompletion === 100 ? (
-                                    <Trophy className="w-10 h-10 text-white animate-pulse" />
-                                  ) : profileCompletion >= 75 ? (
-                                    <Award className="w-10 h-10 text-white" />
-                                  ) : profileCompletion >= 50 ? (
-                                    <Star className="w-10 h-10 text-white" />
-                                  ) : (
-                                    <Target className="w-10 h-10 text-white" />
-                                  )}
-                                </div>
-                                <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                                  {profileCompletion}%
-                                </span>
-                              </div>
-                            </div>
-                          </div>
+                  {/* Header - Always visible */}
+                  <button
+                    onClick={() => setShowCompletionDetails(!showCompletionDetails)}
+                    className="w-full flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Small Progress Circle */}
+                      <div className="relative w-12 h-12">
+                        <svg className="w-12 h-12 transform -rotate-90">
+                          <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" strokeWidth="3" />
+                          <circle
+                            cx="24" cy="24" r="20"
+                            fill="none"
+                            stroke="url(#compactGradient)"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeDasharray={`${2 * Math.PI * 20}`}
+                            strokeDashoffset={`${2 * Math.PI * 20 * (1 - profileCompletion / 100)}`}
+                            className="transition-all duration-500"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            {profileCompletion}%
+                          </span>
                         </div>
+                        <svg className="hidden">
+                          <defs>
+                            <linearGradient id="compactGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="#9333ea" />
+                              <stop offset="50%" stopColor="#ec4899" />
+                              <stop offset="100%" stopColor="#f97316" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
 
-                        {/* Middle: Level Info */}
-                        <div className="flex-1 text-center lg:text-left">
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full mb-3">
-                            <Zap className="w-4 h-4 text-purple-600" />
-                            <span className="text-sm font-bold text-purple-700">
-                              {profileCompletion === 100 ? 'Master' : profileCompletion >= 75 ? 'Expert' : profileCompletion >= 50 ? 'Intermédiaire' : 'Débutant'}
-                            </span>
-                          </div>
-
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-                            {profileCompletion === 100 ? (
-                              <>
-                                <Trophy className="w-6 h-6 text-yellow-600" />
-                                Profil Parfait !
-                              </>
-                            ) : profileCompletion >= 75 ? (
-                              <>
-                                <Sparkles className="w-6 h-6 text-purple-600" />
-                                Presque là !
-                              </>
-                            ) : profileCompletion >= 50 ? (
-                              <>
-                                <Rocket className="w-6 h-6 text-orange-600" />
-                                Continue !
-                              </>
-                            ) : (
-                              <>
-                                <Target className="w-6 h-6 text-blue-600" />
-                                Commence ton aventure !
-                              </>
-                            )}
-                          </h3>
-
-                          <p className="text-gray-600 mb-4">
-                            {profileCompletion === 100 ? (
-                              "Ton profil est complet ! Tu maximises tes chances de trouver le match parfait."
-                            ) : profileCompletion >= 75 ? (
-                              `Plus que ${100 - profileCompletion}% pour débloquer le niveau Master !`
-                            ) : profileCompletion >= 50 ? (
-                              "Tu es sur la bonne voie ! Continue à enrichir ton profil."
-                            ) : (
-                              "Complète ton profil pour augmenter tes chances de matching jusqu'à 3x !"
-                            )}
-                          </p>
-
-                          {/* Mini badges */}
-                          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-                            {/* Basic Profile Badge */}
-                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userData.full_name && userData.avatar_url ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
-                              <UserCircle className={`w-4 h-4 ${userData.full_name && userData.avatar_url ? 'text-green-600' : 'text-gray-400'}`} />
-                              <span className={`text-xs font-medium ${userData.full_name && userData.avatar_url ? 'text-green-700' : 'text-gray-500'}`}>
-                                Profil de base
-                              </span>
-                              {userData.full_name && userData.avatar_url && <Check className="w-3 h-3 text-green-600" />}
-                            </div>
-
-                            {/* Financial Badge */}
-                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.financial_info ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
-                              <DollarSign className={`w-4 h-4 ${userProfile?.financial_info ? 'text-green-600' : 'text-gray-400'}`} />
-                              <span className={`text-xs font-medium ${userProfile?.financial_info ? 'text-green-700' : 'text-gray-500'}`}>
-                                Financier
-                              </span>
-                              {userProfile?.financial_info && <Check className="w-3 h-3 text-green-600" />}
-                            </div>
-
-                            {/* Personality Badge */}
-                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.extended_personality ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
-                              <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
-                              <span className={`text-xs font-medium ${userProfile?.extended_personality ? 'text-green-700' : 'text-gray-500'}`}>
-                                Personnalité
-                              </span>
-                              {userProfile?.extended_personality && <Check className="w-3 h-3 text-green-600" />}
-                            </div>
-
-                            {/* Verification Badge */}
-                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.verification_status === 'verified' ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
-                              <Shield className={`w-4 h-4 ${userProfile?.verification_status === 'verified' ? 'text-green-600' : 'text-gray-400'}`} />
-                              <span className={`text-xs font-medium ${userProfile?.verification_status === 'verified' ? 'text-green-700' : 'text-gray-500'}`}>
-                                Vérifié
-                              </span>
-                              {userProfile?.verification_status === 'verified' && <Check className="w-3 h-3 text-green-600" />}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Right: Rewards */}
-                        {profileCompletion < 100 && (
-                          <div className="flex-shrink-0 text-center">
-                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300 flex items-center justify-center mb-3 shadow-lg">
-                              <div className="text-center">
-                                <Sparkles className="w-12 h-12 text-yellow-600 mx-auto mb-2 animate-pulse" />
-                                <p className="text-xs font-bold text-yellow-700">Récompense</p>
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-600 font-medium">+3x Visibilité</p>
-                          </div>
-                        )}
-
-                        {profileCompletion === 100 && (
-                          <div className="flex-shrink-0 text-center">
-                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-yellow-200 to-orange-200 border-2 border-yellow-400 flex items-center justify-center mb-3 shadow-xl animate-pulse">
-                              <Trophy className="w-16 h-16 text-yellow-700" />
-                            </div>
-                            <p className="text-xs font-bold text-yellow-700">Profil Master!</p>
-                          </div>
-                        )}
+                      <div className="text-left">
+                        <h3 className="text-sm font-semibold text-gray-900">Complétion du profil</h3>
+                        <p className="text-xs text-gray-600">
+                          {profileCompletion === 100 ? (
+                            "Profil complet"
+                          ) : (
+                            `${6 - Math.round((profileCompletion / 100) * 6)} section${6 - Math.round((profileCompletion / 100) * 6) > 1 ? 's' : ''} à compléter`
+                          )}
+                        </p>
                       </div>
                     </div>
-                  </div>
+
+                    <div className="flex items-center gap-2">
+                      {profileCompletion === 100 && (
+                        <Trophy className="w-5 h-5 text-yellow-600" />
+                      )}
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${showCompletionDetails ? 'rotate-180' : ''}`} />
+                    </div>
+                  </button>
+
+                  {/* Dropdown Details */}
+                  <AnimatePresence>
+                    {showCompletionDetails && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-4 pt-4 border-t border-gray-200 space-y-3">
+                          {/* Profile de base */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <UserCircle className={`w-4 h-4 ${userData.full_name && userData.avatar_url ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Profil de base</span>
+                              </div>
+                              {userData.full_name && userData.avatar_url ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <span className="text-xs text-gray-500">0/2</span>
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500"
+                                style={{ width: `${userData.full_name && userData.avatar_url ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Financial Info */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <DollarSign className={`w-4 h-4 ${userProfile?.financial_info ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Informations financières</span>
+                              </div>
+                              {userProfile?.financial_info ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.financial_info ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Community */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Users className={`w-4 h-4 ${userProfile?.community_preferences ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Communauté & événements</span>
+                              </div>
+                              {userProfile?.community_preferences ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.community_preferences ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Personality */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Personnalité étendue</span>
+                              </div>
+                              {userProfile?.extended_personality ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-pink-500 to-rose-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.extended_personality ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Advanced Preferences */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Settings className={`w-4 h-4 ${userProfile?.advanced_preferences ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Préférences avancées</span>
+                              </div>
+                              {userProfile?.advanced_preferences ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-purple-500 to-violet-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.advanced_preferences ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Verification */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Shield className={`w-4 h-4 ${userProfile?.verification_status === 'verified' ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Vérification du profil</span>
+                              </div>
+                              {userProfile?.verification_status === 'verified' ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-amber-500 to-orange-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.verification_status === 'verified' ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* CTA if not complete */}
+                          {profileCompletion < 100 && (
+                            <div className="pt-2">
+                              <p className="text-xs text-center text-gray-600 italic">
+                                Complète ton profil pour augmenter ta visibilité jusqu'à 3x
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
 
                 {/* Enhanced Profile Sections */}
