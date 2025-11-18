@@ -9,8 +9,8 @@ import { useMatching } from '@/lib/hooks/use-matching';
 import { createClient } from '@/lib/auth/supabase-client';
 import PropertyCard from '@/components/PropertyCard';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
-import {
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
   Sparkles,
   Settings,
   TrendingUp,
