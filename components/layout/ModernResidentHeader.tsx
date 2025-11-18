@@ -138,10 +138,10 @@ export default function ModernResidentHeader({
             className="flex items-center group"
           >
             <Image
-              src="/icons/icon-192x192.png"
+              src="/logos/easyco-logo-medium.png"
               alt="EasyCo"
-              width={40}
-              height={40}
+              width={120}
+              height={30}
               className="transition-transform group-hover:scale-105"
               priority
             />
