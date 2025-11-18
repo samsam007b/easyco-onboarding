@@ -40,6 +40,7 @@
     "@upstash/ratelimit": "^2.0.6",
     "@upstash/redis": "^1.35.6",
     "@vis.gl/react-google-maps": "^1.7.1",
+    "canvas-confetti": "^1.9.4",
     "cldr-core": "^48.0.0",
     "cldr-localenames-full": "^48.0.0",
     "cldrjs": "^0.5.5",
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^14.2.33",
     "@playwright/test": "^1.56.1",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^24.9.2",
     "@types/react": "19.2.2",

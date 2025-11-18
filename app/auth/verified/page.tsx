@@ -13,7 +13,7 @@ function EmailVerifiedContent() {
 
   useEffect(() => {
     // Countdown timer
-    const countdownInterval = setInterval(() => {
+    const countdownInterval: NodeJS.Timeout = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(countdownInterval)
