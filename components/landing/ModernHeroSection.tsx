@@ -249,13 +249,16 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
 
-            {/* Owner CTA - Purple Gradient Pill */}
+            {/* Owner CTA - Purple to Orange Gradient Pill (Brand Colors) */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all"
+                className="w-full sm:w-auto group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 100%)'
+                }}
               >
                 {/* Shine effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
