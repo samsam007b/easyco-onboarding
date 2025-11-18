@@ -185,9 +185,11 @@ export default function ModernSearcherDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      {/* Header with hierarchy */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 text-center">
+        <p className="text-orange-600 font-semibold text-sm uppercase tracking-wide mb-2">Bienvenue sur EasyCo</p>
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
-        <p className="text-gray-600">Trouvez votre colocation idéale</p>
+        <p className="text-gray-600 text-lg">Trouvez votre co-living idéal</p>
       </motion.div>
 
       {/* Profile Completion Indicator */}
@@ -228,6 +230,101 @@ export default function ModernSearcherDashboard() {
           <Progress value={stats.profileCompletion} className="h-2" />
         </motion.div>
       )}
+
+      {/* Unified Dashboard Overview Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="mb-8"
+      >
+        <div className="relative rounded-[32px] overflow-hidden shadow-xl bg-gradient-to-br from-purple-50 via-orange-50 to-yellow-50 p-8 md:p-12">
+          {/* Decorative background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
+
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Central Icon */}
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl blur-2xl opacity-30 animate-pulse" />
+                <div className="relative w-24 h-24 bg-white rounded-3xl shadow-2xl flex items-center justify-center">
+                  <Home className="w-12 h-12 text-orange-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* KPI Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              {kpiCards.map((card, index) => {
+                const Icon = card.icon;
+                return (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    onClick={card.action}
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 cursor-pointer transition-all hover:scale-105 hover:shadow-lg"
+                  >
+                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-3", `bg-gradient-to-br ${card.gradient}`)}>
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xs font-medium text-gray-600 mb-1">{card.title}</h3>
+                    <p className="text-2xl font-bold text-gray-900">{card.value}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Welcome Message - Only show if no activity */}
+            {!hasActivity && (
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Commencez votre recherche
+                </h2>
+                <p className="text-gray-600 max-w-lg mx-auto">
+                  Explorez nos propriétés et trouvez la colocation idéale qui vous correspond
+                </p>
+              </div>
+            )}
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={() => router.push('/properties/browse')}
+                size="lg"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Explorer les propriétés
+              </Button>
+              {topMatches.length > 0 && (
+                <Button
+                  onClick={() => router.push('/dashboard/searcher/top-matches')}
+                  variant="outline"
+                  size="lg"
+                  className="bg-white/50 backdrop-blur-sm border-2 border-orange-200 hover:bg-white hover:border-orange-300"
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Voir mes matchs ({stats.topMatchesCount})
+                </Button>
+              )}
+              {stats.profileCompletion < 80 && !hasActivity && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => router.push('/dashboard/my-profile')}
+                  className="bg-white/50 backdrop-blur-sm border-2 border-purple-200 hover:bg-white hover:border-purple-300"
+                >
+                  <CheckCircle2 className="w-5 h-5 mr-2" />
+                  Compléter mon profil
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Search Hero Section */}
       <motion.div
@@ -339,25 +436,6 @@ export default function ModernSearcherDashboard() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {kpiCards.map((card, index) => {
-          const Icon = card.icon;
-          return (
-            <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={card.action}
-              className="relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105 bg-white shadow-lg hover:shadow-xl hover:ring-2 hover:ring-orange-400">
-              <div className={cn("absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20", `bg-gradient-to-br ${card.bg}`)} />
-              <div className="relative z-10">
-                <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center mb-4", `bg-gradient-to-br ${card.gradient} shadow-lg`)}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-sm font-medium text-gray-600 mb-2">{card.title}</h3>
-                <p className="text-3xl font-bold text-gray-900">{card.value}</p>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
       {/* Top Matches Section */}
       {topMatches.length > 0 ? (
         <motion.div
@@ -407,41 +485,6 @@ export default function ModernSearcherDashboard() {
                 />
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-      ) : !matchesLoading && hasActivity === false ? (
-        /* Empty State - No activity */
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="text-center py-12 px-6 bg-gradient-to-br from-purple-50 via-orange-50 to-yellow-50 rounded-3xl mb-8"
-        >
-          <div className="max-w-md mx-auto">
-            <Home className="w-16 h-16 text-orange-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Bienvenue sur EasyCo !
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Commencez votre recherche pour trouver la colocation idéale qui vous correspond.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                Explorer les propriétés
-              </Button>
-              {stats.profileCompletion < 80 && (
-                <Button
-                  variant="outline"
-                  onClick={() => router.push('/dashboard/my-profile')}
-                >
-                  Compléter mon profil
-                </Button>
-              )}
-            </div>
           </div>
         </motion.div>
       ) : matchesLoading ? (
