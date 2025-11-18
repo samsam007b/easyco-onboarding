@@ -185,10 +185,49 @@ export default function ModernSearcherDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Unified Dashboard Overview Section - FIRST */}
+      {/* Profile Completion Indicator - TOP */}
+      {stats.profileCompletion < 100 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 p-5 bg-gradient-to-r from-purple-50 to-orange-50 rounded-2xl border border-purple-100"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              {stats.profileCompletion >= 80 ? (
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              ) : (
+                <AlertCircle className="w-6 h-6 text-orange-600" />
+              )}
+              <div>
+                <h3 className="font-semibold text-gray-900">
+                  Profil complété à {stats.profileCompletion}%
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {stats.profileCompletion >= 80
+                    ? 'Excellent ! Votre profil est presque complet.'
+                    : 'Complétez votre profil pour obtenir de meilleurs matchs'}
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/dashboard/my-profile')}
+              className="flex-shrink-0"
+            >
+              Compléter
+            </Button>
+          </div>
+          <Progress value={stats.profileCompletion} className="h-2" />
+        </motion.div>
+      )}
+
+      {/* Unified Dashboard Overview Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
         className="mb-8"
       >
         <div className="relative rounded-[32px] overflow-hidden shadow-xl bg-gradient-to-br from-purple-50 via-orange-50 to-yellow-50 p-8 md:p-12">
@@ -278,45 +317,6 @@ export default function ModernSearcherDashboard() {
           </div>
         </div>
       </motion.div>
-
-      {/* Profile Completion Indicator */}
-      {stats.profileCompletion < 100 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-6 p-5 bg-gradient-to-r from-purple-50 to-orange-50 rounded-2xl border border-purple-100"
-        >
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-3">
-              {stats.profileCompletion >= 80 ? (
-                <CheckCircle2 className="w-6 h-6 text-green-600" />
-              ) : (
-                <AlertCircle className="w-6 h-6 text-orange-600" />
-              )}
-              <div>
-                <h3 className="font-semibold text-gray-900">
-                  Profil complété à {stats.profileCompletion}%
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {stats.profileCompletion >= 80
-                    ? 'Excellent ! Votre profil est presque complet.'
-                    : 'Complétez votre profil pour obtenir de meilleurs matchs'}
-                </p>
-              </div>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => router.push('/dashboard/my-profile')}
-              className="flex-shrink-0"
-            >
-              Compléter
-            </Button>
-          </div>
-          <Progress value={stats.profileCompletion} className="h-2" />
-        </motion.div>
-      )}
 
       {/* Search Hero Section */}
       <motion.div
