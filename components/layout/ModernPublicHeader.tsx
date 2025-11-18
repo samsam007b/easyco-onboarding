@@ -98,10 +98,10 @@ export default function ModernPublicHeader({
             onClick={() => onNavigate?.(null)}
           >
             <Image
-              src="/logos/easyco-logo-medium.png"
+              src="/logos/easyco-logo-small.png"
               alt="EasyCo"
-              width={100}
-              height={25}
+              width={90}
+              height={23}
               className="transition-transform group-hover:scale-105"
               priority
             />
