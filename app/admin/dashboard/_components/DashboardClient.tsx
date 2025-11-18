@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
+import Link from 'next/link';
 import {
   Activity,
   Users,
@@ -14,6 +15,7 @@ import {
   Shield,
   Eye,
   RefreshCw,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface SystemMetrics {
@@ -107,6 +109,15 @@ export default function DashboardClient() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="mb-4">
+            <Link
+              href="/admin"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retour aux données
+            </Link>
+          </div>
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">

@@ -96,8 +96,16 @@ export default async function AdminPage() {
     <main className="p-6 space-y-8">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-semibold">Admin — Data</h1>
-        <div className="text-sm text-gray-500">
-          Logged in as: {user.email}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/dashboard"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium hover:from-purple-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
+          >
+            📊 Dashboard
+          </Link>
+          <div className="text-sm text-gray-500">
+            Logged in as: {user.email}
+          </div>
         </div>
       </div>
 
