@@ -16,7 +16,10 @@ import {
   Eye,
   Smartphone,
   ArrowRight,
-  Check
+  Check,
+  ChevronRight,
+  Settings as SettingsIcon,
+  HelpCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -29,6 +32,7 @@ interface SettingsSection {
   href: string;
   badge?: string;
   color: string;
+  category: 'account' | 'preferences' | 'advanced';
 }
 
 export default function SettingsPage() {
@@ -65,6 +69,30 @@ export default function SettingsPage() {
     }
   };
 
+  // Role-specific colors
+  const getRoleColors = () => {
+    if (userType === 'owner') return {
+      gradient: 'from-purple-600 to-purple-700',
+      light: 'from-purple-50 via-white to-purple-50/30',
+      accent: 'purple',
+      cardHover: 'hover:border-purple-300',
+    };
+    if (userType === 'resident') return {
+      gradient: 'from-orange-600 to-red-600',
+      light: 'from-orange-50 via-white to-red-50/30',
+      accent: 'orange',
+      cardHover: 'hover:border-orange-300',
+    };
+    return {
+      gradient: 'from-[#FFA040] to-[#FFB85C]',
+      light: 'from-orange-50 via-white to-yellow-50/30',
+      accent: 'orange',
+      cardHover: 'hover:border-orange-300',
+    };
+  };
+
+  const colors = getRoleColors();
+
   const settingsSections: SettingsSection[] = [
     {
       id: 'profile',
@@ -72,15 +100,8 @@ export default function SettingsPage() {
       description: 'Gérer vos informations personnelles',
       icon: User,
       href: userType === 'owner' ? '/dashboard/my-profile-owner' : userType === 'resident' ? '/dashboard/my-profile-resident' : '/profile',
-      color: 'from-purple-500 to-purple-700',
-    },
-    {
-      id: 'notifications',
-      title: 'Notifications',
-      description: 'Configurer vos préférences de notifications',
-      icon: Bell,
-      href: '/dashboard/settings/preferences',
-      color: 'from-yellow-500 to-yellow-700',
+      color: 'from-orange-400 to-yellow-500',
+      category: 'account',
     },
     {
       id: 'security',
@@ -88,7 +109,8 @@ export default function SettingsPage() {
       description: 'Mot de passe et authentification',
       icon: Shield,
       href: '/settings/security',
-      color: 'from-red-500 to-red-700',
+      color: 'from-red-500 to-red-600',
+      category: 'account',
     },
     {
       id: 'privacy',
@@ -96,7 +118,17 @@ export default function SettingsPage() {
       description: 'Contrôler la visibilité de votre profil',
       icon: Eye,
       href: '/settings/privacy',
-      color: 'from-blue-500 to-blue-700',
+      color: 'from-blue-500 to-blue-600',
+      category: 'account',
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      description: 'Configurer vos préférences',
+      icon: Bell,
+      href: '/dashboard/settings/preferences',
+      color: 'from-yellow-500 to-orange-600',
+      category: 'preferences',
     },
     {
       id: 'language',
@@ -104,7 +136,17 @@ export default function SettingsPage() {
       description: 'Changer la langue de l\'interface',
       icon: Globe,
       href: '/settings/language',
-      color: 'from-green-500 to-green-700',
+      color: 'from-green-500 to-emerald-600',
+      category: 'preferences',
+    },
+    {
+      id: 'email',
+      title: 'Emails',
+      description: 'Préférences de communications',
+      icon: Mail,
+      href: '/settings/email',
+      color: 'from-pink-500 to-rose-600',
+      category: 'preferences',
     },
     {
       id: 'payment',
@@ -112,26 +154,26 @@ export default function SettingsPage() {
       description: 'Gérer vos moyens de paiement',
       icon: CreditCard,
       href: '/settings/payment',
-      color: 'from-indigo-500 to-indigo-700',
+      color: 'from-indigo-500 to-purple-600',
       badge: userType === 'owner' ? 'Pro' : undefined,
-    },
-    {
-      id: 'email',
-      title: 'Email & Communications',
-      description: 'Préférences d\'emails et newsletters',
-      icon: Mail,
-      href: '/settings/email',
-      color: 'from-pink-500 to-pink-700',
+      category: 'advanced',
     },
     {
       id: 'devices',
-      title: 'Appareils Connectés',
+      title: 'Appareils',
       description: 'Gérer vos sessions actives',
       icon: Smartphone,
       href: '/settings/devices',
-      color: 'from-cyan-500 to-cyan-700',
+      color: 'from-cyan-500 to-blue-600',
+      category: 'advanced',
     },
   ];
+
+  const categories = [
+    { id: 'account', title: 'Compte', icon: User },
+    { id: 'preferences', title: 'Préférences', icon: SettingsIcon },
+    { id: 'advanced', title: 'Avancé', icon: Shield },
+  ] as const;
 
   if (isLoading) {
     return (
@@ -145,103 +187,138 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30">
-      {/* Header with glassmorphism */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-purple-200/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Paramètres</h1>
-              <p className="text-gray-600 mt-1">Gérer votre compte et vos préférences</p>
+    <div className={cn("min-h-screen bg-gradient-to-br", colors.light)}>
+      {/* Premium Header */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center gap-3 mb-4">
+              <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl", `bg-gradient-to-br ${colors.gradient}`)}>
+                <SettingsIcon className="w-8 h-8 text-white" />
+              </div>
             </div>
-            <Button
-              onClick={() => router.back()}
-              variant="outline"
-              className="rounded-full"
-            >
-              Retour
-            </Button>
-          </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
+            <p className="text-gray-600 text-lg">Gérer votre compte et vos préférences</p>
+          </motion.div>
         </div>
       </div>
 
-      {/* Settings Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {settingsSections.map((section, index) => {
-            const Icon = section.icon;
+      {/* Settings Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {categories.map((category, categoryIndex) => {
+          const CategoryIcon = category.icon;
+          const categorySections = settingsSections.filter(s => s.category === category.id);
 
-            return (
-              <motion.div
-                key={section.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                onClick={() => router.push(section.href)}
-                className="relative group cursor-pointer"
-              >
-                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-200 hover:border-purple-300">
-                  {/* Gradient Background Effect */}
-                  <div className={cn(
-                    "absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity",
-                    `bg-gradient-to-br ${section.color}`
-                  )} />
-
-                  {/* Icon */}
-                  <div className={cn(
-                    "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4",
-                    `bg-gradient-to-br ${section.color} shadow-lg`
-                  )}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-bold text-gray-900">{section.title}</h3>
-                      {section.badge && (
-                        <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">
-                          {section.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-600 mb-4">{section.description}</p>
-
-                    {/* Arrow */}
-                    <div className="flex items-center text-purple-600 text-sm font-medium group-hover:gap-2 transition-all">
-                      <span>Configurer</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
+          return (
+            <motion.div
+              key={category.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: categoryIndex * 0.1 }}
+              className="mb-8"
+            >
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", `bg-gradient-to-br ${colors.gradient}`)}>
+                  <CategoryIcon className="w-5 h-5 text-white" />
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
+              </div>
 
-        {/* Quick Actions */}
+              {/* Category Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categorySections.map((section, index) => {
+                  const Icon = section.icon;
+
+                  return (
+                    <motion.div
+                      key={section.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: categoryIndex * 0.1 + index * 0.05 }}
+                      onClick={() => router.push(section.href)}
+                      className={cn(
+                        "group relative cursor-pointer bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-gray-200 transition-all hover:shadow-xl hover:scale-[1.02]",
+                        colors.cardHover
+                      )}
+                    >
+                      {/* Hover Gradient Effect */}
+                      <div className={cn(
+                        "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity",
+                        `bg-gradient-to-br ${section.color}`
+                      )} />
+
+                      <div className="relative">
+                        {/* Icon with Badge */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div className={cn(
+                            "w-12 h-12 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow",
+                            `bg-gradient-to-br ${section.color}`
+                          )}>
+                            <Icon className="w-6 h-6 text-white" />
+                          </div>
+                          {section.badge && (
+                            <span className={cn(
+                              "px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm",
+                              `bg-gradient-to-br ${colors.gradient} text-white`
+                            )}>
+                              {section.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Content */}
+                        <h3 className="font-bold text-gray-900 mb-1.5 flex items-center justify-between">
+                          {section.title}
+                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                        </h3>
+                        <p className="text-sm text-gray-600 leading-relaxed">{section.description}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          );
+        })}
+
+        {/* Help Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-6 text-white"
+          className={cn(
+            "mt-8 rounded-3xl p-8 text-white relative overflow-hidden",
+            `bg-gradient-to-r ${colors.gradient}`
+          )}
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold mb-1">Besoin d'aide ?</h3>
-              <p className="text-purple-200 text-sm">Consultez notre centre d'aide ou contactez le support</p>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <HelpCircle className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">Besoin d'aide ?</h3>
+                <p className="text-white/80">Consultez notre centre d'aide ou contactez le support</p>
+              </div>
             </div>
             <div className="flex gap-3">
               <Button
                 onClick={() => router.push('/help')}
                 variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-full"
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-xl"
               >
                 Centre d'aide
               </Button>
               <Button
                 onClick={() => router.push('/contact')}
-                className="bg-white text-purple-700 hover:bg-white/90 rounded-full"
+                className="bg-white text-gray-900 hover:bg-white/90 rounded-xl font-semibold"
               >
                 Contacter le support
               </Button>
@@ -249,14 +326,14 @@ export default function SettingsPage() {
           </div>
         </motion.div>
 
-        {/* Account Info */}
+        {/* Footer Info */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-6 text-center text-sm text-gray-500"
+          className="mt-8 text-center"
         >
-          <p>Version 1.0.0 • EasyCo © 2024</p>
+          <p className="text-sm text-gray-500">Version 1.0.0 • EasyCo © 2024</p>
         </motion.div>
       </div>
     </div>
