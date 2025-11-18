@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import LoadingView from '@/components/ui/LoadingView';
 
 export default function MessagesRedirectPage() {
   const router = useRouter();
@@ -53,16 +54,5 @@ export default function MessagesRedirectPage() {
   }, [router, supabase]);
 
   // Show loading state
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-yellow-50/30">
-      <div className="text-center">
-        <div className="relative">
-          <div className="w-20 h-20 border-4 border-orange-200 rounded-full mx-auto mb-6"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-[#FFA040] border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Redirection...</h3>
-        <p className="text-gray-600">Chargement de vos messages</p>
-      </div>
-    </div>
-  );
+  return <LoadingView message="Chargement de vos messages" fullScreen />;
 }
