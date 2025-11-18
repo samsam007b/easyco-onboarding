@@ -1,3 +1,5 @@
+import LoadingHouse from '@/components/ui/LoadingHouse';
+
 export default function DashboardLoading() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -42,7 +44,7 @@ export default function DashboardLoading() {
 
       {/* Loading Indicator */}
       <div className="fixed bottom-8 right-8 bg-white rounded-full p-4 shadow-lg">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4A148C]"></div>
+        <LoadingHouse size={40} />
       </div>
     </div>
   );

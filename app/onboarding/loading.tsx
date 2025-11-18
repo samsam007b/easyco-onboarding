@@ -1,3 +1,5 @@
+import LoadingHouse from '@/components/ui/LoadingHouse';
+
 export default function OnboardingLoading() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center p-4">
@@ -36,7 +38,7 @@ export default function OnboardingLoading() {
 
         {/* Loading Spinner */}
         <div className="flex justify-center mt-6">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#4A148C]"></div>
+          <LoadingHouse size={50} />
         </div>
       </div>
     </div>

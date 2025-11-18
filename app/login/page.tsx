@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 function LoginRedirectContent() {
   const router = useRouter();
@@ -15,7 +16,7 @@ function LoginRedirectContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-      <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+      <LoadingHouse size={64} />
     </div>
   );
 }
@@ -24,7 +25,7 @@ export default function LoginRedirect() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#4A148C] border-t-transparent rounded-full animate-spin" />
+        <LoadingHouse size={64} />
       </div>
     }>
       <LoginRedirectContent />
