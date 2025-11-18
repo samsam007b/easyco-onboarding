@@ -1232,3 +1232,124 @@ body.theme-resident ::selection {
   transform: scale(1.02);
   box-shadow: 0 20px 25px -5px rgba(123, 95, 184, 0.4);
 }
+
+/* ============================================
+   BUTTON GRADIENT UTILITIES
+   Simple gradient button classes for each role
+   ============================================ */
+
+/* Searcher Gradient Buttons */
+.btn-gradient-searcher {
+  background: var(--gradient-searcher);
+  color: white;
+  transition: all var(--transition-base);
+}
+
+.btn-gradient-searcher:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-gradient-searcher-soft {
+  background: var(--gradient-searcher-soft);
+  color: var(--searcher-800);
+}
+
+/* Owner Gradient Buttons */
+.btn-gradient-owner {
+  background: var(--gradient-owner);
+  color: white;
+  transition: all var(--transition-base);
+}
+
+.btn-gradient-owner:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-gradient-owner-soft {
+  background: var(--gradient-owner-soft);
+  color: var(--owner-800);
+}
+
+/* Resident Gradient Buttons */
+.btn-gradient-resident {
+  background: var(--gradient-resident);
+  color: white;
+  transition: all var(--transition-base);
+}
+
+.btn-gradient-resident:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-gradient-resident-soft {
+  background: var(--gradient-resident-soft);
+  color: var(--resident-800);
+}
+
+/* Brand Gradient Button (Tricolor) */
+.btn-gradient-brand {
+  background: var(--gradient-brand);
+  color: white;
+  transition: all var(--transition-base);
+}
+
+.btn-gradient-brand:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ============================================
+   BADGE GRADIENT UTILITIES
+   For notification badges in headers
+   ============================================ */
+
+.badge-gradient-searcher {
+  background: var(--gradient-searcher);
+  color: white;
+  border: none;
+}
+
+.badge-gradient-owner {
+  background: var(--gradient-owner);
+  color: white;
+  border: none;
+}
+
+.badge-gradient-resident {
+  background: var(--gradient-resident);
+  color: white;
+  border: none;
+}
+
+/* ============================================
+   BORDER GRADIENT UTILITIES
+   For cards and containers
+   ============================================ */
+
+.border-gradient-searcher {
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(white, white), var(--gradient-searcher);
+}
+
+.border-gradient-owner {
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(white, white), var(--gradient-owner);
+}
+
+.border-gradient-resident {
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(white, white), var(--gradient-resident);
+}

@@ -1,4 +1,4 @@
-import PublicHeader from '@/components/layout/PublicHeader';
+import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import Footer from '@/components/layout/Footer';
 
 export default function LegalLayout({
@@ -8,7 +8,7 @@ export default function LegalLayout({
 }) {
   return (
     <div className="min-h-screen bg-white">
-      <PublicHeader />
+      <ModernPublicHeader />
       <main className="max-w-4xl mx-auto px-6 py-16">
         {children}
       </main>

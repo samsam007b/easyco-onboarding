@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import PublicHeader from '@/components/layout/PublicHeader';
+import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import Footer from '@/components/layout/Footer';
 import {
   DollarSign,
@@ -134,7 +134,7 @@ export default function OwnersPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PublicHeader />
+      <ModernPublicHeader />
 
       <main>
         {/* Hero Section */}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import PublicHeader from '@/components/layout/PublicHeader';
+import ModernPublicHeader from '@/components/layout/ModernPublicHeader';
 import Footer from '@/components/layout/Footer';
 import { Target, Users, Shield, Zap, Heart, TrendingUp, Award, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PublicHeader />
+      <ModernPublicHeader />
 
       <main>
         {/* Hero Section */}

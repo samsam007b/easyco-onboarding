@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -154,14 +155,14 @@ export default function ModernOwnerHeader({
             href="/dashboard/owner"
             className="flex items-center group"
           >
-            <span
-              className="text-2xl font-bold bg-clip-text text-transparent"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
-              }}
-            >
-              EasyCo
-            </span>
+            <Image
+              src="/icons/icon-192x192.png"
+              alt="EasyCo"
+              width={40}
+              height={40}
+              className="transition-transform group-hover:scale-105"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -177,7 +178,7 @@ export default function ModernOwnerHeader({
                     <motion.div
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
-                        borderTopColor: '#A67BB8'
+                        borderTopColor: 'var(--owner-500)'
                       }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -200,9 +201,9 @@ export default function ModernOwnerHeader({
                     <span>{item.label}</span>
                     {item.badge && (
                       <Badge
-                        className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
+                        className="ml-1 badge-gradient-owner h-5 min-w-[20px] px-1.5"
                         style={{
-                          background: 'linear-gradient(135deg, #6E56CF 0%, #5B45B8 100%)'
+                          background: 'var(--gradient-owner)'
                         }}
                       >
                         {item.badge}
@@ -396,7 +397,7 @@ export default function ModernOwnerHeader({
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
                   style={{
-                    background: 'linear-gradient(135deg, #8E7AD6 0%, #6E56CF 100%)'
+                    background: 'var(--gradient-owner)'
                   }}
                 >
                   <Building2 className="w-4 h-4 text-white" />

@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Building2, Plus, Edit, Trash2, Eye, MapPin, Bed, Bath, DollarSign, Calendar } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
-import OwnerHeader from '@/components/layout/OwnerHeader'
+import ModernOwnerHeader from '@/components/layout/ModernOwnerHeader'
 import { useRole } from '@/lib/role/role-context'
 
 interface UserProfile {

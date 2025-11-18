@@ -56,7 +56,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           'rounded-3xl transition-all duration-200',
           variantStyles[variant],
           paddingStyles[padding],
-          interactive && 'cursor-pointer hover:shadow-lg hover:border-[#4A148C]/20',
+          interactive && 'cursor-pointer hover:shadow-lg hover:border-owner-500/20',
           fullHeight && 'h-full',
           className
         )}

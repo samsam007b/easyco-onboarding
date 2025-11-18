@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Home,
@@ -171,14 +172,14 @@ export default function ModernSearcherHeader({
             href="/dashboard/searcher"
             className="flex items-center group"
           >
-            <span
-              className="text-2xl font-bold bg-clip-text text-transparent"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-              }}
-            >
-              EasyCo
-            </span>
+            <Image
+              src="/icons/icon-192x192.png"
+              alt="EasyCo"
+              width={40}
+              height={40}
+              className="transition-transform group-hover:scale-105"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -194,7 +195,7 @@ export default function ModernSearcherHeader({
                     <motion.div
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
-                        borderTopColor: '#FFB85C'
+                        borderTopColor: 'var(--searcher-500)'
                       }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -217,9 +218,9 @@ export default function ModernSearcherHeader({
                     <span className="nav-text">{item.label}</span>
                     {item.badge && (
                       <Badge
-                        className="ml-1 text-white border-0 h-5 min-w-[20px] px-1.5"
+                        className="ml-1 badge-gradient-searcher h-5 min-w-[20px] px-1.5"
                         style={{
-                          background: 'linear-gradient(135deg, #FFD249 0%, #FFC107 100%)'
+                          background: 'var(--gradient-searcher)'
                         }}
                       >
                         {item.badge}
@@ -313,7 +314,7 @@ export default function ModernSearcherHeader({
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
                   style={{
-                    background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 100%)'
+                    background: 'var(--gradient-searcher)'
                   }}
                 >
                   <Search className="w-4 h-4 text-white" />

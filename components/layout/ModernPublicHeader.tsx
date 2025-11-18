@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'lucide-react';
@@ -90,20 +91,20 @@ export default function ModernPublicHeader({
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo - Signature EasyCo Gradient */}
+          {/* Logo - Official House Icon */}
           <Link
             href="/"
             className="flex items-center group"
             onClick={() => onNavigate?.(null)}
           >
-            <span
-              className="text-2xl font-bold bg-clip-text text-transparent"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
-              }}
-            >
-              EasyCo
-            </span>
+            <Image
+              src="/icons/icon-192x192.png"
+              alt="EasyCo"
+              width={40}
+              height={40}
+              className="transition-transform group-hover:scale-105"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation - Centré */}
@@ -175,7 +176,7 @@ export default function ModernPublicHeader({
               <Button
                 className="rounded-full text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all"
                 style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                  background: 'var(--gradient-brand)'
                 }}
               >
                 {nav.signup}
@@ -292,7 +293,7 @@ export default function ModernPublicHeader({
                     <Button
                       className="w-full rounded-full text-white font-semibold"
                       style={{
-                        background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)'
+                        background: 'var(--gradient-brand)'
                       }}
                     >
                       {nav.signup}
