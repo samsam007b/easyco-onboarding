@@ -6,12 +6,13 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
 import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,6 +40,8 @@ const USER_TYPES = [
   { value: 'resident', label: 'Resident (currently renting)' },
 ]
 
+type TabType = 'profile' | 'security' | 'settings'
+
 export default function ProfilePage() {
   const router = useRouter()
   const { activeRole } = useRole()
@@ -47,6 +50,7 @@ export default function ProfilePage() {
   const [fullName, setFullName] = useState('')
   const [isEditingName, setIsEditingName] = useState(false)
   const [isSavingName, setIsSavingName] = useState(false)
+  const [activeTab, setActiveTab] = useState<TabType>('profile')
 
   // User type change
   const [selectedUserType, setSelectedUserType] = useState('')
@@ -91,7 +95,6 @@ export default function ProfilePage() {
           .single()
 
         if (error) {
-          // FIXME: Use logger.error('Error fetching user data:', error)
           toast.error('Failed to load profile')
           return
         }
@@ -100,7 +103,6 @@ export default function ProfilePage() {
         setFullName(data.full_name || '')
         setSelectedUserType(data.user_type)
       } catch (error) {
-        // FIXME: Use logger.error('Error:', error)
         toast.error('An unexpected error occurred')
       } finally {
         setIsLoading(false)
@@ -128,7 +130,6 @@ export default function ProfilePage() {
         .eq('id', userData.id)
 
       if (error) {
-        // FIXME: Use logger.error('Error updating name:', error)
         toast.error('Failed to update name')
         return
       }
@@ -137,7 +138,6 @@ export default function ProfilePage() {
       setIsEditingName(false)
       toast.success('Name updated successfully')
     } catch (error) {
-      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsSavingName(false)
@@ -163,15 +163,12 @@ export default function ProfilePage() {
     setIsChangingUserType(true)
 
     try {
-      // Check if user has profile data for the new role
       const { data: profileData } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('user_id', userData.id)
         .single()
 
-      // Check if onboarding is completed for new role
-      // We'll check this by looking if key fields for that role exist
       let hasCompletedNewRoleOnboarding = false
 
       if (selectedUserType === 'searcher') {
@@ -182,30 +179,25 @@ export default function ProfilePage() {
         hasCompletedNewRoleOnboarding = !!(profileData?.first_name && profileData?.current_city && profileData?.bio)
       }
 
-      // Update user_type (keep all profile data intact!)
       const { error } = await supabase
         .from('users')
         .update({
           user_type: selectedUserType,
-          // Only mark onboarding as incomplete if they haven't completed it for this role
           onboarding_completed: hasCompletedNewRoleOnboarding
         })
         .eq('id', userData.id)
 
       if (error) {
-        // FIXME: Use logger.error('Error updating user type:', error)
         toast.error('Failed to change role')
         return
       }
 
       toast.success('Role switched successfully!')
 
-      // Redirect based on onboarding status
       setTimeout(() => {
         if (hasCompletedNewRoleOnboarding) {
           router.push(`/dashboard/${selectedUserType}`)
         } else {
-          // Searcher onboarding starts with profile-type to ask if searching for self or dependent
           if (selectedUserType === 'searcher') {
             router.push('/onboarding/searcher/profile-type')
           } else {
@@ -214,7 +206,6 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsChangingUserType(false)
@@ -243,7 +234,6 @@ export default function ProfilePage() {
       setShowResetOnboardingDialog(false)
 
       setTimeout(() => {
-        // Searcher onboarding starts with profile-type
         if (userData.user_type === 'searcher') {
           router.push('/onboarding/searcher/profile-type')
         } else {
@@ -251,7 +241,6 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      // FIXME: Use logger.error('Error:', error)
       toast.error('Failed to reset onboarding')
     }
   }
@@ -294,7 +283,6 @@ export default function ProfilePage() {
     setIsChangingPassword(true)
 
     try {
-      // Verify current password by attempting to sign in
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: userData!.email,
         password: currentPassword,
@@ -306,13 +294,11 @@ export default function ProfilePage() {
         return
       }
 
-      // Update password
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       })
 
       if (updateError) {
-        // FIXME: Use logger.error('Error updating password:', updateError)
         toast.error('Failed to update password')
         return
       }
@@ -323,7 +309,6 @@ export default function ProfilePage() {
       setNewPassword('')
       setConfirmNewPassword('')
     } catch (error) {
-      // FIXME: Use logger.error('Error:', error)
       toast.error('An unexpected error occurred')
     } finally {
       setIsChangingPassword(false)
@@ -340,7 +325,6 @@ export default function ProfilePage() {
     setIsDeletingAccount(true)
 
     try {
-      // Call API route to delete account (uses service role key)
       const response = await fetch('/api/user/delete', {
         method: 'DELETE',
       })
@@ -354,7 +338,6 @@ export default function ProfilePage() {
       toast.success('Account deleted successfully')
       router.push('/')
     } catch (error: any) {
-      // FIXME: Use logger.error('Error:', error)
       toast.error(error.message || 'An unexpected error occurred')
     } finally {
       setIsDeletingAccount(false)
@@ -369,8 +352,8 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingHouse size={48} />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50 flex items-center justify-center">
+        <LoadingHouse size={64} />
       </div>
     )
   }
@@ -383,491 +366,646 @@ export default function ProfilePage() {
   const getRoleColors = () => {
     const role = userData.user_type
     if (role === 'owner') return {
-      gradient: 'from-purple-50 via-white to-purple-50/30',
-      primary: 'purple',
-      header: 'bg-purple-50/95 border-purple-200/50'
+      gradient: 'from-purple-600 to-purple-700',
+      light: 'from-purple-50 via-white to-purple-50/30',
+      ring: 'from-purple-400 to-purple-600',
+      text: 'text-purple-600',
+      bg: 'bg-purple-50',
+      border: 'border-purple-200',
+      hover: 'hover:border-purple-300'
     }
     if (role === 'resident') return {
-      gradient: 'from-orange-50 via-white to-orange-50/30',
-      primary: 'orange',
-      header: 'bg-orange-50/95 border-orange-200/50'
+      gradient: 'from-orange-600 to-red-600',
+      light: 'from-orange-50 via-white to-red-50/30',
+      ring: 'from-orange-400 to-red-500',
+      text: 'text-orange-600',
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      hover: 'hover:border-orange-300'
     }
     return {
-      gradient: 'from-yellow-50 via-white to-yellow-50/30',
-      primary: 'yellow',
-      header: 'bg-yellow-50/95 border-yellow-200/50'
+      gradient: 'from-[#FFA040] to-[#FFD080]',
+      light: 'from-orange-50 via-white to-yellow-50/30',
+      ring: 'from-[#FFA040] to-[#FFD080]',
+      text: 'text-[#FFA040]',
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      hover: 'hover:border-orange-300'
     }
   }
 
   const colors = getRoleColors()
+  const profileCompletion = userData.onboarding_completed ? 100 : 50
+
+  // Tab content components
+  const tabs = [
+    { id: 'profile' as TabType, label: 'Profil', icon: UserCircle },
+    { id: 'security' as TabType, label: 'Sécurité', icon: Shield },
+    { id: 'settings' as TabType, label: 'Paramètres', icon: Settings },
+  ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30">
-      {/* Header with glassmorphism */}
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-purple-200/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className={`min-h-screen bg-gradient-to-br ${colors.light}`}>
+      {/* Header - Minimal */}
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 border-b border-gray-200/50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Mon Profil</h1>
-              <p className="text-gray-600 mt-1 capitalize">{userData.user_type}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button
-                onClick={() => {
-                  const role = activeRole || userData?.user_type || 'searcher'
-                  router.push(`/dashboard/${role}`)
-                }}
-                variant="outline"
-                className="rounded-full"
-              >
-                Retour au Dashboard
-              </Button>
-              <Button
-                onClick={handleLogout}
-                variant="ghost"
-                className="flex items-center gap-2 rounded-full"
-              >
-                <LogOut className="w-4 h-4" />
-                Déconnexion
-              </Button>
-            </div>
+            <Button
+              onClick={() => {
+                const role = activeRole || userData?.user_type || 'searcher'
+                router.push(`/dashboard/${role}`)
+              }}
+              variant="ghost"
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retour
+            </Button>
+            <Button
+              onClick={handleLogout}
+              variant="ghost"
+              className="flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Déconnexion
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Enhance Profile Card */}
-          <div className="lg:col-span-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
-                <p className="text-purple-100 text-sm">
-                  Augmente tes chances de matching en complétant ton profil à 100%
-                </p>
-              </div>
-              <div className="bg-white/20 rounded-full px-4 py-2 backdrop-blur-sm">
-                <span className="text-white font-bold">
-                  {userData.onboarding_completed ? '100%' : '50%'}
+        {/* Hero Section with Avatar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          {/* Avatar with Progress Ring */}
+          <div className="relative inline-block mb-6">
+            {/* Progress Ring */}
+            <svg className="absolute inset-0 -m-3" width="220" height="220">
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" className={colors.ring.split(' ')[0].replace('from-', 'stop-')} />
+                  <stop offset="100%" className={colors.ring.split(' ')[1].replace('to-', 'stop-')} />
+                </linearGradient>
+              </defs>
+              {/* Background circle */}
+              <circle
+                cx="110"
+                cy="110"
+                r="105"
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="3"
+              />
+              {/* Progress circle */}
+              <circle
+                cx="110"
+                cy="110"
+                r="105"
+                fill="none"
+                stroke="url(#progressGradient)"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 105}`}
+                strokeDashoffset={`${2 * Math.PI * 105 * (1 - profileCompletion / 100)}`}
+                transform="rotate(-90 110 110)"
+                className="transition-all duration-1000"
+              />
+            </svg>
+
+            {/* Avatar */}
+            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+              {userData.avatar_url ? (
+                <img
+                  src={userData.avatar_url}
+                  alt={userData.full_name || 'Profile'}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className={`w-full h-full bg-gradient-to-br ${colors.gradient} flex items-center justify-center`}>
+                  <User className="w-24 h-24 text-white" />
+                </div>
+              )}
+            </div>
+
+            {/* Upload button overlay */}
+            <div className="absolute bottom-2 right-2">
+              <ProfilePictureUpload
+                userId={userData.id}
+                currentAvatarUrl={userData.avatar_url || undefined}
+                onUploadSuccess={async (url) => {
+                  const { data } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', userData.id)
+                    .single();
+                  if (data) {
+                    setUserData(data as UserData);
+                  }
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Name and Role */}
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            {userData.full_name || 'Unnamed User'}
+          </h1>
+          <p className={`text-lg ${colors.text} font-medium capitalize mb-4`}>
+            {userData.user_type}
+          </p>
+
+          {/* Completion Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md border border-gray-200">
+            <div className="flex items-center gap-2">
+              <div className="relative w-12 h-12">
+                <svg className="w-12 h-12 transform -rotate-90">
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    fill="none"
+                    stroke="#e5e7eb"
+                    strokeWidth="3"
+                  />
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    fill="none"
+                    stroke="url(#progressGradient)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 20}`}
+                    strokeDashoffset={`${2 * Math.PI * 20 * (1 - profileCompletion / 100)}`}
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-900">
+                  {profileCompletion}%
                 </span>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-              <Button
-                onClick={() => router.push(`/profile/enhance-${userData.user_type}`)}
-                className="bg-white text-purple-700 hover:bg-white/90 rounded-full font-semibold"
-              >
-                Perfectionner mon profil
-              </Button>
-              {userData.onboarding_completed && (
-                <Button
-                  onClick={handleResetOnboarding}
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 rounded-full"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Refaire l'onboarding
-                </Button>
-              )}
+              <span className="text-sm font-medium text-gray-700">
+                Profil complété
+              </span>
             </div>
           </div>
+        </motion.div>
 
-          {/* Quick Stats */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
-            <h3 className="font-bold text-gray-900 mb-4">Statut du compte</h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Email vérifié</span>
-                {userData.email_verified ? (
-                  <Check className="w-5 h-5 text-green-600" />
-                ) : (
-                  <X className="w-5 h-5 text-red-600" />
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Onboarding</span>
-                {userData.onboarding_completed ? (
-                  <Check className="w-5 h-5 text-green-600" />
-                ) : (
-                  <X className="w-5 h-5 text-red-600" />
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Photo de profil</span>
-                {userData.avatar_url ? (
-                  <Check className="w-5 h-5 text-green-600" />
-                ) : (
-                  <X className="w-5 h-5 text-red-600" />
-                )}
-              </div>
-            </div>
+        {/* Tabs Navigation */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex bg-white rounded-2xl p-1 shadow-lg border border-gray-200">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              const isActive = activeTab === tab.id
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative px-6 py-3 rounded-xl font-medium transition-all ${
+                    isActive
+                      ? `${colors.text} bg-gradient-to-r ${colors.bg}`
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-5 h-5" />
+                    {tab.label}
+                  </div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className={`absolute inset-0 bg-gradient-to-r ${colors.bg} rounded-xl -z-10`}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
 
-        <div className="space-y-6">
-          {/* Profile Picture */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Picture</h2>
-            <ProfilePictureUpload
-              userId={userData.id}
-              currentAvatarUrl={userData.avatar_url || undefined}
-              onUploadSuccess={async (url) => {
-                // Refresh user data after upload
-                const { data } = await supabase
-                  .from('users')
-                  .select('*')
-                  .eq('id', userData.id)
-                  .single();
-                if (data) {
-                  setUserData(data as UserData);
-                }
-              }}
-            />
-          </div>
+        {/* Tab Content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-6"
+          >
+            {/* Profile Tab */}
+            {activeTab === 'profile' && (
+              <>
+                {/* Personal Information */}
+                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Informations Personnelles</h2>
 
-          {/* Personal Information */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h2>
-
-            <div className="space-y-4">
-              {/* Full Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
-                {isEditingName ? (
-                  <div className="flex gap-2">
-                    <Input
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="flex-1"
-                      disabled={isSavingName}
-                    />
-                    <Button
-                      onClick={handleSaveName}
-                      disabled={isSavingName}
-                    >
-                      {isSavingName ? 'Saving...' : 'Save'}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setIsEditingName(false)
-                        setFullName(userData.full_name || '')
-                      }}
-                      variant="outline"
-                      disabled={isSavingName}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
-                    <span className="text-gray-900">{userData.full_name || 'Not set'}</span>
-                    <Button
-                      onClick={() => setIsEditingName(true)}
-                      variant="ghost"
-                      className="text-[#4A148C] hover:text-[#311B92]"
-                    >
-                      Edit
-                    </Button>
-                  </div>
-                )}
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-900">{userData.email}</span>
-                  </div>
-                  {userData.email_verified ? (
-                    <span className="flex items-center gap-1 text-xs text-green-600">
-                      <Check className="w-4 h-4" />
-                      Verified
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1 text-xs text-yellow-600">
-                      <AlertCircle className="w-4 h-4" />
-                      Not verified
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Role Management */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Role</h2>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Role
-                </label>
-                <div className="p-4 bg-purple-50 rounded-2xl">
-                  <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
-                  {userData.onboarding_completed && (
-                    <span className="ml-3 text-xs text-green-600">
-                      <Check className="w-3 h-3 inline mr-1" />
-                      Onboarding completed
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Change Role
-                </label>
-                <div className="flex gap-2">
-                  <Select
-                    value={selectedUserType}
-                    onChange={(e) => setSelectedUserType(e.target.value)}
-                    options={USER_TYPES}
-                    className="flex-1"
-                    disabled={isChangingUserType}
-                  />
-                  <Button
-                    onClick={handleOpenRoleSwitch}
-                    disabled={isChangingUserType || selectedUserType === userData.user_type}
-                  >
-                    Change Role
-                  </Button>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Your data is preserved when switching roles. You can always switch back.
-                </p>
-              </div>
-
-              {userData.onboarding_completed && (
-                <div className="pt-4 border-t border-gray-100">
-                  <Button
-                    onClick={handleResetOnboarding}
-                    variant="outline"
-                    className="flex items-center gap-2 border-[#4A148C] text-[#4A148C] hover:bg-[#4A148C] hover:text-white transition-colors"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                    Redo Onboarding
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Security - Same as before */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-200 hover:border-purple-300">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Security</h2>
-
-            {!showChangePassword ? (
-              <Button
-                onClick={() => setShowChangePassword(true)}
-                variant="outline"
-                className="rounded-full flex items-center gap-2"
-              >
-                <Lock className="w-4 h-4" />
-                Change Password
-              </Button>
-            ) : (
-              <div className="space-y-4 p-4 bg-gray-50 rounded-2xl">
-                {/* Password change form - keeping the same as before */}
-                <h3 className="font-medium text-gray-900">Change Password</h3>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Current Password
-                  </label>
-                  <div className="relative">
-                    <Input
-                      type={showCurrentPassword ? 'text' : 'password'}
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                      disabled={isChangingPassword}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    New Password
-                  </label>
-                  <div className="relative">
-                    <Input
-                      type={showNewPassword ? 'text' : 'password'}
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      disabled={isChangingPassword}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowNewPassword(!showNewPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-
-                  {newPassword && (
-                    <div className="mt-2">
-                      <div className="flex gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <div
-                            key={i}
-                            className={`h-1 flex-1 rounded-full ${
-                              i < newPasswordStrength.strength ? newPasswordStrength.color : 'bg-gray-200'
-                            }`}
+                  <div className="space-y-4">
+                    {/* Full Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nom Complet
+                      </label>
+                      {isEditingName ? (
+                        <div className="flex gap-2">
+                          <Input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="flex-1"
+                            disabled={isSavingName}
                           />
-                        ))}
-                      </div>
-                      <p className="text-xs text-gray-600 mt-1">{newPasswordStrength.label}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Confirm New Password
-                  </label>
-                  <div className="relative">
-                    <Input
-                      type={showConfirmNewPassword ? 'text' : 'password'}
-                      value={confirmNewPassword}
-                      onChange={(e) => setConfirmNewPassword(e.target.value)}
-                      disabled={isChangingPassword}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showConfirmNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-
-                  {confirmNewPassword && (
-                    <div className="mt-2 flex items-center gap-1">
-                      {newPassword === confirmNewPassword ? (
-                        <>
-                          <Check className="w-4 h-4 text-green-600" />
-                          <span className="text-xs text-green-700">Passwords match</span>
-                        </>
+                          <Button
+                            onClick={handleSaveName}
+                            disabled={isSavingName}
+                            className={`bg-gradient-to-r ${colors.gradient} text-white`}
+                          >
+                            {isSavingName ? 'Saving...' : 'Save'}
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setIsEditingName(false)
+                              setFullName(userData.full_name || '')
+                            }}
+                            variant="outline"
+                            disabled={isSavingName}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
                       ) : (
-                        <>
-                          <X className="w-4 h-4 text-red-600" />
-                          <span className="text-xs text-red-700">Passwords do not match</span>
-                        </>
+                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                          <span className="text-gray-900">{userData.full_name || 'Not set'}</span>
+                          <Button
+                            onClick={() => setIsEditingName(true)}
+                            variant="ghost"
+                            className={colors.text}
+                          >
+                            Edit
+                          </Button>
+                        </div>
                       )}
                     </div>
-                  )}
-                </div>
 
-                <div className="flex gap-2 pt-2">
-                  <Button
-                    onClick={handleChangePassword}
-                    disabled={isChangingPassword || !currentPassword || !newPassword || newPassword !== confirmNewPassword}
-                  >
-                    {isChangingPassword ? 'Updating...' : 'Update Password'}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setShowChangePassword(false)
-                      setCurrentPassword('')
-                      setNewPassword('')
-                      setConfirmNewPassword('')
-                    }}
-                    variant="outline"
-                    disabled={isChangingPassword}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Danger Zone - Same but with new API */}
-          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-red-200 hover:border-red-300">
-            <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
-
-            {!showDeleteConfirm ? (
-              <div>
-                <p className="text-sm text-gray-600 mb-4">
-                  Once you delete your account, there is no going back. Please be certain.
-                </p>
-                <Button
-                  onClick={() => setShowDeleteConfirm(true)}
-                  variant="outline"
-                  className="border-red-300 text-red-600 hover:bg-red-50 rounded-full flex items-center gap-2"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Delete Account
-                </Button>
-              </div>
-            ) : (
-              <div className="p-4 bg-red-50 rounded-2xl space-y-4">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-red-900 mb-1">
-                      Are you absolutely sure?
-                    </p>
-                    <p className="text-sm text-red-700 mb-2">
-                      This action cannot be undone. This will permanently delete your account and remove all your data.
-                    </p>
+                    {/* Email */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email
+                      </label>
+                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                        <div className="flex items-center gap-2">
+                          <Mail className="w-5 h-5 text-gray-400" />
+                          <span className="text-gray-900">{userData.email}</span>
+                        </div>
+                        {userData.email_verified ? (
+                          <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                            <Check className="w-4 h-4" />
+                            Vérifié
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-xs text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
+                            <AlertCircle className="w-4 h-4" />
+                            Non vérifié
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-red-900 mb-2">
-                    Type <span className="font-mono font-bold">DELETE</span> to confirm
-                  </label>
-                  <Input
-                    type="text"
-                    value={deleteConfirmText}
-                    onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    placeholder="DELETE"
-                    disabled={isDeletingAccount}
-                  />
+                {/* Enhance Profile CTA */}
+                {!userData.onboarding_completed && (
+                  <div className={`bg-gradient-to-r ${colors.gradient} rounded-3xl shadow-xl p-8 text-white`}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
+                        <p className="text-white/90">
+                          Augmente tes chances de matching en complétant ton profil à 100%
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => router.push(`/profile/enhance-${userData.user_type}`)}
+                      className="bg-white text-gray-900 hover:bg-white/90 rounded-full font-semibold"
+                    >
+                      Perfectionner mon profil
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Security Tab */}
+            {activeTab === 'security' && (
+              <>
+                {/* Change Password */}
+                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Changer le mot de passe</h2>
+
+                  {!showChangePassword ? (
+                    <Button
+                      onClick={() => setShowChangePassword(true)}
+                      variant="outline"
+                      className="rounded-full flex items-center gap-2"
+                    >
+                      <Lock className="w-4 h-4" />
+                      Change Password
+                    </Button>
+                  ) : (
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-2xl">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Mot de passe actuel
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showCurrentPassword ? 'text' : 'password'}
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            disabled={isChangingPassword}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                          >
+                            {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Nouveau mot de passe
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showNewPassword ? 'text' : 'password'}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            disabled={isChangingPassword}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                          >
+                            {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
+
+                        {newPassword && (
+                          <div className="mt-2">
+                            <div className="flex gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <div
+                                  key={i}
+                                  className={`h-1 flex-1 rounded-full ${
+                                    i < newPasswordStrength.strength ? newPasswordStrength.color : 'bg-gray-200'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <p className="text-xs text-gray-600 mt-1">{newPasswordStrength.label}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Confirmer le nouveau mot de passe
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showConfirmNewPassword ? 'text' : 'password'}
+                            value={confirmNewPassword}
+                            onChange={(e) => setConfirmNewPassword(e.target.value)}
+                            disabled={isChangingPassword}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                          >
+                            {showConfirmNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
+
+                        {confirmNewPassword && (
+                          <div className="mt-2 flex items-center gap-1">
+                            {newPassword === confirmNewPassword ? (
+                              <>
+                                <Check className="w-4 h-4 text-green-600" />
+                                <span className="text-xs text-green-700">Passwords match</span>
+                              </>
+                            ) : (
+                              <>
+                                <X className="w-4 h-4 text-red-600" />
+                                <span className="text-xs text-red-700">Passwords do not match</span>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex gap-2 pt-2">
+                        <Button
+                          onClick={handleChangePassword}
+                          disabled={isChangingPassword || !currentPassword || !newPassword || newPassword !== confirmNewPassword}
+                          className={`bg-gradient-to-r ${colors.gradient} text-white`}
+                        >
+                          {isChangingPassword ? 'Updating...' : 'Update Password'}
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setShowChangePassword(false)
+                            setCurrentPassword('')
+                            setNewPassword('')
+                            setConfirmNewPassword('')
+                          }}
+                          variant="outline"
+                          disabled={isChangingPassword}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex gap-2">
-                  <Button
-                    onClick={handleDeleteAccount}
-                    disabled={isDeletingAccount || deleteConfirmText !== 'DELETE'}
-                    className="bg-red-600 hover:bg-red-700 text-white rounded-full"
-                  >
-                    {isDeletingAccount ? 'Deleting...' : 'Delete My Account'}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setShowDeleteConfirm(false)
-                      setDeleteConfirmText('')
-                    }}
-                    variant="outline"
-                    disabled={isDeletingAccount}
-                  >
-                    Cancel
-                  </Button>
+                {/* Delete Account */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-red-200 hover:border-red-300">
+                  <h2 className="text-xl font-semibold text-red-600 mb-4">Zone de Danger</h2>
+
+                  {!showDeleteConfirm ? (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Une fois votre compte supprimé, il n'y a pas de retour en arrière possible.
+                      </p>
+                      <Button
+                        onClick={() => setShowDeleteConfirm(true)}
+                        variant="outline"
+                        className="border-red-300 text-red-600 hover:bg-red-50 rounded-full flex items-center gap-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Supprimer mon compte
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-red-50 rounded-2xl space-y-4">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium text-red-900 mb-1">
+                            Êtes-vous absolument sûr ?
+                          </p>
+                          <p className="text-sm text-red-700 mb-2">
+                            Cette action est irréversible. Cela supprimera définitivement votre compte et toutes vos données.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-red-900 mb-2">
+                          Tapez <span className="font-mono font-bold">DELETE</span> pour confirmer
+                        </label>
+                        <Input
+                          type="text"
+                          value={deleteConfirmText}
+                          onChange={(e) => setDeleteConfirmText(e.target.value)}
+                          placeholder="DELETE"
+                          disabled={isDeletingAccount}
+                        />
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleDeleteAccount}
+                          disabled={isDeletingAccount || deleteConfirmText !== 'DELETE'}
+                          className="bg-red-600 hover:bg-red-700 text-white rounded-full"
+                        >
+                          {isDeletingAccount ? 'Deleting...' : 'Delete My Account'}
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setShowDeleteConfirm(false)
+                            setDeleteConfirmText('')
+                          }}
+                          variant="outline"
+                          disabled={isDeletingAccount}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              </>
             )}
-          </div>
-        </div>
+
+            {/* Settings Tab */}
+            {activeTab === 'settings' && (
+              <>
+                {/* Role Management */}
+                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Gestion du Rôle</h2>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Rôle Actuel
+                      </label>
+                      <div className={`p-4 ${colors.bg} rounded-2xl`}>
+                        <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
+                        {userData.onboarding_completed && (
+                          <span className="ml-3 text-xs text-green-600">
+                            <Check className="w-3 h-3 inline mr-1" />
+                            Onboarding terminé
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Changer de Rôle
+                      </label>
+                      <div className="flex gap-2">
+                        <Select
+                          value={selectedUserType}
+                          onChange={(e) => setSelectedUserType(e.target.value)}
+                          options={USER_TYPES}
+                          className="flex-1"
+                          disabled={isChangingUserType}
+                        />
+                        <Button
+                          onClick={handleOpenRoleSwitch}
+                          disabled={isChangingUserType || selectedUserType === userData.user_type}
+                          className={`bg-gradient-to-r ${colors.gradient} text-white`}
+                        >
+                          Changer
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Vos données sont préservées lors du changement de rôle.
+                      </p>
+                    </div>
+
+                    {userData.onboarding_completed && (
+                      <div className="pt-4 border-t border-gray-100">
+                        <Button
+                          onClick={handleResetOnboarding}
+                          variant="outline"
+                          className={`flex items-center gap-2 border-2 ${colors.border} ${colors.text} hover:bg-gray-50`}
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Refaire l'Onboarding
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Account Status */}
+                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                  <h3 className="font-bold text-gray-900 mb-4">Statut du Compte</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                      <span className="text-sm text-gray-600">Email vérifié</span>
+                      {userData.email_verified ? (
+                        <Check className="w-5 h-5 text-green-600" />
+                      ) : (
+                        <X className="w-5 h-5 text-red-600" />
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                      <span className="text-sm text-gray-600">Onboarding</span>
+                      {userData.onboarding_completed ? (
+                        <Check className="w-5 h-5 text-green-600" />
+                      ) : (
+                        <X className="w-5 h-5 text-red-600" />
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                      <span className="text-sm text-gray-600">Photo de profil</span>
+                      {userData.avatar_url ? (
+                        <Check className="w-5 h-5 text-green-600" />
+                      ) : (
+                        <X className="w-5 h-5 text-red-600" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
+
       </main>
 
       {/* Role Switch Modal */}
@@ -884,20 +1022,19 @@ export default function ProfilePage() {
       <AlertDialog open={showResetOnboardingDialog} onOpenChange={setShowResetOnboardingDialog}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-gray-900">Reset Onboarding Progress</AlertDialogTitle>
+            <AlertDialogTitle className="text-gray-900">Réinitialiser l'Onboarding</AlertDialogTitle>
             <AlertDialogDescription className="text-gray-600">
-              This will reset your onboarding progress and redirect you to the beginning of the onboarding process.
-              All your profile information will be preserved, but you'll need to go through the onboarding steps again.
-              Are you sure you want to continue?
+              Cela réinitialisera votre progression d'onboarding. Vos informations de profil seront préservées.
+              Êtes-vous sûr de vouloir continuer ?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">Annuler</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmResetOnboarding}
-              className="bg-orange-600 hover:bg-orange-700 text-white"
+              className={`bg-gradient-to-r ${colors.gradient} text-white`}
             >
-              Reset Onboarding
+              Réinitialiser
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
