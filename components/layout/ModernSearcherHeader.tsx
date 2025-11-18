@@ -167,19 +167,36 @@ export default function ModernSearcherHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo with Searcher gradient */}
           <Link
             href="/dashboard/searcher"
             className="flex items-center group"
           >
-            <Image
-              src="/logos/easyco-logo-medium.png"
-              alt="EasyCo"
-              width={100}
-              height={25}
+            <svg
+              width="100"
+              height="25"
+              viewBox="0 0 400 100"
               className="transition-transform group-hover:scale-105"
-              priority
-            />
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="searcherGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style={{ stopColor: '#FFA040', stopOpacity: 1 }} />
+                  <stop offset="50%" style={{ stopColor: '#FFB85C', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#FFD080', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              <text
+                x="0"
+                y="70"
+                fontSize="80"
+                fontWeight="700"
+                fontFamily="system-ui, -apple-system, sans-serif"
+                fill="url(#searcherGradient)"
+              >
+                EasyCo
+              </text>
+            </svg>
           </Link>
 
           {/* Desktop Navigation */}
