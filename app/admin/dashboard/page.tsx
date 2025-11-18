@@ -4,6 +4,9 @@ import { ROUTES } from '@/lib/config/routes';
 import DashboardClient from './_components/DashboardClient';
 import Link from 'next/link';
 
+// Email autorisé pour l'accès admin
+const ADMIN_EMAIL = 'baudonsamuel@gmail.com';
+
 async function checkAdminAccess() {
   const supabase = await createClient();
 
@@ -14,17 +17,9 @@ async function checkAdminAccess() {
     redirect('/login?redirect=/admin/dashboard');
   }
 
-  // Vérifier si l'utilisateur est admin via la fonction RPC
-  const { data: isAdmin, error: adminError } = await supabase
-    .rpc('is_admin', { user_email: user.email });
-
-  if (adminError) {
-    console.error('[ADMIN] Error checking admin access:', adminError);
-    return { error: 'admin_check_failed', user, details: adminError.message };
-  }
-
-  if (!isAdmin) {
-    return { error: 'not_admin', user };
+  // Vérifier si l'email correspond à l'admin autorisé
+  if (user.email !== ADMIN_EMAIL) {
+    return { error: 'not_authorized', user };
   }
 
   return { user };
@@ -45,51 +40,21 @@ export default async function AdminDashboardPage() {
               </svg>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Accès Refusé</h1>
-            {result.error === 'admin_check_failed' ? (
-              <>
-                <p className="text-gray-600 mb-4">
-                  La fonction d'authentification admin n'est pas configurée dans Supabase.
-                </p>
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4 text-left">
-                  <p className="text-sm text-yellow-800 font-semibold mb-2">Configuration requise :</p>
-                  <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
-                    <li>Ouvrez Supabase Dashboard</li>
-                    <li>Allez dans SQL Editor</li>
-                    <li>Exécutez le script : <code className="bg-yellow-100 px-1 rounded">supabase/SETUP_ADMIN_COMPLETE.sql</code></li>
-                    <li>Modifiez l'email dans le script avec : <code className="bg-yellow-100 px-1 rounded">{result.user.email}</code></li>
-                  </ol>
-                </div>
-                {result.details && (
-                  <p className="text-xs text-gray-500 mb-4 font-mono bg-gray-100 p-2 rounded">
-                    Erreur: {result.details}
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
-                <p className="text-gray-600 mb-4">
-                  Vous n'avez pas les droits administrateur.
-                </p>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-blue-800">
-                    Pour obtenir l'accès admin, exécutez le script SQL dans Supabase avec votre email: <br/>
-                    <code className="bg-blue-100 px-2 py-1 rounded mt-2 inline-block">{result.user.email}</code>
-                  </p>
-                </div>
-              </>
-            )}
+            <p className="text-gray-600 mb-4">
+              Vous n'avez pas les droits pour accéder au tableau de bord admin.
+            </p>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+              <p className="text-sm text-gray-700">
+                Connecté en tant que: <br/>
+                <code className="bg-gray-100 px-2 py-1 rounded mt-2 inline-block">{result.user.email}</code>
+              </p>
+            </div>
             <div className="flex gap-3 justify-center">
               <Link
                 href={ROUTES.HOME}
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
               >
                 ← Retour à l'accueil
-              </Link>
-              <Link
-                href="/admin"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                Page Admin
               </Link>
             </div>
           </div>

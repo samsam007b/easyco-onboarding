@@ -6,6 +6,9 @@ import { createClient as createServerClient } from '@/lib/auth/supabase-server';
 import { ADMIN_CONFIG, DB_LIMITS } from '@/lib/config/constants';
 import { ROUTES } from '@/lib/config/routes';
 
+// Email autorisé pour l'accès admin
+const ADMIN_EMAIL = 'baudonsamuel@gmail.com';
+
 async function checkAdminAccess() {
   const supabase = await createServerClient();
 
@@ -16,27 +19,27 @@ async function checkAdminAccess() {
     redirect('/login?redirect=/admin');
   }
 
-  // Vérifier si l'utilisateur est admin via la fonction RPC
-  const { data: isAdmin, error: adminError } = await supabase
-    .rpc('is_admin', { user_email: user.email });
-
-  if (adminError || !isAdmin) {
-    // FIXME: Use logger.error('Admin check failed:', adminError);
-    redirect(ROUTES.HOME);
+  // Vérifier si l'email correspond à l'admin autorisé
+  if (user.email !== ADMIN_EMAIL) {
+    return { error: 'not_authorized', user };
   }
 
-  // Logger l'accès admin
-  await supabase.from('audit_logs').insert({
-    user_id: user.id,
-    action: 'admin_access',
-    resource_type: 'admin_panel',
-    metadata: {
-      email: user.email,
-      timestamp: new Date().toISOString()
-    }
-  });
+  // Logger l'accès admin (optionnel, peut échouer silencieusement)
+  try {
+    await supabase.from('audit_logs').insert({
+      user_id: user.id,
+      action: 'admin_access',
+      resource_type: 'admin_panel',
+      metadata: {
+        email: user.email,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (e) {
+    // Ignore les erreurs de logging
+  }
 
-  return user;
+  return { user };
 }
 
 async function fetchData() {
@@ -77,8 +80,42 @@ async function fetchData() {
 
 export default async function AdminPage() {
   // Vérifier l'accès admin AVANT de charger les données
-  const user = await checkAdminAccess();
+  const result = await checkAdminAccess();
 
+  // Si l'utilisateur n'est pas autorisé, afficher un message d'erreur
+  if ('error' in result) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center">
+            <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Accès Refusé</h1>
+            <p className="text-gray-600 mb-4">
+              Vous n'avez pas les droits pour accéder à cette page.
+            </p>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+              <p className="text-sm text-gray-700">
+                Connecté en tant que: <br/>
+                <code className="bg-gray-100 px-2 py-1 rounded mt-2 inline-block">{result.user.email}</code>
+              </p>
+            </div>
+            <Link
+              href={ROUTES.HOME}
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              ← Retour à l'accueil
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const user = result.user;
   const { users, profiles, properties, groups, applications, notifications } = await fetchData();
 
   const toCSV = (rows: any[]) => {
