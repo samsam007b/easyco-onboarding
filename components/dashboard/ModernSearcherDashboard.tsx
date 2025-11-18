@@ -333,34 +333,24 @@ export default function ModernSearcherDashboard() {
         transition={{ delay: 0.2 }}
         className="mb-8"
       >
-        <div className="rounded-[32px] shadow-xl" style={{ overflow: 'visible' }}>
-          {/* Glassmorphism container with gradient */}
-          <div className="relative rounded-[32px]"
-               style={{
-                 background: 'linear-gradient(135deg, rgba(255, 160, 64, 0.25) 0%, rgba(255, 184, 92, 0.22) 50%, rgba(255, 208, 128, 0.25) 100%)',
-                 backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-                 WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(255, 160, 64, 0.3)',
-                 overflow: 'hidden'
-               }}
-          >
-            {/* Light refraction effect */}
-            <div className="absolute inset-0 rounded-[32px]"
-                 style={{
-                   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(255, 160, 64, 0.3) 100%)',
-                   mixBlendMode: 'overlay',
-                   overflow: 'hidden'
-                 }}
+        <div className="rounded-[32px] shadow-xl overflow-hidden">
+          {/* Image container with gradient */}
+          <div className="relative rounded-[32px] overflow-hidden">
+            {/* Background Image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: 'url(/images/hero/pexels-kseniachernaya-4740485.jpg)',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover'
+              }}
             />
 
-            {/* Top left light reflection */}
-            <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-[32px]"
-                 style={{
-                   background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
-                   mixBlendMode: 'soft-light',
-                   overflow: 'hidden'
-                 }}
-            />
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+
+            {/* Subtle light effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-purple-500/20" />
 
             {/* Content */}
             <div className="p-6 md:p-8 relative z-10">
