@@ -231,29 +231,6 @@ export default function ModernHeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            {/* Searcher CTA - Orange Gradient Pill (matching Searcher interface) */}
-            <Link href="/onboarding/searcher" className="w-full sm:w-auto">
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-full sm:w-auto group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-                }}
-              >
-                {/* Shine effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-
-                <div className="relative flex items-center justify-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
-                    <Search className="w-4 h-4" />
-                  </div>
-                  <span className="text-base">Je cherche une coloc</span>
-                </div>
-              </motion.button>
-            </Link>
-
             {/* Owner CTA - Purple to Pink Gradient Pill (Brand Colors) */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
               <motion.button
@@ -273,6 +250,29 @@ export default function ModernHeroSection() {
                     <Building2 className="w-4 h-4" />
                   </div>
                   <span className="text-base">Je loue mon bien</span>
+                </div>
+              </motion.button>
+            </Link>
+
+            {/* Resident CTA - Orange Gradient Pill (Brand Colors) */}
+            <Link href="/onboarding/resident" className="w-full sm:w-auto">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full sm:w-auto group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                }}
+              >
+                {/* Shine effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+
+                <div className="relative flex items-center justify-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-all">
+                    <Home className="w-4 h-4" />
+                  </div>
+                  <span className="text-base">Je suis résident</span>
                 </div>
               </motion.button>
             </Link>
