@@ -78,18 +78,17 @@ export default function AdminDashboard() {
         return;
       }
 
-      // Check if user is admin (adjust this based on your admin logic)
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('role, is_admin')
-        .eq('user_id', user.id)
-        .single();
+      // Check if user is admin using the RPC function
+      const { data: isAdminUser, error: adminError } = await supabase
+        .rpc('is_admin', { user_email: user.email });
 
-      if (profile?.is_admin || profile?.role === 'admin') {
-        setIsAdmin(true);
-      } else {
-        router.push('/dashboard');
+      if (adminError || !isAdminUser) {
+        console.error('Admin check failed:', adminError);
+        router.push('/');
+        return;
       }
+
+      setIsAdmin(true);
     } catch (error) {
       console.error('Admin access check failed:', error);
       router.push('/');
