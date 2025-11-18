@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import {
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
   Search,
   SlidersHorizontal,
   Sparkles,

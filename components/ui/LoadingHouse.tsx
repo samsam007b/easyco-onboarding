@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface LoadingHouseProps {
   size?: number
