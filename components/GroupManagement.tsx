@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast, showInfoToast, toasts } from '@/lib/toast-helpers';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Group {
   id: string;

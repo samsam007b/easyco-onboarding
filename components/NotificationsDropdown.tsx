@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Bell, Check, Trash2, MessageCircle, Heart, Home, X } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks/use-notifications';
 import { Button } from '@/components/ui/button';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface NotificationsDropdownProps {
   userId: string;

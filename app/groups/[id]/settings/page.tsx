@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Settings as SettingsIcon, Users, Trash2, LogOut, Copy, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Group {
   id: string;

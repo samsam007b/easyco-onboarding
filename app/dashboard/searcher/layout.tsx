@@ -5,6 +5,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import { useRouter } from 'next/navigation';
 import { logger } from '@/lib/utils/logger';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface SearcherStats {
   favoritesCount: number;

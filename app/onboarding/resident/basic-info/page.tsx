@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function ResidentBasicInfoPage() {
   const router = useRouter();

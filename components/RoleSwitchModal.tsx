@@ -2,6 +2,7 @@
 
 import { AlertCircle, RefreshCw, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface RoleSwitchModalProps {
   isOpen: boolean

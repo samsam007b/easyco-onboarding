@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Review {
   id: string;

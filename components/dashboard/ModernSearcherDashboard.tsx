@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface DashboardStats {
   favoritesCount: number;

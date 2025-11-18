@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function QuickBudgetLocationPage() {
   const router = useRouter();

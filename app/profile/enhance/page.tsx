@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function EnhanceProfilePage() {
   const router = useRouter();

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Coffee, Moon, Music, Utensils, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function LifestyleResidentPage() {
   const router = useRouter();

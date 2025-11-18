@@ -12,6 +12,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import type { UserPreferences } from '@/lib/services/matching-service';
 import { getMatchQuality } from '@/lib/services/matching-service';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   Settings,
   DollarSign,
   MapPin,

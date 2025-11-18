@@ -1,0 +1,351 @@
+import SwiftUI
+import MapKit
+
+// MARK: - Property Map View
+
+/// MapKit-based property map matching web app functionality
+struct PropertyMapView: View {
+    let properties: [Property]
+    @Binding var selectedPropertyId: UUID?
+
+    @State private var region: MKCoordinateRegion
+    @State private var annotations: [PropertyAnnotation] = []
+
+    init(properties: [Property], selectedPropertyId: Binding<UUID?>) {
+        self.properties = properties
+        self._selectedPropertyId = selectedPropertyId
+
+        // Calculate initial region
+        let center = LocationUtilities.calculateCenter(from: properties)
+        _region = State(initialValue: MKCoordinateRegion(
+            center: center,
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        ))
+    }
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            // Map
+            Map(
+                coordinateRegion: $region,
+                annotationItems: properties.compactMap { property in
+                    guard let coordinate = property.coordinate else { return nil }
+                    return MapAnnotationItem(
+                        id: property.id,
+                        coordinate: coordinate,
+                        property: property
+                    )
+                }
+            ) { item in
+                MapAnnotation(coordinate: item.coordinate) {
+                    PropertyMapMarker(
+                        property: item.property,
+                        isSelected: selectedPropertyId == item.property.id
+                    ) {
+                        handleMarkerTap(item.property)
+                    }
+                }
+            }
+            .ignoresSafeArea(edges: .all)
+
+            // Map controls overlay
+            VStack(spacing: Theme.Spacing._3) {
+                // Zoom controls
+                MapControlButton(icon: "plus") {
+                    zoomIn()
+                }
+
+                MapControlButton(icon: "minus") {
+                    zoomOut()
+                }
+
+                MapControlButton(icon: "location.fill") {
+                    centerOnProperties()
+                }
+            }
+            .padding(Theme.Spacing._4)
+        }
+        .onAppear {
+            updateAnnotations()
+        }
+        .onChange(of: properties) { _ in
+            updateAnnotations()
+            if properties.count > 0 {
+                centerOnProperties()
+            }
+        }
+    }
+
+    // MARK: - Actions
+
+    private func handleMarkerTap(_ property: Property) {
+        withAnimation(Theme.Animations.base) {
+            if selectedPropertyId == property.id {
+                selectedPropertyId = nil
+            } else {
+                selectedPropertyId = property.id
+                // Center map on selected property
+                if let coordinate = property.coordinate {
+                    region.center = coordinate
+                }
+            }
+        }
+    }
+
+    private func updateAnnotations() {
+        annotations = properties.map { PropertyAnnotation(property: $0) }
+    }
+
+    private func zoomIn() {
+        withAnimation {
+            region.span.latitudeDelta *= 0.5
+            region.span.longitudeDelta *= 0.5
+        }
+    }
+
+    private func zoomOut() {
+        withAnimation {
+            region.span.latitudeDelta *= 2.0
+            region.span.longitudeDelta *= 2.0
+        }
+    }
+
+    private func centerOnProperties() {
+        guard !properties.isEmpty else { return }
+
+        withAnimation {
+            region.center = LocationUtilities.calculateCenter(from: properties)
+            region.span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        }
+    }
+}
+
+// MARK: - Map Annotation Item
+
+private struct MapAnnotationItem: Identifiable {
+    let id: UUID
+    let coordinate: CLLocationCoordinate2D
+    let property: Property
+}
+
+// MARK: - Property Map Marker
+
+private struct PropertyMapMarker: View {
+    let property: Property
+    let isSelected: Bool
+    let action: () -> Void
+
+    @State private var showCard = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Property card (when selected)
+            if isSelected {
+                PropertyMarkerCard(property: property)
+                    .transition(.scale.combined(with: .opacity))
+            }
+
+            // Pin marker
+            Button(action: action) {
+                ZStack {
+                    Circle()
+                        .fill(pinColor)
+                        .frame(width: pinSize, height: pinSize)
+                        .shadow(
+                            color: .black.opacity(isSelected ? 0.3 : 0.15),
+                            radius: isSelected ? 8 : 4,
+                            y: isSelected ? 4 : 2
+                        )
+
+                    Image(systemName: "mappin.circle.fill")
+                        .font(.system(size: pinSize * 0.6, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                .scaleEffect(isSelected ? 1.25 : 1.0)
+                .animation(Theme.Animations.spring, value: isSelected)
+            }
+        }
+        .offset(y: isSelected ? -60 : 0)
+        .animation(Theme.Animations.spring, value: isSelected)
+    }
+
+    private var pinSize: CGFloat {
+        40
+    }
+
+    private var pinColor: Color {
+        isSelected ? Theme.ResidentColors._600 : Theme.ResidentColors._400
+    }
+}
+
+// MARK: - Property Marker Card
+
+private struct PropertyMarkerCard: View {
+    let property: Property
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Main card
+            VStack(alignment: .leading, spacing: Theme.Spacing._2) {
+                // Property image
+                if let imageUrl = property.mainImageURL, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Rectangle()
+                            .fill(Theme.GrayColors._200)
+                            .overlay(
+                                Image(systemName: "house.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(Theme.GrayColors._400)
+                            )
+                    }
+                    .frame(width: 120, height: 60)
+                    .clipped()
+                    .cornerRadius(Theme.CornerRadius.md)
+                } else {
+                    Rectangle()
+                        .fill(Theme.GrayColors._200)
+                        .frame(width: 120, height: 60)
+                        .cornerRadius(Theme.CornerRadius.md)
+                        .overlay(
+                            Image(systemName: "house.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(Theme.GrayColors._400)
+                        )
+                }
+
+                // Price badge
+                Text("\(property.monthlyRent)€/mois")
+                    .font(Theme.Typography.caption(.bold))
+                    .foregroundColor(Theme.ResidentColors._700)
+                    .padding(.horizontal, Theme.Spacing._2)
+                    .padding(.vertical, Theme.Spacing._1)
+                    .background(
+                        Capsule()
+                            .fill(Color.white.opacity(0.95))
+                    )
+            }
+            .padding(Theme.Spacing._2)
+            .background(Color.white)
+            .cornerRadius(Theme.CornerRadius.lg)
+            .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
+
+            // Pointer triangle
+            Triangle()
+                .fill(Color.white)
+                .frame(width: 16, height: 8)
+                .shadow(color: .black.opacity(0.1), radius: 2, y: 1)
+        }
+        .frame(width: 124)
+    }
+}
+
+// MARK: - Map Control Button
+
+private struct MapControlButton: View {
+    let icon: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
+                .frame(width: 40, height: 40)
+                .background(Color.white)
+                .cornerRadius(Theme.CornerRadius.lg)
+                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+        }
+    }
+}
+
+// MARK: - Triangle Shape
+
+private struct Triangle: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.closePath()
+        return path
+    }
+}
+
+// MARK: - Single Property Map View
+
+/// Map view for displaying a single property
+struct SinglePropertyMapView: View {
+    let property: Property
+
+    @State private var region: MKCoordinateRegion
+
+    init(property: Property) {
+        self.property = property
+
+        let coordinate = property.coordinate ?? CLLocationCoordinate2D(
+            latitude: 50.8503,
+            longitude: 4.3517
+        )
+
+        _region = State(initialValue: MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ))
+    }
+
+    var body: some View {
+        Map(coordinateRegion: $region, annotationItems: [property]) { prop in
+            MapAnnotation(coordinate: prop.coordinate ?? region.center) {
+                VStack(spacing: Theme.Spacing._2) {
+                    // Pin
+                    ZStack {
+                        Circle()
+                            .fill(Theme.ResidentColors._600)
+                            .frame(width: 50, height: 50)
+                            .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
+
+                        Image(systemName: "mappin.circle.fill")
+                            .font(.system(size: 30, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+
+                    // Info card
+                    VStack(alignment: .leading, spacing: Theme.Spacing._1) {
+                        Text(prop.title)
+                            .font(Theme.Typography.bodySmall(.semibold))
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .lineLimit(2)
+
+                        if let address = prop.address {
+                            Text(address)
+                                .font(Theme.Typography.caption())
+                                .foregroundColor(Theme.Colors.textSecondary)
+                                .lineLimit(1)
+                        }
+                    }
+                    .padding(Theme.Spacing._3)
+                    .background(Color.white)
+                    .cornerRadius(Theme.CornerRadius.lg)
+                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
+                    .frame(maxWidth: 200)
+                }
+            }
+        }
+        .ignoresSafeArea(edges: .all)
+    }
+}
+
+// MARK: - Previews
+
+struct PropertyMapView_Previews: PreviewProvider {
+    static var previews: some View {
+        PropertyMapView(
+            properties: MockData.properties.filter { $0.latitude != nil },
+            selectedPropertyId: .constant(nil)
+        )
+    }
+}

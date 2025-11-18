@@ -39,6 +39,7 @@ import { PropertySwipeCard } from '@/components/matching/PropertySwipeCard';
 import { SwipeCard } from '@/components/matching/SwipeCard';
 import { useUserMatching } from '@/lib/hooks/use-user-matching';
 import { cn } from '@/lib/utils';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 // Note: framer-motion doit être importé normalement car utilisé dans les hooks useExitIntent/useScrollTracker
 import { AnimatePresence, motion } from 'framer-motion';

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EventCalendar, type CalendarEvent } from '@/components/ui/event-calendar';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   Calendar as CalendarIcon,
   Clock,
   MapPin,

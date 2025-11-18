@@ -9,6 +9,7 @@ import { ArrowLeft, Heart, MapPin, Trash2, Home, Users, Star, Sparkles } from 'l
 import PropertyCard from '@/components/PropertyCard';
 import { toast } from 'sonner';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Property {
   id: string;

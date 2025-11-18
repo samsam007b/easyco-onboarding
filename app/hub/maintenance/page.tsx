@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   Wrench,
   Plus,
   AlertCircle,

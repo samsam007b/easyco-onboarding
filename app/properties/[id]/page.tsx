@@ -19,6 +19,7 @@ import { toast } from 'sonner';
 import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import PropertyCTASidebar from '@/components/PropertyCTASidebar';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 // Lazy load heavy components
 const SafeSinglePropertyMap = dynamic(() => import('@/components/SafeSinglePropertyMap'), {

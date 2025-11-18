@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Search, Bell, BellOff, Trash2, Play, Edit, MapPin, Home, DollarSign, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface SavedSearch {
   id: string;

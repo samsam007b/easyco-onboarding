@@ -9,6 +9,7 @@ import { ArrowLeft, Mail, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function ForgotPasswordPage() {
   const { t } = useLanguage()

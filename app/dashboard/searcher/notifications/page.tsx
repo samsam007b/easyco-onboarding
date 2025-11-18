@@ -12,6 +12,7 @@ import { Bell, Check, Trash2, Filter, ArrowLeft, Home, DollarSign, FileText, Hea
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 // Removed Select imports - using button filters instead
 
 export default function NotificationsPage() {

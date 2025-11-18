@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { getPropertyById, updateProperty } from '@/lib/property-helpers';
 import { toast } from 'sonner';
 import type { PropertyType, PropertyAmenity } from '@/lib/types/property';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
   { value: 'apartment', label: 'Apartment' },

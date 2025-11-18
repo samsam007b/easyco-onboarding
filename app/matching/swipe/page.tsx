@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Heart, X, Info, Users, RotateCcw, Settings } from 'lucide-react';
 import { toast } from 'sonner';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function SwipePage() {
   const router = useRouter();

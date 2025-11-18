@@ -6,6 +6,7 @@ import { ArrowLeft, FileText } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function OwnerBioPage() {
   const router = useRouter();

@@ -11,6 +11,7 @@ import { useAutoSave } from '@/lib/hooks/use-auto-save';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import IconBadge from '@/components/IconBadge';
 import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function BasicInfoPage() {
   const router = useRouter();

@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import { handleSupabaseError, handleValidationError, ErrorCode } from '@/lib/utils/error-handler';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 // Define type for move-in flexibility
 type MoveInFlexibility = 'asap' | 'exact' | 'flexible';

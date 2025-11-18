@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import ModernResidentHeader from '@/components/layout/ModernResidentHeader';
 import { useRouter } from 'next/navigation';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface ResidentStats {
   groupName: string;

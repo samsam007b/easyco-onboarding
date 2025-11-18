@@ -5,6 +5,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import ModernOwnerHeader from '@/components/layout/ModernOwnerHeader';
 import { useRouter } from 'next/navigation';
 import { logger } from '@/lib/utils/logger';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface OwnerStats {
   monthlyRevenue: number;

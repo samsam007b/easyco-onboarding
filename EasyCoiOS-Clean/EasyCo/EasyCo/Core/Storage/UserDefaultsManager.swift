@@ -89,28 +89,34 @@ class UserDefaultsManager {
 
 extension PropertyFilters: Codable {
     enum CodingKeys: String, CodingKey {
-        case city, minPrice, maxPrice, propertyType, minRooms, amenities, availableFrom
+        case city, cities, minPrice, maxPrice, propertyType, propertyTypes, minRooms, minBedrooms, amenities, availableFrom
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         city = try container.decodeIfPresent(String.self, forKey: .city)
+        cities = try container.decodeIfPresent([String].self, forKey: .cities) ?? []
         minPrice = try container.decodeIfPresent(Int.self, forKey: .minPrice)
         maxPrice = try container.decodeIfPresent(Int.self, forKey: .maxPrice)
         propertyType = try container.decodeIfPresent(PropertyType.self, forKey: .propertyType)
+        propertyTypes = try container.decodeIfPresent([PropertyType].self, forKey: .propertyTypes) ?? []
         minRooms = try container.decodeIfPresent(Int.self, forKey: .minRooms)
-        amenities = try container.decodeIfPresent([Amenity].self, forKey: .amenities)
+        minBedrooms = try container.decodeIfPresent(Int.self, forKey: .minBedrooms)
+        amenities = try container.decodeIfPresent([PropertyAmenity].self, forKey: .amenities) ?? []
         availableFrom = try container.decodeIfPresent(Date.self, forKey: .availableFrom)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(city, forKey: .city)
+        try container.encode(cities, forKey: .cities)
         try container.encodeIfPresent(minPrice, forKey: .minPrice)
         try container.encodeIfPresent(maxPrice, forKey: .maxPrice)
         try container.encodeIfPresent(propertyType, forKey: .propertyType)
+        try container.encode(propertyTypes, forKey: .propertyTypes)
         try container.encodeIfPresent(minRooms, forKey: .minRooms)
-        try container.encodeIfPresent(amenities, forKey: .amenities)
+        try container.encodeIfPresent(minBedrooms, forKey: .minBedrooms)
+        try container.encode(amenities, forKey: .amenities)
         try container.encodeIfPresent(availableFrom, forKey: .availableFrom)
     }
 }

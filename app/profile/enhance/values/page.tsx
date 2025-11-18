@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Sparkles, ThumbsUp, AlertTriangle } from 'lucide
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function EnhanceValuesPage() {
   const router = useRouter();

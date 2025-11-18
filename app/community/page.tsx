@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Users, Calendar, MapPin, User, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function CommunityPage() {
   const router = useRouter();

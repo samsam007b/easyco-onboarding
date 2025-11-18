@@ -24,5 +24,5 @@ struct SearchPreferences: Codable {
     var propertyTypes: [PropertyType]
     var cities: [String]
     var minBedrooms: Int?
-    var amenities: [Amenity]
+    var amenities: [PropertyAmenity]
 }

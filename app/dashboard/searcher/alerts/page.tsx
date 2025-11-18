@@ -12,6 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Bell, Trash2, Edit, Plus, BellOff, MapPin, Euro, Home, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,

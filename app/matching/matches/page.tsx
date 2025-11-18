@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MessageCircle, MapPin, Briefcase, Heart, Users, Sparkles, Plus, UserPlus, Check } from 'lucide-react';
 import { UserProfile } from '@/lib/services/user-matching-service';
 import { toast } from 'sonner';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function MatchesPage() {
   const router = useRouter();

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface AddReviewModalProps {
   propertyId: string;

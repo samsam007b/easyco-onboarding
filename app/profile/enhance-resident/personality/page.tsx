@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Heart, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function PersonalityResidentPage() {
   const router = useRouter();

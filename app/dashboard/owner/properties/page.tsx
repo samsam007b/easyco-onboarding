@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import type { Property } from '@/types/property.types'
 import ModernOwnerHeader from '@/components/layout/ModernOwnerHeader'
 import { useRole } from '@/lib/role/role-context'
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface UserProfile {
   full_name: string

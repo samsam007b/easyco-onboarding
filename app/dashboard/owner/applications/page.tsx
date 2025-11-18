@@ -12,6 +12,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
 import type { Application, GroupApplication } from '@/lib/hooks/use-applications';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   CheckCircle,
   XCircle,
   Clock,

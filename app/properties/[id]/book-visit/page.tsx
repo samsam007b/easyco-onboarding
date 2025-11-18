@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   ArrowLeft,
   Calendar as CalendarIcon,
   Clock,

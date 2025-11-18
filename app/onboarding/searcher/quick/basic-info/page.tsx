@@ -9,6 +9,7 @@ import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import { useOnboardingFunnel } from '@/lib/analytics/use-analytics';
 import { trackQuickStartFunnel } from '@/lib/analytics/funnels';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function QuickBasicInfoPage() {
   const router = useRouter();

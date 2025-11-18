@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Shield, CheckCircle, Upload, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function VerificationResidentPage() {
   const router = useRouter();

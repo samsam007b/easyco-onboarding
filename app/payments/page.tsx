@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/contexts/auth-context';
 import { usePayment } from '@/contexts/PaymentContext';
 import { motion } from 'framer-motion';
 import {
+import LoadingHouse from '@/components/ui/LoadingHouse';
   CreditCard,
   Calendar,
   TrendingUp,

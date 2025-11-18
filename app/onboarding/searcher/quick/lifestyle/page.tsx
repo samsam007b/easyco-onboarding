@@ -7,6 +7,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function QuickLifestylePage() {
   const router = useRouter();

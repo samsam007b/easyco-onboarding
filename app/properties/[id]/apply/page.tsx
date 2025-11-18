@@ -13,6 +13,7 @@ import type { Property } from '@/types/property.types';
 import type { RoomWithTotal } from '@/types/room.types';
 import { toast } from 'sonner';
 import { storageService } from '@/lib/services/storage-service';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function PropertyApplicationPage() {
   const router = useRouter();

@@ -1,0 +1,224 @@
+import SwiftUI
+
+// MARK: - Resident Feature View (Guest Mode)
+
+struct ResidentFeatureView: View {
+    @State private var showSignup = false
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                // Hero Section
+                heroSection
+
+                // Features Section
+                featuresSection
+                    .padding(.vertical, 40)
+
+                // CTA Section
+                ctaSection
+                    .padding(.bottom, 40)
+            }
+        }
+        .background(Color(hex: "F9FAFB"))
+        .sheet(isPresented: $showSignup) {
+            WelcomeSheet(
+                isPresented: $showSignup,
+                onCreateAccount: {
+                    showSignup = false
+                },
+                onContinueAsGuest: {
+                    showSignup = false
+                }
+            )
+        }
+    }
+
+    // MARK: - Hero Section
+
+    private var heroSection: some View {
+        ZStack {
+            // Gradient Background
+            LinearGradient(
+                colors: [
+                    Color(hex: "E8865D").opacity(0.15),
+                    Color(hex: "F4A76F").opacity(0.12),
+                    Color(hex: "FFC185").opacity(0.15)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+
+            VStack(spacing: 24) {
+                // Icon
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(hex: "E8865D"), Color(hex: "F4A76F")],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 100, height: 100)
+
+                    Image(systemName: "house.fill")
+                        .font(.system(size: 48))
+                        .foregroundColor(.white)
+                }
+
+                // Title
+                VStack(spacing: 12) {
+                    Text("Gérez votre colocation")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(Color(hex: "111827"))
+                        .multilineTextAlignment(.center)
+
+                    Text("Simplifiez la vie quotidienne avec vos colocataires")
+                        .font(.system(size: 18))
+                        .foregroundColor(Color(hex: "6B7280"))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
+            }
+            .padding(.vertical, 60)
+        }
+    }
+
+    // MARK: - Features Section
+
+    private var featuresSection: some View {
+        VStack(spacing: 24) {
+            Text("Pourquoi utiliser EasyCo ?")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(Color(hex: "111827"))
+                .padding(.bottom, 8)
+
+            VStack(spacing: 16) {
+                FeatureCard(
+                    icon: "checklist",
+                    title: "Gestion des tâches",
+                    description: "Répartissez équitablement les tâches ménagères et suivez leur progression"
+                )
+
+                FeatureCard(
+                    icon: "eurosign.circle.fill",
+                    title: "Suivi des dépenses",
+                    description: "Partagez les dépenses communes et gardez une trace de tout"
+                )
+
+                FeatureCard(
+                    icon: "calendar",
+                    title: "Événements partagés",
+                    description: "Organisez des activités et coordonnez les plannings"
+                )
+
+                FeatureCard(
+                    icon: "message.fill",
+                    title: "Communication facile",
+                    description: "Discutez avec vos colocataires et contactez votre propriétaire"
+                )
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    // MARK: - CTA Section
+
+    private var ctaSection: some View {
+        VStack(spacing: 16) {
+            Button(action: {
+                showSignup = true
+            }) {
+                HStack(spacing: 12) {
+                    Image(systemName: "house.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                    Text("Rejoindre une résidence")
+                        .font(.system(size: 18, weight: .semibold))
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+                .background(
+                    LinearGradient(
+                        colors: [Color(hex: "E8865D"), Color(hex: "F4A76F")],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .cornerRadius(999)
+                .shadow(color: Color(hex: "E8865D").opacity(0.4), radius: 12, x: 0, y: 6)
+            }
+            .padding(.horizontal, 24)
+
+            Button(action: {
+                showSignup = true
+            }) {
+                HStack(spacing: 12) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                    Text("Inscrire ma résidence")
+                        .font(.system(size: 18, weight: .semibold))
+                }
+                .foregroundColor(Color(hex: "E8865D"))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+                .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 999)
+                        .stroke(Color(hex: "E8865D"), lineWidth: 2)
+                )
+            }
+            .padding(.horizontal, 24)
+        }
+    }
+}
+
+// MARK: - Feature Card Component
+
+struct FeatureCard: View {
+    let icon: String
+    let title: String
+    let description: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 16) {
+            // Icon
+            ZStack {
+                Circle()
+                    .fill(Color(hex: "E8865D").opacity(0.1))
+                    .frame(width: 56, height: 56)
+
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                    .foregroundColor(Color(hex: "E8865D"))
+            }
+
+            // Content
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(Color(hex: "111827"))
+
+                Text(description)
+                    .font(.system(size: 15))
+                    .foregroundColor(Color(hex: "6B7280"))
+                    .lineSpacing(4)
+            }
+
+            Spacer()
+        }
+        .padding(20)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+    }
+}
+
+// MARK: - Preview
+
+struct ResidentFeatureView_Previews: PreviewProvider {
+    static var previews: some View {
+        ResidentFeatureView()
+    }
+}

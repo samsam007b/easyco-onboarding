@@ -8,6 +8,7 @@ import { ArrowLeft, Heart, Home, MapPin, Bed, Bath, Euro, Trash2 } from 'lucide-
 import { useLanguage } from '@/lib/i18n/use-language';
 import DashboardHeader from '@/components/DashboardHeader';
 import { useFavorites } from '@/lib/hooks/use-favorites';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function FavoritesPage() {
   const router = useRouter();

@@ -169,11 +169,14 @@ extension Endpoint: APIEndpoint {
 
 struct PropertyFilters {
     var city: String?
+    var cities: [String] = []
     var minPrice: Int?
     var maxPrice: Int?
     var propertyType: PropertyType?
+    var propertyTypes: [PropertyType] = []
     var minRooms: Int?
-    var amenities: [Amenity]?
+    var minBedrooms: Int?
+    var amenities: [PropertyAmenity] = []
     var availableFrom: Date?
 
     func toDictionary() -> [String: String] {
@@ -184,7 +187,7 @@ struct PropertyFilters {
         if let maxPrice = maxPrice { dict["max_price"] = "\(maxPrice)" }
         if let propertyType = propertyType { dict["property_type"] = propertyType.rawValue }
         if let minRooms = minRooms { dict["min_rooms"] = "\(minRooms)" }
-        if let amenities = amenities {
+        if !amenities.isEmpty {
             dict["amenities"] = amenities.map { $0.rawValue }.joined(separator: ",")
         }
         if let availableFrom = availableFrom {
