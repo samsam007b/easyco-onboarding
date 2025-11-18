@@ -179,13 +179,18 @@ export default function ModernHeroSection() {
               {/* Search Button Integrated - Matching Searcher interface gradient */}
               <div className="p-2 flex items-center justify-center">
                 <Button
-                  className="w-full h-full text-gray-900 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  className="w-full h-full group relative overflow-hidden text-gray-900 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{
                     background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
                   }}
                 >
-                  <Search className="w-5 h-5 mr-2" />
-                  Rechercher
+                  {/* Shine effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+
+                  <div className="relative flex items-center">
+                    <Search className="w-5 h-5 mr-2" />
+                    Rechercher
+                  </div>
                 </Button>
               </div>
             </div>
@@ -249,7 +254,7 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
 
-            {/* Owner CTA - Purple to Orange Gradient Pill (Brand Colors) */}
+            {/* Owner CTA - Purple to Pink Gradient Pill (Brand Colors) */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -257,7 +262,7 @@ export default function ModernHeroSection() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all"
                 style={{
-                  background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 100%)'
+                  background: 'linear-gradient(135deg, #6E56CF 0%, #B76386 100%)'
                 }}
               >
                 {/* Shine effect on hover */}
