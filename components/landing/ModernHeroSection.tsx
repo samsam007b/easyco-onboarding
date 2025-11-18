@@ -112,17 +112,17 @@ export default function ModernHeroSection() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold text-white text-center mb-2 leading-tight"
             >
-              Trouve ta coloc
+              Trouve ton Co-living
             </motion.h1>
 
-            {/* Subtitle - Plus petit */}
+            {/* Subtitle - Valeurs de la marque */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-lg md:text-xl text-white/90 text-center mb-0"
             >
-              En quelques clics
+              Facile, Rapide et Sécurisé
             </motion.p>
           </div>
 
