@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
@@ -784,15 +784,27 @@ export default function ProfilePage() {
                             </span>
                           </div>
 
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                             {profileCompletion === 100 ? (
-                              <>🎉 Profil Parfait !</>
+                              <>
+                                <Trophy className="w-6 h-6 text-yellow-600" />
+                                Profil Parfait !
+                              </>
                             ) : profileCompletion >= 75 ? (
-                              <>✨ Presque là !</>
+                              <>
+                                <Sparkles className="w-6 h-6 text-purple-600" />
+                                Presque là !
+                              </>
                             ) : profileCompletion >= 50 ? (
-                              <>🚀 Continue !</>
+                              <>
+                                <Rocket className="w-6 h-6 text-orange-600" />
+                                Continue !
+                              </>
                             ) : (
-                              <>🎯 Commence ton aventure !</>
+                              <>
+                                <Target className="w-6 h-6 text-blue-600" />
+                                Commence ton aventure !
+                              </>
                             )}
                           </h3>
 
