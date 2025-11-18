@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
@@ -697,6 +697,182 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Gamified Profile Completion */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 p-[2px] shadow-2xl mb-6"
+                >
+                  {/* Animated gradient border */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 opacity-75 animate-pulse" />
+
+                  <div className="relative bg-gradient-to-br from-purple-50 via-white to-pink-50 rounded-[30px] p-8">
+                    {/* Decorative elements */}
+                    <div className="absolute top-4 right-4 w-32 h-32 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl" />
+                    <div className="absolute bottom-4 left-4 w-24 h-24 bg-gradient-to-br from-purple-200/20 to-pink-200/20 rounded-full blur-2xl" />
+
+                    <div className="relative z-10">
+                      <div className="flex flex-col lg:flex-row items-center gap-8">
+                        {/* Left: Circular Progress */}
+                        <div className="flex-shrink-0">
+                          <div className="relative">
+                            {/* Outer glow effect */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl opacity-50" />
+
+                            {/* Main progress circle */}
+                            <div className="relative w-40 h-40">
+                              <svg className="w-40 h-40 transform -rotate-90">
+                                {/* Background circle */}
+                                <circle
+                                  cx="80"
+                                  cy="80"
+                                  r="70"
+                                  fill="none"
+                                  stroke="#e5e7eb"
+                                  strokeWidth="8"
+                                />
+                                {/* Progress circle */}
+                                <circle
+                                  cx="80"
+                                  cy="80"
+                                  r="70"
+                                  fill="none"
+                                  stroke="url(#profileGradient)"
+                                  strokeWidth="8"
+                                  strokeLinecap="round"
+                                  strokeDasharray={`${2 * Math.PI * 70}`}
+                                  strokeDashoffset={`${2 * Math.PI * 70 * (1 - profileCompletion / 100)}`}
+                                  className="transition-all duration-1000 ease-out"
+                                />
+                                <defs>
+                                  <linearGradient id="profileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#9333ea" />
+                                    <stop offset="50%" stopColor="#ec4899" />
+                                    <stop offset="100%" stopColor="#f97316" />
+                                  </linearGradient>
+                                </defs>
+                              </svg>
+
+                              {/* Center content */}
+                              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${colors.gradient} flex items-center justify-center shadow-xl mb-1`}>
+                                  {profileCompletion === 100 ? (
+                                    <Trophy className="w-10 h-10 text-white animate-pulse" />
+                                  ) : profileCompletion >= 75 ? (
+                                    <Award className="w-10 h-10 text-white" />
+                                  ) : profileCompletion >= 50 ? (
+                                    <Star className="w-10 h-10 text-white" />
+                                  ) : (
+                                    <Target className="w-10 h-10 text-white" />
+                                  )}
+                                </div>
+                                <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                                  {profileCompletion}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Middle: Level Info */}
+                        <div className="flex-1 text-center lg:text-left">
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full mb-3">
+                            <Zap className="w-4 h-4 text-purple-600" />
+                            <span className="text-sm font-bold text-purple-700">
+                              {profileCompletion === 100 ? 'Master' : profileCompletion >= 75 ? 'Expert' : profileCompletion >= 50 ? 'Intermédiaire' : 'Débutant'}
+                            </span>
+                          </div>
+
+                          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                            {profileCompletion === 100 ? (
+                              <>🎉 Profil Parfait !</>
+                            ) : profileCompletion >= 75 ? (
+                              <>✨ Presque là !</>
+                            ) : profileCompletion >= 50 ? (
+                              <>🚀 Continue !</>
+                            ) : (
+                              <>🎯 Commence ton aventure !</>
+                            )}
+                          </h3>
+
+                          <p className="text-gray-600 mb-4">
+                            {profileCompletion === 100 ? (
+                              "Ton profil est complet ! Tu maximises tes chances de trouver le match parfait."
+                            ) : profileCompletion >= 75 ? (
+                              `Plus que ${100 - profileCompletion}% pour débloquer le niveau Master !`
+                            ) : profileCompletion >= 50 ? (
+                              "Tu es sur la bonne voie ! Continue à enrichir ton profil."
+                            ) : (
+                              "Complète ton profil pour augmenter tes chances de matching jusqu'à 3x !"
+                            )}
+                          </p>
+
+                          {/* Mini badges */}
+                          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                            {/* Basic Profile Badge */}
+                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userData.full_name && userData.avatar_url ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
+                              <UserCircle className={`w-4 h-4 ${userData.full_name && userData.avatar_url ? 'text-green-600' : 'text-gray-400'}`} />
+                              <span className={`text-xs font-medium ${userData.full_name && userData.avatar_url ? 'text-green-700' : 'text-gray-500'}`}>
+                                Profil de base
+                              </span>
+                              {userData.full_name && userData.avatar_url && <Check className="w-3 h-3 text-green-600" />}
+                            </div>
+
+                            {/* Financial Badge */}
+                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.financial_info ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
+                              <DollarSign className={`w-4 h-4 ${userProfile?.financial_info ? 'text-green-600' : 'text-gray-400'}`} />
+                              <span className={`text-xs font-medium ${userProfile?.financial_info ? 'text-green-700' : 'text-gray-500'}`}>
+                                Financier
+                              </span>
+                              {userProfile?.financial_info && <Check className="w-3 h-3 text-green-600" />}
+                            </div>
+
+                            {/* Personality Badge */}
+                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.extended_personality ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
+                              <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
+                              <span className={`text-xs font-medium ${userProfile?.extended_personality ? 'text-green-700' : 'text-gray-500'}`}>
+                                Personnalité
+                              </span>
+                              {userProfile?.extended_personality && <Check className="w-3 h-3 text-green-600" />}
+                            </div>
+
+                            {/* Verification Badge */}
+                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${userProfile?.verification_status === 'verified' ? 'bg-green-100 border-green-300' : 'bg-gray-100 border-gray-300'} border`}>
+                              <Shield className={`w-4 h-4 ${userProfile?.verification_status === 'verified' ? 'text-green-600' : 'text-gray-400'}`} />
+                              <span className={`text-xs font-medium ${userProfile?.verification_status === 'verified' ? 'text-green-700' : 'text-gray-500'}`}>
+                                Vérifié
+                              </span>
+                              {userProfile?.verification_status === 'verified' && <Check className="w-3 h-3 text-green-600" />}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right: Rewards */}
+                        {profileCompletion < 100 && (
+                          <div className="flex-shrink-0 text-center">
+                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300 flex items-center justify-center mb-3 shadow-lg">
+                              <div className="text-center">
+                                <Sparkles className="w-12 h-12 text-yellow-600 mx-auto mb-2 animate-pulse" />
+                                <p className="text-xs font-bold text-yellow-700">Récompense</p>
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-600 font-medium">+3x Visibilité</p>
+                          </div>
+                        )}
+
+                        {profileCompletion === 100 && (
+                          <div className="flex-shrink-0 text-center">
+                            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-yellow-200 to-orange-200 border-2 border-yellow-400 flex items-center justify-center mb-3 shadow-xl animate-pulse">
+                              <Trophy className="w-16 h-16 text-yellow-700" />
+                            </div>
+                            <p className="text-xs font-bold text-yellow-700">Profil Master!</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
 
                 {/* Enhanced Profile Sections */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
