@@ -3,8 +3,8 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import {
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
   MessageCircle,
   Users,
   Filter,
