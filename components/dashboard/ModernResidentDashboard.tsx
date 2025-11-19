@@ -22,7 +22,10 @@ import {
   Heart,
   ChevronDown,
   Trophy,
-  Target
+  Target,
+  FileText,
+  AlertCircle,
+  Receipt
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -294,6 +297,79 @@ export default function ModernResidentDashboard() {
         <p className="text-gray-600">
           Bienvenue dans ton espace de vie partagé
         </p>
+      </motion.div>
+
+      {/* Quick Actions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 mb-6"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <h2 className="text-lg font-bold text-gray-900">Actions rapides</h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {/* Payer le loyer */}
+          <button
+            onClick={() => router.push('/hub/finances')}
+            className="group relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 rounded-2xl p-4 border border-green-200 hover:border-green-300 hover:shadow-md transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 opacity-0 group-hover:opacity-5 transition-opacity" />
+            <div className="relative flex flex-col items-center gap-2 text-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <Receipt className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-gray-900">Payer le loyer</span>
+            </div>
+          </button>
+
+          {/* Signaler un problème */}
+          <button
+            onClick={() => router.push('/hub/tasks')}
+            className="group relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 rounded-2xl p-4 border border-red-200 hover:border-red-300 hover:shadow-md transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-orange-600 opacity-0 group-hover:opacity-5 transition-opacity" />
+            <div className="relative flex flex-col items-center gap-2 text-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <AlertCircle className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-gray-900">Signaler un problème</span>
+            </div>
+          </button>
+
+          {/* Ajouter une dépense */}
+          <button
+            onClick={() => router.push('/hub/finances')}
+            className="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-2xl p-4 border border-blue-200 hover:border-blue-300 hover:shadow-md transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-600 opacity-0 group-hover:opacity-5 transition-opacity" />
+            <div className="relative flex flex-col items-center gap-2 text-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <Plus className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-gray-900">Ajouter une dépense</span>
+            </div>
+          </button>
+
+          {/* Contacter les colocataires */}
+          <button
+            onClick={() => router.push('/messages')}
+            className="group relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-2xl p-4 border border-purple-200 hover:border-purple-300 hover:shadow-md transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-600 opacity-0 group-hover:opacity-5 transition-opacity" />
+            <div className="relative flex flex-col items-center gap-2 text-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                <MessageCircle className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-gray-900">Contacter</span>
+            </div>
+          </button>
+        </div>
       </motion.div>
 
       {/* Profile Completion Widget */}
