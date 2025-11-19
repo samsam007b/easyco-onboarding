@@ -16,7 +16,8 @@ import {
   AlertCircle,
   X,
   ListTodo,
-  Sparkles
+  Sparkles,
+  Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -632,21 +633,79 @@ export default function HubTasksPage() {
                     </div>
 
                     {/* Priority and Due Date Row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Priority */}
+                    <div className="space-y-4">
+                      {/* Priority - Modern Radio Buttons */}
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
                           Priorité
                         </label>
-                        <select
-                          value={newTask.priority}
-                          onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
-                          className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all outline-none"
-                        >
-                          <option value="low">🟢 Basse</option>
-                          <option value="medium">🟡 Moyenne</option>
-                          <option value="high">🔴 Haute</option>
-                        </select>
+                        <div className="grid grid-cols-3 gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setNewTask({ ...newTask, priority: 'low' })}
+                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+                              newTask.priority === 'low'
+                                ? 'border-green-500 bg-green-50 shadow-md'
+                                : 'border-gray-200 hover:border-green-300 hover:bg-green-50/50'
+                            }`}
+                          >
+                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'low' ? 'scale-110' : ''}`}>
+                              🟢
+                            </div>
+                            <span className={`text-xs font-semibold ${newTask.priority === 'low' ? 'text-green-700' : 'text-gray-600'}`}>
+                              Basse
+                            </span>
+                            {newTask.priority === 'low' && (
+                              <div className="absolute top-2 right-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setNewTask({ ...newTask, priority: 'medium' })}
+                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+                              newTask.priority === 'medium'
+                                ? 'border-yellow-500 bg-yellow-50 shadow-md'
+                                : 'border-gray-200 hover:border-yellow-300 hover:bg-yellow-50/50'
+                            }`}
+                          >
+                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'medium' ? 'scale-110' : ''}`}>
+                              🟡
+                            </div>
+                            <span className={`text-xs font-semibold ${newTask.priority === 'medium' ? 'text-yellow-700' : 'text-gray-600'}`}>
+                              Moyenne
+                            </span>
+                            {newTask.priority === 'medium' && (
+                              <div className="absolute top-2 right-2 w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setNewTask({ ...newTask, priority: 'high' })}
+                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+                              newTask.priority === 'high'
+                                ? 'border-red-500 bg-red-50 shadow-md'
+                                : 'border-gray-200 hover:border-red-300 hover:bg-red-50/50'
+                            }`}
+                          >
+                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'high' ? 'scale-110' : ''}`}>
+                              🔴
+                            </div>
+                            <span className={`text-xs font-semibold ${newTask.priority === 'high' ? 'text-red-700' : 'text-gray-600'}`}>
+                              Haute
+                            </span>
+                            {newTask.priority === 'high' && (
+                              <div className="absolute top-2 right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                            )}
+                          </button>
+                        </div>
                       </div>
 
                       {/* Due Date */}
@@ -664,23 +723,52 @@ export default function HubTasksPage() {
                       </div>
                     </div>
 
-                    {/* Assigned To */}
+                    {/* Assigned To - Modern Select */}
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
                         Assigner à
                       </label>
-                      <select
-                        value={newTask.assignedTo}
-                        onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all outline-none"
-                      >
-                        <option value="">Non assigné</option>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setNewTask({ ...newTask, assignedTo: '' })}
+                          className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
+                            newTask.assignedTo === ''
+                              ? 'border-orange-400 bg-orange-50 shadow-md'
+                              : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                          }`}
+                        >
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                            <User className="w-4 h-4 text-gray-500" />
+                          </div>
+                          <span className={`text-xs font-semibold ${newTask.assignedTo === '' ? 'text-orange-700' : 'text-gray-600'}`}>
+                            Non assigné
+                          </span>
+                        </button>
+
                         {roommates.map((roommate) => (
-                          <option key={roommate.id} value={roommate.id}>
-                            {roommate.name}
-                          </option>
+                          <button
+                            key={roommate.id}
+                            type="button"
+                            onClick={() => setNewTask({ ...newTask, assignedTo: roommate.id })}
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
+                              newTask.assignedTo === roommate.id
+                                ? 'border-orange-400 bg-orange-50 shadow-md'
+                                : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                            }`}
+                          >
+                            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                                 style={{
+                                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                                 }}>
+                              {roommate.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span className={`text-xs font-semibold ${newTask.assignedTo === roommate.id ? 'text-orange-700' : 'text-gray-600'}`}>
+                              {roommate.name}
+                            </span>
+                          </button>
                         ))}
-                      </select>
+                      </div>
                     </div>
 
                     {/* Actions */}
