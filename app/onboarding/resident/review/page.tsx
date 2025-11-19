@@ -77,8 +77,8 @@ export default function ResidentReviewPage() {
       safeLocalStorage.remove('residentLivingSituation');
       safeLocalStorage.remove('residentPersonality');
 
-      // Redirect to property setup page
-      router.push('/onboarding/resident/property-setup');
+      // Redirect to success page (property setup can be done later in hub)
+      router.push('/onboarding/resident/success?completed=true');
     } catch (err: any) {
       // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
