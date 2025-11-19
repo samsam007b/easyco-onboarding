@@ -547,6 +547,7 @@ export default function ProfilePage() {
               <ProfilePictureUpload
                 userId={userData.id}
                 currentAvatarUrl={userData.avatar_url || undefined}
+                compact={true}
                 onUploadSuccess={async (url) => {
                   const { data } = await supabase
                     .from('users')

@@ -11,12 +11,14 @@ interface ProfilePictureUploadProps {
   userId: string;
   currentAvatarUrl?: string;
   onUploadSuccess?: (url: string) => void;
+  compact?: boolean; // New prop for compact mode (just icon button)
 }
 
 export default function ProfilePictureUpload({
   userId,
   currentAvatarUrl,
   onUploadSuccess,
+  compact = false,
 }: ProfilePictureUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
@@ -106,6 +108,36 @@ export default function ProfilePictureUpload({
     fileInputRef.current?.click();
   };
 
+  // Compact mode: just a small camera button
+  if (compact) {
+    return (
+      <>
+        <button
+          onClick={handleClick}
+          disabled={isUploading}
+          className="p-3 bg-white hover:bg-gray-50 rounded-full shadow-lg border-2 border-gray-200 hover:border-gray-300 transition-all disabled:opacity-50"
+          title="Change profile picture"
+        >
+          {isUploading ? (
+            <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
+          ) : (
+            <Camera className="w-5 h-5 text-gray-600" />
+          )}
+        </button>
+
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+      </>
+    );
+  }
+
+  // Full mode with avatar preview
   return (
     <div className="flex flex-col items-center gap-4">
       {/* Avatar Preview */}
