@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import HubLayout from '@/components/hub/HubLayout';
 import {
   DollarSign,
   TrendingUp,
@@ -504,37 +505,28 @@ export default function HubFinancesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <Button
-            onClick={() => router.back()}
-            variant="ghost"
-            className="mb-6 rounded-full hover:bg-orange-50 transition-colors"
-          >
-            ← Retour au hub
-          </Button>
-
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-                 style={{
-                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                 }}>
-              <DollarSign className="w-7 h-7 text-white" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Finances Partagées
-            </h1>
+    <HubLayout>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+               style={{
+                 background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+               }}>
+            <DollarSign className="w-7 h-7 text-white" />
           </div>
-          <p className="text-gray-600 ml-17">
-            Gérez vos dépenses et vos remboursements entre colocataires
-          </p>
-        </motion.div>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Finances Partagées
+          </h1>
+        </div>
+        <p className="text-gray-600 ml-17">
+          Gérez vos dépenses et vos remboursements entre colocataires
+        </p>
+      </motion.div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -789,7 +781,6 @@ export default function HubFinancesPage() {
             </div>
           </motion.div>
         </div>
-      </div>
 
       {/* Create Expense Modal */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
@@ -930,6 +921,6 @@ export default function HubFinancesPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </HubLayout>
   );
 }
