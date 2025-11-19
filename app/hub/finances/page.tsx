@@ -64,14 +64,16 @@ export default function HubFinancesPage() {
 
       setCurrentUserId(user.id);
 
-      // Get user's property_id
-      const { data: profile } = await supabase
-        .from('user_profiles')
+      // Get user's property_id from property_members
+      const { data: membership } = await supabase
+        .from('property_members')
         .select('property_id')
         .eq('user_id', user.id)
+        .eq('status', 'active')
         .single();
 
-      if (!profile?.property_id) {
+      if (!membership?.property_id) {
+        // No property membership found, will use mock data
         setIsLoading(false);
         return;
       }
@@ -94,7 +96,7 @@ export default function HubFinancesPage() {
             amount_owed
           )
         `)
-        .eq('property_id', profile.property_id)
+        .eq('property_id', membership.property_id)
         .order('date', { ascending: false })
         .limit(10);
 
