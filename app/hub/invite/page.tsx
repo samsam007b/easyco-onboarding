@@ -42,7 +42,7 @@ export default function InvitePage() {
       // Get user's property
       const { data: membership } = await supabase
         .from('property_members')
-        .select('property_id, properties(title)')
+        .select('property_id')
         .eq('user_id', user.id)
         .eq('status', 'active')
         .single();
@@ -53,7 +53,15 @@ export default function InvitePage() {
       }
 
       setPropertyId(membership.property_id);
-      setPropertyName(membership.properties?.title || 'Votre colocation');
+
+      // Get property details
+      const { data: property } = await supabase
+        .from('properties')
+        .select('title')
+        .eq('id', membership.property_id)
+        .single();
+
+      setPropertyName(property?.title || 'Votre colocation');
 
       // Get all members
       const { data: membersData } = await supabase
