@@ -19,7 +19,10 @@ import {
   Clock,
   ArrowRight,
   Sparkles,
-  Heart
+  Heart,
+  ChevronDown,
+  Trophy,
+  Target
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -62,6 +65,8 @@ export default function ModernResidentDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
   const [roommates, setRoommates] = useState<any[]>([]);
+  const [profileCompletion, setProfileCompletion] = useState(0);
+  const [showCompletionDetails, setShowCompletionDetails] = useState(false);
   const [stats, setStats] = useState<DashboardStats>({
     rentStatus: {
       paid: 850,
@@ -133,6 +138,32 @@ export default function ModernResidentDashboard() {
         router.push('/login');
         return;
       }
+
+      // Load profile completion
+      const { data: userData } = await supabase
+        .from('users')
+        .select('full_name, avatar_url')
+        .eq('id', user.id)
+        .single();
+
+      const { data: userProfile } = await supabase
+        .from('user_profiles')
+        .select('financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
+        .eq('user_id', user.id)
+        .single();
+
+      // Calculate profile completion
+      let completed = 0;
+      const total = 6;
+
+      if (userData?.full_name && userData?.avatar_url) completed++;
+      if (userProfile?.financial_info) completed++;
+      if (userProfile?.community_preferences) completed++;
+      if (userProfile?.extended_personality) completed++;
+      if (userProfile?.advanced_preferences) completed++;
+      if (userProfile?.verification_status === 'verified') completed++;
+
+      setProfileCompletion(Math.round((completed / total) * 100));
 
       // Load property membership
       const { data: propertyMember } = await supabase
@@ -264,6 +295,112 @@ export default function ModernResidentDashboard() {
           Bienvenue dans ton espace de vie partagé
         </p>
       </motion.div>
+
+      {/* Profile Completion Widget */}
+      {profileCompletion < 100 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm rounded-2xl p-4 border border-orange-200/50 hover:shadow-md transition-all mb-6"
+        >
+          <button
+            onClick={() => setShowCompletionDetails(!showCompletionDetails)}
+            className="w-full flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              {/* Small Progress Circle */}
+              <div className="relative w-12 h-12">
+                <svg className="w-12 h-12 transform -rotate-90">
+                  <defs>
+                    <linearGradient id="residentCompletionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#D97B6F" />
+                      <stop offset="50%" stopColor="#E8865D" />
+                      <stop offset="100%" stopColor="#FF8C4B" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" strokeWidth="3" />
+                  <circle
+                    cx="24" cy="24" r="20"
+                    fill="none"
+                    stroke="url(#residentCompletionGradient)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 20}`}
+                    strokeDashoffset={`${2 * Math.PI * 20 * (1 - profileCompletion / 100)}`}
+                    className="transition-all duration-500"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xs font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
+                    {profileCompletion}%
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-left">
+                <h3 className="text-sm font-semibold text-gray-900">Complétion du profil</h3>
+                <p className="text-xs text-gray-600">
+                  {profileCompletion === 100 ? "Profil complet" : `${6 - Math.round((profileCompletion / 100) * 6)} section${6 - Math.round((profileCompletion / 100) * 6) > 1 ? 's' : ''} à compléter`}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {profileCompletion === 100 && <Trophy className="w-5 h-5 text-yellow-600" />}
+              <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${showCompletionDetails ? 'rotate-180' : ''}`} />
+            </div>
+          </button>
+
+          {/* Dropdown Details */}
+          {showCompletionDetails && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="mt-4 pt-4 border-t border-orange-200/30 space-y-3"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Informations de base</span>
+                  <span className="font-semibold text-gray-900">✓</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                  <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600" style={{ width: '100%' }} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Infos financières</span>
+                  <Target className="w-3.5 h-3.5 text-gray-400" />
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                  <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600" style={{ width: '33%' }} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600">Préférences communauté</span>
+                  <Target className="w-3.5 h-3.5 text-gray-400" />
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                  <div className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-600" style={{ width: '50%' }} />
+                </div>
+              </div>
+
+              <Button
+                onClick={() => router.push('/profile')}
+                className="w-full mt-2 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                size="sm"
+              >
+                Compléter mon profil
+              </Button>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

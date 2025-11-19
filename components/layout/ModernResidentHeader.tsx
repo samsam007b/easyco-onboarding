@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Home,
@@ -132,19 +131,47 @@ export default function ModernResidentHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo with SVG Gradient */}
           <Link
             href="/dashboard/resident"
             className="flex items-center group"
           >
-            <Image
-              src="/logos/easyco-logo-medium.png"
-              alt="EasyCo"
-              width={100}
-              height={25}
+            <svg
+              width="120"
+              height="28"
+              viewBox="0 0 120 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               className="transition-transform group-hover:scale-105"
-              priority
-            />
+            >
+              <defs>
+                <linearGradient id="residentLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#D97B6F" />
+                  <stop offset="50%" stopColor="#E8865D" />
+                  <stop offset="100%" stopColor="#FF8C4B" />
+                </linearGradient>
+              </defs>
+              <text
+                x="0"
+                y="20"
+                fontFamily="system-ui, -apple-system, sans-serif"
+                fontSize="24"
+                fontWeight="700"
+                fill="url(#residentLogoGradient)"
+              >
+                Easy
+              </text>
+              <text
+                x="54"
+                y="20"
+                fontFamily="system-ui, -apple-system, sans-serif"
+                fontSize="24"
+                fontWeight="300"
+                fill="url(#residentLogoGradient)"
+              >
+                Co
+              </text>
+            </svg>
           </Link>
 
           {/* Desktop Navigation */}
@@ -266,7 +293,7 @@ export default function ModernResidentHeader({
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
-              {/* Profile Dropdown */}
+              {/* Enhanced Profile Dropdown */}
               <AnimatePresence>
                 {showProfileMenu && (
                   <>
@@ -275,43 +302,79 @@ export default function ModernResidentHeader({
                       onClick={() => setShowProfileMenu(false)}
                     />
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ type: "spring", duration: 0.3 }}
+                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-gray-200">
-                        <p className="font-semibold text-gray-900">{profile.full_name}</p>
-                        <p className="text-sm text-gray-500 truncate">{profile.email}</p>
+                      {/* Header avec gradient */}
+                      <div className="relative px-4 py-4 bg-gradient-to-br from-orange-50 to-pink-50">
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#D97B6F]/10 via-[#E8865D]/10 to-[#FF8C4B]/10" />
+                        <div className="relative">
+                          <p className="font-bold text-gray-900 text-lg">{profile.full_name}</p>
+                          <p className="text-sm text-gray-600 truncate">{profile.email}</p>
+                        </div>
                       </div>
 
-                      <Link
-                        href="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
-                        onClick={() => setShowProfileMenu(false)}
-                      >
-                        <User className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">Mon Profil</span>
-                      </Link>
+                      {/* Stats rapides */}
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Users className="w-3.5 h-3.5 text-orange-600" />
+                              <span className="text-xs font-medium text-gray-600">Coloc</span>
+                            </div>
+                            <p className="text-lg font-bold text-gray-900">{activeMembersCount}</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <MessageCircle className="w-3.5 h-3.5 text-blue-600" />
+                              <span className="text-xs font-medium text-gray-600">Messages</span>
+                            </div>
+                            <p className="text-lg font-bold text-gray-900">{unreadMessages}</p>
+                          </div>
+                        </div>
+                      </div>
 
-                      <Link
-                        href="/settings"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition"
-                        onClick={() => setShowProfileMenu(false)}
-                      >
-                        <Settings className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">Paramètres</span>
-                      </Link>
+                      {/* Menu items */}
+                      <div className="py-2">
+                        <Link
+                          href="/profile"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 transition group"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-purple-600" />
+                          </div>
+                          <span className="text-gray-700 font-medium">Mon Profil</span>
+                        </Link>
 
-                      <div className="my-2 border-t border-gray-200" />
+                        <Link
+                          href="/settings"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 transition group"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Settings className="w-4 h-4 text-gray-600" />
+                          </div>
+                          <span className="text-gray-700 font-medium">Paramètres</span>
+                        </Link>
+                      </div>
 
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition text-red-600"
-                      >
-                        <LogOut className="w-5 h-5" />
-                        <span className="font-medium">Déconnexion</span>
-                      </button>
+                      <div className="my-1 border-t border-gray-100" />
+
+                      <div className="py-2">
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50/50 transition text-red-600 group"
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <LogOut className="w-4 h-4" />
+                          </div>
+                          <span className="font-medium">Déconnexion</span>
+                        </button>
+                      </div>
                     </motion.div>
                   </>
                 )}
