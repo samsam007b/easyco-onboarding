@@ -19,7 +19,6 @@ import {
   X,
   ChevronDown,
   TrendingUp,
-  CreditCard,
   Heart,
   Globe
 } from 'lucide-react';
@@ -83,12 +82,6 @@ export default function ModernResidentHeader({
       label: 'Finances',
       icon: DollarSign,
       badge: yourBalance !== 0 ? '!' : null,
-    },
-    {
-      id: 'payments',
-      href: '/payments',
-      label: 'Paiements',
-      icon: CreditCard,
     },
     {
       id: 'calendar',
