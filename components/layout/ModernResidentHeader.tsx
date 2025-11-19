@@ -1,16 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Home,
   CheckSquare,
   DollarSign,
   Calendar,
-  Wrench,
   MessageCircle,
-  Bell,
   User,
   LogOut,
   Settings,
@@ -18,8 +15,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  TrendingUp,
-  Globe,
   Zap,
   Receipt,
   AlertCircle,
@@ -28,7 +23,6 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
@@ -56,10 +50,8 @@ export default function ModernResidentHeader({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
 
   const {
-    groupName = 'Ma Coloc',
     pendingTasks = 0,
     yourBalance = 0,
     unreadMessages = 0,
@@ -67,12 +59,6 @@ export default function ModernResidentHeader({
   } = stats;
 
   const navItems = [
-    {
-      id: 'hub',
-      href: '/dashboard/resident',
-      label: 'Hub',
-      icon: Home,
-    },
     {
       id: 'tasks',
       href: '/hub/tasks',
