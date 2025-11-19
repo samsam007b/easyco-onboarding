@@ -40,7 +40,7 @@ BEGIN
 
   -- Create property membership (this links the user to the property)
   INSERT INTO property_members (property_id, user_id, role, status, move_in_date)
-  VALUES (test_property_id, current_user_id, 'member', 'active', CURRENT_DATE)
+  VALUES (test_property_id, current_user_id, 'resident', 'active', CURRENT_DATE)
   ON CONFLICT (property_id, user_id, status) DO NOTHING;
 
   -- Create demo expenses
