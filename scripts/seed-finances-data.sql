@@ -32,11 +32,11 @@ BEGIN
     RETURNING id INTO test_property_id;
   END IF;
 
-  -- Ensure user has a profile
-  INSERT INTO user_profiles (user_id, user_type, first_name, last_name)
-  VALUES (current_user_id, 'resident', 'Test', 'User')
-  ON CONFLICT (user_id) DO UPDATE
-  SET user_type = 'resident';
+  -- Ensure user has a profile (only if doesn't exist to avoid trigger issues)
+  IF NOT EXISTS (SELECT 1 FROM user_profiles WHERE user_id = current_user_id) THEN
+    INSERT INTO user_profiles (user_id, user_type, first_name, last_name)
+    VALUES (current_user_id, 'resident', 'Test', 'User');
+  END IF;
 
   -- Create property membership (this links the user to the property)
   INSERT INTO property_members (property_id, user_id, role, status, move_in_date)
