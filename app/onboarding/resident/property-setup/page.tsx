@@ -97,7 +97,7 @@ export default function ResidentPropertySetupPage() {
           city: createForm.city,
           postal_code: createForm.postal_code,
           country: 'France',
-          property_type: 'shared_apartment',
+          property_type: 'coliving',
           bedrooms: createForm.total_rooms,
           bathrooms: 1,
           total_rooms: createForm.total_rooms,
