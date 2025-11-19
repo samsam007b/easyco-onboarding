@@ -58,17 +58,13 @@ export default function ResidentPropertySetupPage() {
 
       setCurrentUserId(user.id);
 
-      // Check if user already has a property membership
-      const { data: membership } = await supabase
-        .from('property_members')
-        .select('property_id, status')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .single();
+      // Check if user already has a property membership using SECURITY DEFINER function
+      const { data: membership, error } = await supabase
+        .rpc('get_my_property_membership');
 
-      if (membership?.property_id) {
-        // User already has a property, skip to success
-        router.push('/onboarding/resident/success');
+      if (!error && membership && membership.length > 0) {
+        // User already has a property, skip to hub
+        router.push('/hub');
         return;
       }
 
@@ -117,40 +113,20 @@ export default function ResidentPropertySetupPage() {
 
       console.log('✅ Property created:', property);
 
-      // Create property membership
+      // Create property membership using SECURITY DEFINER function
       const { data: membershipData, error: memberError } = await supabase
-        .from('property_members')
-        .insert({
-          property_id: property.id,
-          user_id: currentUserId,
-          role: 'resident',
-          status: 'active',
-        })
-        .select()
-        .single();
+        .rpc('create_property_membership', {
+          p_property_id: property.id,
+          p_user_id: currentUserId,
+          p_role: 'resident'
+        });
 
       if (memberError) {
-        console.error('Error creating membership:', memberError);
+        console.error('❌ Error creating membership:', memberError);
         throw memberError;
       }
 
       console.log('✅ Membership created:', membershipData);
-
-      // Verify membership was actually saved
-      const { data: verifyMembership, error: verifyError } = await supabase
-        .from('property_members')
-        .select('property_id, status')
-        .eq('user_id', currentUserId)
-        .eq('property_id', property.id)
-        .eq('status', 'active')
-        .single();
-
-      if (verifyError || !verifyMembership) {
-        console.error('❌ Failed to verify membership:', verifyError);
-        throw new Error('Membership created but could not be verified');
-      }
-
-      console.log('✅ Membership verified:', verifyMembership);
       toast.success('Colocation créée avec succès!');
 
       // Small delay to ensure database sync
@@ -187,40 +163,20 @@ export default function ResidentPropertySetupPage() {
         return;
       }
 
-      // Create property membership
+      // Create property membership using SECURITY DEFINER function
       const { data: membershipData, error: memberError } = await supabase
-        .from('property_members')
-        .insert({
-          property_id: property.id,
-          user_id: currentUserId,
-          role: 'resident',
-          status: 'active',
-        })
-        .select()
-        .single();
+        .rpc('create_property_membership', {
+          p_property_id: property.id,
+          p_user_id: currentUserId,
+          p_role: 'resident'
+        });
 
       if (memberError) {
-        console.error('Error creating membership:', memberError);
+        console.error('❌ Error creating membership:', memberError);
         throw memberError;
       }
 
       console.log('✅ Membership created:', membershipData);
-
-      // Verify membership was actually saved
-      const { data: verifyMembership, error: verifyError } = await supabase
-        .from('property_members')
-        .select('property_id, status')
-        .eq('user_id', currentUserId)
-        .eq('property_id', property.id)
-        .eq('status', 'active')
-        .single();
-
-      if (verifyError || !verifyMembership) {
-        console.error('❌ Failed to verify membership:', verifyError);
-        throw new Error('Membership created but could not be verified');
-      }
-
-      console.log('✅ Membership verified:', verifyMembership);
       toast.success('Vous avez rejoint la colocation!');
 
       // Small delay to ensure database sync
