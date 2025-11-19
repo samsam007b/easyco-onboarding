@@ -49,8 +49,7 @@ BEGIN
     (gen_random_uuid(), test_property_id, current_user_id, current_user_id, 'Courses de la semaine', 'Supermarché', 85.50, 'groceries', CURRENT_DATE - 2, 'paid'),
     (gen_random_uuid(), test_property_id, current_user_id, current_user_id, 'Facture Internet', 'Fibre Orange', 29.99, 'internet', CURRENT_DATE - 5, 'paid'),
     (gen_random_uuid(), test_property_id, current_user_id, current_user_id, 'Électricité', 'EDF', 68.75, 'utilities', CURRENT_DATE - 10, 'paid'),
-    (gen_random_uuid(), test_property_id, current_user_id, current_user_id, 'Pizza party', 'Soirée coloc', 45.00, 'groceries', CURRENT_DATE, 'pending')
-  RETURNING id INTO expense1_id;
+    (gen_random_uuid(), test_property_id, current_user_id, current_user_id, 'Pizza party', 'Soirée coloc', 45.00, 'groceries', CURRENT_DATE, 'pending');
 
   -- Get all expense IDs
   FOR expense1_id IN
