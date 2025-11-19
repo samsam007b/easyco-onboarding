@@ -403,7 +403,11 @@ export default function HubFinancesPage() {
   };
 
   const createExpense = async () => {
-    if (!currentUserId || !propertyId) return;
+    if (!currentUserId || !propertyId) {
+      console.error('❌ Cannot create expense:', { currentUserId, propertyId });
+      alert('Erreur: Vous devez être membre d\'une propriété pour créer une dépense');
+      return;
+    }
     if (!newExpense.title || !newExpense.amount) {
       alert('Veuillez remplir tous les champs obligatoires');
       return;
