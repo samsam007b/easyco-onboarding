@@ -19,7 +19,6 @@ import {
   X,
   ChevronDown,
   TrendingUp,
-  Heart,
   Globe,
   Zap,
   Receipt,
@@ -100,12 +99,6 @@ export default function ModernResidentHeader({
       label: 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
-    },
-    {
-      id: 'favorites',
-      href: '/favorites',
-      label: 'Favoris',
-      icon: Heart,
     },
   ];
 

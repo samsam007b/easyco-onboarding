@@ -52,6 +52,18 @@ export default function FavoritesPage() {
         .eq('id', user.id)
         .single();
 
+      // Redirect residents to their dashboard (favorites is only for searchers)
+      if (userData?.user_type === 'resident') {
+        router.push('/dashboard/resident');
+        return;
+      }
+
+      // Redirect owners to their dashboard (favorites is only for searchers)
+      if (userData?.user_type === 'owner') {
+        router.push('/dashboard/owner');
+        return;
+      }
+
       const { data: profileData } = await supabase
         .from('user_profiles')
         .select('*')
