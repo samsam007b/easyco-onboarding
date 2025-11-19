@@ -118,22 +118,43 @@ export default function ResidentPropertySetupPage() {
       console.log('✅ Property created:', property);
 
       // Create property membership
-      const { error: memberError } = await supabase
+      const { data: membershipData, error: memberError } = await supabase
         .from('property_members')
         .insert({
           property_id: property.id,
           user_id: currentUserId,
           role: 'resident',
           status: 'active',
-        });
+        })
+        .select()
+        .single();
 
       if (memberError) {
         console.error('Error creating membership:', memberError);
         throw memberError;
       }
 
-      console.log('✅ Membership created');
+      console.log('✅ Membership created:', membershipData);
+
+      // Verify membership was actually saved
+      const { data: verifyMembership, error: verifyError } = await supabase
+        .from('property_members')
+        .select('property_id, status')
+        .eq('user_id', currentUserId)
+        .eq('property_id', property.id)
+        .eq('status', 'active')
+        .single();
+
+      if (verifyError || !verifyMembership) {
+        console.error('❌ Failed to verify membership:', verifyError);
+        throw new Error('Membership created but could not be verified');
+      }
+
+      console.log('✅ Membership verified:', verifyMembership);
       toast.success('Colocation créée avec succès!');
+
+      // Small delay to ensure database sync
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // Redirect directly to hub
       router.push('/hub');
@@ -167,22 +188,43 @@ export default function ResidentPropertySetupPage() {
       }
 
       // Create property membership
-      const { error: memberError } = await supabase
+      const { data: membershipData, error: memberError } = await supabase
         .from('property_members')
         .insert({
           property_id: property.id,
           user_id: currentUserId,
           role: 'resident',
           status: 'active',
-        });
+        })
+        .select()
+        .single();
 
       if (memberError) {
         console.error('Error creating membership:', memberError);
         throw memberError;
       }
 
-      console.log('✅ Joined property successfully');
+      console.log('✅ Membership created:', membershipData);
+
+      // Verify membership was actually saved
+      const { data: verifyMembership, error: verifyError } = await supabase
+        .from('property_members')
+        .select('property_id, status')
+        .eq('user_id', currentUserId)
+        .eq('property_id', property.id)
+        .eq('status', 'active')
+        .single();
+
+      if (verifyError || !verifyMembership) {
+        console.error('❌ Failed to verify membership:', verifyError);
+        throw new Error('Membership created but could not be verified');
+      }
+
+      console.log('✅ Membership verified:', verifyMembership);
       toast.success('Vous avez rejoint la colocation!');
+
+      // Small delay to ensure database sync
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // Redirect directly to hub
       router.push('/hub');
