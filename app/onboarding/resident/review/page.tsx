@@ -77,8 +77,8 @@ export default function ResidentReviewPage() {
       safeLocalStorage.remove('residentLivingSituation');
       safeLocalStorage.remove('residentPersonality');
 
-      // ⚡ Add cache-busting parameter to force reload
-      router.push('/onboarding/resident/success?completed=true');
+      // Redirect to property setup page
+      router.push('/onboarding/resident/property-setup');
     } catch (err: any) {
       // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
