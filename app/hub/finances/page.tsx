@@ -102,8 +102,9 @@ export default function HubFinancesPage() {
         .single();
 
       if (!membership?.property_id) {
-        // No property membership found, will use mock data
-        setIsLoading(false);
+        // No property membership found, redirect to setup
+        console.log('❌ No property membership found, redirecting to setup...');
+        router.push('/hub/setup-property');
         return;
       }
 
