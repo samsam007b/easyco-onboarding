@@ -99,7 +99,8 @@ export default function SetupPropertyPage() {
           property_type: 'shared_apartment',
           total_rooms: createForm.total_rooms,
           available_from: new Date().toISOString().split('T')[0],
-          is_published: false, // Private property for residents
+          is_available: false, // Private property for residents only
+          status: 'draft', // Not published
           owner_id: currentUserId,
         })
         .select()
