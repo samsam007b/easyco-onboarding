@@ -20,7 +20,11 @@ import {
   ChevronDown,
   TrendingUp,
   Heart,
-  Globe
+  Globe,
+  Zap,
+  Receipt,
+  AlertCircle,
+  Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -52,6 +56,7 @@ export default function ModernResidentHeader({
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showQuickActions, setShowQuickActions] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
   const {
@@ -101,6 +106,37 @@ export default function ModernResidentHeader({
       href: '/favorites',
       label: 'Favoris',
       icon: Heart,
+    },
+  ];
+
+  const quickActions = [
+    {
+      id: 'pay-rent',
+      href: '/hub/finances',
+      label: 'Payer le loyer',
+      icon: Receipt,
+      description: 'Effectuer un paiement',
+    },
+    {
+      id: 'report-issue',
+      href: '/hub/tasks',
+      label: 'Signaler un problème',
+      icon: AlertCircle,
+      description: 'Créer une demande',
+    },
+    {
+      id: 'add-expense',
+      href: '/hub/finances',
+      label: 'Ajouter une dépense',
+      icon: Plus,
+      description: 'Partager une dépense',
+    },
+    {
+      id: 'contact-roommates',
+      href: '/messages',
+      label: 'Contacter les colocataires',
+      icon: MessageCircle,
+      description: 'Envoyer un message',
     },
   ];
 
@@ -257,6 +293,78 @@ export default function ModernResidentHeader({
                 <span className="text-sm font-medium text-orange-900">{activeMembersCount} membres</span>
               </Link>
             )}
+
+            {/* Quick Actions Menu - Desktop Only */}
+            <div className="hidden lg:block relative">
+              <button
+                onClick={() => setShowQuickActions(!showQuickActions)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-orange-50 transition-all border border-gray-200 hover:border-orange-300"
+                aria-label="Menu actions rapides"
+                aria-expanded={showQuickActions}
+                aria-haspopup="true"
+              >
+                <Zap className="w-4 h-4 text-orange-600" />
+                <span>Actions Rapides</span>
+                <ChevronDown className={cn(
+                  "w-4 h-4 transition-transform",
+                  showQuickActions && "rotate-180"
+                )} />
+              </button>
+
+              {/* Quick Actions Dropdown */}
+              <AnimatePresence>
+                {showQuickActions && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setShowQuickActions(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ type: "spring", duration: 0.3 }}
+                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-orange-600" />
+                          Actions Rapides
+                        </h3>
+                      </div>
+                      <div className="p-2">
+                        {quickActions.map((action) => {
+                          const Icon = action.icon;
+                          return (
+                            <Link
+                              key={action.id}
+                              href={action.href}
+                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-orange-50 transition group"
+                              onClick={() => setShowQuickActions(false)}
+                            >
+                              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                                   style={{
+                                     background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                                   }}>
+                                <Icon className="w-5 h-5 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-gray-900">
+                                  {action.label}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {action.description}
+                                </p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Notifications - New NotificationBell Component */}
             <NotificationBell />
