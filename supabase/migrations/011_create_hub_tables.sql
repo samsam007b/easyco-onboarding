@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS expenses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   property_id UUID REFERENCES properties(id) ON DELETE CASCADE,
   created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+  paid_by_id UUID REFERENCES users(id) ON DELETE SET NULL,
   title TEXT NOT NULL,
   description TEXT,
   amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS expense_splits (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   expense_id UUID NOT NULL REFERENCES expenses(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
+  amount_owed DECIMAL(10, 2) NOT NULL CHECK (amount_owed >= 0),
   paid BOOLEAN NOT NULL DEFAULT FALSE,
   paid_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -114,6 +115,7 @@ CREATE TABLE IF NOT EXISTS maintenance_requests (
 -- ============================================================================
 CREATE INDEX IF NOT EXISTS idx_expenses_property ON expenses(property_id);
 CREATE INDEX IF NOT EXISTS idx_expenses_created_by ON expenses(created_by);
+CREATE INDEX IF NOT EXISTS idx_expenses_paid_by ON expenses(paid_by_id);
 CREATE INDEX IF NOT EXISTS idx_expenses_date ON expenses(date);
 CREATE INDEX IF NOT EXISTS idx_expense_splits_user ON expense_splits(user_id);
 
