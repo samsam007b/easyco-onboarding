@@ -96,8 +96,12 @@ export default function SetupPropertyPage() {
           address: createForm.address,
           city: createForm.city,
           postal_code: createForm.postal_code,
+          country: 'France',
           property_type: 'shared_apartment',
+          bedrooms: createForm.total_rooms,
+          bathrooms: 1,
           total_rooms: createForm.total_rooms,
+          monthly_rent: 0, // To be filled later by residents
           available_from: new Date().toISOString().split('T')[0],
           is_available: false, // Private property for residents only
           status: 'draft', // Not published
