@@ -135,8 +135,8 @@ export default function ResidentPropertySetupPage() {
       console.log('✅ Membership created');
       toast.success('Colocation créée avec succès!');
 
-      // Redirect to success page
-      router.push('/onboarding/resident/success?completed=true');
+      // Redirect directly to hub
+      router.push('/hub');
     } catch (error: any) {
       console.error('❌ Error creating property:', error);
       toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
@@ -184,8 +184,8 @@ export default function ResidentPropertySetupPage() {
       console.log('✅ Joined property successfully');
       toast.success('Vous avez rejoint la colocation!');
 
-      // Redirect to success page
-      router.push('/onboarding/resident/success?completed=true');
+      // Redirect directly to hub
+      router.push('/hub');
     } catch (error: any) {
       console.error('❌ Error joining property:', error);
       toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
@@ -194,8 +194,8 @@ export default function ResidentPropertySetupPage() {
   };
 
   const skipForNow = () => {
-    // Allow skipping but they'll be prompted again later
-    router.push('/onboarding/resident/success?completed=true');
+    // Redirect to hub - they'll be prompted to setup property there
+    router.push('/hub');
   };
 
   if (isLoading) {
