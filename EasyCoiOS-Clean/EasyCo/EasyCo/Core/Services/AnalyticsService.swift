@@ -28,133 +28,48 @@ class AnalyticsService: ObservableObject {
     /// Track property view event
     func trackPropertyView(
         propertyId: UUID,
-        source: PropertyView.ViewSource = .direct,
+        source: String = "direct",
         viewDuration: Int? = nil
     ) async {
-        let event = AnalyticsEvent(
-            eventName: "property_view",
-            eventParams: [
-                "property_id": propertyId.uuidString,
-                "source": source.rawValue,
-                "view_duration": viewDuration.map(String.init) ?? "0",
-                "session_id": sessionId
-            ]
-        )
-
-        await trackEvent(event)
+        // TODO: Implement analytics endpoint
+        print("📊 Property view tracked: \(propertyId)")
     }
 
     /// Track search event
     func trackSearch(
         query: String?,
-        filters: SearchFilters?,
+        filters: PropertyFilters?,
         resultsCount: Int,
         clickedPropertyId: UUID? = nil
     ) async {
-        var params: [String: String] = [
-            "results_count": String(resultsCount),
-            "session_id": sessionId
-        ]
-
-        if let query = query {
-            params["search_query"] = query
-        }
-
-        if let filters = filters {
-            if let city = filters.city {
-                params["filter_city"] = city
-            }
-            if let minPrice = filters.minPrice {
-                params["filter_min_price"] = String(minPrice)
-            }
-            if let maxPrice = filters.maxPrice {
-                params["filter_max_price"] = String(maxPrice)
-            }
-        }
-
-        if let propertyId = clickedPropertyId {
-            params["clicked_property_id"] = propertyId.uuidString
-        }
-
-        let event = AnalyticsEvent(eventName: "search", eventParams: params)
-        await trackEvent(event)
+        // TODO: Implement analytics endpoint
+        print("📊 Search tracked: \(resultsCount) results")
     }
 
     /// Track generic analytics event
-    func trackEvent(_ event: AnalyticsEvent) async {
+    func trackEvent(eventName: String, params: [String: String] = [:]) async {
         // TODO: Implement analytics endpoint in APIEndpoint.swift
-        // Temporarily disabled - no analytics endpoint configured
-        print("📊 Analytics event (not sent - endpoint TODO): \(event.eventName)")
-
-        /* Commented until analytics endpoint is added to Endpoint enum
-        do {
-            let endpoint = Endpoint.analytics(event: event)
-            let _: EmptyResponse = try await apiClient.request(endpoint, method: .post, body: event)
-            print("✅ Analytics event tracked: \(event.eventName)")
-        } catch {
-            print("❌ Failed to track analytics event: \(error.localizedDescription)")
-            // Silently fail - analytics should not block user actions
-        }
-        */
+        print("📊 Analytics event: \(eventName)")
     }
 
     // MARK: - Data Fetching Methods
 
-    /// Get analytics summary for current user
-    func getAnalyticsSummary() async throws -> AnalyticsSummary {
-        // TODO: Replace with actual API call
-        // For now, return mock data
-        return AnalyticsSummary.mock
-    }
-
     /// Get owner dashboard statistics
-    func getOwnerStats() async throws -> OwnerStats {
+    func getOwnerAnalytics(period: AnalyticsPeriod = .month) async throws -> OwnerAnalytics {
         // TODO: Replace with actual API call
-        // For now, return mock data
         try await Task.sleep(nanoseconds: 500_000_000) // Simulate network delay
-        return OwnerStats.mock
+        return OwnerAnalytics.mock
     }
 
     /// Get searcher dashboard statistics
-    func getSearcherStats() async throws -> SearcherStats {
+    func getSearcherAnalytics(period: AnalyticsPeriod = .month) async throws -> SearcherAnalytics {
         // TODO: Replace with actual API call
         try await Task.sleep(nanoseconds: 500_000_000)
-        return SearcherStats.mock
-    }
-
-    /// Get resident dashboard statistics
-    func getResidentStats() async throws -> ResidentStats {
-        // TODO: Replace with actual API call
-        try await Task.sleep(nanoseconds: 500_000_000)
-        return ResidentStats.mock
+        return SearcherAnalytics.mock
     }
 
     /// Get recently viewed properties
     func getRecentlyViewedProperties(limit: Int = 10) async throws -> [Property] {
-        // TODO: Implement actual API call
-        return []
-    }
-
-    /// Get search history
-    func getSearchHistory(limit: Int = 20) async throws -> [SearchHistory] {
-        // TODO: Implement actual API call
-        return []
-    }
-
-    /// Get property view history
-    func getPropertyViewHistory(limit: Int = 20) async throws -> [PropertyView] {
-        // TODO: Implement actual API call
-        return []
-    }
-
-    /// Get most viewed properties
-    func getMostViewedProperties(limit: Int = 10) async throws -> [MostViewedProperty] {
-        // TODO: Implement actual API call
-        return []
-    }
-
-    /// Get search trends for the last N days
-    func getSearchTrends(days: Int = 30) async throws -> [SearchTrend] {
         // TODO: Implement actual API call
         return []
     }

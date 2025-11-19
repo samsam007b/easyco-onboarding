@@ -74,14 +74,19 @@ class PushNotificationService: NSObject, ObservableObject {
 
     /// Send device token to backend API (Supabase)
     private func sendTokenToBackend(_ token: String) async {
-        guard let authToken = EasyCoKeychainManager.shared.getAuthToken() else {
+        // TODO: Implement backend device token registration
+        // For now, just store locally
+        UserDefaults.standard.set(token, forKey: "device_push_token")
+        print("📱 Device token saved locally: \(token.prefix(20))...")
+
+        /* Commented out until Supabase integration is complete
+        guard let authToken = KeychainManager.shared.getAuthToken() else {
             print("⚠️ No auth token - cannot save device token to Supabase")
             return
         }
 
         do {
-            let userId = try apiClient.getUserIdFromToken(authToken)
-
+            // TODO: Implement actual Supabase API call
             struct DeviceTokenPayload: Codable {
                 let deviceToken: String
                 let platform: String
@@ -109,16 +114,14 @@ class PushNotificationService: NSObject, ObservableObject {
                 updatedAt: ISO8601DateFormatter().string(from: Date())
             )
 
-            // Update user_profiles with device token
-            try await SupabaseClient.shared
-                .from("user_profiles")
-                .eq("user_id", value: userId)
-                .update(payload)
+            // Update user_profiles with device token via API
+            // await apiClient.updateDeviceToken(payload)
 
-            print("✅ Device token registered with Supabase")
+            print("✅ Device token registered with backend")
         } catch {
-            print("❌ Error registering device token with Supabase: \(error)")
+            print("❌ Error registering device token: \(error)")
         }
+        */
     }
 
     /// Handle failed registration

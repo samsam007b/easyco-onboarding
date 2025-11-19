@@ -3,7 +3,7 @@ import Combine
 
 // MARK: - Notification Service
 
-/// Service for managing in-app notifications with Supabase
+/// Service for managing in-app notifications
 @MainActor
 class NotificationService: ObservableObject {
     static let shared = NotificationService()
@@ -12,11 +12,9 @@ class NotificationService: ObservableObject {
     @Published var unreadCount: Int = 0
     @Published var preferences: NotificationPreferences = .default
     @Published var isLoading: Bool = false
-    @Published var error: SupabaseError?
+    @Published var error: Error?
 
-    private let supabase = SupabaseClient.shared
-    private let realtime = SupabaseRealtime.shared
-    private var realtimeSubscriptionId: String?
+    private let apiClient = APIClient.shared
     private var cancellables = Set<AnyCancellable>()
 
     private init() {
@@ -31,37 +29,25 @@ class NotificationService: ObservableObject {
 
     // MARK: - Fetch Notifications
 
-    /// Fetch notifications from Supabase
+    /// Fetch notifications from backend
     func fetchNotifications(limit: Int = 50) async {
         isLoading = true
         defer { isLoading = false }
 
         do {
-            // Query Supabase directly
-            let response: [AppNotification] = try await supabase
-                .from("notifications")
-                .select()
-                .order("created_at", ascending: false)
-                .limit(limit)
-                .execute()
+            // TODO: Implement actual API call
+            // let response = try await apiClient.getNotifications(limit: limit)
 
-            notifications = response
-            print("✅ Fetched \(response.count) notifications from Supabase")
-        } catch let error as SupabaseError {
+            // For now, use mock data
+            try await Task.sleep(nanoseconds: 500_000_000) // Simulate network delay
+            notifications = AppNotification.mockData
+            print("✅ Loaded \(notifications.count) notifications (mock data)")
+        } catch {
             self.error = error
             print("❌ Error fetching notifications: \(error)")
 
-            // Fallback to mock data for development
-            if AppConfig.FeatureFlags.demoMode {
-                notifications = AppNotification.mockData
-            }
-        } catch {
-            print("❌ Unknown error fetching notifications: \(error)")
-
-            // Fallback to mock data for development
-            if AppConfig.FeatureFlags.demoMode {
-                notifications = AppNotification.mockData
-            }
+            // Fallback to mock data
+            notifications = AppNotification.mockData
         }
     }
 
@@ -72,129 +58,103 @@ class NotificationService: ObservableObject {
 
     // MARK: - Mark as Read
 
-    /// Mark a notification as read using Supabase RPC function
+    /// Mark a notification as read
     func markAsRead(_ notification: AppNotification) async {
         guard !notification.isRead else { return }
 
-        do {
-            // Call Supabase RPC function
-            let _: Bool = try await supabase.rpcSingle(
-                "mark_notification_read",
-                params: ["notification_id": notification.id.uuidString]
-            )
+        // TODO: Implement API call
+        // try await apiClient.markNotificationRead(id: notification.id)
 
-            // Update local state
-            if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
-                notifications[index] = AppNotification(
-                    id: notification.id,
-                    userId: notification.userId,
-                    type: notification.type,
-                    title: notification.title,
-                    message: notification.message,
+        // Update local state
+        notifications = notifications.map { n in
+            if n.id == notification.id {
+                return AppNotification(
+                    id: n.id,
+                    userId: n.userId,
+                    type: n.type,
+                    title: n.title,
+                    message: n.message,
                     isRead: true,
                     readAt: Date(),
-                    createdAt: notification.createdAt,
+                    createdAt: n.createdAt,
                     updatedAt: Date(),
-                    expiresAt: notification.expiresAt,
-                    actionUrl: notification.actionUrl,
-                    actionLabel: notification.actionLabel,
-                    data: notification.data,
-                    relatedUserId: notification.relatedUserId,
-                    relatedPropertyId: notification.relatedPropertyId,
-                    relatedMessageId: notification.relatedMessageId,
-                    relatedConversationId: notification.relatedConversationId
+                    expiresAt: n.expiresAt,
+                    actionUrl: n.actionUrl,
+                    actionLabel: n.actionLabel,
+                    data: n.data,
+                    relatedUserId: n.relatedUserId,
+                    relatedPropertyId: n.relatedPropertyId,
+                    relatedMessageId: n.relatedMessageId,
+                    relatedConversationId: n.relatedConversationId
                 )
             }
-
-            print("✅ Marked notification as read: \(notification.id)")
-        } catch {
-            print("❌ Error marking notification as read: \(error)")
+            return n
         }
+
+        print("✅ Marked notification as read: \(notification.id)")
     }
 
-    /// Mark all notifications as read using Supabase RPC function
+    /// Mark all notifications as read
     func markAllAsRead() async {
-        do {
-            // Call Supabase RPC function
-            let _: Bool = try await supabase.rpcSingle("mark_all_notifications_read")
+        // TODO: Implement API call
+        // try await apiClient.markAllNotificationsRead()
 
-            // Update local state
-            notifications = notifications.map { notification in
-                AppNotification(
-                    id: notification.id,
-                    userId: notification.userId,
-                    type: notification.type,
-                    title: notification.title,
-                    message: notification.message,
-                    isRead: true,
-                    readAt: Date(),
-                    createdAt: notification.createdAt,
-                    updatedAt: Date(),
-                    expiresAt: notification.expiresAt,
-                    actionUrl: notification.actionUrl,
-                    actionLabel: notification.actionLabel,
-                    data: notification.data,
-                    relatedUserId: notification.relatedUserId,
-                    relatedPropertyId: notification.relatedPropertyId,
-                    relatedMessageId: notification.relatedMessageId,
-                    relatedConversationId: notification.relatedConversationId
-                )
-            }
-
-            print("✅ Marked all notifications as read")
-        } catch {
-            print("❌ Error marking all as read: \(error)")
+        // Update local state
+        notifications = notifications.map { n in
+            AppNotification(
+                id: n.id,
+                userId: n.userId,
+                type: n.type,
+                title: n.title,
+                message: n.message,
+                isRead: true,
+                readAt: Date(),
+                createdAt: n.createdAt,
+                updatedAt: Date(),
+                expiresAt: n.expiresAt,
+                actionUrl: n.actionUrl,
+                actionLabel: n.actionLabel,
+                data: n.data,
+                relatedUserId: n.relatedUserId,
+                relatedPropertyId: n.relatedPropertyId,
+                relatedMessageId: n.relatedMessageId,
+                relatedConversationId: n.relatedConversationId
+            )
         }
+
+        print("✅ Marked all notifications as read")
     }
 
     // MARK: - Delete Notifications
 
-    /// Delete a notification from Supabase
+    /// Delete a notification
     func deleteNotification(_ notification: AppNotification) async {
-        do {
-            // Delete from Supabase
-            try await supabase
-                .from("notifications")
-                .eq("id", value: notification.id.uuidString)
-                .delete()
+        // TODO: Implement API call
+        // try await apiClient.deleteNotification(id: notification.id)
 
-            // Update local state
-            notifications.removeAll { $0.id == notification.id }
+        // Update local state
+        notifications.removeAll { $0.id == notification.id }
 
-            print("✅ Deleted notification: \(notification.id)")
-        } catch {
-            print("❌ Error deleting notification: \(error)")
-        }
+        print("✅ Deleted notification: \(notification.id)")
     }
 
     /// Clear all notifications
     func clearAll() async {
-        do {
-            // Delete all user's notifications from Supabase
-            try await supabase
-                .from("notifications")
-                .delete()
+        // TODO: Implement API call
+        // try await apiClient.clearAllNotifications()
 
-            // Update local state
-            notifications.removeAll()
+        // Update local state
+        notifications.removeAll()
 
-            print("✅ Cleared all notifications")
-        } catch {
-            print("❌ Error clearing all notifications: \(error)")
-        }
+        print("✅ Cleared all notifications")
     }
 
     // MARK: - Get Unread Count
 
-    /// Get unread count from Supabase using RPC function
+    /// Get unread count
     func getUnreadCount() async -> Int {
-        do {
-            let count: Int = try await supabase.rpcSingle("get_unread_notifications_count")
-            return count
-        } catch {
-            print("❌ Error getting unread count: \(error)")
-            return 0
-        }
+        // Already computed from $notifications publisher
+        return unreadCount
     }
 
     // MARK: - Filter Notifications
@@ -263,67 +223,17 @@ class NotificationService: ObservableObject {
         await savePreferences(updatedPreferences)
     }
 
-    // MARK: - Real-time Updates
+    // MARK: - Real-time Updates (Disabled - TODO: Implement)
 
-    /// Start listening for real-time notification updates via Supabase Realtime
+    /// Start listening for real-time notification updates
     func startListening() {
-        // Connect to Realtime
-        realtime.connect()
-
-        // Subscribe to notifications table changes
-        realtimeSubscriptionId = realtime.subscribe(
-            table: "notifications",
-            event: .all
-        ) { [weak self] (payload: RealtimePayload<AppNotification>) in
-            Task { @MainActor in
-                await self?.handleRealtimeUpdate(payload)
-            }
-        }
-
-        print("📡 Started listening for notification updates via Supabase Realtime")
+        // TODO: Implement real-time updates via WebSocket or polling
+        print("📡 Real-time listening not yet implemented")
     }
 
     /// Stop listening for real-time updates
     func stopListening() {
-        if let subscriptionId = realtimeSubscriptionId {
-            realtime.unsubscribe(subscriptionId)
-            realtimeSubscriptionId = nil
-        }
-
-        realtime.disconnect()
-        print("📡 Stopped listening for notification updates")
-    }
-
-    /// Handle real-time update from Supabase
-    private func handleRealtimeUpdate(_ payload: RealtimePayload<AppNotification>) async {
-        switch payload.event {
-        case .insert:
-            // New notification received
-            if let newNotification = payload.new {
-                notifications.insert(newNotification, at: 0)
-                print("📬 New notification received via Realtime")
-
-                // Update badge count
-                await PushNotificationService.shared.updateBadgeCount(unreadCount)
-            }
-
-        case .update:
-            // Notification updated
-            if let updatedNotification = payload.new,
-               let index = notifications.firstIndex(where: { $0.id == updatedNotification.id }) {
-                notifications[index] = updatedNotification
-                print("🔄 Notification updated via Realtime")
-            }
-
-        case .delete:
-            // Notification deleted
-            if let deletedNotification = payload.old {
-                notifications.removeAll { $0.id == deletedNotification.id }
-                print("🗑️ Notification deleted via Realtime")
-            }
-
-        case .all:
-            break
-        }
+        // TODO: Implement real-time updates teardown
+        print("📡 Stopped listening")
     }
 }
