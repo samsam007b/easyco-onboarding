@@ -20,6 +20,22 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface Expense {
   id: string;
@@ -49,6 +65,18 @@ export default function HubFinancesPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [balances, setBalances] = useState<Balance[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [propertyId, setPropertyId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Form state
+  const [newExpense, setNewExpense] = useState({
+    title: '',
+    amount: '',
+    category: 'groceries',
+    description: '',
+    date: new Date().toISOString().split('T')[0],
+  });
 
   useEffect(() => {
     loadData();
@@ -77,6 +105,8 @@ export default function HubFinancesPage() {
         setIsLoading(false);
         return;
       }
+
+      setPropertyId(membership.property_id);
 
       // Fetch expenses with user names
       const { data: expensesData, error: expensesError } = await supabase
@@ -371,6 +401,68 @@ export default function HubFinancesPage() {
     }
   };
 
+  const createExpense = async () => {
+    if (!currentUserId || !propertyId) return;
+    if (!newExpense.title || !newExpense.amount) {
+      alert('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Create the expense
+      const { data: expense, error: expenseError } = await supabase
+        .from('expenses')
+        .insert({
+          property_id: propertyId,
+          created_by: currentUserId,
+          paid_by_id: currentUserId,
+          title: newExpense.title,
+          description: newExpense.description || null,
+          amount: parseFloat(newExpense.amount),
+          category: newExpense.category,
+          date: newExpense.date,
+          status: 'pending',
+        })
+        .select()
+        .single();
+
+      if (expenseError) throw expenseError;
+
+      // Create expense split (for now, just for the current user)
+      const { error: splitError } = await supabase
+        .from('expense_splits')
+        .insert({
+          expense_id: expense.id,
+          user_id: currentUserId,
+          amount_owed: parseFloat(newExpense.amount),
+          paid: false,
+        });
+
+      if (splitError) throw splitError;
+
+      // Reset form
+      setNewExpense({
+        title: '',
+        amount: '',
+        category: 'groceries',
+        description: '',
+        date: new Date().toISOString().split('T')[0],
+      });
+
+      // Close modal
+      setShowCreateModal(false);
+
+      // Reload data
+      loadData();
+    } catch (error) {
+      console.error('Error creating expense:', error);
+      alert('Erreur lors de la création de la dépense');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const yourShare = expenses.reduce((sum, exp) => sum + (exp.your_share || 0), 0);
   const totalBalance = balances.reduce((sum, bal) => sum + bal.amount, 0);
@@ -515,6 +607,7 @@ export default function HubFinancesPage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   size="sm"
+                  onClick={() => setShowCreateModal(true)}
                   className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-shadow"
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -672,6 +765,122 @@ export default function HubFinancesPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Create Expense Modal */}
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
+              Nouvelle Dépense
+            </DialogTitle>
+            <DialogDescription>
+              Ajoutez une nouvelle dépense à partager avec vos colocataires
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Title */}
+            <div className="space-y-2">
+              <Label htmlFor="title" className="text-sm font-semibold">
+                Titre *
+              </Label>
+              <Input
+                id="title"
+                placeholder="Ex: Courses de la semaine"
+                value={newExpense.title}
+                onChange={(e) => setNewExpense({ ...newExpense, title: e.target.value })}
+                className="rounded-xl"
+              />
+            </div>
+
+            {/* Amount */}
+            <div className="space-y-2">
+              <Label htmlFor="amount" className="text-sm font-semibold">
+                Montant (€) *
+              </Label>
+              <Input
+                id="amount"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={newExpense.amount}
+                onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
+                className="rounded-xl"
+              />
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <Label htmlFor="category" className="text-sm font-semibold">
+                Catégorie
+              </Label>
+              <Select
+                value={newExpense.category}
+                onValueChange={(value) => setNewExpense({ ...newExpense, category: value })}
+              >
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="groceries">🛒 Courses</SelectItem>
+                  <SelectItem value="utilities">⚡ Factures</SelectItem>
+                  <SelectItem value="rent">🏠 Loyer</SelectItem>
+                  <SelectItem value="internet">📡 Internet</SelectItem>
+                  <SelectItem value="cleaning">🧹 Ménage</SelectItem>
+                  <SelectItem value="maintenance">🔧 Entretien</SelectItem>
+                  <SelectItem value="other">📦 Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Date */}
+            <div className="space-y-2">
+              <Label htmlFor="date" className="text-sm font-semibold">
+                Date
+              </Label>
+              <Input
+                id="date"
+                type="date"
+                value={newExpense.date}
+                onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
+                className="rounded-xl"
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description" className="text-sm font-semibold">
+                Description
+              </Label>
+              <Input
+                id="description"
+                placeholder="Détails supplémentaires (optionnel)"
+                value={newExpense.description}
+                onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
+                className="rounded-xl"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-3 justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setShowCreateModal(false)}
+              disabled={isSubmitting}
+              className="rounded-xl"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={createExpense}
+              disabled={isSubmitting}
+              className="rounded-xl bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-shadow"
+            >
+              {isSubmitting ? 'Création...' : 'Créer la dépense'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
