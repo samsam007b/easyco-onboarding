@@ -41,10 +41,10 @@ async function setupPropertyMembers() {
     const propertyId = properties.id;
     console.log(`✅ Found property: ${propertyId}`);
 
-    // 2. Get user profiles with property_id matching
+    // 2. Get user profiles (residents)
     const { data: profiles, error: profilesError } = await supabase
       .from('user_profiles')
-      .select('user_id, first_name, last_name, property_id')
+      .select('user_id, first_name, last_name, user_type')
       .eq('user_type', 'resident')
       .limit(5);
 
@@ -63,7 +63,7 @@ async function setupPropertyMembers() {
 
     const existingUserIds = new Set(existingMembers?.map(m => m.user_id) || []);
 
-    // 4. Create property_members for profiles without property_id or with matching property_id
+    // 4. Create property_members for profiles not yet linked to the property
     const membersToCreate = profiles
       .filter(p => !existingUserIds.has(p.user_id))
       .map(profile => ({
@@ -91,20 +91,9 @@ async function setupPropertyMembers() {
 
     console.log(`✅ Created ${createdMembers.length} property memberships`);
 
-    // 5. Update user_profiles to link them to this property
-    for (const profile of profiles) {
-      if (!profile.property_id) {
-        const { error: updateError } = await supabase
-          .from('user_profiles')
-          .update({ property_id: propertyId })
-          .eq('user_id', profile.user_id);
-
-        if (updateError) {
-          console.error(`❌ Error updating profile for ${profile.first_name}:`, updateError);
-        } else {
-          console.log(`✅ Linked ${profile.first_name} ${profile.last_name} to property`);
-        }
-      }
+    // 5. Display linked members
+    for (const profile of profiles.filter(p => !existingUserIds.has(p.user_id))) {
+      console.log(`✅ Linked ${profile.first_name} ${profile.last_name} to property`);
     }
 
     console.log('\n🎉 Property members setup completed!');
