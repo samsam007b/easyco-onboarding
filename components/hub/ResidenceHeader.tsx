@@ -37,45 +37,91 @@ export default function ResidenceHeader() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Get user's property membership using SECURITY DEFINER function
-      const { data: membershipArray, error: memberError } = await supabase
-        .rpc('get_my_property_membership');
+      // Try to get from sessionStorage first (faster, avoids RLS issues)
+      const cachedProperty = sessionStorage.getItem('currentProperty');
+      let propertyId: string | null = null;
+      let propertyData: any = null;
 
-      if (memberError || !membershipArray || membershipArray.length === 0) {
-        console.log('❌ No property membership found, redirecting to setup...');
-        router.push('/hub/setup-property');
-        return;
+      if (cachedProperty) {
+        try {
+          propertyData = JSON.parse(cachedProperty);
+          propertyId = propertyData.id;
+          console.log('✅ Using cached property from sessionStorage');
+        } catch (e) {
+          console.error('Error parsing cached property:', e);
+        }
       }
 
-      const membership = membershipArray[0];
+      // If not in cache, query from database - DIRECT QUERY (RLS disabled)
+      if (!propertyId) {
+        const { data: membership, error: memberError } = await supabase
+          .from('property_members')
+          .select('property_id')
+          .eq('user_id', user.id)
+          .eq('status', 'active')
+          .maybeSingle();
 
-      // Fetch property details
-      const { data: property } = await supabase
-        .from('properties')
-        .select('id, title, city, address, images')
-        .eq('id', membership.property_id)
-        .single();
+        if (memberError || !membership?.property_id) {
+          console.log('❌ No property membership found, redirecting to setup...');
+          router.push('/hub/setup-property');
+          return;
+        }
 
-      if (!property) return;
+        propertyId = membership.property_id;
 
-      // Count members using SECURITY DEFINER function
-      const { data: memberCount } = await supabase
-        .rpc('count_property_members', { p_property_id: property.id });
+        // Fetch property details
+        const { data: property } = await supabase
+          .from('properties')
+          .select('id, title, city, address, images')
+          .eq('id', propertyId)
+          .single();
+
+        if (!property) return;
+        propertyData = property;
+
+        // Cache it for next time
+        sessionStorage.setItem('currentProperty', JSON.stringify({
+          id: property.id,
+          title: property.title,
+          city: property.city,
+          address: property.address
+        }));
+      }
+
+      // If we only have cached data, fetch full property details
+      if (!propertyData.images) {
+        const { data: property } = await supabase
+          .from('properties')
+          .select('id, title, city, address, images')
+          .eq('id', propertyId)
+          .single();
+
+        if (property) {
+          propertyData = property;
+        }
+      }
+
+      // Count members - DIRECT QUERY (RLS disabled)
+      const { count: memberCount } = await supabase
+        .from('property_members')
+        .select('*', { count: 'exact', head: true })
+        .eq('property_id', propertyId)
+        .eq('status', 'active');
 
       // Check if property has photo
-      const hasPhoto = property.images && property.images.length > 0;
+      const hasPhoto = propertyData.images && propertyData.images.length > 0;
 
       setPropertyInfo({
-        id: property.id,
-        title: property.title,
-        city: property.city,
-        address: property.address,
+        id: propertyData.id,
+        title: propertyData.title,
+        city: propertyData.city,
+        address: propertyData.address,
         memberCount: memberCount || 1,
         hasPhoto,
       });
 
       // Calculate completion
-      await calculateCompletion(property.id, memberCount || 1, hasPhoto);
+      await calculateCompletion(propertyData.id, memberCount || 1, hasPhoto);
 
       setIsLoading(false);
     } catch (error) {

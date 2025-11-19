@@ -58,11 +58,15 @@ export default function ResidentPropertySetupPage() {
 
       setCurrentUserId(user.id);
 
-      // Check if user already has a property membership using SECURITY DEFINER function
+      // Check if user already has a property membership - DIRECT QUERY (RLS disabled)
       const { data: membership, error } = await supabase
-        .rpc('get_my_property_membership');
+        .from('property_members')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .maybeSingle();
 
-      if (!error && membership && membership.length > 0) {
+      if (!error && membership?.property_id) {
         // User already has a property, skip to hub
         router.push('/hub');
         return;
@@ -113,13 +117,17 @@ export default function ResidentPropertySetupPage() {
 
       console.log('✅ Property created:', property);
 
-      // Create property membership using SECURITY DEFINER function
+      // Create property membership - DIRECT INSERT (RLS is disabled)
       const { data: membershipData, error: memberError } = await supabase
-        .rpc('create_property_membership', {
-          p_property_id: property.id,
-          p_user_id: currentUserId,
-          p_role: 'resident'
-        });
+        .from('property_members')
+        .insert({
+          property_id: property.id,
+          user_id: currentUserId,
+          role: 'resident',
+          status: 'active',
+        })
+        .select()
+        .single();
 
       if (memberError) {
         console.error('❌ Error creating membership:', memberError);
@@ -127,10 +135,16 @@ export default function ResidentPropertySetupPage() {
       }
 
       console.log('✅ Membership created:', membershipData);
-      toast.success('Colocation créée avec succès!');
 
-      // Small delay to ensure database sync
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Store property info in sessionStorage to avoid re-querying
+      sessionStorage.setItem('currentProperty', JSON.stringify({
+        id: property.id,
+        title: property.title,
+        city: property.city,
+        address: property.address
+      }));
+
+      toast.success('Colocation créée avec succès!');
 
       // Redirect directly to hub
       router.push('/hub');
@@ -163,13 +177,17 @@ export default function ResidentPropertySetupPage() {
         return;
       }
 
-      // Create property membership using SECURITY DEFINER function
+      // Create property membership - DIRECT INSERT (RLS is disabled)
       const { data: membershipData, error: memberError } = await supabase
-        .rpc('create_property_membership', {
-          p_property_id: property.id,
-          p_user_id: currentUserId,
-          p_role: 'resident'
-        });
+        .from('property_members')
+        .insert({
+          property_id: property.id,
+          user_id: currentUserId,
+          role: 'resident',
+          status: 'active',
+        })
+        .select()
+        .single();
 
       if (memberError) {
         console.error('❌ Error creating membership:', memberError);
@@ -177,10 +195,16 @@ export default function ResidentPropertySetupPage() {
       }
 
       console.log('✅ Membership created:', membershipData);
-      toast.success('Vous avez rejoint la colocation!');
 
-      // Small delay to ensure database sync
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Store property info in sessionStorage
+      sessionStorage.setItem('currentProperty', JSON.stringify({
+        id: property.id,
+        title: property.title || 'Ma Colocation',
+        city: property.city || '',
+        address: property.address || ''
+      }));
+
+      toast.success('Vous avez rejoint la colocation!');
 
       // Redirect directly to hub
       router.push('/hub');
