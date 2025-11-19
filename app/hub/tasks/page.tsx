@@ -13,11 +13,16 @@ import {
   Trash2,
   User,
   Calendar as CalendarIcon,
-  AlertCircle
+  AlertCircle,
+  X,
+  ListTodo,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Task {
   id: string;
@@ -39,7 +44,18 @@ export default function HubTasksPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentPropertyId, setCurrentPropertyId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'todo' | 'in_progress' | 'completed'>('all');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newTask, setNewTask] = useState({
+    title: '',
+    description: '',
+    dueDate: '',
+    priority: 'medium' as 'low' | 'medium' | 'high',
+    assignedTo: ''
+  });
+  const [roommates, setRoommates] = useState<Array<{ id: string; name: string }>>([]);
 
   useEffect(() => {
     loadTasks();
@@ -65,6 +81,21 @@ export default function HubTasksPage() {
       if (!profile?.property_id) {
         setIsLoading(false);
         return;
+      }
+
+      setCurrentPropertyId(profile.property_id);
+
+      // Load roommates for task assignment
+      const { data: roommatesData } = await supabase
+        .from('user_profiles')
+        .select('user_id, first_name, last_name')
+        .eq('property_id', profile.property_id);
+
+      if (roommatesData) {
+        setRoommates(roommatesData.map(r => ({
+          id: r.user_id,
+          name: r.user_id === user.id ? 'Toi' : `${r.first_name} ${r.last_name}`
+        })));
       }
 
       // Fetch tasks
@@ -167,6 +198,46 @@ export default function HubTasksPage() {
     }
   };
 
+  const createTask = async () => {
+    if (!newTask.title.trim() || !currentUserId || !currentPropertyId) return;
+
+    setIsCreating(true);
+
+    try {
+      const { error } = await supabase
+        .from('tasks')
+        .insert({
+          title: newTask.title,
+          description: newTask.description || null,
+          due_date: newTask.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Default to 7 days from now
+          priority: newTask.priority,
+          status: 'todo',
+          assigned_to: newTask.assignedTo || null,
+          created_by: currentUserId,
+          property_id: currentPropertyId
+        });
+
+      if (error) throw error;
+
+      // Reset form and close modal
+      setNewTask({
+        title: '',
+        description: '',
+        dueDate: '',
+        priority: 'medium',
+        assignedTo: ''
+      });
+      setShowCreateModal(false);
+
+      // Reload tasks
+      loadTasks();
+    } catch (error) {
+      console.error('Error creating task:', error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   const filteredTasks = filter === 'all'
     ? tasks
     : tasks.filter(task => task.status === filter);
@@ -232,23 +303,32 @@ export default function HubTasksPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full"
+            className="mb-6 rounded-full hover:bg-orange-50 transition-colors"
           >
             ← Retour au hub
           </Button>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                Tâches de la Coloc
-              </h1>
-              <p className="text-gray-600">
-                Organisez et suivez les tâches communes
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                     style={{
+                       background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                     }}>
+                  <ListTodo className="w-6 h-6 text-white" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  Tâches de la Coloc
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-15">
+                Organisez et suivez les tâches communes avec vos colocataires
               </p>
             </div>
 
             <Button
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+              onClick={() => setShowCreateModal(true)}
+              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all flex-shrink-0"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle tâche
@@ -256,108 +336,97 @@ export default function HubTasksPage() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <motion.button
-              onClick={() => setFilter('todo')}
+              onClick={() => setFilter(filter === 'todo' ? 'all' : 'todo')}
               className={cn(
-                "bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left",
-                filter === 'todo' && "ring-2 ring-orange-500"
+                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
+                filter === 'todo' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
               )}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">À faire</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{todoCount}</p>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">À faire</p>
+                  <p className="text-4xl font-bold text-gray-900 mt-2">{todoCount}</p>
+                  <p className="text-xs text-gray-500 mt-1">tâches en attente</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
-                  <Circle className="w-6 h-6 text-gray-600" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                  <Circle className="w-7 h-7 text-gray-600" />
                 </div>
               </div>
             </motion.button>
 
             <motion.button
-              onClick={() => setFilter('in_progress')}
+              onClick={() => setFilter(filter === 'in_progress' ? 'all' : 'in_progress')}
               className={cn(
-                "bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left",
-                filter === 'in_progress' && "ring-2 ring-orange-500"
+                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
+                filter === 'in_progress' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
               )}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">En cours</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{inProgressCount}</p>
+                  <p className="text-xs font-semibold text-orange-600 uppercase tracking-wider">En cours</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mt-2">{inProgressCount}</p>
+                  <p className="text-xs text-gray-500 mt-1">tâches actives</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-orange-600" />
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center"
+                     style={{
+                       background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                     }}>
+                  <Clock className="w-7 h-7 text-white" />
                 </div>
               </div>
             </motion.button>
 
             <motion.button
-              onClick={() => setFilter('completed')}
+              onClick={() => setFilter(filter === 'completed' ? 'all' : 'completed')}
               className={cn(
-                "bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left",
-                filter === 'completed' && "ring-2 ring-orange-500"
+                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
+                filter === 'completed' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
               )}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Terminées</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{completedCount}</p>
+                  <p className="text-xs font-semibold text-green-600 uppercase tracking-wider">Terminées</p>
+                  <p className="text-4xl font-bold text-green-600 mt-2">{completedCount}</p>
+                  <p className="text-xs text-gray-500 mt-1">tâches complétées</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-green-600" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                  <CheckCircle2 className="w-7 h-7 text-green-600" />
                 </div>
               </div>
             </motion.button>
           </div>
+
+          {/* Active Filter Badge */}
+          {filter !== 'all' && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 flex items-center gap-2"
+            >
+              <Badge className="bg-orange-100 text-orange-800 border-orange-200 px-3 py-1">
+                Filtré par : {filter === 'todo' ? 'À faire' : filter === 'in_progress' ? 'En cours' : 'Terminées'}
+              </Badge>
+              <button
+                onClick={() => setFilter('all')}
+                className="text-xs text-gray-500 hover:text-gray-700 underline"
+              >
+                Afficher tout
+              </button>
+            </motion.div>
+          )}
         </motion.div>
 
-        {/* Filter Bar */}
-        <div className="flex items-center gap-2 mb-6">
-          <Button
-            onClick={() => setFilter('all')}
-            variant={filter === 'all' ? 'default' : 'outline'}
-            className="rounded-full"
-            size="sm"
-          >
-            Toutes
-          </Button>
-          <Button
-            onClick={() => setFilter('todo')}
-            variant={filter === 'todo' ? 'default' : 'outline'}
-            className="rounded-full"
-            size="sm"
-          >
-            À faire
-          </Button>
-          <Button
-            onClick={() => setFilter('in_progress')}
-            variant={filter === 'in_progress' ? 'default' : 'outline'}
-            className="rounded-full"
-            size="sm"
-          >
-            En cours
-          </Button>
-          <Button
-            onClick={() => setFilter('completed')}
-            variant={filter === 'completed' ? 'default' : 'outline'}
-            className="rounded-full"
-            size="sm"
-          >
-            Terminées
-          </Button>
-        </div>
-
         {/* Tasks List */}
-        <div className="space-y-3">
-          <AnimatePresence>
+        <div className="space-y-4">
+          <AnimatePresence mode="popLayout">
             {filteredTasks.map((task, index) => {
               const StatusIcon = getStatusIcon(task.status);
               const isOverdue = new Date(task.dueDate) < new Date() && task.status !== 'completed';
@@ -367,11 +436,12 @@ export default function HubTasksPage() {
                   key={task.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
+                  exit={{ opacity: 0, scale: 0.95, x: -100 }}
                   transition={{ delay: index * 0.05 }}
+                  layout
                   className={cn(
-                    "bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all",
-                    task.status === 'completed' && "opacity-60"
+                    "group bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border",
+                    task.status === 'completed' ? "opacity-70 border-green-200" : "border-gray-200 hover:border-orange-300"
                   )}
                 >
                   <div className="flex items-start gap-4">
@@ -379,19 +449,19 @@ export default function HubTasksPage() {
                     <button
                       onClick={() => toggleTaskStatus(task.id)}
                       className={cn(
-                        "flex-shrink-0 transition-colors",
+                        "flex-shrink-0 transition-all hover:scale-110 active:scale-95",
                         getStatusColor(task.status)
                       )}
                     >
-                      <StatusIcon className="w-6 h-6" />
+                      <StatusIcon className="w-7 h-7" strokeWidth={2.5} />
                     </button>
 
                     {/* Task Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4 mb-2">
                         <h3 className={cn(
-                          "text-lg font-bold text-gray-900",
-                          task.status === 'completed' && "line-through text-gray-500"
+                          "text-lg font-bold",
+                          task.status === 'completed' ? "line-through text-gray-500" : "text-gray-900"
                         )}>
                           {task.title}
                         </h3>
@@ -400,42 +470,46 @@ export default function HubTasksPage() {
                           onClick={() => deleteTask(task.id)}
                           variant="ghost"
                           size="sm"
-                          className="flex-shrink-0 text-gray-400 hover:text-red-600"
+                          className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
 
                       {task.description && (
-                        <p className="text-sm text-gray-600 mb-3">
+                        <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                           {task.description}
                         </p>
                       )}
 
                       <div className="flex flex-wrap items-center gap-3">
-                        {/* Priority */}
-                        <Badge className={cn("text-xs", getPriorityColor(task.priority))}>
+                        {/* Priority Badge */}
+                        <Badge className={cn(
+                          "text-xs font-semibold px-2.5 py-0.5 rounded-full",
+                          getPriorityColor(task.priority)
+                        )}>
                           {getPriorityLabel(task.priority)}
                         </Badge>
 
                         {/* Due Date */}
                         <div className={cn(
-                          "flex items-center gap-1 text-xs",
-                          isOverdue ? "text-red-600" : "text-gray-600"
+                          "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full",
+                          isOverdue ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-700"
                         )}>
-                          {isOverdue && <AlertCircle className="w-3 h-3" />}
-                          <CalendarIcon className="w-3 h-3" />
+                          {isOverdue && <AlertCircle className="w-3.5 h-3.5" />}
+                          <CalendarIcon className="w-3.5 h-3.5" />
                           <span>
                             {new Date(task.dueDate).toLocaleDateString('fr-FR', {
                               day: 'numeric',
-                              month: 'short'
+                              month: 'short',
+                              year: 'numeric'
                             })}
                           </span>
                         </div>
 
                         {/* Assigned To */}
-                        <div className="flex items-center gap-1 text-xs text-gray-600">
-                          <User className="w-3 h-3" />
+                        <div className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-orange-100 text-orange-700">
+                          <User className="w-3.5 h-3.5" />
                           <span>{task.assignedToName || 'Non assigné'}</span>
                         </div>
                       </div>
@@ -452,26 +526,196 @@ export default function HubTasksPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl shadow-lg p-12 text-center"
+            className="bg-gradient-to-br from-white via-orange-50/30 to-white rounded-3xl shadow-xl border border-orange-100 p-12 text-center"
           >
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-orange-600" />
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                 style={{
+                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                 }}>
+              <Sparkles className="w-10 h-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Aucune tâche {filter !== 'all' && filter}
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              {filter === 'all' ? 'Aucune tâche pour le moment' : `Aucune tâche ${filter === 'todo' ? 'à faire' : filter === 'in_progress' ? 'en cours' : 'terminée'}`}
             </h3>
-            <p className="text-gray-600 mb-6">
-              {filter === 'completed'
-                ? 'Commencez à accomplir vos tâches!'
-                : 'Ajoutez votre première tâche pour organiser votre coloc'
+            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+              {filter === 'all'
+                ? 'Créez votre première tâche pour commencer à organiser la vie de votre coloc efficacement'
+                : filter === 'completed'
+                ? 'Vous n\'avez pas encore complété de tâches. Commencez dès maintenant!'
+                : 'Changez de filtre ou créez une nouvelle tâche'
               }
             </p>
-            <Button className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
-              <Plus className="w-4 h-4 mr-2" />
-              Créer une tâche
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all px-6 py-6 text-base"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Créer ma première tâche
             </Button>
           </motion.div>
         )}
+
+        {/* Task Creation Modal */}
+        <AnimatePresence>
+          {showCreateModal && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                onClick={() => setShowCreateModal(false)}
+              />
+
+              {/* Modal */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", duration: 0.5 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                onClick={() => setShowCreateModal(false)}
+              >
+                <div
+                  className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Modal Header */}
+                  <div className="sticky top-0 bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-t-3xl">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                          <Plus className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-bold text-white">Nouvelle Tâche</h2>
+                          <p className="text-white/80 text-sm">Créer une tâche pour la coloc</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setShowCreateModal(false)}
+                        className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-colors"
+                      >
+                        <X className="w-5 h-5 text-white" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Modal Content */}
+                  <div className="p-6 space-y-6">
+                    {/* Title */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Titre de la tâche *
+                      </label>
+                      <Input
+                        value={newTask.title}
+                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                        placeholder="Ex: Sortir les poubelles, Nettoyer la cuisine..."
+                        className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                      />
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Description (optionnel)
+                      </label>
+                      <Textarea
+                        value={newTask.description}
+                        onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                        placeholder="Ajouter plus de détails sur la tâche..."
+                        rows={3}
+                        className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                      />
+                    </div>
+
+                    {/* Priority and Due Date Row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Priority */}
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Priorité
+                        </label>
+                        <select
+                          value={newTask.priority}
+                          onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as 'low' | 'medium' | 'high' })}
+                          className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all outline-none"
+                        >
+                          <option value="low">🟢 Basse</option>
+                          <option value="medium">🟡 Moyenne</option>
+                          <option value="high">🔴 Haute</option>
+                        </select>
+                      </div>
+
+                      {/* Due Date */}
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Date d'échéance
+                        </label>
+                        <Input
+                          type="date"
+                          value={newTask.dueDate}
+                          onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                          className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                          min={new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Assigned To */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Assigner à
+                      </label>
+                      <select
+                        value={newTask.assignedTo}
+                        onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
+                        className="w-full px-4 py-2.5 rounded-xl border-2 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all outline-none"
+                      >
+                        <option value="">Non assigné</option>
+                        {roommates.map((roommate) => (
+                          <option key={roommate.id} value={roommate.id}>
+                            {roommate.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-3 pt-4">
+                      <Button
+                        onClick={() => setShowCreateModal(false)}
+                        variant="outline"
+                        className="flex-1 rounded-full border-gray-300 hover:bg-gray-50"
+                      >
+                        Annuler
+                      </Button>
+                      <Button
+                        onClick={createTask}
+                        disabled={!newTask.title.trim() || isCreating}
+                        className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all disabled:opacity-50"
+                      >
+                        {isCreating ? (
+                          <>
+                            <Clock className="w-4 h-4 mr-2 animate-spin" />
+                            Création...
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            Créer la tâche
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
