@@ -428,7 +428,12 @@ export default function HubFinancesPage() {
         .select()
         .single();
 
-      if (expenseError) throw expenseError;
+      if (expenseError) {
+        console.error('Error creating expense:', expenseError);
+        throw expenseError;
+      }
+
+      console.log('✅ Expense created:', expense);
 
       // Create expense split (for now, just for the current user)
       const { error: splitError } = await supabase
@@ -440,7 +445,12 @@ export default function HubFinancesPage() {
           paid: false,
         });
 
-      if (splitError) throw splitError;
+      if (splitError) {
+        console.error('Error creating split:', splitError);
+        throw splitError;
+      }
+
+      console.log('✅ Expense split created');
 
       // Reset form
       setNewExpense({
@@ -454,11 +464,20 @@ export default function HubFinancesPage() {
       // Close modal
       setShowCreateModal(false);
 
+      console.log('🔄 Reloading data...');
+
       // Reload data
-      loadData();
-    } catch (error) {
-      console.error('Error creating expense:', error);
-      alert('Erreur lors de la création de la dépense');
+      await loadData();
+
+      console.log('✅ Data reloaded successfully');
+    } catch (error: any) {
+      console.error('❌ Error details:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+      alert(`Erreur: ${error.message || 'Erreur inconnue'}`);
     } finally {
       setIsSubmitting(false);
     }
