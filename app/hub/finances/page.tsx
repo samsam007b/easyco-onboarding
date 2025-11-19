@@ -15,7 +15,14 @@ import {
   Plus,
   Check,
   X,
-  Clock
+  Clock,
+  ShoppingCart,
+  Zap,
+  Home,
+  Wifi,
+  Sparkles,
+  Wrench,
+  Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -804,23 +811,51 @@ export default function HubFinancesPage() {
             </div>
 
             {/* Category */}
-            <div className="space-y-2">
-              <Select
-                id="category"
-                label="Catégorie"
-                value={newExpense.category}
-                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-                options={[
-                  { value: 'groceries', label: '🛒 Courses' },
-                  { value: 'utilities', label: '⚡ Factures' },
-                  { value: 'rent', label: '🏠 Loyer' },
-                  { value: 'internet', label: '📡 Internet' },
-                  { value: 'cleaning', label: '🧹 Ménage' },
-                  { value: 'maintenance', label: '🔧 Entretien' },
-                  { value: 'other', label: '📦 Autre' },
-                ]}
-                className="rounded-xl"
-              />
+            <div className="space-y-3">
+              <Label className="text-sm font-semibold">Catégorie</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { value: 'groceries', label: 'Courses', icon: ShoppingCart },
+                  { value: 'utilities', label: 'Factures', icon: Zap },
+                  { value: 'rent', label: 'Loyer', icon: Home },
+                  { value: 'internet', label: 'Internet', icon: Wifi },
+                  { value: 'cleaning', label: 'Ménage', icon: Sparkles },
+                  { value: 'maintenance', label: 'Entretien', icon: Wrench },
+                  { value: 'other', label: 'Autre', icon: Package },
+                ].map((category) => {
+                  const Icon = category.icon;
+                  const isSelected = newExpense.category === category.value;
+                  return (
+                    <button
+                      key={category.value}
+                      type="button"
+                      onClick={() => setNewExpense({ ...newExpense, category: category.value })}
+                      className={cn(
+                        'flex items-center gap-2 px-4 py-3 rounded-xl border-2 transition-all',
+                        'hover:border-orange-300 hover:bg-orange-50',
+                        isSelected
+                          ? 'border-orange-500 bg-gradient-to-r from-orange-50 to-yellow-50 shadow-sm'
+                          : 'border-gray-200 bg-white'
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          'w-5 h-5',
+                          isSelected ? 'text-orange-600' : 'text-gray-400'
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          'text-sm font-medium',
+                          isSelected ? 'text-orange-700' : 'text-gray-700'
+                        )}
+                      >
+                        {category.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Date */}
