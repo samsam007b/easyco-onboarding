@@ -29,13 +29,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 
 interface Expense {
   id: string;
@@ -811,26 +805,22 @@ export default function HubFinancesPage() {
 
             {/* Category */}
             <div className="space-y-2">
-              <Label htmlFor="category" className="text-sm font-semibold">
-                Catégorie
-              </Label>
               <Select
+                id="category"
+                label="Catégorie"
                 value={newExpense.category}
-                onValueChange={(value) => setNewExpense({ ...newExpense, category: value })}
-              >
-                <SelectTrigger className="rounded-xl">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="groceries">🛒 Courses</SelectItem>
-                  <SelectItem value="utilities">⚡ Factures</SelectItem>
-                  <SelectItem value="rent">🏠 Loyer</SelectItem>
-                  <SelectItem value="internet">📡 Internet</SelectItem>
-                  <SelectItem value="cleaning">🧹 Ménage</SelectItem>
-                  <SelectItem value="maintenance">🔧 Entretien</SelectItem>
-                  <SelectItem value="other">📦 Autre</SelectItem>
-                </SelectContent>
-              </Select>
+                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
+                options={[
+                  { value: 'groceries', label: '🛒 Courses' },
+                  { value: 'utilities', label: '⚡ Factures' },
+                  { value: 'rent', label: '🏠 Loyer' },
+                  { value: 'internet', label: '📡 Internet' },
+                  { value: 'cleaning', label: '🧹 Ménage' },
+                  { value: 'maintenance', label: '🔧 Entretien' },
+                  { value: 'other', label: '📦 Autre' },
+                ]}
+                className="rounded-xl"
+              />
             </div>
 
             {/* Date */}
