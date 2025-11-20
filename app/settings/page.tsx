@@ -19,7 +19,8 @@ import {
   Check,
   ChevronRight,
   Settings as SettingsIcon,
-  HelpCircle
+  HelpCircle,
+  Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -129,6 +130,16 @@ export default function SettingsPage() {
       href: '/settings/private-codes',
       color: 'from-purple-500 to-indigo-600',
       badge: userType === 'resident' ? 'Creator' : undefined,
+      category: 'account',
+    },
+    {
+      id: 'residence-profile',
+      title: 'Profil de la Résidence',
+      description: 'Gérer les informations de votre résidence',
+      icon: Home,
+      href: '/settings/residence-profile',
+      color: 'from-orange-500 to-red-600',
+      badge: userType === 'resident' ? 'New' : undefined,
       category: 'account',
     },
     {
