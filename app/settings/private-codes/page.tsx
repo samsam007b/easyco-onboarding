@@ -32,7 +32,7 @@ export default function PrivateCodesPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
-  const [codes, setCode](#message-turn-end)s] = useState<PropertyCodes | null>(null);
+  const [codes, setCodes] = useState<PropertyCodes | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   useEffect(() => {
