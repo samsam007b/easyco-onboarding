@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { Home, Users, MapPin, Sparkles, Plus, UserPlus } from 'lucide-react';
+import { Home, Users, MapPin, Sparkles, Plus, UserPlus, Copy, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -14,6 +14,9 @@ interface PropertyInfo {
   address: string;
   memberCount: number;
   hasPhoto: boolean;
+  invitationCode?: string;
+  ownerCode?: string;
+  isCreator?: boolean;
 }
 
 interface CompletionData {
@@ -27,6 +30,8 @@ export default function ResidenceHeader() {
   const [propertyInfo, setPropertyInfo] = useState<PropertyInfo | null>(null);
   const [completion, setCompletion] = useState<CompletionData>({ percentage: 0, nextSteps: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   useEffect(() => {
     loadPropertyInfo();
@@ -75,10 +80,10 @@ export default function ResidenceHeader() {
 
         propertyId = membershipData.property_id;
 
-        // Fetch property details
+        // Fetch property details including invitation codes
         const { data: property } = await supabase
           .from('properties')
-          .select('id, title, city, address, images')
+          .select('id, title, city, address, images, invitation_code, owner_code')
           .eq('id', propertyId)
           .single();
 
@@ -125,6 +130,9 @@ export default function ResidenceHeader() {
         address: propertyData.address,
         memberCount: memberCount || 1,
         hasPhoto,
+        invitationCode: propertyData.invitation_code,
+        ownerCode: propertyData.owner_code,
+        isCreator: membershipData?.is_creator,
       });
 
       // Calculate completion
@@ -187,6 +195,12 @@ export default function ResidenceHeader() {
     setCompletion({ percentage, nextSteps });
   };
 
+  const copyToClipboard = (code: string, type: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(type);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
+
   if (isLoading || !propertyInfo) {
     return (
       <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-4 rounded-2xl mb-6 mx-4 sm:mx-0 animate-pulse">
@@ -198,6 +212,7 @@ export default function ResidenceHeader() {
   const isComplete = completion.percentage >= 100;
 
   return (
+    <>
     <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mb-6 mx-4 sm:mx-0 border-none shadow-lg">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
@@ -238,7 +253,7 @@ export default function ResidenceHeader() {
           </Button>
 
           <Button
-            onClick={() => router.push('/hub/invite')}
+            onClick={() => setShowInviteModal(true)}
             size="sm"
             className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
             variant="outline"
@@ -276,19 +291,22 @@ export default function ResidenceHeader() {
 
           <div className="flex flex-wrap gap-2">
             {completion.nextSteps.slice(0, 3).map((step, index) => {
-              const getStepAction = (stepText: string) => {
-                if (stepText.includes('Inviter')) return '/hub/invite';
-                if (stepText.includes('photo')) return '/settings/residence-profile';
-                if (stepText.includes('dépense')) return '/hub/finances';
-                return null;
+              const handleStepClick = (stepText: string) => {
+                if (stepText.includes('Inviter')) {
+                  setShowInviteModal(true);
+                } else if (stepText.includes('photo')) {
+                  router.push('/settings/residence-profile');
+                } else if (stepText.includes('dépense')) {
+                  router.push('/hub/finances');
+                }
               };
 
-              const action = getStepAction(step);
+              const isClickable = step.includes('Inviter') || step.includes('photo') || step.includes('dépense');
 
-              return action ? (
+              return isClickable ? (
                 <button
                   key={index}
-                  onClick={() => router.push(action)}
+                  onClick={() => handleStepClick(step)}
                   className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
                 >
                   {step}
@@ -318,5 +336,72 @@ export default function ResidenceHeader() {
         </div>
       )}
     </Card>
+
+    {/* Invite Modal */}
+    {showInviteModal && (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowInviteModal(false)}>
+        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-gray-900">Codes d'invitation</h3>
+            <button onClick={() => setShowInviteModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Invitation Code for Residents */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Code pour les colocataires
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
+                {propertyInfo.invitationCode || 'N/A'}
+              </div>
+              <button
+                onClick={() => propertyInfo.invitationCode && copyToClipboard(propertyInfo.invitationCode, 'invitation')}
+                className="p-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white transition-colors"
+              >
+                {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Partagez ce code avec vos futurs colocataires
+            </p>
+          </div>
+
+          {/* Owner Code (only for creators) */}
+          {propertyInfo.isCreator && propertyInfo.ownerCode && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Code propriétaire
+              </label>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
+                  {propertyInfo.ownerCode}
+                </div>
+                <button
+                  onClick={() => copyToClipboard(propertyInfo.ownerCode!, 'owner')}
+                  className="p-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
+                >
+                  {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Code réservé au propriétaire légal pour revendiquer la résidence
+              </p>
+            </div>
+          )}
+
+          <button
+            onClick={() => setShowInviteModal(false)}
+            className="w-full mt-4 py-3 bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] text-white font-medium rounded-lg hover:shadow-lg transition-shadow"
+          >
+            Fermer
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
