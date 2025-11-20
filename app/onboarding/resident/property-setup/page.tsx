@@ -138,6 +138,9 @@ export default function ResidentPropertySetupPage() {
         is_creator: true, // User created this property
       }));
 
+      // Set flag to prevent redirect loop (expires in 5 seconds)
+      sessionStorage.setItem('justCreatedProperty', Date.now().toString());
+
       toast.success('Résidence créée avec succès! 🎉');
 
       // Redirect directly to hub

@@ -58,6 +58,16 @@ export default function ResidenceHeader() {
           .rpc('get_user_property_membership', { p_user_id: user.id });
 
         if (memberError || !membershipData?.property_id) {
+          // Check if we just created a property (to avoid redirect loop)
+          const justCreated = sessionStorage.getItem('justCreatedProperty');
+          if (justCreated) {
+            const timeSinceCreation = Date.now() - parseInt(justCreated);
+            if (timeSinceCreation < 10000) { // Less than 10 seconds ago
+              console.log('⏳ Property just created, waiting for data to sync...');
+              return; // Don't redirect, stay on hub
+            }
+          }
+
           console.log('❌ No property membership found, redirecting to onboarding...');
           router.push('/onboarding/resident/property-setup');
           return;
@@ -98,8 +108,12 @@ export default function ResidenceHeader() {
       }
 
       // Count members using SECURITY DEFINER function
-      const { data: memberCount } = await supabase
+      const { data: memberCount, error: countError } = await supabase
         .rpc('count_property_members', { p_property_id: propertyId });
+
+      if (countError) {
+        console.error('Error counting members:', countError);
+      }
 
       // Check if property has photo
       const hasPhoto = propertyData.images && propertyData.images.length > 0;
