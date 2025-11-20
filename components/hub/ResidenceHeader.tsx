@@ -58,8 +58,8 @@ export default function ResidenceHeader() {
           .rpc('get_user_property_membership', { p_user_id: user.id });
 
         if (memberError || !membershipData?.property_id) {
-          console.log('❌ No property membership found, redirecting to setup...');
-          router.push('/hub/setup-property');
+          console.log('❌ No property membership found, redirecting to onboarding...');
+          router.push('/onboarding/resident/property-setup');
           return;
         }
 
