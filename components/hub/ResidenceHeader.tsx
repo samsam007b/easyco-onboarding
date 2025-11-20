@@ -207,7 +207,7 @@ export default function ResidenceHeader() {
 
   if (isLoading || !propertyInfo) {
     return (
-      <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-4 rounded-2xl mb-6 mx-4 sm:mx-0 animate-pulse">
+      <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-4 rounded-2xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse">
         <div className="h-16 bg-white/20 rounded-xl"></div>
       </div>
     );
@@ -217,7 +217,7 @@ export default function ResidenceHeader() {
 
   return (
     <>
-    <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mb-6 mx-4 sm:mx-0 border-none shadow-lg">
+    <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mb-6 mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
         <div className="flex items-start gap-4">
