@@ -282,14 +282,14 @@ export default function ModernResidentDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       {/* Profile Completion Widget */}
       {profileCompletion < 100 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-orange-200/50 hover:shadow-md transition-all mb-6 mx-2 sm:mx-6 lg:mx-8"
+          className="bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-orange-200/50 hover:shadow-md transition-all mb-6 -mx-2 sm:mx-0 lg:mx-0"
         >
           <button
             onClick={() => setShowCompletionDetails(!showCompletionDetails)}
