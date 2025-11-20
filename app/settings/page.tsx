@@ -122,6 +122,16 @@ export default function SettingsPage() {
       category: 'account',
     },
     {
+      id: 'private-codes',
+      title: 'Codes Privés',
+      description: 'Codes d\'invitation de votre résidence',
+      icon: Lock,
+      href: '/settings/private-codes',
+      color: 'from-purple-500 to-indigo-600',
+      badge: userType === 'resident' ? 'Creator' : undefined,
+      category: 'account',
+    },
+    {
       id: 'notifications',
       title: 'Notifications',
       description: 'Configurer vos préférences',
