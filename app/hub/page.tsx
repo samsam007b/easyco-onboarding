@@ -1,26 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import ResidenceHeader from '@/components/hub/ResidenceHeader';
+import ModernResidentDashboard from '@/components/dashboard/ModernResidentDashboard';
 
 /**
- * Hub home page - redirects to finances
+ * Hub home page - main dashboard
  */
 export default function HubPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Redirect to finances page
-    router.replace('/hub/finances');
-  }, [router]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <LoadingHouse size={64} />
-        <p className="text-gray-600 font-medium mt-4">Redirection...</p>
-      </div>
-    </div>
+    <>
+      <ResidenceHeader />
+      <ModernResidentDashboard />
+    </>
   );
 }
