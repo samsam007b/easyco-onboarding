@@ -103,9 +103,9 @@ export default function HubFinancesPage() {
         .single();
 
       if (!membership?.property_id) {
-        // No property membership found, redirect to setup
-        console.log('❌ No property membership found, redirecting to setup...');
-        router.push('/hub/setup-property');
+        // No property membership found, redirect to onboarding
+        console.log('❌ No property membership found, redirecting to onboarding...');
+        router.push('/onboarding/resident/property-setup');
         return;
       }
 

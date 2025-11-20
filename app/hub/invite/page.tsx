@@ -48,7 +48,7 @@ export default function InvitePage() {
         .single();
 
       if (!membership?.property_id) {
-        router.push('/hub/setup-property');
+        router.push('/onboarding/resident/property-setup');
         return;
       }
 
@@ -92,7 +92,7 @@ export default function InvitePage() {
 
   const shareViaEmail = () => {
     const subject = `Rejoins-nous sur ${propertyName}`;
-    const body = `Salut !\n\nJe t'invite à rejoindre notre colocation "${propertyName}" sur EasyCo.\n\nUtilise ce code d'invitation : ${propertyId}\n\n1. Va sur https://easyco-onboarding.vercel.app/hub/setup-property\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nÀ bientôt !`;
+    const body = `Salut !\n\nJe t'invite à rejoindre notre colocation "${propertyName}" sur EasyCo.\n\nUtilise ce code d'invitation : ${propertyId}\n\n1. Va sur https://easyco-onboarding.vercel.app/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nÀ bientôt !`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
