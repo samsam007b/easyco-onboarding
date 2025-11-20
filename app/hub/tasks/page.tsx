@@ -31,7 +31,7 @@ interface Task {
   description?: string;
   dueDate: string;
   priority: 'low' | 'medium' | 'high';
-  status: 'todo' | 'in_progress' | 'completed';
+  status: 'pending' | 'in_progress' | 'completed';
   assignedTo?: string;
   assignedToName?: string;
   createdBy: string;
@@ -46,7 +46,7 @@ export default function HubTasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentPropertyId, setCurrentPropertyId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'todo' | 'in_progress' | 'completed'>('all');
+  const [filter, setFilter] = useState<'all' | 'pending' | 'in_progress' | 'completed'>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -161,10 +161,10 @@ export default function HubTasksPage() {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
 
-    let newStatus: 'todo' | 'in_progress' | 'completed' = 'todo';
-    if (task.status === 'todo') newStatus = 'in_progress';
+    let newStatus: 'pending' | 'in_progress' | 'completed' = 'pending';
+    if (task.status === 'pending') newStatus = 'in_progress';
     else if (task.status === 'in_progress') newStatus = 'completed';
-    else newStatus = 'todo';
+    else newStatus = 'pending';
 
     // Optimistic update
     setTasks(tasks.map(t =>
@@ -219,7 +219,7 @@ export default function HubTasksPage() {
           description: newTask.description || null,
           due_date: newTask.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Default to 7 days from now
           priority: newTask.priority,
-          status: 'todo',
+          status: 'pending',
           assigned_to: newTask.assignedTo || null,
           created_by: currentUserId,
           property_id: currentPropertyId
@@ -250,7 +250,7 @@ export default function HubTasksPage() {
     ? tasks
     : tasks.filter(task => task.status === filter);
 
-  const todoCount = tasks.filter(t => t.status === 'todo').length;
+  const pendingCount = tasks.filter(t => t.status === 'pending').length;
   const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
   const completedCount = tasks.filter(t => t.status === 'completed').length;
 
@@ -346,10 +346,10 @@ export default function HubTasksPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <motion.button
-              onClick={() => setFilter(filter === 'todo' ? 'all' : 'todo')}
+              onClick={() => setFilter(filter === 'pending' ? 'all' : 'pending')}
               className={cn(
                 "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'todo' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
+                filter === 'pending' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
               )}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -357,7 +357,7 @@ export default function HubTasksPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">À faire</p>
-                  <p className="text-4xl font-bold text-gray-900 mt-2">{todoCount}</p>
+                  <p className="text-4xl font-bold text-gray-900 mt-2">{pendingCount}</p>
                   <p className="text-xs text-gray-500 mt-1">tâches en attente</p>
                 </div>
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -420,7 +420,7 @@ export default function HubTasksPage() {
               className="mt-4 flex items-center gap-2"
             >
               <Badge className="bg-orange-100 text-orange-800 border-orange-200 px-3 py-1">
-                Filtré par : {filter === 'todo' ? 'À faire' : filter === 'in_progress' ? 'En cours' : 'Terminées'}
+                Filtré par : {filter === 'pending' ? 'À faire' : filter === 'in_progress' ? 'En cours' : 'Terminées'}
               </Badge>
               <button
                 onClick={() => setFilter('all')}
@@ -543,7 +543,7 @@ export default function HubTasksPage() {
               <Sparkles className="w-10 h-10 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              {filter === 'all' ? 'Aucune tâche pour le moment' : `Aucune tâche ${filter === 'todo' ? 'à faire' : filter === 'in_progress' ? 'en cours' : 'terminée'}`}
+              {filter === 'all' ? 'Aucune tâche pour le moment' : `Aucune tâche ${filter === 'pending' ? 'à faire' : filter === 'in_progress' ? 'en cours' : 'terminée'}`}
             </h3>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               {filter === 'all'
