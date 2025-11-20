@@ -95,58 +95,37 @@ export default function ResidentPropertySetupPage() {
       const { data: ownerCode } = await supabase
         .rpc('generate_owner_code');
 
-      // Create the property WITHOUT owner (resident creator flow)
-      const { data: property, error: propertyError } = await supabase
-        .from('properties')
-        .insert({
-          title: createForm.name,
-          address: createForm.address,
-          city: createForm.city,
-          postal_code: createForm.postal_code,
-          country: 'France',
-          property_type: 'coliving',
-          bedrooms: createForm.total_rooms,
-          bathrooms: 1,
-          total_rooms: createForm.total_rooms,
-          monthly_rent: 0, // To be filled later by residents
-          available_from: new Date().toISOString().split('T')[0],
-          is_available: false, // Private property for residents only
-          status: 'draft', // Not published
-          owner_id: null, // ✨ No owner yet - waiting for owner to claim
-          invitation_code: invitationCode,
-          owner_code: ownerCode,
-          owner_verified: false,
-        })
-        .select()
-        .single();
+      // Create property + membership using SECURITY DEFINER function (bypasses RLS)
+      const { data: result, error: createError } = await supabase
+        .rpc('create_resident_property', {
+          p_user_id: currentUserId,
+          p_title: createForm.name,
+          p_address: createForm.address,
+          p_city: createForm.city,
+          p_postal_code: createForm.postal_code,
+          p_country: 'France',
+          p_property_type: 'coliving',
+          p_bedrooms: createForm.total_rooms,
+          p_bathrooms: 1,
+          p_total_rooms: createForm.total_rooms,
+          p_monthly_rent: 0,
+          p_available_from: new Date().toISOString().split('T')[0],
+          p_is_available: false,
+          p_status: 'draft',
+          p_invitation_code: invitationCode,
+          p_owner_code: ownerCode,
+        });
 
-      if (propertyError) {
-        console.error('Error creating property:', propertyError);
-        throw propertyError;
+      if (createError) {
+        console.error('Error creating property:', createError);
+        throw createError;
       }
 
-      console.log('✅ Property created:', property);
+      console.log('✅ Property + Membership created:', result);
 
-      // Create property membership - DIRECT INSERT (RLS is disabled)
-      // This user is the CREATOR (first resident)
-      const { data: membershipData, error: memberError } = await supabase
-        .from('property_members')
-        .insert({
-          property_id: property.id,
-          user_id: currentUserId,
-          role: 'resident',
-          status: 'active',
-          is_creator: true, // ✨ First resident = creator
-        })
-        .select()
-        .single();
-
-      if (memberError) {
-        console.error('❌ Error creating membership:', memberError);
-        throw memberError;
-      }
-
-      console.log('✅ Membership created:', membershipData);
+      // Extract property and membership from result
+      const property = result.property;
+      const membershipData = result.membership;
 
       // Store property info + codes in sessionStorage
       sessionStorage.setItem('currentProperty', JSON.stringify({
