@@ -275,14 +275,33 @@ export default function ResidenceHeader() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {completion.nextSteps.slice(0, 3).map((step, index) => (
-              <span
-                key={index}
-                className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full"
-              >
-                {step}
-              </span>
-            ))}
+            {completion.nextSteps.slice(0, 3).map((step, index) => {
+              const getStepAction = (stepText: string) => {
+                if (stepText.includes('Inviter')) return '/hub/invite';
+                if (stepText.includes('photo')) return '/settings/residence-profile';
+                if (stepText.includes('dépense')) return '/hub/finances';
+                return null;
+              };
+
+              const action = getStepAction(step);
+
+              return action ? (
+                <button
+                  key={index}
+                  onClick={() => router.push(action)}
+                  className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
+                >
+                  {step}
+                </button>
+              ) : (
+                <span
+                  key={index}
+                  className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full"
+                >
+                  {step}
+                </span>
+              );
+            })}
           </div>
         </div>
       )}
