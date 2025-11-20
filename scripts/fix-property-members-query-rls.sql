@@ -70,7 +70,7 @@ GRANT EXECUTE ON FUNCTION count_property_members TO authenticated;
 
 -- Verify functions exist
 SELECT 'Functions created successfully' as status,
+       COUNT(*) as function_count,
        array_agg(proname) as function_names
 FROM pg_proc
-WHERE proname IN ('get_user_property_membership', 'get_property_with_membership', 'count_property_members')
-GROUP BY 'Functions created successfully';
+WHERE proname IN ('get_user_property_membership', 'get_property_with_membership', 'count_property_members');
