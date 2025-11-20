@@ -74,7 +74,7 @@ export default function PrivateCodesPage() {
         return;
       }
 
-      setCode({
+      setCodes({
         property_id: property.id,
         property_title: property.title,
         invitation_code: property.invitation_code,
