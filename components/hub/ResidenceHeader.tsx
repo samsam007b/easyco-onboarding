@@ -120,6 +120,10 @@ export default function ResidenceHeader() {
         console.error('Error counting members:', countError);
       }
 
+      // Get user's membership info to check if creator
+      const { data: userMembership } = await supabase
+        .rpc('get_user_property_membership', { p_user_id: user.id });
+
       // Check if property has photo
       const hasPhoto = propertyData.images && propertyData.images.length > 0;
 
@@ -132,7 +136,7 @@ export default function ResidenceHeader() {
         hasPhoto,
         invitationCode: propertyData.invitation_code,
         ownerCode: propertyData.owner_code,
-        isCreator: membershipData?.is_creator,
+        isCreator: userMembership?.is_creator || false,
       });
 
       // Calculate completion
