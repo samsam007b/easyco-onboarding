@@ -139,7 +139,7 @@ export default function HubTasksPage() {
         description: task.description,
         dueDate: task.due_date,
         priority: task.priority as 'low' | 'medium' | 'high',
-        status: task.status as 'todo' | 'in_progress' | 'completed',
+        status: task.status as 'pending' | 'in_progress' | 'completed',
         assignedTo: task.assigned_to,
         assignedToName: task.assigned_to
           ? (task.assigned_to === user.id ? 'Toi' : userMap.get(task.assigned_to) || 'Inconnu')
