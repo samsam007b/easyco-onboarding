@@ -52,22 +52,18 @@ export default function ResidenceHeader() {
         }
       }
 
-      // If not in cache, query from database - DIRECT QUERY (RLS disabled)
+      // If not in cache, query from database using SECURITY DEFINER function
       if (!propertyId) {
-        const { data: membership, error: memberError } = await supabase
-          .from('property_members')
-          .select('property_id')
-          .eq('user_id', user.id)
-          .eq('status', 'active')
-          .maybeSingle();
+        const { data: membershipData, error: memberError } = await supabase
+          .rpc('get_user_property_membership', { p_user_id: user.id });
 
-        if (memberError || !membership?.property_id) {
+        if (memberError || !membershipData?.property_id) {
           console.log('❌ No property membership found, redirecting to setup...');
           router.push('/hub/setup-property');
           return;
         }
 
-        propertyId = membership.property_id;
+        propertyId = membershipData.property_id;
 
         // Fetch property details
         const { data: property } = await supabase
@@ -101,12 +97,9 @@ export default function ResidenceHeader() {
         }
       }
 
-      // Count members - DIRECT QUERY (RLS disabled)
-      const { count: memberCount } = await supabase
-        .from('property_members')
-        .select('*', { count: 'exact', head: true })
-        .eq('property_id', propertyId)
-        .eq('status', 'active');
+      // Count members using SECURITY DEFINER function
+      const { data: memberCount } = await supabase
+        .rpc('count_property_members', { p_property_id: propertyId });
 
       // Check if property has photo
       const hasPhoto = propertyData.images && propertyData.images.length > 0;
