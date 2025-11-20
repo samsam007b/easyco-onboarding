@@ -217,7 +217,7 @@ export default function ResidenceHeader() {
 
   return (
     <>
-    <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mb-6 mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg">
+    <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
         <div className="flex items-start gap-4">
