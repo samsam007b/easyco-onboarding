@@ -88,7 +88,14 @@ export default function ResidentPropertySetupPage() {
 
     setIsSubmitting(true);
     try {
-      // Create the property
+      // Generate invitation codes using DB functions
+      const { data: invitationCode } = await supabase
+        .rpc('generate_invitation_code');
+
+      const { data: ownerCode } = await supabase
+        .rpc('generate_owner_code');
+
+      // Create the property WITHOUT owner (resident creator flow)
       const { data: property, error: propertyError } = await supabase
         .from('properties')
         .insert({
@@ -105,7 +112,10 @@ export default function ResidentPropertySetupPage() {
           available_from: new Date().toISOString().split('T')[0],
           is_available: false, // Private property for residents only
           status: 'draft', // Not published
-          owner_id: currentUserId,
+          owner_id: null, // ✨ No owner yet - waiting for owner to claim
+          invitation_code: invitationCode,
+          owner_code: ownerCode,
+          owner_verified: false,
         })
         .select()
         .single();
@@ -118,6 +128,7 @@ export default function ResidentPropertySetupPage() {
       console.log('✅ Property created:', property);
 
       // Create property membership - DIRECT INSERT (RLS is disabled)
+      // This user is the CREATOR (first resident)
       const { data: membershipData, error: memberError } = await supabase
         .from('property_members')
         .insert({
@@ -125,6 +136,7 @@ export default function ResidentPropertySetupPage() {
           user_id: currentUserId,
           role: 'resident',
           status: 'active',
+          is_creator: true, // ✨ First resident = creator
         })
         .select()
         .single();
@@ -136,15 +148,18 @@ export default function ResidentPropertySetupPage() {
 
       console.log('✅ Membership created:', membershipData);
 
-      // Store property info in sessionStorage to avoid re-querying
+      // Store property info + codes in sessionStorage
       sessionStorage.setItem('currentProperty', JSON.stringify({
         id: property.id,
         title: property.title,
         city: property.city,
-        address: property.address
+        address: property.address,
+        invitation_code: property.invitation_code,
+        owner_code: property.owner_code,
+        is_creator: true, // User created this property
       }));
 
-      toast.success('Colocation créée avec succès!');
+      toast.success('Résidence créée avec succès! 🎉');
 
       // Redirect directly to hub
       router.push('/hub');
@@ -164,11 +179,11 @@ export default function ResidentPropertySetupPage() {
 
     setIsSubmitting(true);
     try {
-      // Search for property by invite code
+      // Search for property by invitation_code (not by ID anymore)
       const { data: property, error: propertyError } = await supabase
         .from('properties')
-        .select('id')
-        .eq('id', joinCode.trim())
+        .select('id, title, city, address, invitation_code')
+        .eq('invitation_code', joinCode.trim().toUpperCase())
         .single();
 
       if (propertyError || !property) {
@@ -178,6 +193,7 @@ export default function ResidentPropertySetupPage() {
       }
 
       // Create property membership - DIRECT INSERT (RLS is disabled)
+      // This is NOT the creator, just a regular resident joining
       const { data: membershipData, error: memberError } = await supabase
         .from('property_members')
         .insert({
@@ -185,6 +201,7 @@ export default function ResidentPropertySetupPage() {
           user_id: currentUserId,
           role: 'resident',
           status: 'active',
+          is_creator: false, // Not the creator
         })
         .select()
         .single();
@@ -201,10 +218,12 @@ export default function ResidentPropertySetupPage() {
         id: property.id,
         title: property.title || 'Ma Colocation',
         city: property.city || '',
-        address: property.address || ''
+        address: property.address || '',
+        invitation_code: property.invitation_code,
+        is_creator: false, // Not the creator
       }));
 
-      toast.success('Vous avez rejoint la colocation!');
+      toast.success('Vous avez rejoint la résidence! 🎉');
 
       // Redirect directly to hub
       router.push('/hub');
