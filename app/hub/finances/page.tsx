@@ -94,22 +94,28 @@ export default function HubFinancesPage() {
 
       setCurrentUserId(user.id);
 
-      // Get user's property_id from property_members
-      const { data: membership } = await supabase
-        .from('property_members')
-        .select('property_id')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .single();
+      // Get user's property_id using SECURITY DEFINER function
+      const { data: membershipData, error: memberError } = await supabase
+        .rpc('get_user_property_membership', { p_user_id: user.id });
 
-      if (!membership?.property_id) {
-        // No property membership found, redirect to onboarding
+      if (memberError || !membershipData?.property_id) {
+        // Check if we just created a property (to avoid redirect loop)
+        const justCreated = sessionStorage.getItem('justCreatedProperty');
+        if (justCreated) {
+          const timeSinceCreation = Date.now() - parseInt(justCreated);
+          if (timeSinceCreation < 10000) { // Less than 10 seconds ago
+            console.log('⏳ Property just created, waiting for data to sync...');
+            setIsLoading(false);
+            return;
+          }
+        }
+
         console.log('❌ No property membership found, redirecting to onboarding...');
         router.push('/onboarding/resident/property-setup');
         return;
       }
 
-      setPropertyId(membership.property_id);
+      setPropertyId(membershipData.property_id);
 
       // Fetch expenses with user names
       const { data: expensesData, error: expensesError } = await supabase
@@ -129,7 +135,7 @@ export default function HubFinancesPage() {
             amount_owed
           )
         `)
-        .eq('property_id', membership.property_id)
+        .eq('property_id', membershipData.property_id)
         .order('date', { ascending: false })
         .limit(10);
 
