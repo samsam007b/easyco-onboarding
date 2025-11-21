@@ -107,13 +107,6 @@ export default function ModernOwnerHeader({
 
   const quickActions = [
     {
-      id: 'add-property',
-      href: '/properties/add',
-      label: 'Ajouter une propriété',
-      icon: Building2,
-      description: 'Créer un nouveau bien',
-    },
-    {
       id: 'create-ticket',
       href: '/dashboard/owner/maintenance',
       label: 'Ticket maintenance',
@@ -324,14 +317,6 @@ export default function ModernOwnerHeader({
               </Link>
             )}
 
-            {/* Add Property CTA */}
-            <Link href="/properties/add" className="hidden md:block">
-              <Button className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-semibold shadow-sm hover:shadow-md hover:scale-105 transition-all">
-                <Plus className="w-4 h-4 mr-2" />
-                Ajouter bien
-              </Button>
-            </Link>
-
             {/* Notifications */}
             <div className="relative">
               <button
@@ -432,16 +417,16 @@ export default function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20"
                     >
-                      <div className="px-4 py-3 border-b border-gray-200">
+                      <div className="px-4 py-3 border-b border-purple-200/50">
                         <p className="font-semibold text-gray-900">{profile.full_name}</p>
                         <p className="text-sm text-gray-500 truncate">{profile.email}</p>
                       </div>
 
                       <Link
                         href="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition rounded-xl mx-2 my-1"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <User className="w-5 h-5 text-gray-600" />
@@ -450,18 +435,18 @@ export default function ModernOwnerHeader({
 
                       <Link
                         href="/settings"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition rounded-xl mx-2 my-1"
                         onClick={() => setShowProfileMenu(false)}
                       >
                         <Settings className="w-5 h-5 text-gray-600" />
                         <span className="text-gray-700 font-medium">Paramètres</span>
                       </Link>
 
-                      <div className="my-2 border-t border-gray-200" />
+                      <div className="my-2 border-t border-purple-200/50 mx-2" />
 
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition text-red-600"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50/50 transition text-red-600 rounded-xl mx-2 my-1"
                       >
                         <LogOut className="w-5 h-5" />
                         <span className="font-medium">Déconnexion</span>
