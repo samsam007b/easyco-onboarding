@@ -20,7 +20,9 @@ import {
   AlertCircle,
   Plus,
   Key,
-  Globe
+  Globe,
+  Mail,
+  MapPin
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -37,6 +39,7 @@ interface ModernResidentHeaderProps {
     full_name: string;
     email: string;
     avatar_url?: string;
+    profile_data?: any;
   };
   stats?: {
     groupName?: string;
@@ -151,6 +154,12 @@ export default function ModernResidentHeader({
   const handleLogout = async () => {
     setShowProfileMenu(false);
     router.push('/auth/logout');
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
   // Close language dropdown when clicking outside
@@ -523,31 +532,38 @@ export default function ModernResidentHeader({
                         </div>
                       </div>
 
-                      {/* Profile Info Stats */}
+                      {/* Profile Info */}
                       <div className="p-4 space-y-3 border-b border-gray-100">
-                        {activeMembersCount > 0 && (
+                        {/* Email */}
+                        <div className="flex items-center gap-3 text-sm">
+                          <Mail className="w-4 h-4 text-gray-400" />
+                          <span className="text-gray-700">{profile.email}</span>
+                        </div>
+
+                        {/* Date of Birth */}
+                        {profile.profile_data?.date_of_birth && (
                           <div className="flex items-center gap-3 text-sm">
-                            <Users className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700">{activeMembersCount} colocataire{activeMembersCount > 1 ? 's' : ''}</span>
+                            <Calendar className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700">
+                              {formatDate(profile.profile_data.date_of_birth)}
+                            </span>
                           </div>
                         )}
-                        {unreadMessages > 0 && (
+
+                        {/* Nationality */}
+                        {profile.profile_data?.nationality && (
                           <div className="flex items-center gap-3 text-sm">
-                            <MessageCircle className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700">{unreadMessages} message{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}</span>
+                            <MapPin className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700 capitalize">{profile.profile_data.nationality}</span>
                           </div>
                         )}
-                        {pendingTasks > 0 && (
+
+                        {/* Occupation */}
+                        {profile.profile_data?.occupation_status && (
                           <div className="flex items-center gap-3 text-sm">
-                            <CheckSquare className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700">{pendingTasks} tâche{pendingTasks > 1 ? 's' : ''} en attente</span>
-                          </div>
-                        )}
-                        {yourBalance !== 0 && (
-                          <div className="flex items-center gap-3 text-sm">
-                            <DollarSign className="w-4 h-4 text-gray-400" />
-                            <span className={yourBalance > 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                              {yourBalance > 0 ? '+' : ''}€{Math.abs(yourBalance).toFixed(2)}
+                            <User className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700 capitalize">
+                              {profile.profile_data.occupation_status}
                             </span>
                           </div>
                         )}
