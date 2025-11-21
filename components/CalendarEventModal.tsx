@@ -78,11 +78,36 @@ export default function CalendarEventModal({
 
   const loadPropertyMembers = async () => {
     try {
-      const { data, error } = await supabase
-        .rpc('get_property_members', { p_property_id: propertyId });
+      // Get property members
+      const { data: membersData, error: membersError } = await supabase
+        .from('property_members')
+        .select('user_id')
+        .eq('property_id', propertyId)
+        .eq('status', 'active');
 
-      if (error) throw error;
-      setPropertyMembers(data || []);
+      if (membersError) throw membersError;
+
+      // Get user profiles for members
+      const memberUserIds = membersData?.map(m => m.user_id) || [];
+      if (memberUserIds.length === 0) {
+        setPropertyMembers([]);
+        return;
+      }
+
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', memberUserIds);
+
+      if (profilesError) throw profilesError;
+
+      const members = profilesData?.map(profile => ({
+        user_id: profile.id,
+        first_name: profile.first_name,
+        last_name: profile.last_name
+      })) || [];
+
+      setPropertyMembers(members);
     } catch (error) {
       console.error('Error loading property members:', error);
     }
