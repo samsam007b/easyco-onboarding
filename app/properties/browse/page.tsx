@@ -120,6 +120,7 @@ export default function PropertiesBrowsePageV2() {
   const [sortBy, setSortBy] = useState<'newest' | 'price_low' | 'price_high' | 'best_match'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'matching'>('list');
+  const [showMobileMap, setShowMobileMap] = useState(false);
 
   // Hero search states
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -905,30 +906,76 @@ export default function PropertiesBrowsePageV2() {
         {propertiesWithScores && propertiesWithScores.length > 0 ? (
           <>
             {viewMode === 'list' ? (
-              <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                  {propertiesWithScores.map((property, index) => {
-                  // Track view for guests when they see properties
-                  if (!isAuthenticated && index < 10) {
-                    setTimeout(() => trackView(), index * 100);
-                  }
+              // Split-screen: 60% cards + 40% map
+              <div className="relative">
+                <div className="flex gap-6 max-w-[1920px] mx-auto px-6">
+                  {/* Left: Property Cards - 60% */}
+                  <div className={cn(
+                    "w-full lg:w-[60%] flex-shrink-0",
+                    showMobileMap && "hidden lg:block"
+                  )}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                      {propertiesWithScores.map((property, index) => {
+                        // Track view for guests when they see properties
+                        if (!isAuthenticated && index < 10) {
+                          setTimeout(() => trackView(), index * 100);
+                        }
 
-                  const residents = residentsData?.get(property.id) || [];
+                        const residents = residentsData?.get(property.id) || [];
 
-                  return (
-                    <PropertyCard
-                      key={property.id}
-                      property={property}
-                      residents={residents}
-                      showCompatibilityScore={isAuthenticated}
-                      compatibilityScore={property.compatibilityScore}
-                      variant="default"
-                      onFavoriteClick={handleFavoriteClick}
-                      isFavorite={userFavorites.has(property.id)}
-                    />
-                  );
-                })}
+                        return (
+                          <PropertyCard
+                            key={property.id}
+                            property={property}
+                            residents={residents}
+                            showCompatibilityScore={isAuthenticated}
+                            compatibilityScore={property.compatibilityScore}
+                            variant="default"
+                            onFavoriteClick={handleFavoriteClick}
+                            isFavorite={userFavorites.has(property.id)}
+                            onMouseEnter={() => setSelectedPropertyId(property.id)}
+                            onMouseLeave={() => setSelectedPropertyId(undefined)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Right: Sticky Map - 40% desktop, fullscreen mobile when toggled */}
+                  <div className={cn(
+                    "lg:w-[40%] flex-shrink-0",
+                    showMobileMap ? "fixed inset-0 z-40 lg:relative lg:z-auto" : "hidden lg:block"
+                  )}>
+                    <div className={cn(
+                      showMobileMap ? "h-full" : "sticky top-24 h-[calc(100vh-7rem)]"
+                    )}>
+                      <SafePropertyMap
+                        properties={propertiesWithScores}
+                        selectedPropertyId={selectedPropertyId || null}
+                        onPropertySelect={(id) => setSelectedPropertyId(id || undefined)}
+                        className="w-full h-full rounded-none lg:rounded-2xl overflow-hidden shadow-lg"
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {/* Floating Map Toggle Button (Mobile Only) */}
+                <button
+                  onClick={() => setShowMobileMap(!showMobileMap)}
+                  className="lg:hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#4A148C] to-[#7B1FA2] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-2 font-semibold hover:scale-105 transition-transform"
+                >
+                  {showMobileMap ? (
+                    <>
+                      <List className="w-5 h-5" />
+                      <span>Liste</span>
+                    </>
+                  ) : (
+                    <>
+                      <MapIcon className="w-5 h-5" />
+                      <span>Carte</span>
+                    </>
+                  )}
+                </button>
               </div>
             ) : viewMode === 'map' ? (
               <div className="max-w-7xl mx-auto px-6 mb-8">

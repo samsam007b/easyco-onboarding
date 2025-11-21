@@ -38,6 +38,8 @@ interface PropertyCardProps {
   onFavoriteClick?: (id: string) => void;
   isFavorite?: boolean;
   variant?: 'default' | 'compact';
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 function PropertyCard({
@@ -47,7 +49,9 @@ function PropertyCard({
   compatibilityScore,
   onFavoriteClick,
   isFavorite = false,
-  variant = 'default'
+  variant = 'default',
+  onMouseEnter,
+  onMouseLeave
 }: PropertyCardProps) {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
@@ -80,8 +84,14 @@ function PropertyCard({
       <Link
         href={`/properties/${property.id}`}
         className="block"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => {
+          setIsHovered(true);
+          onMouseEnter?.();
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          onMouseLeave?.();
+        }}
       >
         <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
           {/* Image */}
@@ -204,8 +214,14 @@ function PropertyCard({
       <Link
         href={`/properties/${property.id}`}
         className="block group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => {
+          setIsHovered(true);
+          onMouseEnter?.();
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          onMouseLeave?.();
+        }}
       >
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
         {/* Image */}
