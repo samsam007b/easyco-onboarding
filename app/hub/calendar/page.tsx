@@ -42,7 +42,14 @@ const MONTHS = [
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
-const EVENT_COLORS = ['bg-purple-500', 'bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-red-500'];
+const EVENT_COLORS = [
+  'bg-gradient-to-br from-[#D97B6F] to-[#E8865D]',
+  'bg-gradient-to-br from-[#E8865D] to-[#FF8C4B]',
+  'bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
+  'bg-gradient-to-br from-resident-400 to-resident-500',
+  'bg-gradient-to-br from-resident-500 to-resident-600',
+  'bg-gradient-to-br from-resident-600 to-resident-700'
+];
 
 export default function HubCalendarPage() {
   const router = useRouter();
@@ -247,7 +254,7 @@ export default function HubCalendarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-resident-50 via-white to-resident-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -258,7 +265,7 @@ export default function HubCalendarPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full"
+            className="mb-4 rounded-full hover:bg-resident-50"
           >
             ← Retour au hub
           </Button>
@@ -268,14 +275,14 @@ export default function HubCalendarPage() {
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 Calendrier Partagé
               </h1>
-              <p className="text-gray-600">
+              <p className="text-resident-600">
                 Planifiez et coordonnez vos événements de colocation
               </p>
             </div>
 
             <Button
               onClick={handleCreateEvent}
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+              className="cta-resident rounded-full"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouvel événement
@@ -348,8 +355,8 @@ export default function HubCalendarPage() {
                   transition={{ delay: index * 0.01 }}
                   className={cn(
                     "min-h-[100px] p-2 border rounded-xl transition-all cursor-pointer",
-                    day ? "bg-white hover:bg-orange-50 border-gray-200 hover:border-orange-300" : "bg-gray-50 border-gray-100",
-                    isToday(day || 0) && "ring-2 ring-orange-500 bg-orange-50"
+                    day ? "bg-white hover:bg-resident-50 border-gray-200 hover:border-resident-300" : "bg-gray-50 border-gray-100",
+                    isToday(day || 0) && "ring-2 ring-resident-500 bg-resident-50"
                   )}
                   onClick={() => day && setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), day))}
                 >
@@ -357,7 +364,7 @@ export default function HubCalendarPage() {
                     <>
                       <div className={cn(
                         "text-sm font-semibold mb-1",
-                        isToday(day) ? "text-orange-600" : "text-gray-900"
+                        isToday(day) ? "text-resident-600" : "text-gray-900"
                       )}>
                         {day}
                       </div>
@@ -395,14 +402,14 @@ export default function HubCalendarPage() {
           className="bg-white rounded-3xl shadow-lg p-6"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-orange-600" />
+            <CalendarIcon className="w-5 h-5 text-resident-600" />
             Événements à venir
           </h3>
 
           <div className="space-y-3">
             {events.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
-                <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-resident-300" />
                 <p>Aucun événement prévu</p>
                 <p className="text-sm mt-1">Ajoutez votre premier événement au calendrier</p>
               </div>
@@ -415,10 +422,10 @@ export default function HubCalendarPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + index * 0.05 }}
-                  className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors group"
+                  className="flex items-start gap-4 p-4 bg-gradient-to-r from-gray-50 to-resident-50 rounded-xl hover:bg-resident-50 transition-colors group border border-transparent hover:border-resident-200"
                 >
-                  <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", event.color)}>
-                    <CalendarIcon className="w-6 h-6 text-white" />
+                  <div className={cn("relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-sm", event.color)}>
+                    <CalendarIcon className="w-6 h-6 text-white relative z-10" />
                   </div>
 
                   <div className="flex-1 min-w-0">
