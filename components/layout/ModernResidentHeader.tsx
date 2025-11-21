@@ -433,7 +433,6 @@ export default function ModernResidentHeader({
                       className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-20"
                     >
                       {languages.map((lang, index) => {
-                        const FlagComponent = lang.flagComponent;
                         return (
                           <div key={lang.code}>
                             <button
@@ -442,15 +441,14 @@ export default function ModernResidentHeader({
                                 setLangDropdownOpen(false);
                               }}
                               className={cn(
-                                "w-full flex items-center gap-3 px-5 py-3 text-sm transition-all group",
+                                "w-full flex items-center justify-between px-5 py-3 text-sm transition-all group",
                                 language === lang.code
                                   ? "bg-gray-50"
                                   : "hover:bg-gray-50"
                               )}
                             >
-                              <FlagComponent className="w-6 h-6 rounded-sm shadow-sm" />
                               <span className={cn(
-                                "font-medium transition-all flex-1 text-left",
+                                "font-medium transition-all",
                                 language === lang.code
                                   ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
                                   : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
