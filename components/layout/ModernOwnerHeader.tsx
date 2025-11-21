@@ -91,6 +91,12 @@ export default function ModernOwnerHeader({
       icon: DollarSign,
     },
     {
+      id: 'maintenance',
+      href: '/dashboard/owner/maintenance',
+      label: 'Maintenance',
+      icon: Wrench,
+    },
+    {
       id: 'messages',
       href: '/hub/messages',
       label: 'Messages',
@@ -261,11 +267,11 @@ export default function ModernOwnerHeader({
                             <Link
                               key={action.id}
                               href={action.href}
-                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-purple-50 transition group"
+                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-purple-50/50 transition group"
                               onClick={() => setShowQuickActions(false)}
                             >
-                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <Icon className="w-5 h-5 text-white" />
+                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <Icon className="w-5 h-5 text-gray-700" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-gray-900">
@@ -289,11 +295,11 @@ export default function ModernOwnerHeader({
             {monthlyRevenue > 0 && (
               <Link
                 href="/dashboard/owner/finance"
-                className="hidden xl:flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100/50 border border-purple-200/50 hover:border-purple-300 hover:shadow-md transition-all cursor-pointer group"
+                className="hidden xl:flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-50/50 to-purple-100/30 border border-purple-200/50 hover:border-purple-300/50 hover:shadow-md transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <DollarSign className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <DollarSign className="w-4 h-4 text-gray-700" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-600 font-medium">Revenus</p>
@@ -320,7 +326,7 @@ export default function ModernOwnerHeader({
 
             {/* Add Property CTA */}
             <Link href="/properties/add" className="hidden md:block">
-              <Button className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all">
+              <Button className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-semibold shadow-sm hover:shadow-md hover:scale-105 transition-all">
                 <Plus className="w-4 h-4 mr-2" />
                 Ajouter bien
               </Button>
@@ -524,7 +530,7 @@ export default function ModernOwnerHeader({
 
                 <div className="pt-4 mt-2 border-t border-gray-200">
                   <Link href="/properties/add" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold">
+                    <Button className="w-full rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-semibold">
                       <Plus className="w-4 h-4 mr-2" />
                       Ajouter une propriété
                     </Button>
@@ -538,7 +544,7 @@ export default function ModernOwnerHeader({
 
       {/* Quick Stats Bar - Desktop Only - Now with Clickable Stats */}
       {(occupation > 0 || pendingApplications > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-purple-50/30 to-transparent border-t border-gray-200/50">
+        <div className="hidden lg:block bg-gradient-to-r from-purple-50/20 to-transparent border-t border-gray-200/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-6 text-gray-700">
