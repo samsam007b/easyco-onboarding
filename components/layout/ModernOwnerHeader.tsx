@@ -92,7 +92,7 @@ export default function ModernOwnerHeader({
     },
     {
       id: 'messages',
-      href: '/messages',
+      href: '/hub/messages',
       label: 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,

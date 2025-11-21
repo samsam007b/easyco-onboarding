@@ -55,105 +55,115 @@ export default function HubMessagesPage() {
 
       setCurrentUserId(user.id);
 
-      // Get user's conversations with participants
+      // Get user's conversations
       const { data: participantsData, error: participantsError } = await supabase
         .from('conversation_participants')
-        .select(`
-          conversation_id,
-          last_read_at,
-          conversations (
-            id,
-            conversation_type,
-            is_official,
-            subject,
-            property_id,
-            last_message_at
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('last_read_at', { ascending: false });
+        .select('conversation_id, last_read_at')
+        .eq('user_id', user.id);
 
       if (participantsError) throw participantsError;
 
+      const conversationIds = participantsData.map(p => p.conversation_id);
+
+      if (conversationIds.length === 0) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Get conversations details
+      const { data: conversationsData, error: convsError } = await supabase
+        .from('conversations')
+        .select('id, conversation_type, is_official, subject, property_id, last_message_at')
+        .in('id', conversationIds);
+
+      if (convsError) throw convsError;
+
       // Enrich conversations with details
       const enrichedConversations = await Promise.all(
-        participantsData
-          .filter(p => p.conversations) // Filter out null conversations
-          .map(async (participant: any) => {
-            const conv = participant.conversations;
+        conversationsData.map(async (conv) => {
+          const participant = participantsData.find(p => p.conversation_id === conv.id);
 
-            // Get last message
-            const { data: lastMessageData } = await supabase
-              .from('messages')
-                .select(`
-                content,
-                created_at,
-                sender_id,
-                profiles!messages_sender_id_fkey (
-                  id,
-                  first_name,
-                  last_name
-                )
-              `)
-              .eq('conversation_id', conv.id)
-              .order('created_at', { ascending: false })
-              .limit(1)
-              .single();
+          // Get last message
+          const { data: messagesData } = await supabase
+            .from('messages')
+            .select('content, created_at, sender_id')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1);
 
-            // Count unread messages
-            const { count: unreadCount } = await supabase
-              .from('messages')
-              .select('*', { count: 'exact', head: true })
-              .eq('conversation_id', conv.id)
-              .neq('sender_id', user.id)
-              .gt('created_at', participant.last_read_at || '1970-01-01');
+          const lastMessage = messagesData?.[0];
 
-            // For private chats, get other user's name
-            let otherUserName;
-            if (conv.conversation_type.includes('private')) {
-              const { data: otherParticipants } = await supabase
-                .from('conversation_participants')
-                .select(`
-                  user_id,
-                  profiles!conversation_participants_user_id_fkey (
-                    first_name,
-                    last_name
-                  )
-                `)
-                .eq('conversation_id', conv.id)
-                .neq('user_id', user.id)
-                .limit(1);
+          // Get sender name if there's a message
+          let senderName = 'Inconnu';
+          if (lastMessage) {
+            if (lastMessage.sender_id === user.id) {
+              senderName = 'Vous';
+            } else {
+              const { data: senderProfile } = await supabase
+                .from('profiles')
+                .select('first_name, last_name')
+                .eq('id', lastMessage.sender_id)
+                .single();
 
-              if (otherParticipants && otherParticipants.length > 0) {
-                const profile = otherParticipants[0].profiles as any;
-                otherUserName = `${profile.first_name} ${profile.last_name}`;
+              if (senderProfile) {
+                senderName = `${senderProfile.first_name} ${senderProfile.last_name}`.trim();
               }
             }
+          }
 
-            // Get participants count
-            const { count: participantsCount } = await supabase
+          // Count unread messages
+          const { count: unreadCount } = await supabase
+            .from('messages')
+            .select('*', { count: 'exact', head: true })
+            .eq('conversation_id', conv.id)
+            .neq('sender_id', user.id)
+            .gt('created_at', participant?.last_read_at || '1970-01-01');
+
+          // For private chats, get other user's name
+          let otherUserName;
+          if (conv.conversation_type && conv.conversation_type.includes('private')) {
+            const { data: otherParticipants } = await supabase
               .from('conversation_participants')
-              .select('*', { count: 'exact', head: true })
-              .eq('conversation_id', conv.id);
+              .select('user_id')
+              .eq('conversation_id', conv.id)
+              .neq('user_id', user.id)
+              .limit(1);
 
-            return {
-              id: conv.id,
-              conversation_type: conv.conversation_type,
-              is_official: conv.is_official,
-              subject: conv.subject,
-              last_message: lastMessageData ? {
-                content: lastMessageData.content,
-                created_at: lastMessageData.created_at,
-                sender_name: lastMessageData.sender_id === user.id
-                  ? 'Vous'
-                  : `${(lastMessageData.profiles as any)?.first_name || 'Inconnu'} ${(lastMessageData.profiles as any)?.last_name || ''}`.trim(),
-                sender_id: lastMessageData.sender_id
-              } : undefined,
-              unread_count: unreadCount || 0,
-              participants_count: participantsCount || 0,
-              other_user_name: otherUserName
-            };
-          })
+            if (otherParticipants && otherParticipants.length > 0) {
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('first_name, last_name')
+                .eq('id', otherParticipants[0].user_id)
+                .single();
+
+              if (profile) {
+                otherUserName = `${profile.first_name} ${profile.last_name}`.trim();
+              }
+            }
+          }
+
+          // Get participants count
+          const { count: participantsCount } = await supabase
+            .from('conversation_participants')
+            .select('*', { count: 'exact', head: true })
+            .eq('conversation_id', conv.id);
+
+          return {
+            id: conv.id,
+            conversation_type: conv.conversation_type || 'private_residents',
+            is_official: conv.is_official || false,
+            subject: conv.subject,
+            last_message: lastMessage ? {
+              content: lastMessage.content,
+              created_at: lastMessage.created_at,
+              sender_name: senderName,
+              sender_id: lastMessage.sender_id
+            } : undefined,
+            unread_count: unreadCount || 0,
+            participants_count: participantsCount || 0,
+            other_user_name: otherUserName
+          };
+        })
       );
 
       // Sort by last_message_at
@@ -228,7 +238,7 @@ export default function HubMessagesPage() {
               className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Nouveau message
+              Nouveau
             </Button>
           </div>
 

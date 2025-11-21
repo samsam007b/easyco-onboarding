@@ -140,7 +140,7 @@ export default function ModernSearcherHeader({
     },
     {
       id: 'messages',
-      href: '/messages',
+      href: '/hub/messages',
       label: nav.messages,
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,

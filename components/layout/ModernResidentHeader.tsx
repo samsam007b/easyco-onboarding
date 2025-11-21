@@ -81,7 +81,7 @@ export default function ModernResidentHeader({
     },
     {
       id: 'messages',
-      href: '/messages',
+      href: '/hub/messages',
       label: 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
@@ -112,7 +112,7 @@ export default function ModernResidentHeader({
     },
     {
       id: 'contact-roommates',
-      href: '/messages',
+      href: '/hub/messages',
       label: 'Contacter les colocataires',
       icon: MessageCircle,
       description: 'Envoyer un message',
