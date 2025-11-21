@@ -9,11 +9,22 @@ import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'luc
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
+import FranceFlag from '@/components/icons/flags/FranceFlag';
+import UKFlag from '@/components/icons/flags/UKFlag';
+import NetherlandsFlag from '@/components/icons/flags/NetherlandsFlag';
+import GermanyFlag from '@/components/icons/flags/GermanyFlag';
 
 interface ModernPublicHeaderProps {
   activePage?: 'explorer' | 'residents' | 'owners' | null;
   onNavigate?: (page: 'explorer' | 'residents' | 'owners' | null) => void;
 }
+
+const flagComponents = {
+  fr: FranceFlag,
+  en: UKFlag,
+  nl: NetherlandsFlag,
+  de: GermanyFlag,
+};
 
 export default function ModernPublicHeader({
   activePage = null,
@@ -25,10 +36,10 @@ export default function ModernPublicHeader({
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   const languages = [
-    { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
-    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { code: 'fr', label: 'Français', flagComponent: FranceFlag },
+    { code: 'en', label: 'English', flagComponent: UKFlag },
+    { code: 'nl', label: 'Nederlands', flagComponent: NetherlandsFlag },
+    { code: 'de', label: 'Deutsch', flagComponent: GermanyFlag },
   ] as const;
 
   const navItems = [
@@ -206,37 +217,41 @@ export default function ModernPublicHeader({
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-50"
                   >
-                    {languages.map((lang, index) => (
-                      <div key={lang.code}>
-                        <button
-                          onClick={() => {
-                            setLanguage(lang.code);
-                            setLangDropdownOpen(false);
-                          }}
-                          className={cn(
-                            "w-full flex items-center justify-between px-5 py-3 text-sm transition-all group",
-                            language === lang.code
-                              ? "bg-gray-50"
-                              : "hover:bg-gray-50"
+                    {languages.map((lang, index) => {
+                      const FlagComponent = lang.flagComponent;
+                      return (
+                        <div key={lang.code}>
+                          <button
+                            onClick={() => {
+                              setLanguage(lang.code);
+                              setLangDropdownOpen(false);
+                            }}
+                            className={cn(
+                              "w-full flex items-center gap-3 px-5 py-3 text-sm transition-all group",
+                              language === lang.code
+                                ? "bg-gray-50"
+                                : "hover:bg-gray-50"
+                            )}
+                          >
+                            <FlagComponent className="w-6 h-6 rounded-sm shadow-sm" />
+                            <span className={cn(
+                              "font-medium transition-all flex-1 text-left",
+                              language === lang.code
+                                ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
+                                : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                            )}>
+                              {lang.label}
+                            </span>
+                            {language === lang.code && (
+                              <span className="text-purple-600 text-xs">✓</span>
+                            )}
+                          </button>
+                          {index < languages.length - 1 && (
+                            <div className="h-px bg-gray-100 mx-3" />
                           )}
-                        >
-                          <span className={cn(
-                            "font-medium transition-all",
-                            language === lang.code
-                              ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
-                              : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
-                          )}>
-                            {lang.label}
-                          </span>
-                          {language === lang.code && (
-                            <span className="text-purple-600 text-xs">✓</span>
-                          )}
-                        </button>
-                        {index < languages.length - 1 && (
-                          <div className="h-px bg-gray-100 mx-3" />
-                        )}
-                      </div>
-                    ))}
+                        </div>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
