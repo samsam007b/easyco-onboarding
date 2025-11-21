@@ -107,6 +107,13 @@ export default function ModernOwnerHeader({
 
   const quickActions = [
     {
+      id: 'add-property',
+      href: '/properties/add',
+      label: 'Ajouter une propriété',
+      icon: Building2,
+      description: 'Créer un nouveau bien',
+    },
+    {
       id: 'create-ticket',
       href: '/dashboard/owner/maintenance',
       label: 'Ticket maintenance',
@@ -245,9 +252,9 @@ export default function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      className="absolute right-0 mt-2 w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20"
                     >
-                      <div className="px-4 py-3 border-b border-gray-200">
+                      <div className="px-4 py-3 border-b border-purple-200/50">
                         <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                           <Zap className="w-4 h-4 text-purple-600" />
                           Actions Rapides
@@ -260,7 +267,7 @@ export default function ModernOwnerHeader({
                             <Link
                               key={action.id}
                               href={action.href}
-                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-purple-50/50 transition group"
+                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition group"
                               onClick={() => setShowQuickActions(false)}
                             >
                               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
