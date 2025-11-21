@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import CalendarEventModal from '@/components/CalendarEventModal';
 import {
   Calendar as CalendarIcon,
   Plus,
@@ -51,6 +52,9 @@ export default function HubCalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentPropertyId, setCurrentPropertyId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState<CalendarEvent | null>(null);
 
   useEffect(() => {
     loadEvents();
@@ -77,6 +81,8 @@ export default function HubCalendarPage() {
         setIsLoading(false);
         return;
       }
+
+      setCurrentPropertyId(profile.property_id);
 
       // Get month range
       const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -193,6 +199,41 @@ export default function HubCalendarPage() {
     );
   };
 
+  const handleCreateEvent = () => {
+    setEventToEdit(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditEvent = (event: CalendarEvent) => {
+    setEventToEdit(event);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteEvent = async (eventId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('calendar_events')
+        .delete()
+        .eq('id', eventId);
+
+      if (error) throw error;
+
+      // Reload events
+      await loadEvents();
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert('Erreur lors de la suppression de l\'événement');
+    }
+  };
+
+  const handleEventSaved = async () => {
+    await loadEvents();
+  };
+
   const days = getDaysInMonth(currentDate);
 
   if (isLoading) {
@@ -234,6 +275,7 @@ export default function HubCalendarPage() {
             </div>
 
             <Button
+              onClick={handleCreateEvent}
               className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -410,10 +452,20 @@ export default function HubCalendarPage() {
                   </div>
 
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="sm" className="rounded-full">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-full"
+                      onClick={() => handleEditEvent(event)}
+                    >
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="rounded-full text-red-600">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-full text-red-600"
+                      onClick={() => handleDeleteEvent(event.id)}
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -423,6 +475,20 @@ export default function HubCalendarPage() {
           </div>
         </motion.div>
       </div>
+
+      {/* Event Modal */}
+      {currentPropertyId && (
+        <CalendarEventModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEventToEdit(null);
+          }}
+          onEventCreated={handleEventSaved}
+          eventToEdit={eventToEdit}
+          propertyId={currentPropertyId}
+        />
+      )}
     </div>
   );
 }
