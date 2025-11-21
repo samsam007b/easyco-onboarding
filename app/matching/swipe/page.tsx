@@ -107,6 +107,22 @@ export default function SwipePage() {
     }, 600);
   };
 
+  const handleReload = async () => {
+    setIsAnimating(true);
+
+    // Reset local state
+    setCurrentIndex(0);
+    setSwipeHistory([]);
+
+    // Reload potential matches
+    await loadPotentialMatches();
+
+    setTimeout(() => {
+      setIsAnimating(false);
+      toast.success('Profils rechargés !');
+    }, 300);
+  };
+
   const currentCard = potentialMatches[currentIndex];
   const cardsRemaining = potentialMatches.length - currentIndex;
 
@@ -224,8 +240,9 @@ export default function SwipePage() {
                 </p>
                 <div className="flex gap-3">
                   <Button
-                    onClick={() => loadPotentialMatches()}
-                    className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+                    onClick={handleReload}
+                    disabled={isAnimating}
+                    className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] disabled:opacity-50"
                   >
                     <RotateCcw className="w-4 h-4 mr-2" />
                     Recharger
