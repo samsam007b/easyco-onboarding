@@ -274,13 +274,10 @@ function OwnerMessagesContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-purple-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <div className="relative">
-            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
-            <LoadingHouse size={80} />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des messages...</h3>
+          <LoadingHouse size={80} />
+          <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Chargement des messages...</h3>
           <p className="text-gray-600">Préparation de vos conversations</p>
         </div>
       </div>
@@ -288,7 +285,7 @@ function OwnerMessagesContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50/20 via-white to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
       {profile && (
         <ModernOwnerHeader
           profile={profile}
@@ -298,16 +295,16 @@ function OwnerMessagesContent() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         {/* Header */}
-        <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center shadow-lg">
-                  <MessageCircle className="w-5 h-5 text-white" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
+                  <MessageCircle className="w-6 h-6 text-gray-700" />
                 </div>
                 Messages
               </h1>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600">
                 Gérez vos conversations avec les candidats et locataires
               </p>
             </div>
@@ -316,8 +313,8 @@ function OwnerMessagesContent() {
                 variant={showArchived ? 'default' : 'outline'}
                 onClick={() => setShowArchived(!showArchived)}
                 className={cn(
-                  'rounded-full',
-                  showArchived && 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
+                  'rounded-full transition-all',
+                  showArchived && 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
                 )}
               >
                 <Archive className="w-4 h-4 mr-2" />
@@ -333,8 +330,8 @@ function OwnerMessagesContent() {
               onClick={() => setActiveTab('all')}
               size="sm"
               className={cn(
-                'rounded-full',
-                activeTab === 'all' && 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
+                'rounded-full transition-all',
+                activeTab === 'all' && 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
               )}
             >
               <MessageCircle className="w-4 h-4 mr-2" />
@@ -349,8 +346,8 @@ function OwnerMessagesContent() {
               onClick={() => setActiveTab('applicants')}
               size="sm"
               className={cn(
-                'rounded-full',
-                activeTab === 'applicants' && 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
+                'rounded-full transition-all',
+                activeTab === 'applicants' && 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
               )}
             >
               <Users className="w-4 h-4 mr-2" />
@@ -367,8 +364,8 @@ function OwnerMessagesContent() {
               onClick={() => setActiveTab('tenants')}
               size="sm"
               className={cn(
-                'rounded-full',
-                activeTab === 'tenants' && 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
+                'rounded-full transition-all',
+                activeTab === 'tenants' && 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
               )}
             >
               <Building2 className="w-4 h-4 mr-2" />
@@ -384,27 +381,27 @@ function OwnerMessagesContent() {
 
         {/* Messages Container */}
         {filteredConversations.length === 0 && !showArchived ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
+          <div className="relative overflow-hidden bg-white/80 backdrop-blur-sm border border-gray-200 rounded-3xl p-12 text-center">
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-indigo-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-indigo-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
             <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                <MessageCircle className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                <MessageCircle className="w-10 h-10 text-gray-700" />
               </div>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 Aucune conversation
               </h3>
 
-              <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
                 Vos conversations avec les candidats et locataires apparaîtront ici
               </p>
 
               <Button
                 onClick={() => router.push('/dashboard/owner/applications')}
-                className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 font-semibold px-8 shadow-sm hover:shadow-md transition-all hover:scale-105"
               >
                 <Users className="w-5 h-5 mr-2" />
                 Voir les candidatures
@@ -412,7 +409,7 @@ function OwnerMessagesContent() {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden h-[calc(100vh-300px)]">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 overflow-hidden h-[calc(100vh-300px)]">
             <div className="grid md:grid-cols-3 h-full">
               {/* Conversations List */}
               <div className={`${selectedConversationId ? 'hidden md:block' : ''} border-r border-gray-200`}>
@@ -442,10 +439,10 @@ function OwnerMessagesContent() {
                     onBack={() => setSelectedConversationId(null)}
                   />
                 ) : (
-                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-purple-50/30 to-purple-50/30">
+                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-purple-50/50 via-white to-indigo-50/50">
                     <div className="text-center">
-                      <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <MessageCircle className="w-10 h-10 text-white" />
+                      <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <MessageCircle className="w-10 h-10 text-gray-700" />
                       </div>
                       <p className="text-lg font-bold text-gray-900 mb-2">Sélectionnez une conversation</p>
                       <p className="text-sm text-gray-600">
