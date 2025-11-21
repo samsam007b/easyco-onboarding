@@ -12,7 +12,10 @@ import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutoco
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
 import LoadingHouse from '@/components/ui/LoadingHouse';
-import PropertyCard from '@/components/PropertyCard';
+import OptimizedPropertyCard from '@/components/optimized/OptimizedPropertyCard';
+import SmartFilters from '@/components/optimized/SmartFilters';
+import PropertyComparison from '@/components/optimized/PropertyComparison';
+import EnhancedSkeleton from '@/components/optimized/EnhancedSkeleton';
 import { useMatching } from '@/lib/hooks/use-matching';
 import { Progress } from '@/components/ui/progress';
 
@@ -39,6 +42,10 @@ export default function ModernSearcherDashboard() {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
+  const [showSmartFilters, setShowSmartFilters] = useState(false);
+  const [comparisonProperties, setComparisonProperties] = useState<any[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
   // Use matching hook to get top matches
   const {
@@ -90,6 +97,54 @@ export default function ModernSearcherDashboard() {
     if (selectedDate) params.set('move_in_date', selectedDate.toISOString());
 
     router.push(`/properties/browse?${params.toString()}`);
+  };
+
+  const handleSmartFilterApply = (filters: any) => {
+    if (filters.cities && filters.cities.length > 0) {
+      setSelectedLocation(filters.cities[0]);
+    }
+    if (filters.priceRange) {
+      setBudgetRange(filters.priceRange);
+    }
+    setShowSmartFilters(false);
+  };
+
+  const handleAddToComparison = (property: any) => {
+    if (comparisonProperties.length >= 4) {
+      alert('Vous pouvez comparer jusqu\'à 4 propriétés maximum');
+      return;
+    }
+    if (!comparisonProperties.find(p => p.id === property.id)) {
+      setComparisonProperties([...comparisonProperties, property]);
+    }
+  };
+
+  const handleRemoveFromComparison = (propertyId: string) => {
+    setComparisonProperties(comparisonProperties.filter(p => p.id !== propertyId));
+  };
+
+  const handleFavoriteClick = async (propertyId: string) => {
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(propertyId)) {
+      newFavorites.delete(propertyId);
+      // Remove from favorites in DB
+      if (userId) {
+        await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', userId)
+          .eq('property_id', propertyId);
+      }
+    } else {
+      newFavorites.add(propertyId);
+      // Add to favorites in DB
+      if (userId) {
+        await supabase
+          .from('favorites')
+          .insert({ user_id: userId, property_id: propertyId });
+      }
+    }
+    setFavorites(newFavorites);
   };
 
   const loadDashboardData = async () => {
@@ -169,14 +224,7 @@ export default function ModernSearcherDashboard() {
   ];
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={64} />
-          <p className="text-gray-600 font-medium">Chargement...</p>
-        </div>
-      </div>
-    );
+    return <EnhancedSkeleton variant="dashboard" />;
   }
 
   // Get top matches for display
@@ -413,6 +461,18 @@ export default function ModernSearcherDashboard() {
                   </Button>
                 </div>
               </div>
+
+              {/* Smart Filters Toggle Button */}
+              <div className="mt-4 flex justify-center">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowSmartFilters(!showSmartFilters)}
+                  className="border-2 border-purple-200 hover:border-purple-300 hover:bg-purple-50"
+                >
+                  <Sparkles className="w-4 h-4 mr-2 text-purple-600" />
+                  {showSmartFilters ? 'Masquer' : 'Filtres intelligents'}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -448,7 +508,7 @@ export default function ModernSearcherDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
               >
-                <PropertyCard
+                <OptimizedPropertyCard
                   property={{
                     id: match.id,
                     title: match.title,
@@ -458,12 +518,15 @@ export default function ModernSearcherDashboard() {
                     monthly_rent: match.price,
                     bedrooms: match.bedrooms,
                     property_type: match.furnished ? 'Meublé' : 'Non meublé',
+                    main_image: match.images?.[0],
                     images: match.images,
                     available_from: match.available_from
                   }}
                   variant="compact"
                   showCompatibilityScore
                   compatibilityScore={match.matchResult ? Math.round(match.matchResult.score) : undefined}
+                  onFavoriteClick={handleFavoriteClick}
+                  isFavorite={favorites.has(match.id)}
                 />
               </motion.div>
             ))}
@@ -471,11 +534,73 @@ export default function ModernSearcherDashboard() {
         </motion.div>
       ) : matchesLoading ? (
         /* Loading State */
-        <div className="text-center py-12">
-          <LoadingHouse size={48} />
-          <p className="text-gray-600 mt-4">Recherche de matchs en cours...</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <EnhancedSkeleton variant="card" count={4} />
+        </motion.div>
       ) : null}
+
+      {/* Smart Filters Section */}
+      {showSmartFilters && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="mb-8"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-6 h-6 text-purple-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Filtres intelligents</h2>
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => setShowSmartFilters(false)}
+              className="text-gray-600"
+            >
+              Masquer
+            </Button>
+          </div>
+          <SmartFilters
+            onFilterApply={handleSmartFilterApply}
+            currentFilters={{
+              cities: selectedLocation ? [selectedLocation] : undefined,
+              priceRange: budgetRange
+            }}
+          />
+        </motion.div>
+      )}
+
+      {/* Comparison Floating Button */}
+      {comparisonProperties.length > 0 && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="fixed bottom-8 right-8 z-40"
+        >
+          <Button
+            onClick={() => setShowComparison(true)}
+            size="lg"
+            className="bg-gradient-to-r from-purple-600 to-orange-600 hover:from-purple-700 hover:to-orange-700 text-white shadow-2xl rounded-full px-6 py-6"
+          >
+            <TrendingUp className="w-6 h-6 mr-2" />
+            Comparer ({comparisonProperties.length})
+          </Button>
+        </motion.div>
+      )}
+
+      {/* Property Comparison Modal */}
+      {showComparison && comparisonProperties.length > 0 && (
+        <PropertyComparison
+          properties={comparisonProperties}
+          onClose={() => setShowComparison(false)}
+          onRemoveProperty={handleRemoveFromComparison}
+        />
+      )}
     </div>
   );
 }
