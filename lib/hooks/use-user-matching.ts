@@ -24,19 +24,31 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
   // Load current user's profile
   const loadCurrentUserProfile = useCallback(async () => {
+    if (!currentUserId) {
+      console.log('No user ID provided');
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log('Loading profile for user:', currentUserId);
       const { data: profile, error } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
-        .eq('user_id', currentUserId)
+        .eq('id', currentUserId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Profile load error:', error);
+        throw error;
+      }
 
-      setCurrentUserProfile(profile as UserProfile);
+      console.log('Profile loaded successfully:', profile);
+      setCurrentUserProfile(profile as any);
     } catch (error) {
       console.error('Failed to load current user profile:', error);
       setCurrentUserProfile(null);
+      setIsLoading(false);
     }
   }, [currentUserId, supabase]);
 
@@ -59,14 +71,14 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
         // Build query based on context
         let query = supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
-          .neq('user_id', currentUserId)
+          .neq('id', currentUserId)
           .limit(limit);
 
         // Exclude already swiped users
         if (swipedUserIds.length > 0) {
-          query = query.not('user_id', 'in', `(${swipedUserIds.join(',')})`);
+          query = query.not('id', 'in', `(${swipedUserIds.join(',')})`);
         }
 
         // Context-specific filters
@@ -151,9 +163,9 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
         const matchedUserIds = matches.map((m: any) => m.matched_user_id);
 
         const { data: profiles } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
-          .in('user_id', matchedUserIds);
+          .in('id', matchedUserIds);
 
         return profiles as UserProfile[];
       }
