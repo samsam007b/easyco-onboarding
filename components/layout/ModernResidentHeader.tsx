@@ -60,6 +60,13 @@ export default function ModernResidentHeader({
 
   const navItems = [
     {
+      id: 'residents',
+      href: '/hub/residents',
+      label: 'Résidents',
+      icon: Users,
+      badge: activeMembersCount > 0 ? activeMembersCount : null,
+    },
+    {
       id: 'tasks',
       href: '/hub/tasks',
       label: 'Tâches',
