@@ -243,15 +243,16 @@ function PropertyCard({
             />
           </button>
 
-          {/* Residents Photos */}
+          {/* Residents Photos - Enhanced */}
           {residents && residents.length > 0 && (
-            <div className="absolute bottom-3 left-3 flex items-center gap-2">
-              <div className="flex -space-x-3">
-                {residents.slice(0, 4).map((resident, index) => (
+            <div className="absolute bottom-3 left-3 flex items-center gap-2 group/residents">
+              <div className="flex -space-x-4">
+                {residents.slice(0, 3).map((resident, index) => (
                   <div
                     key={resident.id}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-lg flex items-center justify-center"
+                    className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-3 border-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
                     style={{ zIndex: 10 - index }}
+                    title={resident.first_name}
                   >
                     {resident.profile_photo_url ? (
                       <img
@@ -260,23 +261,39 @@ function PropertyCard({
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
-                      <Users className="w-5 h-5 text-white" />
+                      <Users className="w-6 h-6 text-white" />
                     )}
                   </div>
                 ))}
               </div>
-              {residents.length > 4 && (
-                <div className="w-10 h-10 rounded-full bg-gray-900/80 backdrop-blur-sm border-2 border-white text-white text-xs font-bold flex items-center justify-center shadow-lg">
-                  +{residents.length - 4}
+              {residents.length > 3 && (
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border-3 border-white text-white text-sm font-bold flex items-center justify-center shadow-xl">
+                  +{residents.length - 3}
                 </div>
               )}
+              {/* Tooltip on hover */}
+              <div className="absolute bottom-full left-0 mb-2 hidden group-hover/residents:block bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-xl">
+                {residents.length} colocataire{residents.length > 1 ? 's' : ''} · Voir les profils
+              </div>
             </div>
           )}
 
-          {/* Compatibility Score Badge */}
+          {/* Compatibility Score Badge - Enhanced with gradient */}
           {showCompatibilityScore && compatibilityScore && (
-            <div className="absolute top-3 left-3 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-              <span className="text-xl">{compatibilityScore}%</span> Match
+            <div
+              className="absolute top-3 left-3 px-4 py-2 rounded-full text-white font-bold shadow-2xl backdrop-blur-sm border-2 border-white/50"
+              style={{
+                background: compatibilityScore >= 80
+                  ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                  : compatibilityScore >= 60
+                  ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                  : 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 fill-white" />
+                <span className="text-lg">{compatibilityScore}%</span>
+              </div>
             </div>
           )}
 
@@ -311,6 +328,43 @@ function PropertyCard({
             <MapPin className="w-4 h-4" />
             {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
           </p>
+
+          {/* Residents Info - Prominent */}
+          {residents && residents.length > 0 && (
+            <div className="mb-3 p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-semibold text-gray-900">
+                  {residents.length} colocataire{residents.length > 1 ? 's' : ''}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {residents.slice(0, 4).map((resident, index) => (
+                    <div
+                      key={resident.id}
+                      className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-md flex items-center justify-center"
+                      style={{ zIndex: 10 - index }}
+                    >
+                      {resident.profile_photo_url ? (
+                        <img
+                          src={resident.profile_photo_url}
+                          alt={resident.first_name}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <Users className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <span className="text-xs text-gray-600">
+                  {residents.slice(0, 2).map(r => r.first_name).join(', ')}
+                  {residents.length > 2 && ` +${residents.length - 2}`}
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Details */}
           <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
