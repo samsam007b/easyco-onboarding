@@ -20,7 +20,8 @@ import {
   ChevronRight,
   Settings as SettingsIcon,
   HelpCircle,
-  Home
+  Home,
+  ArrowLeft
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -216,15 +217,27 @@ export default function SettingsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
+            className="mb-8"
           >
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl", `bg-gradient-to-br ${colors.gradient}`)}>
-                <SettingsIcon className="w-8 h-8 text-white" />
+            {/* Back Button */}
+            <Button
+              onClick={() => router.push('/hub')}
+              variant="ghost"
+              className="mb-6 rounded-full"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Retour au hub
+            </Button>
+
+            <div className="text-center">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl", `bg-gradient-to-br ${colors.gradient}`)}>
+                  <SettingsIcon className="w-8 h-8 text-white" />
+                </div>
               </div>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
+              <p className="text-gray-600 text-lg">Gérer votre compte et vos préférences</p>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
-            <p className="text-gray-600 text-lg">Gérer votre compte et vos préférences</p>
           </motion.div>
         </div>
       </div>
