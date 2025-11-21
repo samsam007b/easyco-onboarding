@@ -35,8 +35,8 @@ const testUserProfile: UserProfile = {
   // Lifestyle
   cleanliness_level: 8, // Very clean
   social_energy: 7, // Fairly extroverted
-  openness_to_sharing: 7,
-  cultural_openness: 9,
+  openness_to_sharing: 'open',
+  cultural_openness: 'very_open',
   house_rules_preference: 6, // Moderately structured
   shared_space_importance: 7,
 
@@ -90,8 +90,8 @@ const compatibleUser: UserProfile = {
   // Lifestyle - Very similar to testUserProfile
   cleanliness_level: 7,
   social_energy: 8,
-  openness_to_sharing: 8,
-  cultural_openness: 8,
+  openness_to_sharing: 'very_open',
+  cultural_openness: 'very_open',
   house_rules_preference: 7,
   shared_space_importance: 6,
 
@@ -144,8 +144,8 @@ const incompatibleUser: UserProfile = {
   // Lifestyle - Very different
   cleanliness_level: 3, // Low cleanliness
   social_energy: 10, // Very extroverted
-  openness_to_sharing: 3,
-  cultural_openness: 5,
+  openness_to_sharing: 'private',
+  cultural_openness: 'moderate',
   house_rules_preference: 2, // Very flexible
   shared_space_importance: 3,
 

@@ -23,11 +23,18 @@ export interface UserProfile {
   occupation_status?: string;
   bio?: string;
 
+  // Enriched profile data
+  languages_spoken?: string[];
+  interests?: string[];
+  hobbies?: string[];
+  important_qualities?: string[];
+  deal_breakers?: string[];
+
   // Lifestyle preferences (from onboarding)
   cleanliness_level?: number; // 1-10
   social_energy?: number; // 1-10 (introvert to extrovert)
-  openness_to_sharing?: number; // 1-10
-  cultural_openness?: number; // 1-10
+  openness_to_sharing?: string; // 'private' | 'moderate' | 'open' | 'very_open'
+  cultural_openness?: string; // 'conservative' | 'moderate' | 'open' | 'very_open'
   house_rules_preference?: number; // 1-10 (flexible to structured)
   shared_space_importance?: number; // 1-10
 
@@ -35,32 +42,45 @@ export interface UserProfile {
   wake_up_time?: 'early' | 'moderate' | 'late';
   sleep_time?: 'early' | 'moderate' | 'late';
   works_from_home?: boolean;
+  work_schedule?: 'office' | 'hybrid' | 'remote' | 'flexible' | 'student';
   exercise_frequency?: 'never' | 'rarely' | 'sometimes' | 'often' | 'daily';
+  sports_frequency?: 'never' | 'rarely' | 'sometimes' | 'often' | 'daily';
 
   // Social preferences
   guest_frequency?: 'never' | 'rarely' | 'sometimes' | 'often';
   shared_meals_interest?: boolean;
   flatmate_meetups_interest?: boolean;
+  open_to_meetups?: boolean;
   event_participation_interest?: 'low' | 'medium' | 'high';
+  event_interest?: 'low' | 'medium' | 'high';
+  introvert_extrovert_scale?: number; // 1-5
 
   // Lifestyle habits
   smoking?: boolean;
+  drinks_alcohol?: boolean;
   pets?: boolean;
   pet_type?: string;
   cooking_frequency?: 'never' | 'rarely' | 'sometimes' | 'often' | 'daily';
   music_at_home?: boolean;
+  music_habits?: 'none' | 'headphones_only' | 'headphones_mostly' | 'quiet_background' | 'social_listening';
+  diet_type?: 'omnivore' | 'vegetarian' | 'vegan' | 'flexitarian' | 'pescatarian';
 
   // Values
   core_values?: string[]; // ['respect', 'cleanliness', 'communication', 'sharing', 'privacy', 'fun', 'sustainability']
 
   // Preferences for matching
   preferred_coliving_size?: 'small' | 'medium' | 'large' | 'very_large'; // 2-3, 4-6, 7-10, 10+
+  preferred_gender_mix?: 'no_preference' | 'same_gender' | 'mixed';
   gender_preference?: 'no_preference' | 'same_gender' | 'mixed';
   age_range_min?: number;
   age_range_max?: number;
   preferred_neighborhoods?: string[];
   min_budget?: number;
   max_budget?: number;
+  quiet_hours_preference?: boolean;
+  communication_style?: 'direct' | 'diplomatic' | 'casual' | 'formal';
+  coworking_space_needed?: boolean;
+  gym_access_needed?: boolean;
 
   // Tolerance preferences
   pets_tolerance?: boolean;
@@ -185,16 +205,20 @@ function calculateSocialScore(user1: UserProfile, user2: UserProfile): number {
 
   // Openness to sharing (0-7 points)
   if (user1.openness_to_sharing && user2.openness_to_sharing) {
-    const diff = Math.abs(user1.openness_to_sharing - user2.openness_to_sharing);
-    score += Math.max(0, 7 - diff * 0.7);
+    const levels = { private: 1, moderate: 2, open: 3, very_open: 4 };
+    const diff = Math.abs(
+      levels[user1.openness_to_sharing as keyof typeof levels] - levels[user2.openness_to_sharing as keyof typeof levels]
+    );
+    score += Math.max(0, 7 - diff * 2);
   } else {
     score += 5;
   }
 
   // Cultural openness (0-5 points)
   if (user1.cultural_openness && user2.cultural_openness) {
-    const avg = (user1.cultural_openness + user2.cultural_openness) / 2;
-    score += (avg / 10) * 5; // Higher is better for both
+    const levels = { conservative: 1, moderate: 2, open: 3, very_open: 4 };
+    const avg = (levels[user1.cultural_openness as keyof typeof levels] + levels[user2.cultural_openness as keyof typeof levels]) / 2;
+    score += (avg / 4) * 5; // Higher is better for both
   } else {
     score += 4;
   }

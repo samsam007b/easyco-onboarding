@@ -18,6 +18,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
   const [exitX, setExitX] = useState(0);
   const [exitRotate, setExitRotate] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-30, 30]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
@@ -60,13 +61,14 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
 
   return (
     <motion.div
-      className="absolute w-full h-full cursor-grab active:cursor-grabbing"
+      className="absolute w-full cursor-grab active:cursor-grabbing"
       style={{
         x,
         rotate,
         opacity,
         rotateY,
         transformStyle: 'preserve-3d',
+        height: isExpanded ? 'auto' : '100%',
       }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
@@ -74,15 +76,17 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
       animate={{ x: exitX, rotate: exitRotate, rotateY }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
-      <div
-        className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden"
-        onClick={onCardClick}
+      <motion.div
+        className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
+        onClick={() => setIsExpanded(!isExpanded)}
         style={{ transformStyle: 'preserve-3d' }}
+        animate={{ height: isExpanded ? 'auto' : '600px' }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
         {/* Card Front */}
         <div style={{ backfaceVisibility: 'hidden' }}>
         {/* Profile Image - OPTIMIZED with Next.js Image */}
-        <div className="relative h-[60%] overflow-hidden">
+        <div className={`relative overflow-hidden ${isExpanded ? 'h-[400px]' : 'h-[60%]'}`}>
           {user.profile_photo_url ? (
             <Image
               src={user.profile_photo_url}
@@ -166,7 +170,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
         </div>
 
         {/* Profile Details */}
-        <div className="h-[40%] p-6 overflow-y-auto">
+        <div className={`p-6 ${isExpanded ? 'overflow-y-auto' : 'h-[40%] overflow-y-auto'}`}>
           {/* Location & Languages */}
           <div className="flex items-center gap-4 mb-4">
             {user.nationality && (
@@ -254,6 +258,201 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
               </p>
             </div>
           )}
+
+          {/* Extended Details - Only shown when expanded */}
+          {isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6 pt-6 border-t-2 border-gray-200 space-y-6"
+            >
+              {/* Languages Spoken */}
+              {user.languages_spoken && user.languages_spoken.length > 0 && (
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    🌍 Langues parlées
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {user.languages_spoken.map((lang, idx) => (
+                      <Badge key={idx} variant="secondary" size="sm">
+                        {lang}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Hobbies */}
+              {user.hobbies && user.hobbies.length > 0 && (
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    🎨 Hobbies
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {user.hobbies.map((hobby, idx) => (
+                      <Badge key={idx} variant="secondary" size="sm">
+                        {hobby}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Important Qualities */}
+              {user.important_qualities && user.important_qualities.length > 0 && (
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    ⭐ Qualités importantes
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {user.important_qualities.map((quality, idx) => (
+                      <Badge key={idx} variant="default" size="sm" className="bg-orange-100 text-orange-700">
+                        {quality}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Deal Breakers */}
+              {user.deal_breakers && user.deal_breakers.length > 0 && (
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    ⚠️ Deal breakers
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {user.deal_breakers.map((breaker, idx) => (
+                      <Badge key={idx} variant="error" size="sm">
+                        {breaker}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Lifestyle Preferences */}
+              <div>
+                <p className="text-sm font-bold text-gray-900 mb-3">Mode de vie</p>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  {user.guest_frequency && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Invités:</span>
+                      <span className="font-medium capitalize">{user.guest_frequency.replace('_', ' ')}</span>
+                    </div>
+                  )}
+                  {user.sports_frequency && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Sport:</span>
+                      <span className="font-medium capitalize">{user.sports_frequency}</span>
+                    </div>
+                  )}
+                  {user.diet_type && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Régime:</span>
+                      <span className="font-medium capitalize">{user.diet_type}</span>
+                    </div>
+                  )}
+                  {user.music_habits && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Musique:</span>
+                      <span className="font-medium capitalize">{user.music_habits.replace('_', ' ')}</span>
+                    </div>
+                  )}
+                  {user.work_schedule && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Travail:</span>
+                      <span className="font-medium capitalize">{user.work_schedule}</span>
+                    </div>
+                  )}
+                  {user.introvert_extrovert_scale !== undefined && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Social:</span>
+                      <span className="font-medium">{user.introvert_extrovert_scale}/5</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Additional Preferences */}
+              <div>
+                <p className="text-sm font-bold text-gray-900 mb-3">Préférences</p>
+                <div className="space-y-2 text-xs">
+                  {user.shared_meals_interest !== undefined && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Repas partagés</span>
+                      <span className={`font-medium ${user.shared_meals_interest ? 'text-green-600' : 'text-gray-400'}`}>
+                        {user.shared_meals_interest ? '✓ Oui' : '✗ Non'}
+                      </span>
+                    </div>
+                  )}
+                  {user.coworking_space_needed !== undefined && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Espace coworking</span>
+                      <span className={`font-medium ${user.coworking_space_needed ? 'text-green-600' : 'text-gray-400'}`}>
+                        {user.coworking_space_needed ? '✓ Oui' : '✗ Non'}
+                      </span>
+                    </div>
+                  )}
+                  {user.gym_access_needed !== undefined && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Accès salle de sport</span>
+                      <span className={`font-medium ${user.gym_access_needed ? 'text-green-600' : 'text-gray-400'}`}>
+                        {user.gym_access_needed ? '✓ Oui' : '✗ Non'}
+                      </span>
+                    </div>
+                  )}
+                  {user.quiet_hours_preference !== undefined && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Heures calmes</span>
+                      <span className={`font-medium ${user.quiet_hours_preference ? 'text-green-600' : 'text-gray-400'}`}>
+                        {user.quiet_hours_preference ? '✓ Oui' : '✗ Non'}
+                      </span>
+                    </div>
+                  )}
+                  {user.open_to_meetups !== undefined && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Ouvert aux rencontres</span>
+                      <span className={`font-medium ${user.open_to_meetups ? 'text-green-600' : 'text-gray-400'}`}>
+                        {user.open_to_meetups ? '✓ Oui' : '✗ Non'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Coliving Preferences */}
+              <div>
+                <p className="text-sm font-bold text-gray-900 mb-3">Préférences de coliving</p>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  {user.preferred_coliving_size && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Taille:</span>
+                      <span className="font-medium capitalize">{user.preferred_coliving_size.replace('_', ' ')}</span>
+                    </div>
+                  )}
+                  {user.preferred_gender_mix && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Mixité:</span>
+                      <span className="font-medium capitalize">{user.preferred_gender_mix.replace('_', ' ')}</span>
+                    </div>
+                  )}
+                  {user.communication_style && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Communication:</span>
+                      <span className="font-medium capitalize">{user.communication_style}</span>
+                    </div>
+                  )}
+                  {user.cultural_openness && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600">Ouverture culturelle:</span>
+                      <span className="font-medium capitalize">{user.cultural_openness.replace('_', ' ')}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Swipe Indicators */}
@@ -288,7 +487,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
             <p className="text-2xl font-bold text-gray-500">Pas pour moi</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 });
