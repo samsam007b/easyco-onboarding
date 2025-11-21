@@ -161,14 +161,12 @@ export default function ModernOwnerHeader({
             href="/dashboard/owner"
             className="flex items-center group"
           >
-            <Image
-              src="/logos/easyco-logo-medium.png"
-              alt="EasyCo"
-              width={100}
-              height={25}
-              className="transition-transform group-hover:scale-105"
-              priority
-            />
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity rounded-lg blur-sm"></div>
+              <h1 className="relative text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent transition-transform group-hover:scale-105">
+                EasyCo
+              </h1>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
