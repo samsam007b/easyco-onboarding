@@ -70,19 +70,18 @@ export default function HubCalendarPage() {
 
       setCurrentUserId(user.id);
 
-      // Get user's property_id
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('property_id')
-        .eq('user_id', user.id)
-        .single();
+      // Get user's property membership using RPC function
+      const { data: membershipData, error: memberError } = await supabase
+        .rpc('get_user_property_membership', { p_user_id: user.id });
 
-      if (!profile?.property_id) {
+      if (memberError || !membershipData?.property_id) {
+        console.error('No property membership found');
         setIsLoading(false);
         return;
       }
 
-      setCurrentPropertyId(profile.property_id);
+      const propertyId = membershipData.property_id;
+      setCurrentPropertyId(propertyId);
 
       // Get month range
       const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -103,7 +102,7 @@ export default function HubCalendarPage() {
             user_id
           )
         `)
-        .eq('property_id', profile.property_id)
+        .eq('property_id', propertyId)
         .gte('start_time', startDate.toISOString())
         .lte('start_time', endDate.toISOString())
         .order('start_time', { ascending: true });
@@ -119,12 +118,12 @@ export default function HubCalendarPage() {
       ];
 
       const { data: usersData } = await supabase
-        .from('user_profiles')
-        .select('user_id, first_name, last_name')
-        .in('user_id', userIds);
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', userIds);
 
       const userMap = new Map(
-        usersData?.map(u => [u.user_id, `${u.first_name} ${u.last_name}`])
+        usersData?.map(u => [u.id, `${u.first_name} ${u.last_name}`])
       );
 
       // Enrich events
