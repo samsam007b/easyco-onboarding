@@ -43,6 +43,11 @@ export default function PropertiesManagement() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft' | 'archived'>('all');
+  const [deleteModal, setDeleteModal] = useState<{ open: boolean; propertyId: string | null; propertyTitle: string }>({
+    open: false,
+    propertyId: null,
+    propertyTitle: ''
+  });
 
   useEffect(() => {
     loadData();
@@ -92,21 +97,22 @@ export default function PropertiesManagement() {
     }
   };
 
-  const handleDeleteProperty = async (propertyId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible.')) {
-      return;
-    }
+  const handleDeleteProperty = async () => {
+    if (!deleteModal.propertyId) return;
 
     try {
       const { error } = await supabase
         .from('properties')
         .delete()
-        .eq('id', propertyId);
+        .eq('id', deleteModal.propertyId);
 
       if (error) throw error;
 
       toast.success('Propriété supprimée');
-      setProperties(properties.filter(p => p.id !== propertyId));
+      setDeleteModal({ open: false, propertyId: null, propertyTitle: '' });
+
+      // Reload data to ensure consistency
+      await loadData();
     } catch (error: any) {
       toast.error('Erreur lors de la suppression');
     }
@@ -420,7 +426,7 @@ export default function PropertiesManagement() {
                       <Button
                         variant="outline"
                         className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
-                        onClick={() => handleDeleteProperty(property.id)}
+                        onClick={() => setDeleteModal({ open: true, propertyId: property.id, propertyTitle: property.title })}
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
                         Supprimer
@@ -433,6 +439,68 @@ export default function PropertiesManagement() {
           </div>
         )}
       </main>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })}
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+          >
+            <div className="text-center">
+              {/* Icon */}
+              <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                <Trash2 className="w-8 h-8 text-red-600" />
+              </div>
+
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Supprimer la propriété ?
+              </h3>
+
+              {/* Description */}
+              <p className="text-gray-600 mb-2">
+                Êtes-vous sûr de vouloir supprimer
+              </p>
+              <p className="font-semibold text-gray-900 mb-4">
+                "{deleteModal.propertyTitle}" ?
+              </p>
+              <p className="text-sm text-red-600 mb-8">
+                Cette action est irréversible.
+              </p>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-xl"
+                  onClick={() => setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })}
+                >
+                  Annuler
+                </Button>
+                <Button
+                  className="flex-1 rounded-xl bg-red-600 hover:bg-red-700 text-white"
+                  onClick={handleDeleteProperty}
+                >
+                  Supprimer
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
