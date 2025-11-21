@@ -27,7 +27,8 @@ import {
   Receipt,
   UserPlus,
   BarChart3,
-  Zap
+  Zap,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -419,41 +420,158 @@ export default function ModernOwnerHeader({
                       onClick={() => setShowProfileMenu(false)}
                     />
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20"
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-purple-200/50">
-                        <p className="font-semibold text-gray-900">{profile.full_name}</p>
-                        <p className="text-sm text-gray-500 truncate">{profile.email}</p>
+                      {/* Premium Header with Gradient */}
+                      <div className="relative px-6 py-5 bg-gradient-to-br from-purple-600 via-purple-500 to-pink-600 text-white">
+                        <div className="absolute inset-0 bg-black/5" />
+                        <div className="relative flex items-center gap-4">
+                          {/* Avatar with Progress Ring */}
+                          <div className="relative">
+                            <svg className="absolute inset-0 -m-1.5" width="68" height="68">
+                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                              <circle
+                                cx="34" cy="34" r="32"
+                                fill="none"
+                                stroke="white"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeDasharray={`${2 * Math.PI * 32}`}
+                                strokeDashoffset={`${2 * Math.PI * 32 * (1 - 0.75)}`}
+                                transform="rotate(-90 34 34)"
+                                className="transition-all duration-1000"
+                              />
+                            </svg>
+                            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center overflow-hidden">
+                              {profile.avatar_url ? (
+                                <Image
+                                  src={profile.avatar_url}
+                                  alt={profile.full_name}
+                                  width={64}
+                                  height={64}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <User className="w-8 h-8 text-white" />
+                              )}
+                            </div>
+                          </div>
+
+                          {/* User Info */}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-white truncate text-lg">{profile.full_name}</p>
+                            <p className="text-white/90 text-sm truncate">{profile.email}</p>
+                            <div className="mt-1 flex items-center gap-1.5">
+                              <div className="h-1.5 flex-1 bg-white/30 rounded-full overflow-hidden">
+                                <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
+                              </div>
+                              <span className="text-xs text-white/90 font-medium">75%</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
-                      <Link
-                        href="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition rounded-xl mx-2 my-1"
-                        onClick={() => setShowProfileMenu(false)}
-                      >
-                        <User className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">Mon Profil</span>
-                      </Link>
+                      {/* Quick Stats */}
+                      <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-pink-50/50 border-b border-purple-100/50">
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="text-center">
+                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                              {stats?.monthlyRevenue ? `€${Math.round(stats.monthlyRevenue / 1000)}k` : '€0'}
+                            </div>
+                            <div className="text-xs text-gray-600">Revenus</div>
+                          </div>
+                          <div className="text-center border-x border-purple-200/50">
+                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                              {stats?.roi || 0}%
+                            </div>
+                            <div className="text-xs text-gray-600">ROI</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                              {stats?.occupation || 0}%
+                            </div>
+                            <div className="text-xs text-gray-600">Occupation</div>
+                          </div>
+                        </div>
+                      </div>
 
-                      <Link
-                        href="/settings"
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition rounded-xl mx-2 my-1"
-                        onClick={() => setShowProfileMenu(false)}
-                      >
-                        <Settings className="w-5 h-5 text-gray-600" />
-                        <span className="text-gray-700 font-medium">Paramètres</span>
-                      </Link>
+                      {/* Menu Items */}
+                      <div className="py-2">
+                        <Link
+                          href="/profile"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-purple-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Mon Profil</span>
+                            <span className="text-xs text-gray-500">Gérer mes informations</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                        </Link>
 
-                      <div className="my-2 border-t border-purple-200/50 mx-2" />
+                        <Link
+                          href="/dashboard/owner/finance"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <DollarSign className="w-4 h-4 text-green-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Finance</span>
+                            <span className="text-xs text-gray-500">Revenus et dépenses</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                        </Link>
 
+                        <Link
+                          href="/settings"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Settings className="w-4 h-4 text-blue-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Paramètres</span>
+                            <span className="text-xs text-gray-500">Préférences et confidentialité</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
+
+                      {/* Complete Profile CTA */}
+                      <div className="px-4 pb-3">
+                        <Link
+                          href="/profile"
+                          className="block w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium text-center hover:shadow-lg hover:scale-[1.02] transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <Sparkles className="w-4 h-4" />
+                            <span>Compléter mon profil</span>
+                          </div>
+                        </Link>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-gray-200/80" />
+
+                      {/* Logout */}
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50/50 transition text-red-600 rounded-xl mx-2 my-1"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all text-red-600 group"
                       >
-                        <LogOut className="w-5 h-5" />
+                        <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
+                          <LogOut className="w-4 h-4 text-red-600" />
+                        </div>
                         <span className="font-medium">Déconnexion</span>
                       </button>
                     </motion.div>
