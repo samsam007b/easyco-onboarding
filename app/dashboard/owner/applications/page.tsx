@@ -2,21 +2,19 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { PageContainer } from '@/components/layout/PageContainer';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
 import type { Application, GroupApplication } from '@/lib/hooks/use-applications';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import {
   CheckCircle,
   XCircle,
   Clock,
-  Home,
   Mail,
   Phone,
   Briefcase,
@@ -28,23 +26,13 @@ import {
   ThumbsDown,
   Users,
   Building2,
-  Filter,
-  CheckSquare,
-  Send,
+  UserCircle,
+  TrendingUp,
+  FileText,
+  AlertCircle,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { PromptDialog } from '@/components/ui/prompt-dialog';
-import { Spinner } from '@/components/ui/spinner';
 
 type ApplicationType = 'individual' | 'group';
 type CombinedStatus = Application['status'] | GroupApplication['status'];
@@ -60,16 +48,24 @@ export default function OwnerApplicationsPage() {
   const [filterStatus, setFilterStatus] = useState<'all' | CombinedStatus>('all');
   const [filterType, setFilterType] = useState<'all' | ApplicationType>('all');
   const [filterProperty, setFilterProperty] = useState<'all' | string>('all');
-  const [filterDate, setFilterDate] = useState<'all' | '7days' | '30days' | '90days'>('all');
-  const [selectedApplications, setSelectedApplications] = useState<Set<string>>(new Set());
   const [properties, setProperties] = useState<any[]>([]);
 
-  // Dialog states
-  const [approveDialogOpen, setApproveDialogOpen] = useState(false);
-  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
-  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
-  const [selectedApplicationType, setSelectedApplicationType] = useState<'individual' | 'group'>('individual');
-  const [processingAction, setProcessingAction] = useState<string | null>(null);
+  // Modal state
+  const [actionModal, setActionModal] = useState<{
+    open: boolean;
+    action: 'approve' | 'reject' | null;
+    applicationId: string | null;
+    applicationType: 'individual' | 'group';
+    applicantName: string;
+  }>({
+    open: false,
+    action: null,
+    applicationId: null,
+    applicationType: 'individual',
+    applicantName: ''
+  });
+  const [rejectReason, setRejectReason] = useState('');
+  const [processingAction, setProcessingAction] = useState(false);
 
   const {
     applications: hookApplications,
@@ -97,13 +93,15 @@ export default function OwnerApplicationsPage() {
           .single();
 
         const { data: profileData } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('id', user.id)
           .single();
 
         setProfile({
-          full_name: userData?.full_name || user.email?.split('@')[0] || 'User',
+          full_name: profileData?.first_name && profileData?.last_name
+            ? `${profileData.first_name} ${profileData.last_name}`
+            : userData?.full_name || user.email?.split('@')[0] || 'User',
           email: userData?.email || user.email || '',
           profile_data: profileData || {}
         });
@@ -119,7 +117,7 @@ export default function OwnerApplicationsPage() {
           setProperties(propertiesData);
         }
 
-        await loadApplications(true); // true = as owner
+        await loadApplications(true);
       }
 
       setLoading(false);
@@ -138,166 +136,162 @@ export default function OwnerApplicationsPage() {
   }, [hookApplications, hookGroupApplications]);
 
   const loadApplicationsData = async () => {
-    await loadApplications(true); // true = as owner
+    await loadApplications(true);
   };
 
-  // Individual application handlers
-  const handleApprove = async (applicationId: string) => {
-    setSelectedApplicationId(applicationId);
-    setSelectedApplicationType('individual');
-    setApproveDialogOpen(true);
+  const handleOpenActionModal = (
+    action: 'approve' | 'reject',
+    applicationId: string,
+    applicationType: 'individual' | 'group',
+    applicantName: string
+  ) => {
+    setActionModal({
+      open: true,
+      action,
+      applicationId,
+      applicationType,
+      applicantName
+    });
+    setRejectReason('');
   };
 
-  const confirmApprove = async () => {
-    if (!selectedApplicationId) return;
-
-    setProcessingAction(`approve-${selectedApplicationId}`);
-    const success = await updateApplicationStatus(selectedApplicationId, 'approved');
-    if (success) {
-      toast.success('Application approved!');
-      await loadApplicationsData();
-    }
-    setProcessingAction(null);
-    setApproveDialogOpen(false);
-    setSelectedApplicationId(null);
-  };
-
-  const handleReject = async (applicationId: string) => {
-    setSelectedApplicationId(applicationId);
-    setSelectedApplicationType('individual');
-    setRejectDialogOpen(true);
-  };
-
-  const confirmReject = async (reason: string) => {
-    if (!selectedApplicationId) return;
-
-    setProcessingAction(`reject-${selectedApplicationId}`);
-    const success = await updateApplicationStatus(
-      selectedApplicationId,
-      'rejected',
-      reason || undefined
-    );
-
-    if (success) {
-      toast.success('Application rejected');
-      await loadApplicationsData();
-    }
-    setProcessingAction(null);
-    setSelectedApplicationId(null);
-  };
-
-  const handleMarkReviewing = async (applicationId: string) => {
-    const success = await updateApplicationStatus(applicationId, 'reviewing');
-    if (success) {
-      await loadApplicationsData();
+  const handleCloseModal = () => {
+    if (!processingAction) {
+      setActionModal({
+        open: false,
+        action: null,
+        applicationId: null,
+        applicationType: 'individual',
+        applicantName: ''
+      });
+      setRejectReason('');
     }
   };
 
-  // Group application handlers
-  const handleGroupApprove = async (groupApplicationId: string) => {
-    setSelectedApplicationId(groupApplicationId);
-    setSelectedApplicationType('group');
-    setApproveDialogOpen(true);
-  };
+  const handleConfirmAction = async () => {
+    if (!actionModal.applicationId || !actionModal.action) return;
 
-  const confirmGroupApprove = async () => {
-    if (!selectedApplicationId) return;
+    setProcessingAction(true);
 
-    setProcessingAction(`approve-group-${selectedApplicationId}`);
-    const success = await updateGroupApplicationStatus(selectedApplicationId, 'approved');
-    if (success) {
-      toast.success('Group application approved!');
-      await loadApplicationsData();
+    try {
+      let success = false;
+
+      if (actionModal.action === 'approve') {
+        if (actionModal.applicationType === 'group') {
+          success = await updateGroupApplicationStatus(actionModal.applicationId, 'approved');
+        } else {
+          success = await updateApplicationStatus(actionModal.applicationId, 'approved');
+        }
+
+        if (success) {
+          toast.success('Candidature approuvée !');
+          await loadApplicationsData();
+        }
+      } else if (actionModal.action === 'reject') {
+        if (actionModal.applicationType === 'group') {
+          success = await updateGroupApplicationStatus(
+            actionModal.applicationId,
+            'rejected',
+            rejectReason || undefined
+          );
+        } else {
+          success = await updateApplicationStatus(
+            actionModal.applicationId,
+            'rejected',
+            rejectReason || undefined
+          );
+        }
+
+        if (success) {
+          toast.success('Candidature rejetée');
+          await loadApplicationsData();
+        }
+      }
+
+      handleCloseModal();
+    } catch (error) {
+      toast.error('Erreur lors de l\'action');
+    } finally {
+      setProcessingAction(false);
     }
-    setProcessingAction(null);
-    setApproveDialogOpen(false);
-    setSelectedApplicationId(null);
   };
 
-  const handleGroupReject = async (groupApplicationId: string) => {
-    setSelectedApplicationId(groupApplicationId);
-    setSelectedApplicationType('group');
-    setRejectDialogOpen(true);
-  };
-
-  const confirmGroupReject = async (reason: string) => {
-    if (!selectedApplicationId) return;
-
-    setProcessingAction(`reject-group-${selectedApplicationId}`);
-    const success = await updateGroupApplicationStatus(
-      selectedApplicationId,
-      'rejected',
-      reason || undefined
-    );
-
-    if (success) {
-      toast.success('Group application rejected');
-      await loadApplicationsData();
-    }
-    setProcessingAction(null);
-    setSelectedApplicationId(null);
-  };
-
-  const handleGroupMarkReviewing = async (groupApplicationId: string) => {
-    const success = await updateGroupApplicationStatus(groupApplicationId, 'reviewing');
-    if (success) {
-      await loadApplicationsData();
+  const handleMarkReviewing = async (applicationId: string, isGroup: boolean) => {
+    if (isGroup) {
+      const success = await updateGroupApplicationStatus(applicationId, 'reviewing');
+      if (success) {
+        await loadApplicationsData();
+      }
+    } else {
+      const success = await updateApplicationStatus(applicationId, 'reviewing');
+      if (success) {
+        await loadApplicationsData();
+      }
     }
   };
 
   const getStatusBadge = (status: CombinedStatus) => {
-    const config = {
-      pending: { variant: 'warning' as const, icon: Clock, label: 'Pending' },
-      reviewing: { variant: 'default' as const, icon: Eye, label: 'Reviewing' },
-      approved: { variant: 'success' as const, icon: CheckCircle, label: 'Approved' },
-      rejected: { variant: 'default' as const, icon: XCircle, label: 'Rejected' },
-      withdrawn: { variant: 'default' as const, icon: XCircle, label: 'Withdrawn' },
-      expired: { variant: 'default' as const, icon: Clock, label: 'Expired' },
+    const config: Record<CombinedStatus, { className: string; label: string; icon: any }> = {
+      pending: {
+        className: 'bg-orange-100 text-orange-800 border-orange-200',
+        label: 'En attente',
+        icon: Clock
+      },
+      reviewing: {
+        className: 'bg-blue-100 text-blue-800 border-blue-200',
+        label: 'En révision',
+        icon: Eye
+      },
+      approved: {
+        className: 'bg-green-100 text-green-800 border-green-200',
+        label: 'Approuvée',
+        icon: CheckCircle
+      },
+      rejected: {
+        className: 'bg-red-100 text-red-800 border-red-200',
+        label: 'Rejetée',
+        icon: XCircle
+      },
+      withdrawn: {
+        className: 'bg-gray-100 text-gray-800 border-gray-200',
+        label: 'Retirée',
+        icon: XCircle
+      },
+      expired: {
+        className: 'bg-gray-100 text-gray-800 border-gray-200',
+        label: 'Expirée',
+        icon: Clock
+      },
     };
 
-    const { variant, icon: Icon, label } = config[status];
+    const statusConfig = config[status];
+    const Icon = statusConfig.icon;
+
     return (
-      <Badge variant={variant}>
+      <Badge className={statusConfig.className}>
         <Icon className="w-3 h-3 mr-1" />
-        {label}
+        {statusConfig.label}
       </Badge>
     );
   };
 
-  // Helper function for date filtering
-  const isWithinDateRange = (dateStr: string | undefined) => {
-    if (!dateStr || filterDate === 'all') return true;
-
-    const appDate = new Date(dateStr);
-    const now = new Date();
-    const daysDiff = Math.floor((now.getTime() - appDate.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (filterDate === '7days') return daysDiff <= 7;
-    if (filterDate === '30days') return daysDiff <= 30;
-    if (filterDate === '90days') return daysDiff <= 90;
-    return true;
-  };
-
-  // Filter applications with memoization for performance
   const filteredIndividualApps = useMemo(() => {
     return applications.filter((app) => {
       const statusMatch = filterStatus === 'all' || app.status === filterStatus;
       const typeMatch = filterType === 'all' || filterType === 'individual';
       const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
-      const dateMatch = isWithinDateRange(app.created_at);
-      return statusMatch && typeMatch && propertyMatch && dateMatch;
+      return statusMatch && typeMatch && propertyMatch;
     });
-  }, [applications, filterStatus, filterType, filterProperty, filterDate]);
+  }, [applications, filterStatus, filterType, filterProperty]);
 
   const filteredGroupApps = useMemo(() => {
     return groupApps.filter((app) => {
       const statusMatch = filterStatus === 'all' || app.status === filterStatus;
       const typeMatch = filterType === 'all' || filterType === 'group';
       const propertyMatch = filterProperty === 'all' || app.property_id === filterProperty;
-      const dateMatch = isWithinDateRange(app.created_at);
-      return statusMatch && typeMatch && propertyMatch && dateMatch;
+      return statusMatch && typeMatch && propertyMatch;
     });
-  }, [groupApps, filterStatus, filterType, filterProperty, filterDate]);
+  }, [groupApps, filterStatus, filterType, filterProperty]);
 
   // Calculate stats
   const stats = {
@@ -316,13 +310,10 @@ export default function OwnerApplicationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <div className="relative">
-            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
-            <LoadingHouse size={80} />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des candidatures...</h3>
+          <LoadingHouse size={80} />
+          <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Chargement des candidatures...</h3>
           <p className="text-gray-600">Préparation de vos données</p>
         </div>
       </div>
@@ -330,346 +321,316 @@ export default function OwnerApplicationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent mb-2">
-            Property Applications
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Manage individual and group applications for your properties
-          </p>
-        </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Total</p>
-          <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
-        </div>
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Individual</p>
-          <p className="text-2xl font-bold text-blue-700">{stats.individual}</p>
-        </div>
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Groups</p>
-          <p className="text-2xl font-bold text-purple-700">{stats.groups}</p>
-        </div>
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Pending</p>
-          <p className="text-2xl font-bold text-orange-700">{stats.pending}</p>
-        </div>
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Reviewing</p>
-          <p className="text-2xl font-bold text-blue-700">{stats.reviewing}</p>
-        </div>
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Approved</p>
-          <p className="text-2xl font-bold text-green-700">{stats.approved}</p>
-        </div>
-        <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <p className="text-sm text-gray-600 mb-1">Rejected</p>
-          <p className="text-2xl font-bold text-red-700">{stats.rejected}</p>
-        </div>
-      </div>
-
-      {/* Type Filters */}
-      <div className="flex gap-2 mb-4">
-        <Button
-          variant={filterType === 'all' ? 'default' : 'outline'}
-          onClick={() => setFilterType('all')}
-          size="sm"
-          className={filterType === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
         >
-          All Types ({stats.total})
-        </Button>
-        <Button
-          variant={filterType === 'individual' ? 'default' : 'outline'}
-          onClick={() => setFilterType('individual')}
-          size="sm"
-          className={filterType === 'individual' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          Individual ({stats.individual})
-        </Button>
-        <Button
-          variant={filterType === 'group' ? 'default' : 'outline'}
-          onClick={() => setFilterType('group')}
-          size="sm"
-          className={filterType === 'group' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          <Users className="w-4 h-4 mr-1" />
-          Groups ({stats.groups})
-        </Button>
-      </div>
-
-      {/* Status Filters */}
-      <div className="flex gap-2 mb-4 overflow-x-auto">
-        <Button
-          variant={filterStatus === 'all' ? 'default' : 'outline'}
-          onClick={() => setFilterStatus('all')}
-          size="sm"
-          className={filterStatus === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          All Status
-        </Button>
-        <Button
-          variant={filterStatus === 'pending' ? 'default' : 'outline'}
-          onClick={() => setFilterStatus('pending')}
-          size="sm"
-          className={filterStatus === 'pending' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          Pending ({stats.pending})
-        </Button>
-        <Button
-          variant={filterStatus === 'reviewing' ? 'default' : 'outline'}
-          onClick={() => setFilterStatus('reviewing')}
-          size="sm"
-          className={filterStatus === 'reviewing' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          Reviewing ({stats.reviewing})
-        </Button>
-        <Button
-          variant={filterStatus === 'approved' ? 'default' : 'outline'}
-          onClick={() => setFilterStatus('approved')}
-          size="sm"
-          className={filterStatus === 'approved' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          Approved ({stats.approved})
-        </Button>
-        <Button
-          variant={filterStatus === 'rejected' ? 'default' : 'outline'}
-          onClick={() => setFilterStatus('rejected')}
-          size="sm"
-          className={filterStatus === 'rejected' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-        >
-          Rejected ({stats.rejected})
-        </Button>
-      </div>
-
-      {/* Additional Filters Row */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        {/* Property Filter */}
-        <div className="flex-1">
-          <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-            <Building2 className="w-4 h-4" />
-            Filter by Property
-          </label>
-          <select
-            value={filterProperty}
-            onChange={(e) => setFilterProperty(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            <option value="all">All Properties</option>
-            {properties.map((property) => (
-              <option key={property.id} value={property.id}>
-                {property.title}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Date Filter */}
-        <div className="flex-1">
-          <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            Filter by Date
-          </label>
-          <select
-            value={filterDate}
-            onChange={(e) => setFilterDate(e.target.value as any)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            <option value="all">All Time</option>
-            <option value="7days">Last 7 Days</option>
-            <option value="30days">Last 30 Days</option>
-            <option value="90days">Last 90 Days</option>
-          </select>
-        </div>
-
-        {/* Selection Count & Bulk Actions */}
-        {selectedApplications.size > 0 && (
-          <div className="flex-1 flex items-end gap-2">
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => {
-                const selectedArray = Array.from(selectedApplications);
-                // Bulk approve logic
-                toast.promise(
-                  Promise.all(selectedArray.map(id => {
-                    const isGroup = id.startsWith('group-');
-                    const actualId = isGroup ? id.replace('group-', '') : id;
-                    return isGroup
-                      ? updateGroupApplicationStatus(actualId, 'approved')
-                      : updateApplicationStatus(actualId, 'approved');
-                  })),
-                  {
-                    loading: `Approving ${selectedArray.length} applications...`,
-                    success: () => {
-                      setSelectedApplications(new Set());
-                      loadApplicationsData();
-                      return `${selectedArray.length} applications approved`;
-                    },
-                    error: 'Failed to approve applications',
-                  }
-                );
-              }}
-              className="flex items-center gap-2"
-            >
-              <CheckSquare className="w-4 h-4" />
-              Approve ({selectedApplications.size})
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSelectedApplications(new Set())}
-            >
-              Clear Selection
-            </Button>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
+                  <FileText className="w-6 h-6 text-gray-700" />
+                </div>
+                Candidatures
+              </h1>
+              <p className="text-gray-600">
+                Gérer les candidatures individuelles et de groupe pour vos propriétés
+              </p>
+            </div>
           </div>
-        )}
-      </div>
 
-      {/* Applications List */}
-      {filteredIndividualApps.length === 0 && filteredGroupApps.length === 0 ? (
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+          {/* Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-br from-purple-50/50 to-indigo-50/50 p-4 rounded-xl border border-purple-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Building2 className="w-4 h-4 text-purple-600" />
+                <p className="text-sm text-gray-600 font-medium">Total</p>
+              </div>
+              <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
+            </motion.div>
 
-          <div className="relative z-10">
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-              <Home className="w-10 h-10 text-white" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="bg-gradient-to-br from-blue-50/50 to-cyan-50/50 p-4 rounded-xl border border-blue-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <UserCircle className="w-4 h-4 text-blue-600" />
+                <p className="text-sm text-gray-600 font-medium">Individuel</p>
+              </div>
+              <p className="text-2xl font-bold text-blue-700">{stats.individual}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 p-4 rounded-xl border border-purple-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="w-4 h-4 text-purple-600" />
+                <p className="text-sm text-gray-600 font-medium">Groupes</p>
+              </div>
+              <p className="text-2xl font-bold text-purple-700">{stats.groups}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.25 }}
+              className="bg-gradient-to-br from-orange-50/50 to-amber-50/50 p-4 rounded-xl border border-orange-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4 text-orange-600" />
+                <p className="text-sm text-gray-600 font-medium">En attente</p>
+              </div>
+              <p className="text-2xl font-bold text-orange-700">{stats.pending}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-4 rounded-xl border border-blue-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Eye className="w-4 h-4 text-blue-600" />
+                <p className="text-sm text-gray-600 font-medium">En révision</p>
+              </div>
+              <p className="text-2xl font-bold text-blue-700">{stats.reviewing}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.35 }}
+              className="bg-gradient-to-br from-green-50/50 to-emerald-50/50 p-4 rounded-xl border border-green-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <p className="text-sm text-gray-600 font-medium">Approuvées</p>
+              </div>
+              <p className="text-2xl font-bold text-green-700">{stats.approved}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-br from-red-50/50 to-pink-50/50 p-4 rounded-xl border border-red-200/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <XCircle className="w-4 h-4 text-red-600" />
+                <p className="text-sm text-gray-600 font-medium">Rejetées</p>
+              </div>
+              <p className="text-2xl font-bold text-red-700">{stats.rejected}</p>
+            </motion.div>
+          </div>
+
+          {/* Filters */}
+          <div className="mt-6 space-y-4">
+            {/* Type Filters */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { value: 'all', label: 'Tous les types', count: stats.total },
+                { value: 'individual', label: 'Individuel', count: stats.individual },
+                { value: 'group', label: 'Groupes', count: stats.groups }
+              ].map((filter) => (
+                <Button
+                  key={filter.value}
+                  variant={filterType === filter.value ? 'default' : 'outline'}
+                  onClick={() => setFilterType(filter.value as typeof filterType)}
+                  size="sm"
+                  className={cn(
+                    "rounded-full transition-all",
+                    filterType === filter.value
+                      ? 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
+                      : 'hover:border-purple-300'
+                  )}
+                >
+                  {filter.label} ({filter.count})
+                </Button>
+              ))}
+            </div>
+
+            {/* Status Filters */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { value: 'all', label: 'Tous les statuts' },
+                { value: 'pending', label: 'En attente', count: stats.pending },
+                { value: 'reviewing', label: 'En révision', count: stats.reviewing },
+                { value: 'approved', label: 'Approuvées', count: stats.approved },
+                { value: 'rejected', label: 'Rejetées', count: stats.rejected }
+              ].map((filter) => (
+                <Button
+                  key={filter.value}
+                  variant={filterStatus === filter.value ? 'default' : 'outline'}
+                  onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
+                  size="sm"
+                  className={cn(
+                    "rounded-full transition-all",
+                    filterStatus === filter.value
+                      ? 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
+                      : 'hover:border-purple-300'
+                  )}
+                >
+                  {filter.label} {filter.value !== 'all' && `(${filter.count})`}
+                </Button>
+              ))}
+            </div>
+
+            {/* Property Filter */}
+            {properties.length > 0 && (
+              <div>
+                <select
+                  value={filterProperty}
+                  onChange={(e) => setFilterProperty(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                >
+                  <option value="all">Toutes les propriétés</option>
+                  {properties.map((property) => (
+                    <option key={property.id} value={property.id}>
+                      {property.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Applications List */}
+        {filteredIndividualApps.length === 0 && filteredGroupApps.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+          >
+            <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <FileText className="w-10 h-10 text-gray-700" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Aucune candidature trouvée
             </h3>
-            <p className="text-gray-600 mb-4 max-w-md mx-auto text-lg">
+            <p className="text-gray-600 mb-4 max-w-md mx-auto">
               Essayez de modifier vos filtres ou attendez de nouvelles candidatures
             </p>
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {/* Group Applications */}
-          {filteredGroupApps.map((groupApp) => (
-            <Card key={`group-${groupApp.id}`} className="hover:shadow-md transition-shadow border-l-4 border-l-purple-500">
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                  {/* Checkbox for bulk selection */}
-                  <div className="flex items-start pt-1">
-                    <input
-                      type="checkbox"
-                      checked={selectedApplications.has(`group-${groupApp.id}`)}
-                      onChange={(e) => {
-                        const newSet = new Set(selectedApplications);
-                        if (e.target.checked) {
-                          newSet.add(`group-${groupApp.id}`);
-                        } else {
-                          newSet.delete(`group-${groupApp.id}`);
-                        }
-                        setSelectedApplications(newSet);
-                      }}
-                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                    />
-                  </div>
-
-                  {/* Left: Group Info */}
+          </motion.div>
+        ) : (
+          <div className="space-y-4">
+            {/* Group Applications */}
+            {filteredGroupApps.map((groupApp, index) => (
+              <motion.div
+                key={`group-${groupApp.id}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.05 }}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border-l-4 border-l-purple-500 border border-gray-200 hover:shadow-md transition-all duration-300 p-6"
+              >
+                <div className="flex flex-col lg:flex-row gap-6">
+                  {/* Group Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
-                      <Users className="w-6 h-6 text-purple-600 mt-1" />
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+                        <Users className="w-5 h-5 text-purple-600" />
+                      </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {groupApp.group?.name || 'Group Application'}
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <h3 className="text-lg font-bold text-gray-900">
+                            {groupApp.group?.name || 'Groupe'}
                           </h3>
-                          <Badge variant="default" className="bg-purple-50 text-purple-700 border-purple-200">
-                            <Users className="w-3 h-3 mr-1" />
-                            GROUP
+                          <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                            Groupe
                           </Badge>
                           {getStatusBadge(groupApp.status)}
                         </div>
                         <p className="text-sm text-gray-600 mb-2">
-                          Applied for: <span className="font-medium">{groupApp.property?.title || 'Property'}</span>
+                          <span className="font-medium">{groupApp.property?.title || 'Propriété'}</span>
                         </p>
                       </div>
                     </div>
 
                     {/* Group Members */}
-                    {groupApp.group && (
-                      <div className="mb-3 p-3 bg-purple-50 rounded-lg">
-                        <p className="text-sm font-medium text-gray-700 mb-2">
-                          Group Members ({groupApp.group.members?.length || 0}/{groupApp.group.max_members}):
+                    {groupApp.group?.members && groupApp.group.members.length > 0 && (
+                      <div className="mb-4 p-4 bg-purple-50/50 rounded-xl border border-purple-200/30">
+                        <p className="text-sm font-semibold text-gray-900 mb-3">
+                          Membres ({groupApp.group.members.length}/{groupApp.group.max_members})
                         </p>
-                        <div className="space-y-1">
-                          {groupApp.group.members?.map((member, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                              <div className="w-6 h-6 rounded-full bg-purple-200 flex items-center justify-center text-xs font-medium">
+                        <div className="space-y-2">
+                          {groupApp.group.members.map((member, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm">
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-xs font-semibold text-gray-700">
                                 {member.user.full_name?.charAt(0).toUpperCase() || '?'}
                               </div>
-                              <span>{member.user.full_name}</span>
+                              <span className="font-medium text-gray-900">{member.user.full_name}</span>
                               <span className="text-gray-400">•</span>
-                              <span className="text-gray-500">{member.user.email}</span>
+                              <span className="text-gray-600">{member.user.email}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                      {groupApp.combined_income && (
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <DollarSign className="w-4 h-4 text-gray-500" />
-                          <span>Combined Income: €{groupApp.combined_income.toLocaleString()}/month</span>
-                        </div>
-                      )}
-                    </div>
+                    {groupApp.combined_income && (
+                      <div className="flex items-center gap-2 text-sm text-gray-700 mb-3">
+                        <DollarSign className="w-4 h-4 text-green-600" />
+                        <span>Revenu combiné: <span className="font-semibold">{groupApp.combined_income.toLocaleString()}€/mois</span></span>
+                      </div>
+                    )}
 
                     {groupApp.message && (
-                      <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
                         <div className="flex items-center gap-2 mb-1">
                           <MessageSquare className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm font-medium text-gray-700">Message:</span>
+                          <span className="text-sm font-medium text-gray-700">Message :</span>
                         </div>
                         <p className="text-sm text-gray-600">{groupApp.message}</p>
                       </div>
                     )}
 
                     <p className="text-xs text-gray-500 mt-3">
-                      Applied {new Date(groupApp.created_at).toLocaleDateString()} at{' '}
-                      {new Date(groupApp.created_at).toLocaleTimeString()}
+                      Candidature du {new Date(groupApp.created_at).toLocaleDateString('fr-FR')} à{' '}
+                      {new Date(groupApp.created_at).toLocaleTimeString('fr-FR')}
                     </p>
                   </div>
 
-                  {/* Right: Actions */}
-                  <div className="flex md:flex-col gap-2">
+                  {/* Actions */}
+                  <div className="flex lg:flex-col gap-2 lg:w-48">
                     {groupApp.status === 'pending' && (
                       <>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleGroupMarkReviewing(groupApp.id)}
+                          className="flex-1 rounded-xl hover:bg-blue-50 hover:border-blue-300"
+                          onClick={() => handleMarkReviewing(groupApp.id, true)}
                         >
-                          <Eye className="w-4 h-4 mr-1" />
-                          Mark Reviewing
+                          <Eye className="w-4 h-4 mr-2" />
+                          Réviser
                         </Button>
                         <Button
-                          size="sm"
-                          onClick={() => handleGroupApprove(groupApp.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => handleOpenActionModal('approve', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          Approve
+                          <ThumbsUp className="w-4 h-4 mr-2" />
+                          Approuver
                         </Button>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleGroupReject(groupApp.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                          onClick={() => handleOpenActionModal('reject', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
-                          <ThumbsDown className="w-4 h-4 mr-1" />
-                          Reject
+                          <ThumbsDown className="w-4 h-4 mr-2" />
+                          Rejeter
                         </Button>
                       </>
                     )}
@@ -677,176 +638,163 @@ export default function OwnerApplicationsPage() {
                     {groupApp.status === 'reviewing' && (
                       <>
                         <Button
-                          size="sm"
-                          onClick={() => handleGroupApprove(groupApp.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => handleOpenActionModal('approve', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          Approve
+                          <ThumbsUp className="w-4 h-4 mr-2" />
+                          Approuver
                         </Button>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleGroupReject(groupApp.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                          onClick={() => handleOpenActionModal('reject', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
-                          <ThumbsDown className="w-4 h-4 mr-1" />
-                          Reject
+                          <ThumbsDown className="w-4 h-4 mr-2" />
+                          Rejeter
                         </Button>
                       </>
                     )}
 
                     {(groupApp.status === 'approved' || groupApp.status === 'rejected') && (
-                      <div className="text-sm text-gray-600 text-center md:text-right">
+                      <div className="text-sm text-gray-600 text-center lg:text-right">
                         {groupApp.status === 'approved' ? (
-                          <div className="text-green-600 font-medium">
-                            <CheckCircle className="w-5 h-5 mx-auto mb-1" />
-                            Approved
+                          <div className="text-green-600 font-semibold">
+                            <CheckCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
+                            Approuvée
                           </div>
                         ) : (
-                          <div className="text-red-600 font-medium">
-                            <XCircle className="w-5 h-5 mx-auto mb-1" />
-                            Rejected
+                          <div className="text-red-600 font-semibold">
+                            <XCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
+                            Rejetée
                           </div>
                         )}
                         {groupApp.reviewed_at && (
                           <p className="text-xs mt-1">
-                            {new Date(groupApp.reviewed_at).toLocaleDateString()}
+                            {new Date(groupApp.reviewed_at).toLocaleDateString('fr-FR')}
                           </p>
                         )}
                       </div>
                     )}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </motion.div>
+            ))}
 
-          {/* Individual Applications */}
-          {filteredIndividualApps.map((application) => (
-            <Card key={`individual-${application.id}`} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                  {/* Checkbox for bulk selection */}
-                  <div className="flex items-start pt-1">
-                    <input
-                      type="checkbox"
-                      checked={selectedApplications.has(application.id)}
-                      onChange={(e) => {
-                        const newSet = new Set(selectedApplications);
-                        if (e.target.checked) {
-                          newSet.add(application.id);
-                        } else {
-                          newSet.delete(application.id);
-                        }
-                        setSelectedApplications(newSet);
-                      }}
-                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                    />
-                  </div>
-
-                  {/* Left: Application Info */}
+            {/* Individual Applications */}
+            {filteredIndividualApps.map((application, index) => (
+              <motion.div
+                key={`individual-${application.id}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + (filteredGroupApps.length + index) * 0.05 }}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 p-6"
+              >
+                <div className="flex flex-col lg:flex-row gap-6">
+                  {/* Application Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center flex-shrink-0">
+                        <UserCircle className="w-5 h-5 text-blue-600" />
+                      </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold text-gray-900">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <h3 className="text-lg font-bold text-gray-900">
                             {application.applicant_name}
                           </h3>
                           {getStatusBadge(application.status)}
                         </div>
                         <p className="text-sm text-gray-600 mb-2">
-                          Applied for: <span className="font-medium">{application.property?.title || 'Property'}</span>
+                          <span className="font-medium">{application.property?.title || 'Propriété'}</span>
                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                      <div className="flex items-center gap-2 text-gray-700">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                      <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                         <Mail className="w-4 h-4 text-gray-500" />
-                        <span>{application.applicant_email}</span>
+                        <span className="text-gray-700">{application.applicant_email}</span>
                       </div>
 
                       {application.applicant_phone && (
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Phone className="w-4 h-4 text-gray-500" />
-                          <span>{application.applicant_phone}</span>
+                          <span className="text-gray-700">{application.applicant_phone}</span>
                         </div>
                       )}
 
                       {application.occupation && (
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Briefcase className="w-4 h-4 text-gray-500" />
-                          <span>{application.occupation}</span>
+                          <span className="text-gray-700">{application.occupation}</span>
                         </div>
                       )}
 
                       {application.monthly_income && (
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <DollarSign className="w-4 h-4 text-gray-500" />
-                          <span>€{application.monthly_income.toLocaleString()}/month</span>
+                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                          <DollarSign className="w-4 h-4 text-green-600" />
+                          <span className="text-gray-700">{application.monthly_income.toLocaleString()}€/mois</span>
                         </div>
                       )}
 
                       {application.desired_move_in_date && (
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Calendar className="w-4 h-4 text-gray-500" />
-                          <span>Move-in: {new Date(application.desired_move_in_date).toLocaleDateString()}</span>
+                          <span className="text-gray-700">
+                            Emménagement: {new Date(application.desired_move_in_date).toLocaleDateString('fr-FR')}
+                          </span>
                         </div>
                       )}
 
                       {application.lease_duration_months && (
-                        <div className="flex items-center gap-2 text-gray-700">
+                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Clock className="w-4 h-4 text-gray-500" />
-                          <span>{application.lease_duration_months} months lease</span>
+                          <span className="text-gray-700">{application.lease_duration_months} mois</span>
                         </div>
                       )}
                     </div>
 
                     {application.message && (
-                      <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 mb-3">
                         <div className="flex items-center gap-2 mb-1">
                           <MessageSquare className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm font-medium text-gray-700">Message:</span>
+                          <span className="text-sm font-medium text-gray-700">Message :</span>
                         </div>
                         <p className="text-sm text-gray-600">{application.message}</p>
                       </div>
                     )}
 
-                    <p className="text-xs text-gray-500 mt-3">
-                      Applied {new Date(application.created_at).toLocaleDateString()} at{' '}
-                      {new Date(application.created_at).toLocaleTimeString()}
+                    <p className="text-xs text-gray-500">
+                      Candidature du {new Date(application.created_at).toLocaleDateString('fr-FR')} à{' '}
+                      {new Date(application.created_at).toLocaleTimeString('fr-FR')}
                     </p>
                   </div>
 
-                  {/* Right: Actions */}
-                  <div className="flex md:flex-col gap-2">
+                  {/* Actions */}
+                  <div className="flex lg:flex-col gap-2 lg:w-48">
                     {application.status === 'pending' && (
                       <>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleMarkReviewing(application.id)}
+                          className="flex-1 rounded-xl hover:bg-blue-50 hover:border-blue-300"
+                          onClick={() => handleMarkReviewing(application.id, false)}
                         >
-                          <Eye className="w-4 h-4 mr-1" />
-                          Mark Reviewing
+                          <Eye className="w-4 h-4 mr-2" />
+                          Réviser
                         </Button>
                         <Button
-                          size="sm"
-                          onClick={() => handleApprove(application.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => handleOpenActionModal('approve', application.id, 'individual', application.applicant_name)}
                         >
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          Approve
+                          <ThumbsUp className="w-4 h-4 mr-2" />
+                          Approuver
                         </Button>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleReject(application.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                          onClick={() => handleOpenActionModal('reject', application.id, 'individual', application.applicant_name)}
                         >
-                          <ThumbsDown className="w-4 h-4 mr-1" />
-                          Reject
+                          <ThumbsDown className="w-4 h-4 mr-2" />
+                          Rejeter
                         </Button>
                       </>
                     )}
@@ -854,104 +802,160 @@ export default function OwnerApplicationsPage() {
                     {application.status === 'reviewing' && (
                       <>
                         <Button
-                          size="sm"
-                          onClick={() => handleApprove(application.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => handleOpenActionModal('approve', application.id, 'individual', application.applicant_name)}
                         >
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          Approve
+                          <ThumbsUp className="w-4 h-4 mr-2" />
+                          Approuver
                         </Button>
                         <Button
-                          size="sm"
                           variant="outline"
-                          onClick={() => handleReject(application.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                          onClick={() => handleOpenActionModal('reject', application.id, 'individual', application.applicant_name)}
                         >
-                          <ThumbsDown className="w-4 h-4 mr-1" />
-                          Reject
+                          <ThumbsDown className="w-4 h-4 mr-2" />
+                          Rejeter
                         </Button>
                       </>
                     )}
 
                     {(application.status === 'approved' || application.status === 'rejected') && (
-                      <div className="text-sm text-gray-600 text-center md:text-right">
+                      <div className="text-sm text-gray-600 text-center lg:text-right">
                         {application.status === 'approved' ? (
-                          <div className="text-green-600 font-medium">
-                            <CheckCircle className="w-5 h-5 mx-auto mb-1" />
-                            Approved
+                          <div className="text-green-600 font-semibold">
+                            <CheckCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
+                            Approuvée
                           </div>
                         ) : (
-                          <div className="text-red-600 font-medium">
-                            <XCircle className="w-5 h-5 mx-auto mb-1" />
-                            Rejected
+                          <div className="text-red-600 font-semibold">
+                            <XCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
+                            Rejetée
                           </div>
                         )}
                         {application.reviewed_at && (
                           <p className="text-xs mt-1">
-                            {new Date(application.reviewed_at).toLocaleDateString()}
+                            {new Date(application.reviewed_at).toLocaleDateString('fr-FR')}
                           </p>
                         )}
                       </div>
                     )}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </main>
 
-      {/* Approve Confirmation Dialog */}
-      <AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Approve Application</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to approve this {selectedApplicationType === 'group' ? 'group' : 'individual'} application?
-              This action will notify the applicant(s) and mark the application as approved.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => setSelectedApplicationId(null)}
-              disabled={processingAction !== null}
-            >
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={selectedApplicationType === 'group' ? confirmGroupApprove : confirmApprove}
-              className="bg-green-600 hover:bg-green-700"
-              disabled={processingAction !== null}
-            >
-              {processingAction !== null ? (
-                <>
-                  <Spinner size="sm" className="mr-2" />
-                  Approving...
-                </>
-              ) : (
-                'Approve'
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Action Confirmation Modal */}
+      <AnimatePresence>
+        {actionModal.open && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={handleCloseModal}
+            />
 
-      {/* Reject Prompt Dialog */}
-      <PromptDialog
-        open={rejectDialogOpen}
-        onOpenChange={setRejectDialogOpen}
-        title="Reject Application"
-        description={`Provide a reason for rejecting this ${selectedApplicationType === 'group' ? 'group' : 'individual'} application. This will be sent to the applicant(s).`}
-        label="Rejection Reason"
-        placeholder="Enter reason for rejection..."
-        multiline
-        required={false}
-        onConfirm={selectedApplicationType === 'group' ? confirmGroupReject : confirmReject}
-        onCancel={() => setSelectedApplicationId(null)}
-        confirmText="Reject"
-        cancelText="Cancel"
-      />
-      </div>
+            {/* Modal Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+            >
+              <div className="text-center">
+                {/* Icon */}
+                <div className={cn(
+                  "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4",
+                  actionModal.action === 'approve'
+                    ? 'bg-green-100'
+                    : 'bg-red-100'
+                )}>
+                  {actionModal.action === 'approve' ? (
+                    <ThumbsUp className="w-8 h-8 text-green-600" />
+                  ) : (
+                    <ThumbsDown className="w-8 h-8 text-red-600" />
+                  )}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  {actionModal.action === 'approve' ? 'Approuver la candidature' : 'Rejeter la candidature'}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 mb-2">
+                  {actionModal.action === 'approve'
+                    ? 'Êtes-vous sûr de vouloir approuver la candidature de'
+                    : 'Êtes-vous sûr de vouloir rejeter la candidature de'
+                  }
+                </p>
+                <p className="font-semibold text-gray-900 mb-4">
+                  "{actionModal.applicantName}" ?
+                </p>
+
+                {/* Reject reason input */}
+                {actionModal.action === 'reject' && (
+                  <div className="mb-6 text-left">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Raison du rejet (optionnel)
+                    </label>
+                    <textarea
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                      placeholder="Expliquez pourquoi vous rejetez cette candidature..."
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                      rows={4}
+                      disabled={processingAction}
+                    />
+                  </div>
+                )}
+
+                {actionModal.action === 'approve' && (
+                  <p className="text-sm text-gray-600 mb-8">
+                    Le candidat sera notifié de votre décision.
+                  </p>
+                )}
+
+                {/* Actions */}
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1 rounded-xl"
+                    onClick={handleCloseModal}
+                    disabled={processingAction}
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    className={cn(
+                      "flex-1 rounded-xl text-white",
+                      actionModal.action === 'approve'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-red-600 hover:bg-red-700'
+                    )}
+                    onClick={handleConfirmAction}
+                    disabled={processingAction}
+                  >
+                    {processingAction ? (
+                      <>
+                        <Clock className="w-4 h-4 mr-2 animate-spin" />
+                        Traitement...
+                      </>
+                    ) : (
+                      actionModal.action === 'approve' ? 'Approuver' : 'Rejeter'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
