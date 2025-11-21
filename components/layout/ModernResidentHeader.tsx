@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -19,13 +19,18 @@ import {
   Receipt,
   AlertCircle,
   Plus,
-  Key
+  Key,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import NotificationBell from '@/components/notifications/NotificationBell';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
+import FranceFlag from '@/components/icons/flags/FranceFlag';
+import UKFlag from '@/components/icons/flags/UKFlag';
+import NetherlandsFlag from '@/components/icons/flags/NetherlandsFlag';
+import GermanyFlag from '@/components/icons/flags/GermanyFlag';
 
 interface ModernResidentHeaderProps {
   profile: {
@@ -42,15 +47,24 @@ interface ModernResidentHeaderProps {
   };
 }
 
+const flagComponents = {
+  fr: FranceFlag,
+  en: UKFlag,
+  nl: NetherlandsFlag,
+  de: GermanyFlag,
+};
+
 export default function ModernResidentHeader({
   profile,
   stats = {}
 }: ModernResidentHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { language, setLanguage } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   const {
     pendingTasks = 0,
@@ -58,6 +72,13 @@ export default function ModernResidentHeader({
     unreadMessages = 0,
     activeMembersCount = 0
   } = stats;
+
+  const languages = [
+    { code: 'fr', label: 'Français', flagComponent: FranceFlag },
+    { code: 'en', label: 'English', flagComponent: UKFlag },
+    { code: 'nl', label: 'Nederlands', flagComponent: NetherlandsFlag },
+    { code: 'de', label: 'Deutsch', flagComponent: GermanyFlag },
+  ] as const;
 
   const navItems = [
     {
@@ -131,6 +152,24 @@ export default function ModernResidentHeader({
     setShowProfileMenu(false);
     router.push('/auth/logout');
   };
+
+  // Close language dropdown when clicking outside
+  const langDropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+
+    if (langDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [langDropdownOpen]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -356,9 +395,73 @@ export default function ModernResidentHeader({
             {/* Notifications - New NotificationBell Component */}
             <NotificationBell />
 
-            {/* Language Switcher */}
-            <div className="hidden md:block">
-              <LanguageSwitcher />
+            {/* Language Switcher - Landing Page Style */}
+            <div ref={langDropdownRef} className="hidden md:block relative">
+              <button
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
+              >
+                <Globe className="w-4 h-4" />
+                <span className="font-medium">{language.toUpperCase()}</span>
+                <ChevronDown className={cn(
+                  "w-3 h-3 transition-transform",
+                  langDropdownOpen && "rotate-180"
+                )} />
+              </button>
+
+              {/* Dropdown Menu - Premium Minimalist */}
+              <AnimatePresence>
+                {langDropdownOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setLangDropdownOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-20"
+                    >
+                      {languages.map((lang, index) => {
+                        const FlagComponent = lang.flagComponent;
+                        return (
+                          <div key={lang.code}>
+                            <button
+                              onClick={() => {
+                                setLanguage(lang.code);
+                                setLangDropdownOpen(false);
+                              }}
+                              className={cn(
+                                "w-full flex items-center gap-3 px-5 py-3 text-sm transition-all group",
+                                language === lang.code
+                                  ? "bg-gray-50"
+                                  : "hover:bg-gray-50"
+                              )}
+                            >
+                              <FlagComponent className="w-6 h-6 rounded-sm shadow-sm" />
+                              <span className={cn(
+                                "font-medium transition-all flex-1 text-left",
+                                language === lang.code
+                                  ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
+                                  : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                              )}>
+                                {lang.label}
+                              </span>
+                              {language === lang.code && (
+                                <span className="text-purple-600 text-xs">✓</span>
+                              )}
+                            </button>
+                            {index < languages.length - 1 && (
+                              <div className="h-px bg-gray-100 mx-3" />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Profile Menu */}
