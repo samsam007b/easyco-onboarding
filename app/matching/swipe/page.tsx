@@ -78,8 +78,11 @@ export default function SwipePage() {
 
   if (!user || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100">
-        <LoadingHouse size={80} />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="text-gray-600 font-medium mt-4">Chargement des profils...</p>
+        </div>
       </div>
     );
   }
