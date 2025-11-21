@@ -101,7 +101,7 @@ export default function SettingsPage() {
       description: 'Gérer vos informations personnelles',
       icon: User,
       href: userType === 'owner' ? '/dashboard/my-profile-owner' : userType === 'resident' ? '/dashboard/my-profile-resident' : '/profile',
-      color: 'from-orange-400 to-yellow-500',
+      color: 'from-orange-200/80 to-amber-200/80',
       category: 'account',
     },
     {
@@ -110,7 +110,7 @@ export default function SettingsPage() {
       description: 'Mot de passe et authentification',
       icon: Shield,
       href: '/settings/security',
-      color: 'from-red-500 to-red-600',
+      color: 'from-red-200/70 to-rose-200/70',
       category: 'account',
     },
     {
@@ -119,7 +119,7 @@ export default function SettingsPage() {
       description: 'Contrôler la visibilité de votre profil',
       icon: Eye,
       href: '/settings/privacy',
-      color: 'from-blue-500 to-blue-600',
+      color: 'from-blue-200/70 to-sky-200/70',
       category: 'account',
     },
     {
@@ -128,7 +128,7 @@ export default function SettingsPage() {
       description: 'Codes d\'invitation de votre résidence',
       icon: Lock,
       href: '/settings/private-codes',
-      color: 'from-purple-500 to-indigo-600',
+      color: 'from-purple-200/70 to-indigo-200/70',
       badge: userType === 'resident' ? 'Creator' : undefined,
       category: 'account',
     },
@@ -138,7 +138,7 @@ export default function SettingsPage() {
       description: 'Gérer les informations de votre résidence',
       icon: Home,
       href: '/settings/residence-profile',
-      color: 'from-orange-500 to-red-600',
+      color: 'from-orange-200/70 to-pink-200/70',
       badge: userType === 'resident' ? 'New' : undefined,
       category: 'account',
     },
@@ -148,7 +148,7 @@ export default function SettingsPage() {
       description: 'Configurer vos préférences',
       icon: Bell,
       href: '/dashboard/settings/preferences',
-      color: 'from-yellow-500 to-orange-600',
+      color: 'from-yellow-200/70 to-amber-200/70',
       category: 'preferences',
     },
     {
@@ -157,7 +157,7 @@ export default function SettingsPage() {
       description: 'Changer la langue de l\'interface',
       icon: Globe,
       href: '/settings/language',
-      color: 'from-green-500 to-emerald-600',
+      color: 'from-emerald-200/70 to-teal-200/70',
       category: 'preferences',
     },
     {
@@ -166,7 +166,7 @@ export default function SettingsPage() {
       description: 'Préférences de communications',
       icon: Mail,
       href: '/settings/email',
-      color: 'from-pink-500 to-rose-600',
+      color: 'from-pink-200/70 to-rose-200/70',
       category: 'preferences',
     },
     {
@@ -175,7 +175,7 @@ export default function SettingsPage() {
       description: 'Gérer vos moyens de paiement',
       icon: CreditCard,
       href: '/settings/payment',
-      color: 'from-indigo-500 to-purple-600',
+      color: 'from-indigo-200/70 to-purple-200/70',
       badge: userType === 'owner' ? 'Pro' : undefined,
       category: 'advanced',
     },
@@ -185,7 +185,7 @@ export default function SettingsPage() {
       description: 'Gérer vos sessions actives',
       icon: Smartphone,
       href: '/settings/devices',
-      color: 'from-cyan-500 to-blue-600',
+      color: 'from-cyan-200/70 to-blue-200/70',
       category: 'advanced',
     },
   ];
@@ -268,9 +268,12 @@ export default function SettingsPage() {
                         colors.cardHover
                       )}
                     >
+                      {/* Subtle texture overlay */}
+                      <div className="absolute inset-0 rounded-2xl opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iNCIgLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiAvPjwvc3ZnPg==')]" />
+
                       {/* Hover Gradient Effect */}
                       <div className={cn(
-                        "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity",
+                        "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity",
                         `bg-gradient-to-br ${section.color}`
                       )} />
 
@@ -278,10 +281,10 @@ export default function SettingsPage() {
                         {/* Icon with Badge */}
                         <div className="flex items-start justify-between mb-3">
                           <div className={cn(
-                            "w-12 h-12 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow",
+                            "w-12 h-12 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all backdrop-blur-sm",
                             `bg-gradient-to-br ${section.color}`
                           )}>
-                            <Icon className="w-6 h-6 text-white" />
+                            <Icon className="w-6 h-6 text-gray-700" />
                           </div>
                           {section.badge && (
                             <span className={cn(
