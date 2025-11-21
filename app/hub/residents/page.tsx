@@ -239,7 +239,7 @@ export default function ResidentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-pink-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-resident-50 via-white to-resident-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -248,12 +248,12 @@ export default function ResidentsPage() {
           className="mb-8"
         >
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-200/80 to-pink-200/80 flex items-center justify-center shadow-sm">
-              <Users className="w-8 h-8 text-gray-700" />
+            <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg bg-gradient-to-br from-[#D97B6F] to-[#E8865D] grain-subtle">
+              <Users className="w-8 h-8 text-white relative z-10" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Résidents</h1>
-              <p className="text-gray-600">Découvrez votre communauté</p>
+              <p className="text-resident-600">Découvrez votre communauté</p>
             </div>
           </div>
         </motion.div>
@@ -264,15 +264,15 @@ export default function ResidentsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mb-8 bg-gradient-to-br from-purple-100/50 to-pink-100/50 rounded-3xl p-8 border border-purple-200/50 shadow-sm"
+            className="mb-8 bg-gradient-to-br from-resident-50 to-resident-100 rounded-3xl p-8 border border-resident-200 shadow-sm"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center">
-                <Home className="w-6 h-6 text-purple-600" />
+              <div className="relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-md bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] grain-medium">
+                <Home className="w-6 h-6 text-white relative z-10" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Ambiance de la résidence</h2>
-                <p className="text-gray-600">Atmosphère générale de votre colocation</p>
+                <p className="text-resident-600">Atmosphère générale de votre colocation</p>
               </div>
             </div>
 
@@ -280,13 +280,13 @@ export default function ResidentsPage() {
               {/* Cleanliness */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <Sparkles className="w-5 h-5 text-blue-600" />
+                  <Sparkles className="w-5 h-5 text-resident-600" />
                   <span className="font-semibold text-gray-900">Propreté</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                      className="h-full bg-gradient-to-r from-[#D97B6F] to-[#E8865D] rounded-full"
                       style={{ width: `${(residenceVibe.cleanliness_avg / 10) * 100}%` }}
                     />
                   </div>
@@ -299,13 +299,13 @@ export default function ResidentsPage() {
               {/* Social Level */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <PartyPopper className="w-5 h-5 text-orange-600" />
+                  <PartyPopper className="w-5 h-5 text-resident-600" />
                   <span className="font-semibold text-gray-900">Niveau social</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
+                      className="h-full bg-gradient-to-r from-[#E8865D] to-[#FF8C4B] rounded-full"
                       style={{ width: `${(residenceVibe.social_level_avg / 10) * 100}%` }}
                     />
                   </div>
@@ -318,13 +318,13 @@ export default function ResidentsPage() {
               {/* Noise Level */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <Volume2 className="w-5 h-5 text-purple-600" />
+                  <Volume2 className="w-5 h-5 text-resident-600" />
                   <span className="font-semibold text-gray-900">Tolérance au bruit</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
+                      className="h-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] rounded-full"
                       style={{ width: `${(residenceVibe.noise_level_avg / 10) * 100}%` }}
                     />
                   </div>
@@ -342,7 +342,7 @@ export default function ResidentsPage() {
                 {residenceVibe.atmosphere.map((trait, idx) => (
                   <Badge
                     key={idx}
-                    className="bg-white/80 text-purple-800 border border-purple-200"
+                    className="bg-white/80 text-resident-800 border border-resident-200"
                   >
                     {trait}
                   </Badge>
@@ -358,7 +358,7 @@ export default function ResidentsPage() {
                   {residenceVibe.dominant_interests.map((interest, idx) => (
                     <Badge
                       key={idx}
-                      className="bg-gradient-to-r from-orange-100 to-pink-100 text-gray-800 border border-orange-200"
+                      className="bg-gradient-to-r from-resident-100 to-resident-200 text-resident-800 border border-resident-300"
                     >
                       {interest}
                     </Badge>
@@ -387,11 +387,11 @@ export default function ResidentsPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 + idx * 0.05 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-resident-200 shadow-sm hover:shadow-md transition-shadow"
               >
                 {/* Avatar & Name */}
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-200 to-pink-200 flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-resident-200 to-resident-300 flex items-center justify-center overflow-hidden">
                     {resident.avatar_url ? (
                       <img
                         src={resident.avatar_url}
@@ -399,7 +399,7 @@ export default function ResidentsPage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-2xl font-bold text-gray-700">
+                      <span className="text-2xl font-bold text-resident-700">
                         {resident.full_name.charAt(0).toUpperCase()}
                       </span>
                     )}
@@ -449,7 +449,7 @@ export default function ResidentsPage() {
                       <Badge
                         key={i}
                         variant="secondary"
-                        className="text-xs bg-orange-50 text-orange-800 border-orange-200"
+                        className="text-xs bg-resident-50 text-resident-800 border-resident-200"
                       >
                         {interest}
                       </Badge>
