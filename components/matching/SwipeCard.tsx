@@ -61,14 +61,13 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
 
   return (
     <motion.div
-      className="absolute w-full cursor-grab active:cursor-grabbing"
+      className="absolute w-full h-full cursor-grab active:cursor-grabbing"
       style={{
         x,
         rotate,
         opacity,
         rotateY,
         transformStyle: 'preserve-3d',
-        height: isExpanded ? 'auto' : '100%',
       }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
@@ -78,7 +77,6 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
     >
       <motion.div
         className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
-        onClick={() => setIsExpanded(!isExpanded)}
         style={{ transformStyle: 'preserve-3d' }}
         animate={{ height: isExpanded ? 'auto' : '600px' }}
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
@@ -86,7 +84,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
         {/* Card Front */}
         <div style={{ backfaceVisibility: 'hidden' }}>
         {/* Profile Image - OPTIMIZED with Next.js Image */}
-        <div className={`relative overflow-hidden ${isExpanded ? 'h-[400px]' : 'h-[60%]'}`}>
+        <div className={`relative overflow-hidden ${isExpanded ? 'h-[360px]' : 'h-[360px]'}`}>
           {user.profile_photo_url ? (
             <Image
               src={user.profile_photo_url}
@@ -170,7 +168,13 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
         </div>
 
         {/* Profile Details */}
-        <div className={`p-6 ${isExpanded ? 'overflow-y-auto' : 'h-[40%] overflow-y-auto'}`}>
+        <div
+          className={`p-6 cursor-pointer ${isExpanded ? 'overflow-y-auto max-h-[400px]' : 'h-[240px] overflow-y-auto'}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsExpanded(!isExpanded);
+          }}
+        >
           {/* Location & Languages */}
           <div className="flex items-center gap-4 mb-4">
             {user.nationality && (
