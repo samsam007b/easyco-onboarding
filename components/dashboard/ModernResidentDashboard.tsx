@@ -238,17 +238,19 @@ export default function ModernResidentDashboard() {
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
       gradient: 'from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
-      bg: 'from-orange-50 to-orange-100/50',
+      bg: 'from-resident-50 to-resident-100',
       progress: rentPercentage,
+      importance: 'critical' // Loyer = très important
     },
     {
       title: 'Dépenses Partagées',
       value: `€${stats.sharedExpenses}`,
       subtitle: 'À répartir',
       icon: DollarSign,
-      gradient: 'from-yellow-500 to-yellow-700',
-      bg: 'from-yellow-50 to-yellow-100/50',
+      gradient: 'from-[#E8865D] to-[#FF8C4B]',
+      bg: 'from-resident-50 to-resident-100',
       action: () => router.push('/hub/finances'),
+      importance: 'high' // Important mais pas critique
     },
     {
       title: 'Ton Solde',
@@ -258,15 +260,17 @@ export default function ModernResidentDashboard() {
       gradient: stats.yourBalance > 0 ? 'from-emerald-500 to-emerald-700' : 'from-red-500 to-red-700',
       bg: stats.yourBalance > 0 ? 'from-emerald-50 to-emerald-100/50' : 'from-red-50 to-red-100/50',
       action: () => router.push('/hub/finances'),
+      importance: 'medium' // Informatif
     },
     {
       title: 'Colocataires',
       value: stats.roommatesCount,
       subtitle: 'Membres actifs',
       icon: Users,
-      gradient: 'from-blue-500 to-blue-700',
-      bg: 'from-blue-50 to-blue-100/50',
+      gradient: 'from-[#D97B6F] to-[#E8865D]',
+      bg: 'from-resident-50 to-resident-100',
       action: () => router.push('/hub/members'),
+      importance: 'medium' // Informatif
     },
   ];
 
@@ -289,7 +293,7 @@ export default function ModernResidentDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-7xl mx-auto bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-orange-200/50 hover:shadow-md transition-all mb-6 mx-2 sm:mx-6 lg:mx-8"
+          className="max-w-7xl mx-auto bg-gradient-to-br from-resident-50 to-resident-100 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-resident-200 hover:shadow-md transition-all mb-6 mx-2 sm:mx-6 lg:mx-8"
         >
           <button
             onClick={() => setShowCompletionDetails(!showCompletionDetails)}
@@ -379,7 +383,7 @@ export default function ModernResidentDashboard() {
 
               <Button
                 onClick={() => router.push('/profile')}
-                className="w-full mt-2 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                className="cta-resident w-full mt-2 rounded-full"
                 size="sm"
               >
                 Compléter mon profil
@@ -415,12 +419,14 @@ export default function ModernResidentDashboard() {
               )} />
 
               <div className="relative z-10">
-                {/* Icon */}
+                {/* Icon with grain texture based on importance */}
                 <div className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center mb-4",
-                  `bg-gradient-to-br ${card.gradient} shadow-lg`
+                  "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-lg",
+                  `bg-gradient-to-br ${card.gradient}`,
+                  card.importance === 'critical' && "grain-medium",
+                  card.importance === 'high' && "grain-subtle"
                 )}>
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-6 h-6 text-white relative z-10" />
                 </div>
 
                 {/* Title */}
@@ -524,7 +530,7 @@ export default function ModernResidentDashboard() {
               <div className="flex gap-3">
                 <Button
                   onClick={() => router.push('/hub/members')}
-                  className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                  className="cta-resident rounded-full"
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Voir les membres
@@ -532,7 +538,7 @@ export default function ModernResidentDashboard() {
                 <Button
                   onClick={() => router.push('/messages')}
                   variant="outline"
-                  className="rounded-full"
+                  className="rounded-full border-resident-300 hover:bg-resident-50 text-resident-700"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Chat de groupe
