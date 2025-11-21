@@ -178,29 +178,29 @@ export default function SwipePage() {
       </div>
 
       {/* Card Stack with Piles */}
-      <div className="max-w-6xl mx-auto relative">
+      <div className="max-w-7xl mx-auto relative px-4">
         <div className="relative h-[600px] mb-6">
           {/* Left Pile - Disliked (showing backs) */}
-          <div className="absolute left-0 top-0 h-full w-1/3 pointer-events-none">
+          <div className="absolute -left-4 md:left-0 top-0 h-full w-[200px] md:w-[280px] pointer-events-none overflow-hidden">
             <AnimatePresence>
               {passedCards.map((swipedCard, index) => (
                 <motion.div
                   key={`passed-${swipedCard.index}`}
-                  className="absolute top-1/2 -translate-y-1/2 w-full"
-                  initial={{ x: '150%', rotate: 0, scale: 1, rotateY: 180 }}
+                  className="absolute top-1/2 -translate-y-1/2 w-[180px] md:w-[240px]"
+                  initial={{ x: '250%', rotate: 0, scale: 1, rotateY: 180 }}
                   animate={{
-                    x: `${-50 + index * 5}%`,
-                    rotate: -15 + index * 2,
-                    scale: 0.7 - index * 0.05,
+                    x: `${-20 + index * 8}%`,
+                    rotate: -15 + index * 3,
+                    scale: 0.75 - index * 0.05,
                     rotateY: 180,
                     zIndex: index
                   }}
-                  exit={{ x: '150%', rotate: 0, opacity: 0 }}
+                  exit={{ x: '250%', rotate: 0, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Card Back */}
-                  <div className="w-full h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
-                    <X className="w-32 h-32 text-gray-400 opacity-30" />
+                  <div className="w-full h-[500px] md:h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
+                    <X className="w-20 h-20 md:w-32 md:h-32 text-gray-400 opacity-30" />
                   </div>
                 </motion.div>
               ))}
@@ -259,24 +259,24 @@ export default function SwipePage() {
           </div>
 
           {/* Right Pile - Liked (showing faces) */}
-          <div className="absolute right-0 top-0 h-full w-1/3 pointer-events-none">
+          <div className="absolute -right-4 md:right-0 top-0 h-full w-[200px] md:w-[280px] pointer-events-none overflow-hidden">
             <AnimatePresence>
               {likedCards.map((swipedCard, index) => (
                 <motion.div
                   key={`liked-${swipedCard.index}`}
-                  className="absolute top-1/2 -translate-y-1/2 w-full"
-                  initial={{ x: '-150%', rotate: 0, scale: 1 }}
+                  className="absolute top-1/2 -translate-y-1/2 w-[180px] md:w-[240px]"
+                  initial={{ x: '-250%', rotate: 0, scale: 1 }}
                   animate={{
-                    x: `${50 - index * 5}%`,
-                    rotate: 15 - index * 2,
-                    scale: 0.7 - index * 0.05,
+                    x: `${20 - index * 8}%`,
+                    rotate: 15 - index * 3,
+                    scale: 0.75 - index * 0.05,
                     zIndex: index
                   }}
-                  exit={{ x: '-150%', rotate: 0, opacity: 0 }}
+                  exit={{ x: '-250%', rotate: 0, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Simplified card preview */}
-                  <div className="w-full h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden">
+                  <div className="w-full h-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden">
                     {swipedCard.user.profile_photo_url ? (
                       <img
                         src={swipedCard.user.profile_photo_url}
@@ -285,7 +285,7 @@ export default function SwipePage() {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-orange-200 to-yellow-100 flex items-center justify-center">
-                        <Heart className="w-32 h-32 text-orange-400 opacity-30" />
+                        <Heart className="w-20 h-20 md:w-32 md:h-32 text-orange-400 opacity-30" />
                       </div>
                     )}
                   </div>
