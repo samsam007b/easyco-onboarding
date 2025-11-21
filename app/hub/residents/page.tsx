@@ -78,16 +78,22 @@ export default function ResidentsPage() {
         return;
       }
 
-      // Get user's property
-      const { data: memberData } = await supabase
-        .rpc('get_user_property_membership', { p_user_id: user.id });
+      // Get user's property directly from property_members
+      const { data: memberData, error: memberError } = await supabase
+        .from('property_members')
+        .select('property_id')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .limit(1)
+        .single();
 
-      if (!memberData || memberData.length === 0) {
+      if (memberError || !memberData) {
+        console.log('No property found for user');
         setIsLoading(false);
         return;
       }
 
-      const propertyId = memberData[0].property_id;
+      const propertyId = memberData.property_id;
       setCurrentPropertyId(propertyId);
 
       // Get all residents of the property
