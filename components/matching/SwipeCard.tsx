@@ -94,13 +94,44 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
 
           {/* Compatibility Badge */}
-          {compatibilityQuality && (
-            <div className="absolute top-4 right-4 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full shadow-lg">
+          {user.compatibility_score && (
+            <div
+              className="absolute top-4 right-4 px-5 py-3 rounded-full shadow-xl backdrop-blur-md border-2 border-white/50"
+              style={{
+                background: `linear-gradient(135deg,
+                  rgba(255, 160, 64, ${user.compatibility_score / 100 * 0.95}) 0%,
+                  rgba(255, 184, 92, ${user.compatibility_score / 100 * 0.85}) 50%,
+                  rgba(255, 206, 126, ${user.compatibility_score / 100 * 0.75}) 100%)`
+              }}
+            >
               <div className="flex items-center gap-2">
-                <span className="text-2xl">{compatibilityQuality.emoji}</span>
+                <Sparkles
+                  className="w-5 h-5"
+                  style={{
+                    color: user.compatibility_score >= 80 ? '#fff' :
+                           user.compatibility_score >= 60 ? '#fffbeb' :
+                           '#fef3c7'
+                  }}
+                  strokeWidth={2.5}
+                  fill={user.compatibility_score >= 80 ? '#fff' : 'none'}
+                />
                 <div>
-                  <p className="text-xs font-semibold text-gray-600">Match Score</p>
-                  <p className="text-lg font-bold text-orange-600">{user.compatibility_score}%</p>
+                  <p
+                    className="text-xs font-bold tracking-wide uppercase"
+                    style={{
+                      color: user.compatibility_score >= 70 ? '#fff' : '#78350f'
+                    }}
+                  >
+                    Match
+                  </p>
+                  <p
+                    className="text-2xl font-black leading-none"
+                    style={{
+                      color: user.compatibility_score >= 70 ? '#fff' : '#92400e'
+                    }}
+                  >
+                    {user.compatibility_score}%
+                  </p>
                 </div>
               </div>
             </div>
