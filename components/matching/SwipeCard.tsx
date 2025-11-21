@@ -11,10 +11,13 @@ interface SwipeCardProps {
   user: UserProfile & { compatibility_score?: number };
   onSwipe: (direction: 'left' | 'right') => void;
   onCardClick?: () => void;
+  swipeAction?: 'like' | 'pass' | null;
 }
 
-export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }: SwipeCardProps) {
+export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, swipeAction }: SwipeCardProps) {
   const [exitX, setExitX] = useState(0);
+  const [exitRotate, setExitRotate] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-30, 30]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
@@ -42,11 +45,16 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
     if (info.offset.x > threshold) {
       // Swiped right (like)
       setExitX(1000);
+      setExitRotate(25);
       onSwipe('right');
     } else if (info.offset.x < -threshold) {
-      // Swiped left (pass)
-      setExitX(-1000);
-      onSwipe('left');
+      // Swiped left (pass) - flip the card
+      setRotateY(180);
+      setTimeout(() => {
+        setExitX(-1000);
+        setExitRotate(-25);
+      }, 300);
+      setTimeout(() => onSwipe('left'), 600);
     }
   }, [onSwipe]);
 
@@ -57,17 +65,22 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
         x,
         rotate,
         opacity,
+        rotateY,
+        transformStyle: 'preserve-3d',
       }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
-      animate={{ x: exitX }}
+      animate={{ x: exitX, rotate: exitRotate, rotateY }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
       <div
         className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden"
         onClick={onCardClick}
+        style={{ transformStyle: 'preserve-3d' }}
       >
+        {/* Card Front */}
+        <div style={{ backfaceVisibility: 'hidden' }}>
         {/* Profile Image - OPTIMIZED with Next.js Image */}
         <div className="relative h-[60%] overflow-hidden">
           {user.profile_photo_url ? (
@@ -260,6 +273,21 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick }:
         >
           PASS
         </motion.div>
+        </div>
+
+        {/* Card Back - shown when flipped (dislike) */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          <div className="text-center">
+            <X className="w-48 h-48 text-gray-400 opacity-30 mx-auto mb-4" />
+            <p className="text-2xl font-bold text-gray-500">Pas pour moi</p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );

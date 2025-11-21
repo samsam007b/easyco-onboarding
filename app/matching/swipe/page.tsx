@@ -4,12 +4,19 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { SwipeCard } from '@/components/matching/SwipeCard';
-import { useUserMatching, type SwipeContext } from '@/lib/hooks/use-user-matching';
+import { useUserMatching, type SwipeContext, type UserWithCompatibility } from '@/lib/hooks/use-user-matching';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Heart, X, Info, Users, RotateCcw, Settings } from 'lucide-react';
+import { Heart, X, Info, Users, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface SwipedCard {
+  user: UserWithCompatibility;
+  action: 'like' | 'pass';
+  index: number;
+}
 
 export default function SwipePage() {
   const router = useRouter();
@@ -17,6 +24,8 @@ export default function SwipePage() {
   const [user, setUser] = useState<any>(null);
   const [context, setContext] = useState<SwipeContext>('searcher_matching');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [swipeHistory, setSwipeHistory] = useState<SwipedCard[]>([]);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     currentUserProfile,
@@ -44,9 +53,18 @@ export default function SwipePage() {
 
   const handleSwipe = async (direction: 'left' | 'right') => {
     const currentUser = potentialMatches[currentIndex];
-    if (!currentUser) return;
+    if (!currentUser || isAnimating) return;
 
+    setIsAnimating(true);
     const action = direction === 'right' ? 'like' : 'pass';
+
+    // Add to history
+    setSwipeHistory(prev => [...prev, {
+      user: currentUser,
+      action,
+      index: currentIndex
+    }]);
+
     const success = await recordSwipe(currentUser.user_id, action);
 
     if (success) {
@@ -56,10 +74,16 @@ export default function SwipePage() {
         });
       }
 
-      // Move to next card
-      setCurrentIndex((prev) => prev + 1);
+      // Wait for animation to complete
+      setTimeout(() => {
+        setCurrentIndex((prev) => prev + 1);
+        setIsAnimating(false);
+      }, 600);
     } else {
       toast.error('Failed to record swipe. Please try again.');
+      setIsAnimating(false);
+      // Remove from history on failure
+      setSwipeHistory(prev => prev.slice(0, -1));
     }
   };
 
@@ -67,14 +91,28 @@ export default function SwipePage() {
   const handlePass = () => handleSwipe('left');
 
   const handleUndo = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
+    if (swipeHistory.length === 0 || isAnimating) return;
+
+    setIsAnimating(true);
+    const lastSwipe = swipeHistory[swipeHistory.length - 1];
+
+    // Remove from history
+    setSwipeHistory(prev => prev.slice(0, -1));
+
+    // Go back to previous card
+    setTimeout(() => {
+      setCurrentIndex(lastSwipe.index);
+      setIsAnimating(false);
       toast.info('Undo successful');
-    }
+    }, 600);
   };
 
   const currentCard = potentialMatches[currentIndex];
   const cardsRemaining = potentialMatches.length - currentIndex;
+
+  // Get recent liked and passed cards for piles
+  const likedCards = swipeHistory.filter(s => s.action === 'like').slice(-5);
+  const passedCards = swipeHistory.filter(s => s.action === 'pass').slice(-5);
 
   if (!user || isLoading) {
     return (
@@ -88,9 +126,9 @@ export default function SwipePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8 overflow-hidden">
       {/* Header */}
-      <div className="max-w-md mx-auto mb-6">
+      <div className="max-w-md mx-auto mb-6 relative z-50">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
@@ -139,64 +177,133 @@ export default function SwipePage() {
         </div>
       </div>
 
-      {/* Card Stack */}
-      <div className="max-w-md mx-auto relative">
+      {/* Card Stack with Piles */}
+      <div className="max-w-6xl mx-auto relative">
         <div className="relative h-[600px] mb-6">
-          {!currentCard ? (
-            <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl shadow-2xl">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
-                <Users className="w-12 h-12 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Tu as tout vu ! 🎉
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Reviens plus tard pour voir de nouveaux profils ou ajuste tes préférences.
-              </p>
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => loadPotentialMatches()}
-                  className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+          {/* Left Pile - Disliked (showing backs) */}
+          <div className="absolute left-0 top-0 h-full w-1/3 pointer-events-none">
+            <AnimatePresence>
+              {passedCards.map((swipedCard, index) => (
+                <motion.div
+                  key={`passed-${swipedCard.index}`}
+                  className="absolute top-1/2 -translate-y-1/2 w-full"
+                  initial={{ x: 0, rotate: 0, scale: 1 }}
+                  animate={{
+                    x: `${-50 + index * 5}%`,
+                    rotate: -15 + index * 2,
+                    scale: 0.7 - index * 0.05,
+                    zIndex: index
+                  }}
+                  exit={{ x: 0, rotate: 0, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Recharger
-                </Button>
-                <Button
-                  onClick={() => router.push('/matching/matches')}
-                  variant="outline"
-                >
-                  <Heart className="w-4 h-4 mr-2" />
-                  Voir mes matchs
-                </Button>
-              </div>
-            </Card>
-          ) : (
-            <>
-              {/* Next card preview (behind) */}
-              {potentialMatches[currentIndex + 1] && (
-                <div className="absolute inset-0 bg-white rounded-3xl shadow-lg scale-95 opacity-50"></div>
-              )}
+                  {/* Card Back */}
+                  <div className="w-full h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
+                    <X className="w-32 h-32 text-gray-400 opacity-30" />
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {/* White fade effect */}
+            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-r from-transparent to-gray-50 pointer-events-none" />
+          </div>
 
-              {/* Current card */}
-              <SwipeCard
-                user={currentCard}
-                onSwipe={handleSwipe}
-                onCardClick={() => {
-                  // TODO: Open full profile modal
-                  toast.info('Full profile view coming soon!');
-                }}
-              />
-            </>
-          )}
+          {/* Center - Current Card */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-md h-full">
+            {!currentCard ? (
+              <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl shadow-2xl">
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
+                  <Users className="w-12 h-12 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Tu as tout vu ! 🎉
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Reviens plus tard pour voir de nouveaux profils ou ajuste tes préférences.
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => loadPotentialMatches()}
+                    className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Recharger
+                  </Button>
+                  <Button
+                    onClick={() => router.push('/matching/matches')}
+                    variant="outline"
+                  >
+                    <Heart className="w-4 h-4 mr-2" />
+                    Voir mes matchs
+                  </Button>
+                </div>
+              </Card>
+            ) : (
+              <>
+                {/* Next card preview (behind) */}
+                {potentialMatches[currentIndex + 1] && (
+                  <div className="absolute inset-0 bg-white rounded-3xl shadow-lg scale-95 opacity-50"></div>
+                )}
+
+                {/* Current card */}
+                <SwipeCard
+                  user={currentCard}
+                  onSwipe={handleSwipe}
+                  onCardClick={() => {
+                    toast.info('Full profile view coming soon!');
+                  }}
+                />
+              </>
+            )}
+          </div>
+
+          {/* Right Pile - Liked (showing faces) */}
+          <div className="absolute right-0 top-0 h-full w-1/3 pointer-events-none">
+            <AnimatePresence>
+              {likedCards.map((swipedCard, index) => (
+                <motion.div
+                  key={`liked-${swipedCard.index}`}
+                  className="absolute top-1/2 -translate-y-1/2 w-full"
+                  initial={{ x: 0, rotate: 0, scale: 1 }}
+                  animate={{
+                    x: `${50 - index * 5}%`,
+                    rotate: 15 - index * 2,
+                    scale: 0.7 - index * 0.05,
+                    zIndex: index
+                  }}
+                  exit={{ x: 0, rotate: 0, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                >
+                  {/* Simplified card preview */}
+                  <div className="w-full h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    {swipedCard.user.profile_photo_url ? (
+                      <img
+                        src={swipedCard.user.profile_photo_url}
+                        alt={`${swipedCard.user.first_name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-orange-200 to-yellow-100 flex items-center justify-center">
+                        <Heart className="w-32 h-32 text-orange-400 opacity-30" />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {/* White fade effect */}
+            <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-l from-transparent to-gray-50 pointer-events-none" />
+          </div>
         </div>
 
         {/* Action Buttons */}
         {currentCard && (
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex items-center justify-center gap-6 relative z-50">
             {/* Pass Button */}
             <button
               onClick={handlePass}
-              className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
+              disabled={isAnimating}
+              className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
               aria-label="Pass"
             >
               <X className="w-8 h-8 text-red-500" />
@@ -205,7 +312,7 @@ export default function SwipePage() {
             {/* Undo Button */}
             <button
               onClick={handleUndo}
-              disabled={currentIndex === 0}
+              disabled={swipeHistory.length === 0 || isAnimating}
               className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Undo"
             >
@@ -215,10 +322,10 @@ export default function SwipePage() {
             {/* Info Button */}
             <button
               onClick={() => {
-                // TODO: Show compatibility details
                 toast.info('Détails de compatibilité bientôt disponibles !');
               }}
-              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
+              disabled={isAnimating}
+              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
               aria-label="Info"
             >
               <Info className="w-5 h-5 text-orange-600" />
@@ -227,7 +334,8 @@ export default function SwipePage() {
             {/* Like Button */}
             <button
               onClick={handleLike}
-              className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95"
+              disabled={isAnimating}
+              className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
               aria-label="Like"
             >
               <Heart className="w-8 h-8 text-white fill-current" />
@@ -237,7 +345,7 @@ export default function SwipePage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="max-w-md mx-auto mt-8">
+      <div className="max-w-md mx-auto mt-8 relative z-50">
         <div className="flex items-center justify-around py-4">
           <Button
             variant="ghost"
