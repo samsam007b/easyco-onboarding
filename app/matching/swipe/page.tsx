@@ -187,14 +187,15 @@ export default function SwipePage() {
                 <motion.div
                   key={`passed-${swipedCard.index}`}
                   className="absolute top-1/2 -translate-y-1/2 w-full"
-                  initial={{ x: 0, rotate: 0, scale: 1 }}
+                  initial={{ x: '150%', rotate: 0, scale: 1, rotateY: 180 }}
                   animate={{
                     x: `${-50 + index * 5}%`,
                     rotate: -15 + index * 2,
                     scale: 0.7 - index * 0.05,
+                    rotateY: 180,
                     zIndex: index
                   }}
-                  exit={{ x: 0, rotate: 0, opacity: 0 }}
+                  exit={{ x: '150%', rotate: 0, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Card Back */}
@@ -205,7 +206,7 @@ export default function SwipePage() {
               ))}
             </AnimatePresence>
             {/* White fade effect */}
-            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-r from-transparent to-gray-50 pointer-events-none" />
+            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-r from-transparent to-gray-50 pointer-events-none z-10" />
           </div>
 
           {/* Center - Current Card */}
@@ -264,14 +265,14 @@ export default function SwipePage() {
                 <motion.div
                   key={`liked-${swipedCard.index}`}
                   className="absolute top-1/2 -translate-y-1/2 w-full"
-                  initial={{ x: 0, rotate: 0, scale: 1 }}
+                  initial={{ x: '-150%', rotate: 0, scale: 1 }}
                   animate={{
                     x: `${50 - index * 5}%`,
                     rotate: 15 - index * 2,
                     scale: 0.7 - index * 0.05,
                     zIndex: index
                   }}
-                  exit={{ x: 0, rotate: 0, opacity: 0 }}
+                  exit={{ x: '-150%', rotate: 0, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Simplified card preview */}
@@ -292,7 +293,7 @@ export default function SwipePage() {
               ))}
             </AnimatePresence>
             {/* White fade effect */}
-            <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-l from-transparent to-gray-50 pointer-events-none" />
+            <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-l from-transparent to-gray-50 pointer-events-none z-10" />
           </div>
         </div>
 
