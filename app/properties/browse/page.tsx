@@ -905,8 +905,9 @@ export default function PropertiesBrowsePageV2() {
         {propertiesWithScores && propertiesWithScores.length > 0 ? (
           <>
             {viewMode === 'list' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {propertiesWithScores.map((property, index) => {
+              <div className="max-w-7xl mx-auto px-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                  {propertiesWithScores.map((property, index) => {
                   // Track view for guests when they see properties
                   if (!isAuthenticated && index < 10) {
                     setTimeout(() => trackView(), index * 100);
@@ -927,9 +928,10 @@ export default function PropertiesBrowsePageV2() {
                     />
                   );
                 })}
+                </div>
               </div>
             ) : viewMode === 'map' ? (
-              <div className="mb-8">
+              <div className="max-w-7xl mx-auto px-6 mb-8">
                 <SafePropertyMap
                   properties={propertiesWithScores}
                   selectedPropertyId={selectedPropertyId || null}

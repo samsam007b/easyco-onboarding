@@ -20,11 +20,8 @@ async function applyRLSFix() {
   console.log('📄 Executing SQL migration...\n');
 
   try {
-    // Execute the SQL
-    const { data, error } = await supabase.rpc('exec_sql', { sql_query: sql }).catch(async () => {
-      // If RPC doesn't exist, try direct query
-      return await (supabase as any).from('_').select('*').single();
-    });
+    // Note: We can't execute raw SQL directly from the client
+    // The migration should be applied via Supabase Dashboard or CLI
 
     // Since we can't execute raw SQL easily, let's try to drop and recreate the policy
     console.log('🛠️  Using alternative approach...\n');
