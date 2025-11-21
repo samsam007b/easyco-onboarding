@@ -329,7 +329,7 @@ function JoinGroupContent() {
 
             {isLoadingOpenGroups && (
               <div className="text-center py-8">
-                <LoadingHouse size={48} />
+                <LoadingHouse size={64} />
               </div>
             )}
 
@@ -386,7 +386,7 @@ export default function JoinGroupPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
-        <LoadingHouse size={64} />
+        <LoadingHouse size={80} />
       </div>
     }>
       <JoinGroupContent />

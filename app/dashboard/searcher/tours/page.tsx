@@ -206,7 +206,7 @@ export default function ToursPage() {
         {/* Tours List */}
         {isLoading ? (
           <div className="text-center py-12">
-            <LoadingHouse size={48} />
+            <LoadingHouse size={64} />
             <p className="text-gray-600 mt-4">Chargement des visites...</p>
           </div>
         ) : tours.length === 0 ? (

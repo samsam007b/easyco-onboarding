@@ -66,7 +66,7 @@ export default function PaymentInfoPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">{onboarding.owner.about.loadingInfo}</p>
         </div>
       </div>

@@ -114,7 +114,7 @@ export default function CompleteSignupPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
-        <LoadingHouse size={48} />
+        <LoadingHouse size={80} />
         <p className="text-gray-600">Completing your signup...</p>
       </div>
     </div>

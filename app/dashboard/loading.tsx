@@ -2,7 +2,7 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 
 export default function DashboardLoading() {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6 relative">
       {/* Header Skeleton */}
       <div className="mb-8 animate-pulse">
         <div className="h-8 bg-gray-200 rounded w-1/4 mb-2"></div>
@@ -42,9 +42,9 @@ export default function DashboardLoading() {
         </div>
       </div>
 
-      {/* Loading Indicator */}
-      <div className="fixed bottom-8 right-8 bg-white rounded-full p-4 shadow-lg">
-        <LoadingHouse size={40} />
+      {/* Centered Loading House */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+        <LoadingHouse size={80} />
       </div>
     </div>
   );

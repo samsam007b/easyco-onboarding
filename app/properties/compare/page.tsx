@@ -102,7 +102,7 @@ export default function PropertyComparePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">Chargement de la comparaison...</p>
         </div>
       </div>

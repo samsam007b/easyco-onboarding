@@ -113,7 +113,7 @@ export default function OwnerEnhanceReviewPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingHouse size={48} />
+        <LoadingHouse size={80} />
       </div>
     );
   }

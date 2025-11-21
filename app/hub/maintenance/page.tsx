@@ -177,7 +177,7 @@ export default function HubMaintenancePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium">Chargement...</p>
         </div>
       </div>

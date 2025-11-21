@@ -38,7 +38,7 @@ export default function OnboardingLoading() {
 
         {/* Loading Spinner */}
         <div className="flex justify-center mt-6">
-          <LoadingHouse size={50} />
+          <LoadingHouse size={80} />
         </div>
       </div>
     </div>

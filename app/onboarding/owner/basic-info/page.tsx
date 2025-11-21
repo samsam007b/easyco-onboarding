@@ -86,7 +86,7 @@ export default function OwnerBasicInfo() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">{common.loadingInfo}</p>
         </div>
       </div>

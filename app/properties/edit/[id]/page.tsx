@@ -177,7 +177,7 @@ export default function EditPropertyPage() {
       <PageContainer>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <LoadingHouse size={48} />
+            <LoadingHouse size={64} />
             <p className="mt-4 text-gray-600">Loading property...</p>
           </div>
         </div>

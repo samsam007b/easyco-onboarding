@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Check } from 'lucide-react'
+import LoadingHouse from '@/components/ui/LoadingHouse'
 
 function EmailVerifiedContent() {
   const router = useRouter()
@@ -79,7 +80,14 @@ function EmailVerifiedContent() {
 
 export default function EmailVerifiedPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
       <EmailVerifiedContent />
     </Suspense>
   )

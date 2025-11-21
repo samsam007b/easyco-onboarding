@@ -157,7 +157,7 @@ export default function SavedSearchesPage() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center py-12">
-            <LoadingHouse size={48} />
+            <LoadingHouse size={80} />
             <p className="text-gray-600">Chargement...</p>
           </div>
         </div>

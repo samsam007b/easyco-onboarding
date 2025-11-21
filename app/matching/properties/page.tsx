@@ -188,7 +188,7 @@ export default function PropertyMatchesPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-yellow-50">
         <div className="text-center">
-          <LoadingHouse size={48} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">Chargement de vos matches...</p>
         </div>
       </div>

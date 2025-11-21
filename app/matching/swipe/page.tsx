@@ -79,7 +79,7 @@ export default function SwipePage() {
   if (!user || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100">
-        <LoadingHouse size={48} />
+        <LoadingHouse size={80} />
       </div>
     );
   }

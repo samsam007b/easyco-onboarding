@@ -465,7 +465,7 @@ export default function OwnerMessagesPage() {
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <LoadingHouse size={48} />
+          <LoadingHouse size={80} />
           <p className="mt-4 text-gray-600">Loading messages...</p>
         </div>
       </div>

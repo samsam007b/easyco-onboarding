@@ -223,7 +223,7 @@ export default function PropertyDetailsPage() {
       <PageContainer>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <LoadingHouse size={48} />
+            <LoadingHouse size={80} />
             <p className="mt-4 text-gray-600">Chargement de la propriété...</p>
           </div>
         </div>

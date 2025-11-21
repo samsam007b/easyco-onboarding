@@ -150,7 +150,7 @@ export default function NotificationsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">Chargement des notifications...</p>
         </div>
       </div>

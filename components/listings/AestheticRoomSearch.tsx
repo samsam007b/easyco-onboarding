@@ -165,7 +165,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
             {/* Loading State */}
             {isLoading && (
               <div className="flex items-center justify-center py-20">
-                <LoadingHouse size={48} />
+                <LoadingHouse size={64} />
               </div>
             )}
 

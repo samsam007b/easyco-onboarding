@@ -157,7 +157,7 @@ export default function MyProfileOwnerPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">{common.loading}</p>
         </div>
       </div>

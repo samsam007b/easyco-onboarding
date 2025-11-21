@@ -156,7 +156,7 @@ export default function BookVisitPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={48} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">Loading property...</p>
         </div>
       </div>

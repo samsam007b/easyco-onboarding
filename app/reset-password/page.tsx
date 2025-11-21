@@ -130,7 +130,7 @@ function ResetPasswordContent() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={48} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">Verifying reset link...</p>
         </div>
       </div>
@@ -383,7 +383,14 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
       <ResetPasswordContent />
     </Suspense>
   )

@@ -158,7 +158,7 @@ export default function FavoritesPage() {
           </div>
 
           <div className="text-center py-12">
-            <LoadingHouse size={48} />
+            <LoadingHouse size={80} />
             <p className="text-gray-600">Chargement de vos favoris...</p>
           </div>
         </div>

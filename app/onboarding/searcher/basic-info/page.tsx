@@ -146,7 +146,7 @@ export default function BasicInfoPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={64} />
+          <LoadingHouse size={80} />
           <p className="text-gray-600">{common.loadingInfo}</p>
         </div>
       </div>
