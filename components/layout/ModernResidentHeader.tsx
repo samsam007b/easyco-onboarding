@@ -18,7 +18,8 @@ import {
   Zap,
   Receipt,
   AlertCircle,
-  Plus
+  Plus,
+  Key
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -369,18 +370,19 @@ export default function ModernResidentHeader({
                 aria-expanded={showProfileMenu}
                 aria-haspopup="true"
               >
+                {/* Avatar rond avec icône key */}
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
+                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-white/30 group-hover:border-white/50 transition-colors shadow-sm"
                   style={{
-                    background: 'var(--gradient-resident)'
+                    background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
                   }}
                 >
-                  <Users className="w-4 h-4 text-white" />
+                  <Key className="w-4 h-4 text-white" />
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
-              {/* Enhanced Profile Dropdown */}
+              {/* Enhanced Profile Dropdown - Style Searcher */}
               <AnimatePresence>
                 {showProfileMenu && (
                   <>
@@ -393,73 +395,77 @@ export default function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", duration: 0.3 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 max-w-xs bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
-                      {/* Header avec gradient */}
-                      <div className="relative px-4 py-4 bg-gradient-to-br from-orange-50 to-pink-50">
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#D97B6F]/10 via-[#E8865D]/10 to-[#FF8C4B]/10" />
-                        <div className="relative">
-                          <p className="font-bold text-gray-900 text-lg">{profile.full_name}</p>
-                          <p className="text-sm text-gray-600 truncate">{profile.email}</p>
+                      {/* Profile Header with Resident Gradient */}
+                      <div
+                        className="p-6 text-white"
+                        style={{
+                          background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                        }}
+                      >
+                        <div className="flex items-center gap-4 mb-3">
+                          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                            <Key className="w-8 h-8" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-bold truncate">{profile.full_name}</h3>
+                            <p className="text-sm text-white/80 truncate">{profile.email}</p>
+                          </div>
+                        </div>
+                        {/* Role Badge */}
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                          <Key className="w-4 h-4" />
+                          <span className="text-sm font-semibold uppercase tracking-wide">Résident</span>
                         </div>
                       </div>
 
-                      {/* Stats rapides */}
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-3">
-                            <div className="flex items-center gap-2 mb-1">
-                              <Users className="w-3.5 h-3.5 text-orange-600" />
-                              <span className="text-xs font-medium text-gray-600">Coloc</span>
-                            </div>
-                            <p className="text-lg font-bold text-gray-900">{activeMembersCount}</p>
+                      {/* Profile Info Stats */}
+                      <div className="p-4 space-y-3 border-b border-gray-100">
+                        {activeMembersCount > 0 && (
+                          <div className="flex items-center gap-3 text-sm">
+                            <Users className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700">{activeMembersCount} colocataire{activeMembersCount > 1 ? 's' : ''}</span>
                           </div>
-                          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3">
-                            <div className="flex items-center gap-2 mb-1">
-                              <MessageCircle className="w-3.5 h-3.5 text-blue-600" />
-                              <span className="text-xs font-medium text-gray-600">Messages</span>
-                            </div>
-                            <p className="text-lg font-bold text-gray-900">{unreadMessages}</p>
+                        )}
+                        {unreadMessages > 0 && (
+                          <div className="flex items-center gap-3 text-sm">
+                            <MessageCircle className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700">{unreadMessages} message{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}</span>
                           </div>
-                        </div>
+                        )}
+                        {pendingTasks > 0 && (
+                          <div className="flex items-center gap-3 text-sm">
+                            <CheckSquare className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-700">{pendingTasks} tâche{pendingTasks > 1 ? 's' : ''} en attente</span>
+                          </div>
+                        )}
+                        {yourBalance !== 0 && (
+                          <div className="flex items-center gap-3 text-sm">
+                            <DollarSign className="w-4 h-4 text-gray-400" />
+                            <span className={yourBalance > 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                              {yourBalance > 0 ? '+' : ''}€{Math.abs(yourBalance).toFixed(2)}
+                            </span>
+                          </div>
+                        )}
                       </div>
 
-                      {/* Menu items */}
-                      <div className="py-2">
+                      {/* Actions */}
+                      <div className="p-2 space-y-1">
                         <Link
                           href="/profile"
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 transition group"
                           onClick={() => setShowProfileMenu(false)}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
                         >
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-purple-600" />
-                          </div>
-                          <span className="text-gray-700 font-medium">Mon Profil</span>
+                          <Settings className="w-5 h-5" />
+                          <span className="font-medium">Paramètres du profil</span>
                         </Link>
-
-                        <Link
-                          href="/settings"
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50 transition group"
-                          onClick={() => setShowProfileMenu(false)}
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Settings className="w-4 h-4 text-gray-600" />
-                          </div>
-                          <span className="text-gray-700 font-medium">Paramètres</span>
-                        </Link>
-                      </div>
-
-                      <div className="my-1 border-t border-gray-100" />
-
-                      <div className="py-2">
                         <button
                           onClick={handleLogout}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50/50 transition text-red-600 group"
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 rounded-xl transition-colors"
                         >
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <LogOut className="w-4 h-4" />
-                          </div>
-                          <span className="font-medium">Déconnexion</span>
+                          <LogOut className="w-5 h-5" />
+                          <span className="font-medium">Se déconnecter</span>
                         </button>
                       </div>
                     </motion.div>
