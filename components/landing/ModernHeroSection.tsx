@@ -8,8 +8,10 @@ import { useState } from 'react';
 import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import DatePicker from '@/components/ui/date-picker';
 import BudgetRangePicker from '@/components/ui/budget-range-picker';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ModernHeroSection() {
+  const { t } = useLanguage();
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
@@ -277,6 +279,18 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
           </div>
+
+          {/* Guest Mode Link */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="mt-6"
+          >
+            <Link href="/guest" className="text-white/70 hover:text-white text-sm font-medium underline decoration-white/30 hover:decoration-white transition-all">
+              {t('landing.hero.guestMode')}
+            </Link>
+          </motion.div>
         </motion.div>
 
       </div>

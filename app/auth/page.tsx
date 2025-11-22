@@ -522,6 +522,16 @@ function AuthContent() {
                 </button>
               </p>
             </div>
+
+            {/* Guest Mode Link */}
+            <div className="mt-4 text-center">
+              <Link
+                href="/guest"
+                className="text-sm text-gray-500 hover:text-gray-700 underline decoration-gray-300 hover:decoration-gray-500 transition-all"
+              >
+                {t('landing.hero.guestMode')}
+              </Link>
+            </div>
           </div>
         </div>
       </main>

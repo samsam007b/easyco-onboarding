@@ -46,6 +46,223 @@ export const translations = {
         nl: 'Inloggen',
         de: 'Anmelden',
       },
+      guestMode: {
+        fr: 'Continuer en tant qu\'invité',
+        en: 'Continue as guest',
+        nl: 'Doorgaan als gast',
+        de: 'Als Gast fortfahren',
+      },
+    },
+
+    guest: {
+      title: {
+        fr: 'Mode Invité',
+        en: 'Guest Mode',
+        nl: 'Gastmodus',
+        de: 'Gastmodus',
+      },
+      subtitle: {
+        fr: 'Explorez les propriétés sans créer de compte',
+        en: 'Explore properties without creating an account',
+        nl: 'Ontdek eigenschappen zonder een account aan te maken',
+        de: 'Erkunde Immobilien ohne ein Konto zu erstellen',
+      },
+      whatCanYouDo: {
+        fr: 'Que pouvez-vous faire en mode invité ?',
+        en: 'What can you do in guest mode?',
+        nl: 'Wat kun je doen in gastmodus?',
+        de: 'Was kannst du im Gastmodus tun?',
+      },
+      description: {
+        fr: 'Découvrez nos propriétés et fonctionnalités. Créez un compte pour débloquer toutes les possibilités.',
+        en: 'Discover our properties and features. Create an account to unlock all possibilities.',
+        nl: 'Ontdek onze eigenschappen en functies. Maak een account aan om alle mogelijkheden te ontgrendelen.',
+        de: 'Entdecke unsere Immobilien und Funktionen. Erstelle ein Konto, um alle Möglichkeiten freizuschalten.',
+      },
+      features: {
+        browse: {
+          title: {
+            fr: 'Parcourir les annonces',
+            en: 'Browse listings',
+            nl: 'Bladeren door advertenties',
+            de: 'Anzeigen durchsuchen',
+          },
+          description: {
+            fr: 'Explorez notre sélection de propriétés disponibles',
+            en: 'Explore our selection of available properties',
+            nl: 'Ontdek onze selectie van beschikbare eigenschappen',
+            de: 'Erkunde unsere Auswahl an verfügbaren Immobilien',
+          },
+        },
+        locations: {
+          title: {
+            fr: 'Voir les emplacements',
+            en: 'View locations',
+            nl: 'Locaties bekijken',
+            de: 'Standorte ansehen',
+          },
+          description: {
+            fr: 'Découvrez les quartiers et localisations',
+            en: 'Discover neighborhoods and locations',
+            nl: 'Ontdek buurten en locaties',
+            de: 'Entdecke Viertel und Standorte',
+          },
+        },
+        matching: {
+          title: {
+            fr: 'Matching intelligent',
+            en: 'Smart matching',
+            nl: 'Slimme matching',
+            de: 'Intelligentes Matching',
+          },
+          description: {
+            fr: 'Trouvez des colocataires compatibles',
+            en: 'Find compatible roommates',
+            nl: 'Vind compatibele huisgenoten',
+            de: 'Finde kompatible Mitbewohner',
+          },
+        },
+        bookVisits: {
+          title: {
+            fr: 'Réserver des visites',
+            en: 'Book visits',
+            nl: 'Bezoeken boeken',
+            de: 'Besichtigungen buchen',
+          },
+          description: {
+            fr: 'Planifiez des visites de propriétés',
+            en: 'Schedule property visits',
+            nl: 'Plan bezoeken aan eigendommen',
+            de: 'Plane Immobilienbesichtigungen',
+          },
+        },
+        favorites: {
+          title: {
+            fr: 'Sauvegarder des favoris',
+            en: 'Save favorites',
+            nl: 'Favorieten opslaan',
+            de: 'Favoriten speichern',
+          },
+          description: {
+            fr: 'Créez votre liste de propriétés préférées',
+            en: 'Create your list of favorite properties',
+            nl: 'Maak je lijst met favoriete eigenschappen',
+            de: 'Erstelle deine Liste der Lieblingsimmobilien',
+          },
+        },
+      },
+      accountRequired: {
+        fr: 'Compte requis',
+        en: 'Account required',
+        nl: 'Account vereist',
+        de: 'Konto erforderlich',
+      },
+      unlockFeature: {
+        fr: 'Créer un compte pour débloquer',
+        en: 'Create an account to unlock',
+        nl: 'Maak een account aan om te ontgrendelen',
+        de: 'Erstelle ein Konto zum Freischalten',
+      },
+      availableProperties: {
+        fr: 'Propriétés disponibles',
+        en: 'Available properties',
+        nl: 'Beschikbare eigenschappen',
+        de: 'Verfügbare Immobilien',
+      },
+      previewDescription: {
+        fr: 'Aperçu des propriétés - Créez un compte pour voir tous les détails',
+        en: 'Property preview - Create an account to see all details',
+        nl: 'Voorvertoning van eigenschappen - Maak een account aan om alle details te zien',
+        de: 'Immobilienvorschau - Erstelle ein Konto, um alle Details zu sehen',
+      },
+      seeMore: {
+        fr: 'Voir plus de propriétés ?',
+        en: 'See more properties?',
+        nl: 'Meer eigenschappen zien?',
+        de: 'Mehr Immobilien sehen?',
+      },
+      createAccountCTA: {
+        fr: 'Créez un compte gratuit pour accéder à toutes nos propriétés, utiliser notre système de matching intelligent, et réserver des visites.',
+        en: 'Create a free account to access all our properties, use our smart matching system, and book visits.',
+        nl: 'Maak een gratis account aan om toegang te krijgen tot al onze eigendommen, ons slimme matchingsysteem te gebruiken en bezoeken te boeken.',
+        de: 'Erstelle ein kostenloses Konto, um auf alle unsere Immobilien zuzugreifen, unser intelligentes Matching-System zu nutzen und Besichtigungen zu buchen.',
+      },
+      whyCreateAccount: {
+        fr: 'Pourquoi créer un compte ?',
+        en: 'Why create an account?',
+        nl: 'Waarom een account aanmaken?',
+        de: 'Warum ein Konto erstellen?',
+      },
+      benefits: {
+        smartMatching: {
+          title: {
+            fr: 'Matching Intelligent',
+            en: 'Smart Matching',
+            nl: 'Slimme Matching',
+            de: 'Intelligentes Matching',
+          },
+          description: {
+            fr: 'Trouvez des colocataires compatibles avec votre style de vie',
+            en: 'Find roommates compatible with your lifestyle',
+            nl: 'Vind huisgenoten die compatibel zijn met jouw levensstijl',
+            de: 'Finde Mitbewohner, die zu deinem Lebensstil passen',
+          },
+        },
+        alerts: {
+          title: {
+            fr: 'Alertes Personnalisées',
+            en: 'Personalized Alerts',
+            nl: 'Gepersonaliseerde Meldingen',
+            de: 'Personalisierte Benachrichtigungen',
+          },
+          description: {
+            fr: 'Recevez des notifications pour les nouvelles propriétés',
+            en: 'Receive notifications for new properties',
+            nl: 'Ontvang meldingen voor nieuwe eigenschappen',
+            de: 'Erhalte Benachrichtigungen für neue Immobilien',
+          },
+        },
+        messaging: {
+          title: {
+            fr: 'Messagerie Directe',
+            en: 'Direct Messaging',
+            nl: 'Directe Berichten',
+            de: 'Direktnachrichten',
+          },
+          description: {
+            fr: 'Contactez directement les propriétaires et colocataires',
+            en: 'Contact owners and roommates directly',
+            nl: 'Neem direct contact op met eigenaren en huisgenoten',
+            de: 'Kontaktiere Eigentümer und Mitbewohner direkt',
+          },
+        },
+      },
+      startFree: {
+        fr: 'Commencer gratuitement',
+        en: 'Start for free',
+        nl: 'Start gratis',
+        de: 'Kostenlos starten',
+      },
+      limitedAccess: {
+        title: {
+          fr: 'Fonctionnalité limitée',
+          en: 'Limited feature',
+          nl: 'Beperkte functie',
+          de: 'Eingeschränkte Funktion',
+        },
+        description: {
+          fr: 'Cette fonctionnalité nécessite un compte EasyCo. Créez votre compte gratuitement pour accéder à toutes nos fonctionnalités.',
+          en: 'This feature requires an EasyCo account. Create your account for free to access all our features.',
+          nl: 'Deze functie vereist een EasyCo-account. Maak gratis een account aan om toegang te krijgen tot al onze functies.',
+          de: 'Diese Funktion erfordert ein EasyCo-Konto. Erstelle dein Konto kostenlos, um auf alle unsere Funktionen zuzugreifen.',
+        },
+      },
+      continueAsGuest: {
+        fr: 'Continuer en mode invité',
+        en: 'Continue in guest mode',
+        nl: 'Doorgaan in gastmodus',
+        de: 'Im Gastmodus fortfahren',
+      },
     },
 
     benefits: {
