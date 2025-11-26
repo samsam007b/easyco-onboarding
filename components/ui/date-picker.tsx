@@ -27,6 +27,7 @@ export default function DatePicker({
   const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -35,7 +36,12 @@ export default function DatePicker({
   // Calculate calendar position and close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      // Check if click is outside BOTH the container AND the calendar popup
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        calendarRef.current && !calendarRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -165,6 +171,7 @@ export default function DatePicker({
 
   const calendarContent = (
     <motion.div
+      ref={calendarRef}
       key="date-picker"
       initial={{ opacity: 0, y: -10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

@@ -31,6 +31,7 @@ export default function BudgetRangePicker({
   const [pickerPosition, setPickerPosition] = useState({ top: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -39,7 +40,12 @@ export default function BudgetRangePicker({
   // Calculate picker position and close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      // Check if click is outside BOTH the container AND the picker popup
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        pickerRef.current && !pickerRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -108,6 +114,7 @@ export default function BudgetRangePicker({
 
   const popupContent = (
     <motion.div
+      ref={pickerRef}
       key="budget-picker"
       initial={{ opacity: 0, y: -10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
