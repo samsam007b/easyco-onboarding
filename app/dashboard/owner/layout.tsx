@@ -145,9 +145,11 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <LoadingHouse size={80} />
+          <div className="flex justify-center mb-6">
+            <LoadingHouse size={80} />
+          </div>
           <p className="text-gray-600 font-medium">Chargement...</p>
         </div>
       </div>

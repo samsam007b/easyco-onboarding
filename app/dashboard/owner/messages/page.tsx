@@ -276,8 +276,10 @@ function OwnerMessagesContent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <LoadingHouse size={80} />
-          <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Chargement des messages...</h3>
+          <div className="flex justify-center mb-6">
+            <LoadingHouse size={80} />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des messages...</h3>
           <p className="text-gray-600">Préparation de vos conversations</p>
         </div>
       </div>
@@ -463,10 +465,12 @@ function OwnerMessagesContent() {
 export default function OwnerMessagesPage() {
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="mt-4 text-gray-600">Loading messages...</p>
+          <div className="flex justify-center mb-6">
+            <LoadingHouse size={80} />
+          </div>
+          <p className="text-gray-600 font-medium">Loading messages...</p>
         </div>
       </div>
     }>

@@ -191,10 +191,9 @@ export default function ModernOwnerDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-transparent">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
         <div className="text-center">
-          <div className="relative">
-            <div className="w-20 h-20 border-4 border-purple-200 rounded-full mx-auto mb-6"></div>
+          <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement du dashboard...</h3>
