@@ -40,7 +40,7 @@ export default function DatePicker({
       // Check if click is outside BOTH the container AND the calendar popup
       if (
         containerRef.current && !containerRef.current.contains(target) &&
-        calendarRef.current && !calendarRef.current.contains(target)
+        (!calendarRef.current || !calendarRef.current.contains(target))
       ) {
         setIsOpen(false);
       }
@@ -58,16 +58,20 @@ export default function DatePicker({
 
     if (isOpen) {
       updatePosition();
-      document.addEventListener('mousedown', handleClickOutside);
+      // Delay adding the listener to avoid immediate close on open click
+      const timer = setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 100);
       window.addEventListener('scroll', updatePosition, true);
       window.addEventListener('resize', updatePosition);
-    }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('scroll', updatePosition, true);
-      window.removeEventListener('resize', updatePosition);
-    };
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('mousedown', handleClickOutside);
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
+    }
   }, [isOpen]);
 
   const daysInMonth = (date: Date) => {
