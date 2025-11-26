@@ -163,8 +163,15 @@ export default function ModernOwnerHeader({
             className="flex items-center group"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity rounded-lg blur-sm"></div>
-              <h1 className="relative text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent transition-transform group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-200/30 to-orange-200/30 opacity-0 group-hover:opacity-50 transition-opacity rounded-lg blur-sm"></div>
+              <h1
+                className="relative text-2xl font-bold bg-clip-text text-transparent transition-transform group-hover:scale-105"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #A67BB8 0%, #E8865D 50%, #FFB85C 100%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                }}
+              >
                 EasyCo
               </h1>
             </div>
