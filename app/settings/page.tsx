@@ -74,10 +74,10 @@ export default function SettingsPage() {
   // Role-specific colors
   const getRoleColors = () => {
     if (userType === 'owner') return {
-      gradient: 'from-purple-600 to-purple-700',
-      light: 'from-purple-50 via-white to-purple-50/30',
+      gradient: 'from-purple-100 to-pink-100/70',
+      light: 'from-purple-50/30 via-white to-pink-50/20',
       accent: 'purple',
-      cardHover: 'hover:border-purple-300',
+      cardHover: 'hover:border-purple-200',
     };
     if (userType === 'resident') return {
       gradient: 'from-orange-600 to-red-600',
@@ -231,8 +231,8 @@ export default function SettingsPage() {
 
             <div className="text-center">
               <div className="inline-flex items-center gap-3 mb-4">
-                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl", `bg-gradient-to-br ${colors.gradient}`)}>
-                  <SettingsIcon className="w-8 h-8 text-white" />
+                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
+                  <SettingsIcon className="w-8 h-8 text-gray-700" />
                 </div>
               </div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
@@ -258,8 +258,8 @@ export default function SettingsPage() {
             >
               {/* Category Header */}
               <div className="flex items-center gap-3 mb-4">
-                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", `bg-gradient-to-br ${colors.gradient}`)}>
-                  <CategoryIcon className="w-5 h-5 text-white" />
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
+                  <CategoryIcon className="w-5 h-5 text-gray-700" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
               </div>
@@ -301,8 +301,8 @@ export default function SettingsPage() {
                           </div>
                           {section.badge && (
                             <span className={cn(
-                              "px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm",
-                              `bg-gradient-to-br ${colors.gradient} text-white`
+                              "px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm border border-gray-200",
+                              `bg-gradient-to-br ${colors.gradient} text-gray-700`
                             )}>
                               {section.badge}
                             </span>
@@ -329,33 +329,30 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className={cn(
-            "mt-8 rounded-3xl p-8 text-white relative overflow-hidden",
-            `bg-gradient-to-r ${colors.gradient}`
-          )}
+          className="mt-8 rounded-3xl p-8 bg-white/80 backdrop-blur-sm border border-gray-200 relative overflow-hidden shadow-sm"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-pink-50/30" />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <HelpCircle className="w-7 h-7 text-white" />
+              <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
+                <HelpCircle className="w-7 h-7 text-gray-700" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-1">Besoin d'aide ?</h3>
-                <p className="text-white/80">Consultez notre centre d'aide ou contactez le support</p>
+                <h3 className="text-xl font-bold mb-1 text-gray-900">Besoin d'aide ?</h3>
+                <p className="text-gray-600">Consultez notre centre d'aide ou contactez le support</p>
               </div>
             </div>
             <div className="flex gap-3">
               <Button
                 onClick={() => router.push('/help')}
                 variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-xl"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl"
               >
                 Centre d'aide
               </Button>
               <Button
                 onClick={() => router.push('/contact')}
-                className="bg-white text-gray-900 hover:bg-white/90 rounded-xl font-semibold"
+                className="bg-gradient-to-r from-purple-100 to-pink-100/70 text-gray-900 hover:from-purple-200 hover:to-pink-200 border border-gray-200 rounded-xl font-semibold shadow-sm"
               >
                 Contacter le support
               </Button>
