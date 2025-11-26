@@ -35,7 +35,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', currentUserId)
+        .eq('user_id', currentUserId)
         .single();
 
       if (error) {

@@ -35,7 +35,7 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
     return age;
   };
 
-  const age = calculateAge(user.date_of_birth);
+  const age = user.date_of_birth ? calculateAge(user.date_of_birth) : null;
   const compatibilityQuality = user.compatibility_score
     ? getCompatibilityQuality(user.compatibility_score)
     : null;
