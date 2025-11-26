@@ -82,6 +82,9 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
         }
 
         // Context-specific filters
+        // NOTE: Temporarily disabled user_type filter as profiles table doesn't have this column
+        // TODO: Join with users table or add user_type to profiles
+        /*
         if (context === 'searcher_matching') {
           // For searchers finding co-searchers: filter by user_type = 'searcher'
           query = query.eq('user_type', 'searcher');
@@ -89,6 +92,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
           // For residents finding new roommates: filter by user_type = 'searcher'
           query = query.eq('user_type', 'searcher');
         }
+        */
 
         const { data: users, error } = await query;
 
