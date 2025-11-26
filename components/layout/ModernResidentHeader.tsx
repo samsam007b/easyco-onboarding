@@ -377,7 +377,7 @@ export default function ModernResidentHeader({
                               className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-orange-50 transition group"
                               onClick={() => setShowQuickActions(false)}
                             >
-                              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform bg-gradient-to-br from-orange-100 to-red-100/70 border border-gray-200">
+                              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 border border-gray-200">
                                 <Icon className="w-5 h-5 text-gray-700" />
                               </div>
                               <div className="flex-1 min-w-0">
@@ -479,7 +479,7 @@ export default function ModernResidentHeader({
               >
                 {/* Avatar rond avec icône key */}
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm bg-gradient-to-br from-orange-100 to-red-100/70"
+                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70"
                 >
                   <Key className="w-4 h-4 text-gray-700" />
                 </div>
@@ -502,7 +502,7 @@ export default function ModernResidentHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 bg-gradient-to-br from-orange-200/70 via-red-200/70 to-orange-200/70 text-gray-900">
+                      <div className="relative px-6 py-5 bg-gradient-to-br from-[#F5D5CF]/70 via-[#FFD5C5]/70 to-[#FFDAC9]/70 text-gray-900">
                         <div className="absolute inset-0 bg-white/10" />
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
@@ -512,7 +512,7 @@ export default function ModernResidentHeader({
                               <circle
                                 cx="34" cy="34" r="32"
                                 fill="none"
-                                stroke="rgba(249, 115, 22, 0.5)"
+                                stroke="rgba(255, 111, 60, 0.5)"
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeDasharray={`${2 * Math.PI * 32}`}
@@ -532,7 +532,7 @@ export default function ModernResidentHeader({
                             <p className="text-gray-700 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
                               <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                                <div className="h-full bg-orange-400 rounded-full" style={{ width: '75%' }} />
+                                <div className="h-full bg-[#FF6F3C] rounded-full" style={{ width: '75%' }} />
                               </div>
                               <span className="text-xs text-gray-700 font-medium">75%</span>
                             </div>
@@ -541,7 +541,7 @@ export default function ModernResidentHeader({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-orange-50/50 to-red-50/50 border-b border-orange-200/50">
+                      <div className="px-4 py-3 bg-gradient-to-br from-[#FFF3EF]/50 to-[#FFEBE5]/50 border-b border-[#FFDAC9]/50">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
                             <div className="text-lg font-bold text-gray-900">
@@ -549,7 +549,7 @@ export default function ModernResidentHeader({
                             </div>
                             <div className="text-xs text-gray-600">Tâches</div>
                           </div>
-                          <div className="text-center border-x border-orange-200/50">
+                          <div className="text-center border-x border-[#FFDAC9]/50">
                             <div className="text-lg font-bold text-gray-900">
                               {activeMembersCount || 0}
                             </div>
@@ -568,10 +568,10 @@ export default function ModernResidentHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-100 to-red-100/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <User className="w-4 h-4 text-gray-700" />
                           </div>
                           <div className="flex-1">
@@ -583,7 +583,7 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/hub/finances"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -598,7 +598,7 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
