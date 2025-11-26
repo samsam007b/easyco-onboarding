@@ -164,7 +164,16 @@ export default function ModernOwnerHeader({
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-200/30 to-pink-200/30 opacity-0 group-hover:opacity-50 transition-opacity rounded-lg blur-sm"></div>
-              <h1 className="relative text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent transition-transform group-hover:scale-105">
+              <h1
+                className="relative text-2xl font-bold transition-transform group-hover:scale-105"
+                style={{
+                  background: 'var(--gradient-owner)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  color: 'transparent'
+                }}
+              >
                 EasyCo
               </h1>
             </div>
