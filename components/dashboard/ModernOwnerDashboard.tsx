@@ -159,32 +159,32 @@ export default function ModernOwnerDashboard() {
       value: `€${stats.totalRevenue.toLocaleString()}`,
       change: stats.revenueChange,
       icon: DollarSign,
-      gradient: 'from-emerald-500 to-emerald-700',
-      bg: 'from-emerald-50 to-emerald-100/50',
+      gradient: 'from-emerald-100 to-emerald-200/70',
+      bg: 'from-emerald-50/50 to-emerald-50/30',
     },
     {
       title: 'Propriétés',
       value: stats.totalProperties,
       subtitle: `${stats.publishedProperties} publiées`,
       icon: Building2,
-      gradient: 'from-purple-500 to-purple-700',
-      bg: 'from-purple-50 to-purple-100/50',
+      gradient: 'from-purple-200/70 to-indigo-200/70',
+      bg: 'from-purple-50/50 to-indigo-50/30',
     },
     {
       title: 'Taux d\'Occupation',
       value: `${stats.occupation}%`,
       change: stats.occupationChange,
       icon: TrendingUp,
-      gradient: 'from-blue-500 to-blue-700',
-      bg: 'from-blue-50 to-blue-100/50',
+      gradient: 'from-blue-100 to-cyan-200/70',
+      bg: 'from-blue-50/50 to-cyan-50/30',
     },
     {
       title: 'Candidatures',
       value: stats.pendingApplications,
       subtitle: 'En attente',
       icon: Users,
-      gradient: 'from-yellow-500 to-yellow-700',
-      bg: 'from-yellow-50 to-yellow-100/50',
+      gradient: 'from-amber-100 to-yellow-200/70',
+      bg: 'from-amber-50/50 to-yellow-50/30',
       action: () => router.push('/dashboard/owner/applications'),
     },
   ];
@@ -205,7 +205,7 @@ export default function ModernOwnerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Welcome Section */}
       <motion.div
@@ -213,7 +213,7 @@ export default function ModernOwnerDashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-10"
       >
-        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-900 to-purple-700 bg-clip-text text-transparent mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
           Tableau de bord
         </h1>
         <p className="text-gray-600 text-lg">
@@ -235,25 +235,18 @@ export default function ModernOwnerDashboard() {
               transition={{ delay: index * 0.1 }}
               onClick={card.action}
               className={cn(
-                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02]",
-                "bg-white shadow-md hover:shadow-2xl",
-                card.action && "hover:ring-2 hover:ring-purple-400"
+                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:scale-[1.01]",
+                "bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md border border-gray-200",
+                card.action && "hover:border-purple-300"
               )}
             >
-              {/* Glassmorphism blur effects */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-purple-600/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-              <div className={cn(
-                "absolute bottom-0 left-0 w-24 h-24 rounded-full blur-2xl opacity-10",
-                `bg-gradient-to-br ${card.bg}`
-              )} />
-
               <div className="relative z-10">
                 {/* Icon */}
                 <div className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center mb-4",
-                  `bg-gradient-to-br ${card.gradient} shadow-lg`
+                  "w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm",
+                  `bg-gradient-to-br ${card.gradient}`
                 )}>
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-6 h-6 text-gray-700" />
                 </div>
 
                 {/* Title */}
@@ -297,11 +290,11 @@ export default function ModernOwnerDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
+            className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
           >
             <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
+                <TrendingUp className="w-4 h-4 text-gray-700" />
               </div>
               Évolution Revenus & Dépenses
             </h3>
@@ -350,11 +343,11 @@ export default function ModernOwnerDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
+              className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                  <Building2 className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
+                  <Building2 className="w-4 h-4 text-gray-700" />
                 </div>
                 Taux d'Occupation
               </h3>
@@ -398,13 +391,13 @@ export default function ModernOwnerDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6"
+        className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                <Building2 className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
+                <Building2 className="w-4 h-4 text-gray-700" />
               </div>
               Mes Propriétés
             </h3>
@@ -415,7 +408,7 @@ export default function ModernOwnerDashboard() {
 
           <Button
             onClick={() => router.push('/properties/add')}
-            className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700"
+            className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 shadow-sm hover:shadow-md"
           >
             <Plus className="w-4 h-4 mr-2" />
             Ajouter
@@ -423,14 +416,10 @@ export default function ModernOwnerDashboard() {
         </div>
 
         {properties.length === 0 ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30 rounded-3xl p-12 text-center">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-purple-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-purple-300/10 to-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-
+          <div className="relative overflow-hidden bg-gradient-to-br from-purple-50/50 via-white to-indigo-50/50 rounded-3xl p-12 text-center border border-purple-200/50">
             <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                <Building2 className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                <Building2 className="w-10 h-10 text-gray-700" />
               </div>
               <h4 className="text-2xl font-bold text-gray-900 mb-3">
                 Commencez votre aventure immobilière
@@ -440,7 +429,7 @@ export default function ModernOwnerDashboard() {
               </p>
               <Button
                 onClick={() => router.push('/properties/add')}
-                className="rounded-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 font-semibold px-8 py-6 text-lg shadow-sm hover:shadow-md transition-all hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 Ajouter ma première propriété
@@ -456,7 +445,7 @@ export default function ModernOwnerDashboard() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05 }}
                 onClick={() => router.push(`/properties/${property.id}`)}
-                className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                className="group relative bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 cursor-pointer hover:scale-[1.01]"
               >
                 {/* Status Badge */}
                 <Badge
