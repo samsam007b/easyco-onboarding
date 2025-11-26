@@ -486,7 +486,7 @@ export default function ModernResidentHeader({
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
 
-              {/* Enhanced Profile Dropdown - Style Searcher */}
+              {/* Profile Dropdown */}
               <AnimatePresence>
                 {showProfileMenu && (
                   <>
@@ -498,84 +498,132 @@ export default function ModernResidentHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ type: "spring", duration: 0.3 }}
-                      className="absolute right-0 mt-2 w-80 max-w-xs bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
-                      {/* Profile Header with Resident Gradient */}
-                      <div
-                        className="p-6 relative overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-100 via-amber-100/70 to-red-100/70" />
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-red-50/30" />
-                        <div className="relative flex items-center gap-4 mb-3">
-                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-red-100/70 flex items-center justify-center border-2 border-gray-200">
-                            <Key className="w-8 h-8 text-gray-700" />
+                      {/* Premium Header with Gradient */}
+                      <div className="relative px-6 py-5 bg-gradient-to-br from-orange-200/70 via-red-200/70 to-orange-200/70 text-gray-900">
+                        <div className="absolute inset-0 bg-white/10" />
+                        <div className="relative flex items-center gap-4">
+                          {/* Avatar with Progress Ring */}
+                          <div className="relative">
+                            <svg className="absolute inset-0 -m-1.5" width="68" height="68">
+                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                              <circle
+                                cx="34" cy="34" r="32"
+                                fill="none"
+                                stroke="rgba(249, 115, 22, 0.5)"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeDasharray={`${2 * Math.PI * 32}`}
+                                strokeDashoffset={`${2 * Math.PI * 32 * (1 - 0.75)}`}
+                                transform="rotate(-90 34 34)"
+                                className="transition-all duration-1000"
+                              />
+                            </svg>
+                            <div className="w-16 h-16 rounded-full bg-white/50 backdrop-blur-sm border-2 border-gray-300 flex items-center justify-center overflow-hidden">
+                              <Key className="w-8 h-8 text-gray-700" />
+                            </div>
                           </div>
+
+                          {/* User Info */}
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-bold truncate text-gray-900">{profile.full_name}</h3>
-                            <p className="text-sm text-gray-600 truncate">{profile.email}</p>
+                            <p className="font-bold text-gray-900 truncate text-lg">{profile.full_name}</p>
+                            <p className="text-gray-700 text-sm truncate">{profile.email}</p>
+                            <div className="mt-1 flex items-center gap-1.5">
+                              <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                                <div className="h-full bg-orange-400 rounded-full" style={{ width: '75%' }} />
+                              </div>
+                              <span className="text-xs text-gray-700 font-medium">75%</span>
+                            </div>
                           </div>
-                        </div>
-                        {/* Role Badge */}
-                        <div className="relative inline-flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200">
-                          <Key className="w-4 h-4 text-gray-700" />
-                          <span className="text-sm font-semibold uppercase tracking-wide text-gray-900">Résident</span>
                         </div>
                       </div>
 
-                      {/* Profile Info */}
-                      <div className="p-4 space-y-3 border-b border-gray-100">
-                        {/* Email */}
-                        <div className="flex items-center gap-3 text-sm">
-                          <Mail className="w-4 h-4 text-gray-400" />
-                          <span className="text-gray-700">{profile.email}</span>
+                      {/* Quick Stats */}
+                      <div className="px-4 py-3 bg-gradient-to-br from-orange-50/50 to-red-50/50 border-b border-orange-200/50">
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-gray-900">
+                              {pendingTasks || 0}
+                            </div>
+                            <div className="text-xs text-gray-600">Tâches</div>
+                          </div>
+                          <div className="text-center border-x border-orange-200/50">
+                            <div className="text-lg font-bold text-gray-900">
+                              {activeMembersCount || 0}
+                            </div>
+                            <div className="text-xs text-gray-600">Membres</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-gray-900">
+                              {unreadMessages || 0}
+                            </div>
+                            <div className="text-xs text-gray-600">Messages</div>
+                          </div>
                         </div>
-
-                        {/* Date of Birth */}
-                        {profile.profile_data?.date_of_birth && (
-                          <div className="flex items-center gap-3 text-sm">
-                            <Calendar className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700">
-                              {formatDate(profile.profile_data.date_of_birth)}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Nationality */}
-                        {profile.profile_data?.nationality && (
-                          <div className="flex items-center gap-3 text-sm">
-                            <MapPin className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700 capitalize">{profile.profile_data.nationality}</span>
-                          </div>
-                        )}
-
-                        {/* Occupation */}
-                        {profile.profile_data?.occupation_status && (
-                          <div className="flex items-center gap-3 text-sm">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-700 capitalize">
-                              {profile.profile_data.occupation_status}
-                            </span>
-                          </div>
-                        )}
                       </div>
 
-                      {/* Actions */}
-                      <div className="p-2 space-y-1">
+                      {/* Menu Items */}
+                      <div className="py-2">
                         <Link
                           href="/profile"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
                         >
-                          <Settings className="w-5 h-5" />
-                          <span className="font-medium">Paramètres du profil</span>
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-100 to-red-100/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-gray-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Mon Profil</span>
+                            <span className="text-xs text-gray-500">Gérer mes informations</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
+
+                        <Link
+                          href="/hub/finances"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <DollarSign className="w-4 h-4 text-gray-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Finances</span>
+                            <span className="text-xs text-gray-500">Loyer et dépenses</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+
+                        <Link
+                          href="/settings"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50/50 hover:to-red-50/50 transition-all"
+                          onClick={() => setShowProfileMenu(false)}
+                        >
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Settings className="w-4 h-4 text-gray-700" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-gray-900 font-medium block">Paramètres</span>
+                            <span className="text-xs text-gray-500">Préférences du compte</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+
+                        <div className="my-1 h-px bg-gray-200" />
+
                         <button
                           onClick={handleLogout}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                          className="group w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all rounded-xl"
                         >
-                          <LogOut className="w-5 h-5" />
-                          <span className="font-medium">Se déconnecter</span>
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-100 to-red-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <LogOut className="w-4 h-4 text-red-700" />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <span className="text-red-600 font-medium block">Se déconnecter</span>
+                            <span className="text-xs text-red-400">Quitter votre session</span>
+                          </div>
                         </button>
                       </div>
                     </motion.div>
