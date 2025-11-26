@@ -427,17 +427,17 @@ export default function ModernOwnerHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 bg-gradient-to-br from-purple-600 via-purple-500 to-pink-600 text-white">
-                        <div className="absolute inset-0 bg-black/5" />
+                      <div className="relative px-6 py-5 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70 text-gray-900">
+                        <div className="absolute inset-0 bg-white/10" />
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
                           <div className="relative">
                             <svg className="absolute inset-0 -m-1.5" width="68" height="68">
-                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
                               <circle
                                 cx="34" cy="34" r="32"
                                 fill="none"
-                                stroke="white"
+                                stroke="rgba(110, 86, 207, 0.5)"
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeDasharray={`${2 * Math.PI * 32}`}
@@ -446,7 +446,7 @@ export default function ModernOwnerHeader({
                                 className="transition-all duration-1000"
                               />
                             </svg>
-                            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center overflow-hidden">
+                            <div className="w-16 h-16 rounded-full bg-white/50 backdrop-blur-sm border-2 border-gray-300 flex items-center justify-center overflow-hidden">
                               {profile.avatar_url ? (
                                 <Image
                                   src={profile.avatar_url}
@@ -456,42 +456,42 @@ export default function ModernOwnerHeader({
                                   className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <User className="w-8 h-8 text-white" />
+                                <User className="w-8 h-8 text-gray-700" />
                               )}
                             </div>
                           </div>
 
                           {/* User Info */}
                           <div className="flex-1 min-w-0">
-                            <p className="font-bold text-white truncate text-lg">{profile.full_name}</p>
-                            <p className="text-white/90 text-sm truncate">{profile.email}</p>
+                            <p className="font-bold text-gray-900 truncate text-lg">{profile.full_name}</p>
+                            <p className="text-gray-700 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
-                              <div className="h-1.5 flex-1 bg-white/30 rounded-full overflow-hidden">
-                                <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
+                              <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                                <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
                               </div>
-                              <span className="text-xs text-white/90 font-medium">75%</span>
+                              <span className="text-xs text-gray-700 font-medium">75%</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-pink-50/50 border-b border-purple-100/50">
+                      <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
-                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-gray-900">
                               {stats?.monthlyRevenue ? `€${Math.round(stats.monthlyRevenue / 1000)}k` : '€0'}
                             </div>
                             <div className="text-xs text-gray-600">Revenus</div>
                           </div>
                           <div className="text-center border-x border-purple-200/50">
-                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-gray-900">
                               {stats?.roi || 0}%
                             </div>
                             <div className="text-xs text-gray-600">ROI</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-gray-900">
                               {stats?.occupation || 0}%
                             </div>
                             <div className="text-xs text-gray-600">Occupation</div>
@@ -503,11 +503,11 @@ export default function ModernOwnerHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-purple-700" />
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-gray-700" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -518,11 +518,11 @@ export default function ModernOwnerHeader({
 
                         <Link
                           href="/dashboard/owner/finance"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <DollarSign className="w-4 h-4 text-green-700" />
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <DollarSign className="w-4 h-4 text-gray-700" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Finance</span>
@@ -533,11 +533,11 @@ export default function ModernOwnerHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Settings className="w-4 h-4 text-blue-700" />
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Settings className="w-4 h-4 text-gray-700" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Paramètres</span>
@@ -551,7 +551,7 @@ export default function ModernOwnerHeader({
                       <div className="px-4 pb-3">
                         <Link
                           href="/profile"
-                          className="block w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium text-center hover:shadow-lg hover:scale-[1.02] transition-all"
+                          className="block w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-medium text-center hover:shadow-md hover:scale-[1.02] transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="flex items-center justify-center gap-2">
