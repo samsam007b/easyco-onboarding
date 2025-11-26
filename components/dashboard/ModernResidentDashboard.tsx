@@ -237,8 +237,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradient: 'from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
-      bg: 'from-resident-50 to-resident-100',
+      gradient: 'from-orange-100 to-red-100/70',
+      bg: 'from-orange-50/30 to-red-50/30',
       progress: rentPercentage,
       importance: 'critical' // Loyer = très important
     },
@@ -247,8 +247,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.sharedExpenses}`,
       subtitle: 'À répartir',
       icon: DollarSign,
-      gradient: 'from-[#E8865D] to-[#FF8C4B]',
-      bg: 'from-resident-50 to-resident-100',
+      gradient: 'from-orange-100 to-amber-100/70',
+      bg: 'from-orange-50/30 to-amber-50/30',
       action: () => router.push('/hub/finances'),
       importance: 'high' // Important mais pas critique
     },
@@ -257,8 +257,8 @@ export default function ModernResidentDashboard() {
       value: stats.yourBalance > 0 ? `+€${stats.yourBalance}` : `-€${Math.abs(stats.yourBalance)}`,
       subtitle: stats.yourBalance > 0 ? 'On te doit' : 'Tu dois',
       icon: TrendingUp,
-      gradient: stats.yourBalance > 0 ? 'from-emerald-500 to-emerald-700' : 'from-red-500 to-red-700',
-      bg: stats.yourBalance > 0 ? 'from-emerald-50 to-emerald-100/50' : 'from-red-50 to-red-100/50',
+      gradient: stats.yourBalance > 0 ? 'from-emerald-100 to-teal-100/70' : 'from-red-100 to-rose-100/70',
+      bg: stats.yourBalance > 0 ? 'from-emerald-50/30 to-teal-50/30' : 'from-red-50/30 to-rose-50/30',
       action: () => router.push('/hub/finances'),
       importance: 'medium' // Informatif
     },
@@ -267,8 +267,8 @@ export default function ModernResidentDashboard() {
       value: stats.roommatesCount,
       subtitle: 'Membres actifs',
       icon: Users,
-      gradient: 'from-[#D97B6F] to-[#E8865D]',
-      bg: 'from-resident-50 to-resident-100',
+      gradient: 'from-orange-100 to-red-100/70',
+      bg: 'from-orange-50/30 to-red-50/30',
       action: () => router.push('/hub/members'),
       importance: 'medium' // Informatif
     },
@@ -293,21 +293,22 @@ export default function ModernResidentDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-7xl mx-auto bg-gradient-to-br from-resident-50 to-resident-100 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-resident-200 hover:shadow-md transition-all mb-6 mx-2 sm:mx-6 lg:mx-8"
+          className="max-w-7xl mx-auto bg-white/80 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-gray-200 hover:shadow-sm transition-all mb-6 mx-2 sm:mx-6 lg:mx-8 relative overflow-hidden"
         >
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 via-transparent to-red-50/20" />
           <button
             onClick={() => setShowCompletionDetails(!showCompletionDetails)}
             className="w-full flex items-center justify-between"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 relative">
               {/* Small Progress Circle */}
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90">
                   <defs>
                     <linearGradient id="residentCompletionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#D97B6F" />
-                      <stop offset="50%" stopColor="#E8865D" />
-                      <stop offset="100%" stopColor="#FF8C4B" />
+                      <stop offset="0%" stopColor="#fed7aa" />
+                      <stop offset="50%" stopColor="#fecaca" />
+                      <stop offset="100%" stopColor="#fca5a5" />
                     </linearGradient>
                   </defs>
                   <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" strokeWidth="3" />
@@ -323,7 +324,7 @@ export default function ModernResidentDashboard() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">
+                  <span className="text-xs font-bold text-gray-700">
                     {profileCompletion}%
                   </span>
                 </div>
@@ -421,12 +422,12 @@ export default function ModernResidentDashboard() {
               <div className="relative z-10">
                 {/* Icon with grain texture based on importance */}
                 <div className={cn(
-                  "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-lg",
+                  "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm border border-gray-200",
                   `bg-gradient-to-br ${card.gradient}`,
                   card.importance === 'critical' && "grain-medium",
                   card.importance === 'high' && "grain-subtle"
                 )}>
-                  <Icon className="w-6 h-6 text-white relative z-10" />
+                  <Icon className="w-6 h-6 text-gray-700 relative z-10" />
                 </div>
 
                 {/* Title */}
@@ -667,19 +668,22 @@ export default function ModernResidentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] rounded-3xl shadow-lg p-6 text-white"
+        className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 relative overflow-hidden"
       >
-        <div className="flex items-center justify-between">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-red-50/30" />
+        <div className="relative flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
-              <Heart className="w-5 h-5" />
+            <h3 className="text-lg font-bold mb-1 flex items-center gap-2 text-gray-900">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100/70 border border-gray-200">
+                <Heart className="w-5 h-5 text-gray-700" />
+              </div>
               Bonheur de la Coloc
             </h3>
-            <p className="text-orange-200 text-sm">Basé sur l'activité et les interactions</p>
+            <p className="text-gray-600 text-sm ml-12">Basé sur l'activité et les interactions</p>
           </div>
           <div className="text-right">
-            <p className="text-5xl font-bold">{stats.communityHappiness}%</p>
-            <p className="text-orange-200 text-sm mt-1">Excellent!</p>
+            <p className="text-5xl font-bold text-gray-900">{stats.communityHappiness}%</p>
+            <p className="text-gray-600 text-sm mt-1">Excellent!</p>
           </div>
         </div>
       </motion.div>

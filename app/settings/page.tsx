@@ -80,10 +80,10 @@ export default function SettingsPage() {
       cardHover: 'hover:border-purple-200',
     };
     if (userType === 'resident') return {
-      gradient: 'from-orange-600 to-red-600',
-      light: 'from-orange-50 via-white to-red-50/30',
+      gradient: 'from-orange-100 to-red-100/70',
+      light: 'from-orange-50/30 via-white to-red-50/20',
       accent: 'orange',
-      cardHover: 'hover:border-orange-300',
+      cardHover: 'hover:border-orange-200',
     };
     return {
       gradient: 'from-[#FFA040] to-[#FFB85C]',

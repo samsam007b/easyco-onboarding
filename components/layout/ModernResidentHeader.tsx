@@ -377,11 +377,8 @@ export default function ModernResidentHeader({
                               className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-orange-50 transition group"
                               onClick={() => setShowQuickActions(false)}
                             >
-                              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
-                                   style={{
-                                     background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                                   }}>
-                                <Icon className="w-5 h-5 text-white" />
+                              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform bg-gradient-to-br from-orange-100 to-red-100/70 border border-gray-200">
+                                <Icon className="w-5 h-5 text-gray-700" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-gray-900">
@@ -482,12 +479,9 @@ export default function ModernResidentHeader({
               >
                 {/* Avatar rond avec icône key */}
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-white/30 group-hover:border-white/50 transition-colors shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                  }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm bg-gradient-to-br from-orange-100 to-red-100/70"
                 >
-                  <Key className="w-4 h-4 text-white" />
+                  <Key className="w-4 h-4 text-gray-700" />
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
               </button>
@@ -509,24 +503,23 @@ export default function ModernResidentHeader({
                     >
                       {/* Profile Header with Resident Gradient */}
                       <div
-                        className="p-6 text-white"
-                        style={{
-                          background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
-                        }}
+                        className="p-6 relative overflow-hidden"
                       >
-                        <div className="flex items-center gap-4 mb-3">
-                          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
-                            <Key className="w-8 h-8" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-100 via-amber-100/70 to-red-100/70" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-red-50/30" />
+                        <div className="relative flex items-center gap-4 mb-3">
+                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-red-100/70 flex items-center justify-center border-2 border-gray-200">
+                            <Key className="w-8 h-8 text-gray-700" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-bold truncate">{profile.full_name}</h3>
-                            <p className="text-sm text-white/80 truncate">{profile.email}</p>
+                            <h3 className="text-lg font-bold truncate text-gray-900">{profile.full_name}</h3>
+                            <p className="text-sm text-gray-600 truncate">{profile.email}</p>
                           </div>
                         </div>
                         {/* Role Badge */}
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
-                          <Key className="w-4 h-4" />
-                          <span className="text-sm font-semibold uppercase tracking-wide">Résident</span>
+                        <div className="relative inline-flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200">
+                          <Key className="w-4 h-4 text-gray-700" />
+                          <span className="text-sm font-semibold uppercase tracking-wide text-gray-900">Résident</span>
                         </div>
                       </div>
 
