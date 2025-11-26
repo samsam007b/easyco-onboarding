@@ -66,9 +66,13 @@ export async function middleware(request: NextRequest) {
   // Handle route redirects for standardization
   const routeRedirects: Record<string, string> = {
     '/properties/new': '/properties/add',
-    '/groups/new': '/groups/create',
-    '/auth/signup': '/signup',
-    '/auth/login': '/login',
+    '/groups/new': '/dashboard/searcher/groups/create',
+    '/groups/create': '/dashboard/searcher/groups/create',
+    '/auth/signup': '/auth?mode=signup',
+    '/auth/login': '/auth',
+    '/login': '/auth',
+    '/signup': '/auth?mode=signup',
+    '/properties': '/properties/browse',
   }
 
   // Check if current path needs redirection
@@ -79,11 +83,9 @@ export async function middleware(request: NextRequest) {
   // Define route categories
   const publicRoutes = [
     '/',
-    '/login',
-    '/signup',
+    '/auth',
     '/forgot-password',
     '/reset-password',
-    '/consent',
     '/terms',
     '/privacy',
     '/properties/browse', // Public property search
@@ -97,7 +99,7 @@ export async function middleware(request: NextRequest) {
 
   const welcomeRoute = '/welcome'
 
-  const authOnlyRoutes = ['/login', '/signup']
+  const authOnlyRoutes = ['/auth']
 
   const protectedRoutes = [
     '/dashboard',

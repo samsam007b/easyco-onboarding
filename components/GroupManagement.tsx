@@ -297,7 +297,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Button
-            onClick={() => router.push('/groups/create')}
+            onClick={() => router.push('/dashboard/searcher/groups/create')}
             className="h-auto py-6 flex-col gap-2"
           >
             <Users className="w-8 h-8" />

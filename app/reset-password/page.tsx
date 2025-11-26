@@ -115,7 +115,7 @@ function ResetPasswordContent() {
 
       // Redirect to login after 2 seconds
       setTimeout(() => {
-        router.push('/login')
+        router.push('/auth')
       }, 2000)
     } catch (error: any) {
       // FIXME: Use logger.error('Unexpected error:', error)
@@ -196,7 +196,7 @@ function ResetPasswordContent() {
               Your password has been successfully updated. You can now log in with your new password.
             </p>
             <Link
-              href="/login"
+              href="/auth"
               className="inline-block w-full px-6 py-3 bg-[#FFD600] hover:bg-[#F57F17] text-black font-semibold rounded-full transition-colors"
             >
               Go to Login
@@ -212,7 +212,7 @@ function ResetPasswordContent() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/login" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+          <Link href="/auth" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span>Back to login</span>
           </Link>

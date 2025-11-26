@@ -234,7 +234,7 @@ export default function ReviewPage() {
         safeLocalStorage.remove('verification');
 
         toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
-        router.push('/dashboard/profiles');
+        router.push('/dashboard/searcher');
       } else {
         // Save to user_profiles table (original behavior)
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');

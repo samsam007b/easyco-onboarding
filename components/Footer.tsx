@@ -67,7 +67,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-white transition">
+                <Link href="/auth" className="hover:text-white transition">
                   {footer.platform.login}
                 </Link>
               </li>

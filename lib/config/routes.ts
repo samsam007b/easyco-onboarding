@@ -7,8 +7,8 @@
 export const ROUTES = {
   // Public routes
   HOME: '/',
-  LOGIN: '/login',
-  SIGNUP: '/signup',
+  LOGIN: '/auth', // Consolidated auth page
+  SIGNUP: '/auth?mode=signup', // Consolidated auth page with signup mode
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   WELCOME: '/welcome',
@@ -23,6 +23,7 @@ export const ROUTES = {
 
   // Auth routes
   AUTH: {
+    INDEX: '/auth',
     CALLBACK: '/auth/callback',
     COMPLETE_SIGNUP: '/auth/complete-signup',
     VERIFIED: '/auth/verified',
@@ -85,14 +86,7 @@ export const ROUTES = {
     SUCCESS: '/onboarding/resident/success',
   },
 
-  // Onboarding routes - Property
-  ONBOARDING_PROPERTY: {
-    BASICS: '/onboarding/property/basics',
-    PRICING: '/onboarding/property/pricing',
-    DESCRIPTION: '/onboarding/property/description',
-    REVIEW: '/onboarding/property/review',
-    SUCCESS: '/onboarding/property/success',
-  },
+  // Onboarding routes - Property (DEPRECATED - routes removed)
 
   // Profile enhancement routes
   PROFILE_ENHANCE: {
@@ -136,7 +130,7 @@ export const ROUTES = {
 
   // Groups routes
   GROUPS: {
-    CREATE: '/groups/create',
+    CREATE: '/dashboard/searcher/groups/create',
     JOIN: '/groups/join',
     SETTINGS: (id: string) => `/groups/${id}/settings`,
   },
@@ -146,8 +140,6 @@ export const ROUTES = {
   MESSAGES: '/messages',
   NOTIFICATIONS: '/notifications',
   FAVORITES: '/favorites',
-  CONSENT: '/consent',
-  POST_TEST: '/post-test',
   PROFILE: '/profile',
 
   // API routes

@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/login" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+          <Link href="/auth" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span>{t('auth.forgotPassword.backToLogin')}</span>
           </Link>
@@ -134,7 +134,7 @@ export default function ForgotPasswordPage() {
                 <p className="text-gray-600">
                   {t('auth.forgotPassword.rememberPassword')}{' '}
                   <Link
-                    href="/login"
+                    href="/auth"
                     className="text-[#4A148C] hover:text-[#311B92] font-semibold"
                   >
                     {t('auth.forgotPassword.loginLink')}
@@ -176,7 +176,7 @@ export default function ForgotPasswordPage() {
                   </button>
                 </p>
                 <Link
-                  href="/login"
+                  href="/auth"
                   className="inline-block w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-full transition-colors"
                 >
                   {t('auth.forgotPassword.success.backToLogin')}
