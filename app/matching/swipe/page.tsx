@@ -110,17 +110,23 @@ export default function SwipePage() {
   const handleReload = async () => {
     setIsAnimating(true);
 
-    // Reset local state
-    setCurrentIndex(0);
-    setSwipeHistory([]);
+    // Animate cards sliding down
+    setCurrentIndex(-1); // Trigger exit animation
 
-    // Reload potential matches
-    await loadPotentialMatches();
+    // Reset local state after animation
+    setTimeout(async () => {
+      setSwipeHistory([]);
 
-    setTimeout(() => {
-      setIsAnimating(false);
-      toast.success('Profils rechargés !');
-    }, 300);
+      // Reload potential matches
+      await loadPotentialMatches();
+
+      // Show new cards with entrance animation
+      setTimeout(() => {
+        setCurrentIndex(0);
+        setIsAnimating(false);
+        toast.success('Profils rechargés !');
+      }, 100);
+    }, 400);
   };
 
   const currentCard = potentialMatches[currentIndex];
@@ -225,7 +231,7 @@ export default function SwipePage() {
             <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-r from-transparent to-gray-50 pointer-events-none z-10" />
           </div>
 
-          {/* Center - Current Card */}
+          {/* Center - Current Card Stack */}
           <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-md h-full">
             {!currentCard ? (
               <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl shadow-2xl">
@@ -258,19 +264,80 @@ export default function SwipePage() {
               </Card>
             ) : (
               <>
-                {/* Next card preview (behind) */}
-                {potentialMatches[currentIndex + 1] && (
-                  <div className="absolute inset-0 bg-white rounded-3xl shadow-lg scale-95 opacity-50"></div>
-                )}
+                {/* Card Stack - Show 3 cards behind */}
+                <AnimatePresence mode="popLayout">
+                  {[3, 2, 1].map((offset) => {
+                    const cardIndex = currentIndex + offset;
+                    const card = potentialMatches[cardIndex];
+                    if (!card) return null;
+
+                    return (
+                      <motion.div
+                        key={`preview-${cardIndex}`}
+                        className="absolute inset-0 bg-white rounded-3xl shadow-lg pointer-events-none overflow-hidden"
+                        initial={{ scale: 0.9, y: -100, opacity: 0, rotate: Math.random() * 10 - 5 }}
+                        animate={{
+                          scale: 1 - offset * 0.03,
+                          y: -offset * 8,
+                          opacity: 1 - offset * 0.2,
+                          rotate: 0,
+                          zIndex: -offset
+                        }}
+                        exit={{ scale: 0.8, y: 100, opacity: 0, rotate: Math.random() * 20 - 10 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                          delay: (3 - offset) * 0.05
+                        }}
+                      >
+                        {/* Preview of next cards */}
+                        <div className="relative w-full h-[360px]">
+                          {card.profile_photo_url ? (
+                            <img
+                              src={card.profile_photo_url}
+                              alt={`${card.first_name}`}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
+                              <div className="text-6xl font-bold text-orange-600 opacity-30">
+                                {card.first_name.charAt(0)}
+                                {card.last_name.charAt(0)}
+                              </div>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
 
                 {/* Current card */}
-                <SwipeCard
-                  user={currentCard}
-                  onSwipe={handleSwipe}
-                  onCardClick={() => {
-                    toast.info('Full profile view coming soon!');
-                  }}
-                />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`current-${currentIndex}`}
+                    className="relative z-10"
+                    initial={{ scale: 0.95, y: -80, opacity: 0, rotate: -3 }}
+                    animate={{ scale: 1, y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ scale: 0.85, opacity: 0 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 400,
+                      damping: 35,
+                      delay: 0.1
+                    }}
+                  >
+                    <SwipeCard
+                      user={currentCard}
+                      onSwipe={handleSwipe}
+                      onCardClick={() => {
+                        toast.info('Full profile view coming soon!');
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </>
             )}
           </div>
