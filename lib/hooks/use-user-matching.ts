@@ -73,12 +73,12 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
         let query = supabase
           .from('profiles')
           .select('*')
-          .neq('id', currentUserId)
+          .neq('user_id', currentUserId)
           .limit(limit);
 
         // Exclude already swiped users
         if (swipedUserIds.length > 0) {
-          query = query.not('id', 'in', `(${swipedUserIds.join(',')})`);
+          query = query.not('user_id', 'in', `(${swipedUserIds.join(',')})`);
         }
 
         // Context-specific filters
