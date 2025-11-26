@@ -133,6 +133,7 @@ export default function PropertiesBrowsePageV2() {
   const [likedProperties, setLikedProperties] = useState<Set<string>>(new Set());
   const [passedProperties, setPassedProperties] = useState<Set<string>>(new Set());
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>();
+  const [isAnimatingReload, setIsAnimatingReload] = useState(false);
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
     priceRange: { min: 0, max: 5000 },
@@ -1067,15 +1068,26 @@ export default function PropertiesBrowsePageV2() {
                       </p>
                       <div className="flex flex-col gap-3 w-full max-w-xs">
                         <Button
-                          onClick={() => {
-                            setMatchingIndex(0);
-                            loadPotentialMatches();
+                          onClick={async () => {
+                            setIsAnimatingReload(true);
+                            setMatchingIndex(-1); // Trigger exit animation
+
+                            setTimeout(async () => {
+                              setMatchingIndex(0);
+                              await loadPotentialMatches();
+
+                              setTimeout(() => {
+                                setIsAnimatingReload(false);
+                                toast.success('Profils rechargés !');
+                              }, 100);
+                            }, 400);
                           }}
-                          className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+                          disabled={isAnimatingReload}
+                          className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-50"
                           size="lg"
                         >
-                          <RotateCcw className="w-5 h-5 mr-2" />
-                          Recharger
+                          <RotateCcw className={`w-5 h-5 mr-2 ${isAnimatingReload ? 'animate-spin' : ''}`} />
+                          {isAnimatingReload ? 'Chargement...' : 'Recharger'}
                         </Button>
                         <Button
                           onClick={() => router.push('/matching/matches')}
@@ -1090,53 +1102,98 @@ export default function PropertiesBrowsePageV2() {
                     </motion.div>
                   ) : (
                     <>
-                      {/* Preview cards (behind) - Blurred stack effect */}
-                      {[1, 2].map((offset) => {
-                        const previewIndex = matchingIndex + offset;
-                        if (previewIndex >= potentialMatches.length) return null;
-                        return (
-                          <div
-                            key={`preview-${previewIndex}`}
-                            className={cn(
-                              "absolute inset-0 rounded-3xl shadow-2xl overflow-hidden pointer-events-none transition-all duration-300",
-                              offset === 1 ? "scale-[0.95] opacity-40 blur-sm translate-y-2" : "scale-[0.90] opacity-20 blur-md translate-y-4"
-                            )}
-                            style={{
-                              zIndex: -offset,
+                      {/* Card Stack - Show 3 cards behind with enhanced animations */}
+                      <AnimatePresence mode="popLayout">
+                        {[3, 2, 1].map((offset) => {
+                          const cardIndex = matchingIndex + offset;
+                          const card = potentialMatches[cardIndex];
+                          if (!card) return null;
+
+                          return (
+                            <motion.div
+                              key={`preview-${cardIndex}`}
+                              className="absolute inset-0 bg-white rounded-3xl shadow-lg pointer-events-none overflow-hidden"
+                              initial={{ scale: 0.9, y: -100, opacity: 0, rotate: Math.random() * 10 - 5 }}
+                              animate={{
+                                scale: 1 - offset * 0.03,
+                                y: -offset * 8,
+                                opacity: 1 - offset * 0.2,
+                                rotate: 0,
+                                zIndex: -offset
+                              }}
+                              exit={{ scale: 0.8, y: 100, opacity: 0, rotate: Math.random() * 20 - 10 }}
+                              transition={{
+                                type: 'spring',
+                                stiffness: 300,
+                                damping: 30,
+                                delay: (3 - offset) * 0.05
+                              }}
+                            >
+                              {/* Preview of next cards with photo */}
+                              <div className="relative w-full h-[360px]">
+                                {card.profile_photo_url ? (
+                                  <img
+                                    src={card.profile_photo_url}
+                                    alt={`${card.first_name}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
+                                    <div className="text-6xl font-bold text-orange-600 opacity-30">
+                                      {card.first_name?.charAt(0) || ''}
+                                      {card.last_name?.charAt(0) || ''}
+                                    </div>
+                                  </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </AnimatePresence>
+
+                      {/* Current card with entrance animation */}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`current-${matchingIndex}`}
+                          className="relative z-10"
+                          initial={{ scale: 0.95, y: -80, opacity: 0, rotate: -3 }}
+                          animate={{ scale: 1, y: 0, opacity: 1, rotate: 0 }}
+                          exit={{ scale: 0.85, opacity: 0 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 35,
+                            delay: 0.1
+                          }}
+                        >
+                          <SwipeCard
+                            user={potentialMatches[matchingIndex]}
+                            onSwipe={async (direction) => {
+                              const currentUser = potentialMatches[matchingIndex];
+                              const action = direction === 'right' ? 'like' : 'pass';
+
+                              // Record swipe
+                              const success = await recordSwipe(currentUser.user_id, action);
+
+                              if (success) {
+                                if (action === 'like') {
+                                  toast.success('👍 Profil liké !', {
+                                    description: `${currentUser.first_name} ${currentUser.last_name}`
+                                  });
+                                }
+                                // Move to next with animation
+                                setTimeout(() => setMatchingIndex(prev => prev + 1), 300);
+                              } else {
+                                toast.error('Erreur lors de l\'enregistrement');
+                              }
                             }}
-                          >
-                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200" />
-                          </div>
-                        );
-                      })}
-
-                      {/* Current card */}
-                      <SwipeCard
-                        key={potentialMatches[matchingIndex].user_id}
-                        user={potentialMatches[matchingIndex]}
-                        onSwipe={async (direction) => {
-                          const currentUser = potentialMatches[matchingIndex];
-                          const action = direction === 'right' ? 'like' : 'pass';
-
-                          // Record swipe
-                          const success = await recordSwipe(currentUser.user_id, action);
-
-                          if (success) {
-                            if (action === 'like') {
-                              toast.success('👍 Profil liké !', {
-                                description: `${currentUser.first_name} ${currentUser.last_name}`
-                              });
-                            }
-                            // Move to next
-                            setTimeout(() => setMatchingIndex(prev => prev + 1), 200);
-                          } else {
-                            toast.error('Erreur lors de l\'enregistrement');
-                          }
-                        }}
-                        onCardClick={() => {
-                          toast.info('Profil complet bientôt disponible !');
-                        }}
-                      />
+                            onCardClick={() => {
+                              toast.info('Profil complet bientôt disponible !');
+                            }}
+                          />
+                        </motion.div>
+                      </AnimatePresence>
                     </>
                   )}
                 </div>
