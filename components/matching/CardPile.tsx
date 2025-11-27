@@ -51,8 +51,8 @@ export const CardPile = memo(function CardPile({
       {/* Card stack */}
       <div
         className={`
-          relative w-[140px] h-[200px]
-          ${isLike ? 'translate-x-8' : '-translate-x-8'}
+          relative w-[120px] lg:w-[140px] h-[180px] lg:h-[200px]
+          ${isLike ? 'translate-x-4 lg:translate-x-8' : '-translate-x-4 lg:-translate-x-8'}
         `}
       >
         <AnimatePresence mode="popLayout">

@@ -1025,9 +1025,9 @@ export default function PropertiesBrowsePageV2() {
                 </div>
 
                 {/* 3-Column Layout with Piles */}
-                <div className="relative flex items-stretch justify-center gap-4 mb-6" style={{ minHeight: '650px' }}>
+                <div className="relative flex items-stretch justify-center gap-2 md:gap-4 mb-6 overflow-visible" style={{ minHeight: '650px' }}>
                   {/* Left Pile - NOPE */}
-                  <div className="hidden lg:flex w-[180px] -ml-8">
+                  <div className="hidden md:flex w-[140px] lg:w-[180px] -ml-4 lg:-ml-8 flex-shrink-0">
                     <CardPile
                       type="pass"
                       cards={passedProfiles}
@@ -1230,7 +1230,7 @@ export default function PropertiesBrowsePageV2() {
                   </div>
 
                   {/* Right Pile - LIKE */}
-                  <div className="hidden lg:flex w-[180px] -mr-8">
+                  <div className="hidden md:flex w-[140px] lg:w-[180px] -mr-4 lg:-mr-8 flex-shrink-0">
                     <CardPile
                       type="like"
                       cards={likedProfiles}
