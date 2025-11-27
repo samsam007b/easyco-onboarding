@@ -37,7 +37,8 @@ import { getResidentsForProperties } from '@/lib/services/rooms.service';
 import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
 import { PropertySwipeCard } from '@/components/matching/PropertySwipeCard';
 import { SwipeCard } from '@/components/matching/SwipeCard';
-import { useUserMatching } from '@/lib/hooks/use-user-matching';
+import { CardPile } from '@/components/matching/CardPile';
+import { useUserMatching, type UserWithCompatibility } from '@/lib/hooks/use-user-matching';
 import { cn } from '@/lib/utils';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 
@@ -134,6 +135,10 @@ export default function PropertiesBrowsePageV2() {
   const [passedProperties, setPassedProperties] = useState<Set<string>>(new Set());
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>();
   const [isAnimatingReload, setIsAnimatingReload] = useState(false);
+
+  // Piles for People matching mode
+  const [likedProfiles, setLikedProfiles] = useState<UserWithCompatibility[]>([]);
+  const [passedProfiles, setPassedProfiles] = useState<UserWithCompatibility[]>([]);
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
     priceRange: { min: 0, max: 5000 },
@@ -1006,17 +1011,39 @@ export default function PropertiesBrowsePageV2() {
                 {/* Stats Bar */}
                 <div className="mb-6 flex items-center justify-center gap-4">
                   <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md">
-                    <Heart className="w-4 h-4 text-orange-600" />
-                    <span className="text-sm font-semibold text-gray-700">{matchingIndex} vus</span>
+                    <Heart className="w-4 h-4 text-green-600" />
+                    <span className="text-sm font-semibold text-gray-700">{likedProfiles.length} likés</span>
                   </div>
                   <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md">
                     <Users className="w-4 h-4 text-orange-600" />
                     <span className="text-sm font-semibold text-gray-700">{potentialMatches.length - matchingIndex} restants</span>
                   </div>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md">
+                    <X className="w-4 h-4 text-red-500" />
+                    <span className="text-sm font-semibold text-gray-700">{passedProfiles.length} passés</span>
+                  </div>
                 </div>
 
-                {/* Card Stack */}
-                <div className="relative h-[650px] mb-6">
+                {/* 3-Column Layout with Piles */}
+                <div className="relative flex items-stretch justify-center gap-4 mb-6" style={{ minHeight: '650px' }}>
+                  {/* Left Pile - NOPE */}
+                  <div className="hidden lg:flex w-[180px] -ml-8">
+                    <CardPile
+                      type="pass"
+                      cards={passedProfiles}
+                      onUndo={() => {
+                        if (passedProfiles.length > 0) {
+                          const lastPassed = passedProfiles[passedProfiles.length - 1];
+                          setPassedProfiles(prev => prev.slice(0, -1));
+                          setMatchingIndex(prev => Math.max(0, prev - 1));
+                          toast.info(`${lastPassed.first_name} remis dans le deck`);
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Center - Main Card */}
+                  <div className="relative flex-1 max-w-[420px] h-[650px]">
                   {!isAuthenticated ? (
                     // Must be logged in
                     <motion.div
@@ -1177,10 +1204,14 @@ export default function PropertiesBrowsePageV2() {
                               const success = await recordSwipe(currentUser.user_id, action);
 
                               if (success) {
+                                // Add to appropriate pile
                                 if (action === 'like') {
+                                  setLikedProfiles(prev => [...prev, currentUser]);
                                   toast.success('👍 Profil liké !', {
                                     description: `${currentUser.first_name} ${currentUser.last_name}`
                                   });
+                                } else {
+                                  setPassedProfiles(prev => [...prev, currentUser]);
                                 }
                                 // Move to next with animation
                                 setTimeout(() => setMatchingIndex(prev => prev + 1), 300);
@@ -1196,6 +1227,23 @@ export default function PropertiesBrowsePageV2() {
                       </AnimatePresence>
                     </>
                   )}
+                  </div>
+
+                  {/* Right Pile - LIKE */}
+                  <div className="hidden lg:flex w-[180px] -mr-8">
+                    <CardPile
+                      type="like"
+                      cards={likedProfiles}
+                      onUndo={() => {
+                        if (likedProfiles.length > 0) {
+                          const lastLiked = likedProfiles[likedProfiles.length - 1];
+                          setLikedProfiles(prev => prev.slice(0, -1));
+                          setMatchingIndex(prev => Math.max(0, prev - 1));
+                          toast.info(`${lastLiked.first_name} remis dans le deck`);
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {/* Action Buttons */}
@@ -1207,20 +1255,39 @@ export default function PropertiesBrowsePageV2() {
                         const currentUser = potentialMatches[matchingIndex];
                         const success = await recordSwipe(currentUser.user_id, 'pass');
                         if (success) {
+                          setPassedProfiles(prev => [...prev, currentUser]);
                           setMatchingIndex(prev => prev + 1);
                         }
                       }}
-                      className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                      className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform border-2 border-red-200 hover:border-red-400"
                     >
                       <X className="w-8 h-8 text-red-500" />
                     </button>
 
-                    {/* Undo - Not available in this version */}
+                    {/* Undo */}
                     <button
                       onClick={() => {
-                        toast.info('Retour en arrière bientôt disponible');
+                        // Undo from most recent pile
+                        if (likedProfiles.length > 0 || passedProfiles.length > 0) {
+                          const lastLikedTime = likedProfiles.length > 0 ? likedProfiles.length : 0;
+                          const lastPassedTime = passedProfiles.length > 0 ? passedProfiles.length : 0;
+
+                          if (lastLikedTime >= lastPassedTime && likedProfiles.length > 0) {
+                            const lastLiked = likedProfiles[likedProfiles.length - 1];
+                            setLikedProfiles(prev => prev.slice(0, -1));
+                            setMatchingIndex(prev => Math.max(0, prev - 1));
+                            toast.info(`${lastLiked.first_name} remis dans le deck`);
+                          } else if (passedProfiles.length > 0) {
+                            const lastPassed = passedProfiles[passedProfiles.length - 1];
+                            setPassedProfiles(prev => prev.slice(0, -1));
+                            setMatchingIndex(prev => Math.max(0, prev - 1));
+                            toast.info(`${lastPassed.first_name} remis dans le deck`);
+                          }
+                        } else {
+                          toast.info('Rien à annuler');
+                        }
                       }}
-                      disabled={matchingIndex === 0}
+                      disabled={matchingIndex === 0 && likedProfiles.length === 0 && passedProfiles.length === 0}
                       className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       <RotateCcw className="w-6 h-6 text-gray-600" />
@@ -1242,6 +1309,7 @@ export default function PropertiesBrowsePageV2() {
                         const currentUser = potentialMatches[matchingIndex];
                         const success = await recordSwipe(currentUser.user_id, 'like');
                         if (success) {
+                          setLikedProfiles(prev => [...prev, currentUser]);
                           toast.success('👍 Profil liké !', {
                             description: `${currentUser.first_name} ${currentUser.last_name}`
                           });

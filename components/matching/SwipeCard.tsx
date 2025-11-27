@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, memo } from 'react';
-import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
+import { motion, useMotionValue, useTransform, PanInfo, useAnimation } from 'framer-motion';
 import { Heart, X, MapPin, Briefcase, Calendar, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { UserProfile, getCompatibilityQuality } from '@/lib/services/user-matching-service';
@@ -12,16 +12,40 @@ interface SwipeCardProps {
   onSwipe: (direction: 'left' | 'right') => void;
   onCardClick?: () => void;
   swipeAction?: 'like' | 'pass' | null;
+  // Target positions for pile animations
+  likePilePosition?: { x: number; y: number };
+  passPilePosition?: { x: number; y: number };
 }
 
-export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, swipeAction }: SwipeCardProps) {
-  const [exitX, setExitX] = useState(0);
-  const [exitRotate, setExitRotate] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+export const SwipeCard = memo(function SwipeCard({
+  user,
+  onSwipe,
+  onCardClick,
+  swipeAction,
+  likePilePosition,
+  passPilePosition
+}: SwipeCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
+  const controls = useAnimation();
+
+  // Motion values for drag tracking
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-30, 30]);
-  const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
+  const y = useMotionValue(0);
+
+  // Rotate based on x position (Tinder-style rotation)
+  const rotate = useTransform(x, [-300, 0, 300], [-25, 0, 25]);
+
+  // Opacity for LIKE/PASS indicators
+  const likeOpacity = useTransform(x, [0, 100, 150], [0, 0.5, 1]);
+  const passOpacity = useTransform(x, [-150, -100, 0], [1, 0.5, 0]);
+
+  // Scale down as card approaches pile
+  const scale = useTransform(
+    x,
+    [-300, -150, 0, 150, 300],
+    [0.6, 0.8, 1, 0.8, 0.6]
+  );
 
   const calculateAge = (dateOfBirth?: string): number | null => {
     if (!dateOfBirth) return null;
@@ -40,49 +64,86 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
     ? getCompatibilityQuality(user.compatibility_score)
     : null;
 
-  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = useCallback(async (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 100;
+    const velocity = info.velocity.x;
+    const offset = info.offset.x;
 
-    if (info.offset.x > threshold) {
-      // Swiped right (like)
-      setExitX(1000);
-      setExitRotate(25);
+    // Check if swipe is strong enough (by distance or velocity)
+    if (offset > threshold || velocity > 500) {
+      // Swiped right (like) - fly to the like pile
+      setIsLeaving(true);
+
+      // Animate to pile position or default right exit
+      const targetX = likePilePosition?.x ?? window.innerWidth + 200;
+      const targetY = likePilePosition?.y ?? 0;
+
+      await controls.start({
+        x: targetX,
+        y: targetY,
+        rotate: 15,
+        scale: 0.3,
+        opacity: 0,
+        transition: {
+          duration: 0.5,
+          ease: [0.32, 0.72, 0, 1], // Custom easing for natural arc
+        }
+      });
       onSwipe('right');
-    } else if (info.offset.x < -threshold) {
-      // Swiped left (pass) - flip the card
-      setRotateY(180);
-      setTimeout(() => {
-        setExitX(-1000);
-        setExitRotate(-25);
-      }, 300);
-      setTimeout(() => onSwipe('left'), 600);
+    } else if (offset < -threshold || velocity < -500) {
+      // Swiped left (pass) - fly to the pass pile
+      setIsLeaving(true);
+
+      // Animate to pile position or default left exit
+      const targetX = passPilePosition?.x ?? -window.innerWidth - 200;
+      const targetY = passPilePosition?.y ?? 0;
+
+      await controls.start({
+        x: targetX,
+        y: targetY,
+        rotate: -15,
+        scale: 0.3,
+        opacity: 0,
+        transition: {
+          duration: 0.5,
+          ease: [0.32, 0.72, 0, 1],
+        }
+      });
+      onSwipe('left');
+    } else {
+      // Return to center with spring animation
+      controls.start({
+        x: 0,
+        y: 0,
+        rotate: 0,
+        transition: { type: 'spring', stiffness: 500, damping: 30 }
+      });
     }
-  }, [onSwipe]);
+  }, [onSwipe, controls, likePilePosition, passPilePosition]);
 
   return (
     <motion.div
       className="absolute w-full h-full cursor-grab active:cursor-grabbing"
       style={{
         x,
+        y,
         rotate,
-        opacity,
-        rotateY,
-        transformStyle: 'preserve-3d',
+        zIndex: isLeaving ? 0 : 1,
       }}
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
+      drag={!isLeaving}
+      dragElastic={0.9}
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       onDragEnd={handleDragEnd}
-      animate={{ x: exitX, rotate: exitRotate, rotateY }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      animate={controls}
+      whileDrag={{ scale: 1.02 }}
     >
       <motion.div
         className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
-        style={{ transformStyle: 'preserve-3d' }}
         animate={{ height: isExpanded ? 'auto' : '600px' }}
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
-        {/* Card Front */}
-        <div style={{ backfaceVisibility: 'hidden' }}>
+        {/* Card Content */}
+        <div>
         {/* Profile Image - OPTIMIZED with Next.js Image */}
         <div className={`relative overflow-hidden ${isExpanded ? 'h-[360px]' : 'h-[360px]'}`}>
           {user.profile_photo_url ? (
@@ -459,37 +520,27 @@ export const SwipeCard = memo(function SwipeCard({ user, onSwipe, onCardClick, s
           )}
         </div>
 
-        {/* Swipe Indicators */}
+        {/* Swipe Indicators - LIKE (green, left side) */}
         <motion.div
-          className="absolute top-1/4 left-8 text-6xl font-bold text-green-500 opacity-0 rotate-[-20deg] pointer-events-none"
+          className="absolute top-1/4 left-6 px-6 py-3 border-4 border-green-500 rounded-lg pointer-events-none"
           style={{
-            opacity: useTransform(x, [0, 100], [0, 1]),
+            opacity: likeOpacity,
+            rotate: -20,
           }}
         >
-          LIKE
+          <span className="text-4xl font-black text-green-500 tracking-wider">LIKE</span>
         </motion.div>
-        <motion.div
-          className="absolute top-1/4 right-8 text-6xl font-bold text-red-500 opacity-0 rotate-[20deg] pointer-events-none"
-          style={{
-            opacity: useTransform(x, [-100, 0], [1, 0]),
-          }}
-        >
-          PASS
-        </motion.div>
-        </div>
 
-        {/* Card Back - shown when flipped (dislike) */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center"
+        {/* Swipe Indicators - NOPE (red, right side) */}
+        <motion.div
+          className="absolute top-1/4 right-6 px-6 py-3 border-4 border-red-500 rounded-lg pointer-events-none"
           style={{
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
+            opacity: passOpacity,
+            rotate: 20,
           }}
         >
-          <div className="text-center">
-            <X className="w-48 h-48 text-gray-400 opacity-30 mx-auto mb-4" />
-            <p className="text-2xl font-bold text-gray-500">Pas pour moi</p>
-          </div>
+          <span className="text-4xl font-black text-red-500 tracking-wider">NOPE</span>
+        </motion.div>
         </div>
       </motion.div>
     </motion.div>
