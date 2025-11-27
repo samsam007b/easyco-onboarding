@@ -994,7 +994,7 @@ export default function PropertiesBrowsePageV2() {
               </div>
             ) : (
               // People Mode - Find co-searchers to form groups
-              <div className="max-w-lg mx-auto px-4">
+              <div className="max-w-5xl mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-8">
                   <h2 className="text-4xl font-bold text-gray-900 mb-3">
@@ -1025,9 +1025,9 @@ export default function PropertiesBrowsePageV2() {
                 </div>
 
                 {/* 3-Column Layout with Piles */}
-                <div className="relative flex items-start justify-center gap-4 lg:gap-8 mb-6">
-                  {/* Left Pile - NOPE (positioned absolutely on larger screens) */}
-                  <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10">
+                <div className="flex items-center justify-center gap-8 lg:gap-12 mb-6">
+                  {/* Left Pile - NOPE */}
+                  <div className="hidden lg:flex flex-shrink-0">
                     <CardPile
                       type="pass"
                       cards={passedProfiles}
@@ -1043,7 +1043,7 @@ export default function PropertiesBrowsePageV2() {
                   </div>
 
                   {/* Center - Main Card */}
-                  <div className="relative w-full max-w-[420px] h-[650px] mx-auto">
+                  <div className="relative w-full max-w-[420px] h-[650px] flex-shrink-0">
                   {!isAuthenticated ? (
                     // Must be logged in
                     <motion.div
@@ -1229,8 +1229,8 @@ export default function PropertiesBrowsePageV2() {
                   )}
                   </div>
 
-                  {/* Right Pile - LIKE (positioned absolutely on larger screens) */}
-                  <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10">
+                  {/* Right Pile - LIKE */}
+                  <div className="hidden lg:flex flex-shrink-0">
                     <CardPile
                       type="like"
                       cards={likedProfiles}
