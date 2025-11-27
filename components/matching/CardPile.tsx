@@ -24,35 +24,34 @@ export const CardPile = memo(function CardPile({
 
   return (
     <div
-      className={`relative h-full flex flex-col items-center justify-center ${
-        isLike ? 'items-end pr-4' : 'items-start pl-4'
+      className={`flex flex-col items-center w-[160px] ${
+        isLike ? 'items-start' : 'items-end'
       }`}
     >
       {/* Pile header */}
-      <div className={`mb-4 flex items-center gap-2 ${isLike ? 'flex-row-reverse' : ''}`}>
+      <div className={`mb-3 flex items-center gap-2 ${isLike ? '' : 'flex-row-reverse'}`}>
         <div className={`
-          w-10 h-10 rounded-full flex items-center justify-center
+          w-8 h-8 rounded-full flex items-center justify-center
           ${isLike ? 'bg-green-100' : 'bg-red-100'}
         `}>
           {isLike ? (
-            <Heart className="w-5 h-5 text-green-600 fill-green-600" />
+            <Heart className="w-4 h-4 text-green-600 fill-green-600" />
           ) : (
-            <X className="w-5 h-5 text-red-600" strokeWidth={3} />
+            <X className="w-4 h-4 text-red-600" strokeWidth={3} />
           )}
         </div>
-        <div className={`text-center ${isLike ? 'text-right' : 'text-left'}`}>
-          <p className={`text-sm font-bold ${isLike ? 'text-green-700' : 'text-red-700'}`}>
+        <div className={isLike ? 'text-left' : 'text-right'}>
+          <p className={`text-xs font-bold ${isLike ? 'text-green-700' : 'text-red-700'}`}>
             {isLike ? 'LIKE' : 'NOPE'}
           </p>
-          <p className="text-xs text-gray-500">{cards.length} profil{cards.length > 1 ? 's' : ''}</p>
+          <p className="text-[10px] text-gray-500">{cards.length} profil{cards.length > 1 ? 's' : ''}</p>
         </div>
       </div>
 
       {/* Card stack */}
       <div
         className={`
-          relative w-[120px] lg:w-[140px] h-[180px] lg:h-[200px]
-          ${isLike ? 'translate-x-4 lg:translate-x-8' : '-translate-x-4 lg:-translate-x-8'}
+          relative w-[100px] h-[140px]
         `}
       >
         <AnimatePresence mode="popLayout">
@@ -73,44 +72,44 @@ export const CardPile = memo(function CardPile({
             </motion.div>
           ) : (
             visibleCards.map((card, index) => {
-              const offset = index * 4;
+              const offsetX = index * 3;
+              const offsetY = index * 3;
               const rotation = isLike
-                ? 3 + index * 1.5
-                : -3 - index * 1.5;
+                ? 2 + index * 1
+                : -2 - index * 1;
 
               return (
                 <motion.div
                   key={card.user_id}
                   initial={{
-                    x: isLike ? 300 : -300,
-                    y: -100,
-                    rotate: isLike ? 45 : -45,
+                    x: isLike ? 200 : -200,
+                    y: -50,
+                    rotate: isLike ? 30 : -30,
                     opacity: 0,
-                    scale: 0.5
+                    scale: 0.6
                   }}
                   animate={{
-                    x: offset,
-                    y: offset,
+                    x: offsetX,
+                    y: offsetY,
                     rotate: rotation,
-                    opacity: 1,
-                    scale: 1
+                    opacity: 1 - index * 0.15,
+                    scale: 1 - index * 0.05
                   }}
                   exit={{
-                    x: isLike ? 100 : -100,
+                    x: isLike ? 50 : -50,
                     opacity: 0,
-                    scale: 0.8,
-                    transition: { duration: 0.2 }
+                    scale: 0.7,
+                    transition: { duration: 0.15 }
                   }}
                   transition={{
                     type: 'spring',
-                    stiffness: 300,
-                    damping: 25,
-                    delay: index * 0.02
+                    stiffness: 400,
+                    damping: 30,
+                    delay: index * 0.01
                   }}
                   className={`
-                    absolute inset-0 rounded-xl overflow-hidden shadow-lg
+                    absolute inset-0 rounded-lg overflow-hidden shadow-md
                     border-2 ${isLike ? 'border-green-400' : 'border-red-400'}
-                    cursor-pointer hover:scale-105 transition-transform
                   `}
                   style={{
                     zIndex: maxVisible - index,
@@ -123,7 +122,7 @@ export const CardPile = memo(function CardPile({
                         src={card.profile_photo_url}
                         alt={`${card.first_name}`}
                         fill
-                        sizes="140px"
+                        sizes="100px"
                         className="object-cover"
                       />
                     ) : (
@@ -134,34 +133,34 @@ export const CardPile = memo(function CardPile({
                           : 'bg-gradient-to-br from-red-100 to-red-200'
                         }
                       `}>
-                        <span className={`text-2xl font-bold ${isLike ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`text-xl font-bold ${isLike ? 'text-green-600' : 'text-red-600'}`}>
                           {card.first_name.charAt(0)}
                         </span>
                       </div>
                     )}
 
                     {/* Overlay with name */}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                      <p className="text-white text-xs font-semibold truncate">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1.5">
+                      <p className="text-white text-[10px] font-semibold truncate">
                         {card.first_name}
                       </p>
                       {card.compatibility_score && (
-                        <p className={`text-xs ${isLike ? 'text-green-300' : 'text-red-300'}`}>
+                        <p className={`text-[9px] ${isLike ? 'text-green-300' : 'text-red-300'}`}>
                           {card.compatibility_score}%
                         </p>
                       )}
                     </div>
 
-                    {/* Type indicator overlay */}
+                    {/* Small type indicator */}
                     <div className={`
-                      absolute top-2 ${isLike ? 'right-2' : 'left-2'}
-                      w-6 h-6 rounded-full flex items-center justify-center
+                      absolute top-1 ${isLike ? 'right-1' : 'left-1'}
+                      w-4 h-4 rounded-full flex items-center justify-center
                       ${isLike ? 'bg-green-500' : 'bg-red-500'}
                     `}>
                       {isLike ? (
-                        <Heart className="w-3 h-3 text-white fill-white" />
+                        <Heart className="w-2 h-2 text-white fill-white" />
                       ) : (
-                        <X className="w-3 h-3 text-white" strokeWidth={3} />
+                        <X className="w-2 h-2 text-white" strokeWidth={3} />
                       )}
                     </div>
                   </div>
@@ -172,14 +171,16 @@ export const CardPile = memo(function CardPile({
         </AnimatePresence>
       </div>
 
-      {/* Undo button - only show if there are cards and onUndo is provided */}
+      {/* Undo button - compact */}
       {cards.length > 0 && onUndo && (
         <motion.button
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onUndo}
           className={`
-            mt-4 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium
+            mt-2 flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium
             transition-colors
             ${isLike
               ? 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -187,7 +188,7 @@ export const CardPile = memo(function CardPile({
             }
           `}
         >
-          <RotateCcw className="w-3 h-3" />
+          <RotateCcw className="w-2.5 h-2.5" />
           Annuler
         </motion.button>
       )}
