@@ -4,13 +4,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import {
   calculateUserCompatibility,
+  calculatePersonalProfileCompletion,
   UserProfile,
   type CompatibilityResult,
+  type PersonalProfileCompletion,
 } from '@/lib/services/user-matching-service';
 
 export interface UserWithCompatibility extends UserProfile {
   compatibility_score?: number;
   compatibility_result?: CompatibilityResult;
+}
+
+export interface MatchingGateStatus {
+  isUnlocked: boolean;
+  profileCompletion: PersonalProfileCompletion;
+  requiredFields: string[];
 }
 
 export type SwipeContext = 'searcher_matching' | 'resident_matching';
@@ -135,8 +143,17 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
   const [potentialMatches, setPotentialMatches] = useState<UserWithCompatibility[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
+  const [matchingGateStatus, setMatchingGateStatus] = useState<MatchingGateStatus | null>(null);
+  const [extendedUserData, setExtendedUserData] = useState<{
+    phone_number?: string;
+    email?: string;
+    kyc_verified?: boolean;
+    iban?: string;
+    profile_photo_url?: string;
+  } | null>(null);
 
   // Load current user's profile from user_profiles (has all matching data)
+  // Also loads extended data for profile completion gate check
   const loadCurrentUserProfile = useCallback(async () => {
     if (!currentUserId) {
       console.log('No user ID provided');
@@ -146,6 +163,8 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
     try {
       console.log('Loading profile for user:', currentUserId);
+
+      // Load main profile
       const { data: profile, error } = await supabase
         .from('user_profiles')
         .select('*')
@@ -157,9 +176,48 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
         throw error;
       }
 
+      // Load user email from auth
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+
+      // Load verification data if exists
+      const { data: verification } = await supabase
+        .from('user_verifications')
+        .select('kyc_status, phone_verified')
+        .eq('user_id', currentUserId)
+        .single();
+
+      // Store extended data for gate check
+      const extended = {
+        phone_number: profile.phone_number as string | undefined,
+        email: authUser?.email,
+        kyc_verified: verification?.kyc_status === 'verified',
+        iban: profile.iban as string | undefined,
+        profile_photo_url: profile.profile_photo_url as string | undefined,
+      };
+      setExtendedUserData(extended);
+
       console.log('Profile loaded successfully:', profile);
       const mappedProfile = mapDbProfileToUserProfile(profile as Record<string, unknown>);
       setCurrentUserProfile(mappedProfile);
+
+      // Calculate personal profile completion for gate check
+      const profileCompletion = calculatePersonalProfileCompletion(mappedProfile, extended);
+
+      setMatchingGateStatus({
+        isUnlocked: profileCompletion.isUnlocked,
+        profileCompletion,
+        requiredFields: profileCompletion.requiredForUnlock,
+      });
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Matching Gate]', {
+          isUnlocked: profileCompletion.isUnlocked,
+          percentage: `${profileCompletion.percentage}%`,
+          filledFields: `${profileCompletion.filledFields}/${profileCompletion.totalFields}`,
+          missingCategories: profileCompletion.missingCategories.filter(c => !c.isComplete).map(c => c.label),
+          requiredForUnlock: profileCompletion.requiredForUnlock,
+        });
+      }
     } catch (error) {
       console.error('Failed to load current user profile:', error);
       setCurrentUserProfile(null);
@@ -370,5 +428,8 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
     getMatches,
     checkIfMatched,
     loadPotentialMatches,
+    // New: Gate status for profile completion requirement
+    matchingGateStatus,
+    isMatchingUnlocked: matchingGateStatus?.isUnlocked ?? false,
   };
 }
