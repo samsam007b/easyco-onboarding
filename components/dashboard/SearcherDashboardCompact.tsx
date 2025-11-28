@@ -196,20 +196,20 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
   }
 
   return (
-    <div className="px-4 py-4">
-      {/* Main Unified Card - Orange/Yellow dominant */}
+    <div className="px-4 py-2">
+      {/* Main Unified Card - Orange/Yellow dominant with better contrast */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FFA040] via-[#FFB85C] to-[#FFD080] shadow-xl"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E88A2D] via-[#F5A035] to-[#FFB85C] shadow-xl"
       >
-        {/* Grain texture overlay */}
-        <div className="absolute inset-0 opacity-30" style={{
+        {/* Grain texture overlay - reduced opacity */}
+        <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }} />
 
-        {/* Glass effect overlay */}
-        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]" />
+        {/* Subtle dark overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black/5" />
 
         <div className="relative z-10 p-5">
           {/* Header: Profile + Quick actions */}
@@ -244,10 +244,10 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
               {/* Welcome text */}
               <div>
-                <h1 className="text-lg font-bold text-white drop-shadow-sm">
+                <h1 className="text-lg font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
                   Salut, {userData.full_name.split(' ')[0]} !
                 </h1>
-                <p className="text-xs text-white/80">
+                <p className="text-xs text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
                   {preferences.cities.length > 0
                     ? `Recherche à ${preferences.cities.slice(0, 2).join(', ')}`
                     : 'Configure ta recherche'}
@@ -277,66 +277,66 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             {/* Matchs */}
             <button
               onClick={() => router.push('/matching/matches')}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl p-3 transition text-center"
+              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl p-3 transition text-center shadow-sm"
             >
-              <Heart className="w-5 h-5 text-white mx-auto mb-1" />
-              <p className="text-lg font-bold text-white">{stats.likedProfiles}</p>
-              <p className="text-[10px] text-white/80">Matchs</p>
+              <Heart className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
+              <p className="text-lg font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.likedProfiles}</p>
+              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Matchs</p>
             </button>
 
             {/* Favoris */}
             <button
               onClick={() => router.push('/dashboard/searcher/favorites')}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl p-3 transition text-center"
+              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl p-3 transition text-center shadow-sm"
             >
-              <Bookmark className="w-5 h-5 text-white mx-auto mb-1" />
-              <p className="text-lg font-bold text-white">{stats.favoritesCount}</p>
-              <p className="text-[10px] text-white/80">Favoris</p>
+              <Bookmark className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
+              <p className="text-lg font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.favoritesCount}</p>
+              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Favoris</p>
             </button>
 
             {/* Messages */}
             <button
               onClick={() => router.push('/dashboard/searcher/messages')}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl p-3 transition text-center relative"
+              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl p-3 transition text-center relative shadow-sm"
             >
               {stats.unreadMessages > 0 && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center shadow-md">
                   <span className="text-[8px] font-bold text-white">{stats.unreadMessages}</span>
                 </div>
               )}
-              <MessageCircle className="w-5 h-5 text-white mx-auto mb-1" />
-              <p className="text-lg font-bold text-white">{stats.unreadMessages}</p>
-              <p className="text-[10px] text-white/80">Messages</p>
+              <MessageCircle className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
+              <p className="text-lg font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.unreadMessages}</p>
+              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Messages</p>
             </button>
 
             {/* Profil */}
             <button
               onClick={() => router.push('/dashboard/my-profile')}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl p-3 transition text-center"
+              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl p-3 transition text-center shadow-sm"
             >
               {stats.profileCompletion >= 100 ? (
-                <CheckCircle2 className="w-5 h-5 text-white mx-auto mb-1" />
+                <CheckCircle2 className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
               ) : (
-                <AlertCircle className="w-5 h-5 text-white mx-auto mb-1" />
+                <AlertCircle className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
               )}
-              <p className="text-lg font-bold text-white">{stats.profileCompletion}%</p>
-              <p className="text-[10px] text-white/80">Profil</p>
+              <p className="text-lg font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.profileCompletion}%</p>
+              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Profil</p>
             </button>
           </div>
 
           {/* Collapsible Sections - Inside the card */}
           <div className="space-y-2">
             {/* Ma Recherche Idéale */}
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl overflow-hidden">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleSection('search')}
                 className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 transition"
               >
                 <div className="flex items-center gap-3">
-                  <Target className="w-4 h-4 text-white" />
+                  <Target className="w-4 h-4 text-white drop-shadow-sm" />
                   <div className="text-left">
-                    <p className="text-sm font-semibold text-white">Ma Recherche</p>
-                    <p className="text-[10px] text-white/70">
+                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Ma Recherche</p>
+                    <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                       {preferences.minBudget}-{preferences.maxBudget}€ • {preferences.cities.slice(0, 2).join(', ') || 'Non défini'}
                     </p>
                   </div>
@@ -385,16 +385,16 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             </div>
 
             {/* Mon Groupe de Coloc */}
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl overflow-hidden">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleSection('group')}
                 className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 transition"
               >
                 <div className="flex items-center gap-3">
-                  <Users className="w-4 h-4 text-white" />
+                  <Users className="w-4 h-4 text-white drop-shadow-sm" />
                   <div className="text-left">
-                    <p className="text-sm font-semibold text-white">Mon Groupe</p>
-                    <p className="text-[10px] text-white/70">
+                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Mon Groupe</p>
+                    <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                       Toi + {stats.likedProfiles} profils likés
                     </p>
                   </div>
@@ -451,16 +451,16 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             </div>
 
             {/* Mes Alertes */}
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl overflow-hidden">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleSection('alerts')}
                 className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 transition"
               >
                 <div className="flex items-center gap-3">
-                  <Bell className="w-4 h-4 text-white" />
+                  <Bell className="w-4 h-4 text-white drop-shadow-sm" />
                   <div className="text-left">
-                    <p className="text-sm font-semibold text-white">Mes Alertes</p>
-                    <p className="text-[10px] text-white/70">
+                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Mes Alertes</p>
+                    <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                       {alerts.active} alertes actives
                     </p>
                   </div>
