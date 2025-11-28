@@ -4,7 +4,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Loader2, MessageSquare } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 import { cn } from '@/lib/utils';
 import type { Conversation } from '@/hooks/useConversations';
 
@@ -24,7 +25,7 @@ export function ConversationList({
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+        <LoadingHouse size={48} />
       </div>
     );
   }
