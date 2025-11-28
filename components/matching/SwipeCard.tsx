@@ -19,7 +19,6 @@ import {
   Utensils,
   Heart,
   AlertTriangle,
-  CheckCircle2,
   XCircle,
   Globe,
   MessageCircle
@@ -39,6 +38,8 @@ interface SwipeCardProps {
   swipeAction?: 'like' | 'pass' | null;
   likePilePosition?: { x: number; y: number };
   passPilePosition?: { x: number; y: number };
+  isExpanded?: boolean;
+  onExpandChange?: (expanded: boolean) => void;
 }
 
 export const SwipeCard = memo(function SwipeCard({
@@ -47,9 +48,21 @@ export const SwipeCard = memo(function SwipeCard({
   onCardClick,
   swipeAction,
   likePilePosition,
-  passPilePosition
+  passPilePosition,
+  isExpanded: controlledExpanded,
+  onExpandChange
 }: SwipeCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
+  const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
+
+  const handleExpandToggle = () => {
+    const newValue = !isExpanded;
+    if (onExpandChange) {
+      onExpandChange(newValue);
+    } else {
+      setInternalExpanded(newValue);
+    }
+  };
   const [isLeaving, setIsLeaving] = useState(false);
   const controls = useAnimation();
 
@@ -235,7 +248,7 @@ export const SwipeCard = memo(function SwipeCard({
           className="p-5 cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            setIsExpanded(!isExpanded);
+            handleExpandToggle();
           }}
         >
           {/* Key Stats Grid */}
@@ -361,61 +374,6 @@ export const SwipeCard = memo(function SwipeCard({
                     À propos
                   </p>
                   <p className="text-gray-700 text-sm leading-relaxed">{user.bio}</p>
-                </div>
-              )}
-
-              {/* Compatibility Breakdown */}
-              {user.compatibility_result && (
-                <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4">
-                  <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-orange-500" />
-                    Pourquoi ce match ?
-                  </p>
-
-                  {/* Score Breakdown */}
-                  <div className="grid grid-cols-5 gap-2 mb-3">
-                    {[
-                      { label: 'Vie', score: user.compatibility_result.breakdown.lifestyle, max: 30 },
-                      { label: 'Social', score: user.compatibility_result.breakdown.social, max: 25 },
-                      { label: 'Pratique', score: user.compatibility_result.breakdown.practical, max: 20 },
-                      { label: 'Valeurs', score: user.compatibility_result.breakdown.values, max: 15 },
-                      { label: 'Prefs', score: user.compatibility_result.breakdown.preferences, max: 10 },
-                    ].map((item, idx) => (
-                      <div key={idx} className="text-center">
-                        <div className="relative w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mb-1">
-                          <div
-                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full"
-                            style={{ width: `${(item.score / item.max) * 100}%` }}
-                          />
-                        </div>
-                        <p className="text-[10px] text-gray-600">{item.label}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Strengths */}
-                  {user.compatibility_result.strengths.length > 0 && (
-                    <div className="space-y-1">
-                      {user.compatibility_result.strengths.slice(0, 3).map((strength, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-xs text-green-700">
-                          <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                          <span>{strength}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Considerations */}
-                  {user.compatibility_result.considerations.length > 0 && (
-                    <div className="space-y-1 mt-2">
-                      {user.compatibility_result.considerations.slice(0, 2).map((consideration, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-xs text-amber-700">
-                          <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                          <span>{consideration}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               )}
 

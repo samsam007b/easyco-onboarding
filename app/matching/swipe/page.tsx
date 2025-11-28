@@ -7,10 +7,11 @@ import { SwipeCard } from '@/components/matching/SwipeCard';
 import { useUserMatching, type SwipeContext, type UserWithCompatibility } from '@/lib/hooks/use-user-matching';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Heart, X, Info, Users, RotateCcw } from 'lucide-react';
+import { Heart, X, Info, Users, RotateCcw, Sparkles, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface SwipedCard {
   user: UserWithCompatibility;
@@ -26,6 +27,7 @@ export default function SwipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeHistory, setSwipeHistory] = useState<SwipedCard[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isCardExpanded, setIsCardExpanded] = useState(false);
 
   const {
     currentUserProfile,
@@ -147,8 +149,13 @@ export default function SwipePage() {
     );
   }
 
+  // Reset expansion when card changes
+  const handleSwipeComplete = () => {
+    setIsCardExpanded(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 overflow-hidden">
+    <div className={cn("min-h-screen bg-gray-50 p-4 md:p-8", isCardExpanded ? "overflow-auto" : "overflow-hidden")}>
       {/* Header */}
       <div className="max-w-md mx-auto mb-6 relative z-50">
         <div className="flex items-center justify-between mb-4">
@@ -331,10 +338,15 @@ export default function SwipePage() {
                   >
                     <SwipeCard
                       user={currentCard}
-                      onSwipe={handleSwipe}
+                      onSwipe={(direction) => {
+                        handleSwipe(direction);
+                        handleSwipeComplete();
+                      }}
                       onCardClick={() => {
                         toast.info('Full profile view coming soon!');
                       }}
+                      isExpanded={isCardExpanded}
+                      onExpandChange={setIsCardExpanded}
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -381,53 +393,133 @@ export default function SwipePage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        {currentCard && (
-          <div className="flex items-center justify-center gap-6 relative z-50">
-            {/* Pass Button */}
-            <button
-              onClick={handlePass}
-              disabled={isAnimating}
-              className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
-              aria-label="Pass"
-            >
-              <X className="w-8 h-8 text-red-500" />
-            </button>
-
-            {/* Undo Button */}
-            <button
-              onClick={handleUndo}
-              disabled={swipeHistory.length === 0 || isAnimating}
-              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Undo"
-            >
-              <RotateCcw className="w-5 h-5 text-gray-600" />
-            </button>
-
-            {/* Info Button */}
-            <button
-              onClick={() => {
-                toast.info('Détails de compatibilité bientôt disponibles !');
-              }}
-              disabled={isAnimating}
-              className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
-              aria-label="Info"
-            >
-              <Info className="w-5 h-5 text-orange-600" />
-            </button>
-
-            {/* Like Button */}
-            <button
-              onClick={handleLike}
-              disabled={isAnimating}
-              className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
-              aria-label="Like"
-            >
-              <Heart className="w-8 h-8 text-white fill-current" />
-            </button>
-          </div>
-        )}
       </div>
+
+      {/* Why This Match Section - Outside the card stack */}
+      <AnimatePresence>
+        {isCardExpanded && currentCard?.compatibility_result && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="max-w-md mx-auto mt-6 px-4"
+          >
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-5 shadow-lg border border-orange-100">
+              <p className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-orange-500" />
+                Pourquoi ce match ?
+              </p>
+
+              {/* Score Breakdown */}
+              <div className="grid grid-cols-5 gap-3 mb-4">
+                {[
+                  { label: 'Style de vie', score: currentCard.compatibility_result.breakdown.lifestyle, max: 30 },
+                  { label: 'Social', score: currentCard.compatibility_result.breakdown.social, max: 25 },
+                  { label: 'Pratique', score: currentCard.compatibility_result.breakdown.practical, max: 20 },
+                  { label: 'Valeurs', score: currentCard.compatibility_result.breakdown.values, max: 15 },
+                  { label: 'Préfs', score: currentCard.compatibility_result.breakdown.preferences, max: 10 },
+                ].map((item, idx) => (
+                  <div key={idx} className="text-center">
+                    <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-1.5">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(item.score / item.max) * 100}%` }}
+                        transition={{ duration: 0.5, delay: idx * 0.1 }}
+                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full"
+                      />
+                    </div>
+                    <p className="text-[10px] text-gray-600 font-medium">{item.label}</p>
+                    <p className="text-xs font-bold text-orange-600">{Math.round((item.score / item.max) * 100)}%</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Strengths */}
+              {currentCard.compatibility_result.strengths.length > 0 && (
+                <div className="space-y-2 mb-3">
+                  <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Points forts</p>
+                  {currentCard.compatibility_result.strengths.slice(0, 3).map((strength, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2">
+                      <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{strength}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Considerations */}
+              {currentCard.compatibility_result.considerations.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">À considérer</p>
+                  {currentCard.compatibility_result.considerations.slice(0, 2).map((consideration, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2">
+                      <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{consideration}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Action Buttons - Below the card and "Why this match" section */}
+      {currentCard && (
+        <motion.div
+          layout
+          className={cn(
+            "flex items-center justify-center gap-6 relative z-50",
+            isCardExpanded ? "mt-8 mb-8" : "mt-6"
+          )}
+        >
+          {/* Pass Button */}
+          <button
+            onClick={handlePass}
+            disabled={isAnimating}
+            className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
+            aria-label="Pass"
+          >
+            <X className="w-8 h-8 text-red-500" />
+          </button>
+
+          {/* Undo Button */}
+          <button
+            onClick={handleUndo}
+            disabled={swipeHistory.length === 0 || isAnimating}
+            className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Undo"
+          >
+            <RotateCcw className="w-5 h-5 text-gray-600" />
+          </button>
+
+          {/* Info Button - Show/Hide compatibility */}
+          <button
+            onClick={() => setIsCardExpanded(!isCardExpanded)}
+            disabled={isAnimating}
+            className={cn(
+              "w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all active:scale-95 disabled:opacity-50",
+              isCardExpanded
+                ? "bg-orange-500 text-white"
+                : "bg-white text-orange-600"
+            )}
+            aria-label="Info"
+          >
+            <Info className="w-5 h-5" />
+          </button>
+
+          {/* Like Button */}
+          <button
+            onClick={handleLike}
+            disabled={isAnimating}
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
+            aria-label="Like"
+          >
+            <Heart className="w-8 h-8 text-white fill-current" />
+          </button>
+        </motion.div>
+      )}
 
       {/* Bottom Navigation */}
       <div className="max-w-md mx-auto mt-8 relative z-50">
