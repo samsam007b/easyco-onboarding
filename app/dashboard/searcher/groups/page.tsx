@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Plus, MessageCircle, MapPin, Euro, Calendar, Search, TrendingUp, Heart, Briefcase, UserPlus, Check, Sparkles } from 'lucide-react';
+import { Users, Plus, MessageCircle, MapPin, Euro, Calendar, Search, TrendingUp, Heart, Briefcase, UserPlus, Check, Sparkles, Home, Settings, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,9 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import { UserProfile } from '@/lib/services/user-matching-service';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { useMatching } from '@/lib/hooks/use-matching';
+import PropertyCard from '@/components/PropertyCard';
+import { getResidentsForProperties } from '@/lib/services/rooms.service';
 
 interface Group {
   id: string;
@@ -34,6 +37,19 @@ export default function GroupsPage() {
   const [matches, setMatches] = useState<UserProfile[]>([]);
   const [selectedMatches, setSelectedMatches] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [residentsData, setResidentsData] = useState<Map<string, any[]>>(new Map());
+
+  // Hook for property matching
+  const {
+    propertiesWithMatches,
+    userPreferences,
+    isLoading: matchingLoading,
+    loadPropertiesWithMatches,
+    getTopMatches,
+  } = useMatching(userId || undefined);
+
+  const topMatches = getTopMatches(70); // Properties with score >= 70%
 
   useEffect(() => {
     const loadData = async () => {
@@ -46,6 +62,9 @@ export default function GroupsPage() {
           router.push('/login');
           return;
         }
+
+        // Set userId for property matching
+        setUserId(user.id);
 
         // Load user's groups from group_members table
         const { data: groupMemberships, error: membershipsError } = await supabase
@@ -135,6 +154,26 @@ export default function GroupsPage() {
 
     loadData();
   }, [router]);
+
+  // Load properties when userId is set
+  useEffect(() => {
+    if (userId && !matchingLoading) {
+      loadPropertiesWithMatches();
+    }
+  }, [userId, loadPropertiesWithMatches, matchingLoading]);
+
+  // Load residents for properties
+  useEffect(() => {
+    const loadResidents = async () => {
+      if (propertiesWithMatches.length > 0) {
+        const propertyIds = propertiesWithMatches.map(p => p.id);
+        const residents = await getResidentsForProperties(propertyIds);
+        setResidentsData(residents);
+      }
+    };
+
+    loadResidents();
+  }, [propertiesWithMatches]);
 
   const toggleSelectMatch = (userId: string) => {
     const newSelected = new Set(selectedMatches);
@@ -662,6 +701,186 @@ export default function GroupsPage() {
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
                     Créer un groupe public
                   </Button>
+                </CardContent>
+              </Card>
+            )}
+          </section>
+
+          {/* Top Properties Matches Section */}
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                  <Home className="w-8 h-8 text-orange-600" />
+                  Propriétés Recommandées
+                </h2>
+                <p className="text-gray-600 mt-1">
+                  Logements qui correspondent à tes critères
+                </p>
+              </div>
+              {topMatches.length > 0 && (
+                <Badge className="bg-orange-100 text-orange-700 px-4 py-2 text-base hover:bg-orange-100">
+                  {topMatches.length} {topMatches.length > 1 ? 'matchs' : 'match'}
+                </Badge>
+              )}
+            </div>
+
+            {!userPreferences ? (
+              /* No preferences set */
+              <Card className="rounded-3xl border-2 border-dashed border-orange-200 bg-gradient-to-br from-orange-50/50 to-white">
+                <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center">
+                      <Settings className="w-12 h-12 text-orange-400" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                      <Home className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Configure tes préférences
+                  </h3>
+                  <p className="text-gray-600 max-w-md mb-6">
+                    Complète ton profil et tes préférences pour obtenir des recommandations de logements personnalisées.
+                  </p>
+                  <Button
+                    onClick={() => router.push('/settings/preferences')}
+                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl px-8 py-6 gap-3 shadow-xl hover:shadow-2xl transition-all group"
+                    size="lg"
+                  >
+                    <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                    Configurer mes préférences
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : topMatches.length > 0 ? (
+              <>
+                {/* Stats Banner */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <Card className="bg-white border-orange-100 shadow-md hover:shadow-lg transition-shadow rounded-2xl">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <Sparkles className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-medium">Top Matchs</p>
+                          <p className="text-xl font-bold text-gray-900">{topMatches.length}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-white border-orange-100 shadow-md hover:shadow-lg transition-shadow rounded-2xl">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <Home className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-medium">Total analysé</p>
+                          <p className="text-xl font-bold text-gray-900">{propertiesWithMatches.length}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-white border-orange-100 shadow-md hover:shadow-lg transition-shadow rounded-2xl">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <Euro className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-medium">Budget</p>
+                          <p className="text-lg font-bold text-gray-900">
+                            {userPreferences.min_budget ? `€${userPreferences.min_budget}` : '?'} - {userPreferences.max_budget ? `€${userPreferences.max_budget}` : '?'}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Properties Grid - Show first 6 */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {topMatches.slice(0, 6).map((property) => {
+                    const residents = residentsData.get(property.id) || [];
+                    const matchScore = property.matchResult?.score;
+
+                    return (
+                      <PropertyCard
+                        key={property.id}
+                        property={{
+                          id: property.id,
+                          title: property.title,
+                          description: property.description,
+                          city: property.city,
+                          neighborhood: property.neighborhood,
+                          monthly_rent: property.price,
+                          bedrooms: property.bedrooms,
+                          property_type: 'Colocation',
+                          main_image: property.images?.[0],
+                          images: property.images,
+                          available_from: property.available_from,
+                        }}
+                        residents={residents}
+                        showCompatibilityScore={true}
+                        compatibilityScore={matchScore}
+                        variant="default"
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* See all button */}
+                {topMatches.length > 6 && (
+                  <div className="mt-6 text-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push('/matching/properties')}
+                      className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
+                    >
+                      Voir les {topMatches.length - 6} autres propriétés
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              /* No matches found */
+              <Card className="rounded-3xl border-2 border-dashed border-orange-200 bg-gradient-to-br from-orange-50/50 to-white">
+                <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center">
+                      <Home className="w-12 h-12 text-orange-400" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                      <Search className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Aucun match élevé trouvé
+                  </h3>
+                  <p className="text-gray-600 max-w-md mb-6">
+                    Ajuste tes préférences ou reviens plus tard pour de nouvelles annonces qui correspondent mieux à tes critères.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push('/settings/preferences')}
+                      className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Ajuster mes préférences
+                    </Button>
+                    <Button
+                      onClick={() => router.push('/matching/properties')}
+                      className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl gap-2"
+                    >
+                      Explorer toutes les propriétés
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}

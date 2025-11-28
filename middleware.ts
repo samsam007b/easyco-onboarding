@@ -75,6 +75,7 @@ export async function middleware(request: NextRequest) {
     '/properties': '/dashboard/searcher',
     '/properties/browse': '/dashboard/searcher',
     '/matching/matches': '/dashboard/searcher/groups',
+    '/dashboard/searcher/top-matches': '/dashboard/searcher/groups',
   }
 
   // Check if current path needs redirection

@@ -103,7 +103,7 @@ function SearcherMessagesContent() {
         );
       case 'searchers':
         return (
-          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} className={buttonClass}>
+          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
             <Users className="w-5 h-5 mr-2" />
             Trouver des colocataires
           </Button>
@@ -117,7 +117,7 @@ function SearcherMessagesContent() {
         );
       case 'requests':
         return (
-          <Button onClick={() => router.push('/dashboard/searcher/top-matches')} className={buttonClass}>
+          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
             <Heart className="w-5 h-5 mr-2" />
             Voir mes matchs
           </Button>
@@ -600,7 +600,7 @@ function SearcherMessagesContent() {
                 </p>
 
                 <Button
-                  onClick={() => router.push('/dashboard/searcher/top-matches')}
+                  onClick={() => router.push('/dashboard/searcher/groups')}
                   className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 >
                   <Users className="w-5 h-5 mr-2" />
@@ -716,7 +716,7 @@ function SearcherMessagesContent() {
                           </Button>
                           <Button
                             variant="outline"
-                            onClick={() => router.push(`/dashboard/searcher/top-matches?user=${request.user_id}`)}
+                            onClick={() => router.push(`/dashboard/searcher/groups?user=${request.user_id}`)}
                             className="rounded-full border-orange-200 hover:bg-orange-50 text-gray-700"
                           >
                             Voir le profil

@@ -336,7 +336,7 @@ export default function ModernSearcherDashboard() {
       icon: Heart,
       gradient: 'from-[#FF6F3C] to-[#FF8C5C]',
       bg: 'from-orange-50 to-orange-100/50',
-      action: () => router.push('/dashboard/searcher/top-matches'),
+      action: () => router.push('/dashboard/searcher/groups'),
     },
     {
       title: 'Candidatures',
@@ -508,7 +508,7 @@ export default function ModernSearcherDashboard() {
                 <h2 className="text-2xl font-bold text-gray-900">Tes meilleurs matchs</h2>
               </div>
               {stats.topMatchesCount > 4 && (
-                <Button variant="outline" onClick={() => router.push('/dashboard/searcher/top-matches')}>
+                <Button variant="outline" onClick={() => router.push('/dashboard/searcher/groups')}>
                   Voir tous ({stats.topMatchesCount})
                 </Button>
               )}

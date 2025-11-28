@@ -109,7 +109,7 @@ export default function ModernSearcherHeader({
     },
     {
       id: 'matches',
-      href: '/dashboard/searcher/top-matches',
+      href: '/dashboard/searcher/groups',
       label: nav.matches,
       icon: Heart,
       badge: matchesCount > 0 ? matchesCount : null,
@@ -291,7 +291,7 @@ export default function ModernSearcherHeader({
                       <div className="max-h-96 overflow-y-auto">
                         {matchesCount > 0 && (
                           <Link
-                            href="/dashboard/searcher/top-matches"
+                            href="/dashboard/searcher/groups"
                             className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >

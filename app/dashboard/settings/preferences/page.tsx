@@ -453,7 +453,7 @@ export default function PreferencesEditorPage() {
             {topMatches.length > 0 && (
               <Button
                 className="w-full"
-                onClick={() => router.push('/dashboard/searcher/top-matches')}
+                onClick={() => router.push('/dashboard/searcher/groups')}
               >
                 View {topMatches.length} Top Matches
               </Button>
