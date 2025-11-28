@@ -6,7 +6,8 @@ import { logger } from '@/lib/utils/logger';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bookmark, Trash2, Bell, BellOff, Loader2 } from 'lucide-react';
+import { Bookmark, Trash2, Bell, BellOff } from 'lucide-react';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -102,7 +103,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+        <LoadingHouse size={40} />
       </div>
     );
   }
