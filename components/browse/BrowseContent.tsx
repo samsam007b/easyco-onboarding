@@ -260,41 +260,53 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
 
   return (
     <div id="browse-content" className="pb-8">
-      {/* View Mode Toggle */}
-      <div className="py-6 px-4">
+      {/* View Mode Toggle - Large & Dominant with Sliding Pill */}
+      <div className="py-4 px-4">
         <div className="flex justify-center mb-4">
-          <div className="inline-flex items-center bg-gray-100 rounded-full p-1.5 shadow-sm">
+          <div className="relative inline-flex items-center bg-gray-100 rounded-full p-2 shadow-lg">
+            {/* Sliding pill background */}
+            <motion.div
+              className="absolute top-2 bottom-2 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] shadow-lg"
+              initial={false}
+              animate={{
+                left: viewMode === 'list' ? '8px' : viewMode === 'map' ? 'calc(33.33% + 4px)' : 'calc(66.66% + 0px)',
+                width: 'calc(33.33% - 8px)',
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 400,
+                damping: 30,
+              }}
+            />
+
             <button
               onClick={() => setViewMode('list')}
-              className={`px-5 py-2.5 rounded-full flex items-center gap-2 transition-all font-medium text-sm ${
-                viewMode === 'list'
-                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
-                  : 'text-gray-600 hover:text-orange-600'
-              }`}
+              className={cn(
+                "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
+                viewMode === 'list' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+              )}
             >
-              <List className="w-4 h-4" />
+              <List className="w-5 h-5" />
               Liste
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`px-5 py-2.5 rounded-full flex items-center gap-2 transition-all font-medium text-sm ${
-                viewMode === 'map'
-                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
-                  : 'text-gray-600 hover:text-orange-600'
-              }`}
+              className={cn(
+                "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
+                viewMode === 'map' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+              )}
             >
-              <MapIcon className="w-4 h-4" />
+              <MapIcon className="w-5 h-5" />
               Carte
             </button>
             <button
               onClick={() => setViewMode('matching')}
-              className={`px-5 py-2.5 rounded-full flex items-center gap-2 transition-all font-medium text-sm ${
-                viewMode === 'matching'
-                  ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white shadow-md'
-                  : 'text-gray-600 hover:text-orange-600'
-              }`}
+              className={cn(
+                "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
+                viewMode === 'matching' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+              )}
             >
-              <Users className="w-4 h-4" />
+              <Users className="w-5 h-5" />
               People
             </button>
           </div>
