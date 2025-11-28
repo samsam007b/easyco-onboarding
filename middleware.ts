@@ -72,7 +72,8 @@ export async function middleware(request: NextRequest) {
     '/auth/login': '/auth',
     '/login': '/auth',
     '/signup': '/auth?mode=signup',
-    '/properties': '/properties/browse',
+    '/properties': '/dashboard/searcher',
+    '/properties/browse': '/dashboard/searcher',
   }
 
   // Check if current path needs redirection
@@ -88,7 +89,6 @@ export async function middleware(request: NextRequest) {
     '/reset-password',
     '/terms',
     '/privacy',
-    '/properties/browse', // Public property search
     '/legal',
   ]
 

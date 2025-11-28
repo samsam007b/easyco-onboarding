@@ -122,7 +122,7 @@ export const ROUTES = {
 
   // Properties routes
   PROPERTIES: {
-    BROWSE: '/properties/browse',
+    BROWSE: '/dashboard/searcher', // Redirect to main searcher dashboard
     ADD: '/properties/add',
     VIEW: (id: string) => `/properties/${id}`,
     EDIT: (id: string) => `/properties/edit/${id}`,

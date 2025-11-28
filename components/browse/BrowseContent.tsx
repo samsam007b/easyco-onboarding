@@ -259,7 +259,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   }
 
   return (
-    <div className="pb-8">
+    <div id="browse-content" className="pb-8">
       {/* View Mode Toggle */}
       <div className="py-6 px-4">
         <div className="flex justify-center mb-4">

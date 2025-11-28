@@ -435,7 +435,13 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                           Voir
                         </Button>
                         <Button
-                          onClick={() => router.push('/properties/browse?viewMode=matching')}
+                          onClick={() => {
+                            // Scroll to browse section and activate People mode
+                            const browseSection = document.getElementById('browse-content');
+                            if (browseSection) {
+                              browseSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
                           variant="ghost"
                           size="sm"
                           className="flex-1 rounded-full bg-white/20 hover:bg-white/30 text-white border-0"

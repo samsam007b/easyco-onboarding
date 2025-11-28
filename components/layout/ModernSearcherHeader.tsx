@@ -101,12 +101,6 @@ export default function ModernSearcherHeader({
 
   const navItems = [
     {
-      id: 'browse',
-      href: '/properties/browse',
-      label: nav.browse,
-      icon: Search,
-    },
-    {
       id: 'favorites',
       href: '/dashboard/searcher/favorites',
       label: nav.favorites,
