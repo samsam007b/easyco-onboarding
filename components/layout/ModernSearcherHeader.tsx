@@ -108,13 +108,6 @@ export default function ModernSearcherHeader({
       badge: favoritesCount > 0 ? favoritesCount : null,
     },
     {
-      id: 'matches',
-      href: '/dashboard/searcher/groups',
-      label: nav.matches,
-      icon: Heart,
-      badge: matchesCount > 0 ? matchesCount : null,
-    },
-    {
       id: 'visits',
       href: '/dashboard/searcher/my-visits',
       label: nav.visits,
@@ -131,6 +124,7 @@ export default function ModernSearcherHeader({
       href: '/dashboard/searcher/groups',
       label: nav.groups,
       icon: Users,
+      badge: matchesCount > 0 ? matchesCount : null,
     },
     {
       id: 'messages',
