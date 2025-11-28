@@ -5,28 +5,19 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Heart,
   MessageCircle,
   Bookmark,
-  FileText,
   ChevronDown,
-  ChevronRight,
   MapPin,
   Euro,
-  Calendar,
   Users,
-  Bell,
   Settings,
-  Sparkles,
   Target,
-  Search,
   Edit3,
   CheckCircle2,
   AlertCircle,
-  Trophy
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -78,10 +69,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
     maxBudget: 2000,
   });
 
-  const [alerts, setAlerts] = useState<{ active: number; newResults: number }>({
-    active: 0,
-    newResults: 0,
-  });
 
   useEffect(() => {
     loadDashboardData();
@@ -119,12 +106,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
       } catch (err) {
         console.error('Unread count failed:', err);
       }
-
-      // Load alerts count
-      const { count: alertsCount } = await supabase
-        .from('saved_searches')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId);
 
       // Calculate profile completion & load preferences
       const { data: profile } = await supabase
@@ -169,11 +150,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
         profileCompletion,
         unreadMessages: unreadCount,
         likedProfiles: likedCount || 0,
-      });
-
-      setAlerts({
-        active: alertsCount || 0,
-        newResults: 0,
       });
 
     } catch (error) {
@@ -384,123 +360,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               </AnimatePresence>
             </div>
 
-            {/* Mon Groupe de Coloc */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
-              <button
-                onClick={() => toggleSection('group')}
-                className="w-full px-3 py-2.5 flex items-center justify-between hover:bg-white/10 transition"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Users className="w-4 h-4 text-white drop-shadow-sm" />
-                  <div className="text-left">
-                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Mon Groupe</p>
-                    <p className="text-xs text-white/90 font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
-                      Toi + <span className="font-bold">{stats.likedProfiles}</span> profils likés
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {stats.likedProfiles > 0 && (
-                    <Badge className="bg-white/30 text-white text-xs font-bold border-0 px-2">
-                      {stats.likedProfiles}
-                    </Badge>
-                  )}
-                  <ChevronDown className={cn(
-                    'w-4 h-4 text-white/70 transition-transform',
-                    expandedSection === 'group' && 'rotate-180'
-                  )} />
-                </div>
-              </button>
-
-              <AnimatePresence>
-                {expandedSection === 'group' && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="border-t border-white/10"
-                  >
-                    <div className="p-3">
-                      <p className="text-xs text-white/80 mb-2">
-                        Forme ton groupe de colocation idéal !
-                      </p>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => router.push('/dashboard/searcher/groups')}
-                          size="sm"
-                          className="flex-1 rounded-full bg-white text-orange-600 hover:bg-white/90"
-                        >
-                          <Users className="w-3 h-3 mr-1" />
-                          Voir
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            // Scroll to browse section and activate People mode
-                            const browseSection = document.getElementById('browse-content');
-                            if (browseSection) {
-                              browseSection.scrollIntoView({ behavior: 'smooth' });
-                            }
-                          }}
-                          variant="ghost"
-                          size="sm"
-                          className="flex-1 rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
-                        >
-                          <Search className="w-3 h-3 mr-1" />
-                          Swiper
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Mes Alertes */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
-              <button
-                onClick={() => toggleSection('alerts')}
-                className="w-full px-3 py-2.5 flex items-center justify-between hover:bg-white/10 transition"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Bell className="w-4 h-4 text-white drop-shadow-sm" />
-                  <div className="text-left">
-                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Mes Alertes</p>
-                    <p className="text-xs text-white/90 font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
-                      <span className="font-bold">{alerts.active}</span> alertes actives
-                    </p>
-                  </div>
-                </div>
-                <ChevronDown className={cn(
-                  'w-4 h-4 text-white/70 transition-transform',
-                  expandedSection === 'alerts' && 'rotate-180'
-                )} />
-              </button>
-
-              <AnimatePresence>
-                {expandedSection === 'alerts' && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="border-t border-white/10"
-                  >
-                    <div className="p-3">
-                      <Button
-                        onClick={() => router.push('/dashboard/searcher/saved-searches')}
-                        variant="ghost"
-                        size="sm"
-                        className="w-full rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
-                      >
-                        Gérer mes alertes
-                        <ChevronRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </div>
         </div>
       </motion.div>
