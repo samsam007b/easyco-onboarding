@@ -250,7 +250,7 @@ function AuthContent() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       {/* Header */}
       <header className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="inline-flex items-center gap-2 text-[#4A148C] hover:text-[#311B92] transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 text-owner-700 hover:text-owner-900 transition-colors">
           <ArrowLeft className="w-5 h-5" />
           <span className="font-semibold">{t('auth.login.backToHome')}</span>
         </Link>
@@ -262,7 +262,7 @@ function AuthContent() {
         <div className="w-full max-w-md">
           {/* Logo/Title */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[#4A148C] mb-2">
+            <h1 className="text-4xl font-bold text-owner-700 mb-2">
               {mode === 'login' ? t('auth.login.title') : t('auth.signup.title')}
             </h1>
             <p className="text-gray-600">
@@ -278,7 +278,7 @@ function AuthContent() {
                 onClick={() => setMode('login')}
                 className={`flex-1 py-2 px-4 rounded-full font-medium transition-all ${
                   mode === 'login'
-                    ? 'bg-[#4A148C] text-white shadow-md'
+                    ? 'bg-owner-700 text-white shadow-md'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -288,7 +288,7 @@ function AuthContent() {
                 onClick={() => setMode('signup')}
                 className={`flex-1 py-2 px-4 rounded-full font-medium transition-all ${
                   mode === 'signup'
-                    ? 'bg-[#4A148C] text-white shadow-md'
+                    ? 'bg-owner-700 text-white shadow-md'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -460,13 +460,13 @@ function AuthContent() {
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                      className="w-4 h-4 text-owner-700 border-gray-300 rounded focus:ring-owner-500"
                     />
                     <span className="text-sm text-gray-600">{t('auth.login.remember')}</span>
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-sm text-[#4A148C] hover:text-[#311B92] font-semibold"
+                    className="text-sm text-owner-700 hover:text-owner-900 font-semibold"
                   >
                     {t('auth.login.forgotPassword')}
                   </Link>
@@ -485,11 +485,11 @@ function AuthContent() {
                     />
                     <span className="text-sm text-gray-600">
                       {t('auth.signup.agreeToTerms')}{' '}
-                      <Link href="/legal/terms" className="text-[#4A148C] hover:underline">
+                      <Link href="/legal/terms" className="text-owner-700 hover:underline">
                         {t('auth.signup.termsLink')}
                       </Link>{' '}
                       {t('auth.signup.and')}{' '}
-                      <Link href="/legal/privacy" className="text-[#4A148C] hover:underline">
+                      <Link href="/legal/privacy" className="text-owner-700 hover:underline">
                         {t('auth.signup.privacyLink')}
                       </Link>
                     </span>
@@ -516,7 +516,7 @@ function AuthContent() {
                 {mode === 'login' ? t('auth.login.noAccount') : t('auth.signup.hasAccount')}{' '}
                 <button
                   onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-                  className="text-[#4A148C] hover:text-[#311B92] font-semibold"
+                  className="text-owner-700 hover:text-owner-900 font-semibold"
                 >
                   {mode === 'login' ? t('auth.login.signupLink') : t('auth.signup.loginLink')}
                 </button>

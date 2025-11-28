@@ -446,7 +446,7 @@ export default function PropertyDetailsPage() {
                     setLightboxIndex(selectedImageIndex);
                     setIsLightboxOpen(true);
                   }}
-                  className="flex-shrink-0 h-20 px-6 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF9030] hover:to-[#FFA84C] text-white rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
+                  className="flex-shrink-0 h-20 px-6 bg-gradient-searcher hover:opacity-90 text-white rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
                 >
                   <Expand className="w-5 h-5" />
                   <span className="font-medium hidden sm:inline">Voir tout</span>
