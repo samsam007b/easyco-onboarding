@@ -210,11 +210,13 @@ export const SwipeCard = memo(function SwipeCard({
               <Sparkles
                 className="w-4 h-4 text-white"
                 strokeWidth={2.5}
-                fill={(user.compatibility_score || 0) >= 80 ? '#fff' : 'none'}
+                fill={(user.compatibility_score ?? 0) >= 80 ? '#fff' : 'none'}
               />
               <div className="text-center">
                 <p className="text-2xl font-black text-white leading-none">
-                  {user.compatibility_score ?? 75}%
+                  {typeof user.compatibility_score === 'number' && !isNaN(user.compatibility_score)
+                    ? user.compatibility_score
+                    : 75}%
                 </p>
                 <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
               </div>

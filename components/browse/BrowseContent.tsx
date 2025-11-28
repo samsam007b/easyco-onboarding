@@ -54,6 +54,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   const [likedProfiles, setLikedProfiles] = useState<UserWithCompatibility[]>([]);
   const [passedProfiles, setPassedProfiles] = useState<UserWithCompatibility[]>([]);
   const [isAnimatingReload, setIsAnimatingReload] = useState(false);
+  const [isCardExpanded, setIsCardExpanded] = useState(false);
 
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
@@ -452,7 +453,10 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           </div>
 
           {/* 3-Column Layout */}
-          <div className="flex items-center justify-center gap-6 lg:gap-10 mb-4">
+          <div className={cn(
+            "flex justify-center gap-6 lg:gap-10",
+            isCardExpanded ? "items-start" : "items-center"
+          )}>
             {/* Left Pile */}
             <div className="hidden lg:flex flex-shrink-0">
               <CardPile
@@ -470,7 +474,10 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
             </div>
 
             {/* Center Card */}
-            <div className="relative w-full max-w-[380px] h-[580px] flex-shrink-0">
+            <div className={cn(
+              "relative w-full max-w-[380px] flex-shrink-0 transition-all duration-300",
+              isCardExpanded ? "h-auto min-h-[580px]" : "h-[500px]"
+            )}>
               {isLoadingMatches ? (
                 <div className="absolute inset-0 bg-white rounded-3xl shadow-xl flex items-center justify-center">
                   <LoadingHouse size={48} />
@@ -550,10 +557,13 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                             } else {
                               setPassedProfiles(prev => [...prev, currentUser]);
                             }
+                            setIsCardExpanded(false); // Reset expansion when swiping
                             setTimeout(() => setMatchingIndex(prev => prev + 1), 200);
                           }
                         }}
                         onCardClick={() => toast.info('Profil complet bientôt disponible !')}
+                        isExpanded={isCardExpanded}
+                        onExpandChange={setIsCardExpanded}
                       />
                     </motion.div>
                   </AnimatePresence>
@@ -578,15 +588,22 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Always visible below content */}
           {matchingIndex < potentialMatches.length && (
-            <div className="flex items-center justify-center gap-4">
+            <motion.div
+              layout
+              className={cn(
+                "flex items-center justify-center gap-4",
+                isCardExpanded ? "mt-8 pb-8" : "mt-6"
+              )}
+            >
               <button
                 onClick={async () => {
                   const currentUser = potentialMatches[matchingIndex];
                   const success = await recordSwipe(currentUser.user_id, 'pass');
                   if (success) {
                     setPassedProfiles(prev => [...prev, currentUser]);
+                    setIsCardExpanded(false);
                     setMatchingIndex(prev => prev + 1);
                   }
                 }}
@@ -601,6 +618,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                   if (success) {
                     setLikedProfiles(prev => [...prev, currentUser]);
                     toast.success(`${currentUser.first_name} liké !`);
+                    setIsCardExpanded(false);
                     setMatchingIndex(prev => prev + 1);
                   }
                 }}
@@ -608,7 +626,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               >
                 <Heart className="w-7 h-7 text-white fill-current" />
               </button>
-            </div>
+            </motion.div>
           )}
         </div>
       )}
