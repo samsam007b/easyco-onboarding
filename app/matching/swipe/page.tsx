@@ -155,7 +155,7 @@ export default function SwipePage() {
   };
 
   return (
-    <div className={cn("min-h-screen bg-gray-50 p-4 md:p-8", isCardExpanded ? "overflow-auto" : "overflow-hidden")}>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8 overflow-auto pb-32">
       {/* Header */}
       <div className="max-w-md mx-auto mb-6 relative z-50">
         <div className="flex items-center justify-between mb-4">
@@ -208,7 +208,7 @@ export default function SwipePage() {
 
       {/* Card Stack with Piles */}
       <div className="max-w-7xl mx-auto relative px-4">
-        <div className="relative h-[600px] mb-6">
+        <div className="relative h-[500px] md:h-[550px] mb-6">
           {/* Left Pile - Disliked (showing backs) */}
           <div className="absolute -left-4 md:left-0 top-0 h-full w-[200px] md:w-[280px] pointer-events-none overflow-hidden">
             <AnimatePresence>
@@ -228,7 +228,7 @@ export default function SwipePage() {
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Card Back */}
-                  <div className="w-full h-[500px] md:h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
+                  <div className="w-full h-[400px] md:h-[480px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
                     <X className="w-20 h-20 md:w-32 md:h-32 text-gray-400 opacity-30" />
                   </div>
                 </motion.div>
@@ -372,7 +372,7 @@ export default function SwipePage() {
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 >
                   {/* Simplified card preview */}
-                  <div className="w-full h-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden">
+                  <div className="w-full h-[400px] md:h-[480px] bg-white rounded-3xl shadow-2xl overflow-hidden">
                     {swipedCard.user.profile_photo_url ? (
                       <img
                         src={swipedCard.user.profile_photo_url}

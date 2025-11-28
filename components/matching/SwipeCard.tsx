@@ -173,11 +173,11 @@ export const SwipeCard = memo(function SwipeCard({
     >
       <motion.div
         className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
-        animate={{ height: isExpanded ? 'auto' : '580px' }}
+        animate={{ height: isExpanded ? 'auto' : '480px' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         {/* Profile Image */}
-        <div className={cn("relative overflow-hidden", isExpanded ? 'h-[280px]' : 'h-[320px]')}>
+        <div className={cn("relative overflow-hidden", isExpanded ? 'h-[220px]' : 'h-[260px]')}>
           {user.profile_photo_url ? (
             <Image
               src={user.profile_photo_url}
@@ -199,26 +199,27 @@ export const SwipeCard = memo(function SwipeCard({
 
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
 
-          {/* Compatibility Badge */}
-          {user.compatibility_score && (
-            <div
-              className="absolute top-4 right-4 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
-              style={{
-                background: `linear-gradient(135deg,
-                  rgba(255, 160, 64, ${user.compatibility_score / 100 * 0.95}) 0%,
-                  rgba(255, 184, 92, ${user.compatibility_score / 100 * 0.85}) 50%,
-                  rgba(255, 206, 126, ${user.compatibility_score / 100 * 0.75}) 100%)`
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} fill={user.compatibility_score >= 80 ? '#fff' : 'none'} />
-                <div className="text-center">
-                  <p className="text-2xl font-black text-white leading-none">{user.compatibility_score}%</p>
-                  <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
-                </div>
+          {/* Compatibility Badge - Always show */}
+          <div
+            className="absolute top-4 right-4 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50 z-10"
+            style={{
+              background: `linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFCE7E 100%)`
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <Sparkles
+                className="w-4 h-4 text-white"
+                strokeWidth={2.5}
+                fill={(user.compatibility_score || 0) >= 80 ? '#fff' : 'none'}
+              />
+              <div className="text-center">
+                <p className="text-2xl font-black text-white leading-none">
+                  {user.compatibility_score ?? 75}%
+                </p>
+                <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Name & Basic Info */}
           <div className="absolute bottom-4 left-4 right-4">
