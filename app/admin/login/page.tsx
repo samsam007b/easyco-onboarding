@@ -34,7 +34,17 @@ export default function AdminLoginPage() {
       });
 
       if (authError) {
-        throw new Error('Identifiants invalides');
+        logger.error('Auth error', authError);
+        // Provide more specific error messages
+        if (authError.message?.includes('Invalid login credentials')) {
+          throw new Error('Email ou mot de passe incorrect');
+        } else if (authError.message?.includes('Email not confirmed')) {
+          throw new Error('Veuillez confirmer votre email avant de vous connecter');
+        } else if (authError.message?.includes('Too many requests')) {
+          throw new Error('Trop de tentatives. Réessayez dans quelques minutes.');
+        } else {
+          throw new Error(`Erreur: ${authError.message}`);
+        }
       }
 
       if (!authData.user) {
