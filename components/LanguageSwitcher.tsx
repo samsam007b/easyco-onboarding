@@ -73,22 +73,22 @@ export default function LanguageSwitcher() {
                 <button
                   onClick={() => handleLanguageChange(code as Language)}
                   className={cn(
-                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
+                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all group",
                     language === code
-                      ? "bg-purple-50/50"
-                      : "hover:bg-gray-50"
+                      ? "bg-orange-50/50"
+                      : "hover:bg-orange-50/30"
                   )}
                 >
                   <span className={cn(
-                    "font-medium transition-all",
+                    "font-medium transition-colors",
                     language === code
-                      ? "text-purple-600"
-                      : "text-gray-700"
+                      ? "text-[#FFA040]"
+                      : "text-gray-700 group-hover:text-[#FFA040]"
                   )}>
                     {label}
                   </span>
                   {language === code && (
-                    <span className="text-purple-600 text-xs">✓</span>
+                    <span className="text-[#FFA040] text-xs">✓</span>
                   )}
                 </button>
                 {index < Object.keys(languageLabels).length - 1 && (
