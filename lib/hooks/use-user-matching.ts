@@ -16,6 +16,39 @@ export interface UserWithCompatibility extends UserProfile {
 export type SwipeContext = 'searcher_matching' | 'resident_matching';
 
 // Helper to map database fields to UserProfile interface
+// Helper to convert cleanliness text values to numbers
+function parseCleanlinessLevel(value: unknown): number | undefined {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') {
+    // Handle text values from DB
+    const textToNumber: Record<string, number> = {
+      'relaxed': 3,
+      'moderate': 5,
+      'tidy': 7,
+      'spotless': 9,
+      // Also handle emoji-based values that might be in the DB
+      'very_relaxed': 2,
+      'very_tidy': 8,
+    };
+    const parsed = textToNumber[value.toLowerCase()];
+    if (parsed !== undefined) return parsed;
+    // Try parsing as number string
+    const num = parseInt(value, 10);
+    if (!isNaN(num)) return num;
+  }
+  return undefined;
+}
+
+// Helper to convert time preference text to standardized format
+function parseTimePreference(value: unknown): 'early' | 'moderate' | 'late' | undefined {
+  if (!value) return undefined;
+  const str = String(value).toLowerCase();
+  if (str.includes('early') || str.includes('tôt') || str.includes('morning')) return 'early';
+  if (str.includes('late') || str.includes('tard') || str.includes('night')) return 'late';
+  if (str.includes('moderate') || str.includes('normal') || str.includes('regular')) return 'moderate';
+  return str as 'early' | 'moderate' | 'late';
+}
+
 function mapDbProfileToUserProfile(dbProfile: Record<string, unknown>): UserProfile {
   return {
     user_id: dbProfile.user_id as string,
@@ -37,7 +70,7 @@ function mapDbProfileToUserProfile(dbProfile: Record<string, unknown>): UserProf
     deal_breakers: dbProfile.deal_breakers as string[] | undefined,
 
     // Lifestyle preferences
-    cleanliness_level: dbProfile.cleanliness_preference as number | undefined,
+    cleanliness_level: parseCleanlinessLevel(dbProfile.cleanliness_preference),
     social_energy: dbProfile.introvert_extrovert_scale
       ? (dbProfile.introvert_extrovert_scale as number) * 2 // Convert 1-5 to approx 1-10
       : undefined,
@@ -47,8 +80,8 @@ function mapDbProfileToUserProfile(dbProfile: Record<string, unknown>): UserProf
     shared_space_importance: dbProfile.shared_space_importance as number | undefined,
 
     // Daily routine
-    wake_up_time: dbProfile.wake_up_time as 'early' | 'moderate' | 'late' | undefined,
-    sleep_time: dbProfile.sleep_time as 'early' | 'moderate' | 'late' | undefined,
+    wake_up_time: parseTimePreference(dbProfile.wake_up_time),
+    sleep_time: parseTimePreference(dbProfile.sleep_time),
     works_from_home: dbProfile.works_from_home as boolean | undefined,
     work_schedule: dbProfile.work_schedule as 'office' | 'hybrid' | 'remote' | 'flexible' | 'student' | undefined,
     exercise_frequency: dbProfile.exercise_frequency as 'never' | 'rarely' | 'sometimes' | 'often' | 'daily' | undefined,
@@ -183,6 +216,25 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
             currentUserProfile,
             mappedUser
           );
+
+          // Debug logging for compatibility calculation
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`[Matching] ${mappedUser.first_name}: Score ${compatibilityResult.score}`, {
+              currentUserData: {
+                cleanliness: currentUserProfile.cleanliness_level,
+                socialEnergy: currentUserProfile.social_energy,
+                wakeUp: currentUserProfile.wake_up_time,
+                sleep: currentUserProfile.sleep_time,
+              },
+              matchedUserData: {
+                cleanliness: mappedUser.cleanliness_level,
+                socialEnergy: mappedUser.social_energy,
+                wakeUp: mappedUser.wake_up_time,
+                sleep: mappedUser.sleep_time,
+              },
+              breakdown: compatibilityResult.breakdown,
+            });
+          }
 
           return {
             ...mappedUser,
