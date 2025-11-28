@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback, memo } from 'react';
-import { motion, useMotionValue, useTransform, PanInfo, useAnimation } from 'framer-motion';
+import { useState, useCallback, memo, useRef, useEffect } from 'react';
+import { motion, useMotionValue, useTransform, PanInfo, useAnimation, AnimatePresence } from 'framer-motion';
 import {
   MapPin,
   Briefcase,
@@ -21,11 +21,16 @@ import {
   AlertTriangle,
   XCircle,
   Globe,
-  MessageCircle
+  MessageCircle,
+  HelpCircle,
+  UserCog,
+  X
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { UserProfile, getCompatibilityQuality, CompatibilityResult } from '@/lib/services/user-matching-service';
 import Image from 'next/image';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 interface SwipeCardProps {
@@ -53,7 +58,22 @@ export const SwipeCard = memo(function SwipeCard({
   onExpandChange
 }: SwipeCardProps) {
   const [internalExpanded, setInternalExpanded] = useState(false);
+  const [showIncompleteDropdown, setShowIncompleteDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowIncompleteDropdown(false);
+      }
+    };
+    if (showIncompleteDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showIncompleteDropdown]);
 
   const handleExpandToggle = () => {
     const newValue = !isExpanded;
@@ -65,6 +85,10 @@ export const SwipeCard = memo(function SwipeCard({
   };
   const [isLeaving, setIsLeaving] = useState(false);
   const controls = useAnimation();
+
+  // Check if score is reliable based on profile completeness
+  const isScoreReliable = user.compatibility_result?.isScoreReliable ?? true;
+  const otherUserCompleteness = user.compatibility_result?.profileCompleteness?.user2;
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -202,28 +226,128 @@ export const SwipeCard = memo(function SwipeCard({
 
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
 
-          {/* Compatibility Badge - Always show */}
-          <div
-            className="absolute top-4 right-4 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50 z-10"
-            style={{
-              background: `linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFCE7E 100%)`
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <Sparkles
-                className="w-4 h-4 text-white"
-                strokeWidth={2.5}
-                fill={(user.compatibility_score ?? 0) >= 80 ? '#fff' : 'none'}
-              />
-              <div className="text-center">
-                <p className="text-2xl font-black text-white leading-none">
-                  {typeof user.compatibility_score === 'number' && !isNaN(user.compatibility_score)
-                    ? user.compatibility_score
-                    : 75}%
-                </p>
-                <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
+          {/* Compatibility Badge - Show N/A if profile incomplete */}
+          <div className="absolute top-4 right-4 z-10" ref={dropdownRef}>
+            {isScoreReliable ? (
+              // Normal score badge
+              <div
+                className="px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
+                style={{
+                  background: `linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFCE7E 100%)`
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles
+                    className="w-4 h-4 text-white"
+                    strokeWidth={2.5}
+                    fill={(user.compatibility_score ?? 0) >= 80 ? '#fff' : 'none'}
+                  />
+                  <div className="text-center">
+                    <p className="text-2xl font-black text-white leading-none">
+                      {typeof user.compatibility_score === 'number' && !isNaN(user.compatibility_score)
+                        ? user.compatibility_score
+                        : '—'}%
+                    </p>
+                    <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              // N/A badge with dropdown for incomplete profile
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowIncompleteDropdown(!showIncompleteDropdown);
+                  }}
+                  className="px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50 cursor-pointer hover:scale-105 transition-transform"
+                  style={{
+                    background: `linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)`
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-white" strokeWidth={2.5} />
+                    <div className="text-center">
+                      <p className="text-xl font-black text-white leading-none">N/A</p>
+                      <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">Match</p>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Dropdown Panel */}
+                <AnimatePresence>
+                  {showIncompleteDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+                    >
+                      {/* Header */}
+                      <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-4 py-3 border-b border-gray-200">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <AlertTriangle className="w-4 h-4 text-amber-500" />
+                            <span className="font-semibold text-gray-900 text-sm">Score non disponible</span>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowIncompleteDropdown(false);
+                            }}
+                            className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                          >
+                            <X className="w-4 h-4 text-gray-500" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4 space-y-3">
+                        <p className="text-sm text-gray-600">
+                          {otherUserCompleteness && otherUserCompleteness.percentage < 40 ? (
+                            <>
+                              <span className="font-medium text-gray-900">{user.first_name}</span> n'a pas assez complété son profil pour que l'algorithme de compatibilité fonctionne.
+                            </>
+                          ) : (
+                            <>Ton profil n'est pas assez complété pour que l'algorithme puisse calculer un score de compatibilité fiable.</>
+                          )}
+                        </p>
+
+                        {/* Missing categories */}
+                        {otherUserCompleteness && otherUserCompleteness.missingCategories.length > 0 && (
+                          <div className="bg-amber-50 rounded-xl p-3">
+                            <p className="text-xs font-medium text-amber-800 mb-2">Informations manquantes :</p>
+                            <div className="flex flex-wrap gap-1">
+                              {otherUserCompleteness.missingCategories.map((cat, idx) => (
+                                <span key={idx} className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
+                                  {cat}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* CTA Button */}
+                        <Link href="/profile/enhance" onClick={(e) => e.stopPropagation()}>
+                          <Button
+                            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-lg"
+                          >
+                            <UserCog className="w-4 h-4 mr-2" />
+                            Enrichir mon profil
+                          </Button>
+                        </Link>
+
+                        <p className="text-[10px] text-gray-400 text-center">
+                          Un profil complet = des matchs plus précis !
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
           </div>
 
           {/* Name & Basic Info */}
