@@ -7,7 +7,7 @@ import { SwipeCard } from '@/components/matching/SwipeCard';
 import { useUserMatching, type SwipeContext, type UserWithCompatibility } from '@/lib/hooks/use-user-matching';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Heart, X, Info, Users, RotateCcw, Sparkles, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Heart, X, Info, Users, RotateCcw, Sparkles, CheckCircle2, AlertTriangle, Lock, UserCircle, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,6 +36,8 @@ export default function SwipePage() {
     hasMore,
     recordSwipe,
     loadPotentialMatches,
+    matchingGateStatus,
+    isMatchingUnlocked,
   } = useUserMatching(user?.id || '', context);
 
   useEffect(() => {
@@ -144,6 +146,114 @@ export default function SwipePage() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">Chargement des profils...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Profile completion gate - block matching if profile is not complete enough
+  if (matchingGateStatus && !isMatchingUnlocked) {
+    const { profileCompletion } = matchingGateStatus;
+    const incompleteCategories = profileCompletion.missingCategories.filter(c => !c.isComplete);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 p-4 md:p-8">
+        <div className="max-w-md mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.back()}
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Gate Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="p-8 text-center bg-white rounded-3xl shadow-2xl border-0">
+              {/* Lock Icon */}
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Lock className="w-12 h-12 text-orange-500" />
+              </div>
+
+              <h1 className="text-2xl font-bold text-gray-900 mb-3">
+                Complète ton profil pour matcher
+              </h1>
+
+              <p className="text-gray-600 mb-6">
+                Pour trouver les meilleurs colocataires, nous avons besoin de mieux te connaître.
+                Complète ton profil à au moins <span className="font-bold text-orange-600">70%</span> pour débloquer le matching.
+              </p>
+
+              {/* Progress Bar */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700">Progression</span>
+                  <span className="text-sm font-bold text-orange-600">{profileCompletion.percentage}%</span>
+                </div>
+                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${profileCompletion.percentage}%` }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="h-full bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {profileCompletion.filledFields}/{profileCompletion.totalFields} champs remplis
+                </p>
+              </div>
+
+              {/* Missing Categories */}
+              {incompleteCategories.length > 0 && (
+                <div className="mb-6 text-left">
+                  <p className="text-sm font-semibold text-gray-700 mb-3">Sections à compléter :</p>
+                  <div className="space-y-2">
+                    {incompleteCategories.map((cat, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between bg-orange-50 rounded-lg px-4 py-2.5"
+                      >
+                        <span className="text-sm text-gray-700">{cat.label}</span>
+                        <span className="text-xs font-medium text-orange-600">
+                          {cat.filled}/{cat.total}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA Button */}
+              <Button
+                onClick={() => router.push('/profile/edit')}
+                className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold py-6 rounded-xl text-lg"
+              >
+                <UserCircle className="w-5 h-5 mr-2" />
+                Compléter mon profil
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+
+              {/* Secondary link */}
+              <button
+                onClick={() => router.push('/dashboard/searcher')}
+                className="mt-4 text-sm text-gray-500 hover:text-gray-700 underline"
+              >
+                Retour au dashboard
+              </button>
+            </Card>
+          </motion.div>
+
+          {/* Info */}
+          <p className="text-center text-xs text-gray-400 mt-6 px-4">
+            Un profil complet permet des matchs plus précis et augmente tes chances de trouver le colocataire idéal.
+          </p>
         </div>
       </div>
     );
