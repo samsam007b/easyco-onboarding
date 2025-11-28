@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
@@ -38,6 +38,13 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 type GuestView = 'searcher' | 'resident' | 'owner';
+
+interface SearchCriteria {
+  location: string | null;
+  budgetMin: number | null;
+  budgetMax: number | null;
+  moveInDate: string | null;
+}
 
 // Mock data for property previews
 const mockProperties = [
@@ -83,11 +90,22 @@ const mockRoommates = [
   { id: '3', name: 'Sophie M.', age: 24, score: 91, occupation: 'Étudiante' },
 ];
 
-export default function GuestPage() {
+function GuestPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeView, setActiveView] = useState<GuestView>('searcher');
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [lockedFeatureMessage, setLockedFeatureMessage] = useState('');
+
+  // Parse search criteria from URL
+  const searchCriteria: SearchCriteria = {
+    location: searchParams.get('location'),
+    budgetMin: searchParams.get('budget_min') ? parseInt(searchParams.get('budget_min')!) : null,
+    budgetMax: searchParams.get('budget_max') ? parseInt(searchParams.get('budget_max')!) : null,
+    moveInDate: searchParams.get('move_in_date'),
+  };
+
+  const hasSearchCriteria = searchCriteria.location || searchCriteria.budgetMin || searchCriteria.budgetMax || searchCriteria.moveInDate;
 
   const handleLockedFeature = (message: string) => {
     setLockedFeatureMessage(message);
@@ -229,6 +247,7 @@ export default function GuestPage() {
               key="searcher"
               onLockedFeature={handleLockedFeature}
               router={router}
+              searchCriteria={searchCriteria}
             />
           )}
           {activeView === 'resident' && (
@@ -350,10 +369,21 @@ export default function GuestPage() {
 function SearcherGuestView({
   onLockedFeature,
   router,
+  searchCriteria,
 }: {
   onLockedFeature: (msg: string) => void;
   router: any;
+  searchCriteria: SearchCriteria;
 }) {
+  const hasSearchCriteria = searchCriteria.location || searchCriteria.budgetMin || searchCriteria.budgetMax || searchCriteria.moveInDate;
+
+  // Format move-in date for display
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return null;
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -362,6 +392,51 @@ function SearcherGuestView({
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
+      {/* Search Criteria Banner - Only show if criteria exist */}
+      {hasSearchCriteria && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl shadow-sm border border-orange-200 p-4"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
+              <Search className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Ta recherche</h3>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {searchCriteria.location && (
+              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+                <MapPin className="w-3.5 h-3.5" />
+                {searchCriteria.location}
+              </Badge>
+            )}
+            {(searchCriteria.budgetMin || searchCriteria.budgetMax) && (
+              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+                <Euro className="w-3.5 h-3.5" />
+                {searchCriteria.budgetMin && searchCriteria.budgetMax
+                  ? `${searchCriteria.budgetMin}€ - ${searchCriteria.budgetMax}€`
+                  : searchCriteria.budgetMin
+                    ? `Min ${searchCriteria.budgetMin}€`
+                    : `Max ${searchCriteria.budgetMax}€`
+                }
+              </Badge>
+            )}
+            {searchCriteria.moveInDate && (
+              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+                <Calendar className="w-3.5 h-3.5" />
+                {formatDate(searchCriteria.moveInDate)}
+              </Badge>
+            )}
+          </div>
+          <p className="text-sm text-gray-500 mt-3">
+            <Sparkles className="w-4 h-4 inline mr-1 text-orange-500" />
+            Crée un compte pour sauvegarder ta recherche et recevoir des alertes
+          </p>
+        </motion.div>
+      )}
+
       {/* Fake Dashboard Compact */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E88A2D] via-[#F5A035] to-[#FFB85C] shadow-xl p-4">
         <div className="absolute inset-0 opacity-20" style={{
@@ -377,10 +452,13 @@ function SearcherGuestView({
               </div>
               <div>
                 <h1 className="text-base font-bold text-white drop-shadow-md">
-                  Bienvenue !
+                  {hasSearchCriteria ? 'Résultats de recherche' : 'Bienvenue !'}
                 </h1>
                 <p className="text-xs text-white/90 drop-shadow-sm">
-                  Découvre EasyCo en mode invité
+                  {hasSearchCriteria
+                    ? `${mockProperties.length} propriétés correspondent`
+                    : 'Découvre EasyCo en mode invité'
+                  }
                 </p>
               </div>
             </div>
@@ -425,7 +503,7 @@ function SearcherGuestView({
                 <div className="text-left">
                   <p className="text-sm font-semibold text-white drop-shadow-md">Ma Recherche</p>
                   <p className="text-xs text-white/90 font-medium drop-shadow-sm">
-                    Configure tes préférences
+                    {hasSearchCriteria ? 'Critères actifs' : 'Configure tes préférences'}
                   </p>
                 </div>
               </div>
@@ -436,7 +514,7 @@ function SearcherGuestView({
                 className="text-white hover:bg-white/20"
               >
                 <Lock className="w-3 h-3 mr-1" />
-                Configurer
+                {hasSearchCriteria ? 'Modifier' : 'Configurer'}
               </Button>
             </div>
           </div>
@@ -889,5 +967,21 @@ function OwnerGuestView({
         </div>
       </div>
     </motion.div>
+  );
+}
+
+// Main export with Suspense for useSearchParams
+export default function GuestPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Chargement...</p>
+        </div>
+      </div>
+    }>
+      <GuestPageContent />
+    </Suspense>
   );
 }
