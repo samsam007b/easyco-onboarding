@@ -6,6 +6,7 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 
 export interface MatchScore {
   total_score: number;
@@ -74,13 +75,13 @@ export async function calculateEnhancedMatchScore(
     });
 
     if (error) {
-      console.error('Error calculating match score:', error);
+      logger.error('Error calculating match score', error);
       return null;
     }
 
     return data?.[0] || null;
   } catch (error) {
-    console.error('Failed to calculate match score:', error);
+    logger.error('Failed to calculate match score', error);
     return null;
   }
 }
@@ -122,13 +123,13 @@ export async function findMatchesForSearcher(
     const { data, error } = await query;
 
     if (error) {
-      console.error('Error fetching matches:', error);
+      logger.error('Error fetching matches', error);
       return [];
     }
 
     return (data || []) as EnhancedMatch[];
   } catch (error) {
-    console.error('Failed to find matches:', error);
+    logger.error('Failed to find matches', error);
     return [];
   }
 }
@@ -213,7 +214,7 @@ export async function generateMatchesForSearcher(
 
     return { success: true, matchesGenerated };
   } catch (error) {
-    console.error('Failed to generate matches:', error);
+    logger.error('Failed to generate matches', error);
     return { success: false, matchesGenerated: 0, error: String(error) };
   }
 }
@@ -232,7 +233,7 @@ export async function markMatchViewed(matchId: string, userId: string): Promise<
 
     return !error;
   } catch (error) {
-    console.error('Failed to mark match as viewed:', error);
+    logger.error('Failed to mark match as viewed', error);
     return false;
   }
 }
@@ -254,7 +255,7 @@ export async function updateMatchStatus(
 
     return !error;
   } catch (error) {
-    console.error('Failed to update match status:', error);
+    logger.error('Failed to update match status', error);
     return false;
   }
 }
@@ -277,7 +278,7 @@ export async function hideMatch(matchId: string): Promise<boolean> {
 
     return !error;
   } catch (error) {
-    console.error('Failed to hide match:', error);
+    logger.error('Failed to hide match', error);
     return false;
   }
 }
@@ -319,7 +320,7 @@ export async function getMatchStatistics(userId: string): Promise<{
 
     return stats;
   } catch (error) {
-    console.error('Failed to get match statistics:', error);
+    logger.error('Failed to get match statistics', error);
     return { total: 0, active: 0, viewed: 0, contacted: 0, hidden: 0, averageScore: 0 };
   }
 }
@@ -349,7 +350,7 @@ export async function submitMatchFeedback(
 
     return !error;
   } catch (error) {
-    console.error('Failed to submit match feedback:', error);
+    logger.error('Failed to submit match feedback', error);
     return false;
   }
 }

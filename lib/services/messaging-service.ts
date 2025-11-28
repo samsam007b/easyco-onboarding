@@ -4,6 +4,7 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 
 // ============================================================================
 // TYPES
@@ -94,7 +95,7 @@ export async function getOrCreateConversation(
 
     return { success: true, data };
   } catch (error: any) {
-    console.error('Error getting/creating conversation:', error);
+    logger.error('Error getting/creating conversation', error);
     return { success: false, error: error.message };
   }
 }
@@ -116,7 +117,7 @@ export async function getUserConversations(
 
     return { success: true, data: data || [] };
   } catch (error: any) {
-    console.error('Error fetching conversations:', error);
+    logger.error('Error fetching conversations', error);
     return { success: false, error: error.message };
   }
 }
@@ -140,7 +141,7 @@ export async function getConversation(
 
     return { success: true, data };
   } catch (error: any) {
-    console.error('Error fetching conversation:', error);
+    logger.error('Error fetching conversation', error);
     return { success: false, error: error.message };
   }
 }
@@ -177,7 +178,7 @@ export async function toggleArchiveConversation(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error archiving conversation:', error);
+    logger.error('Error archiving conversation', error);
     return { success: false, error: error.message };
   }
 }
@@ -212,7 +213,7 @@ export async function sendMessage(
 
     return { success: true, data };
   } catch (error: any) {
-    console.error('Error sending message:', error);
+    logger.error('Error sending message', error);
     return { success: false, error: error.message };
   }
 }
@@ -255,7 +256,7 @@ export async function getMessages(
     // Reverse to show oldest first
     return { success: true, data: (data || []).reverse() };
   } catch (error: any) {
-    console.error('Error fetching messages:', error);
+    logger.error('Error fetching messages', error);
     return { success: false, error: error.message };
   }
 }
@@ -279,7 +280,7 @@ export async function markConversationRead(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error marking conversation as read:', error);
+    logger.error('Error marking conversation as read', error);
     return { success: false, error: error.message };
   }
 }
@@ -306,7 +307,7 @@ export async function deleteMessage(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error deleting message:', error);
+    logger.error('Error deleting message', error);
     return { success: false, error: error.message };
   }
 }
@@ -334,7 +335,7 @@ export async function editMessage(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error editing message:', error);
+    logger.error('Error editing message', error);
     return { success: false, error: error.message };
   }
 }
@@ -371,7 +372,7 @@ export async function setTypingIndicator(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error setting typing indicator:', error);
+    logger.error('Error setting typing indicator', error);
     return { success: false, error: error.message };
   }
 }
@@ -396,7 +397,7 @@ export async function removeTypingIndicator(
 
     return { success: true };
   } catch (error: any) {
-    console.error('Error removing typing indicator:', error);
+    logger.error('Error removing typing indicator', error);
     return { success: false, error: error.message };
   }
 }
@@ -528,7 +529,7 @@ export async function getTotalUnreadCount(
 
     return { success: true, data: total };
   } catch (error: any) {
-    console.error('Error getting total unread count:', error);
+    logger.error('Error getting total unread count', error);
     return { success: false, error: error.message };
   }
 }

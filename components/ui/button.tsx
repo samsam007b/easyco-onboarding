@@ -16,11 +16,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       destructive: "bg-error-500 text-white hover:bg-red-700 focus-visible:ring-error-500"
     }
 
+    // Touch targets: minimum 44x44px for accessibility (WCAG 2.1)
     const sizes = {
-      default: "h-12 px-6 py-2",
-      sm: "h-9 px-4 text-sm",
-      lg: "h-14 px-8",
-      icon: "h-10 w-10"
+      default: "h-12 px-6 py-2 min-h-[44px]",
+      sm: "h-11 px-4 text-sm min-h-[44px]",
+      lg: "h-14 px-8 min-h-[44px]",
+      icon: "h-11 w-11 min-h-[44px] min-w-[44px]"
     }
 
     return (

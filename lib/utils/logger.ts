@@ -2,13 +2,18 @@
  * Centralized logging utility
  *
  * This logger provides structured logging with different levels,
- * automatic context capture, and integration with monitoring services.
+ * automatic context capture, and integration with Sentry.
+ *
+ * PRODUCTION: Logs are silent (no console output), errors go to Sentry
+ * DEVELOPMENT: Full console logging for debugging
  */
+
+import * as Sentry from '@sentry/nextjs'
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogContext {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 class Logger {
@@ -25,50 +30,63 @@ class Logger {
   }
 
   /**
-   * Send log to external monitoring service (Sentry, etc.)
+   * Send log to Sentry in production
    */
-  private async sendToMonitoring(level: LogLevel, message: string, context?: LogContext) {
+  private sendToSentry(level: LogLevel, message: string, error?: Error | unknown, context?: LogContext) {
     if (!this.isProduction) return;
 
     try {
-      // TODO: Integrate with Sentry or other monitoring service
-      // For now, just console in production
-      if (level === 'error') {
-        // Sentry.captureMessage(message, { level: 'error', extra: context });
+      if (level === 'error' && error) {
+        Sentry.captureException(error instanceof Error ? error : new Error(message), {
+          extra: context,
+        });
+      } else if (level === 'warn') {
+        Sentry.addBreadcrumb({
+          category: 'warning',
+          message,
+          level: 'warning',
+          data: context,
+        });
       }
-    } catch (error) {
+    } catch {
       // Fail silently - don't let logging errors break the app
     }
   }
 
   /**
-   * Debug log - only in development
+   * Debug log - only in development, silent in production
    */
   debug(message: string, context?: LogContext) {
     if (this.isDevelopment) {
       console.debug(this.format('debug', message, context));
     }
+    // Silent in production
   }
 
   /**
-   * Info log - general information
+   * Info log - only in development, silent in production
    */
   info(message: string, context?: LogContext) {
-    console.info(this.format('info', message, context));
+    if (this.isDevelopment) {
+      console.info(this.format('info', message, context));
+    }
+    // Silent in production
   }
 
   /**
-   * Warning log - something unexpected but not breaking
+   * Warning log - development console + Sentry breadcrumb in production
    */
   warn(message: string, context?: LogContext) {
-    console.warn(this.format('warn', message, context));
-    this.sendToMonitoring('warn', message, context);
+    if (this.isDevelopment) {
+      console.warn(this.format('warn', message, context));
+    }
+    this.sendToSentry('warn', message, undefined, context);
   }
 
   /**
-   * Error log - something went wrong
+   * Error log - development console + Sentry capture in production
    */
-  error(message: string, error?: Error | any, context?: LogContext) {
+  error(message: string, error?: Error | unknown, context?: LogContext) {
     const errorContext = {
       ...context,
       error: error instanceof Error ? {
@@ -78,8 +96,10 @@ class Logger {
       } : error,
     };
 
-    console.error(this.format('error', message, errorContext));
-    this.sendToMonitoring('error', message, errorContext);
+    if (this.isDevelopment) {
+      console.error(this.format('error', message, errorContext));
+    }
+    this.sendToSentry('error', message, error, errorContext);
   }
 
   /**

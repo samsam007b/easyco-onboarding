@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { AlertsService } from '@/lib/services/alerts-service';
 import { PropertyNotification } from '@/types/alerts.types';
 import { useRouter } from 'next/navigation';
@@ -47,7 +48,7 @@ export default function PropertyAlertsNotificationBell() {
       const data = await alertsService.getUserNotifications(10);
       setNotifications(data);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      logger.error('Error loading notifications', error);
     }
   };
 
@@ -56,7 +57,7 @@ export default function PropertyAlertsNotificationBell() {
       const count = await alertsService.getUnreadNotificationsCount();
       setUnreadCount(count);
     } catch (error) {
-      console.error('Error loading unread count:', error);
+      logger.error('Error loading unread count', error);
     }
   };
 
@@ -85,7 +86,7 @@ export default function PropertyAlertsNotificationBell() {
         prev.map((n) => ({ ...n, is_read: true, read_at: new Date().toISOString() }))
       );
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      logger.error('Error marking all as read', error);
     }
   };
 
@@ -112,7 +113,7 @@ export default function PropertyAlertsNotificationBell() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge

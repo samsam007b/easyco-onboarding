@@ -89,6 +89,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
             size="icon"
             onClick={handlePreviousMonth}
             className="h-9 w-9"
+            aria-label="Mois précédent"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -97,6 +98,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
             size="icon"
             onClick={handleNextMonth}
             className="h-9 w-9"
+            aria-label="Mois suivant"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

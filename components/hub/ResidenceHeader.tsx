@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { Home, Users, MapPin, Sparkles, Plus, UserPlus, Copy, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -51,9 +52,9 @@ export default function ResidenceHeader() {
         try {
           propertyData = JSON.parse(cachedProperty);
           propertyId = propertyData.id;
-          console.log('✅ Using cached property from sessionStorage');
+          logger.debug('Using cached property from sessionStorage');
         } catch (e) {
-          console.error('Error parsing cached property:', e);
+          logger.error('Error parsing cached property', e);
         }
       }
 
@@ -68,12 +69,12 @@ export default function ResidenceHeader() {
           if (justCreated) {
             const timeSinceCreation = Date.now() - parseInt(justCreated);
             if (timeSinceCreation < 10000) { // Less than 10 seconds ago
-              console.log('⏳ Property just created, waiting for data to sync...');
+              logger.debug('Property just created, waiting for data to sync');
               return; // Don't redirect, stay on hub
             }
           }
 
-          console.log('❌ No property membership found, redirecting to onboarding...');
+          logger.debug('No property membership found, redirecting to onboarding');
           router.push('/onboarding/resident/property-setup');
           return;
         }
@@ -117,7 +118,7 @@ export default function ResidenceHeader() {
         .rpc('count_property_members', { p_property_id: propertyId });
 
       if (countError) {
-        console.error('Error counting members:', countError);
+        logger.error('Error counting members', countError);
       }
 
       // Get user's membership info to check if creator
@@ -144,7 +145,7 @@ export default function ResidenceHeader() {
 
       setIsLoading(false);
     } catch (error) {
-      console.error('Error loading property info:', error);
+      logger.error('Error loading property info', error);
       setIsLoading(false);
     }
   };

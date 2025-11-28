@@ -137,6 +137,7 @@ export function ChatWindow({
               size="icon"
               onClick={onBack}
               className="md:hidden rounded-full"
+              aria-label="Retour"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -167,7 +168,7 @@ export function ChatWindow({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full" aria-label="Plus d'options">
               <MoreVertical className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>

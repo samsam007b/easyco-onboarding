@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle,
@@ -104,7 +105,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
           unreadCount = unreadData;
         }
       } catch (err) {
-        console.error('Unread count failed:', err);
+        logger.error('Unread count failed', err);
       }
 
       // Calculate profile completion & load preferences
@@ -153,7 +154,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
       });
 
     } catch (error) {
-      console.error('Error loading dashboard:', error);
+      logger.error('Error loading dashboard', error);
     } finally {
       setIsLoading(false);
     }

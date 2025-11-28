@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -203,7 +204,7 @@ export default function ModernSearcherDashboard() {
           unreadCount = unreadData;
         }
       } catch (err) {
-        console.error('Unread count failed:', err);
+        logger.error('Unread count failed', err);
       }
 
       // Calculate profile completion
@@ -254,7 +255,7 @@ export default function ModernSearcherDashboard() {
         viewsCount: 0, // TODO: Implement views tracking
       });
     } catch (error) {
-      console.error('Error loading dashboard:', error);
+      logger.error('Error loading dashboard', error);
     } finally {
       setIsLoading(false);
     }

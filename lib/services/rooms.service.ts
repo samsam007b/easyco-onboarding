@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import {
   PropertyRoom,
   RoomWithTotal,
@@ -23,7 +24,7 @@ export async function getPropertyRooms(propertyId: string): Promise<RoomWithTota
     .order('room_number', { ascending: true });
 
   if (roomsError) {
-    console.error('Error fetching rooms:', roomsError);
+    logger.error('Error fetching rooms', roomsError);
     throw new Error('Failed to fetch rooms');
   }
 
@@ -58,7 +59,7 @@ export async function getRoomById(roomId: string): Promise<RoomWithTotal | null>
     .single();
 
   if (error || !room) {
-    console.error('Error fetching room:', error);
+    logger.error('Error fetching room', error);
     return null;
   }
 
@@ -85,7 +86,7 @@ export async function getPropertyCosts(propertyId: string): Promise<PropertyCost
     .single();
 
   if (error || !data) {
-    console.error('Error fetching costs:', error);
+    logger.error('Error fetching costs', error);
     // Return default empty costs
     return {
       utilities: { total: 0 },
@@ -144,7 +145,7 @@ export async function getPropertyLifestyleMetrics(
     .single();
 
   if (error || !data) {
-    console.error('Error fetching lifestyle metrics:', error);
+    logger.error('Error fetching lifestyle metrics', error);
     return null;
   }
 
@@ -174,7 +175,7 @@ export async function getPropertyResidents(propertyId: string): Promise<Resident
     .eq('property_id', propertyId);
 
   if (error || !residents) {
-    console.error('Error fetching residents:', error);
+    logger.error('Error fetching residents', error);
     return [];
   }
 
@@ -219,7 +220,7 @@ export async function getResidentsForProperties(propertyIds: string[]): Promise<
     .in('property_id', propertyIds);
 
   if (error || !residents) {
-    console.error('Error fetching residents for properties:', error);
+    logger.error('Error fetching residents for properties', error);
     return residentsMap;
   }
 
@@ -424,7 +425,7 @@ export async function upsertPropertyCosts(
     .upsert(dataToUpsert, { onConflict: 'property_id' });
 
   if (error) {
-    console.error('Error upserting costs:', error);
+    logger.error('Error upserting costs', error);
     return false;
   }
 
@@ -450,7 +451,7 @@ export async function upsertPropertyLifestyleMetrics(
     .upsert(dataToUpsert, { onConflict: 'property_id' });
 
   if (error) {
-    console.error('Error upserting lifestyle metrics:', error);
+    logger.error('Error upserting lifestyle metrics', error);
     return false;
   }
 

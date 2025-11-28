@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { getTotalUnreadCount, subscribeToConversationList } from '@/lib/services/messaging-service';
 
 interface MessagesIconWithBadgeProps {
@@ -49,7 +50,7 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
         setUserRole(userData.user_type);
       }
     } catch (error) {
-      console.error('Error loading user role:', error);
+      logger.error('Error loading user role', error);
     }
   };
 
@@ -77,7 +78,6 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
 
   const handleClick = () => {
     const url = getMessagesUrl();
-    console.log('Messages icon clicked - Role:', userRole, 'URL:', url);
     router.push(url);
   };
 
