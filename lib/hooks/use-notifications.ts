@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
 export interface Notification {
@@ -50,7 +51,7 @@ export function useNotifications(userId?: string) {
       const unread = (data || []).filter(n => !n.read).length;
       setUnreadCount(unread);
     } catch (error: any) {
-      console.error('Error loading notifications:', error);
+      logger.error('Error loading notifications', error);
       setNotifications([]);
       setUnreadCount(0);
     } finally {
@@ -73,7 +74,7 @@ export function useNotifications(userId?: string) {
 
       setUnreadCount(count || 0);
     } catch (error: any) {
-      console.error('Error loading unread count:', error);
+      logger.error('Error loading unread count', error);
       setUnreadCount(0);
     }
   }, [userId]);
@@ -243,7 +244,7 @@ export function useNotifications(userId?: string) {
 
       setChannel(newChannel);
     } catch (error) {
-      console.error('Error subscribing to notifications:', error);
+      logger.error('Error subscribing to notifications', error);
     }
   }, [userId, channel, loadUnreadCount]);
 

@@ -1,5 +1,8 @@
 import * as Sentry from '@sentry/nextjs'
 
+// Export for router transition tracking (required by Sentry for App Router navigation)
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
+
 // Client-side Sentry configuration
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,

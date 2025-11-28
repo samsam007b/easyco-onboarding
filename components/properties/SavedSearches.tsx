@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -47,7 +48,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
 
       setSearches(data || []);
     } catch (error) {
-      console.error('Error loading saved searches:', error);
+      logger.error('Error loading saved searches', error);
       toast.error('Impossible de charger les recherches sauvegardées');
     } finally {
       setLoading(false);
@@ -63,7 +64,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
       setSearches((prev) => prev.filter((s) => s.id !== searchId));
       toast.success('Recherche supprimée');
     } catch (error) {
-      console.error('Error deleting search:', error);
+      logger.error('Error deleting search', error);
       toast.error('Impossible de supprimer la recherche');
     }
   };
@@ -89,7 +90,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
           : 'Notifications désactivées'
       );
     } catch (error) {
-      console.error('Error toggling notifications:', error);
+      logger.error('Error toggling notifications', error);
       toast.error('Impossible de modifier les notifications');
     }
   };

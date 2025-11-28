@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { Home, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -24,11 +25,10 @@ export default function OnboardingCompletionPage() {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
-        console.log('🔍 Completion page - User:', user?.id);
-        console.log('🔍 User metadata:', user?.user_metadata);
+        logger.debug('Completion page - verifying user');
 
         if (!user) {
-          console.log('❌ No user, redirecting to login');
+          logger.debug('No user, redirecting to login');
           router.push('/login');
           return;
         }
@@ -36,7 +36,7 @@ export default function OnboardingCompletionPage() {
         // Priority 1: Get user_type from URL query parameter (most reliable)
         const userTypeFromURL = searchParams.get('user_type');
         if (userTypeFromURL && ['searcher', 'owner', 'resident'].includes(userTypeFromURL)) {
-          console.log('✅ Got user type from URL:', userTypeFromURL);
+          logger.debug('Got user type from URL', { userType: userTypeFromURL });
           setUserType(userTypeFromURL as 'searcher' | 'owner' | 'resident');
           setUserName(user.user_metadata?.full_name || user.user_metadata?.name || 'User');
           setIsLoading(false);
@@ -48,7 +48,7 @@ export default function OnboardingCompletionPage() {
         const fullNameFromMetadata = user.user_metadata?.full_name || user.user_metadata?.name;
 
         if (userTypeFromMetadata) {
-          console.log('✅ Got user type from metadata:', userTypeFromMetadata);
+          logger.debug('Got user type from metadata', { userType: userTypeFromMetadata });
           setUserType(userTypeFromMetadata as 'searcher' | 'owner' | 'resident');
           setUserName(fullNameFromMetadata || 'User');
           setIsLoading(false);
@@ -56,7 +56,7 @@ export default function OnboardingCompletionPage() {
         }
 
         // Priority 3: Try to fetch from database
-        console.log('⚠️ No user_type in URL or metadata, fetching from DB...');
+        logger.debug('No user_type in URL or metadata, fetching from DB');
 
         const { data: userData, error: userError } = await supabase
           .from('users')
@@ -64,12 +64,8 @@ export default function OnboardingCompletionPage() {
           .eq('id', user.id)
           .single();
 
-        console.log('📊 User data from DB:', userData);
-        console.log('❌ User error:', userError);
-
         if (userError) {
-          console.error('Failed to fetch user data:', userError);
-          console.error('⚠️ Cannot determine user type - navigation will be blocked');
+          logger.error('Failed to fetch user data', userError);
           setUserName('User');
           setIsLoading(false);
           return;
@@ -77,17 +73,17 @@ export default function OnboardingCompletionPage() {
 
         if (!userData?.onboarding_completed) {
           // If not completed, redirect back to onboarding
-          console.log('⚠️ Onboarding not completed, redirecting back');
+          logger.debug('Onboarding not completed, redirecting back');
           router.push(`/onboarding/${userData?.user_type}/basic-info`);
           return;
         }
 
-        console.log('✅ Setting user type from DB:', userData.user_type);
+        logger.debug('Setting user type from DB', { userType: userData.user_type });
         setUserType(userData.user_type as 'searcher' | 'owner' | 'resident');
         setUserName(userData.full_name || 'User');
         setIsLoading(false);
       } catch (error) {
-        console.error('💥 Error in verifyCompletion:', error);
+        logger.error('Error in verifyCompletion', error);
         setIsLoading(false);
       }
     };
@@ -96,31 +92,23 @@ export default function OnboardingCompletionPage() {
   }, [router, searchParams]);
 
   const handleGoHome = () => {
-    console.log('🏠 handleGoHome clicked, userType:', userType);
     if (!userType) {
-      console.log('❌ No userType, cannot navigate');
       return;
     }
-    console.log('✅ Navigating to:', `/dashboard/${userType}`);
     router.replace(`/dashboard/${userType}`);
   };
 
   const handleEnhanceProfile = () => {
-    console.log('✨ handleEnhanceProfile clicked, userType:', userType);
     if (!userType) {
-      console.log('❌ No userType, cannot navigate');
       return;
     }
 
     // Redirect to appropriate enhance profile page
     if (userType === 'searcher') {
-      console.log('✅ Navigating to: /profile/enhance');
       router.replace('/profile/enhance');
     } else if (userType === 'owner') {
-      console.log('✅ Navigating to: /profile/enhance-owner');
       router.replace('/profile/enhance-owner');
     } else if (userType === 'resident') {
-      console.log('✅ Navigating to: /profile/enhance-resident/personality');
       router.replace('/profile/enhance-resident/personality');
     }
   };

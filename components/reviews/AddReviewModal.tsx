@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 
@@ -125,7 +126,7 @@ export default function AddReviewModal({
       onSuccess?.();
       onClose();
     } catch (error: any) {
-      console.error('Error submitting review:', error);
+      logger.error('Error submitting review', error);
       toast.error(error.message || 'Erreur lors de la publication de l\'avis');
     } finally {
       setSubmitting(false);
@@ -145,6 +146,7 @@ export default function AddReviewModal({
               size="icon"
               onClick={onClose}
               className="rounded-full"
+              aria-label="Fermer"
             >
               <X className="h-5 w-5" />
             </Button>

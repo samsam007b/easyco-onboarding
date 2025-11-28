@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -101,7 +102,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
 
       setSearchers(searchersList);
     } catch (error) {
-      console.error('Error loading searchers:', error);
+      logger.error('Error loading searchers', error);
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +139,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
         });
       }
     } catch (error) {
-      console.error('Error saving like:', error);
+      logger.error('Error saving like', error);
     }
 
     // Move to next

@@ -48,7 +48,7 @@ export default function ComparisonBar() {
               Comparer
             </Button>
 
-            <Button variant="ghost" size="icon" onClick={clearComparison}>
+            <Button variant="ghost" size="icon" onClick={clearComparison} aria-label="Effacer la comparaison">
               <X className="w-4 h-4" />
             </Button>
           </div>

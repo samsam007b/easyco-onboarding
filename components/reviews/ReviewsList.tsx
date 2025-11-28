@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 
@@ -62,7 +63,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
       if (error) throw error;
       setReviews(data || []);
     } catch (error) {
-      console.error('Error loading reviews:', error);
+      logger.error('Error loading reviews', error);
     } finally {
       setLoading(false);
     }
@@ -118,7 +119,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
       // Refresh reviews to get updated helpful_count
       loadReviews();
     } catch (error: any) {
-      console.error('Error voting:', error);
+      logger.error('Error voting', error);
       toast.error('Erreur lors du vote');
     }
   };

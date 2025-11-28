@@ -3,7 +3,8 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import { SkeletonDashboard } from '@/components/ui/skeleton';
+import { logger } from '@/lib/utils/logger';
 import {
   MessageCircle,
   Home,
@@ -91,7 +92,7 @@ function SearcherMessagesContent() {
 
   // Helper function to render empty state action button
   const renderEmptyStateAction = (tab: SearcherMessageTab) => {
-    const buttonClass = "rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105";
+    const buttonClass = "rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105";
 
     switch (tab) {
       case 'owners':
@@ -205,8 +206,8 @@ function SearcherMessagesContent() {
         user_type: userData?.user_type,
       });
     } catch (error) {
-      console.error('Error loading user:', error);
-      toast.error('Failed to load user data');
+      logger.error('Error loading user', error);
+      toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
     }
@@ -219,7 +220,7 @@ function SearcherMessagesContent() {
     if (result.success && result.data) {
       setConversations(result.data);
     } else {
-      console.error('Error loading conversations:', result.error);
+      logger.error('Error loading conversations', result.error);
     }
 
     // Load pending message requests from matches
@@ -258,7 +259,7 @@ function SearcherMessagesContent() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading pending requests:', error);
+        logger.error('Error loading pending requests', error);
         return;
       }
 
@@ -284,7 +285,7 @@ function SearcherMessagesContent() {
 
       setPendingRequests(requests);
     } catch (error) {
-      console.error('Error loading pending requests:', error);
+      logger.error('Error loading pending requests', error);
     }
   };
 
@@ -293,8 +294,8 @@ function SearcherMessagesContent() {
     if (result.success && result.data) {
       setMessages(result.data);
     } else {
-      console.error('Error loading messages:', result.error);
-      toast.error('Failed to load messages');
+      logger.error('Error loading messages', result.error);
+      toast.error('Erreur lors du chargement des messages');
     }
   };
 
@@ -440,28 +441,32 @@ function SearcherMessagesContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-yellow-50/30">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-20 h-20 border-4 border-orange-200 rounded-full mx-auto mb-6"></div>
-            <LoadingHouse size={80} />
+      <div className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-searcher flex items-center justify-center">
+                <MessageCircle className="w-5 h-5 text-white" />
+              </div>
+              Messages
+            </h1>
+            <p className="text-gray-600 mt-1">Chargement...</p>
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des messages...</h3>
-          <p className="text-gray-600">Préparation de vos conversations</p>
+          <SkeletonDashboard />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/20 via-white to-yellow-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-searcher-50/20 via-white to-searcher-50/20">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center shadow-lg">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-searcher bg-clip-text text-transparent flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-searcher flex items-center justify-center shadow-lg">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 Messages
@@ -476,7 +481,7 @@ function SearcherMessagesContent() {
                 onClick={() => setShowArchived(!showArchived)}
                 className={cn(
                   'rounded-full',
-                  showArchived && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                  showArchived && 'bg-gradient-searcher hover:opacity-90'
                 )}
               >
                 <Archive className="w-4 h-4 mr-2" />
@@ -493,7 +498,7 @@ function SearcherMessagesContent() {
               size="sm"
               className={cn(
                 'rounded-full',
-                activeTab === 'all' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                activeTab === 'all' && 'bg-gradient-searcher hover:opacity-90'
               )}
             >
               <MessageCircle className="w-4 h-4 mr-2" />
@@ -509,7 +514,7 @@ function SearcherMessagesContent() {
               size="sm"
               className={cn(
                 'rounded-full',
-                activeTab === 'owners' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                activeTab === 'owners' && 'bg-gradient-searcher hover:opacity-90'
               )}
             >
               <Building2 className="w-4 h-4 mr-2" />
@@ -527,7 +532,7 @@ function SearcherMessagesContent() {
               size="sm"
               className={cn(
                 'rounded-full',
-                activeTab === 'searchers' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                activeTab === 'searchers' && 'bg-gradient-searcher hover:opacity-90'
               )}
             >
               <UserCircle2 className="w-4 h-4 mr-2" />
@@ -545,7 +550,7 @@ function SearcherMessagesContent() {
               size="sm"
               className={cn(
                 'rounded-full',
-                activeTab === 'groups' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                activeTab === 'groups' && 'bg-gradient-searcher hover:opacity-90'
               )}
             >
               <UsersRound className="w-4 h-4 mr-2" />
@@ -563,7 +568,7 @@ function SearcherMessagesContent() {
               size="sm"
               className={cn(
                 'rounded-full',
-                activeTab === 'requests' && 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]'
+                activeTab === 'requests' && 'bg-gradient-searcher hover:opacity-90'
               )}
             >
               <UserPlus className="w-4 h-4 mr-2" />
@@ -581,13 +586,13 @@ function SearcherMessagesContent() {
         {activeTab === 'requests' ? (
           /* Pending Requests View */
           pendingRequests.length === 0 ? (
-            <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50/30 rounded-3xl p-12 text-center">
+            <div className="relative overflow-hidden bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30 rounded-3xl p-12 text-center">
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/20 to-yellow-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-orange-300/10 to-yellow-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-searcher-200/20 to-searcher-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-searcher-300/10 to-searcher-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
               <div className="relative z-10">
-                <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
                   <UserPlus className="w-10 h-10 text-white" />
                 </div>
 
@@ -601,7 +606,7 @@ function SearcherMessagesContent() {
 
                 <Button
                   onClick={() => router.push('/dashboard/searcher/groups')}
-                  className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  className="rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 >
                   <Users className="w-5 h-5 mr-2" />
                   Trouver des colocataires
@@ -612,7 +617,7 @@ function SearcherMessagesContent() {
             <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden">
               <div className="p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <UserPlus className="w-5 h-5 text-[#FFA040]" />
+                  <UserPlus className="w-5 h-5 text-searcher-500" />
                   Demandes de contact ({pendingRequests.length})
                 </h2>
                 <p className="text-gray-600 mb-6">
@@ -623,7 +628,7 @@ function SearcherMessagesContent() {
                   {pendingRequests.map((request: any) => (
                     <div
                       key={request.match_id}
-                      className="group relative bg-gradient-to-br from-orange-50/50 to-yellow-50/50 hover:from-orange-50 hover:to-yellow-50 rounded-2xl p-6 border border-orange-100 hover:border-orange-200 transition-all hover:shadow-lg"
+                      className="group relative bg-gradient-to-br from-searcher-50/50 to-searcher-50/50 hover:from-searcher-50 hover:to-searcher-100 rounded-2xl p-6 border border-searcher-100 hover:border-searcher-200 transition-all hover:shadow-lg"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-4 flex-1">
@@ -633,10 +638,10 @@ function SearcherMessagesContent() {
                               <img
                                 src={request.user_photo}
                                 alt={request.user_name}
-                                className="w-16 h-16 rounded-full object-cover ring-2 ring-orange-200"
+                                className="w-16 h-16 rounded-full object-cover ring-2 ring-searcher-200"
                               />
                             ) : (
-                              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center ring-2 ring-orange-200">
+                              <div className="w-16 h-16 rounded-full bg-gradient-searcher flex items-center justify-center ring-2 ring-searcher-200">
                                 <UserCircle2 className="w-8 h-8 text-white" />
                               </div>
                             )}
@@ -657,8 +662,8 @@ function SearcherMessagesContent() {
                                 year: new Date(request.matched_at).getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
                               })}
                             </p>
-                            <div className="flex items-center gap-2 text-sm text-orange-700 bg-orange-100/50 rounded-full px-3 py-1 w-fit">
-                              <Heart className="w-3.5 h-3.5 fill-orange-700" />
+                            <div className="flex items-center gap-2 text-sm text-searcher-700 bg-searcher-100/50 rounded-full px-3 py-1 w-fit">
+                              <Heart className="w-3.5 h-3.5 fill-searcher-700" />
                               <span className="font-medium">Match confirmé</span>
                             </div>
                           </div>
@@ -705,11 +710,11 @@ function SearcherMessagesContent() {
                                 setSelectedConversationId(newConv.id);
                                 setActiveTab('searchers');
                               } catch (error) {
-                                console.error('Error creating conversation:', error);
+                                logger.error('Error creating conversation', error);
                                 toast.error('Échec de la création de la conversation');
                               }
                             }}
-                            className="rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold px-6 py-2 shadow-md hover:shadow-lg transition-all hover:scale-105"
+                            className="rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-6 py-2 shadow-md hover:shadow-lg transition-all hover:scale-105"
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
                             Envoyer un message
@@ -717,7 +722,7 @@ function SearcherMessagesContent() {
                           <Button
                             variant="outline"
                             onClick={() => router.push(`/dashboard/searcher/groups?user=${request.user_id}`)}
-                            className="rounded-full border-orange-200 hover:bg-orange-50 text-gray-700"
+                            className="rounded-full border-searcher-200 hover:bg-searcher-50 text-gray-700"
                           >
                             Voir le profil
                           </Button>
@@ -730,13 +735,13 @@ function SearcherMessagesContent() {
             </div>
           )
         ) : filteredConversations.length === 0 && !showArchived ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50/30 rounded-3xl p-12 text-center">
+          <div className="relative overflow-hidden bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30 rounded-3xl p-12 text-center">
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/20 to-yellow-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-orange-300/10 to-yellow-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-searcher-200/20 to-searcher-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-searcher-300/10 to-searcher-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
             <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+              <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
                 {renderTabIcon(activeTab)}
               </div>
 
@@ -782,9 +787,9 @@ function SearcherMessagesContent() {
                     onBack={() => setSelectedConversationId(null)}
                   />
                 ) : (
-                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-orange-50/30 to-yellow-50/30">
+                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-searcher-50/30 to-searcher-50/30">
                     <div className="text-center">
-                      <div className="w-20 h-20 bg-gradient-to-br from-[#FFA040] to-[#FFB85C] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                      <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <MessageCircle className="w-10 h-10 text-white" />
                       </div>
                       <p className="text-lg font-bold text-gray-900 mb-2">Sélectionnez une conversation</p>
@@ -806,10 +811,9 @@ function SearcherMessagesContent() {
 export default function SearcherMessagesPage() {
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="mt-4 text-gray-600">Loading messages...</p>
+      <div className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30 p-8">
+        <div className="max-w-7xl mx-auto">
+          <SkeletonDashboard />
         </div>
       </div>
     }>
