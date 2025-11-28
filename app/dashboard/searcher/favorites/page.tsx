@@ -23,8 +23,6 @@ interface Property {
   main_image?: string;
   images?: string[];
   views_count?: number;
-  rating?: number;
-  reviews_count?: number;
   available_from?: string;
 }
 
@@ -75,8 +73,6 @@ export default function FavoritesPage() {
             main_image,
             images,
             views_count,
-            rating,
-            reviews_count,
             available_from
           )
         `)
