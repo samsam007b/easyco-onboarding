@@ -221,12 +221,12 @@ export default function SettingsPage() {
           >
             {/* Back Button */}
             <Button
-              onClick={() => router.push('/hub')}
+              onClick={() => router.back()}
               variant="ghost"
               className="mb-6 rounded-full"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour au hub
+              Retour
             </Button>
 
             <div className="text-center">

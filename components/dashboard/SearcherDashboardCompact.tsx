@@ -264,7 +264,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 <Edit3 className="w-4 h-4 text-white" />
               </button>
               <button
-                onClick={() => router.push('/dashboard/searcher/settings')}
+                onClick={() => router.push('/settings')}
                 className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition backdrop-blur-sm"
               >
                 <Settings className="w-4 h-4 text-white" />
