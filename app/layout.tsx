@@ -5,6 +5,7 @@ import { ClientProviders } from '@/components/ClientProviders'
 import dynamic from 'next/dynamic'
 import SkipLink from '@/components/accessibility/SkipLink'
 import { OrganizationStructuredData, WebsiteStructuredData } from '@/components/seo/StructuredData'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 // Lazy load des composants non-critiques pour améliorer les performances
 const Analytics = dynamic(() => import('@/components/Analytics'), {
@@ -138,7 +139,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <WebVitalsReporter />
         <ClientProviders>
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
           <Toaster position="top-right" />
           <CookieConsentBanner />
           <PWAInstallPrompt />
