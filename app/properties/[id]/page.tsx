@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, CheckCircle, Edit, Trash2, Users, Home } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, CheckCircle, Edit, Trash2, Users, Home, X, ChevronLeft, ChevronRight, Expand } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -68,6 +69,8 @@ export default function PropertyDetailsPage() {
   const [ownerProfile, setOwnerProfile] = useState<PropertyOwner | null>(null);
   const [virtualTourInfo, setVirtualTourInfo] = useState<VirtualTourInfo | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const supabase = createClient();
   const virtualToursService = new VirtualToursService(supabase);
@@ -75,6 +78,24 @@ export default function PropertyDetailsPage() {
   useEffect(() => {
     loadProperty();
   }, [propertyId]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!isLightboxOpen || !property?.images) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev === 0 ? property.images!.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev === property.images!.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, property?.images]);
 
   const loadProperty = async () => {
     setLoading(true);
@@ -393,28 +414,43 @@ export default function PropertyDetailsPage() {
         {property.images && property.images.length > 1 && (
           <div className="bg-white border-b">
             <div className="max-w-7xl mx-auto px-8 py-4">
-              <div className="flex gap-3 overflow-x-auto">
-                {property.images.slice(0, 8).map((image, index) => (
-                  <img
-                    key={index}
-                    src={getImageUrl(image)}
-                    alt={`${property.title} - ${index + 1}`}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`h-20 w-32 object-cover rounded-lg border-2 transition-all cursor-pointer flex-shrink-0 hover:border-orange-500 hover:scale-105 ${
-                      selectedImageIndex === index
-                        ? 'border-orange-500 ring-2 ring-orange-300'
-                        : 'border-gray-200'
-                    }`}
-                  />
-                ))}
-                {property.images.length > 8 && (
-                  <div
-                    className="h-20 w-32 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center flex-shrink-0 cursor-pointer hover:bg-gray-200 transition-colors"
-                    onClick={() => setSelectedImageIndex(8)}
-                  >
-                    <span className="text-gray-600 font-semibold">+{property.images.length - 8}</span>
-                  </div>
-                )}
+              <div className="flex items-center gap-3">
+                {/* Thumbnails */}
+                <div className="flex gap-3 overflow-x-auto flex-1">
+                  {property.images.slice(0, 8).map((image, index) => (
+                    <img
+                      key={index}
+                      src={getImageUrl(image)}
+                      alt={`${property.title} - ${index + 1}`}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={`h-20 w-32 object-cover rounded-lg border-2 transition-all cursor-pointer flex-shrink-0 hover:border-orange-500 hover:scale-105 ${
+                        selectedImageIndex === index
+                          ? 'border-orange-500 ring-2 ring-orange-300'
+                          : 'border-gray-200'
+                      }`}
+                    />
+                  ))}
+                  {property.images.length > 8 && (
+                    <div
+                      className="h-20 w-32 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center flex-shrink-0 cursor-pointer hover:bg-gray-200 transition-colors"
+                      onClick={() => setSelectedImageIndex(8)}
+                    >
+                      <span className="text-gray-600 font-semibold">+{property.images.length - 8}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Expand Button */}
+                <button
+                  onClick={() => {
+                    setLightboxIndex(selectedImageIndex);
+                    setIsLightboxOpen(true);
+                  }}
+                  className="flex-shrink-0 h-20 px-6 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF9030] hover:to-[#FFA84C] text-white rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
+                >
+                  <Expand className="w-5 h-5" />
+                  <span className="font-medium hidden sm:inline">Voir tout</span>
+                </button>
               </div>
             </div>
           </div>
@@ -587,6 +623,95 @@ export default function PropertyDetailsPage() {
           </div>
         </div>
       </div>
+
+      {/* Lightbox / Gallery Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && property.images && property.images.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-6 right-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Image Counter */}
+            <div className="absolute top-6 left-6 z-10 px-4 py-2 bg-white/10 rounded-full">
+              <span className="text-white font-medium">
+                {lightboxIndex + 1} / {property.images.length}
+              </span>
+            </div>
+
+            {/* Previous Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === 0 ? property.images!.length - 1 : prev - 1));
+              }}
+              className="absolute left-4 md:left-8 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <ChevronLeft className="w-8 h-8 text-white" />
+            </button>
+
+            {/* Main Image */}
+            <motion.div
+              key={lightboxIndex}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="max-w-[90vw] max-h-[85vh] relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={getImageUrl(property.images[lightboxIndex])}
+                alt={`${property.title} - ${lightboxIndex + 1}`}
+                className="max-w-full max-h-[85vh] object-contain rounded-lg"
+              />
+            </motion.div>
+
+            {/* Next Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === property.images!.length - 1 ? 0 : prev + 1));
+              }}
+              className="absolute right-4 md:right-8 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <ChevronRight className="w-8 h-8 text-white" />
+            </button>
+
+            {/* Thumbnail Strip at Bottom */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+              <div className="flex gap-2 p-2 bg-black/50 rounded-xl max-w-[90vw] overflow-x-auto">
+                {property.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={getImageUrl(image)}
+                    alt={`Miniature ${index + 1}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxIndex(index);
+                    }}
+                    className={`h-16 w-24 object-cover rounded-lg cursor-pointer transition-all flex-shrink-0 ${
+                      lightboxIndex === index
+                        ? 'ring-2 ring-orange-500 opacity-100'
+                        : 'opacity-50 hover:opacity-80'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageContainer>
   );
 }
