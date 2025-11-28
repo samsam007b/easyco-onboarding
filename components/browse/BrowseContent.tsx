@@ -56,6 +56,66 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   const [isAnimatingReload, setIsAnimatingReload] = useState(false);
   const [isCardExpanded, setIsCardExpanded] = useState(false);
 
+  // Load swipe history from database on mount
+  useEffect(() => {
+    const loadSwipeHistory = async () => {
+      if (!userId) return;
+
+      try {
+        // Get recent swipes with user profiles
+        const { data: swipes, error } = await supabase
+          .from('user_swipes')
+          .select('swiped_id, action, created_at')
+          .eq('swiper_id', userId)
+          .eq('context', 'searcher_matching')
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (error) throw error;
+
+        if (swipes && swipes.length > 0) {
+          // Get profiles for these users
+          const userIds = swipes.map(s => s.swiped_id);
+          const { data: profiles, error: profilesError } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .in('user_id', userIds);
+
+          if (profilesError) throw profilesError;
+
+          // Map to liked and passed arrays
+          const liked: UserWithCompatibility[] = [];
+          const passed: UserWithCompatibility[] = [];
+
+          swipes.forEach((swipe) => {
+            const profile = profiles?.find(p => p.user_id === swipe.swiped_id);
+            if (profile) {
+              const userProfile: UserWithCompatibility = {
+                user_id: swipe.swiped_id,
+                first_name: profile.first_name || 'Unknown',
+                last_name: profile.last_name || '',
+                profile_photo_url: profile.profile_photo_url,
+              };
+
+              if (swipe.action === 'like') {
+                liked.unshift(userProfile); // Add to beginning (oldest first)
+              } else {
+                passed.unshift(userProfile);
+              }
+            }
+          });
+
+          setLikedProfiles(liked.slice(-5));
+          setPassedProfiles(passed.slice(-5));
+        }
+      } catch (error) {
+        console.error('Failed to load swipe history:', error);
+      }
+    };
+
+    loadSwipeHistory();
+  }, [userId, supabase]);
+
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
     priceRange: { min: 0, max: 5000 },
@@ -462,11 +522,27 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               <CardPile
                 type="pass"
                 cards={passedProfiles}
-                onUndo={() => {
+                onUndo={async () => {
                   if (passedProfiles.length > 0) {
                     const lastPassed = passedProfiles[passedProfiles.length - 1];
+
+                    // Delete from database
+                    const { error } = await supabase
+                      .from('user_swipes')
+                      .delete()
+                      .eq('swiper_id', userId)
+                      .eq('swiped_id', lastPassed.user_id)
+                      .eq('context', 'searcher_matching');
+
+                    if (error) {
+                      console.error('Failed to delete swipe:', error);
+                      toast.error('Impossible d\'annuler');
+                      return;
+                    }
+
                     setPassedProfiles(prev => prev.slice(0, -1));
-                    setMatchingIndex(prev => Math.max(0, prev - 1));
+                    await loadPotentialMatches();
+                    setMatchingIndex(0);
                     toast.info(`${lastPassed.first_name} remis dans le deck`);
                   }
                 }}
@@ -579,11 +655,27 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               <CardPile
                 type="like"
                 cards={likedProfiles}
-                onUndo={() => {
+                onUndo={async () => {
                   if (likedProfiles.length > 0) {
                     const lastLiked = likedProfiles[likedProfiles.length - 1];
+
+                    // Delete from database
+                    const { error } = await supabase
+                      .from('user_swipes')
+                      .delete()
+                      .eq('swiper_id', userId)
+                      .eq('swiped_id', lastLiked.user_id)
+                      .eq('context', 'searcher_matching');
+
+                    if (error) {
+                      console.error('Failed to delete swipe:', error);
+                      toast.error('Impossible d\'annuler');
+                      return;
+                    }
+
                     setLikedProfiles(prev => prev.slice(0, -1));
-                    setMatchingIndex(prev => Math.max(0, prev - 1));
+                    await loadPotentialMatches();
+                    setMatchingIndex(0);
                     toast.info(`${lastLiked.first_name} remis dans le deck`);
                   }
                 }}
