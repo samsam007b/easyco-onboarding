@@ -336,12 +336,19 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
   const recordSwipe = useCallback(
     async (swipedUserId: string, action: 'like' | 'pass') => {
       try {
-        const { error } = await supabase.from('user_swipes').insert({
-          swiper_id: currentUserId,
-          swiped_id: swipedUserId,
-          action,
-          context,
-        });
+        // Use upsert to handle re-swiping after undo (avoids duplicate key error)
+        const { error } = await supabase.from('user_swipes').upsert(
+          {
+            swiper_id: currentUserId,
+            swiped_id: swipedUserId,
+            action,
+            context,
+            created_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'swiper_id,swiped_id,context',
+          }
+        );
 
         if (error) throw error;
 
