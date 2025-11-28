@@ -239,7 +239,86 @@ export default function ModernSearcherHeader({
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            {/* Profile Menu - Always first (leftmost) */}
+            {/* Favorites Quick Access */}
+            {favoritesCount > 0 && (
+              <Link
+                href="/dashboard/searcher/favorites"
+                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
+              >
+                <Bookmark className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-medium text-orange-900">{favoritesCount} favoris</span>
+              </Link>
+            )}
+
+            {/* Notifications */}
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
+                aria-label={`Notifications${(matchesCount > 0 || unreadMessages > 0) ? ` (${matchesCount + unreadMessages} non lues)` : ''}`}
+                aria-expanded={showNotifications}
+                aria-haspopup="true"
+              >
+                <Bell className="w-5 h-5 text-gray-700" />
+                {(matchesCount > 0 || unreadMessages > 0) && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white" />
+                )}
+              </button>
+
+              {/* Notifications Dropdown */}
+              <AnimatePresence>
+                {showNotifications && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setShowNotifications(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-200">
+                        <h3 className="font-semibold text-gray-900">Notifications</h3>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {matchesCount > 0 && (
+                          <Link
+                            href="/dashboard/searcher/groups"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            onClick={() => setShowNotifications(false)}
+                          >
+                            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                              <Heart className="w-5 h-5 text-orange-600" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-gray-900">
+                                {matchesCount} nouveau{matchesCount > 1 ? 'x' : ''} match{matchesCount > 1 ? 's' : ''}
+                              </p>
+                              <p className="text-xs text-gray-500">Propriétés compatibles avec vous</p>
+                            </div>
+                          </Link>
+                        )}
+                        {(matchesCount === 0 && unreadMessages === 0) && (
+                          <div className="px-4 py-8 text-center text-gray-500">
+                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                            <p className="text-sm">Aucune notification</p>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Language Switcher */}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+
+            {/* Profile Menu - Always last (rightmost) */}
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -426,85 +505,6 @@ export default function ModernSearcherHeader({
                   </>
                 )}
               </AnimatePresence>
-            </div>
-
-            {/* Favorites Quick Access */}
-            {favoritesCount > 0 && (
-              <Link
-                href="/dashboard/searcher/favorites"
-                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
-              >
-                <Bookmark className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">{favoritesCount} favoris</span>
-              </Link>
-            )}
-
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
-                aria-label={`Notifications${(matchesCount > 0 || unreadMessages > 0) ? ` (${matchesCount + unreadMessages} non lues)` : ''}`}
-                aria-expanded={showNotifications}
-                aria-haspopup="true"
-              >
-                <Bell className="w-5 h-5 text-gray-700" />
-                {(matchesCount > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white" />
-                )}
-              </button>
-
-              {/* Notifications Dropdown */}
-              <AnimatePresence>
-                {showNotifications && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowNotifications(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
-                    >
-                      <div className="px-4 py-3 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
-                      </div>
-                      <div className="max-h-96 overflow-y-auto">
-                        {matchesCount > 0 && (
-                          <Link
-                            href="/dashboard/searcher/groups"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                              <Heart className="w-5 h-5 text-orange-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                {matchesCount} nouveau{matchesCount > 1 ? 'x' : ''} match{matchesCount > 1 ? 's' : ''}
-                              </p>
-                              <p className="text-xs text-gray-500">Propriétés compatibles avec vous</p>
-                            </div>
-                          </Link>
-                        )}
-                        {(matchesCount === 0 && unreadMessages === 0) && (
-                          <div className="px-4 py-8 text-center text-gray-500">
-                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">Aucune notification</p>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Language Switcher */}
-            <div className="hidden md:block">
-              <LanguageSwitcher />
             </div>
 
             {/* Mobile Menu Toggle */}
