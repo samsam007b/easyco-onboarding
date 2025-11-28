@@ -103,7 +103,7 @@ export default function SearcherDashboardPage() {
       />
 
       {/* Compact Dashboard Section - collé en haut */}
-      <div className="pt-16">
+      <div className="pt-14">
         <SearcherDashboardCompact
           userId={userData.id}
           userData={userData}
