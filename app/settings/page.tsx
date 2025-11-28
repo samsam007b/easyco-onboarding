@@ -221,7 +221,16 @@ export default function SettingsPage() {
           >
             {/* Back Button */}
             <Button
-              onClick={() => router.back()}
+              onClick={() => {
+                // Navigation explicite pour éviter la boucle avec router.back()
+                if (userType === 'owner') {
+                  router.push('/dashboard/owner');
+                } else if (userType === 'resident') {
+                  router.push('/dashboard/resident');
+                } else {
+                  router.push('/dashboard/searcher');
+                }
+              }}
               variant="ghost"
               className="mb-6 rounded-full"
             >
