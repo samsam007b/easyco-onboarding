@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Plus, MessageCircle, MapPin, Euro, Calendar, Search, TrendingUp } from 'lucide-react';
+import { Users, Plus, MessageCircle, MapPin, Euro, Calendar, Search, TrendingUp, Heart, Briefcase, UserPlus, Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { UserProfile } from '@/lib/services/user-matching-service';
+import { toast } from 'sonner';
+import Image from 'next/image';
 
 interface Group {
   id: string;
@@ -28,6 +31,8 @@ export default function GroupsPage() {
   const router = useRouter();
   const [myGroups, setMyGroups] = useState<Group[]>([]);
   const [discoverGroups, setDiscoverGroups] = useState<Group[]>([]);
+  const [matches, setMatches] = useState<UserProfile[]>([]);
+  const [selectedMatches, setSelectedMatches] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -68,6 +73,31 @@ export default function GroupsPage() {
           setMyGroups(groupsWithCounts);
         }
 
+        // Load user matches from user_matches table
+        const { data: matchData, error: matchError } = await supabase
+          .from('user_matches')
+          .select('*')
+          .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
+          .eq('is_active', true)
+          .order('matched_at', { ascending: false });
+
+        if (!matchError && matchData && matchData.length > 0) {
+          // Extract matched user IDs
+          const matchedUserIds = matchData.map((m: any) => {
+            return m.user1_id === user.id ? m.user2_id : m.user1_id;
+          });
+
+          // Fetch profiles for matched users
+          const { data: profiles, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .in('user_id', matchedUserIds);
+
+          if (!profileError && profiles) {
+            setMatches(profiles as UserProfile[]);
+          }
+        }
+
         // Load discover groups (public groups user is not part of)
         const { data: allGroups, error: groupsError } = await supabase
           .from('groups')
@@ -105,6 +135,37 @@ export default function GroupsPage() {
 
     loadData();
   }, [router]);
+
+  const toggleSelectMatch = (userId: string) => {
+    const newSelected = new Set(selectedMatches);
+    if (newSelected.has(userId)) {
+      newSelected.delete(userId);
+    } else {
+      newSelected.add(userId);
+    }
+    setSelectedMatches(newSelected);
+  };
+
+  const handleCreateGroupFromMatches = () => {
+    if (selectedMatches.size === 0) {
+      toast.error('Sélectionne au moins une personne pour créer un groupe');
+      return;
+    }
+    const memberIds = Array.from(selectedMatches).join(',');
+    router.push(`/dashboard/searcher/groups/create?members=${memberIds}`);
+  };
+
+  const calculateAge = (dateOfBirth?: string): number | null => {
+    if (!dateOfBirth) return null;
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
 
   const formatBudget = (min: number | null, max: number | null) => {
     if (!min && !max) return 'Budget flexible';
@@ -176,6 +237,174 @@ export default function GroupsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+          {/* Matches Section - Create groups from matches */}
+          {matches.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <Sparkles className="w-8 h-8 text-orange-600" />
+                    Tes Matchs
+                  </h2>
+                  <p className="text-gray-600 mt-1">
+                    Sélectionne des personnes pour créer un groupe de colocation
+                  </p>
+                </div>
+                {selectedMatches.size > 0 && (
+                  <Button
+                    onClick={handleCreateGroupFromMatches}
+                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-2xl gap-2"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    Créer un groupe ({selectedMatches.size})
+                  </Button>
+                )}
+              </div>
+
+              {/* Info Banner */}
+              <Card className="mb-6 border-orange-200 bg-gradient-to-r from-orange-50 to-white rounded-2xl">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <Heart className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900 mb-1">
+                        Ces personnes t'ont aussi liké !
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        Sélectionne-les pour former ton groupe de colocation idéal et chercher un logement ensemble.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Matches Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {matches.map((match) => {
+                  const age = calculateAge(match.date_of_birth);
+                  const isSelected = selectedMatches.has(match.user_id);
+
+                  return (
+                    <Card
+                      key={match.user_id}
+                      className={`overflow-hidden hover:shadow-xl transition-all cursor-pointer rounded-2xl border-2 ${
+                        isSelected
+                          ? 'border-orange-500 ring-2 ring-orange-200'
+                          : 'border-orange-100 hover:border-orange-300'
+                      }`}
+                      onClick={() => toggleSelectMatch(match.user_id)}
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        {match.profile_photo_url ? (
+                          <Image
+                            src={match.profile_photo_url}
+                            alt={`${match.first_name} ${match.last_name}`}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
+                            <div className="text-4xl font-bold text-orange-600 opacity-30">
+                              {match.first_name.charAt(0)}
+                              {match.last_name?.charAt(0) || ''}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Match Badge */}
+                        <div className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full shadow-lg">
+                          <div className="flex items-center gap-1">
+                            <Heart className="w-3 h-3 fill-current" />
+                            <span className="text-xs font-bold">Match</span>
+                          </div>
+                        </div>
+
+                        {/* Selection Indicator */}
+                        {isSelected && (
+                          <div className="absolute top-3 left-3 w-7 h-7 bg-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        )}
+                      </div>
+
+                      <CardContent className="p-4">
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">
+                          {match.first_name} {match.last_name}
+                          {age && <span className="text-base font-normal text-gray-500 ml-2">{age} ans</span>}
+                        </h3>
+
+                        {match.occupation_status && (
+                          <div className="flex items-center gap-2 text-gray-600 text-sm">
+                            <Briefcase className="w-3 h-3" />
+                            <span className="capitalize">
+                              {match.occupation_status.replace('_', ' ')}
+                            </span>
+                          </div>
+                        )}
+
+                        {match.bio && (
+                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{match.bio}</p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              {/* Suggested Group Combinations */}
+              {matches.length >= 2 && (
+                <div className="mt-8">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Users className="w-5 h-5 text-orange-600" />
+                    Suggestions de groupes
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {matches.slice(0, 4).map((match1, idx1) => {
+                      const match2 = matches[idx1 + 1];
+                      if (!match2) return null;
+
+                      return (
+                        <Card
+                          key={`suggestion-${idx1}`}
+                          className="p-4 rounded-2xl border border-orange-200 hover:border-orange-400 hover:shadow-lg transition-all cursor-pointer"
+                          onClick={() => {
+                            const groupMembers = [match1.user_id, match2.user_id].join(',');
+                            router.push(`/dashboard/searcher/groups/create?members=${groupMembers}`);
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="flex -space-x-2">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold border-2 border-white">
+                                {match1.first_name.charAt(0)}
+                              </div>
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold border-2 border-white">
+                                {match2.first_name.charAt(0)}
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-900">
+                                {match1.first_name} + {match2.first_name}
+                              </p>
+                              <p className="text-xs text-gray-600">Groupe de 2 personnes</p>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-orange-300 text-orange-700 hover:bg-orange-50 rounded-xl"
+                            >
+                              <Plus className="w-4 h-4 mr-1" />
+                              Créer
+                            </Button>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
 
           {/* My Groups Section */}
           <section>

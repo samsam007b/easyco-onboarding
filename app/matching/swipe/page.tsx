@@ -254,7 +254,7 @@ export default function SwipePage() {
                     Recharger
                   </Button>
                   <Button
-                    onClick={() => router.push('/matching/matches')}
+                    onClick={() => router.push('/dashboard/searcher/groups')}
                     variant="outline"
                   >
                     <Heart className="w-4 h-4 mr-2" />
@@ -440,11 +440,11 @@ export default function SwipePage() {
           </Button>
           <Button
             variant="ghost"
-            onClick={() => router.push('/matching/matches')}
+            onClick={() => router.push('/dashboard/searcher/groups')}
             className="relative"
           >
             <Heart className="w-5 h-5 mr-2" />
-            Matches
+            Matchs & Groupes
           </Button>
         </div>
       </div>

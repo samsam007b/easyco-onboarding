@@ -274,14 +274,14 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
           {/* KPIs Row - Inline, compact */}
           <div className="grid grid-cols-4 gap-2 mb-4">
-            {/* Matchs */}
+            {/* Groupes / Matchs */}
             <button
-              onClick={() => router.push('/matching/matches')}
+              onClick={() => router.push('/dashboard/searcher/groups')}
               className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl p-3 transition text-center shadow-sm"
             >
-              <Heart className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
+              <Users className="w-5 h-5 text-white mx-auto mb-1 drop-shadow-sm" />
               <p className="text-lg font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.likedProfiles}</p>
-              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Matchs</p>
+              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Groupes</p>
             </button>
 
             {/* Favoris */}
@@ -427,11 +427,11 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                       </p>
                       <div className="flex gap-2">
                         <Button
-                          onClick={() => router.push('/matching/matches')}
+                          onClick={() => router.push('/dashboard/searcher/groups')}
                           size="sm"
                           className="flex-1 rounded-full bg-white text-orange-600 hover:bg-white/90"
                         >
-                          <Heart className="w-3 h-3 mr-1" />
+                          <Users className="w-3 h-3 mr-1" />
                           Voir
                         </Button>
                         <Button

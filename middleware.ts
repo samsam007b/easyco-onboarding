@@ -74,6 +74,7 @@ export async function middleware(request: NextRequest) {
     '/signup': '/auth?mode=signup',
     '/properties': '/dashboard/searcher',
     '/properties/browse': '/dashboard/searcher',
+    '/matching/matches': '/dashboard/searcher/groups',
   }
 
   // Check if current path needs redirection
