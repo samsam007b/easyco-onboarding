@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { SwipeCard } from '@/components/matching/SwipeCard';
+import { CardPile } from '@/components/matching/CardPile';
 import { useUserMatching, type SwipeContext, type UserWithCompatibility } from '@/lib/hooks/use-user-matching';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -40,6 +41,54 @@ export default function SwipePage() {
     isMatchingUnlocked,
   } = useUserMatching(user?.id || '', context);
 
+  // Load swipe history from database
+  const loadSwipeHistory = useCallback(async () => {
+    if (!user?.id) return;
+
+    try {
+      // Get recent swipes with user profiles
+      const { data: swipes, error } = await supabase
+        .from('user_swipes')
+        .select('swiped_id, action, created_at')
+        .eq('swiper_id', user.id)
+        .eq('context', context)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+
+      if (swipes && swipes.length > 0) {
+        // Get profiles for these users
+        const userIds = swipes.map(s => s.swiped_id);
+        const { data: profiles, error: profilesError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .in('user_id', userIds);
+
+        if (profilesError) throw profilesError;
+
+        // Map to swipe history format
+        const history: SwipedCard[] = swipes.map((swipe, idx) => {
+          const profile = profiles?.find(p => p.user_id === swipe.swiped_id);
+          return {
+            user: {
+              user_id: swipe.swiped_id,
+              first_name: profile?.first_name || 'Unknown',
+              last_name: profile?.last_name || '',
+              profile_photo_url: profile?.profile_photo_url,
+            } as UserWithCompatibility,
+            action: swipe.action as 'like' | 'pass',
+            index: idx
+          };
+        }).reverse(); // Reverse to have oldest first
+
+        setSwipeHistory(history);
+      }
+    } catch (error) {
+      console.error('Failed to load swipe history:', error);
+    }
+  }, [user?.id, context, supabase]);
+
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -54,6 +103,13 @@ export default function SwipePage() {
 
     getUser();
   }, [supabase, router]);
+
+  // Load swipe history when user and context are ready
+  useEffect(() => {
+    if (user?.id) {
+      loadSwipeHistory();
+    }
+  }, [user?.id, context, loadSwipeHistory]);
 
   const handleSwipe = async (direction: 'left' | 'right') => {
     const currentUser = potentialMatches[currentIndex];
@@ -94,21 +150,45 @@ export default function SwipePage() {
   const handleLike = () => handleSwipe('right');
   const handlePass = () => handleSwipe('left');
 
-  const handleUndo = () => {
+  const handleUndo = async () => {
     if (swipeHistory.length === 0 || isAnimating) return;
 
     setIsAnimating(true);
     const lastSwipe = swipeHistory[swipeHistory.length - 1];
 
-    // Remove from history
-    setSwipeHistory(prev => prev.slice(0, -1));
+    try {
+      // Delete the swipe from the database
+      const { error } = await supabase
+        .from('user_swipes')
+        .delete()
+        .eq('swiper_id', user.id)
+        .eq('swiped_id', lastSwipe.user.user_id)
+        .eq('context', context);
 
-    // Go back to previous card
-    setTimeout(() => {
-      setCurrentIndex(lastSwipe.index);
+      if (error) {
+        console.error('Failed to delete swipe:', error);
+        toast.error('Impossible d\'annuler le swipe');
+        setIsAnimating(false);
+        return;
+      }
+
+      // Remove from history
+      setSwipeHistory(prev => prev.slice(0, -1));
+
+      // Add the user back to potentialMatches at the beginning
+      // This ensures the card reappears in the center
+      loadPotentialMatches();
+
+      setTimeout(() => {
+        setCurrentIndex(0);
+        setIsAnimating(false);
+        toast.info('Swipe annulé !');
+      }, 600);
+    } catch (error) {
+      console.error('Undo failed:', error);
+      toast.error('Erreur lors de l\'annulation');
       setIsAnimating(false);
-      toast.info('Undo successful');
-    }, 600);
+    }
   };
 
   const handleReload = async () => {
@@ -136,9 +216,15 @@ export default function SwipePage() {
   const currentCard = potentialMatches[currentIndex];
   const cardsRemaining = potentialMatches.length - currentIndex;
 
-  // Get recent liked and passed cards for piles
-  const likedCards = swipeHistory.filter(s => s.action === 'like').slice(-5);
-  const passedCards = swipeHistory.filter(s => s.action === 'pass').slice(-5);
+  // Get recent liked and passed cards for piles (extract user objects)
+  const likedUsers = swipeHistory
+    .filter(s => s.action === 'like')
+    .slice(-5)
+    .map(s => s.user);
+  const passedUsers = swipeHistory
+    .filter(s => s.action === 'pass')
+    .slice(-5)
+    .map(s => s.user);
 
   if (!user || isLoading) {
     return (
@@ -319,33 +405,13 @@ export default function SwipePage() {
       {/* Card Stack with Piles */}
       <div className="max-w-7xl mx-auto relative px-4">
         <div className="relative h-[500px] md:h-[550px] mb-6">
-          {/* Left Pile - Disliked (showing backs) */}
-          <div className="absolute -left-4 md:left-0 top-0 h-full w-[200px] md:w-[280px] pointer-events-none overflow-hidden">
-            <AnimatePresence>
-              {passedCards.map((swipedCard, index) => (
-                <motion.div
-                  key={`passed-${swipedCard.index}`}
-                  className="absolute top-1/2 -translate-y-1/2 w-[180px] md:w-[240px]"
-                  initial={{ x: '250%', rotate: 0, scale: 1, rotateY: 180 }}
-                  animate={{
-                    x: `${-20 + index * 8}%`,
-                    rotate: -15 + index * 3,
-                    scale: 0.75 - index * 0.05,
-                    rotateY: 180,
-                    zIndex: index
-                  }}
-                  exit={{ x: '250%', rotate: 0, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                >
-                  {/* Card Back */}
-                  <div className="w-full h-[400px] md:h-[480px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
-                    <X className="w-20 h-20 md:w-32 md:h-32 text-gray-400 opacity-30" />
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            {/* White fade effect */}
-            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-r from-transparent to-gray-50 pointer-events-none z-10" />
+          {/* Left Pile - Disliked */}
+          <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20">
+            <CardPile
+              type="pass"
+              cards={passedUsers}
+              onUndo={swipeHistory.length > 0 && swipeHistory[swipeHistory.length - 1]?.action === 'pass' ? handleUndo : undefined}
+            />
           </div>
 
           {/* Center - Current Card Stack */}
@@ -464,42 +530,13 @@ export default function SwipePage() {
             )}
           </div>
 
-          {/* Right Pile - Liked (showing faces) */}
-          <div className="absolute -right-4 md:right-0 top-0 h-full w-[200px] md:w-[280px] pointer-events-none overflow-hidden">
-            <AnimatePresence>
-              {likedCards.map((swipedCard, index) => (
-                <motion.div
-                  key={`liked-${swipedCard.index}`}
-                  className="absolute top-1/2 -translate-y-1/2 w-[180px] md:w-[240px]"
-                  initial={{ x: '-250%', rotate: 0, scale: 1 }}
-                  animate={{
-                    x: `${20 - index * 8}%`,
-                    rotate: 15 - index * 3,
-                    scale: 0.75 - index * 0.05,
-                    zIndex: index
-                  }}
-                  exit={{ x: '-250%', rotate: 0, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                >
-                  {/* Simplified card preview */}
-                  <div className="w-full h-[400px] md:h-[480px] bg-white rounded-3xl shadow-2xl overflow-hidden">
-                    {swipedCard.user.profile_photo_url ? (
-                      <img
-                        src={swipedCard.user.profile_photo_url}
-                        alt={`${swipedCard.user.first_name}`}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-200 to-yellow-100 flex items-center justify-center">
-                        <Heart className="w-20 h-20 md:w-32 md:h-32 text-orange-400 opacity-30" />
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            {/* White fade effect */}
-            <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-l from-transparent to-gray-50 pointer-events-none z-10" />
+          {/* Right Pile - Liked */}
+          <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
+            <CardPile
+              type="like"
+              cards={likedUsers}
+              onUndo={swipeHistory.length > 0 && swipeHistory[swipeHistory.length - 1]?.action === 'like' ? handleUndo : undefined}
+            />
           </div>
         </div>
 

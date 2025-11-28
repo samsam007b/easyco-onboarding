@@ -120,7 +120,7 @@ export default function PropertyInfoPage() {
           {/* Back button */}
           <button
             onClick={() => router.push('/dashboard/my-profile-owner')}
-            className="mb-6 flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
+            className="mb-6 flex items-center gap-2 text-gray-600 hover:text-owner-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>{common.back}</span>
@@ -130,11 +130,11 @@ export default function PropertyInfoPage() {
           <div className="bg-white rounded-3xl shadow-xl p-8">
             {/* Header */}
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-owner rounded-2xl flex items-center justify-center">
                 <Home className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-[#4A148C]">
+                <h1 className="text-3xl font-bold text-owner-700">
                   {onboarding.owner.propertyBasics?.title || 'Property Information'}
                 </h1>
                 <p className="text-gray-600 mt-1">
@@ -153,13 +153,13 @@ export default function PropertyInfoPage() {
                   onClick={() => setHasProperty(true)}
                   className={`p-4 rounded-xl border-2 transition-all ${
                     hasProperty === true
-                      ? 'border-[#4A148C] bg-purple-50 shadow-md'
+                      ? 'border-owner-700 bg-owner-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-gray-900">{common.yes}</span>
-                    {hasProperty === true && <Check className="w-5 h-5 text-[#4A148C]" />}
+                    {hasProperty === true && <Check className="w-5 h-5 text-owner-700" />}
                   </div>
                   <p className="text-sm text-gray-600 text-left">
                     {onboarding.owner.propertyBasics?.hasPropertyYes || 'I have a property ready'}
@@ -174,13 +174,13 @@ export default function PropertyInfoPage() {
                   }}
                   className={`p-4 rounded-xl border-2 transition-all ${
                     hasProperty === false
-                      ? 'border-[#4A148C] bg-purple-50 shadow-md'
+                      ? 'border-owner-700 bg-owner-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-gray-900">{common.no}</span>
-                    {hasProperty === false && <Check className="w-5 h-5 text-[#4A148C]" />}
+                    {hasProperty === false && <Check className="w-5 h-5 text-owner-700" />}
                   </div>
                   <p className="text-sm text-gray-600 text-left">
                     {onboarding.owner.propertyBasics?.hasPropertyNo || "I'm planning to list later"}
@@ -204,7 +204,7 @@ export default function PropertyInfoPage() {
                       value={propertyCity}
                       onChange={(e) => setPropertyCity(e.target.value)}
                       placeholder={onboarding.owner.propertyBasics?.propertyCityPlaceholder || 'e.g., Brussels, Antwerp, Ghent'}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#4A148C] focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-owner-700 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default function PropertyInfoPage() {
                     <select
                       value={propertyType}
                       onChange={(e) => setPropertyType(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#4A148C] focus:outline-none transition-colors appearance-none bg-white"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-owner-700 focus:outline-none transition-colors appearance-none bg-white"
                     >
                       <option value="">
                         {onboarding.owner.propertyBasics?.propertyTypeSelect || 'Select type'}
@@ -250,7 +250,7 @@ export default function PropertyInfoPage() {
               <Button
                 onClick={handleSave}
                 disabled={!canSave || isSaving}
-                className="w-full py-6 text-lg font-semibold bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] hover:from-[#6A1B9A] hover:to-[#4A148C] text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-6 text-lg font-semibold bg-gradient-owner hover:opacity-90 text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? (
                   <div className="flex items-center gap-2">
