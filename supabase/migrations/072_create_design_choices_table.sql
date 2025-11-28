@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS public.design_choices (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Add unique constraint for upsert
+ALTER TABLE public.design_choices ADD CONSTRAINT unique_session_choice
+    UNIQUE (session_id, choice_key);
+
 -- Create indexes for faster queries
 CREATE INDEX IF NOT EXISTS idx_design_choices_session_id ON public.design_choices(session_id);
 CREATE INDEX IF NOT EXISTS idx_design_choices_user_id ON public.design_choices(user_id);

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '@/lib/supabase';
 import {
   Palette,
   Type,
@@ -25,6 +26,9 @@ import {
   AlertTriangle,
   Info,
   Zap,
+  Loader2,
+  CheckCircle,
+  Save,
   // Icons Section - All commonly used icons
   Image as ImageIcon,
   Search,
@@ -1338,11 +1342,121 @@ function BadgesSection() {
 /* ============================================
    CHOICES SECTION - V1 vs V2
    ============================================ */
+
+// Types for design choices
+interface DesignChoice {
+  key: string;
+  title: string;
+  selectedVersion: 'v1' | 'v2';
+  v1Label: string;
+  v2Label: string;
+  feedback: string;
+}
+
+// Generate a session ID for anonymous users
+function getSessionId(): string {
+  if (typeof window === 'undefined') return '';
+  let sessionId = localStorage.getItem('design_session_id');
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    localStorage.setItem('design_session_id', sessionId);
+  }
+  return sessionId;
+}
+
 function ChoicesSection() {
   const [selectedChoices, setSelectedChoices] = useState<Record<string, 'v1' | 'v2'>>({});
+  const [feedbacks, setFeedbacks] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState<Record<string, boolean>>({});
+  const [saved, setSaved] = useState<Record<string, boolean>>({});
+  const [sessionId, setSessionId] = useState<string>('');
+
+  // Initialize session ID on mount
+  useEffect(() => {
+    setSessionId(getSessionId());
+  }, []);
+
+  // Choice definitions
+  const choiceDefinitions = {
+    cards: { title: 'Style de cartes', v1Label: 'V1 - Flat', v2Label: 'V2 - Glassmorphism' },
+    buttons: { title: 'Style de boutons', v1Label: 'V1 - Solid', v2Label: 'V2 - Gradient' },
+    shadows: { title: 'Intensité des ombres', v1Label: 'V1 - Légère', v2Label: 'V2 - Marquée' },
+    badges: { title: 'Style de badges', v1Label: 'V1 - Discret', v2Label: 'V2 - Vibrant' },
+    backgrounds: { title: 'Effets de fond', v1Label: 'V1 - Statique', v2Label: 'V2 - Dynamique' },
+  };
 
   const toggleChoice = (id: string, version: 'v1' | 'v2') => {
     setSelectedChoices(prev => ({ ...prev, [id]: version }));
+    // Reset saved state when choice changes
+    setSaved(prev => ({ ...prev, [id]: false }));
+  };
+
+  const updateFeedback = (id: string, feedback: string) => {
+    setFeedbacks(prev => ({ ...prev, [id]: feedback }));
+    // Reset saved state when feedback changes
+    setSaved(prev => ({ ...prev, [id]: false }));
+  };
+
+  const saveChoice = async (choiceKey: string) => {
+    const version = selectedChoices[choiceKey];
+    if (!version || !sessionId) return;
+
+    setSaving(prev => ({ ...prev, [choiceKey]: true }));
+
+    try {
+      const def = choiceDefinitions[choiceKey as keyof typeof choiceDefinitions];
+
+      // Upsert the choice (insert or update based on session_id + choice_key)
+      const { error } = await supabase
+        .from('design_choices')
+        .upsert({
+          session_id: sessionId,
+          choice_key: choiceKey,
+          choice_title: def.title,
+          selected_version: version,
+          v1_label: def.v1Label,
+          v2_label: def.v2Label,
+          feedback: feedbacks[choiceKey] || null,
+        }, {
+          onConflict: 'session_id,choice_key',
+          ignoreDuplicates: false,
+        });
+
+      if (error) {
+        // If upsert fails due to missing unique constraint, try insert
+        const { error: insertError } = await supabase
+          .from('design_choices')
+          .insert({
+            session_id: sessionId,
+            choice_key: choiceKey,
+            choice_title: def.title,
+            selected_version: version,
+            v1_label: def.v1Label,
+            v2_label: def.v2Label,
+            feedback: feedbacks[choiceKey] || null,
+          });
+
+        if (insertError) throw insertError;
+      }
+
+      setSaved(prev => ({ ...prev, [choiceKey]: true }));
+
+      // Reset saved indicator after 3 seconds
+      setTimeout(() => {
+        setSaved(prev => ({ ...prev, [choiceKey]: false }));
+      }, 3000);
+    } catch (error) {
+      console.error('Error saving choice:', error);
+    } finally {
+      setSaving(prev => ({ ...prev, [choiceKey]: false }));
+    }
+  };
+
+  const saveAllChoices = async () => {
+    const keys = Object.keys(selectedChoices);
+    for (const key of keys) {
+      await saveChoice(key);
+    }
   };
 
   return (
@@ -1409,6 +1523,11 @@ function ChoicesSection() {
         }}
         selectedVersion={selectedChoices['cards']}
         onSelect={(v) => toggleChoice('cards', v)}
+        feedback={feedbacks['cards'] || ''}
+        onFeedbackChange={(f) => updateFeedback('cards', f)}
+        onSave={() => saveChoice('cards')}
+        saving={saving['cards']}
+        saved={saved['cards']}
       />
 
       {/* Choice 2: Buttons Style */}
@@ -1446,6 +1565,11 @@ function ChoicesSection() {
         }}
         selectedVersion={selectedChoices['buttons']}
         onSelect={(v) => toggleChoice('buttons', v)}
+        feedback={feedbacks['buttons'] || ''}
+        onFeedbackChange={(f) => updateFeedback('buttons', f)}
+        onSave={() => saveChoice('buttons')}
+        saving={saving['buttons']}
+        saved={saved['buttons']}
       />
 
       {/* Choice 3: Shadows */}
@@ -1483,6 +1607,11 @@ function ChoicesSection() {
         }}
         selectedVersion={selectedChoices['shadows']}
         onSelect={(v) => toggleChoice('shadows', v)}
+        feedback={feedbacks['shadows'] || ''}
+        onFeedbackChange={(f) => updateFeedback('shadows', f)}
+        onSave={() => saveChoice('shadows')}
+        saving={saving['shadows']}
+        saved={saved['shadows']}
       />
 
       {/* Choice 4: Badges */}
@@ -1526,6 +1655,11 @@ function ChoicesSection() {
         }}
         selectedVersion={selectedChoices['badges']}
         onSelect={(v) => toggleChoice('badges', v)}
+        feedback={feedbacks['badges'] || ''}
+        onFeedbackChange={(f) => updateFeedback('badges', f)}
+        onSave={() => saveChoice('badges')}
+        saving={saving['badges']}
+        saved={saved['badges']}
       />
 
       {/* Choice 5: Background Effects */}
@@ -1565,6 +1699,11 @@ function ChoicesSection() {
         }}
         selectedVersion={selectedChoices['backgrounds']}
         onSelect={(v) => toggleChoice('backgrounds', v)}
+        feedback={feedbacks['backgrounds'] || ''}
+        onFeedbackChange={(f) => updateFeedback('backgrounds', f)}
+        onSave={() => saveChoice('backgrounds')}
+        saving={saving['backgrounds']}
+        saved={saved['backgrounds']}
       />
 
       {/* Summary */}
@@ -1580,21 +1719,47 @@ function ChoicesSection() {
               <p className="font-bold text-lg">
                 {selectedChoices[key] ? selectedChoices[key].toUpperCase() : '—'}
               </p>
+              {saved[key] && (
+                <p className="text-xs text-green-600 mt-1">Enregistré</p>
+              )}
             </div>
           ))}
         </div>
 
         {Object.keys(selectedChoices).length > 0 && (
-          <div className="mt-6 p-4 bg-white rounded-xl">
-            <p className="text-sm text-gray-600">
-              <strong>Tendance :</strong>{' '}
-              {Object.values(selectedChoices).filter(v => v === 'v1').length > Object.values(selectedChoices).filter(v => v === 'v2').length
-                ? '📋 Tu penches vers un design Flat/Minimaliste'
-                : Object.values(selectedChoices).filter(v => v === 'v2').length > Object.values(selectedChoices).filter(v => v === 'v1').length
-                ? '✨ Tu penches vers un design Glassmorphism/Premium'
-                : '⚖️ Tu es entre les deux directions'}
-            </p>
-          </div>
+          <>
+            <div className="mt-6 p-4 bg-white rounded-xl">
+              <p className="text-sm text-gray-600">
+                <strong>Tendance :</strong>{' '}
+                {Object.values(selectedChoices).filter(v => v === 'v1').length > Object.values(selectedChoices).filter(v => v === 'v2').length
+                  ? '📋 Tu penches vers un design Flat/Minimaliste'
+                  : Object.values(selectedChoices).filter(v => v === 'v2').length > Object.values(selectedChoices).filter(v => v === 'v1').length
+                  ? '✨ Tu penches vers un design Glassmorphism/Premium'
+                  : '⚖️ Tu es entre les deux directions'}
+              </p>
+            </div>
+
+            {/* Save All Button */}
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={saveAllChoices}
+                disabled={Object.values(saving).some(s => s)}
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+              >
+                {Object.values(saving).some(s => s) ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Enregistrement...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5" />
+                    Enregistrer tous mes choix
+                  </>
+                )}
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -1620,9 +1785,27 @@ interface ChoiceComparisonProps {
   };
   selectedVersion?: 'v1' | 'v2';
   onSelect: (version: 'v1' | 'v2') => void;
+  feedback?: string;
+  onFeedbackChange?: (feedback: string) => void;
+  onSave?: () => void;
+  saving?: boolean;
+  saved?: boolean;
 }
 
-function ChoiceComparison({ id, title, description, v1, v2, selectedVersion, onSelect }: ChoiceComparisonProps) {
+function ChoiceComparison({
+  id,
+  title,
+  description,
+  v1,
+  v2,
+  selectedVersion,
+  onSelect,
+  feedback = '',
+  onFeedbackChange,
+  onSave,
+  saving = false,
+  saved = false,
+}: ChoiceComparisonProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       {/* Header */}
@@ -1681,6 +1864,63 @@ function ChoiceComparison({ id, title, description, v1, v2, selectedVersion, onS
           <div className="mt-4">
             {v2.render}
           </div>
+        </div>
+      </div>
+
+      {/* Feedback Section - Always visible */}
+      <div className="p-6 border-t border-gray-100 bg-gray-50">
+        <div className="flex items-start gap-3">
+          <MessageSquare className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
+          <div className="flex-1">
+            <label htmlFor={`feedback-${id}`} className="block text-sm font-medium text-gray-700 mb-2">
+              Ton feedback sur ce choix (optionnel)
+            </label>
+            <textarea
+              id={`feedback-${id}`}
+              value={feedback}
+              onChange={(e) => onFeedbackChange?.(e.target.value)}
+              placeholder="Explique pourquoi tu préfères cette option, ou donne des suggestions..."
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 resize-none transition-all"
+              rows={3}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+
+        {/* Save Button */}
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSave?.();
+            }}
+            disabled={!selectedVersion || saving}
+            className={cn(
+              "flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all",
+              selectedVersion
+                ? saved
+                  ? "bg-green-500 text-white"
+                  : "bg-purple-600 hover:bg-purple-700 text-white"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            )}
+          >
+            {saving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Enregistrement...
+              </>
+            ) : saved ? (
+              <>
+                <CheckCircle className="w-4 h-4" />
+                Enregistré !
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                Enregistrer ce choix
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
