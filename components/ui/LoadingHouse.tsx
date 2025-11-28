@@ -20,11 +20,11 @@ export default function LoadingHouse({
   }, [])
 
   if (!isClient) {
-    return <div className={className} style={{ width: size, height: size }} />
+    return <div className={`mx-auto ${className}`} style={{ width: size, height: size }} />
   }
 
   return (
-    <div className={className} style={{ width: size, height: size }}>
+    <div className={`mx-auto ${className}`} style={{ width: size, height: size }}>
       <svg
         width={size}
         height={size}
