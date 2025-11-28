@@ -15,6 +15,87 @@ export interface UserWithCompatibility extends UserProfile {
 
 export type SwipeContext = 'searcher_matching' | 'resident_matching';
 
+// Helper to map database fields to UserProfile interface
+function mapDbProfileToUserProfile(dbProfile: Record<string, unknown>): UserProfile {
+  return {
+    user_id: dbProfile.user_id as string,
+    first_name: dbProfile.first_name as string || '',
+    last_name: dbProfile.last_name as string || '',
+    profile_photo_url: dbProfile.profile_photo_url as string | undefined,
+    date_of_birth: dbProfile.date_of_birth as string | undefined,
+    gender: dbProfile.gender_identity as string | undefined,
+    nationality: dbProfile.nationality as string | undefined,
+    languages: dbProfile.languages_spoken as string[] | undefined,
+    occupation_status: dbProfile.occupation_status as string | undefined,
+    bio: dbProfile.bio as string | undefined,
+
+    // Enriched profile data
+    languages_spoken: dbProfile.languages_spoken as string[] | undefined,
+    interests: dbProfile.interests as string[] | undefined,
+    hobbies: dbProfile.hobbies as string[] | undefined,
+    important_qualities: dbProfile.important_qualities as string[] | undefined,
+    deal_breakers: dbProfile.deal_breakers as string[] | undefined,
+
+    // Lifestyle preferences
+    cleanliness_level: dbProfile.cleanliness_preference as number | undefined,
+    social_energy: dbProfile.introvert_extrovert_scale
+      ? (dbProfile.introvert_extrovert_scale as number) * 2 // Convert 1-5 to approx 1-10
+      : undefined,
+    openness_to_sharing: dbProfile.openness_to_sharing as string | undefined,
+    cultural_openness: dbProfile.cultural_openness as string | undefined,
+    house_rules_preference: dbProfile.house_rules_preference as number | undefined,
+    shared_space_importance: dbProfile.shared_space_importance as number | undefined,
+
+    // Daily routine
+    wake_up_time: dbProfile.wake_up_time as 'early' | 'moderate' | 'late' | undefined,
+    sleep_time: dbProfile.sleep_time as 'early' | 'moderate' | 'late' | undefined,
+    works_from_home: dbProfile.works_from_home as boolean | undefined,
+    work_schedule: dbProfile.work_schedule as 'office' | 'hybrid' | 'remote' | 'flexible' | 'student' | undefined,
+    exercise_frequency: dbProfile.exercise_frequency as 'never' | 'rarely' | 'sometimes' | 'often' | 'daily' | undefined,
+    sports_frequency: dbProfile.sports_frequency as 'never' | 'rarely' | 'sometimes' | 'often' | 'daily' | undefined,
+
+    // Social preferences
+    guest_frequency: dbProfile.guest_frequency as 'never' | 'rarely' | 'sometimes' | 'often' | undefined,
+    shared_meals_interest: dbProfile.shared_meals_interest as boolean | undefined,
+    flatmate_meetups_interest: dbProfile.flatmate_meetups_interest as boolean | undefined,
+    open_to_meetups: dbProfile.open_to_meetups as boolean | undefined,
+    event_participation_interest: dbProfile.event_participation_interest as 'low' | 'medium' | 'high' | undefined,
+    event_interest: dbProfile.event_interest as 'low' | 'medium' | 'high' | undefined,
+    introvert_extrovert_scale: dbProfile.introvert_extrovert_scale as number | undefined,
+
+    // Lifestyle habits
+    smoking: dbProfile.smoker as boolean | undefined,
+    drinks_alcohol: dbProfile.drinks_alcohol as boolean | undefined,
+    pets: dbProfile.has_pets as boolean | undefined,
+    pet_type: dbProfile.pet_type as string | undefined,
+    cooking_frequency: dbProfile.cooking_frequency as 'never' | 'rarely' | 'sometimes' | 'often' | 'daily' | undefined,
+    music_at_home: dbProfile.music_at_home as boolean | undefined,
+    music_habits: dbProfile.music_habits as 'none' | 'headphones_only' | 'headphones_mostly' | 'quiet_background' | 'social_listening' | undefined,
+    diet_type: dbProfile.diet_type as 'omnivore' | 'vegetarian' | 'vegan' | 'flexitarian' | 'pescatarian' | undefined,
+
+    // Values
+    core_values: dbProfile.core_values as string[] | undefined,
+
+    // Preferences for matching
+    preferred_coliving_size: dbProfile.preferred_coliving_size as 'small' | 'medium' | 'large' | 'very_large' | undefined,
+    preferred_gender_mix: dbProfile.preferred_gender_mix as 'no_preference' | 'same_gender' | 'mixed' | undefined,
+    gender_preference: dbProfile.gender_preference as 'no_preference' | 'same_gender' | 'mixed' | undefined,
+    age_range_min: dbProfile.roommate_age_min as number | undefined,
+    age_range_max: dbProfile.roommate_age_max as number | undefined,
+    preferred_neighborhoods: dbProfile.preferred_neighborhoods as string[] | undefined,
+    min_budget: dbProfile.budget_min as number || dbProfile.min_budget as number | undefined,
+    max_budget: dbProfile.budget_max as number || dbProfile.max_budget as number | undefined,
+    quiet_hours_preference: dbProfile.quiet_hours_preference as boolean | undefined,
+    communication_style: dbProfile.communication_style as 'direct' | 'diplomatic' | 'casual' | 'formal' | undefined,
+    coworking_space_needed: dbProfile.coworking_space_needed as boolean | undefined,
+    gym_access_needed: dbProfile.gym_access_needed as boolean | undefined,
+
+    // Tolerance preferences
+    pets_tolerance: dbProfile.pet_tolerance as boolean | undefined,
+    smoking_tolerance: dbProfile.smoking_tolerance as boolean | undefined,
+  };
+}
+
 export function useUserMatching(currentUserId: string, context: SwipeContext) {
   const supabase = createClient();
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile | null>(null);
@@ -22,7 +103,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
 
-  // Load current user's profile
+  // Load current user's profile from user_profiles (has all matching data)
   const loadCurrentUserProfile = useCallback(async () => {
     if (!currentUserId) {
       console.log('No user ID provided');
@@ -33,7 +114,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
     try {
       console.log('Loading profile for user:', currentUserId);
       const { data: profile, error } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .select('*')
         .eq('user_id', currentUserId)
         .single();
@@ -44,7 +125,8 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
       }
 
       console.log('Profile loaded successfully:', profile);
-      setCurrentUserProfile(profile as any);
+      const mappedProfile = mapDbProfileToUserProfile(profile as Record<string, unknown>);
+      setCurrentUserProfile(mappedProfile);
     } catch (error) {
       console.error('Failed to load current user profile:', error);
       setCurrentUserProfile(null);
@@ -52,7 +134,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
     }
   }, [currentUserId, supabase]);
 
-  // Load potential matches
+  // Load potential matches from user_profiles (has all matching data)
   const loadPotentialMatches = useCallback(
     async (limit: number = 20) => {
       if (!currentUserProfile) return;
@@ -69,9 +151,9 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
         const swipedUserIds = swipedUsers?.map((s) => s.swiped_id) || [];
 
-        // Build query based on context
+        // Build query based on context - use user_profiles for all matching data
         let query = supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('*')
           .neq('user_id', currentUserId)
           .limit(limit);
@@ -81,10 +163,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
           query = query.not('user_id', 'in', `(${swipedUserIds.join(',')})`);
         }
 
-        // Context-specific filters
-        // NOTE: Temporarily disabled user_type filter as profiles table doesn't have this column
-        // TODO: Join with users table or add user_type to profiles
-        /*
+        // Context-specific filters - filter by user_type for relevant matches
         if (context === 'searcher_matching') {
           // For searchers finding co-searchers: filter by user_type = 'searcher'
           query = query.eq('user_type', 'searcher');
@@ -92,21 +171,21 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
           // For residents finding new roommates: filter by user_type = 'searcher'
           query = query.eq('user_type', 'searcher');
         }
-        */
 
         const { data: users, error } = await query;
 
         if (error) throw error;
 
-        // Calculate compatibility scores
+        // Map database profiles to UserProfile interface and calculate compatibility scores
         const usersWithScores: UserWithCompatibility[] = (users || []).map((user) => {
+          const mappedUser = mapDbProfileToUserProfile(user as Record<string, unknown>);
           const compatibilityResult = calculateUserCompatibility(
             currentUserProfile,
-            user as UserProfile
+            mappedUser
           );
 
           return {
-            ...(user as UserProfile),
+            ...mappedUser,
             compatibility_score: compatibilityResult.score,
             compatibility_result: compatibilityResult,
           };
@@ -162,16 +241,17 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
       if (error) throw error;
 
-      // Fetch full profiles for matched users
+      // Fetch full profiles for matched users from user_profiles
       if (matches && matches.length > 0) {
-        const matchedUserIds = matches.map((m: any) => m.matched_user_id);
+        const matchedUserIds = matches.map((m: Record<string, unknown>) => m.matched_user_id);
 
         const { data: profiles } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('*')
-          .in('id', matchedUserIds);
+          .in('user_id', matchedUserIds);
 
-        return profiles as UserProfile[];
+        // Map database profiles to UserProfile interface
+        return (profiles || []).map((p) => mapDbProfileToUserProfile(p as Record<string, unknown>));
       }
 
       return [];
