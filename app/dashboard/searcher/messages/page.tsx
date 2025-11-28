@@ -232,21 +232,15 @@ function SearcherMessagesContent() {
 
     try {
       // Get matches where user hasn't started a conversation yet
+      // The matches table uses searcher_id and owner_id columns
       const { data: matches, error } = await supabase
         .from('matches')
         .select(`
           id,
           created_at,
-          user1_id,
-          user2_id,
-          users!matches_user1_id_fkey (
-            id,
-            full_name,
-            user_profiles (
-              profile_photo
-            )
-          ),
-          users2:users!matches_user2_id_fkey (
+          searcher_id,
+          owner_id,
+          owner:users!matches_owner_id_fkey (
             id,
             full_name,
             user_profiles (
@@ -254,8 +248,8 @@ function SearcherMessagesContent() {
             )
           )
         `)
-        .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
-        .eq('status', 'matched')
+        .eq('searcher_id', userId)
+        .in('status', ['active', 'viewed'])
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -269,16 +263,13 @@ function SearcherMessagesContent() {
       );
 
       const requests = matches?.filter((match: any) => {
-        const otherId = match.user1_id === userId ? match.user2_id : match.user1_id;
-        return !existingConversationUserIds.has(otherId);
+        return !existingConversationUserIds.has(match.owner_id);
       }).map((match: any) => {
-        const isUser1 = match.user1_id === userId;
-        const otherUser = isUser1 ? match.users2 : match.users;
         return {
           match_id: match.id,
-          user_id: otherUser?.id,
-          user_name: otherUser?.full_name,
-          user_photo: otherUser?.user_profiles?.profile_photo,
+          user_id: match.owner?.id || match.owner_id,
+          user_name: match.owner?.full_name || 'Propriétaire',
+          user_photo: match.owner?.user_profiles?.profile_photo,
           matched_at: match.created_at,
         };
       }) || [];
