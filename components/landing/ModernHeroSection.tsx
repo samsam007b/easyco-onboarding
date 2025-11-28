@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, Home, MapPin, Euro, Calendar, Users, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ModernHeroSection() {
   const { t } = useLanguage();
+  const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [budgetRange, setBudgetRange] = useState({ min: 0, max: 2000 });
@@ -28,6 +30,26 @@ export default function ModernHeroSection() {
 
   const handleBudgetChange = (min: number, max: number) => {
     setBudgetRange({ min, max });
+  };
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (selectedLocation) {
+      params.set('location', selectedLocation);
+    }
+    if (budgetRange.min > 0) {
+      params.set('budget_min', budgetRange.min.toString());
+    }
+    if (budgetRange.max < 2000) {
+      params.set('budget_max', budgetRange.max.toString());
+    }
+    if (selectedDate) {
+      params.set('move_in_date', selectedDate.toISOString().split('T')[0]);
+    }
+
+    const queryString = params.toString();
+    router.push(`/guest${queryString ? `?${queryString}` : ''}`);
   };
   return (
     <section className="relative pt-24 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
@@ -181,6 +203,7 @@ export default function ModernHeroSection() {
               {/* Search Button Integrated - Matching Searcher interface gradient */}
               <div className="p-2 flex items-center justify-center">
                 <Button
+                  onClick={handleSearch}
                   className="w-full h-full group relative overflow-hidden text-gray-900 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{
                     background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
