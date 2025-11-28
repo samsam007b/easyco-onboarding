@@ -219,18 +219,34 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
 
           // Debug logging for compatibility calculation
           if (process.env.NODE_ENV === 'development') {
-            console.log(`[Matching] ${mappedUser.first_name}: Score ${compatibilityResult.score}`, {
-              currentUserData: {
-                cleanliness: currentUserProfile.cleanliness_level,
-                socialEnergy: currentUserProfile.social_energy,
-                wakeUp: currentUserProfile.wake_up_time,
-                sleep: currentUserProfile.sleep_time,
+            const { profileCompleteness, isScoreReliable } = compatibilityResult;
+            console.log(`[Matching] ${mappedUser.first_name}: Score ${compatibilityResult.score}% | Reliable: ${isScoreReliable}`, {
+              '⚠️ SCORE_RELIABLE': isScoreReliable,
+              '👤 TON PROFIL': {
+                completeness: `${profileCompleteness.user1.percentage}% (${profileCompleteness.user1.filledFields}/${profileCompleteness.user1.totalFields} champs)`,
+                isComplete: profileCompleteness.user1.isComplete,
+                missingCategories: profileCompleteness.user1.missingCategories,
+                data: {
+                  cleanliness: currentUserProfile.cleanliness_level,
+                  socialEnergy: currentUserProfile.social_energy,
+                  wakeUp: currentUserProfile.wake_up_time,
+                  sleep: currentUserProfile.sleep_time,
+                  budget: `${currentUserProfile.min_budget || '?'}-${currentUserProfile.max_budget || '?'}€`,
+                  smoking: currentUserProfile.smoking,
+                  pets: currentUserProfile.pets,
+                },
               },
-              matchedUserData: {
-                cleanliness: mappedUser.cleanliness_level,
-                socialEnergy: mappedUser.social_energy,
-                wakeUp: mappedUser.wake_up_time,
-                sleep: mappedUser.sleep_time,
+              '🎯 LEUR PROFIL': {
+                name: mappedUser.first_name,
+                completeness: `${profileCompleteness.user2.percentage}% (${profileCompleteness.user2.filledFields}/${profileCompleteness.user2.totalFields} champs)`,
+                isComplete: profileCompleteness.user2.isComplete,
+                missingCategories: profileCompleteness.user2.missingCategories,
+                data: {
+                  cleanliness: mappedUser.cleanliness_level,
+                  socialEnergy: mappedUser.social_energy,
+                  wakeUp: mappedUser.wake_up_time,
+                  sleep: mappedUser.sleep_time,
+                },
               },
               breakdown: compatibilityResult.breakdown,
             });
