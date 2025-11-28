@@ -67,6 +67,7 @@ export default function PropertyDetailsPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [ownerProfile, setOwnerProfile] = useState<PropertyOwner | null>(null);
   const [virtualTourInfo, setVirtualTourInfo] = useState<VirtualTourInfo | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const supabase = createClient();
   const virtualToursService = new VirtualToursService(supabase);
@@ -253,9 +254,9 @@ export default function PropertyDetailsPage() {
           {property.images && property.images.length > 0 ? (
             <>
               <img
-                src={property.main_image || getImageUrl(property.images[0])}
+                src={getImageUrl(property.images[selectedImageIndex]) || property.main_image || getImageUrl(property.images[0])}
                 alt={property.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-opacity duration-300"
               />
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -398,11 +399,19 @@ export default function PropertyDetailsPage() {
                     key={index}
                     src={getImageUrl(image)}
                     alt={`${property.title} - ${index + 1}`}
-                    className="h-20 w-32 object-cover rounded-lg border-2 border-gray-200 hover:border-orange-500 transition-colors cursor-pointer flex-shrink-0"
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`h-20 w-32 object-cover rounded-lg border-2 transition-all cursor-pointer flex-shrink-0 hover:border-orange-500 hover:scale-105 ${
+                      selectedImageIndex === index
+                        ? 'border-orange-500 ring-2 ring-orange-300'
+                        : 'border-gray-200'
+                    }`}
                   />
                 ))}
                 {property.images.length > 8 && (
-                  <div className="h-20 w-32 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center flex-shrink-0">
+                  <div
+                    className="h-20 w-32 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center flex-shrink-0 cursor-pointer hover:bg-gray-200 transition-colors"
+                    onClick={() => setSelectedImageIndex(8)}
+                  >
                     <span className="text-gray-600 font-semibold">+{property.images.length - 8}</span>
                   </div>
                 )}
