@@ -371,7 +371,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                       </div>
                       <Button
                         onClick={() => router.push('/onboarding/searcher-preferences')}
-                        variant="secondary"
+                        variant="ghost"
                         size="sm"
                         className="w-full mt-2 rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
                       >
@@ -436,7 +436,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                         </Button>
                         <Button
                           onClick={() => router.push('/properties/browse?viewMode=matching')}
-                          variant="secondary"
+                          variant="ghost"
                           size="sm"
                           className="flex-1 rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
                         >
@@ -483,7 +483,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                     <div className="p-4">
                       <Button
                         onClick={() => router.push('/dashboard/searcher/saved-searches')}
-                        variant="secondary"
+                        variant="ghost"
                         size="sm"
                         className="w-full rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
                       >
