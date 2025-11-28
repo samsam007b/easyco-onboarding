@@ -475,8 +475,8 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
 
             {/* Center Card */}
             <div className={cn(
-              "relative w-full max-w-[380px] flex-shrink-0 transition-all duration-300",
-              isCardExpanded ? "h-auto min-h-[580px]" : "h-[500px]"
+              "relative w-full max-w-[380px] flex-shrink-0",
+              isCardExpanded ? "" : "h-[500px]"
             )}>
               {isLoadingMatches ? (
                 <div className="absolute inset-0 bg-white rounded-3xl shadow-xl flex items-center justify-center">
@@ -538,7 +538,10 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`current-${matchingIndex}`}
-                      className="relative z-10"
+                      className={cn(
+                        "z-10",
+                        isCardExpanded ? "relative" : "absolute inset-0"
+                      )}
                       initial={{ scale: 0.95, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.9, opacity: 0 }}

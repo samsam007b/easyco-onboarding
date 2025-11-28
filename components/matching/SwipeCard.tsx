@@ -162,7 +162,10 @@ export const SwipeCard = memo(function SwipeCard({
 
   return (
     <motion.div
-      className="absolute w-full h-full cursor-grab active:cursor-grabbing"
+      className={cn(
+        "w-full cursor-grab active:cursor-grabbing",
+        isExpanded ? "relative" : "absolute h-full"
+      )}
       style={{ x, y, rotate, zIndex: isLeaving ? 0 : 1 }}
       drag={!isLeaving && !isExpanded}
       dragElastic={0.9}
