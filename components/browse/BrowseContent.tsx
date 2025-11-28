@@ -39,6 +39,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
     potentialMatches,
     isLoading: isLoadingMatches,
     recordSwipe,
+    restoreUser,
     loadPotentialMatches
   } = useUserMatching(userId, 'searcher_matching');
 
@@ -540,9 +541,11 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       return;
                     }
 
+                    // Remove from pile and restore to deck
                     setPassedProfiles(prev => prev.slice(0, -1));
-                    await loadPotentialMatches();
+                    restoreUser(lastPassed);
                     setMatchingIndex(0);
+
                     toast.info(`${lastPassed.first_name} remis dans le deck`);
                   }
                 }}
@@ -673,9 +676,11 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       return;
                     }
 
+                    // Remove from pile and restore to deck
                     setLikedProfiles(prev => prev.slice(0, -1));
-                    await loadPotentialMatches();
+                    restoreUser(lastLiked);
                     setMatchingIndex(0);
+
                     toast.info(`${lastLiked.first_name} remis dans le deck`);
                   }
                 }}

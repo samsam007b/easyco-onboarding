@@ -357,6 +357,18 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
     [currentUserId, context, supabase]
   );
 
+  // Restore a user to the beginning of potential matches (for undo functionality)
+  const restoreUser = useCallback((user: UserWithCompatibility) => {
+    setPotentialMatches((prev) => {
+      // Check if user is already in the list
+      if (prev.some((u) => u.user_id === user.user_id)) {
+        return prev;
+      }
+      // Add user to the beginning of the list
+      return [user, ...prev];
+    });
+  }, []);
+
   // Get matches for current user
   const getMatches = useCallback(async () => {
     try {
@@ -428,6 +440,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
     getMatches,
     checkIfMatched,
     loadPotentialMatches,
+    restoreUser,
     // New: Gate status for profile completion requirement
     matchingGateStatus,
     isMatchingUnlocked: matchingGateStatus?.isUnlocked ?? false,
