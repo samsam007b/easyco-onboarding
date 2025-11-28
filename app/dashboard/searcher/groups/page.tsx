@@ -239,8 +239,7 @@ export default function GroupsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
 
           {/* Matches Section - Create groups from matches */}
-          {matches.length > 0 && (
-            <section>
+          <section>
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -262,149 +261,184 @@ export default function GroupsPage() {
                 )}
               </div>
 
-              {/* Info Banner */}
-              <Card className="mb-6 border-orange-200 bg-gradient-to-r from-orange-50 to-white rounded-2xl">
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Heart className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 mb-1">
-                        Ces personnes t'ont aussi liké !
-                      </p>
-                      <p className="text-sm text-gray-700">
-                        Sélectionne-les pour former ton groupe de colocation idéal et chercher un logement ensemble.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Matches Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {matches.map((match) => {
-                  const age = calculateAge(match.date_of_birth);
-                  const isSelected = selectedMatches.has(match.user_id);
-
-                  return (
-                    <Card
-                      key={match.user_id}
-                      className={`overflow-hidden hover:shadow-xl transition-all cursor-pointer rounded-2xl border-2 ${
-                        isSelected
-                          ? 'border-orange-500 ring-2 ring-orange-200'
-                          : 'border-orange-100 hover:border-orange-300'
-                      }`}
-                      onClick={() => toggleSelectMatch(match.user_id)}
-                    >
-                      <div className="relative h-48 overflow-hidden">
-                        {match.profile_photo_url ? (
-                          <Image
-                            src={match.profile_photo_url}
-                            alt={`${match.first_name} ${match.last_name}`}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
-                            <div className="text-4xl font-bold text-orange-600 opacity-30">
-                              {match.first_name.charAt(0)}
-                              {match.last_name?.charAt(0) || ''}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Match Badge */}
-                        <div className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full shadow-lg">
-                          <div className="flex items-center gap-1">
-                            <Heart className="w-3 h-3 fill-current" />
-                            <span className="text-xs font-bold">Match</span>
-                          </div>
+              {matches.length > 0 ? (
+                <>
+                  {/* Info Banner */}
+                  <Card className="mb-6 border-orange-200 bg-gradient-to-r from-orange-50 to-white rounded-2xl">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Heart className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900 mb-1">
+                            Ces personnes t'ont aussi liké !
+                          </p>
+                          <p className="text-sm text-gray-700">
+                            Sélectionne-les pour former ton groupe de colocation idéal et chercher un logement ensemble.
+                          </p>
                         </div>
-
-                        {/* Selection Indicator */}
-                        {isSelected && (
-                          <div className="absolute top-3 left-3 w-7 h-7 bg-orange-600 rounded-full flex items-center justify-center shadow-lg">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                        )}
                       </div>
+                    </CardContent>
+                  </Card>
 
-                      <CardContent className="p-4">
-                        <h3 className="text-lg font-bold text-gray-900 mb-1">
-                          {match.first_name} {match.last_name}
-                          {age && <span className="text-base font-normal text-gray-500 ml-2">{age} ans</span>}
-                        </h3>
-
-                        {match.occupation_status && (
-                          <div className="flex items-center gap-2 text-gray-600 text-sm">
-                            <Briefcase className="w-3 h-3" />
-                            <span className="capitalize">
-                              {match.occupation_status.replace('_', ' ')}
-                            </span>
-                          </div>
-                        )}
-
-                        {match.bio && (
-                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{match.bio}</p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
-              {/* Suggested Group Combinations */}
-              {matches.length >= 2 && (
-                <div className="mt-8">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-orange-600" />
-                    Suggestions de groupes
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {matches.slice(0, 4).map((match1, idx1) => {
-                      const match2 = matches[idx1 + 1];
-                      if (!match2) return null;
+                  {/* Matches Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {matches.map((match) => {
+                      const age = calculateAge(match.date_of_birth);
+                      const isSelected = selectedMatches.has(match.user_id);
 
                       return (
                         <Card
-                          key={`suggestion-${idx1}`}
-                          className="p-4 rounded-2xl border border-orange-200 hover:border-orange-400 hover:shadow-lg transition-all cursor-pointer"
-                          onClick={() => {
-                            const groupMembers = [match1.user_id, match2.user_id].join(',');
-                            router.push(`/dashboard/searcher/groups/create?members=${groupMembers}`);
-                          }}
+                          key={match.user_id}
+                          className={`overflow-hidden hover:shadow-xl transition-all cursor-pointer rounded-2xl border-2 ${
+                            isSelected
+                              ? 'border-orange-500 ring-2 ring-orange-200'
+                              : 'border-orange-100 hover:border-orange-300'
+                          }`}
+                          onClick={() => toggleSelectMatch(match.user_id)}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className="flex -space-x-2">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold border-2 border-white">
-                                {match1.first_name.charAt(0)}
+                          <div className="relative h-48 overflow-hidden">
+                            {match.profile_photo_url ? (
+                              <Image
+                                src={match.profile_photo_url}
+                                alt={`${match.first_name} ${match.last_name}`}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
+                                <div className="text-4xl font-bold text-orange-600 opacity-30">
+                                  {match.first_name.charAt(0)}
+                                  {match.last_name?.charAt(0) || ''}
+                                </div>
                               </div>
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold border-2 border-white">
-                                {match2.first_name.charAt(0)}
+                            )}
+
+                            {/* Match Badge */}
+                            <div className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full shadow-lg">
+                              <div className="flex items-center gap-1">
+                                <Heart className="w-3 h-3 fill-current" />
+                                <span className="text-xs font-bold">Match</span>
                               </div>
                             </div>
-                            <div className="flex-1">
-                              <p className="font-semibold text-gray-900">
-                                {match1.first_name} + {match2.first_name}
-                              </p>
-                              <p className="text-xs text-gray-600">Groupe de 2 personnes</p>
-                            </div>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-orange-300 text-orange-700 hover:bg-orange-50 rounded-xl"
-                            >
-                              <Plus className="w-4 h-4 mr-1" />
-                              Créer
-                            </Button>
+
+                            {/* Selection Indicator */}
+                            {isSelected && (
+                              <div className="absolute top-3 left-3 w-7 h-7 bg-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                                <Check className="w-4 h-4 text-white" />
+                              </div>
+                            )}
                           </div>
+
+                          <CardContent className="p-4">
+                            <h3 className="text-lg font-bold text-gray-900 mb-1">
+                              {match.first_name} {match.last_name}
+                              {age && <span className="text-base font-normal text-gray-500 ml-2">{age} ans</span>}
+                            </h3>
+
+                            {match.occupation_status && (
+                              <div className="flex items-center gap-2 text-gray-600 text-sm">
+                                <Briefcase className="w-3 h-3" />
+                                <span className="capitalize">
+                                  {match.occupation_status.replace('_', ' ')}
+                                </span>
+                              </div>
+                            )}
+
+                            {match.bio && (
+                              <p className="text-sm text-gray-600 mt-2 line-clamp-2">{match.bio}</p>
+                            )}
+                          </CardContent>
                         </Card>
                       );
                     })}
                   </div>
-                </div>
+
+                  {/* Suggested Group Combinations */}
+                  {matches.length >= 2 && (
+                    <div className="mt-8">
+                      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <Users className="w-5 h-5 text-orange-600" />
+                        Suggestions de groupes
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {matches.slice(0, 4).map((match1, idx1) => {
+                          const match2 = matches[idx1 + 1];
+                          if (!match2) return null;
+
+                          return (
+                            <Card
+                              key={`suggestion-${idx1}`}
+                              className="p-4 rounded-2xl border border-orange-200 hover:border-orange-400 hover:shadow-lg transition-all cursor-pointer"
+                              onClick={() => {
+                                const groupMembers = [match1.user_id, match2.user_id].join(',');
+                                router.push(`/dashboard/searcher/groups/create?members=${groupMembers}`);
+                              }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="flex -space-x-2">
+                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold border-2 border-white">
+                                    {match1.first_name.charAt(0)}
+                                  </div>
+                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold border-2 border-white">
+                                    {match2.first_name.charAt(0)}
+                                  </div>
+                                </div>
+                                <div className="flex-1">
+                                  <p className="font-semibold text-gray-900">
+                                    {match1.first_name} + {match2.first_name}
+                                  </p>
+                                  <p className="text-xs text-gray-600">Groupe de 2 personnes</p>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-orange-300 text-orange-700 hover:bg-orange-50 rounded-xl"
+                                >
+                                  <Plus className="w-4 h-4 mr-1" />
+                                  Créer
+                                </Button>
+                              </div>
+                            </Card>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                /* Empty State for Matches */
+                <Card className="rounded-3xl border-2 border-dashed border-orange-200 bg-gradient-to-br from-orange-50/50 to-white overflow-hidden">
+                  <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                    <div className="relative mb-6">
+                      <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center">
+                        <Heart className="w-12 h-12 text-orange-400" />
+                      </div>
+                      <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                        <Sparkles className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      Pas encore de matchs
+                    </h3>
+                    <p className="text-gray-600 max-w-md mb-6">
+                      Swipe des profils pour trouver des personnes compatibles avec ton style de vie.
+                      Quand vous vous likez mutuellement, un match apparaît ici !
+                    </p>
+                    <Button
+                      onClick={() => router.push('/matching/swipe')}
+                      className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl px-8 py-6 gap-3 shadow-xl hover:shadow-2xl transition-all group"
+                      size="lg"
+                    >
+                      <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      Découvrir des profils
+                    </Button>
+                    <p className="text-sm text-gray-500 mt-4">
+                      35+ profils t'attendent
+                    </p>
+                  </CardContent>
+                </Card>
               )}
             </section>
-          )}
 
           {/* My Groups Section */}
           <section>
@@ -527,13 +561,13 @@ export default function GroupsPage() {
           </section>
 
           {/* Discover Groups Section */}
-          {discoverGroups.length > 0 && (
-            <section>
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900">Groupes à découvrir</h2>
-                  <p className="text-gray-600 mt-1">Rejoignez des groupes qui correspondent à vos critères</p>
-                </div>
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900">Groupes à découvrir</h2>
+                <p className="text-gray-600 mt-1">Rejoignez des groupes qui correspondent à vos critères</p>
+              </div>
+              {discoverGroups.length > 0 && (
                 <Button
                   variant="outline"
                   onClick={() => router.push('/groups/browse')}
@@ -542,8 +576,10 @@ export default function GroupsPage() {
                   Voir tout
                   <TrendingUp className="h-4 w-4" />
                 </Button>
-              </div>
+              )}
+            </div>
 
+            {discoverGroups.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {discoverGroups.map((group) => (
                   <Card
@@ -600,8 +636,36 @@ export default function GroupsPage() {
                   </Card>
                 ))}
               </div>
-            </section>
-          )}
+            ) : (
+              /* Empty State for Discover Groups */
+              <Card className="rounded-3xl border-2 border-dashed border-purple-200 bg-gradient-to-br from-purple-50/50 to-white">
+                <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center">
+                      <Search className="w-12 h-12 text-purple-400" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Aucun groupe public pour le moment
+                  </h3>
+                  <p className="text-gray-600 max-w-md mb-6">
+                    Sois le premier à créer un groupe de recherche ! D'autres chercheurs pourront te rejoindre pour chercher ensemble.
+                  </p>
+                  <Button
+                    onClick={() => router.push('/dashboard/searcher/groups/create')}
+                    className="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white rounded-2xl px-8 py-6 gap-3 shadow-xl hover:shadow-2xl transition-all group"
+                    size="lg"
+                  >
+                    <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                    Créer un groupe public
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </section>
 
           {/* Why Search in Groups - Benefits Section */}
           <section className="bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 md:p-12">
