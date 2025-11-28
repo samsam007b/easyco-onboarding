@@ -87,6 +87,14 @@ export interface UserProfile {
   smoking_tolerance?: boolean;
 }
 
+export interface ProfileCompleteness {
+  percentage: number; // 0-100
+  filledFields: number;
+  totalFields: number;
+  isComplete: boolean; // true if >= 40% filled
+  missingCategories: string[];
+}
+
 export interface CompatibilityResult {
   score: number; // 0-100
   breakdown: {
@@ -99,6 +107,72 @@ export interface CompatibilityResult {
   strengths: string[];
   considerations: string[];
   dealbreakers: string[];
+  profileCompleteness: {
+    user1: ProfileCompleteness;
+    user2: ProfileCompleteness;
+  };
+  isScoreReliable: boolean; // true if both profiles are >= 40% complete
+}
+
+/**
+ * Calculate profile completeness for matching algorithm
+ * Returns percentage of filled fields and missing categories
+ */
+export function calculateProfileCompleteness(user: UserProfile): ProfileCompleteness {
+  const categories = {
+    lifestyle: {
+      fields: ['cleanliness_level', 'wake_up_time', 'sleep_time', 'house_rules_preference', 'cooking_frequency'],
+      label: 'Mode de vie'
+    },
+    social: {
+      fields: ['social_energy', 'openness_to_sharing', 'cultural_openness', 'event_participation_interest', 'guest_frequency'],
+      label: 'Préférences sociales'
+    },
+    practical: {
+      fields: ['min_budget', 'max_budget', 'date_of_birth', 'preferred_coliving_size', 'gender_preference'],
+      label: 'Critères pratiques'
+    },
+    values: {
+      fields: ['core_values'],
+      label: 'Valeurs'
+    },
+    preferences: {
+      fields: ['smoking', 'pets', 'smoking_tolerance', 'pets_tolerance'],
+      label: 'Tolérances'
+    }
+  };
+
+  let filledFields = 0;
+  let totalFields = 0;
+  const missingCategories: string[] = [];
+
+  for (const [, category] of Object.entries(categories)) {
+    let categoryFilled = 0;
+    for (const field of category.fields) {
+      totalFields++;
+      const value = user[field as keyof UserProfile];
+      if (value !== undefined && value !== null && value !== '' &&
+          !(Array.isArray(value) && value.length === 0)) {
+        filledFields++;
+        categoryFilled++;
+      }
+    }
+    // If less than 50% of category fields are filled, mark as missing
+    if (categoryFilled < category.fields.length * 0.5) {
+      missingCategories.push(category.label);
+    }
+  }
+
+  const percentage = Math.round((filledFields / totalFields) * 100);
+  const isComplete = percentage >= 40;
+
+  return {
+    percentage,
+    filledFields,
+    totalFields,
+    isComplete,
+    missingCategories
+  };
 }
 
 /**
@@ -108,6 +182,11 @@ export function calculateUserCompatibility(
   user1: UserProfile,
   user2: UserProfile
 ): CompatibilityResult {
+  // Calculate profile completeness for both users
+  const user1Completeness = calculateProfileCompleteness(user1);
+  const user2Completeness = calculateProfileCompleteness(user2);
+  const isScoreReliable = user1Completeness.isComplete && user2Completeness.isComplete;
+
   const breakdown = {
     lifestyle: calculateLifestyleScore(user1, user2),
     social: calculateSocialScore(user1, user2),
@@ -134,6 +213,11 @@ export function calculateUserCompatibility(
     strengths,
     considerations,
     dealbreakers,
+    profileCompleteness: {
+      user1: user1Completeness,
+      user2: user2Completeness,
+    },
+    isScoreReliable,
   };
 }
 
