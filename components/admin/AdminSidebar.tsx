@@ -14,6 +14,7 @@ import {
   Bell,
   Database,
   LogOut,
+  Palette,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -36,6 +37,7 @@ const navigation = [
 ];
 
 const settingsNav = [
+  { name: 'Design System', href: '/admin/dashboard/design-system', icon: Palette },
   { name: 'Paramètres', href: '/admin/dashboard/settings', icon: Settings },
   { name: 'Admins', href: '/admin/dashboard/admins', icon: Shield, superAdminOnly: true },
 ];
