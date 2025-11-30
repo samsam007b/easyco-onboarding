@@ -2496,64 +2496,362 @@ function ProfileCardsSection() {
    DROPDOWNS SECTION
    ============================================ */
 function DropdownsSection() {
-  const [langOpen, setLangOpen] = useState(false);
-  const [actionsOpen, setActionsOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [langLandingOpen, setLangLandingOpen] = useState(true);
+  const [langOwnerOpen, setLangOwnerOpen] = useState(true);
+  const [langResidentOpen, setLangResidentOpen] = useState(true);
+  const [langSearcherOpen, setLangSearcherOpen] = useState(true);
+
+  const languages = [
+    { code: 'fr', label: 'Français', active: true },
+    { code: 'en', label: 'English', active: false },
+    { code: 'nl', label: 'Nederlands', active: false },
+    { code: 'de', label: 'Deutsch', active: false },
+  ];
 
   return (
     <div className="space-y-8">
-      {/* Language Switcher - VRAI composant */}
+      {/* ========== LANGUAGE SWITCHERS - 4 versions côte à côte ========== */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Language Switcher</h3>
-        <p className="text-sm text-slate-400 mb-4">Composant : <code className="bg-slate-700 px-2 py-0.5 rounded">components/LanguageSwitcher.tsx</code></p>
+        <h3 className="text-lg font-bold text-white mb-2">Language Switcher - 4 Versions</h3>
+        <p className="text-sm text-slate-400 mb-6">Landing Page (gradient signature) + 3 rôles avec leurs couleurs respectives</p>
 
-        <div className="bg-gray-100 rounded-xl p-6 min-h-[280px]">
-          <div className="relative inline-block">
-            {/* Trigger */}
-            <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-gray-200 transition-all"
-            >
-              <Globe className="w-4 h-4" />
-              <span className="font-medium">FR</span>
-              <ChevronDown className={cn("w-3 h-3 transition-transform", langOpen && "rotate-180")} />
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* LANDING PAGE - Gradient Signature */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500" />
+              <span className="text-white font-semibold text-sm">LANDING PAGE</span>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden min-w-[160px]">
+              {languages.map((lang, index) => (
+                <div key={`landing-${lang.code}`}>
+                  <button className={cn(
+                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all group",
+                    lang.active ? "bg-gray-50" : "hover:bg-gray-50"
+                  )}>
+                    <span className={cn(
+                      "font-medium transition-all",
+                      lang.active
+                        ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
+                        : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                    )}>
+                      {lang.label}
+                    </span>
+                    {lang.active && <span className="text-purple-600 text-xs">✓</span>}
+                  </button>
+                  {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 font-mono">from-purple-600 via-orange-500 to-yellow-500</p>
+          </div>
 
-            {/* Dropdown */}
-            {langOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden min-w-[160px] z-50">
-                {[
-                  { code: 'fr', label: 'Français', active: true },
-                  { code: 'en', label: 'English', active: false },
-                  { code: 'nl', label: 'Nederlands', active: false },
-                  { code: 'de', label: 'Deutsch', active: false },
-                ].map((lang, index) => (
-                  <div key={lang.code}>
-                    <button
-                      className={cn(
-                        "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
-                        lang.active ? "bg-orange-50/50" : "hover:bg-orange-50/30"
-                      )}
-                    >
-                      <span className={cn(
-                        "font-medium transition-colors",
-                        lang.active ? "text-[#FFA040]" : "text-gray-700 hover:text-[#FFA040]"
-                      )}>
-                        {lang.label}
-                      </span>
-                      {lang.active && <span className="text-[#FFA040] text-xs">✓</span>}
-                    </button>
-                    {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
-                  </div>
-                ))}
-              </div>
-            )}
+          {/* OWNER - Purple */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-owner)' }} />
+              <span className="text-purple-400 font-semibold text-sm">OWNER</span>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden min-w-[160px]">
+              {languages.map((lang, index) => (
+                <div key={`owner-${lang.code}`}>
+                  <button className={cn(
+                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
+                    lang.active ? "bg-purple-50/50" : "hover:bg-purple-50/30"
+                  )}>
+                    <span className={cn(
+                      "font-medium transition-colors",
+                      lang.active ? "text-purple-600 font-semibold" : "text-gray-700 hover:text-purple-600"
+                    )}>
+                      {lang.label}
+                    </span>
+                    {lang.active && <span className="text-purple-600 text-xs">✓</span>}
+                  </button>
+                  {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 font-mono">text-purple-600</p>
+          </div>
+
+          {/* RESIDENT - Orange */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-resident)' }} />
+              <span className="text-orange-400 font-semibold text-sm">RESIDENT</span>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden min-w-[160px]">
+              {languages.map((lang, index) => (
+                <div key={`resident-${lang.code}`}>
+                  <button className={cn(
+                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
+                    lang.active ? "bg-orange-50/50" : "hover:bg-orange-50/30"
+                  )}>
+                    <span className={cn(
+                      "font-medium transition-colors",
+                      lang.active ? "text-[#FF6F3C] font-semibold" : "text-gray-700 hover:text-[#FF6F3C]"
+                    )}>
+                      {lang.label}
+                    </span>
+                    {lang.active && <span className="text-[#FF6F3C] text-xs">✓</span>}
+                  </button>
+                  {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 font-mono">text-[#FF6F3C]</p>
+          </div>
+
+          {/* SEARCHER - Yellow/Orange */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-searcher)' }} />
+              <span className="text-yellow-400 font-semibold text-sm">SEARCHER</span>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden min-w-[160px]">
+              {languages.map((lang, index) => (
+                <div key={`searcher-${lang.code}`}>
+                  <button className={cn(
+                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
+                    lang.active ? "bg-orange-50/50" : "hover:bg-orange-50/30"
+                  )}>
+                    <span className={cn(
+                      "font-medium transition-colors",
+                      lang.active ? "text-[#FFA040] font-semibold" : "text-gray-700 hover:text-[#FFA040]"
+                    )}>
+                      {lang.label}
+                    </span>
+                    {lang.active && <span className="text-[#FFA040] text-xs">✓</span>}
+                  </button>
+                  {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 font-mono">text-[#FFA040]</p>
           </div>
         </div>
 
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <p className="text-xs text-slate-400 font-mono">
-            Couleur active: <span className="text-orange-400">#FFA040</span> (Searcher gradient)
+        <div className="mt-6 p-3 bg-slate-700/30 rounded-lg">
+          <p className="text-xs text-slate-400">
+            <strong className="text-white">Fichiers:</strong> ModernPublicHeader.tsx (landing), LanguageSwitcher.tsx (rôles)
+          </p>
+        </div>
+      </div>
+
+      {/* ========== PROFILE DROPDOWNS - 3 rôles côte à côte ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Profile Dropdowns - 3 Rôles</h3>
+        <p className="text-sm text-slate-400 mb-6">Owner, Resident et Searcher avec leurs gradients et stats respectifs</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* OWNER Profile Dropdown */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-owner)' }} />
+              <span className="text-purple-400 font-semibold">OWNER</span>
+            </div>
+            <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+              {/* Header Gradient */}
+              <div className="relative px-4 py-4 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <svg className="absolute inset-0 -m-1" width="52" height="52">
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(110, 86, 207, 0.5)" strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 24}`}
+                        strokeDashoffset={`${2 * Math.PI * 24 * 0.25}`}
+                        transform="rotate(-90 26 26)"
+                      />
+                    </svg>
+                    <div className="w-12 h-12 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
+                      <User className="w-6 h-6 text-gray-700" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-gray-900">sam jones</p>
+                    <p className="text-gray-700 text-xs truncate">sam@email.com</p>
+                    <div className="mt-1 flex items-center gap-1">
+                      <div className="h-1 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                        <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
+                      </div>
+                      <span className="text-[10px] text-gray-700">75%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Stats */}
+              <div className="px-3 py-2 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
+                <div className="grid grid-cols-3 gap-1 text-center">
+                  <div><div className="text-sm font-bold text-gray-900">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
+                  <div className="border-x border-purple-200/50"><div className="text-sm font-bold text-gray-900">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
+                  <div><div className="text-sm font-bold text-gray-900">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
+                </div>
+              </div>
+              {/* Menu */}
+              <div className="py-1">
+                {[
+                  { icon: User, label: 'Mon Profil', color: 'from-purple-100 to-indigo-100' },
+                  { icon: Euro, label: 'Finance', color: 'from-emerald-100 to-emerald-200/70' },
+                  { icon: Settings, label: 'Paramètres', color: 'from-blue-100 to-cyan-200/70' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-purple-50/50 cursor-pointer group">
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                    </div>
+                    <span className="text-gray-900 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Logout */}
+              <div className="border-t border-gray-200/80 px-3 py-2">
+                <div className="flex items-center gap-2 text-red-600 cursor-pointer hover:bg-red-50 rounded-lg px-2 py-1">
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="text-sm">Déconnexion</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RESIDENT Profile Dropdown */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-resident)' }} />
+              <span className="text-orange-400 font-semibold">RESIDENT</span>
+            </div>
+            <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+              {/* Header Gradient - Coral/Peach tones */}
+              <div className="relative px-4 py-4 bg-gradient-to-br from-[#F5D5CF]/70 via-[#FFD5C5]/70 to-[#FFDAC9]/70">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <svg className="absolute inset-0 -m-1" width="52" height="52">
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(255, 111, 60, 0.5)" strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 24}`}
+                        strokeDashoffset={`${2 * Math.PI * 24 * 0.25}`}
+                        transform="rotate(-90 26 26)"
+                      />
+                    </svg>
+                    <div className="w-12 h-12 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
+                      <Key className="w-6 h-6 text-gray-700" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-gray-900">Marie Dupont</p>
+                    <p className="text-gray-700 text-xs truncate">marie@email.com</p>
+                    <div className="mt-1 flex items-center gap-1">
+                      <div className="h-1 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                        <div className="h-full bg-[#FF6F3C] rounded-full" style={{ width: '75%' }} />
+                      </div>
+                      <span className="text-[10px] text-gray-700">75%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Stats */}
+              <div className="px-3 py-2 bg-gradient-to-br from-[#FFF3EF]/50 to-[#FFEBE5]/50 border-b border-[#FFDAC9]/50">
+                <div className="grid grid-cols-3 gap-1 text-center">
+                  <div><div className="text-sm font-bold text-gray-900">2</div><div className="text-[10px] text-gray-600">Tâches</div></div>
+                  <div className="border-x border-[#FFDAC9]/50"><div className="text-sm font-bold text-gray-900">4</div><div className="text-[10px] text-gray-600">Membres</div></div>
+                  <div><div className="text-sm font-bold text-gray-900">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
+                </div>
+              </div>
+              {/* Menu */}
+              <div className="py-1">
+                {[
+                  { icon: User, label: 'Mon Profil', color: 'from-[#F5D5CF] to-[#FFDAC9]/70' },
+                  { icon: Euro, label: 'Finances', color: 'from-emerald-100 to-emerald-200/70' },
+                  { icon: Settings, label: 'Paramètres', color: 'from-blue-100 to-cyan-200/70' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-[#FFF3EF]/50 cursor-pointer group">
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                    </div>
+                    <span className="text-gray-900 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Logout */}
+              <div className="border-t border-gray-200/80 px-3 py-2">
+                <div className="flex items-center gap-2 text-red-600 cursor-pointer hover:bg-red-50 rounded-lg px-2 py-1">
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="text-sm">Déconnexion</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SEARCHER Profile Dropdown */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-searcher)' }} />
+              <span className="text-yellow-400 font-semibold">SEARCHER</span>
+            </div>
+            <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+              {/* Header Gradient - Amber/Yellow - texte BLANC */}
+              <div className="relative px-4 py-4 bg-gradient-to-br from-[#FFA040] via-[#FFB85C] to-[#FFD080] text-white">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <svg className="absolute inset-0 -m-1" width="52" height="52">
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 24}`}
+                        strokeDashoffset={`${2 * Math.PI * 24 * 0.25}`}
+                        transform="rotate(-90 26 26)"
+                      />
+                    </svg>
+                    <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-white/50 flex items-center justify-center">
+                      <User className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white">Lucas Martin</p>
+                    <p className="text-white/90 text-xs truncate">lucas@email.com</p>
+                    <div className="mt-1 flex items-center gap-1">
+                      <div className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+                        <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
+                      </div>
+                      <span className="text-[10px] text-white/90">75%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Stats - avec gradient text */}
+              <div className="px-3 py-2 bg-gradient-to-br from-orange-50/50 to-yellow-50/50 border-b border-orange-100/50">
+                <div className="grid grid-cols-3 gap-1 text-center">
+                  <div><div className="text-sm font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">5</div><div className="text-[10px] text-gray-600">Favoris</div></div>
+                  <div className="border-x border-orange-200/50"><div className="text-sm font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">12</div><div className="text-[10px] text-gray-600">Matches</div></div>
+                  <div><div className="text-sm font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
+                </div>
+              </div>
+              {/* Menu */}
+              <div className="py-1">
+                {[
+                  { icon: User, label: 'Mon Profil', color: 'from-orange-100 to-yellow-100' },
+                  { icon: Bookmark, label: 'Recherches', color: 'from-blue-100 to-cyan-100' },
+                  { icon: Settings, label: 'Paramètres', color: 'from-purple-100 to-pink-100' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50/50 cursor-pointer group">
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                    </div>
+                    <span className="text-gray-900 text-sm">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Logout */}
+              <div className="border-t border-gray-200/80 px-3 py-2">
+                <div className="flex items-center gap-2 text-red-600 cursor-pointer hover:bg-red-50 rounded-lg px-2 py-1">
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="text-sm">Déconnexion</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 p-3 bg-slate-700/30 rounded-lg">
+          <p className="text-xs text-slate-400">
+            <strong className="text-white">Fichiers:</strong> ModernOwnerHeader.tsx, ModernResidentHeader.tsx, ModernSearcherHeader.tsx
           </p>
         </div>
       </div>
@@ -2563,180 +2861,40 @@ function DropdownsSection() {
         <h3 className="text-lg font-bold text-white mb-2">Quick Actions Dropdown</h3>
         <p className="text-sm text-slate-400 mb-4">Utilisé dans le header Owner - <code className="bg-slate-700 px-2 py-0.5 rounded">ModernOwnerHeader.tsx</code></p>
 
-        <div className="bg-gray-100 rounded-xl p-6 min-h-[400px]">
-          <div className="relative inline-block">
-            {/* Trigger */}
-            <button
-              onClick={() => setActionsOpen(!actionsOpen)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-purple-50 transition-all border border-gray-200 hover:border-purple-300"
-            >
-              <Zap className="w-4 h-4 text-purple-600" />
-              <span>Actions Rapides</span>
-              <ChevronDown className={cn("w-4 h-4 transition-transform", actionsOpen && "rotate-180")} />
-            </button>
-
-            {/* Dropdown */}
-            {actionsOpen && (
-              <div className="absolute left-0 mt-2 w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20">
-                <div className="px-4 py-3 border-b border-purple-200/50">
-                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-purple-600" />
-                    Actions Rapides
-                  </h3>
-                </div>
-                <div className="p-2">
-                  {[
-                    { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien' },
-                    { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème' },
-                    { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense' },
-                    { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées' },
-                  ].map((action) => (
-                    <div
-                      key={action.label}
-                      className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition cursor-pointer group"
-                    >
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <action.icon className="w-5 h-5 text-gray-700" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-gray-900">{action.label}</p>
-                        <p className="text-xs text-gray-500">{action.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <p className="text-xs text-slate-400 font-mono">
-            Icons bg: <span className="text-purple-400">from-purple-200/70 to-indigo-200/70</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Profile Dropdown - VERSION APP (Owner) */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Profile Dropdown (Owner)</h3>
-        <p className="text-sm text-slate-400 mb-4">Version complète avec stats et progress ring</p>
-
-        <div className="bg-gray-100 rounded-xl p-6 min-h-[550px]">
-          <div className="relative inline-block">
-            {/* Trigger */}
-            <button
-              onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-200 transition-all group"
-            >
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
-                style={{ background: 'var(--gradient-owner)' }}
-              >
-                <Building2 className="w-4 h-4 text-white" />
-              </div>
-              <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-purple-900 transition-colors" />
-            </button>
-
-            {/* Dropdown */}
-            {profileOpen && (
-              <div className="absolute left-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20">
-                {/* Header Gradient avec Progress Ring */}
-                <div className="relative px-6 py-5 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70">
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
-                      <svg className="absolute inset-0 -m-1.5" width="68" height="68">
-                        <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
-                        <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(110, 86, 207, 0.5)" strokeWidth="3" strokeLinecap="round"
-                          strokeDasharray={`${2 * Math.PI * 32}`}
-                          strokeDashoffset={`${2 * Math.PI * 32 * 0.25}`}
-                          transform="rotate(-90 34 34)"
-                        />
-                      </svg>
-                      <div className="w-16 h-16 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
-                        <User className="w-8 h-8 text-gray-700" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-bold text-gray-900 text-lg">sam jones</p>
-                      <p className="text-gray-700 text-sm">sam7777jones@gmail.com</p>
-                      <div className="mt-1 flex items-center gap-1.5">
-                        <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                          <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
-                        </div>
-                        <span className="text-xs text-gray-700 font-medium">75%</span>
-                      </div>
-                    </div>
+        <div className="bg-gray-100 rounded-xl p-6">
+          <div className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2">
+            <div className="px-4 py-3 border-b border-purple-200/50">
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-purple-600" />
+                Actions Rapides
+              </h3>
+            </div>
+            <div className="p-2">
+              {[
+                { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien' },
+                { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème' },
+                { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense' },
+                { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées' },
+              ].map((action) => (
+                <div
+                  key={action.label}
+                  className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition cursor-pointer group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <action.icon className="w-5 h-5 text-gray-700" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900">{action.label}</p>
+                    <p className="text-xs text-gray-500">{action.desc}</p>
                   </div>
                 </div>
-
-                {/* Quick Stats */}
-                <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div>
-                      <div className="text-lg font-bold text-gray-900">€0</div>
-                      <div className="text-xs text-gray-600">Revenus</div>
-                    </div>
-                    <div className="border-x border-purple-200/50">
-                      <div className="text-lg font-bold text-gray-900">0%</div>
-                      <div className="text-xs text-gray-600">ROI</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-gray-900">0%</div>
-                      <div className="text-xs text-gray-600">Occupation</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Menu Items */}
-                <div className="py-2">
-                  {[
-                    { icon: User, label: 'Mon Profil', desc: 'Gérer mes informations', color: 'from-purple-100 to-indigo-100' },
-                    { icon: Euro, label: 'Finance', desc: 'Revenus et dépenses', color: 'from-emerald-100 to-emerald-200/70' },
-                    { icon: Settings, label: 'Paramètres', desc: 'Préférences et confidentialité', color: 'from-blue-100 to-cyan-200/70' },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all cursor-pointer"
-                    >
-                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <item.icon className="w-4 h-4 text-gray-700" />
-                      </div>
-                      <div className="flex-1">
-                        <span className="text-gray-900 font-medium block">{item.label}</span>
-                        <span className="text-xs text-gray-500">{item.desc}</span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Complete Profile CTA */}
-                <div className="px-4 pb-3">
-                  <div className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-medium text-center hover:shadow-md cursor-pointer">
-                    <div className="flex items-center justify-center gap-2">
-                      <Sparkles className="w-4 h-4" />
-                      <span>Compléter mon profil</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Logout */}
-                <div className="border-t border-gray-200/80">
-                  <div className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all cursor-pointer text-red-600 group">
-                    <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
-                      <LogOut className="w-4 h-4 text-red-600" />
-                    </div>
-                    <span className="font-medium">Déconnexion</span>
-                  </div>
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Dropdowns par Role */}
+      {/* Icon Backgrounds par Role */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Icon Backgrounds par Role</h3>
         <p className="text-sm text-slate-400 mb-6">Chaque role utilise son gradient pour les icones des dropdowns</p>
@@ -2772,18 +2930,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-200/70 to-red-200/70 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 flex items-center justify-center">
                   <User className="w-5 h-5 text-gray-700" />
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-rose-100 flex items-center justify-center">
                   <Settings className="w-5 h-5 text-gray-700" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-100 to-orange-200/70 flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center">
+                  <Euro className="w-5 h-5 text-gray-700" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">orange/coral tones</p>
+            <p className="text-xs text-slate-500 font-mono">coral/peach tones</p>
           </div>
 
           {/* SEARCHER */}
@@ -2794,32 +2952,19 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-200/70 to-yellow-200/70 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center">
                   <User className="w-5 h-5 text-gray-700" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
+                  <Bookmark className="w-5 h-5 text-gray-700" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-200/70 flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-gray-700" />
                 </div>
               </div>
             </div>
             <p className="text-xs text-slate-500 font-mono">amber/yellow tones</p>
           </div>
-        </div>
-      </div>
-
-      {/* Archived Button Example */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Bouton Archivées</h3>
-        <p className="text-sm text-slate-400 mb-4">Comme visible dans le screenshot Messages</p>
-
-        <div className="bg-gray-100 rounded-xl p-6">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-300 text-purple-700 hover:bg-purple-50 transition-all">
-            <Folder className="w-4 h-4" />
-            Archivées
-          </button>
         </div>
       </div>
     </div>
