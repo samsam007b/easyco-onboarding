@@ -4,8 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import BookVisitModal from './BookVisitModal';
 
 interface ResidentProfile {
   id: string;
@@ -53,10 +51,8 @@ function PropertyCard({
   onMouseEnter,
   onMouseLeave
 }: PropertyCardProps) {
-  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
-  const [showBookVisitModal, setShowBookVisitModal] = useState(false);
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,12 +60,6 @@ function PropertyCard({
     setLocalFavorite(!localFavorite);
     onFavoriteClick?.(property.id);
   }, [localFavorite, property.id, onFavoriteClick]);
-
-  const handleBookVisit = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowBookVisitModal(true);
-  }, []);
 
   // Generate placeholder image based on property type and location
   const getPlaceholderImage = () => {
@@ -170,38 +160,17 @@ function PropertyCard({
               {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
             </p>
 
-            {/* Price section with glassmorphism */}
-            <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
-              {/* Animated background lights - Slow right to left */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-                <div className="absolute top-0 left-1/4 w-24 h-24 bg-orange-300/60 rounded-full blur-xl"
-                     style={{ animation: 'float 20s ease-in-out infinite' }} />
-                <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-purple-300/50 rounded-full blur-2xl"
-                     style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
-                <div className="absolute top-1/2 left-1/2 w-28 h-28 bg-yellow-200/50 rounded-full blur-xl"
-                     style={{ animation: 'float 22s ease-in-out infinite 10s' }} />
-              </div>
-
-              {/* Glassmorphism layer */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/50 backdrop-blur-2xl backdrop-saturate-150 z-10"
-                   style={{
-                     WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                     backdropFilter: 'blur(40px) saturate(150%)'
-                   }}
-              />
-              <div className="absolute inset-0 border-t border-white/30 shadow-lg z-10" />
-
-              <div className="relative z-20 flex items-center justify-between">
-                <span className="text-sm font-bold text-gray-900">
-                  €{property.monthly_rent}
-                  <span className="text-xs text-gray-500 font-normal">/mois</span>
+            {/* Price section - V3.A Clean */}
+            <div className="flex items-center justify-between pt-2 mt-2 border-t border-gray-100">
+              <span className="text-sm font-bold text-gray-900">
+                €{property.monthly_rent}
+                <span className="text-xs text-gray-500 font-normal">/mois</span>
+              </span>
+              {property.bedrooms && (
+                <span className="text-xs text-gray-500">
+                  {property.bedrooms} ch.
                 </span>
-                {property.bedrooms && (
-                  <span className="text-xs text-gray-500">
-                    {property.bedrooms} {property.bedrooms > 1 ? 'chambres' : 'chambre'}
-                  </span>
-                )}
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -210,8 +179,7 @@ function PropertyCard({
   }
 
   return (
-    <>
-      <Link
+    <Link
         href={`/properties/${property.id}`}
         className="block group"
         onMouseEnter={() => {
@@ -278,22 +246,16 @@ function PropertyCard({
             </div>
           )}
 
-          {/* Compatibility Score Badge - Enhanced with gradient */}
+          {/* Compatibility Score Badge - V3.A Flat */}
           {showCompatibilityScore && compatibilityScore && (
-            <div
-              className="absolute top-3 left-3 px-4 py-2 rounded-full text-white font-bold shadow-2xl backdrop-blur-sm border-2 border-white/50"
-              style={{
-                background: compatibilityScore >= 80
-                  ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                  : compatibilityScore >= 60
-                  ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
-                  : 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 fill-white" />
-                <span className="text-lg">{compatibilityScore}%</span>
-              </div>
+            <div className={`absolute top-3 left-3 px-3 py-1.5 rounded-full text-sm font-bold shadow-md ${
+              compatibilityScore >= 80
+                ? 'bg-green-500 text-white'
+                : compatibilityScore >= 60
+                ? 'bg-orange-500 text-white'
+                : 'bg-gray-500 text-white'
+            }`}>
+              {compatibilityScore}% Match
             </div>
           )}
 
@@ -329,146 +291,86 @@ function PropertyCard({
             {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
           </p>
 
-          {/* Residents Info - Prominent */}
-          {residents && residents.length > 0 && (
-            <div className="mb-3 p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
-              <div className="flex items-center gap-2 mb-2">
-                <Users className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-semibold text-gray-900">
-                  {residents.length} colocataire{residents.length > 1 ? 's' : ''}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {residents.slice(0, 4).map((resident, index) => (
-                    <div
-                      key={resident.id}
-                      className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-md flex items-center justify-center"
-                      style={{ zIndex: 10 - index }}
-                    >
-                      {resident.profile_photo_url ? (
-                        <img
-                          src={resident.profile_photo_url}
-                          alt={resident.first_name}
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      ) : (
-                        <Users className="w-4 h-4 text-white" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <span className="text-xs text-gray-600">
-                  {residents.slice(0, 2).map(r => r.first_name).join(', ')}
-                  {residents.length > 2 && ` +${residents.length - 2}`}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Details */}
-          <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+          {/* Info Tags - V3.A Flat Modern */}
+          <div className="flex flex-wrap gap-2 mb-4">
             {property.bedrooms && (
-              <div className="flex items-center gap-1">
-                <Home className="w-4 h-4" />
-                <span>{property.bedrooms} {property.bedrooms > 1 ? 'chambres' : 'chambre'}</span>
-              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
+                <Home className="w-3.5 h-3.5" />
+                {property.bedrooms} ch.
+              </span>
             )}
-            {property.views_count && (
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" />
-                <span>{property.views_count} vues</span>
-              </div>
+            {residents && residents.length > 0 && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
+                <Users className="w-3.5 h-3.5" />
+                {residents.length} coloc{residents.length > 1 ? 's' : ''}
+              </span>
+            )}
+            {property.available_from && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-medium">
+                <Calendar className="w-3.5 h-3.5" />
+                Dispo {new Date(property.available_from).toLocaleDateString('fr-FR', { month: 'short' })}
+              </span>
             )}
           </div>
 
-          {/* Description (optional) */}
-          {property.description && (
-            <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-              {property.description}
-            </p>
-          )}
-
-          {/* Footer: Price and CTA - with glassmorphism */}
-          <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
-            {/* Animated background lights - Slow right to left */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-              <div className="absolute top-0 left-1/4 w-32 h-32 bg-orange-300/60 rounded-full blur-2xl"
-                   style={{ animation: 'float 20s ease-in-out infinite' }} />
-              <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-purple-300/50 rounded-full blur-2xl"
-                   style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
-              <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-yellow-200/50 rounded-full blur-2xl"
-                   style={{ animation: 'float 22s ease-in-out infinite 10s' }} />
-            </div>
-
-            {/* Glassmorphism layer */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/50 backdrop-blur-2xl backdrop-saturate-150 z-10"
-                 style={{
-                   WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-                   backdropFilter: 'blur(40px) saturate(150%)'
-                 }}
-            />
-            <div className="absolute inset-0 border-t border-white/30 shadow-lg z-10" />
-
-            <div className="relative z-20 flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-gray-900">
-                  €{property.monthly_rent}
-                </span>
-                <span className="text-sm text-gray-500">/mois</span>
-                {property.available_from && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Dispo {new Date(property.available_from).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}
-                  </p>
+          {/* Resident Avatars - Subtle */}
+          {residents && residents.length > 0 && (
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex -space-x-2">
+                {residents.slice(0, 3).map((resident, index) => (
+                  <div
+                    key={resident.id}
+                    className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 border-2 border-white shadow-sm flex items-center justify-center"
+                    style={{ zIndex: 10 - index }}
+                  >
+                    {resident.profile_photo_url ? (
+                      <img
+                        src={resident.profile_photo_url}
+                        alt={resident.first_name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-xs font-medium text-white">
+                        {resident.first_name.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                ))}
+                {residents.length > 3 && (
+                  <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white text-gray-600 text-xs font-medium flex items-center justify-center">
+                    +{residents.length - 3}
+                  </div>
                 )}
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={handleBookVisit}
-                  className="px-4 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-                  style={{
-                    background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-                  }}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span className="hidden sm:inline">Visite</span>
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = `/properties/${property.id}`;
-                  }}
-                  className="px-5 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
-                  style={{
-                    background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
-                  }}
-                >
-                  Voir
-                </button>
-              </div>
+              <span className="text-xs text-gray-500">
+                {residents.slice(0, 2).map(r => r.first_name).join(', ')}
+                {residents.length > 2 && ` ...`}
+              </span>
             </div>
+          )}
+
+          {/* Footer: Price and CTA - V3.A Clean */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div>
+              <span className="text-2xl font-bold text-gray-900">
+                €{property.monthly_rent}
+              </span>
+              <span className="text-sm text-gray-500">/mois</span>
+            </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = `/properties/${property.id}`;
+              }}
+              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-full transition-colors shadow-md hover:shadow-lg"
+            >
+              Voir détails
+            </button>
           </div>
         </div>
       </div>
     </Link>
-
-    {/* Book Visit Modal */}
-    {showBookVisitModal && property.owner_id && (
-      <BookVisitModal
-        property={{
-          id: property.id,
-          title: property.title,
-          city: property.city,
-          address: property.address,
-          monthly_rent: property.monthly_rent,
-          main_image: property.main_image,
-        }}
-        ownerId={property.owner_id}
-        isOpen={showBookVisitModal}
-        onClose={() => setShowBookVisitModal(false)}
-      />
-    )}
-  </>
   );
 }
 
