@@ -88,13 +88,13 @@ export default function PropertyCTASidebar({
         <Card className="border-orange-200">
           <CardHeader className="pb-4">
             <CardTitle className="text-base flex items-center gap-2">
-              <User className="w-5 h-5 text-orange-600" />
+              <User className="w-5 h-5 text-gray-600" />
               Votre contact propriétaire
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-start gap-3">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center flex-shrink-0 shadow-md">
+              <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200">
                 {owner.profile_photo_url ? (
                   <img
                     src={owner.profile_photo_url}
@@ -102,7 +102,7 @@ export default function PropertyCTASidebar({
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <User className="w-7 h-7 text-white" />
+                  <User className="w-7 h-7 text-gray-500" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
@@ -130,15 +130,15 @@ export default function PropertyCTASidebar({
               </div>
             </div>
 
-            {/* Trust badges */}
+            {/* Trust badges - V1 Discret */}
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
-              <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+              <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span className="font-medium">Vérifié</span>
               </div>
-              <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+              <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
@@ -175,7 +175,7 @@ export default function PropertyCTASidebar({
           <div className="space-y-3 pt-4 border-t">
             <Button
               onClick={handleApply}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-6"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-6"
               disabled={!selectedRoom?.is_available}
             >
               <Send className="w-5 h-5 mr-2" />
@@ -186,7 +186,7 @@ export default function PropertyCTASidebar({
               <Button
                 onClick={handleScheduleTour}
                 variant="outline"
-                className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Visite
@@ -194,7 +194,7 @@ export default function PropertyCTASidebar({
               <Button
                 onClick={handleVirtualTour}
                 variant="outline"
-                className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <Video className="w-4 h-4 mr-2" />
                 Virtuelle
@@ -218,11 +218,11 @@ export default function PropertyCTASidebar({
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+              <MapPin className="w-4 h-4 text-gray-500 mt-1 flex-shrink-0" />
               <p className="text-sm text-gray-700">{propertyAddress}</p>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Calendar className="w-4 h-4 text-orange-600" />
+              <Calendar className="w-4 h-4 text-gray-500" />
               <span>
                 {selectedRoom?.is_available
                   ? selectedRoom.available_from
@@ -241,14 +241,14 @@ export default function PropertyCTASidebar({
         <Card>
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-orange-600" />
+              <Calendar className="w-5 h-5 text-gray-600" />
               Disponibilité
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
               <p className="text-sm text-gray-600 mb-1">Disponible à partir du</p>
-              <p className="text-2xl font-bold text-orange-600">
+              <p className="text-2xl font-bold text-gray-900">
                 {new Date(selectedRoom.available_from).toLocaleDateString('fr-FR', {
                   day: 'numeric',
                   month: 'long',
@@ -260,24 +260,24 @@ export default function PropertyCTASidebar({
         </Card>
       )}
 
-      {/* Trust Badges */}
-      <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+      {/* Trust Badges - V1 Discret */}
+      <Card className="bg-gray-50 border-gray-200">
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">✓</span>
               </div>
               <p className="text-sm font-medium text-gray-900">Propriété vérifiée</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">🔒</span>
               </div>
               <p className="text-sm font-medium text-gray-900">Paiement sécurisé</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">📋</span>
               </div>
               <p className="text-sm font-medium text-gray-900">Contrat de bail standard</p>

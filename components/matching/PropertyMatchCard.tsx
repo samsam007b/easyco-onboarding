@@ -183,14 +183,14 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           </div>
         </div>
 
-        {/* Price & Availability */}
+        {/* Price & Availability - V1 Flat */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="flex items-center gap-2 text-gray-700">
-            <Euro className="w-4 h-4 text-purple-600" />
+            <Euro className="w-4 h-4 text-gray-500" />
             <span className="font-semibold">{formatPrice(property.monthly_rent)}/mois</span>
           </div>
           <div className="flex items-center gap-2 text-gray-700">
-            <Calendar className="w-4 h-4 text-purple-600" />
+            <Calendar className="w-4 h-4 text-gray-500" />
             <span className="text-sm">{formatDate(property.available_from)}</span>
           </div>
         </div>
@@ -212,19 +212,19 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           )}
         </div>
 
-        {/* Match Reasons */}
+        {/* Match Reasons - V1 Discret */}
         {match.match_reasons && match.match_reasons.length > 0 && (
-          <div className="mb-4 p-3 bg-purple-50 rounded-lg">
+          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-100">
             <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-semibold text-purple-900">
+              <TrendingUp className="w-4 h-4 text-gray-500" />
+              <span className="text-sm font-semibold text-gray-900">
                 Pourquoi ce match ?
               </span>
             </div>
-            <ul className="text-sm text-purple-800 space-y-1">
+            <ul className="text-sm text-gray-700 space-y-1">
               {match.match_reasons.slice(0, 2).map((reason, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <span className="text-purple-400 mt-0.5">•</span>
+                  <span className="text-gray-400 mt-0.5">•</span>
                   <span>{reason}</span>
                 </li>
               ))}
@@ -232,10 +232,10 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           </div>
         )}
 
-        {/* Score Breakdown Toggle */}
+        {/* Score Breakdown Toggle - V1 Flat */}
         <button
           onClick={toggleDetails}
-          className="w-full text-sm text-purple-600 hover:text-purple-800 font-medium mb-3 text-left flex items-center gap-2"
+          className="w-full text-sm text-gray-600 hover:text-gray-800 font-medium mb-3 text-left flex items-center gap-2"
         >
           <TrendingUp className="w-4 h-4" />
           {showDetails ? 'Masquer les détails' : 'Voir le détail du score'}
@@ -300,9 +300,9 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           </div>
         )}
 
-        {/* Owner Info */}
+        {/* Owner Info - V1 Flat */}
         {owner && (
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg flex items-center gap-3">
+          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-100 flex items-center gap-3">
             {owner.profile_photo_url ? (
               <img
                 src={owner.profile_photo_url}
@@ -310,8 +310,8 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
                 className="w-10 h-10 rounded-full object-cover"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-purple-200 flex items-center justify-center">
-                <span className="text-purple-700 font-semibold text-sm">
+              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-600 font-semibold text-sm">
                   {owner.first_name.charAt(0)}
                   {owner.last_name.charAt(0)}
                 </span>

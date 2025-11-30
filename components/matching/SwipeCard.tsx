@@ -381,12 +381,12 @@ export const SwipeCard = memo(function SwipeCard({
             handleExpandToggle();
           }}
         >
-          {/* Key Stats Grid */}
+          {/* Key Stats Grid - V1 Flat */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             {/* Budget */}
             {(user.min_budget || user.max_budget) && (
-              <div className="flex items-center gap-2 bg-orange-50 rounded-xl px-3 py-2">
-                <Euro className="w-4 h-4 text-orange-500" />
+              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+                <Euro className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">Budget</p>
                   <p className="text-sm font-bold text-gray-900">
@@ -403,8 +403,8 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Cleanliness */}
             {user.cleanliness_level && (
-              <div className="flex items-center gap-2 bg-blue-50 rounded-xl px-3 py-2">
-                <Home className="w-4 h-4 text-blue-500" />
+              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+                <Home className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">Propreté</p>
                   <p className="text-sm font-bold text-gray-900">{getCleanlinessLabel(user.cleanliness_level)}</p>
@@ -414,8 +414,8 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Social */}
             {user.social_energy && (
-              <div className="flex items-center gap-2 bg-purple-50 rounded-xl px-3 py-2">
-                <Users className="w-4 h-4 text-purple-500" />
+              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+                <Users className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">Social</p>
                   <p className="text-sm font-bold text-gray-900">{getSocialLabel(user.social_energy)}</p>
@@ -425,8 +425,8 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Schedule */}
             {(user.wake_up_time || user.sleep_time) && (
-              <div className="flex items-center gap-2 bg-yellow-50 rounded-xl px-3 py-2">
-                <Clock className="w-4 h-4 text-yellow-600" />
+              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+                <Clock className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">Rythme</p>
                   <p className="text-sm font-bold text-gray-900">
