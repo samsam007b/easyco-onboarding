@@ -2996,7 +2996,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">Actuel</span>
                 <span className="text-sm font-medium text-white">Landing Page</span>
               </div>
-              <button className="w-full px-6 py-3 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white rounded-full font-semibold shadow-lg">S'inscrire</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>S'inscrire</button>
               <p className="text-xs text-slate-500 mt-2">CTA principal unique</p>
             </div>
 
@@ -3005,7 +3005,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Onboarding - Fin d'étape</span>
               </div>
-              <button className="w-full px-6 py-3 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white rounded-full font-semibold shadow-lg">Continuer →</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Continuer →</button>
               <p className="text-xs text-slate-500 mt-2">Marque la progression</p>
             </div>
 
@@ -3014,7 +3014,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Matching - Super Like</span>
               </div>
-              <button className="w-full px-6 py-3 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2"><Star className="w-5 h-5" /> Super Like</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><Star className="w-5 h-5" /> Super Like</button>
               <p className="text-xs text-slate-500 mt-2">Action premium</p>
             </div>
 
@@ -3023,7 +3023,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Badge Vérifié</span>
               </div>
-              <span className="px-3 py-1.5 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white text-sm rounded-full font-medium inline-flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
+              <span className="px-3 py-1.5 text-white text-sm rounded-full font-medium inline-flex items-center gap-1" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
               <p className="text-xs text-slate-500 mt-2">Statut premium</p>
             </div>
 
@@ -3033,7 +3033,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Empty State</span>
               </div>
               <div className="flex justify-center py-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] flex items-center justify-center"><Search className="w-8 h-8 text-white" /></div>
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><Search className="w-8 h-8 text-white" /></div>
               </div>
               <p className="text-xs text-slate-500 mt-2 text-center">Attire l'attention</p>
             </div>
@@ -3044,7 +3044,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Logo Mobile</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] flex items-center justify-center"><span className="text-white font-bold text-lg">E</span></div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
                 <span className="text-white font-semibold">EasyCo</span>
               </div>
               <p className="text-xs text-slate-500 mt-2">Rappel de marque</p>
@@ -3062,8 +3062,8 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Navigation</span>
               </div>
               <div className="flex gap-2">
-                <button className="px-3 py-1.5 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white rounded-lg text-xs">Accueil</button>
-                <button className="px-3 py-1.5 bg-gradient-to-r from-[#6E56CF] via-[#FF6F3C] to-[#FFD249] text-white rounded-lg text-xs">Recherche</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Accueil</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Recherche</button>
               </div>
               <p className="text-xs text-red-400 mt-2">Perd son impact</p>
             </div>
