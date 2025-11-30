@@ -2687,16 +2687,16 @@ function DropdownsSection() {
                   <div><div className="text-sm font-bold text-[#6E56CF]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
                 </div>
               </div>
-              {/* Menu */}
+              {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' },
-                  { icon: Euro, label: 'Finance', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
-                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' },
+                  { icon: User, label: 'Mon Profil', bgColor: 'bg-orange-100', iconColor: 'text-orange-500' },
+                  { icon: Euro, label: 'Finance', bgColor: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+                  { icon: Settings, label: 'Paramètres', bgColor: 'bg-purple-100', iconColor: 'text-purple-600' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-purple-50 cursor-pointer group">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
-                      <item.icon className="w-3.5 h-3.5 text-white" />
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${item.bgColor}`}>
+                      <item.icon className={`w-3.5 h-3.5 ${item.iconColor}`} />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2755,16 +2755,16 @@ function DropdownsSection() {
                   <div><div className="text-sm font-bold text-[#FF6F3C]">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
                 </div>
               </div>
-              {/* Menu */}
+              {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #D97B6F 0%, #FF8C4B 100%)' },
-                  { icon: Euro, label: 'Finances', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
-                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' },
+                  { icon: User, label: 'Mon Profil', bgColor: 'bg-orange-100', iconColor: 'text-orange-500' },
+                  { icon: Euro, label: 'Finances', bgColor: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+                  { icon: Settings, label: 'Paramètres', bgColor: 'bg-purple-100', iconColor: 'text-purple-600' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer group">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
-                      <item.icon className="w-3.5 h-3.5 text-white" />
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${item.bgColor}`}>
+                      <item.icon className={`w-3.5 h-3.5 ${item.iconColor}`} />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2823,16 +2823,16 @@ function DropdownsSection() {
                   <div><div className="text-sm font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
                 </div>
               </div>
-              {/* Menu */}
+              {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #FFA040 0%, #FFD080 100%)' },
-                  { icon: Bookmark, label: 'Recherches', gradient: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' },
-                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)' },
+                  { icon: User, label: 'Mon Profil', bgColor: 'bg-orange-100', iconColor: 'text-orange-500' },
+                  { icon: Bookmark, label: 'Recherches', bgColor: 'bg-blue-100', iconColor: 'text-blue-600' },
+                  { icon: Settings, label: 'Paramètres', bgColor: 'bg-purple-100', iconColor: 'text-purple-600' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer group">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
-                      <item.icon className="w-3.5 h-3.5 text-white" />
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${item.bgColor}`}>
+                      <item.icon className={`w-3.5 h-3.5 ${item.iconColor}`} />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2856,7 +2856,7 @@ function DropdownsSection() {
         </div>
       </div>
 
-      {/* Quick Actions Dropdown - OWNER */}
+      {/* Quick Actions Dropdown - OWNER - Style V1 Flat */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Quick Actions Dropdown</h3>
         <p className="text-sm text-slate-400 mb-4">Utilisé dans le header Owner - <code className="bg-slate-700 px-2 py-0.5 rounded">ModernOwnerHeader.tsx</code></p>
@@ -2871,17 +2871,17 @@ function DropdownsSection() {
             </div>
             <div className="p-2">
               {[
-                { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien', gradient: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' },
-                { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème', gradient: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)' },
-                { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
-                { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées', gradient: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' },
+                { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien', bgColor: 'bg-purple-100', iconColor: 'text-purple-600' },
+                { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème', bgColor: 'bg-amber-100', iconColor: 'text-amber-600' },
+                { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense', bgColor: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+                { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées', bgColor: 'bg-blue-100', iconColor: 'text-blue-600' },
               ].map((action) => (
                 <div
                   key={action.label}
                   className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-purple-50 transition cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ background: action.gradient }}>
-                    <action.icon className="w-5 h-5 text-white" />
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform ${action.bgColor}`}>
+                    <action.icon className={`w-5 h-5 ${action.iconColor}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900">{action.label}</p>
@@ -2894,10 +2894,10 @@ function DropdownsSection() {
         </div>
       </div>
 
-      {/* Icon Backgrounds par Role */}
+      {/* Icon Backgrounds par Role - Style V1 Flat */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Icon Backgrounds par Role</h3>
-        <p className="text-sm text-slate-400 mb-6">Chaque role utilise son gradient OFFICIEL pour les icones - couleurs vives, icônes blanches</p>
+        <h3 className="text-lg font-bold text-white mb-2">Icon Backgrounds par Role - Style V1 Flat</h3>
+        <p className="text-sm text-slate-400 mb-6">Fond pastel léger + icône colorée (style préféré)</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* OWNER */}
@@ -2908,18 +2908,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' }}>
-                  <User className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                  <User className="w-5 h-5 text-orange-500" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' }}>
-                  <Settings className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-purple-600" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' }}>
-                  <Euro className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                  <Euro className="w-5 h-5 text-emerald-600" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">#7B5FB8 → #A67BB8 (gradient officiel)</p>
+            <p className="text-xs text-slate-500 font-mono">bg-[color]-100 + text-[color]-500/600</p>
           </div>
 
           {/* RESIDENT */}
@@ -2930,18 +2930,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #FF8C4B 100%)' }}>
-                  <User className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                  <User className="w-5 h-5 text-orange-500" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' }}>
-                  <Settings className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-purple-600" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' }}>
-                  <Euro className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                  <Euro className="w-5 h-5 text-emerald-600" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">#D97B6F → #FF8C4B (gradient officiel)</p>
+            <p className="text-xs text-slate-500 font-mono">bg-[color]-100 + text-[color]-500/600</p>
           </div>
 
           {/* SEARCHER */}
@@ -2952,18 +2952,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FFA040 0%, #FFD080 100%)' }}>
-                  <User className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                  <User className="w-5 h-5 text-orange-500" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' }}>
-                  <Bookmark className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                  <Bookmark className="w-5 h-5 text-blue-600" />
                 </div>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)' }}>
-                  <Settings className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-purple-600" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">#FFA040 → #FFD080 (gradient officiel)</p>
+            <p className="text-xs text-slate-500 font-mono">bg-[color]-100 + text-[color]-500/600</p>
           </div>
         </div>
       </div>
