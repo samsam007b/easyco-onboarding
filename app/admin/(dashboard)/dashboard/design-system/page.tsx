@@ -111,6 +111,10 @@ import {
   Sofa,
   Dog,
   Cat,
+  PawPrint,
+  Plane,
+  CigaretteOff,
+  Languages,
   Leaf,
   TreeDeciduous,
   Bike,
@@ -123,6 +127,7 @@ import {
   CircleX,
   CircleAlert,
   CircleHelp,
+  HelpCircle,
   Ban,
   ShieldCheck,
   ShieldAlert,
@@ -672,7 +677,7 @@ function ColorAuditCard({ hex, name, usage, justification, status, location }: C
           <p className="text-xs text-slate-300 mt-1">{usage}</p>
           <p className="text-xs text-slate-500 mt-1 italic">{justification}</p>
           {location && (
-            <p className="text-[10px] text-slate-600 mt-1 font-mono">📁 {location}</p>
+            <p className="text-[10px] text-slate-600 mt-1 font-mono flex items-center gap-1"><Folder className="w-3 h-3" /> {location}</p>
           )}
         </div>
       </div>
@@ -1034,27 +1039,27 @@ function ColorsSection() {
           <h4 className="font-semibold text-white mb-3">Resume des decisions a prendre:</h4>
           <ul className="space-y-2 text-sm text-slate-300">
             <li className="flex items-start gap-2">
-              <span className="text-green-400 mt-1">✓</span>
+              <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
               <span><strong>Couleurs des roles (Mauve, Orange, Jaune)</strong> - A conserver, c'est le coeur de l'identite</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-green-400 mt-1">✓</span>
+              <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
               <span><strong>Couleurs semantiques (Vert, Rouge, Jaune, Bleu)</strong> - Necessaires pour l'UX</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-green-400 mt-1">✓</span>
+              <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
               <span><strong>Nuances de slate</strong> - Necessaires pour l'interface sombre</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-yellow-400 mt-1">?</span>
+              <HelpCircle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
               <span><strong>Cyan/Turquoise</strong> - Revoir si coherent avec la direction artistique chaude</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-yellow-400 mt-1">?</span>
+              <HelpCircle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
               <span><strong>Pink/Rose</strong> - Revoir l'utilite, peut-etre limiter son usage</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-yellow-400 mt-1">?</span>
+              <HelpCircle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
               <span><strong>Trop de nuances de violet</strong> - Simplifier la palette (Purple, Violet, Indigo)</span>
             </li>
           </ul>
@@ -2283,7 +2288,7 @@ function PropertyCardsSection() {
               <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
                 <div className="relative h-40 bg-gradient-to-br from-slate-700 to-slate-600">
                   <div className="absolute top-3 right-3 px-3 py-1.5 bg-green-500 text-white text-sm font-bold rounded-full flex items-center gap-1">
-                    <span>92%</span><span>🎯</span>
+                    <span>92%</span><Target className="w-3.5 h-3.5" />
                   </div>
                   <div className="absolute top-3 left-3 flex gap-2">
                     <span className="px-2 py-1 bg-blue-500/80 text-white text-xs rounded-full">Vu</span>
@@ -2327,9 +2332,9 @@ function PropertyCardsSection() {
               <div className="relative bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700">
                 <div className="relative h-64 bg-gradient-to-br from-orange-400/20 via-purple-500/20 to-yellow-400/20">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="absolute top-4 right-4 px-3 py-1.5 bg-green-500 text-white font-bold rounded-full text-sm">87% 💚</div>
+                  <div className="absolute top-4 right-4 px-3 py-1.5 bg-green-500 text-white font-bold rounded-full text-sm flex items-center gap-1">87% <Heart className="w-3.5 h-3.5" /></div>
                   <div className="absolute top-4 left-4">
-                    <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-orange-500 text-white text-xs font-medium rounded-full">⭐ Featured</span>
+                    <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-orange-500 text-white text-xs font-medium rounded-full flex items-center gap-1"><Star className="w-3 h-3" /> Featured</span>
                   </div>
                   <div className="absolute bottom-4 left-4 right-4">
                     <h3 className="text-xl font-bold text-white">Loft Belleville</h3>
@@ -2343,9 +2348,9 @@ function PropertyCardsSection() {
                     <div><p className="text-lg font-bold text-white">3</p><p className="text-xs text-slate-400">colocs</p></div>
                   </div>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">🛋️ Meublé</span>
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">📶 WiFi</span>
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">🐕 Animaux</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><Sofa className="w-3 h-3" /> Meuble</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><Wifi className="w-3 h-3" /> WiFi</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><PawPrint className="w-3 h-3" /> Animaux</span>
                   </div>
                   <div className="flex justify-center gap-8 pt-2">
                     <button className="w-14 h-14 rounded-full bg-red-500/20 border-2 border-red-500 flex items-center justify-center"><X className="w-6 h-6 text-red-500" /></button>
@@ -2417,8 +2422,8 @@ function ProfileCardsSection() {
                       <h4 className="text-lg font-bold text-white">Marie Dupont</h4>
                       <p className="text-sm text-slate-300">28 ans • Designer UX</p>
                       <div className="flex gap-1 mt-1">
-                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full">🇫🇷 FR</span>
-                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">🇬🇧 EN</span>
+                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full flex items-center gap-1"><Languages className="w-3 h-3" /> FR</span>
+                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full flex items-center gap-1"><Languages className="w-3 h-3" /> EN</span>
                       </div>
                     </div>
                   </div>
@@ -2429,9 +2434,9 @@ function ProfileCardsSection() {
                 <div className="p-4 border-b border-slate-700">
                   <p className="text-xs text-slate-400 mb-2">Centres d'intérêt</p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">🎨 Art</span>
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">✈️ Voyages</span>
-                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">🧘 Yoga</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><Palette className="w-3 h-3" /> Art</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><Plane className="w-3 h-3" /> Voyages</span>
+                    <span className="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded-full flex items-center gap-1"><Heart className="w-3 h-3" /> Yoga</span>
                   </div>
                 </div>
                 <div className="p-4">
@@ -2446,8 +2451,8 @@ function ProfileCardsSection() {
                       <span className="text-xs text-blue-400">Calme</span>
                     </div>
                     <div className="flex items-center gap-4 mt-2 pt-2 border-t border-slate-700">
-                      <span className="text-xs text-slate-400">🚭 Non-fumeur</span>
-                      <span className="text-xs text-slate-400">🐱 Chat</span>
+                      <span className="text-xs text-slate-400 flex items-center gap-1"><CigaretteOff className="w-3 h-3" /> Non-fumeur</span>
+                      <span className="text-xs text-slate-400 flex items-center gap-1"><Cat className="w-3 h-3" /> Chat</span>
                     </div>
                   </div>
                 </div>
@@ -2537,7 +2542,7 @@ function DropdownsSection() {
                     )}>
                       {lang.label}
                     </span>
-                    {lang.active && <span className="text-purple-600 text-xs">✓</span>}
+                    {lang.active && <Check className="w-3.5 h-3.5 text-purple-600" />}
                   </button>
                   {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                 </div>
@@ -2565,7 +2570,7 @@ function DropdownsSection() {
                     )}>
                       {lang.label}
                     </span>
-                    {lang.active && <span className="text-purple-600 text-xs">✓</span>}
+                    {lang.active && <Check className="w-3.5 h-3.5 text-purple-600" />}
                   </button>
                   {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                 </div>
@@ -2593,7 +2598,7 @@ function DropdownsSection() {
                     )}>
                       {lang.label}
                     </span>
-                    {lang.active && <span className="text-[#FF6F3C] text-xs">✓</span>}
+                    {lang.active && <Check className="w-3.5 h-3.5 text-[#FF6F3C]" />}
                   </button>
                   {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                 </div>
@@ -2621,7 +2626,7 @@ function DropdownsSection() {
                     )}>
                       {lang.label}
                     </span>
-                    {lang.active && <span className="text-[#FFA040] text-xs">✓</span>}
+                    {lang.active && <Check className="w-3.5 h-3.5 text-[#FFA040]" />}
                   </button>
                   {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                 </div>
@@ -3087,21 +3092,21 @@ function GradientUsageSection() {
           <h4 className="font-semibold text-white mb-3">Résumé</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-green-400 font-medium mb-2">✓ Utiliser pour:</p>
-              <ul className="text-slate-300 space-y-1">
-                <li>• CTA principal (1 par page max)</li>
-                <li>• Moments clés (inscription, match)</li>
-                <li>• Récompenses (badges, vérifié)</li>
-                <li>• Logo et identité</li>
+              <p className="text-green-400 font-medium mb-2 flex items-center gap-2"><Check className="w-4 h-4" /> Utiliser pour:</p>
+              <ul className="text-slate-300 space-y-1 ml-6">
+                <li>CTA principal (1 par page max)</li>
+                <li>Moments cles (inscription, match)</li>
+                <li>Recompenses (badges, verifie)</li>
+                <li>Logo et identite</li>
               </ul>
             </div>
             <div>
-              <p className="text-red-400 font-medium mb-2">✗ Ne pas utiliser:</p>
-              <ul className="text-slate-300 space-y-1">
-                <li>• Navigation quotidienne</li>
-                <li>• Boutons secondaires</li>
-                <li>• Éléments répétitifs</li>
-                <li>• Plusieurs fois par page</li>
+              <p className="text-red-400 font-medium mb-2 flex items-center gap-2"><X className="w-4 h-4" /> Ne pas utiliser:</p>
+              <ul className="text-slate-300 space-y-1 ml-6">
+                <li>Navigation quotidienne</li>
+                <li>Boutons secondaires</li>
+                <li>Elements repetitifs</li>
+                <li>Plusieurs fois par page</li>
               </ul>
             </div>
           </div>
