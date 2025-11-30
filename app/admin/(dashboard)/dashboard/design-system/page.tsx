@@ -730,17 +730,93 @@ function ButtonsSection() {
       </div>
 
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Gradients EasyCo</h3>
-        <div className="flex flex-wrap gap-4">
-          <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full font-medium hover:from-purple-700 hover:to-purple-800 transition-all">
-            Owner Style
+        <h3 className="text-lg font-bold text-white mb-4">Gradient Signature EasyCo</h3>
+        <p className="text-sm text-slate-400 mb-4">
+          Les boutons utilisent le meme gradient et sont positionnes pour former ensemble le degrade signature.
+        </p>
+
+        {/* Boutons avec gradient signature continu */}
+        <div className="flex gap-0 mb-6">
+          <button
+            className="px-8 py-3 text-white rounded-l-full font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
+            style={{
+              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+              backgroundSize: '300% 100%',
+              backgroundPosition: '0% 50%',
+            }}
+          >
+            Owner
           </button>
-          <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-            Searcher Style
+          <button
+            className="px-8 py-3 text-white font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
+            style={{
+              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+              backgroundSize: '300% 100%',
+              backgroundPosition: '50% 50%',
+            }}
+          >
+            Searcher
           </button>
-          <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all">
-            Resident Style
+          <button
+            className="px-8 py-3 text-white rounded-r-full font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
+            style={{
+              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+              backgroundSize: '300% 100%',
+              backgroundPosition: '100% 50%',
+            }}
+          >
+            Resident
           </button>
+        </div>
+
+        {/* Bouton unique avec gradient complet (comme S'inscrire) */}
+        <div className="mb-6">
+          <p className="text-sm text-slate-400 mb-3">Bouton unique avec gradient complet :</p>
+          <button
+            className="px-10 py-4 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+            style={{
+              background: 'linear-gradient(to right, #6E56CF, #F9A825, #FF5722)',
+            }}
+          >
+            S'inscrire
+          </button>
+        </div>
+
+        {/* Boutons separes avec leurs portions du gradient */}
+        <div>
+          <p className="text-sm text-slate-400 mb-3">Boutons separes (meme gradient, portions differentes) :</p>
+          <div className="flex flex-wrap gap-4">
+            <button
+              className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '0% 50%',
+              }}
+            >
+              Owner Style
+            </button>
+            <button
+              className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '50% 50%',
+              }}
+            >
+              Searcher Style
+            </button>
+            <button
+              className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '100% 50%',
+              }}
+            >
+              Resident Style
+            </button>
+          </div>
         </div>
       </div>
     </div>
