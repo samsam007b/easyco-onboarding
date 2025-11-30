@@ -276,7 +276,7 @@ struct PropertyHeaderCard: View {
                 }
                 .foregroundColor(.secondary)
 
-                Text("€\(Int(property.price))/mo")
+                Text("€\(Int(property.monthlyRent))/mo")
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundColor(Theme.Colors.primary)

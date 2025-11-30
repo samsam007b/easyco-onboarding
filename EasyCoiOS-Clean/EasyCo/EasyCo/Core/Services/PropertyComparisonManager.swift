@@ -149,17 +149,17 @@ enum ComparisonFeature: String, CaseIterable {
     func value(for property: Property) -> String {
         switch self {
         case .price:
-            return "€\(Int(property.price))/mo"
+            return "€\(Int(property.monthlyRent))/mo"
         case .location:
             return "\(property.city), \(property.address)"
         case .size:
-            return "\(property.surface ?? 0)m²"
+            return "\(Int(property.surfaceArea ?? 0))m²"
         case .bedrooms:
             return "\(property.bedrooms)"
         case .bathrooms:
-            return "\(property.bathrooms ?? 1)"
+            return "\(property.bathrooms)"
         case .type:
-            return property.type.displayName
+            return property.propertyType.displayName
         case .amenities:
             return "\(property.amenities.count) amenities"
         case .availability:
@@ -170,7 +170,7 @@ enum ComparisonFeature: String, CaseIterable {
             // TODO: Add transport info to Property model
             return "Near metro"
         case .score:
-            return "\(property.matchScore ?? 0)%"
+            return "\(property.compatibilityScore ?? 0)%"
         }
     }
 
@@ -186,13 +186,13 @@ enum ComparisonFeature: String, CaseIterable {
         switch self {
         case .price:
             // Lower is better
-            let minPrice = properties.map { $0.price }.min()
-            return properties.firstIndex { $0.price == minPrice }
+            let minPrice = properties.map { $0.monthlyRent }.min()
+            return properties.firstIndex { $0.monthlyRent == minPrice }
 
         case .size:
             // Larger is better
-            let maxSize = properties.compactMap { $0.surface }.max()
-            return properties.firstIndex { $0.surface == maxSize }
+            let maxSize = properties.compactMap { $0.surfaceArea }.max()
+            return properties.firstIndex { $0.surfaceArea == maxSize }
 
         case .bedrooms:
             // More is better
@@ -201,7 +201,7 @@ enum ComparisonFeature: String, CaseIterable {
 
         case .bathrooms:
             // More is better
-            let maxBathrooms = properties.compactMap { $0.bathrooms }.max()
+            let maxBathrooms = properties.map { $0.bathrooms }.max()
             return properties.firstIndex { $0.bathrooms == maxBathrooms }
 
         case .amenities:
@@ -211,8 +211,8 @@ enum ComparisonFeature: String, CaseIterable {
 
         case .score:
             // Higher score is better
-            let maxScore = properties.compactMap { $0.matchScore }.max()
-            return properties.firstIndex { $0.matchScore == maxScore }
+            let maxScore = properties.compactMap { $0.compatibilityScore }.max()
+            return properties.firstIndex { $0.compatibilityScore == maxScore }
 
         case .location, .type, .availability, .transport:
             // No clear winner for these
