@@ -2377,64 +2377,95 @@ function PropertyCardsSection() {
         </div>
       </div>
 
-      {/* ========== PROPOSITION V3 - FLAT MODERN ========== */}
+      {/* ========== V3 VARIANTES - TU AS CHOISI V3, VOICI LES DECLINAISONS ========== */}
+      <div className="bg-gradient-to-r from-orange-500/20 to-purple-500/20 rounded-xl border border-orange-500/30 p-6 mb-8">
+        <h3 className="text-lg font-bold text-white mb-2">V3 Flat Modern - Variantes enrichies</h3>
+        <p className="text-sm text-slate-300">
+          Base V3 + badge match + plus d'infos + CTA colore. Choisis ta preferee !
+        </p>
+      </div>
+
+      {/* ========== V3.A - CTA Orange Solid ========== */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-md font-semibold text-white flex items-center gap-2">
-            <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded">V3</span>
-            Flat Modern
+            <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded">V3.A</span>
+            CTA Orange Solid
           </h4>
-          <span className="text-xs text-slate-500">Icons flat + couleurs role</span>
+          <span className="text-xs text-slate-500">Searcher gradient</span>
         </div>
-        <p className="text-xs text-slate-400 mb-4">Style flat avec icones sur fond pastel, action en outline</p>
 
         <div className="bg-gray-50 rounded-xl p-6">
           <div className="max-w-sm">
-            {/* V3 - PropertyCard Flat Modern */}
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100">
               {/* Image */}
-              <div className="relative h-48">
+              <div className="relative h-52">
                 <img
-                  src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop"
-                  alt="Studio"
+                  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+                  alt="Coliving"
                   className="w-full h-full object-cover"
                 />
-                {/* Favorite - flat style */}
-                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow flex items-center justify-center hover:bg-gray-50 transition-colors">
+                {/* Favorite */}
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:scale-105 transition-transform">
                   <Heart className="w-5 h-5 text-gray-400" />
                 </button>
-                {/* Type badge - flat */}
-                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white rounded-lg shadow text-xs font-medium text-gray-700">
-                  Studio
+                {/* Match badge */}
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-md">
+                  92% match
+                </div>
+                {/* Residents sur image */}
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                  </div>
+                  <span className="text-white text-xs font-medium bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">3 colocs</span>
+                </div>
+                {/* Type badge */}
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/95 rounded-lg shadow text-xs font-medium text-gray-700">
+                  Coliving
                 </div>
               </div>
               {/* Content */}
               <div className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  {/* Icon flat style */}
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
-                    <Home className="w-5 h-5 text-orange-500" />
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                      <Home className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Coliving Design District</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5" /> Saint-Gilles, Bruxelles
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Studio Moderne Ixelles</h3>
-                    <p className="text-sm text-gray-500">Ixelles, Bruxelles</p>
+                  <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">4.8</span>
                   </div>
                 </div>
-                {/* Tags flat */}
-                <div className="flex gap-2 mb-4">
-                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg">1 chambre</span>
+                {/* Tags infos */}
+                <div className="flex flex-wrap gap-2 my-3">
                   <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" /> 4.5
+                    <Bed className="w-3.5 h-3.5" /> 3 chambres
+                  </span>
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Users className="w-3.5 h-3.5" /> 3 colocs
+                  </span>
+                  <span className="px-2.5 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> Dispo 1 fev
                   </span>
                 </div>
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                   <div>
-                    <span className="text-xl font-bold text-gray-900">520€</span>
-                    <span className="text-gray-500 text-sm">/mois</span>
+                    <span className="text-2xl font-bold text-gray-900">650€</span>
+                    <span className="text-gray-500">/mois</span>
                   </div>
-                  <button className="px-4 py-2 border-2 border-gray-900 text-gray-900 text-sm font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors">
-                    Decouvrir
+                  <button className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-full transition-colors shadow-md hover:shadow-lg">
+                    Voir details
                   </button>
                 </div>
               </div>
@@ -2444,54 +2475,401 @@ function PropertyCardsSection() {
 
         <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg">
           <p className="text-xs text-orange-400">
-            <strong>Points forts:</strong> Icone flat coordonnee, tags minimalistes, bouton outline elegant, pas de gradient
+            <strong>CTA:</strong> Orange solid (couleur Searcher) - visible mais pas agressif
           </p>
         </div>
       </div>
 
-      {/* ========== COMPARATIF ========== */}
+      {/* ========== V3.B - CTA Purple Solid ========== */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-4">Comparatif</h4>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-purple-500 text-white text-xs font-bold rounded">V3.B</span>
+            CTA Purple Solid
+          </h4>
+          <span className="text-xs text-slate-500">Owner color</span>
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              {/* Image */}
+              <div className="relative h-52">
+                <img
+                  src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&h=600&fit=crop"
+                  alt="Appartement"
+                  className="w-full h-full object-cover"
+                />
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:scale-105 transition-transform">
+                  <Heart className="w-5 h-5 text-gray-400" />
+                </button>
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-md">
+                  87% match
+                </div>
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                  </div>
+                  <span className="text-white text-xs font-medium bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">2 colocs</span>
+                </div>
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/95 rounded-lg shadow text-xs font-medium text-gray-700">
+                  Appartement
+                </div>
+              </div>
+              {/* Content */}
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Appartement Flagey</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5" /> Flagey, Bruxelles
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">4.9</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 my-3">
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Bed className="w-3.5 h-3.5" /> 4 chambres
+                  </span>
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Users className="w-3.5 h-3.5" /> 2 colocs
+                  </span>
+                  <span className="px-2.5 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> Dispo now
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div>
+                    <span className="text-2xl font-bold text-gray-900">750€</span>
+                    <span className="text-gray-500">/mois</span>
+                  </div>
+                  <button className="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-full transition-colors shadow-md hover:shadow-lg">
+                    Voir details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+          <p className="text-xs text-purple-400">
+            <strong>CTA:</strong> Purple solid (couleur Owner) - elegant et premium
+          </p>
+        </div>
+      </div>
+
+      {/* ========== V3.C - CTA Outline Colore ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-teal-500 text-white text-xs font-bold rounded">V3.C</span>
+            CTA Outline Colore
+          </h4>
+          <span className="text-xs text-slate-500">Plus subtil</span>
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              <div className="relative h-52">
+                <img
+                  src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop"
+                  alt="Studio"
+                  className="w-full h-full object-cover"
+                />
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:scale-105 transition-transform">
+                  <Heart className="w-5 h-5 text-red-400 fill-red-400" />
+                </button>
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-md">
+                  78% match
+                </div>
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/95 rounded-lg shadow text-xs font-medium text-gray-700">
+                  Studio
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center flex-shrink-0">
+                      <Home className="w-5 h-5 text-teal-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Studio Moderne Ixelles</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5" /> Ixelles, Bruxelles
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">4.5</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 my-3">
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Bed className="w-3.5 h-3.5" /> 1 chambre
+                  </span>
+                  <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> Dispo 15 mars
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div>
+                    <span className="text-2xl font-bold text-gray-900">520€</span>
+                    <span className="text-gray-500">/mois</span>
+                  </div>
+                  <button className="px-5 py-2.5 border-2 border-teal-500 text-teal-600 text-sm font-semibold rounded-full hover:bg-teal-500 hover:text-white transition-colors">
+                    Voir details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-teal-500/10 border border-teal-500/30 rounded-lg">
+          <p className="text-xs text-teal-400">
+            <strong>CTA:</strong> Outline teal - subtil, devient solid au hover
+          </p>
+        </div>
+      </div>
+
+      {/* ========== V3.D - Gradient Signature (subtil) ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-gradient-to-r from-orange-500 to-purple-500 text-white text-xs font-bold rounded">V3.D</span>
+            Gradient Signature
+          </h4>
+          <span className="text-xs text-slate-500">EasyCo signature</span>
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100">
+              <div className="relative h-52">
+                <img
+                  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+                  alt="Coliving"
+                  className="w-full h-full object-cover"
+                />
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:scale-105 transition-transform">
+                  <Heart className="w-5 h-5 text-gray-400" />
+                </button>
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-md">
+                  95% match
+                </div>
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow" />
+                  </div>
+                  <span className="text-white text-xs font-medium bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">3 colocs</span>
+                </div>
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/95 rounded-lg shadow text-xs font-medium text-gray-700">
+                  Coliving
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-purple-100 flex items-center justify-center flex-shrink-0">
+                      <Home className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Coliving Design District</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5" /> Saint-Gilles, Bruxelles
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">4.8</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 my-3">
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Bed className="w-3.5 h-3.5" /> 3 chambres
+                  </span>
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Users className="w-3.5 h-3.5" /> 3 colocs
+                  </span>
+                  <span className="px-2.5 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> Dispo 1 fev
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div>
+                    <span className="text-2xl font-bold text-gray-900">650€</span>
+                    <span className="text-gray-500">/mois</span>
+                  </div>
+                  <button
+                    className="px-5 py-2.5 text-white text-sm font-semibold rounded-full transition-all shadow-md hover:shadow-lg hover:scale-105"
+                    style={{ background: 'linear-gradient(135deg, #FFA040 0%, #9333EA 100%)' }}
+                  >
+                    Voir details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+          <p className="text-xs text-purple-400">
+            <strong>CTA:</strong> Gradient signature EasyCo (orange → purple) - identite forte
+          </p>
+        </div>
+      </div>
+
+      {/* ========== V3.E - Glassmorphism Complet ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-white/20 backdrop-blur text-white text-xs font-bold rounded border border-white/30">V3.E</span>
+            Glassmorphism Complet
+          </h4>
+          <span className="text-xs text-slate-500">Effet verre depoli</span>
+        </div>
+
+        <div className="bg-gradient-to-br from-purple-900 via-slate-900 to-orange-900 rounded-xl p-8">
+          <div className="max-w-sm mx-auto">
+            {/* Card Glassmorphism */}
+            <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl backdrop-blur-xl bg-white/10">
+              {/* Image */}
+              <div className="relative h-52">
+                <img
+                  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+                  alt="Coliving"
+                  className="w-full h-full object-cover"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                {/* Favorite - glass */}
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl border border-white/30 flex items-center justify-center hover:bg-white/30 transition-colors">
+                  <Heart className="w-5 h-5 text-white" />
+                </button>
+                {/* Match badge - glass */}
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-emerald-500/80 backdrop-blur-sm text-white rounded-xl text-sm font-bold border border-emerald-400/30">
+                  92% match
+                </div>
+                {/* Residents sur image */}
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-9 h-9 rounded-full border-2 border-white/50 object-cover" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-9 h-9 rounded-full border-2 border-white/50 object-cover" />
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" className="w-9 h-9 rounded-full border-2 border-white/50 object-cover" />
+                  </div>
+                  <span className="text-white text-xs font-medium">3 colocs</span>
+                </div>
+                {/* Prix sur image - glass */}
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
+                  <span className="text-lg font-bold text-white">650€</span>
+                  <span className="text-white/70 text-sm">/mois</span>
+                </div>
+              </div>
+              {/* Content - glass effect */}
+              <div className="p-4 bg-white/5 backdrop-blur-md border-t border-white/10">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center">
+                      <Home className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">Coliving Design District</h3>
+                      <p className="text-sm text-white/60 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5" /> Saint-Gilles, Bruxelles
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-lg border border-white/20">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-white">4.8</span>
+                  </div>
+                </div>
+                {/* Tags - glass */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="px-2.5 py-1 bg-white/10 text-white/80 text-xs font-medium rounded-lg border border-white/20 flex items-center gap-1">
+                    <Bed className="w-3.5 h-3.5" /> 3 chambres
+                  </span>
+                  <span className="px-2.5 py-1 bg-white/10 text-white/80 text-xs font-medium rounded-lg border border-white/20 flex items-center gap-1">
+                    <Users className="w-3.5 h-3.5" /> 3 colocs
+                  </span>
+                  <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-medium rounded-lg border border-emerald-500/30 flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> Dispo 1 fev
+                  </span>
+                </div>
+                {/* CTA - glass */}
+                <button className="w-full py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white text-sm font-semibold rounded-xl border border-white/30 transition-all hover:border-white/50">
+                  Voir details
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-white/5 border border-white/20 rounded-lg">
+          <p className="text-xs text-slate-300">
+            <strong>Style:</strong> Full glassmorphism - fond transparent, bordures subtiles, effet verre depoli. Ideal sur fond colore/image.
+          </p>
+        </div>
+      </div>
+
+      {/* ========== COMPARATIF V3 VARIANTES ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h4 className="text-md font-semibold text-white mb-4">Comparatif des variantes V3</h4>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="text-slate-400 border-b border-slate-700">
-                <th className="text-left py-2 px-3">Critere</th>
-                <th className="text-center py-2 px-3">V1 Clean</th>
-                <th className="text-center py-2 px-3">V2 Premium</th>
-                <th className="text-center py-2 px-3">V3 Flat</th>
+                <th className="text-left py-2 px-3">Variante</th>
+                <th className="text-center py-2 px-3">CTA</th>
+                <th className="text-center py-2 px-3">Couleur icone</th>
+                <th className="text-center py-2 px-3">Vibe</th>
               </tr>
             </thead>
             <tbody className="text-slate-300">
               <tr className="border-b border-slate-700/50">
-                <td className="py-2 px-3">Footer</td>
-                <td className="text-center py-2 px-3">Blanc simple</td>
-                <td className="text-center py-2 px-3">Gris + bordure</td>
-                <td className="text-center py-2 px-3">Blanc + bordure</td>
+                <td className="py-2 px-3 font-medium text-orange-400">V3.A</td>
+                <td className="text-center py-2 px-3">Orange solid</td>
+                <td className="text-center py-2 px-3">Orange</td>
+                <td className="text-center py-2 px-3">Searcher / Chaleureux</td>
               </tr>
               <tr className="border-b border-slate-700/50">
-                <td className="py-2 px-3">Bouton CTA</td>
-                <td className="text-center py-2 px-3 text-green-400">Aucun</td>
-                <td className="text-center py-2 px-3">Noir solid</td>
-                <td className="text-center py-2 px-3">Outline noir</td>
+                <td className="py-2 px-3 font-medium text-purple-400">V3.B</td>
+                <td className="text-center py-2 px-3">Purple solid</td>
+                <td className="text-center py-2 px-3">Purple</td>
+                <td className="text-center py-2 px-3">Owner / Premium</td>
               </tr>
               <tr className="border-b border-slate-700/50">
-                <td className="py-2 px-3">Prix</td>
-                <td className="text-center py-2 px-3">Sur image</td>
-                <td className="text-center py-2 px-3">Dans footer</td>
-                <td className="text-center py-2 px-3">Dans footer</td>
+                <td className="py-2 px-3 font-medium text-teal-400">V3.C</td>
+                <td className="text-center py-2 px-3">Teal outline</td>
+                <td className="text-center py-2 px-3">Teal</td>
+                <td className="text-center py-2 px-3">Subtil / Moderne</td>
               </tr>
               <tr className="border-b border-slate-700/50">
-                <td className="py-2 px-3">Hover</td>
-                <td className="text-center py-2 px-3">Shadow</td>
-                <td className="text-center py-2 px-3">Shadow + lift</td>
-                <td className="text-center py-2 px-3">Shadow</td>
+                <td className="py-2 px-3 font-medium bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">V3.D</td>
+                <td className="text-center py-2 px-3">Gradient signature</td>
+                <td className="text-center py-2 px-3">Purple (fond gradient)</td>
+                <td className="text-center py-2 px-3">Signature EasyCo</td>
               </tr>
               <tr>
-                <td className="py-2 px-3">Style icones</td>
-                <td className="text-center py-2 px-3">Inline</td>
-                <td className="text-center py-2 px-3">Inline</td>
-                <td className="text-center py-2 px-3 text-orange-400">Flat (fond pastel)</td>
+                <td className="py-2 px-3 font-medium text-white/80">V3.E</td>
+                <td className="text-center py-2 px-3">Glass blanc</td>
+                <td className="text-center py-2 px-3">Blanc (glass)</td>
+                <td className="text-center py-2 px-3">Futuriste / Dark mode</td>
               </tr>
             </tbody>
           </table>
