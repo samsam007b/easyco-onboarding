@@ -1699,6 +1699,278 @@ function ButtonsSection() {
           </code>
         </div>
       </div>
+
+      {/* ============================================
+          CTA BUTTONS LANDING - PROPOSITIONS
+          ============================================ */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">CTA Landing Page - Propositions</h3>
+        <p className="text-sm text-slate-400 mb-6">
+          Alternatives aux boutons "Je loue mon bien" / "Je suis résident" pour éviter l'effet arc-en-ciel
+        </p>
+
+        {/* ACTUEL - Pour référence */}
+        <div className="mb-8 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-red-400 mb-4">❌ ACTUEL (à remplacer) - Effet arc-en-ciel</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #B76386 100%)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION A - Couleurs solides */}
+        <div className="mb-8 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-green-400 mb-2">✨ Proposition A - Couleurs solides</p>
+          <p className="text-xs text-slate-400 mb-4">Pas de dégradé du tout - couleurs primaires par rôle</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+              style={{ backgroundColor: '#6E56CF' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+              style={{ backgroundColor: '#FF6F3C' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION B - Dégradé subtil même famille */}
+        <div className="mb-8 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-blue-400 mb-2">✨ Proposition B - Dégradé subtil (même famille)</p>
+          <p className="text-xs text-slate-400 mb-4">Dégradé dans la même teinte (clair → foncé) - pas d'arc-en-ciel</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+              style={{ background: 'linear-gradient(135deg, #8B7AD0 0%, #5A45A0 100%)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+              style={{ background: 'linear-gradient(135deg, #FF9060 0%, #E85A30 100%)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION C - Outline avec couleur */}
+        <div className="mb-8 p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-purple-400 mb-2">✨ Proposition C - Style Outline</p>
+          <p className="text-xs text-slate-400 mb-4">Bordure colorée + fond transparent/blanc - élégant et minimaliste</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 bg-white/90 backdrop-blur-sm hover:bg-white"
+              style={{ borderColor: '#6E56CF', color: '#6E56CF' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF20' }}>
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 bg-white/90 backdrop-blur-sm hover:bg-white"
+              style={{ borderColor: '#FF6F3C', color: '#FF6F3C' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C20' }}>
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION D - Glassmorphism léger */}
+        <div className="mb-8 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-cyan-400 mb-2">✨ Proposition D - Glassmorphism + teinte</p>
+          <p className="text-xs text-slate-400 mb-4">Fond verre dépoli avec une légère teinte de la couleur du rôle</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all backdrop-blur-xl border border-white/30"
+              style={{ background: 'rgba(110, 86, 207, 0.6)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all backdrop-blur-xl border border-white/30"
+              style={{ background: 'rgba(255, 111, 60, 0.6)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION E - Blanc + icône colorée */}
+        <div className="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-yellow-400 mb-2">✨ Proposition E - Blanc + accent coloré</p>
+          <p className="text-xs text-slate-400 mb-4">Bouton blanc avec icône/bordure gauche colorée - style épuré Apple</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#6E56CF' }}>
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF' }}>
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#FF6F3C' }}>
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C' }}>
+                  <Home className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION F - Pills modernes avec ombre colorée */}
+        <div className="mb-8 p-4 bg-pink-500/10 border border-pink-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-pink-400 mb-2">✨ Proposition F - Ombre colorée diffuse</p>
+          <p className="text-xs text-slate-400 mb-4">Fond solide + ombre diffuse de la couleur - effet moderne "glow"</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full hover:scale-105 transition-all"
+              style={{ backgroundColor: '#6E56CF', boxShadow: '0 10px 40px -10px rgba(110, 86, 207, 0.7)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button
+              className="group text-white font-bold px-8 py-5 rounded-full hover:scale-105 transition-all"
+              style={{ backgroundColor: '#FF6F3C', boxShadow: '0 10px 40px -10px rgba(255, 111, 60, 0.7)' }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Home className="w-4 h-4" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* PROPOSITION G - Noir/Blanc élégant */}
+        <div className="mb-8 p-4 bg-slate-500/10 border border-slate-500/30 rounded-xl">
+          <p className="text-sm font-semibold text-slate-300 mb-2">✨ Proposition G - Noir & Blanc premium</p>
+          <p className="text-xs text-slate-400 mb-4">Boutons noir/blanc avec icône colorée uniquement - très élégant, luxe</p>
+          <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
+            <button className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-gray-900">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF' }}>
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-base">Je loue mon bien</span>
+              </div>
+            </button>
+            <button className="group text-gray-900 font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C' }}>
+                  <Home className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-base">Je suis résident</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Code pour chaque proposition */}
+        <div className="p-4 bg-slate-900 rounded-xl">
+          <p className="text-sm text-slate-300 mb-3 font-medium">Résumé des styles :</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <p className="text-green-400 font-semibold">A - Solide</p>
+              <code className="text-slate-400">background: #6E56CF</code>
+            </div>
+            <div>
+              <p className="text-blue-400 font-semibold">B - Dégradé subtil</p>
+              <code className="text-slate-400">linear-gradient(135deg, #8B7AD0 → #5A45A0)</code>
+            </div>
+            <div>
+              <p className="text-purple-400 font-semibold">C - Outline</p>
+              <code className="text-slate-400">border: 2px + bg-white</code>
+            </div>
+            <div>
+              <p className="text-cyan-400 font-semibold">D - Glass</p>
+              <code className="text-slate-400">rgba(110,86,207,0.6) + backdrop-blur</code>
+            </div>
+            <div>
+              <p className="text-yellow-400 font-semibold">E - Accent</p>
+              <code className="text-slate-400">bg-white + border-left colored</code>
+            </div>
+            <div>
+              <p className="text-pink-400 font-semibold">F - Glow</p>
+              <code className="text-slate-400">solid + box-shadow colored</code>
+            </div>
+            <div>
+              <p className="text-slate-300 font-semibold">G - B&W</p>
+              <code className="text-slate-400">bg-gray-900/white + icon colored</code>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
