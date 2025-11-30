@@ -200,19 +200,14 @@ export default function ModernHeroSection() {
                 />
               </div>
 
-              {/* Search Button Integrated - Matching Searcher interface gradient */}
+              {/* Search Button - Glassmorphism Style (Option D) */}
               <div className="p-2 flex items-center justify-center">
                 <Button
                   onClick={handleSearch}
-                  className="w-full h-full group relative overflow-hidden text-gray-900 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                  style={{
-                    background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-                  }}
+                  className="w-full h-full group text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105 backdrop-blur-xl border border-white/30"
+                  style={{ background: 'rgba(255, 160, 64, 0.7)' }}
                 >
-                  {/* Shine effect on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-
-                  <div className="relative flex items-center">
+                  <div className="flex items-center">
                     <Search className="w-5 h-5 mr-2" />
                     Rechercher
                   </div>
