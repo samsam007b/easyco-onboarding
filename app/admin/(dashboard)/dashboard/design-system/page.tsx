@@ -3177,10 +3177,15 @@ function ChoicesSection() {
   const choiceDefinitions = {
     cards: { title: 'Style de cartes', v1Label: 'V1 - Flat', v2Label: 'V2 - Glassmorphism' },
     buttons: { title: 'Style de boutons', v1Label: 'V1 - Solid', v2Label: 'V2 - Gradient' },
-    shadows: { title: 'Intensite des ombres', v1Label: 'V1 - Legere', v2Label: 'V2 - Marquee' },
+    shadows: { title: 'Intensité des ombres', v1Label: 'V1 - Légère', v2Label: 'V2 - Marquée' },
     badges: { title: 'Style de badges', v1Label: 'V1 - Discret', v2Label: 'V2 - Vibrant' },
     backgrounds: { title: 'Effets de fond', v1Label: 'V1 - Statique', v2Label: 'V2 - Dynamique' },
-    icons: { title: 'Style d\'icones', v1Label: 'V1 - Vif (Vivid)', v2Label: 'V2 - Gradient' },
+    icons: { title: 'Style d\'icônes', v1Label: 'V1 - Flat (pastel)', v2Label: 'V2 - Gradient' },
+    headers: { title: 'Style de headers', v1Label: 'V1 - Clean', v2Label: 'V2 - Gradient' },
+    inputs: { title: 'Champs de saisie', v1Label: 'V1 - Bordure', v2Label: 'V2 - Fond blanc' },
+    tabs: { title: 'Onglets/Tabs', v1Label: 'V1 - Underline', v2Label: 'V2 - Pills' },
+    progress: { title: 'Progression', v1Label: 'V1 - Barre', v2Label: 'V2 - Anneau' },
+    notifications: { title: 'Notifications', v1Label: 'V1 - Toast simple', v2Label: 'V2 - Riche' },
   };
 
   const toggleChoice = (id: string, version: 'v1' | 'v2') => {
@@ -3500,14 +3505,312 @@ function ChoicesSection() {
         saved={saved['badges']}
       />
 
+      {/* Choice: Shadows */}
+      <ChoiceCard
+        id="shadows"
+        title="Intensité des ombres"
+        description="Légère et subtile vs Marquée et profonde"
+        v1Content={
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
+                  <Home className="w-6 h-6 text-gray-500" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">Carte légère</p>
+                  <p className="text-sm text-gray-500">Ombre subtile</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <div className="bg-white rounded-xl p-4 shadow-xl border border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                  <Home className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">Carte profonde</p>
+                  <p className="text-sm text-gray-500">Ombre marquée</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['shadows']}
+        onSelect={(v) => toggleChoice('shadows', v)}
+        feedback={feedbacks['shadows'] || ''}
+        onFeedbackChange={(f) => updateFeedback('shadows', f)}
+        onSave={() => saveChoice('shadows')}
+        saving={saving['shadows']}
+        saved={saved['shadows']}
+      />
+
+      {/* Choice: Backgrounds */}
+      <ChoiceCard
+        id="backgrounds"
+        title="Effets de fond"
+        description="Statique et uni vs Dynamique avec dégradés"
+        v1Content={
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <div className="h-24 bg-gray-50 rounded-lg flex items-center justify-center">
+              <p className="text-gray-500 text-sm">Fond uni #F9FAFB</p>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="p-4 rounded-lg relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-100 via-orange-50 to-yellow-100">
+              <div className="absolute top-2 left-1/4 w-16 h-16 bg-purple-300/40 rounded-full blur-2xl" />
+              <div className="absolute bottom-2 right-1/4 w-20 h-20 bg-orange-300/40 rounded-full blur-2xl" />
+            </div>
+            <div className="relative h-24 flex items-center justify-center">
+              <p className="text-gray-700 text-sm font-medium">Dégradé + Blobs</p>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['backgrounds']}
+        onSelect={(v) => toggleChoice('backgrounds', v)}
+        feedback={feedbacks['backgrounds'] || ''}
+        onFeedbackChange={(f) => updateFeedback('backgrounds', f)}
+        onSave={() => saveChoice('backgrounds')}
+        saving={saving['backgrounds']}
+        saved={saved['backgrounds']}
+      />
+
+      {/* Choice: Headers */}
+      <ChoiceCard
+        id="headers"
+        title="Style de headers"
+        description="Clean et minimaliste vs Riche avec gradient"
+        v1Content={
+          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <div className="px-4 py-3 flex items-center justify-between bg-gray-50 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gray-200" />
+                <span className="font-medium text-gray-900">Jean Dupont</span>
+              </div>
+              <div className="flex gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                  <Bell className="w-4 h-4 text-gray-500" />
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="rounded-lg overflow-hidden">
+            <div className="px-4 py-3 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-white/20 border border-white/30" />
+                <span className="font-medium text-white">Jean Dupont</span>
+              </div>
+              <div className="flex gap-2">
+                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                  <Bell className="w-4 h-4 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['headers']}
+        onSelect={(v) => toggleChoice('headers', v)}
+        feedback={feedbacks['headers'] || ''}
+        onFeedbackChange={(f) => updateFeedback('headers', f)}
+        onSave={() => saveChoice('headers')}
+        saving={saving['headers']}
+        saved={saved['headers']}
+      />
+
+      {/* Choice: Inputs */}
+      <ChoiceCard
+        id="inputs"
+        title="Style des champs de saisie"
+        description="Classique avec bordure vs Moderne avec fond"
+        v1Content={
+          <div className="p-4 bg-gray-50 rounded-lg space-y-3">
+            <input
+              type="text"
+              placeholder="Email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+              readOnly
+            />
+            <input
+              type="text"
+              placeholder="Mot de passe"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+              readOnly
+            />
+          </div>
+        }
+        v2Content={
+          <div className="p-4 bg-gray-50 rounded-lg space-y-3">
+            <input
+              type="text"
+              placeholder="Email"
+              className="w-full px-4 py-3 bg-white border-0 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+              readOnly
+            />
+            <input
+              type="text"
+              placeholder="Mot de passe"
+              className="w-full px-4 py-3 bg-white border-0 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+              readOnly
+            />
+          </div>
+        }
+        selectedVersion={selectedChoices['inputs']}
+        onSelect={(v) => toggleChoice('inputs', v)}
+        feedback={feedbacks['inputs'] || ''}
+        onFeedbackChange={(f) => updateFeedback('inputs', f)}
+        onSave={() => saveChoice('inputs')}
+        saving={saving['inputs']}
+        saved={saved['inputs']}
+      />
+
+      {/* Choice: Navigation Tabs */}
+      <ChoiceCard
+        id="tabs"
+        title="Style des onglets/tabs"
+        description="Underline classique vs Pills modernes"
+        v1Content={
+          <div className="p-4 bg-white rounded-lg">
+            <div className="flex gap-6 border-b border-gray-200">
+              <button className="pb-2 text-sm font-medium text-purple-600 border-b-2 border-purple-600">
+                Propriétés
+              </button>
+              <button className="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700">
+                Messages
+              </button>
+              <button className="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700">
+                Finance
+              </button>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="p-4 bg-white rounded-lg">
+            <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+              <button className="flex-1 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg shadow">
+                Propriétés
+              </button>
+              <button className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg">
+                Messages
+              </button>
+              <button className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg">
+                Finance
+              </button>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['tabs']}
+        onSelect={(v) => toggleChoice('tabs', v)}
+        feedback={feedbacks['tabs'] || ''}
+        onFeedbackChange={(f) => updateFeedback('tabs', f)}
+        onSave={() => saveChoice('tabs')}
+        saving={saving['tabs']}
+        saved={saved['tabs']}
+      />
+
+      {/* Choice: Progress Indicators */}
+      <ChoiceCard
+        id="progress"
+        title="Indicateurs de progression"
+        description="Barre simple vs Anneau avec pourcentage"
+        v1Content={
+          <div className="p-4 bg-white rounded-lg space-y-3">
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-600">Profil complété</span>
+                <span className="text-gray-900 font-medium">75%</span>
+              </div>
+              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500 rounded-full" style={{ width: '75%' }} />
+              </div>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="p-4 bg-white rounded-lg flex items-center justify-center">
+            <div className="relative">
+              <svg className="w-20 h-20 transform -rotate-90">
+                <circle cx="40" cy="40" r="36" fill="none" stroke="#E5E7EB" strokeWidth="6" />
+                <circle
+                  cx="40" cy="40" r="36" fill="none"
+                  stroke="url(#progressGradient)"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 36}`}
+                  strokeDashoffset={`${2 * Math.PI * 36 * 0.25}`}
+                />
+                <defs>
+                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#8B5CF6" />
+                    <stop offset="100%" stopColor="#EC4899" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-lg font-bold text-gray-900">75%</span>
+              </div>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['progress']}
+        onSelect={(v) => toggleChoice('progress', v)}
+        feedback={feedbacks['progress'] || ''}
+        onFeedbackChange={(f) => updateFeedback('progress', f)}
+        onSave={() => saveChoice('progress')}
+        saving={saving['progress']}
+        saved={saved['progress']}
+      />
+
+      {/* Choice: Notifications */}
+      <ChoiceCard
+        id="notifications"
+        title="Style des notifications"
+        description="Toast simple vs Notification riche"
+        v1Content={
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <p className="text-sm text-gray-700">Propriété ajoutée avec succès</p>
+            </div>
+          </div>
+        }
+        v2Content={
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-4 shadow-lg flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-white">Succès !</p>
+                <p className="text-sm text-white/90">Propriété ajoutée avec succès</p>
+              </div>
+            </div>
+          </div>
+        }
+        selectedVersion={selectedChoices['notifications']}
+        onSelect={(v) => toggleChoice('notifications', v)}
+        feedback={feedbacks['notifications'] || ''}
+        onFeedbackChange={(f) => updateFeedback('notifications', f)}
+        onSave={() => saveChoice('notifications')}
+        saving={saving['notifications']}
+        saved={saved['notifications']}
+      />
+
       {/* Summary */}
       <div className="bg-gradient-to-br from-purple-900/50 to-slate-800 rounded-xl p-6 border border-purple-500/20">
         <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
           <Zap className="w-5 h-5 text-yellow-400" />
           Resume de tes choix
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {['cards', 'buttons', 'icons', 'badges'].map((key) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+          {['cards', 'buttons', 'icons', 'badges', 'shadows', 'backgrounds', 'headers', 'inputs', 'tabs', 'progress', 'notifications'].map((key) => (
             <div key={key} className="bg-slate-700/50 rounded-xl p-4 text-center">
               <p className="text-sm text-slate-400 mb-1 capitalize">{key}</p>
               <p className="font-bold text-lg text-white">
