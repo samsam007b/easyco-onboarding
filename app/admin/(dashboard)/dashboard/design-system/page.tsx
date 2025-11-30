@@ -231,21 +231,7 @@ export default function AdminDesignSystemPage() {
    COLORS SECTION
    ============================================ */
 
-const searcherColors: Record<number, string> = {
-  50: '#FFFEF0', 100: '#FFF9E6', 200: '#FFF59D', 300: '#FFEB3B',
-  400: '#FFD249', 500: '#FFC107', 600: '#F9A825', 700: '#F57F17',
-  800: '#E65100', 900: '#BF360C'
-};
-const ownerColors: Record<number, string> = {
-  50: '#F9F8FF', 100: '#F3F1FF', 200: '#E0D9FF', 300: '#BAB2E3',
-  400: '#8E7AD6', 500: '#6E56CF', 600: '#5B45B8', 700: '#4A148C',
-  800: '#38006B', 900: '#1A0033'
-};
-const residentColors: Record<number, string> = {
-  50: '#FFFAF8', 100: '#FFF3EF', 200: '#FFB88C', 300: '#FF8C5C',
-  400: '#FF6F3C', 500: '#FF5722', 600: '#E64A19', 700: '#D84315',
-  800: '#BF360C', 900: '#8D2A0E'
-};
+// Les couleurs des roles sont maintenant generees dynamiquement par le GradientSignatureEditor
 
 /* ============================================
    GRADIENT SIGNATURE EDITOR - Curseurs INDEPENDANTS
@@ -631,94 +617,8 @@ function GradientSignatureEditor() {
 function ColorsSection() {
   return (
     <div className="space-y-8">
-      {/* Role Colors */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Searcher */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500" />
-            <h3 className="text-lg font-bold text-white">Searcher</h3>
-            <Badge className="bg-yellow-500 text-white border-0">Jaune/Dore</Badge>
-          </div>
-          <div className="space-y-2">
-            {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((shade) => (
-              <div key={shade} className="flex items-center gap-3">
-                <div
-                  className="w-12 h-8 rounded-lg border border-slate-600"
-                  style={{ backgroundColor: searcherColors[shade] }}
-                />
-                <span className="text-xs font-mono text-slate-400">--searcher-{shade}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Owner */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
-            <h3 className="text-lg font-bold text-white">Owner</h3>
-            <Badge className="bg-purple-600 text-white border-0">Mauve</Badge>
-          </div>
-          <div className="space-y-2">
-            {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((shade) => (
-              <div key={shade} className="flex items-center gap-3">
-                <div
-                  className="w-12 h-8 rounded-lg border border-slate-600"
-                  style={{ backgroundColor: ownerColors[shade] }}
-                />
-                <span className="text-xs font-mono text-slate-400">--owner-{shade}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Resident */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500" />
-            <h3 className="text-lg font-bold text-white">Resident</h3>
-            <Badge className="bg-orange-500 text-white border-0">Orange</Badge>
-          </div>
-          <div className="space-y-2">
-            {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((shade) => (
-              <div key={shade} className="flex items-center gap-3">
-                <div
-                  className="w-12 h-8 rounded-lg border border-slate-600"
-                  style={{ backgroundColor: residentColors[shade] }}
-                />
-                <span className="text-xs font-mono text-slate-400">--resident-{shade}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* GRADIENT SIGNATURE EASYCO - Avec curseurs interactifs */}
+      {/* GRADIENT SIGNATURE EASYCO - En premier pour configurer les couleurs */}
       <GradientSignatureEditor />
-
-      {/* Autres Gradients */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Autres Gradients</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-400">
-            <p className="text-white font-bold">Gradient Brand (ancien)</p>
-            <p className="text-white/80 text-xs font-mono">--gradient-brand</p>
-          </div>
-          <div className="p-4 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-400">
-            <p className="text-white font-bold">Gradient Searcher</p>
-            <p className="text-white/80 text-xs font-mono">--gradient-searcher</p>
-          </div>
-          <div className="p-4 rounded-xl bg-gradient-to-r from-purple-600 via-purple-400 to-pink-400">
-            <p className="text-white font-bold">Gradient Owner</p>
-            <p className="text-white/80 text-xs font-mono">--gradient-owner</p>
-          </div>
-          <div className="p-4 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-400">
-            <p className="text-white font-bold">Gradient Resident</p>
-            <p className="text-white/80 text-xs font-mono">--gradient-resident</p>
-          </div>
-        </div>
-      </div>
 
       {/* Semantic Colors */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
