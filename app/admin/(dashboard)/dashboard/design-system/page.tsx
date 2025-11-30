@@ -2227,25 +2227,286 @@ function PropertyCardsSection() {
     <div className="space-y-8">
       {/* Introduction */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Property Cards - Composants Reels</h3>
+        <h3 className="text-lg font-bold text-white mb-2">Property Cards - Nouvelles Propositions</h3>
         <p className="text-sm text-slate-400 mb-4">
-          Voici les vraies PropertyCards telles qu'elles apparaissent dans l'application.
-          Ces composants sont importes directement depuis <code className="bg-slate-700 px-2 py-0.5 rounded">components/PropertyCard.tsx</code>
+          3 propositions de redesign pour les PropertyCards. Plus modernes, plus sobres, sans animation qui clignote.
         </p>
-        <div className="flex gap-2 flex-wrap">
-          <span className="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs rounded-full">variant="default"</span>
-          <span className="px-3 py-1 bg-orange-500/20 text-orange-400 text-xs rounded-full">variant="compact"</span>
-          <span className="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">showCompatibilityScore</span>
+        <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <p className="text-xs text-red-400">
+            <strong>A supprimer:</strong> Footer rose/glassmorphism anime, boutons gradient "Visite" et "Voir"
+          </p>
         </div>
       </div>
 
-      {/* PropertyCard - Default avec Residents */}
+      {/* ========== PROPOSITION V1 - CLEAN MINIMAL ========== */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-          <Building2 className="w-5 h-5 text-purple-400" />
-          PropertyCard - Default (avec residents)
-        </h4>
-        <p className="text-xs text-slate-500 mb-4">Carte principale avec photo des colocataires, rating, et boutons d'action</p>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded">V1</span>
+            Clean Minimal
+          </h4>
+          <span className="text-xs text-slate-500">Style Airbnb / epure</span>
+        </div>
+        <p className="text-xs text-slate-400 mb-4">Footer blanc simple, un seul bouton discret, prix bien visible</p>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            {/* V1 - PropertyCard Clean Minimal */}
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden border border-gray-100">
+              {/* Image */}
+              <div className="relative h-52">
+                <img
+                  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+                  alt="Coliving"
+                  className="w-full h-full object-cover"
+                />
+                {/* Favorite */}
+                <button className="absolute top-3 right-3 p-2.5 bg-white rounded-full shadow-md hover:scale-110 transition-transform">
+                  <Heart className="w-5 h-5 text-gray-400" />
+                </button>
+                {/* Type badge */}
+                <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/95 rounded-full text-xs font-medium text-gray-700 shadow-sm">
+                  Coliving
+                </div>
+                {/* Prix sur image */}
+                <div className="absolute bottom-3 left-3 px-3 py-1.5 bg-white rounded-xl shadow-lg">
+                  <span className="text-lg font-bold text-gray-900">650€</span>
+                  <span className="text-sm text-gray-500">/mois</span>
+                </div>
+              </div>
+              {/* Content */}
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 mb-1">Coliving Design District</h3>
+                <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
+                  <MapPin className="w-4 h-4" /> Saint-Gilles, Bruxelles
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                    <span className="flex items-center gap-1"><Home className="w-4 h-4" /> 3 ch.</span>
+                    <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-yellow-400 text-yellow-400" /> 4.8</span>
+                  </div>
+                  {/* Residents avatars */}
+                  <div className="flex -space-x-2">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">+1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+          <p className="text-xs text-blue-400">
+            <strong>Points forts:</strong> Tres epure, focus sur l'image et le prix, pas de bouton intrusif, hover subtil
+          </p>
+        </div>
+      </div>
+
+      {/* ========== PROPOSITION V2 - MODERN PREMIUM ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-purple-500 text-white text-xs font-bold rounded">V2</span>
+            Modern Premium
+          </h4>
+          <span className="text-xs text-slate-500">Relief + ombre douce</span>
+        </div>
+        <p className="text-xs text-slate-400 mb-4">Footer gris tres clair, bouton unique sobre, badge match discret</p>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            {/* V2 - PropertyCard Modern Premium */}
+            <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all overflow-hidden border border-gray-100 hover:-translate-y-1">
+              {/* Image */}
+              <div className="relative h-56">
+                <img
+                  src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&h=600&fit=crop"
+                  alt="Appartement"
+                  className="w-full h-full object-cover"
+                />
+                {/* Favorite */}
+                <button className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:scale-110 transition-transform">
+                  <Heart className="w-5 h-5 text-gray-500" />
+                </button>
+                {/* Match score - discret */}
+                <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-500 text-white rounded-full text-sm font-semibold shadow-lg">
+                  92% match
+                </div>
+                {/* Residents sur image */}
+                <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                  <div className="flex -space-x-3">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-md" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-md" />
+                  </div>
+                  <span className="text-white text-sm font-medium drop-shadow-lg">2 colocs</span>
+                </div>
+              </div>
+              {/* Content */}
+              <div className="p-5">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-bold text-lg text-gray-900">Appartement Flagey</h3>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">4.9</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-500 flex items-center gap-1 mb-4">
+                  <MapPin className="w-4 h-4" /> Flagey, Bruxelles
+                </p>
+                {/* Footer sobre */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div>
+                    <span className="text-2xl font-bold text-gray-900">750€</span>
+                    <span className="text-gray-500">/mois</span>
+                  </div>
+                  <button className="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-colors">
+                    Voir details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+          <p className="text-xs text-purple-400">
+            <strong>Points forts:</strong> Premium mais pas tape-a-l'oeil, bouton noir sobre, effet hover elegant, separation claire
+          </p>
+        </div>
+      </div>
+
+      {/* ========== PROPOSITION V3 - FLAT MODERN ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded">V3</span>
+            Flat Modern
+          </h4>
+          <span className="text-xs text-slate-500">Icons flat + couleurs role</span>
+        </div>
+        <p className="text-xs text-slate-400 mb-4">Style flat avec icones sur fond pastel, action en outline</p>
+
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="max-w-sm">
+            {/* V3 - PropertyCard Flat Modern */}
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+              {/* Image */}
+              <div className="relative h-48">
+                <img
+                  src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop"
+                  alt="Studio"
+                  className="w-full h-full object-cover"
+                />
+                {/* Favorite - flat style */}
+                <button className="absolute top-3 right-3 w-10 h-10 bg-white rounded-xl shadow flex items-center justify-center hover:bg-gray-50 transition-colors">
+                  <Heart className="w-5 h-5 text-gray-400" />
+                </button>
+                {/* Type badge - flat */}
+                <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-white rounded-lg shadow text-xs font-medium text-gray-700">
+                  Studio
+                </div>
+              </div>
+              {/* Content */}
+              <div className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  {/* Icon flat style */}
+                  <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Home className="w-5 h-5 text-orange-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Studio Moderne Ixelles</h3>
+                    <p className="text-sm text-gray-500">Ixelles, Bruxelles</p>
+                  </div>
+                </div>
+                {/* Tags flat */}
+                <div className="flex gap-2 mb-4">
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg">1 chambre</span>
+                  <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" /> 4.5
+                  </span>
+                </div>
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div>
+                    <span className="text-xl font-bold text-gray-900">520€</span>
+                    <span className="text-gray-500 text-sm">/mois</span>
+                  </div>
+                  <button className="px-4 py-2 border-2 border-gray-900 text-gray-900 text-sm font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors">
+                    Decouvrir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg">
+          <p className="text-xs text-orange-400">
+            <strong>Points forts:</strong> Icone flat coordonnee, tags minimalistes, bouton outline elegant, pas de gradient
+          </p>
+        </div>
+      </div>
+
+      {/* ========== COMPARATIF ========== */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h4 className="text-md font-semibold text-white mb-4">Comparatif</h4>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="text-slate-400 border-b border-slate-700">
+                <th className="text-left py-2 px-3">Critere</th>
+                <th className="text-center py-2 px-3">V1 Clean</th>
+                <th className="text-center py-2 px-3">V2 Premium</th>
+                <th className="text-center py-2 px-3">V3 Flat</th>
+              </tr>
+            </thead>
+            <tbody className="text-slate-300">
+              <tr className="border-b border-slate-700/50">
+                <td className="py-2 px-3">Footer</td>
+                <td className="text-center py-2 px-3">Blanc simple</td>
+                <td className="text-center py-2 px-3">Gris + bordure</td>
+                <td className="text-center py-2 px-3">Blanc + bordure</td>
+              </tr>
+              <tr className="border-b border-slate-700/50">
+                <td className="py-2 px-3">Bouton CTA</td>
+                <td className="text-center py-2 px-3 text-green-400">Aucun</td>
+                <td className="text-center py-2 px-3">Noir solid</td>
+                <td className="text-center py-2 px-3">Outline noir</td>
+              </tr>
+              <tr className="border-b border-slate-700/50">
+                <td className="py-2 px-3">Prix</td>
+                <td className="text-center py-2 px-3">Sur image</td>
+                <td className="text-center py-2 px-3">Dans footer</td>
+                <td className="text-center py-2 px-3">Dans footer</td>
+              </tr>
+              <tr className="border-b border-slate-700/50">
+                <td className="py-2 px-3">Hover</td>
+                <td className="text-center py-2 px-3">Shadow</td>
+                <td className="text-center py-2 px-3">Shadow + lift</td>
+                <td className="text-center py-2 px-3">Shadow</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-3">Style icones</td>
+                <td className="text-center py-2 px-3">Inline</td>
+                <td className="text-center py-2 px-3">Inline</td>
+                <td className="text-center py-2 px-3 text-orange-400">Flat (fond pastel)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Version actuelle pour reference */}
+      <div className="bg-slate-800 rounded-xl border border-red-500/30 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white flex items-center gap-2">
+            <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">ACTUEL</span>
+            Version a remplacer
+          </h4>
+          <span className="text-xs text-red-400">Footer anime + gradients</span>
+        </div>
 
         <div className="bg-gray-100 rounded-xl p-6">
           <div className="max-w-sm">
@@ -2258,178 +2519,10 @@ function PropertyCardsSection() {
           </div>
         </div>
 
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <p className="text-xs text-slate-400 mb-2">
-            <strong className="text-white">Props utilisees:</strong>
+        <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <p className="text-xs text-red-400">
+            <strong>Problemes:</strong> Footer rose qui clignote, 2 boutons gradient, trop charge
           </p>
-          <pre className="text-xs text-green-400 overflow-x-auto">{`<PropertyCard
-  property={...}
-  residents={[{ id, first_name, profile_photo_url }]}
-  isFavorite={false}
-  variant="default"
-/>`}</pre>
-        </div>
-      </div>
-
-      {/* PropertyCard - Default simple */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-          <Building2 className="w-5 h-5 text-orange-400" />
-          PropertyCard - Default (sans residents)
-        </h4>
-        <p className="text-xs text-slate-500 mb-4">Version simple sans colocataires affiches</p>
-
-        <div className="bg-gray-100 rounded-xl p-6">
-          <div className="max-w-sm">
-            <PropertyCard
-              property={demoProperties.simple}
-              isFavorite={true}
-              variant="default"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* PropertyCard - Avec Match Score */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-          <Target className="w-5 h-5 text-green-400" />
-          PropertyCard - Avec Score de Compatibilite
-        </h4>
-        <p className="text-xs text-slate-500 mb-4">Affiche le pourcentage de match avec les preferences du searcher</p>
-
-        <div className="bg-gray-100 rounded-xl p-6">
-          <div className="max-w-sm">
-            <PropertyCard
-              property={demoProperties.withMatch}
-              residents={demoResidents.slice(0, 2)}
-              showCompatibilityScore={true}
-              compatibilityScore={92}
-              isFavorite={false}
-              variant="default"
-            />
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <p className="text-xs text-slate-400 mb-2">
-            <strong className="text-white">Props pour le matching:</strong>
-          </p>
-          <pre className="text-xs text-green-400 overflow-x-auto">{`<PropertyCard
-  showCompatibilityScore={true}
-  compatibilityScore={92}
-  ...
-/>`}</pre>
-        </div>
-      </div>
-
-      {/* PropertyCard - Compact */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-          <Layers className="w-5 h-5 text-yellow-400" />
-          PropertyCard - Compact
-        </h4>
-        <p className="text-xs text-slate-500 mb-4">Version compacte pour les listes et sidebars</p>
-
-        <div className="bg-gray-100 rounded-xl p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <PropertyCard
-              property={demoProperties.simple}
-              residents={demoResidents.slice(0, 2)}
-              isFavorite={false}
-              variant="compact"
-            />
-            <PropertyCard
-              property={demoProperties.withResidents}
-              residents={demoResidents}
-              showCompatibilityScore={true}
-              compatibilityScore={87}
-              isFavorite={true}
-              variant="compact"
-            />
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <pre className="text-xs text-green-400">{`<PropertyCard variant="compact" ... />`}</pre>
-        </div>
-      </div>
-
-      {/* Grille de cards */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-          <Layers className="w-5 h-5 text-blue-400" />
-          Grille de PropertyCards (comme sur /properties)
-        </h4>
-        <p className="text-xs text-slate-500 mb-4">Disposition en grille responsive</p>
-
-        <div className="bg-gray-100 rounded-xl p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <PropertyCard
-              property={demoProperties.withResidents}
-              residents={demoResidents}
-              isFavorite={false}
-            />
-            <PropertyCard
-              property={demoProperties.simple}
-              isFavorite={true}
-            />
-            <PropertyCard
-              property={demoProperties.withMatch}
-              residents={demoResidents.slice(0, 2)}
-              showCompatibilityScore={true}
-              compatibilityScore={85}
-            />
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
-          <p className="text-xs text-slate-400">
-            <strong className="text-white">Layout:</strong> grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6
-          </p>
-        </div>
-      </div>
-
-      {/* Caracteristiques du composant */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h4 className="text-md font-semibold text-white mb-4">Caracteristiques du PropertyCard</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-slate-700/30 rounded-lg">
-            <h5 className="text-sm font-semibold text-white mb-2">Design</h5>
-            <ul className="text-xs text-slate-400 space-y-1">
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Coins arrondis (rounded-2xl)</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Ombre au hover (shadow-lg to shadow-2xl)</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Footer glassmorphism avec animation</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Boutons gradient (Owner + Searcher)</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-slate-700/30 rounded-lg">
-            <h5 className="text-sm font-semibold text-white mb-2">Interactions</h5>
-            <ul className="text-xs text-slate-400 space-y-1">
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Bouton favori (coeur)</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Zoom image au hover</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Tooltip residents</li>
-              <li className="flex items-center gap-2"><Check className="w-3 h-3 text-green-400" /> Modal Book Visit</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-slate-700/30 rounded-lg">
-            <h5 className="text-sm font-semibold text-white mb-2">Props principales</h5>
-            <ul className="text-xs text-slate-400 space-y-1">
-              <li><code className="text-purple-400">property</code> - Donnees du bien</li>
-              <li><code className="text-purple-400">residents</code> - Array des colocataires</li>
-              <li><code className="text-purple-400">variant</code> - "default" | "compact"</li>
-              <li><code className="text-purple-400">showCompatibilityScore</code> - boolean</li>
-              <li><code className="text-purple-400">isFavorite</code> - boolean</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-slate-700/30 rounded-lg">
-            <h5 className="text-sm font-semibold text-white mb-2">Fichiers</h5>
-            <ul className="text-xs text-slate-400 space-y-1">
-              <li className="flex items-center gap-2"><Folder className="w-3 h-3 text-orange-400" /> components/PropertyCard.tsx</li>
-              <li className="flex items-center gap-2"><Folder className="w-3 h-3 text-orange-400" /> components/optimized/OptimizedPropertyCard.tsx</li>
-              <li className="flex items-center gap-2"><Folder className="w-3 h-3 text-orange-400" /> components/PropertyCardSkeleton.tsx</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
