@@ -1028,6 +1028,213 @@ function IconsSection() {
           </div>
         </div>
       </div>
+
+      {/* Styles d'icônes - Comparaison V1 vs V2 */}
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">Styles d'icônes : 3 approches</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Comparaison des différentes façons de styliser les icônes dans l'app
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Style 1: Terne / Muted */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <h4 className="font-semibold text-gray-700">Style 1 : Terne (Muted)</h4>
+              <p className="text-xs text-gray-500">Icônes grises sur fond blanc/clair</p>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-4">
+                {[User, Settings, Bell, Shield, Mail, Phone].map((Icon, i) => (
+                  <div key={i} className="flex flex-col items-center gap-2">
+                    <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100">
+                      <Icon className="w-6 h-6 text-gray-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500">
+                  <strong>Usage :</strong> Icônes secondaires, états désactivés
+                </p>
+                <p className="text-xs text-gray-400 mt-1 font-mono">
+                  text-gray-400, bg-gray-50
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Style 2: Vif / Vivid */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="bg-purple-50 px-4 py-3 border-b border-purple-100">
+              <h4 className="font-semibold text-purple-700">Style 2 : Vif (Vivid)</h4>
+              <p className="text-xs text-purple-500">Icônes colorées saturées sur fond teinté</p>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <User className="w-6 h-6 text-orange-600" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <Settings className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <Bell className="w-6 h-6 text-blue-600" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-red-600" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-green-600" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                    <Phone className="w-6 h-6 text-yellow-600" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500">
+                  <strong>Usage :</strong> Catégories, sections, états actifs
+                </p>
+                <p className="text-xs text-gray-400 mt-1 font-mono">
+                  text-[color]-600, bg-[color]-100
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Style 3: Gradient / Granuleux */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-orange-100 to-amber-100 px-4 py-3 border-b border-orange-200">
+              <h4 className="font-semibold text-orange-700">Style 3 : Gradient (Granuleux)</h4>
+              <p className="text-xs text-orange-500">Icônes sur fond dégradé avec opacité</p>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-200/80 to-amber-200/80 flex items-center justify-center border border-orange-200/50">
+                    <User className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-200/70 to-pink-200/70 flex items-center justify-center border border-purple-200/50">
+                    <Settings className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-200/70 to-sky-200/70 flex items-center justify-center border border-blue-200/50">
+                    <Bell className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-200/70 to-rose-200/70 flex items-center justify-center border border-red-200/50">
+                    <Shield className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-200/70 to-emerald-200/70 flex items-center justify-center border border-green-200/50">
+                    <Mail className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-200/70 to-lime-200/70 flex items-center justify-center border border-yellow-200/50">
+                    <Phone className="w-6 h-6 text-gray-700" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500">
+                  <strong>Usage :</strong> Page settings, cartes premium
+                </p>
+                <p className="text-xs text-gray-400 mt-1 font-mono">
+                  text-gray-700, bg-gradient-to-br from-X/70 to-Y/70
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Comparaison côte à côte */}
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
+          <h4 className="font-semibold text-gray-900 mb-4">Même icône, 3 styles</h4>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {/* Settings icon in 3 styles */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 h-16 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100">
+                <Settings className="w-8 h-8 text-gray-400" />
+              </div>
+              <span className="text-xs text-gray-500 font-medium">Terne</span>
+            </div>
+
+            <ArrowRight className="w-5 h-5 text-gray-300" />
+
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 h-16 rounded-xl bg-purple-100 flex items-center justify-center">
+                <Settings className="w-8 h-8 text-purple-600" />
+              </div>
+              <span className="text-xs text-purple-600 font-medium">Vif</span>
+            </div>
+
+            <ArrowRight className="w-5 h-5 text-gray-300" />
+
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-200/70 to-pink-200/70 flex items-center justify-center border border-purple-200/50">
+                <Settings className="w-8 h-8 text-gray-700" />
+              </div>
+              <span className="text-xs text-orange-600 font-medium">Gradient</span>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-white rounded-xl">
+            <p className="text-sm text-gray-600">
+              <strong className="text-orange-500">Problème actuel :</strong> L'app mélange ces 3 styles sans cohérence.
+              Il faut choisir un style principal et définir quand utiliser les variantes.
+            </p>
+          </div>
+        </div>
+
+        {/* Exemple Settings Page Style */}
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="p-4 border-b border-gray-100 bg-orange-50">
+            <h4 className="font-semibold text-gray-900">Exemple : Page Paramètres (style actuel)</h4>
+            <p className="text-xs text-gray-500">Style gradient utilisé dans /settings</p>
+          </div>
+          <div className="p-6 bg-gray-50">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: User, color: 'from-orange-200/80 to-amber-200/80', label: 'Profil' },
+                { icon: Shield, color: 'from-red-200/70 to-rose-200/70', label: 'Sécurité' },
+                { icon: Bell, color: 'from-blue-200/70 to-sky-200/70', label: 'Notifications' },
+                { icon: Lock, color: 'from-purple-200/70 to-pink-200/70', label: 'Confidentialité' },
+                { icon: CreditCard, color: 'from-green-200/70 to-emerald-200/70', label: 'Paiement' },
+                { icon: Globe, color: 'from-indigo-200/70 to-violet-200/70', label: 'Langue' },
+                { icon: Smartphone, color: 'from-cyan-200/70 to-teal-200/70', label: 'Appareils' },
+                { icon: CircleHelp, color: 'from-gray-200/70 to-slate-200/70', label: 'Aide' },
+              ].map(({ icon: Icon, color, label }, i) => (
+                <div key={i} className="bg-white rounded-xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br", color)}>
+                    <Icon className="w-5 h-5 text-gray-700" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
