@@ -732,64 +732,83 @@ function ButtonsSection() {
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-4">Gradient Signature EasyCo</h3>
         <p className="text-sm text-slate-400 mb-4">
-          Les boutons utilisent le meme gradient et sont positionnes pour former ensemble le degrade signature.
+          Gradient extrait du logo original (globals.css). Les 3 boutons utilisent le MEME gradient avec backgroundPosition pour afficher chaque portion.
         </p>
 
-        {/* Boutons avec gradient signature continu */}
-        <div className="flex gap-0 mb-6">
-          <button
-            className="px-8 py-3 text-white rounded-l-full font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
+        {/* Le gradient signature complet */}
+        <div className="mb-6 p-4 bg-slate-700/30 rounded-xl">
+          <p className="text-xs text-slate-400 mb-2">Gradient signature complet (9 couleurs du logo) :</p>
+          <div
+            className="h-12 rounded-xl shadow-lg"
             style={{
-              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
-              backgroundSize: '300% 100%',
-              backgroundPosition: '0% 50%',
+              background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
             }}
-          >
-            Owner
-          </button>
-          <button
-            className="px-8 py-3 text-white font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
-            style={{
-              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
-              backgroundSize: '300% 100%',
-              backgroundPosition: '50% 50%',
-            }}
-          >
-            Searcher
-          </button>
-          <button
-            className="px-8 py-3 text-white rounded-r-full font-medium shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
-            style={{
-              background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
-              backgroundSize: '300% 100%',
-              backgroundPosition: '100% 50%',
-            }}
-          >
-            Resident
-          </button>
+          />
+          <div className="flex justify-between mt-2 text-xs text-slate-500">
+            <span>Owner</span>
+            <span>Resident</span>
+            <span>Searcher</span>
+          </div>
         </div>
 
-        {/* Bouton unique avec gradient complet (comme S'inscrire) */}
+        {/* Bouton S'inscrire avec gradient complet */}
         <div className="mb-6">
-          <p className="text-sm text-slate-400 mb-3">Bouton unique avec gradient complet :</p>
+          <p className="text-sm text-slate-400 mb-3">Bouton unifie avec gradient complet :</p>
           <button
             className="px-10 py-4 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
             style={{
-              background: 'linear-gradient(to right, #6E56CF, #F9A825, #FF5722)',
+              background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
             }}
           >
             S'inscrire
           </button>
         </div>
 
-        {/* Boutons separes avec leurs portions du gradient */}
-        <div>
+        {/* 3 boutons alignes = gradient complet */}
+        <div className="mb-6">
+          <p className="text-sm text-slate-400 mb-3">3 boutons alignes = gradient complet reconstitue :</p>
+          <div className="flex gap-0">
+            <button
+              className="flex-1 px-6 py-3 text-white rounded-l-full font-medium shadow-lg hover:brightness-110 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '0% 50%',
+              }}
+            >
+              Owner
+            </button>
+            <button
+              className="flex-1 px-6 py-3 text-white font-medium shadow-lg hover:brightness-110 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '50% 50%',
+              }}
+            >
+              Resident
+            </button>
+            <button
+              className="flex-1 px-6 py-3 text-white rounded-r-full font-medium shadow-lg hover:brightness-110 transition-all"
+              style={{
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
+                backgroundSize: '300% 100%',
+                backgroundPosition: '100% 50%',
+              }}
+            >
+              Searcher
+            </button>
+          </div>
+        </div>
+
+        {/* Boutons separes */}
+        <div className="mb-6">
           <p className="text-sm text-slate-400 mb-3">Boutons separes (meme gradient, portions differentes) :</p>
           <div className="flex flex-wrap gap-4">
             <button
               className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               style={{
-                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
                 backgroundSize: '300% 100%',
                 backgroundPosition: '0% 50%',
               }}
@@ -799,24 +818,177 @@ function ButtonsSection() {
             <button
               className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               style={{
-                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
                 backgroundSize: '300% 100%',
                 backgroundPosition: '50% 50%',
               }}
             >
-              Searcher Style
+              Resident Style
             </button>
             <button
               className="px-6 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               style={{
-                background: 'linear-gradient(to right, #6E56CF, #8E7AD6, #F9A825, #FFC107, #FF5722, #E64A19)',
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
                 backgroundSize: '300% 100%',
                 backgroundPosition: '100% 50%',
               }}
             >
-              Resident Style
+              Searcher Style
             </button>
           </div>
+        </div>
+
+        {/* Mapping visuel des 3 portions du logo */}
+        <div className="p-4 bg-slate-700/30 rounded-xl">
+          <h4 className="font-medium text-white mb-3">Portions du gradient par role (extraites du logo)</h4>
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div className="text-center">
+              <div className="w-full h-10 rounded-lg mb-2 shadow-md" style={{ background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E)' }} />
+              <p className="text-purple-400 font-semibold">Owner</p>
+              <p className="text-slate-500 text-xs font-mono">#7B5FB8 → #C98B9E</p>
+              <p className="text-slate-400 text-xs">mauve → rose</p>
+            </div>
+            <div className="text-center">
+              <div className="w-full h-10 rounded-lg mb-2 shadow-md" style={{ background: 'linear-gradient(to right, #D97B6F, #E8865D, #FF8C4B)' }} />
+              <p className="text-orange-400 font-semibold">Resident</p>
+              <p className="text-slate-500 text-xs font-mono">#D97B6F → #FF8C4B</p>
+              <p className="text-slate-400 text-xs">coral → orange</p>
+            </div>
+            <div className="text-center">
+              <div className="w-full h-10 rounded-lg mb-2 shadow-md" style={{ background: 'linear-gradient(to right, #FFA040, #FFB85C, #FFD080)' }} />
+              <p className="text-yellow-400 font-semibold">Searcher</p>
+              <p className="text-slate-500 text-xs font-mono">#FFA040 → #FFD080</p>
+              <p className="text-slate-400 text-xs">orange → jaune dore</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Decomposition complete du gradient - chaque couleur */}
+        <div className="mt-6 p-4 bg-slate-700/30 rounded-xl">
+          <h4 className="font-medium text-white mb-4">Decomposition du gradient (9 couleurs)</h4>
+          <div className="grid grid-cols-9 gap-2 mb-4">
+            {[
+              { hex: '#7B5FB8', name: 'Mauve profond', role: 'Owner' },
+              { hex: '#A67BB8', name: 'Mauve clair', role: 'Owner' },
+              { hex: '#C98B9E', name: 'Rose mauve', role: 'Owner' },
+              { hex: '#D97B6F', name: 'Coral rose', role: 'Resident' },
+              { hex: '#E8865D', name: 'Coral orange', role: 'Resident' },
+              { hex: '#FF8C4B', name: 'Orange vif', role: 'Resident' },
+              { hex: '#FFA040', name: 'Orange dore', role: 'Searcher' },
+              { hex: '#FFB85C', name: 'Orange jaune', role: 'Searcher' },
+              { hex: '#FFD080', name: 'Jaune dore', role: 'Searcher' },
+            ].map((color, i) => (
+              <div key={i} className="text-center">
+                <div
+                  className="w-full aspect-square rounded-lg shadow-md border border-slate-600 mb-2"
+                  style={{ backgroundColor: color.hex }}
+                />
+                <p className="text-[10px] text-white font-mono">{color.hex}</p>
+                <p className="text-[9px] text-slate-400">{color.name}</p>
+                <p className={`text-[9px] font-medium ${
+                  color.role === 'Owner' ? 'text-purple-400' :
+                  color.role === 'Resident' ? 'text-orange-400' : 'text-yellow-400'
+                }`}>{color.role}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Barre de gradient avec indicateurs */}
+          <div className="relative">
+            <div
+              className="h-8 rounded-lg shadow-lg"
+              style={{
+                background: 'linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)',
+              }}
+            />
+            <div className="flex justify-between mt-1">
+              <span className="text-[10px] text-purple-400">← Owner</span>
+              <span className="text-[10px] text-orange-400">Resident</span>
+              <span className="text-[10px] text-yellow-400">Searcher →</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Palette etendue avec variations */}
+        <div className="mt-6 p-4 bg-slate-700/30 rounded-xl">
+          <h4 className="font-medium text-white mb-4">Palette etendue par role</h4>
+
+          {/* Owner palette */}
+          <div className="mb-4">
+            <p className="text-sm text-purple-400 font-semibold mb-2">Owner - Palette mauve/rose</p>
+            <div className="grid grid-cols-6 gap-2">
+              {[
+                { hex: '#5A4589', name: 'Mauve fonce' },
+                { hex: '#7B5FB8', name: 'Mauve 1' },
+                { hex: '#A67BB8', name: 'Mauve 2' },
+                { hex: '#C98B9E', name: 'Rose mauve' },
+                { hex: '#D9A5B0', name: 'Rose clair' },
+                { hex: '#E8C5CC', name: 'Rose pale' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-10 rounded-lg shadow-md border border-slate-600"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[10px] text-white font-mono mt-1">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Resident palette */}
+          <div className="mb-4">
+            <p className="text-sm text-orange-400 font-semibold mb-2">Resident - Palette coral/orange</p>
+            <div className="grid grid-cols-6 gap-2">
+              {[
+                { hex: '#B85A4F', name: 'Coral fonce' },
+                { hex: '#D97B6F', name: 'Coral 1' },
+                { hex: '#E8865D', name: 'Coral 2' },
+                { hex: '#FF8C4B', name: 'Orange vif' },
+                { hex: '#FFA672', name: 'Orange clair' },
+                { hex: '#FFC4A0', name: 'Peche' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-10 rounded-lg shadow-md border border-slate-600"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[10px] text-white font-mono mt-1">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Searcher palette */}
+          <div>
+            <p className="text-sm text-yellow-400 font-semibold mb-2">Searcher - Palette orange/jaune</p>
+            <div className="grid grid-cols-6 gap-2">
+              {[
+                { hex: '#E08020', name: 'Orange fonce' },
+                { hex: '#FFA040', name: 'Orange dore 1' },
+                { hex: '#FFB85C', name: 'Orange dore 2' },
+                { hex: '#FFD080', name: 'Jaune dore' },
+                { hex: '#FFE0A0', name: 'Jaune clair' },
+                { hex: '#FFF0D0', name: 'Creme' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-10 rounded-lg shadow-md border border-slate-600"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[10px] text-white font-mono mt-1">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Code reference */}
+        <div className="mt-4 p-3 bg-slate-900 rounded-lg">
+          <p className="text-xs text-slate-400 mb-2">Gradient signature (a utiliser partout) :</p>
+          <code className="text-xs text-green-400 font-mono break-all">
+            linear-gradient(to right, #7B5FB8, #A67BB8, #C98B9E, #D97B6F, #E8865D, #FF8C4B, #FFA040, #FFB85C, #FFD080)
+          </code>
         </div>
       </div>
     </div>
