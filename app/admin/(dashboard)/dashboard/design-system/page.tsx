@@ -342,6 +342,11 @@ function GradientSignatureEditor() {
   const [searcherPos, setSearcherPos] = useState(95);
   const [searcherWidth, setSearcherWidth] = useState(50);
 
+  // Couleurs dominantes selectionnees (index 1-5, 3 = centre par defaut)
+  const [ownerDominant, setOwnerDominant] = useState<number>(3);
+  const [residentDominant, setResidentDominant] = useState<number>(3);
+  const [searcherDominant, setSearcherDominant] = useState<number>(3);
+
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
@@ -360,15 +365,44 @@ function GradientSignatureEditor() {
   const residentPalette = generateColorPalette(residentPos, residentWidth);
   const searcherPalette = generateColorPalette(searcherPos, searcherWidth);
 
+  // Helper pour obtenir la couleur dominante d'une palette
+  const getDominantColor = (palette: ReturnType<typeof generateColorPalette>, index: number): string => {
+    const colors = [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5];
+    return colors[index - 1] || palette.color3;
+  };
+
+  // Couleurs dominantes actuelles
+  const ownerDominantColor = getDominantColor(ownerPalette, ownerDominant);
+  const residentDominantColor = getDominantColor(residentPalette, residentDominant);
+  const searcherDominantColor = getDominantColor(searcherPalette, searcherDominant);
+
   // Fonction de sauvegarde
   const handleSave = async () => {
     setIsSaving(true);
     setSaveMessage(null);
 
     const config = {
-      owner: { pos: ownerPos, width: ownerWidth, palette: ownerPalette },
-      resident: { pos: residentPos, width: residentWidth, palette: residentPalette },
-      searcher: { pos: searcherPos, width: searcherWidth, palette: searcherPalette },
+      owner: {
+        pos: ownerPos,
+        width: ownerWidth,
+        palette: ownerPalette,
+        dominantIndex: ownerDominant,
+        dominantColor: ownerDominantColor
+      },
+      resident: {
+        pos: residentPos,
+        width: residentWidth,
+        palette: residentPalette,
+        dominantIndex: residentDominant,
+        dominantColor: residentDominantColor
+      },
+      searcher: {
+        pos: searcherPos,
+        width: searcherWidth,
+        palette: searcherPalette,
+        dominantIndex: searcherDominant,
+        dominantColor: searcherDominantColor
+      },
     };
 
     // Sauvegarder dans localStorage pour l'instant
@@ -384,31 +418,54 @@ function GradientSignatureEditor() {
     setTimeout(() => setSaveMessage(null), 3000);
   };
 
-  // Composant pour afficher les carres de couleurs REELLES du gradient
-  const ColorSwatches = ({ palette }: { palette: ReturnType<typeof generateColorPalette> }) => (
-    <div className="flex gap-1 mt-2">
-      <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color1 }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">0%</span>
+  // Composant pour afficher les carres de couleurs REELLES du gradient (cliquables)
+  const ColorSwatches = ({
+    palette,
+    selectedIndex,
+    onSelect,
+    role
+  }: {
+    palette: ReturnType<typeof generateColorPalette>;
+    selectedIndex: number;
+    onSelect: (index: number) => void;
+    role: 'owner' | 'resident' | 'searcher';
+  }) => {
+    const colors = [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5];
+    const labels = ['0%', '25%', '50%', '75%', '100%'];
+
+    return (
+      <div className="flex gap-1 mt-2">
+        {colors.map((color, i) => (
+          <button
+            key={i}
+            onClick={() => onSelect(i + 1)}
+            className={`group relative cursor-pointer transition-all duration-200 ${
+              selectedIndex === i + 1
+                ? 'scale-110 z-10'
+                : 'hover:scale-105'
+            }`}
+          >
+            <div
+              className={`w-8 h-8 rounded transition-all ${
+                selectedIndex === i + 1
+                  ? 'ring-2 ring-white ring-offset-2 ring-offset-slate-800 shadow-lg'
+                  : 'border border-slate-600 hover:border-slate-400'
+              }`}
+              style={{ background: color }}
+            />
+            {selectedIndex === i + 1 && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full flex items-center justify-center shadow">
+                <Check className="w-2 h-2 text-slate-800" />
+              </div>
+            )}
+            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              {labels[i]}
+            </span>
+          </button>
+        ))}
       </div>
-      <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color2 }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">25%</span>
-      </div>
-      <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color3 }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">50%</span>
-      </div>
-      <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color4 }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">75%</span>
-      </div>
-      <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color5 }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">100%</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
@@ -543,13 +600,22 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
+            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={ownerPalette} />
+              <ColorSwatches
+                palette={ownerPalette}
+                selectedIndex={ownerDominant}
+                onSelect={setOwnerDominant}
+                role="owner"
+              />
             </div>
-            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Debut: {ownerPalette.color1}</div>
-              <div>Fin: {ownerPalette.color5}</div>
+            {/* Couleur dominante selectionnee */}
+            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
+              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Owner :</p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: ownerDominantColor }} />
+                <code className="text-sm text-purple-400 font-mono">{ownerDominantColor}</code>
+              </div>
             </div>
           </div>
 
@@ -557,13 +623,22 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
+            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={residentPalette} />
+              <ColorSwatches
+                palette={residentPalette}
+                selectedIndex={residentDominant}
+                onSelect={setResidentDominant}
+                role="resident"
+              />
             </div>
-            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Debut: {residentPalette.color1}</div>
-              <div>Fin: {residentPalette.color5}</div>
+            {/* Couleur dominante selectionnee */}
+            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
+              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Resident :</p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: residentDominantColor }} />
+                <code className="text-sm text-orange-400 font-mono">{residentDominantColor}</code>
+              </div>
             </div>
           </div>
 
@@ -571,13 +646,22 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
+            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={searcherPalette} />
+              <ColorSwatches
+                palette={searcherPalette}
+                selectedIndex={searcherDominant}
+                onSelect={setSearcherDominant}
+                role="searcher"
+              />
             </div>
-            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Debut: {searcherPalette.color1}</div>
-              <div>Fin: {searcherPalette.color5}</div>
+            {/* Couleur dominante selectionnee */}
+            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
+              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Searcher :</p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: searcherDominantColor }} />
+                <code className="text-sm text-yellow-400 font-mono">{searcherDominantColor}</code>
+              </div>
             </div>
           </div>
         </div>
@@ -600,6 +684,7 @@ function GradientSignatureEditor() {
           {/* Owner */}
           <div className="space-y-1">
             <div className="text-purple-400 font-bold mb-2">/* OWNER */</div>
+            <div className="bg-purple-500/20 rounded px-1 py-0.5"><span className="text-white">--owner-primary:</span> <code className="text-green-400">{ownerDominantColor};</code> <span className="text-purple-300">/* DOMINANTE */</span></div>
             <div><span className="text-slate-400">--owner-100:</span> <code className="text-green-400">{ownerPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
             <div><span className="text-slate-400">--owner-300:</span> <code className="text-green-400">{ownerPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
             <div><span className="text-slate-400">--owner-500:</span> <code className="text-green-400">{ownerPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
@@ -611,6 +696,7 @@ function GradientSignatureEditor() {
           {/* Resident */}
           <div className="space-y-1">
             <div className="text-orange-400 font-bold mb-2">/* RESIDENT */</div>
+            <div className="bg-orange-500/20 rounded px-1 py-0.5"><span className="text-white">--resident-primary:</span> <code className="text-green-400">{residentDominantColor};</code> <span className="text-orange-300">/* DOMINANTE */</span></div>
             <div><span className="text-slate-400">--resident-100:</span> <code className="text-green-400">{residentPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
             <div><span className="text-slate-400">--resident-300:</span> <code className="text-green-400">{residentPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
             <div><span className="text-slate-400">--resident-500:</span> <code className="text-green-400">{residentPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
@@ -622,6 +708,7 @@ function GradientSignatureEditor() {
           {/* Searcher */}
           <div className="space-y-1">
             <div className="text-yellow-400 font-bold mb-2">/* SEARCHER */</div>
+            <div className="bg-yellow-500/20 rounded px-1 py-0.5"><span className="text-white">--searcher-primary:</span> <code className="text-green-400">{searcherDominantColor};</code> <span className="text-yellow-300">/* DOMINANTE */</span></div>
             <div><span className="text-slate-400">--searcher-100:</span> <code className="text-green-400">{searcherPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
             <div><span className="text-slate-400">--searcher-300:</span> <code className="text-green-400">{searcherPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
             <div><span className="text-slate-400">--searcher-500:</span> <code className="text-green-400">{searcherPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
