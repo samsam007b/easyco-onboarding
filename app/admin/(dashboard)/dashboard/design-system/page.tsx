@@ -248,306 +248,193 @@ const residentColors: Record<number, string> = {
 };
 
 /* ============================================
-   GRADIENT SIGNATURE EDITOR - Avec curseurs
+   GRADIENT SIGNATURE EDITOR - Curseurs INDEPENDANTS
    ============================================ */
 function GradientSignatureEditor() {
-  // Positions des curseurs (0-100) pour chaque rôle
-  const [ownerStart, setOwnerStart] = useState(0);
-  const [ownerEnd, setOwnerEnd] = useState(33);
-  const [residentStart, setResidentStart] = useState(33);
-  const [residentEnd, setResidentEnd] = useState(66);
-  const [searcherStart, setSearcherStart] = useState(66);
-  const [searcherEnd, setSearcherEnd] = useState(100);
+  // Couleurs VIVES du gradient signature - basées sur globals.css
+  const gradientColors = [
+    { pos: 0, hex: '#6E56CF' },    // Mauve vif (owner-primary)
+    { pos: 10, hex: '#8B5CF6' },   // Violet
+    { pos: 20, hex: '#A855F7' },   // Violet clair
+    { pos: 30, hex: '#D946EF' },   // Fuchsia
+    { pos: 40, hex: '#EC4899' },   // Pink
+    { pos: 50, hex: '#F43F5E' },   // Rose/Rouge
+    { pos: 60, hex: '#FF6F3C' },   // Orange vif (resident-primary)
+    { pos: 70, hex: '#FB923C' },   // Orange
+    { pos: 80, hex: '#FBBF24' },   // Amber
+    { pos: 90, hex: '#FFD249' },   // Jaune dore (searcher-primary)
+    { pos: 100, hex: '#FDE047' },  // Jaune vif
+  ];
 
-  // Gradient original du logo - extrait directement du bouton "S'inscrire"
-  // L'orange est la couleur DOMINANTE (occupe ~50% du gradient)
-  // Proportions: violet (10%) -> rose/coral (15%) -> ORANGE VIF (50%) -> jaune doré (25%)
-  const signatureGradient = 'linear-gradient(135deg, #8B6DB5 0%, #A87AAD 8%, #C97B94 15%, #E07B6B 22%, #E8875A 30%, #F08C4A 40%, #F5924A 50%, #F9A54D 60%, #FBAF52 70%, #FDC55E 80%, #FFD36B 90%, #FFE082 100%)';
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 0, g: 0, b: 0 };
+  };
+
+  const getColorAtPosition = (position: number): string => {
+    let lower = gradientColors[0];
+    let upper = gradientColors[gradientColors.length - 1];
+    for (let i = 0; i < gradientColors.length - 1; i++) {
+      if (position >= gradientColors[i].pos && position <= gradientColors[i + 1].pos) {
+        lower = gradientColors[i];
+        upper = gradientColors[i + 1];
+        break;
+      }
+    }
+    const range = upper.pos - lower.pos;
+    const factor = range === 0 ? 0 : (position - lower.pos) / range;
+    const lowerRgb = hexToRgb(lower.hex);
+    const upperRgb = hexToRgb(upper.hex);
+    const r = Math.round(lowerRgb.r + factor * (upperRgb.r - lowerRgb.r));
+    const g = Math.round(lowerRgb.g + factor * (upperRgb.g - lowerRgb.g));
+    const b = Math.round(lowerRgb.b + factor * (upperRgb.b - lowerRgb.b));
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  // Curseurs INDEPENDANTS - Position + Largeur
+  const [ownerPos, setOwnerPos] = useState(10);
+  const [ownerWidth, setOwnerWidth] = useState(20);
+  const [residentPos, setResidentPos] = useState(55);
+  const [residentWidth, setResidentWidth] = useState(25);
+  const [searcherPos, setSearcherPos] = useState(85);
+  const [searcherWidth, setSearcherWidth] = useState(20);
+
+  const signatureGradient = 'linear-gradient(to right, #6E56CF 0%, #8B5CF6 10%, #A855F7 20%, #D946EF 30%, #EC4899 40%, #F43F5E 50%, #FF6F3C 60%, #FB923C 70%, #FBBF24 80%, #FFD249 90%, #FDE047 100%)';
+
+  const getRoleGradient = (pos: number, width: number) => {
+    if (width <= 2) return getColorAtPosition(pos);
+    const start = Math.max(0, pos - width / 2);
+    const end = Math.min(100, pos + width / 2);
+    return `linear-gradient(to right, ${getColorAtPosition(start)}, ${getColorAtPosition(end)})`;
+  };
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
       <h3 className="text-lg font-bold text-white mb-2">Gradient Signature EasyCo</h3>
       <p className="text-sm text-slate-400 mb-6">
-        Reproduis le gradient original du logo. Utilise les curseurs pour definir la portion de chaque role.
+        Curseurs independants. Met la largeur a 0 pour une couleur unie.
       </p>
 
-      {/* GRADIENT ORIGINAL - TRES LARGE avec angle oblique */}
+      {/* GRADIENT ORIGINAL */}
       <div className="mb-8">
-        <p className="text-xs text-slate-400 mb-3">Gradient signature original (angle 135°) :</p>
-        <div
-          className="w-full h-32 rounded-2xl shadow-2xl"
-          style={{
-            background: signatureGradient,
-          }}
-        />
-      </div>
-
-      {/* CURSEURS INTERACTIFS */}
-      <div className="space-y-8 mb-8">
-        <h4 className="font-medium text-white">Definir les portions par role</h4>
-
-        {/* Barre de gradient avec indicateurs de position */}
-        <div className="relative">
-          <div
-            className="w-full h-8 rounded-lg"
-            style={{ background: signatureGradient }}
-          />
-          {/* Marqueurs de position */}
-          <div className="absolute inset-0 flex">
-            <div
-              className="border-r-2 border-white/50 h-full"
-              style={{ width: `${ownerEnd}%` }}
-            />
-            <div
-              className="border-r-2 border-white/50 h-full"
-              style={{ width: `${residentEnd - ownerEnd}%` }}
-            />
-          </div>
-          <div className="flex justify-between mt-1 text-[10px] text-slate-500 font-mono">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
-            <span>75%</span>
-            <span>100%</span>
-          </div>
-        </div>
-
-        {/* Owner Slider */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-purple-400 font-bold">Owner</span>
-            <span className="text-slate-400 text-sm font-mono">{ownerStart}% - {ownerEnd}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Debut</span>
-            <input
-              type="range"
-              min="0"
-              max="50"
-              value={ownerStart}
-              onChange={(e) => setOwnerStart(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{ownerStart}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Fin</span>
-            <input
-              type="range"
-              min="10"
-              max="60"
-              value={ownerEnd}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setOwnerEnd(val);
-                if (residentStart < val) setResidentStart(val);
-              }}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{ownerEnd}%</span>
-          </div>
-          {/* Apercu Owner */}
-          <div
-            className="h-12 rounded-xl shadow-lg mt-2"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${100 / ((ownerEnd - ownerStart) / 100)}% 100%`,
-              backgroundPosition: `${ownerStart}% 50%`,
-            }}
-          />
-        </div>
-
-        {/* Resident Slider */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-orange-400 font-bold">Resident</span>
-            <span className="text-slate-400 text-sm font-mono">{residentStart}% - {residentEnd}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Debut</span>
-            <input
-              type="range"
-              min="20"
-              max="70"
-              value={residentStart}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setResidentStart(val);
-                if (ownerEnd > val) setOwnerEnd(val);
-              }}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{residentStart}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Fin</span>
-            <input
-              type="range"
-              min="40"
-              max="90"
-              value={residentEnd}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setResidentEnd(val);
-                if (searcherStart < val) setSearcherStart(val);
-              }}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{residentEnd}%</span>
-          </div>
-          {/* Apercu Resident */}
-          <div
-            className="h-12 rounded-xl shadow-lg mt-2"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${100 / ((residentEnd - residentStart) / 100)}% 100%`,
-              backgroundPosition: `${residentStart}% 50%`,
-            }}
-          />
-        </div>
-
-        {/* Searcher Slider */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-yellow-400 font-bold">Searcher</span>
-            <span className="text-slate-400 text-sm font-mono">{searcherStart}% - {searcherEnd}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Debut</span>
-            <input
-              type="range"
-              min="50"
-              max="90"
-              value={searcherStart}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setSearcherStart(val);
-                if (residentEnd > val) setResidentEnd(val);
-              }}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{searcherStart}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-500 w-12">Fin</span>
-            <input
-              type="range"
-              min="70"
-              max="100"
-              value={searcherEnd}
-              onChange={(e) => setSearcherEnd(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
-            />
-            <span className="text-xs text-slate-400 w-10">{searcherEnd}%</span>
-          </div>
-          {/* Apercu Searcher */}
-          <div
-            className="h-12 rounded-xl shadow-lg mt-2"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${100 / ((searcherEnd - searcherStart) / 100)}% 100%`,
-              backgroundPosition: `${searcherStart}% 50%`,
-            }}
-          />
+        <p className="text-xs text-slate-400 mb-3">Gradient signature (couleurs vives) :</p>
+        <div className="w-full h-24 rounded-2xl shadow-2xl" style={{ background: signatureGradient }} />
+        <div className="flex justify-between mt-2 text-[10px] text-slate-500 font-mono">
+          <span>0% Mauve</span><span>25%</span><span>50% Rose</span><span>75%</span><span>100% Jaune</span>
         </div>
       </div>
 
-      {/* APERCU DES 3 BOUTONS */}
+      {/* CURSEURS INDEPENDANTS */}
+      <div className="space-y-6 mb-8">
+        {/* Owner */}
+        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-purple-400 font-bold text-lg">Owner</span>
+            <span className="text-slate-400 text-sm font-mono">
+              {ownerWidth <= 2 ? `Unie @ ${ownerPos}%` : `${Math.max(0, ownerPos - ownerWidth/2).toFixed(0)}% - ${Math.min(100, ownerPos + ownerWidth/2).toFixed(0)}%`}
+            </span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Position</span>
+            <input type="range" min="0" max="100" value={ownerPos}
+              onChange={(e) => setOwnerPos(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{ownerPos}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Largeur</span>
+            <input type="range" min="0" max="50" value={ownerWidth}
+              onChange={(e) => setOwnerWidth(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{ownerWidth}%</span>
+          </div>
+          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(ownerPos, ownerWidth) }} />
+        </div>
+
+        {/* Resident */}
+        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-orange-400 font-bold text-lg">Resident</span>
+            <span className="text-slate-400 text-sm font-mono">
+              {residentWidth <= 2 ? `Unie @ ${residentPos}%` : `${Math.max(0, residentPos - residentWidth/2).toFixed(0)}% - ${Math.min(100, residentPos + residentWidth/2).toFixed(0)}%`}
+            </span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Position</span>
+            <input type="range" min="0" max="100" value={residentPos}
+              onChange={(e) => setResidentPos(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{residentPos}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Largeur</span>
+            <input type="range" min="0" max="50" value={residentWidth}
+              onChange={(e) => setResidentWidth(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{residentWidth}%</span>
+          </div>
+          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(residentPos, residentWidth) }} />
+        </div>
+
+        {/* Searcher */}
+        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-yellow-400 font-bold text-lg">Searcher</span>
+            <span className="text-slate-400 text-sm font-mono">
+              {searcherWidth <= 2 ? `Unie @ ${searcherPos}%` : `${Math.max(0, searcherPos - searcherWidth/2).toFixed(0)}% - ${Math.min(100, searcherPos + searcherWidth/2).toFixed(0)}%`}
+            </span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Position</span>
+            <input type="range" min="0" max="100" value={searcherPos}
+              onChange={(e) => setSearcherPos(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{searcherPos}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-400 w-16">Largeur</span>
+            <input type="range" min="0" max="50" value={searcherWidth}
+              onChange={(e) => setSearcherWidth(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
+            <span className="text-xs text-slate-300 w-10 text-right">{searcherWidth}%</span>
+          </div>
+          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(searcherPos, searcherWidth) }} />
+        </div>
+      </div>
+
+      {/* APERCU DES BOUTONS */}
       <div className="mb-8 p-6 bg-slate-700/30 rounded-xl">
-        <h4 className="font-medium text-white mb-4">Apercu des boutons avec tes reglages</h4>
-
-        {/* 3 boutons alignes */}
-        <div className="flex gap-0 mb-6">
-          <button
-            className="flex-1 px-6 py-4 text-white rounded-l-full font-semibold shadow-lg"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${ownerStart + (ownerEnd - ownerStart) / 2}% 50%`,
-            }}
-          >
-            Owner
-          </button>
-          <button
-            className="flex-1 px-6 py-4 text-white font-semibold shadow-lg"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${residentStart + (residentEnd - residentStart) / 2}% 50%`,
-            }}
-          >
-            Resident
-          </button>
-          <button
-            className="flex-1 px-6 py-4 text-white rounded-r-full font-semibold shadow-lg"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${searcherStart + (searcherEnd - searcherStart) / 2}% 50%`,
-            }}
-          >
-            Searcher
-          </button>
+        <h4 className="font-medium text-white mb-4">Apercu des boutons</h4>
+        <div className="flex flex-wrap gap-4 mb-6">
+          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
+          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
+          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
         </div>
-
-        {/* Boutons separes */}
-        <p className="text-sm text-slate-400 mb-3">Boutons separes :</p>
-        <div className="flex flex-wrap gap-4">
-          <button
-            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${ownerStart + (ownerEnd - ownerStart) / 2}% 50%`,
-            }}
-          >
-            Interface Owner
-          </button>
-          <button
-            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${residentStart + (residentEnd - residentStart) / 2}% 50%`,
-            }}
-          >
-            Interface Resident
-          </button>
-          <button
-            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{
-              background: signatureGradient,
-              backgroundSize: `${300}% 100%`,
-              backgroundPosition: `${searcherStart + (searcherEnd - searcherStart) / 2}% 50%`,
-            }}
-          >
-            Interface Searcher
-          </button>
+        <p className="text-sm text-slate-400 mb-3">Boutons alignes :</p>
+        <div className="flex gap-0">
+          <button className="flex-1 px-6 py-4 text-white rounded-l-full font-semibold shadow-lg"
+            style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Owner</button>
+          <button className="flex-1 px-6 py-4 text-white font-semibold shadow-lg"
+            style={{ background: getRoleGradient(residentPos, residentWidth) }}>Resident</button>
+          <button className="flex-1 px-6 py-4 text-white rounded-r-full font-semibold shadow-lg"
+            style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Searcher</button>
         </div>
       </div>
 
-      {/* CODE CSS GENERE */}
+      {/* CSS GENERE */}
       <div className="p-4 bg-slate-900 rounded-xl">
-        <p className="text-xs text-slate-400 mb-2">CSS genere pour chaque role :</p>
-        <div className="space-y-2 text-xs font-mono">
-          <div>
-            <span className="text-purple-400">/* Owner */</span>
-            <code className="text-green-400 block ml-4">
-              background-position: {ownerStart + (ownerEnd - ownerStart) / 2}% 50%;
-            </code>
-          </div>
-          <div>
-            <span className="text-orange-400">/* Resident */</span>
-            <code className="text-green-400 block ml-4">
-              background-position: {residentStart + (residentEnd - residentStart) / 2}% 50%;
-            </code>
-          </div>
-          <div>
-            <span className="text-yellow-400">/* Searcher */</span>
-            <code className="text-green-400 block ml-4">
-              background-position: {searcherStart + (searcherEnd - searcherStart) / 2}% 50%;
-            </code>
-          </div>
+        <p className="text-xs text-slate-400 mb-2">CSS genere :</p>
+        <div className="space-y-1 text-xs font-mono">
+          <div><span className="text-purple-400">--owner:</span> <code className="text-green-400">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
+          <div><span className="text-orange-400">--resident:</span> <code className="text-green-400">{getRoleGradient(residentPos, residentWidth)};</code></div>
+          <div><span className="text-yellow-400">--searcher:</span> <code className="text-green-400">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
         </div>
       </div>
     </div>
