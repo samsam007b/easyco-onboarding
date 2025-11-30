@@ -6,6 +6,18 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+// Couleurs Resident extraites du logo gradient
+const RESIDENT_COLORS = {
+  primary: '#FF6F3C',
+  gradient: {
+    start: '#D97B6F',
+    middle: '#E8865D',
+    end: '#FF8C4B',
+  },
+  light: '#FFF3EF',
+  text: '#C4430A',
+};
+
 export default function ResidentsPage() {
   const { scrollYProgress } = useScroll();
   const [count1, setCount1] = useState(0);
@@ -85,16 +97,23 @@ export default function ResidentsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 mb-6"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-6"
+                style={{
+                  background: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}15, ${RESIDENT_COLORS.gradient.end}15)`,
+                  borderColor: `${RESIDENT_COLORS.primary}30`,
+                }}
               >
-                <Users className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-semibold text-orange-600">Pour les résidents</span>
+                <Users className="w-4 h-4" style={{ color: RESIDENT_COLORS.primary }} />
+                <span className="text-sm font-semibold" style={{ color: RESIDENT_COLORS.primary }}>Pour les résidents</span>
               </motion.div>
 
               {/* Hero title */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                 Vis l'expérience{' '}
-                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+                >
                   coliving ultime
                 </span>
               </h1>
@@ -107,7 +126,12 @@ export default function ResidentsPage() {
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/signup">
-                  <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold px-8 py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">
+                  <Button
+                    className="text-white font-semibold px-8 py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})`,
+                    }}
+                  >
                     Devenir résident
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
@@ -127,16 +151,23 @@ export default function ResidentsPage() {
                 {/* Stat card 1 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-orange-100"
+                  className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl"
+                  style={{ borderColor: `${RESIDENT_COLORS.primary}20`, borderWidth: '1px' }}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                      <div
+                        className="text-4xl font-bold bg-clip-text text-transparent"
+                        style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+                      >
                         {count1}+
                       </div>
                       <div className="text-gray-600 mt-1">Colocations disponibles</div>
                     </div>
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+                    >
                       <Users className="w-6 h-6 text-white" />
                     </div>
                   </div>
@@ -145,12 +176,13 @@ export default function ResidentsPage() {
                 {/* Stat card 2 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl p-6 shadow-xl"
+                  className="rounded-2xl p-6 shadow-xl"
+                  style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-4xl font-bold text-white">€{count2}</div>
-                      <div className="text-orange-50 mt-1">Économies moyennes/mois</div>
+                      <div className="mt-1" style={{ color: `${RESIDENT_COLORS.light}` }}>Économies moyennes/mois</div>
                     </div>
                     <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <TrendingUp className="w-6 h-6 text-white" />
@@ -173,7 +205,12 @@ export default function ResidentsPage() {
             className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16"
           >
             Pourquoi choisir{' '}
-            <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">EasyCo</span>
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+            >
+              EasyCo
+            </span>
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -191,10 +228,19 @@ export default function ResidentsPage() {
                   className="group relative"
                 >
                   {/* Hover gradient effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-red-500/0 group-hover:from-orange-500/5 group-hover:to-red-500/5 rounded-2xl transition-all duration-300" />
+                  <div
+                    className="absolute inset-0 rounded-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    style={{ background: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}08, ${RESIDENT_COLORS.gradient.end}08)` }}
+                  />
 
-                  <div className="relative bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-100 group-hover:border-orange-200 transition-all duration-300">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                  <div
+                    className="relative bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-100 transition-all duration-300"
+                    style={{ '--hover-border': `${RESIDENT_COLORS.primary}40` } as React.CSSProperties}
+                  >
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg"
+                      style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+                    >
                       <Icon className="w-7 h-7 text-white" />
                     </div>
 
@@ -209,7 +255,10 @@ export default function ResidentsPage() {
       </div>
 
       {/* Timeline section */}
-      <div className="py-20 px-6 bg-gradient-to-b from-transparent to-orange-50/30">
+      <div
+        className="py-20 px-6"
+        style={{ background: `linear-gradient(to bottom, transparent, ${RESIDENT_COLORS.light}50)` }}
+      >
         <div className="max-w-4xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -222,7 +271,10 @@ export default function ResidentsPage() {
 
           <div className="relative">
             {/* Vertical line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange-500 to-red-500" />
+            <div
+              className="absolute left-8 top-0 bottom-0 w-0.5"
+              style={{ backgroundImage: `linear-gradient(to bottom, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+            />
 
             {timeline.map((item, index) => (
               <motion.div
@@ -234,12 +286,18 @@ export default function ResidentsPage() {
                 className="relative pl-24 pb-12 last:pb-0"
               >
                 {/* Step circle */}
-                <div className="absolute left-0 w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg">
+                <div
+                  className="absolute left-0 w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+                >
                   <span className="text-white font-bold text-lg">{item.step}</span>
                 </div>
 
                 {/* Content */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-orange-100 hover:border-orange-300 transition-all hover:shadow-lg">
+                <div
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border transition-all hover:shadow-lg"
+                  style={{ borderColor: `${RESIDENT_COLORS.primary}20` }}
+                >
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
                   <p className="text-gray-600">{item.description}</p>
                 </div>
@@ -257,7 +315,10 @@ export default function ResidentsPage() {
         className="py-20 px-6"
       >
         <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 md:p-16 shadow-2xl">
+          <div
+            className="relative overflow-hidden rounded-3xl p-12 md:p-16 shadow-2xl"
+            style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
+          >
             {/* Animated blobs */}
             <motion.div
               animate={{
@@ -285,11 +346,14 @@ export default function ResidentsPage() {
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   Prêt pour l'aventure coliving ?
                 </h3>
-                <p className="text-orange-50 text-lg mb-8 max-w-2xl mx-auto">
+                <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: RESIDENT_COLORS.light }}>
                   Rejoins des centaines de résidents qui ont trouvé leur coloc idéale
                 </p>
                 <Link href="/signup">
-                  <Button className="bg-white text-orange-600 hover:bg-gray-50 font-semibold px-10 py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">
+                  <Button
+                    className="bg-white hover:bg-gray-50 font-semibold px-10 py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base"
+                    style={{ color: RESIDENT_COLORS.text }}
+                  >
                     Commencer maintenant
                     <Check className="w-5 h-5 ml-2" />
                   </Button>
