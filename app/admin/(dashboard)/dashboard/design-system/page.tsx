@@ -259,14 +259,10 @@ function GradientSignatureEditor() {
   const [searcherStart, setSearcherStart] = useState(66);
   const [searcherEnd, setSearcherEnd] = useState(100);
 
-  // Gradient original du logo avec les vraies couleurs et proportions
-  // Basé sur l'image du bouton "S'inscrire" - angle oblique 135deg
-  const signatureGradient = 'linear-gradient(135deg, #9F7AEA 0%, #B794F4 15%, #D97BBA 30%, #E57373 45%, #F59E0B 60%, #FBBF24 75%, #FCD34D 90%, #FDE68A 100%)';
-
-  // Fonction pour extraire une portion du gradient
-  const getGradientPortion = (start: number, end: number) => {
-    return `linear-gradient(135deg, #9F7AEA 0%, #B794F4 15%, #D97BBA 30%, #E57373 45%, #F59E0B 60%, #FBBF24 75%, #FCD34D 90%, #FDE68A 100%)`;
-  };
+  // Gradient original du logo - extrait directement du bouton "S'inscrire"
+  // L'orange est la couleur DOMINANTE (occupe ~50% du gradient)
+  // Proportions: violet (10%) -> rose/coral (15%) -> ORANGE VIF (50%) -> jaune doré (25%)
+  const signatureGradient = 'linear-gradient(135deg, #8B6DB5 0%, #A87AAD 8%, #C97B94 15%, #E07B6B 22%, #E8875A 30%, #F08C4A 40%, #F5924A 50%, #F9A54D 60%, #FBAF52 70%, #FDC55E 80%, #FFD36B 90%, #FFE082 100%)';
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
