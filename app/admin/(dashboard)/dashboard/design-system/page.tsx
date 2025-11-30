@@ -247,6 +247,317 @@ const residentColors: Record<number, string> = {
   800: '#BF360C', 900: '#8D2A0E'
 };
 
+/* ============================================
+   GRADIENT SIGNATURE EDITOR - Avec curseurs
+   ============================================ */
+function GradientSignatureEditor() {
+  // Positions des curseurs (0-100) pour chaque rôle
+  const [ownerStart, setOwnerStart] = useState(0);
+  const [ownerEnd, setOwnerEnd] = useState(33);
+  const [residentStart, setResidentStart] = useState(33);
+  const [residentEnd, setResidentEnd] = useState(66);
+  const [searcherStart, setSearcherStart] = useState(66);
+  const [searcherEnd, setSearcherEnd] = useState(100);
+
+  // Gradient original du logo avec les vraies couleurs et proportions
+  // Basé sur l'image du bouton "S'inscrire" - angle oblique 135deg
+  const signatureGradient = 'linear-gradient(135deg, #9F7AEA 0%, #B794F4 15%, #D97BBA 30%, #E57373 45%, #F59E0B 60%, #FBBF24 75%, #FCD34D 90%, #FDE68A 100%)';
+
+  // Fonction pour extraire une portion du gradient
+  const getGradientPortion = (start: number, end: number) => {
+    return `linear-gradient(135deg, #9F7AEA 0%, #B794F4 15%, #D97BBA 30%, #E57373 45%, #F59E0B 60%, #FBBF24 75%, #FCD34D 90%, #FDE68A 100%)`;
+  };
+
+  return (
+    <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+      <h3 className="text-lg font-bold text-white mb-2">Gradient Signature EasyCo</h3>
+      <p className="text-sm text-slate-400 mb-6">
+        Reproduis le gradient original du logo. Utilise les curseurs pour definir la portion de chaque role.
+      </p>
+
+      {/* GRADIENT ORIGINAL - TRES LARGE avec angle oblique */}
+      <div className="mb-8">
+        <p className="text-xs text-slate-400 mb-3">Gradient signature original (angle 135°) :</p>
+        <div
+          className="w-full h-32 rounded-2xl shadow-2xl"
+          style={{
+            background: signatureGradient,
+          }}
+        />
+      </div>
+
+      {/* CURSEURS INTERACTIFS */}
+      <div className="space-y-8 mb-8">
+        <h4 className="font-medium text-white">Definir les portions par role</h4>
+
+        {/* Barre de gradient avec indicateurs de position */}
+        <div className="relative">
+          <div
+            className="w-full h-8 rounded-lg"
+            style={{ background: signatureGradient }}
+          />
+          {/* Marqueurs de position */}
+          <div className="absolute inset-0 flex">
+            <div
+              className="border-r-2 border-white/50 h-full"
+              style={{ width: `${ownerEnd}%` }}
+            />
+            <div
+              className="border-r-2 border-white/50 h-full"
+              style={{ width: `${residentEnd - ownerEnd}%` }}
+            />
+          </div>
+          <div className="flex justify-between mt-1 text-[10px] text-slate-500 font-mono">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        {/* Owner Slider */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-purple-400 font-bold">Owner</span>
+            <span className="text-slate-400 text-sm font-mono">{ownerStart}% - {ownerEnd}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Debut</span>
+            <input
+              type="range"
+              min="0"
+              max="50"
+              value={ownerStart}
+              onChange={(e) => setOwnerStart(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{ownerStart}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Fin</span>
+            <input
+              type="range"
+              min="10"
+              max="60"
+              value={ownerEnd}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setOwnerEnd(val);
+                if (residentStart < val) setResidentStart(val);
+              }}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{ownerEnd}%</span>
+          </div>
+          {/* Apercu Owner */}
+          <div
+            className="h-12 rounded-xl shadow-lg mt-2"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${100 / ((ownerEnd - ownerStart) / 100)}% 100%`,
+              backgroundPosition: `${ownerStart}% 50%`,
+            }}
+          />
+        </div>
+
+        {/* Resident Slider */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-orange-400 font-bold">Resident</span>
+            <span className="text-slate-400 text-sm font-mono">{residentStart}% - {residentEnd}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Debut</span>
+            <input
+              type="range"
+              min="20"
+              max="70"
+              value={residentStart}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setResidentStart(val);
+                if (ownerEnd > val) setOwnerEnd(val);
+              }}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{residentStart}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Fin</span>
+            <input
+              type="range"
+              min="40"
+              max="90"
+              value={residentEnd}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setResidentEnd(val);
+                if (searcherStart < val) setSearcherStart(val);
+              }}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{residentEnd}%</span>
+          </div>
+          {/* Apercu Resident */}
+          <div
+            className="h-12 rounded-xl shadow-lg mt-2"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${100 / ((residentEnd - residentStart) / 100)}% 100%`,
+              backgroundPosition: `${residentStart}% 50%`,
+            }}
+          />
+        </div>
+
+        {/* Searcher Slider */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-yellow-400 font-bold">Searcher</span>
+            <span className="text-slate-400 text-sm font-mono">{searcherStart}% - {searcherEnd}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Debut</span>
+            <input
+              type="range"
+              min="50"
+              max="90"
+              value={searcherStart}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setSearcherStart(val);
+                if (residentEnd > val) setResidentEnd(val);
+              }}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{searcherStart}%</span>
+          </div>
+          <div className="flex gap-4 items-center">
+            <span className="text-xs text-slate-500 w-12">Fin</span>
+            <input
+              type="range"
+              min="70"
+              max="100"
+              value={searcherEnd}
+              onChange={(e) => setSearcherEnd(Number(e.target.value))}
+              className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+            />
+            <span className="text-xs text-slate-400 w-10">{searcherEnd}%</span>
+          </div>
+          {/* Apercu Searcher */}
+          <div
+            className="h-12 rounded-xl shadow-lg mt-2"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${100 / ((searcherEnd - searcherStart) / 100)}% 100%`,
+              backgroundPosition: `${searcherStart}% 50%`,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* APERCU DES 3 BOUTONS */}
+      <div className="mb-8 p-6 bg-slate-700/30 rounded-xl">
+        <h4 className="font-medium text-white mb-4">Apercu des boutons avec tes reglages</h4>
+
+        {/* 3 boutons alignes */}
+        <div className="flex gap-0 mb-6">
+          <button
+            className="flex-1 px-6 py-4 text-white rounded-l-full font-semibold shadow-lg"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${ownerStart + (ownerEnd - ownerStart) / 2}% 50%`,
+            }}
+          >
+            Owner
+          </button>
+          <button
+            className="flex-1 px-6 py-4 text-white font-semibold shadow-lg"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${residentStart + (residentEnd - residentStart) / 2}% 50%`,
+            }}
+          >
+            Resident
+          </button>
+          <button
+            className="flex-1 px-6 py-4 text-white rounded-r-full font-semibold shadow-lg"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${searcherStart + (searcherEnd - searcherStart) / 2}% 50%`,
+            }}
+          >
+            Searcher
+          </button>
+        </div>
+
+        {/* Boutons separes */}
+        <p className="text-sm text-slate-400 mb-3">Boutons separes :</p>
+        <div className="flex flex-wrap gap-4">
+          <button
+            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${ownerStart + (ownerEnd - ownerStart) / 2}% 50%`,
+            }}
+          >
+            Interface Owner
+          </button>
+          <button
+            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${residentStart + (residentEnd - residentStart) / 2}% 50%`,
+            }}
+          >
+            Interface Resident
+          </button>
+          <button
+            className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
+            style={{
+              background: signatureGradient,
+              backgroundSize: `${300}% 100%`,
+              backgroundPosition: `${searcherStart + (searcherEnd - searcherStart) / 2}% 50%`,
+            }}
+          >
+            Interface Searcher
+          </button>
+        </div>
+      </div>
+
+      {/* CODE CSS GENERE */}
+      <div className="p-4 bg-slate-900 rounded-xl">
+        <p className="text-xs text-slate-400 mb-2">CSS genere pour chaque role :</p>
+        <div className="space-y-2 text-xs font-mono">
+          <div>
+            <span className="text-purple-400">/* Owner */</span>
+            <code className="text-green-400 block ml-4">
+              background-position: {ownerStart + (ownerEnd - ownerStart) / 2}% 50%;
+            </code>
+          </div>
+          <div>
+            <span className="text-orange-400">/* Resident */</span>
+            <code className="text-green-400 block ml-4">
+              background-position: {residentStart + (residentEnd - residentStart) / 2}% 50%;
+            </code>
+          </div>
+          <div>
+            <span className="text-yellow-400">/* Searcher */</span>
+            <code className="text-green-400 block ml-4">
+              background-position: {searcherStart + (searcherEnd - searcherStart) / 2}% 50%;
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ColorsSection() {
   return (
     <div className="space-y-8">
@@ -313,171 +624,8 @@ function ColorsSection() {
         </div>
       </div>
 
-      {/* GRADIENT SIGNATURE EASYCO - Couleurs originales du logo */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Gradient Signature EasyCo</h3>
-        <p className="text-sm text-slate-400 mb-6">Couleurs extraites directement du logo original - VIVES et SATUREES</p>
-
-        {/* Le gradient signature complet */}
-        <div className="mb-8">
-          <p className="text-xs text-slate-400 mb-2">Gradient signature complet :</p>
-          <div
-            className="h-16 rounded-xl shadow-lg"
-            style={{
-              background: 'linear-gradient(to right, #8B5CF6, #A855F7, #D946EF, #EC4899, #F43F5E, #F97316, #FB923C, #FBBF24, #FDE047)',
-            }}
-          />
-          <div className="flex justify-between mt-2 text-sm font-semibold">
-            <span className="text-purple-400">Owner</span>
-            <span className="text-orange-400">Resident</span>
-            <span className="text-yellow-400">Searcher</span>
-          </div>
-        </div>
-
-        {/* Decomposition du gradient - 9 couleurs VIVES */}
-        <div className="mb-8">
-          <h4 className="font-medium text-white mb-4">Decomposition (9 couleurs originales)</h4>
-          <div className="grid grid-cols-9 gap-3">
-            {[
-              { hex: '#8B5CF6', name: 'Violet vif', role: 'Owner' },
-              { hex: '#A855F7', name: 'Violet', role: 'Owner' },
-              { hex: '#D946EF', name: 'Fuchsia', role: 'Owner' },
-              { hex: '#EC4899', name: 'Pink', role: 'Resident' },
-              { hex: '#F43F5E', name: 'Rose', role: 'Resident' },
-              { hex: '#F97316', name: 'Orange', role: 'Resident' },
-              { hex: '#FB923C', name: 'Orange clair', role: 'Searcher' },
-              { hex: '#FBBF24', name: 'Amber', role: 'Searcher' },
-              { hex: '#FDE047', name: 'Jaune vif', role: 'Searcher' },
-            ].map((color, i) => (
-              <div key={i} className="text-center">
-                <div
-                  className="w-full aspect-square rounded-xl shadow-lg mb-2"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <p className="text-[11px] text-white font-mono font-bold">{color.hex}</p>
-                <p className="text-[10px] text-slate-400">{color.name}</p>
-                <p className={`text-[10px] font-semibold ${
-                  color.role === 'Owner' ? 'text-purple-400' :
-                  color.role === 'Resident' ? 'text-orange-400' : 'text-yellow-400'
-                }`}>{color.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Portions par role */}
-        <div className="mb-8">
-          <h4 className="font-medium text-white mb-4">Gradients par role</h4>
-          <div className="grid grid-cols-3 gap-6">
-            <div>
-              <div
-                className="h-14 rounded-xl shadow-lg mb-3"
-                style={{ background: 'linear-gradient(to right, #8B5CF6, #A855F7, #D946EF)' }}
-              />
-              <p className="text-purple-400 font-bold text-center">Owner</p>
-              <p className="text-slate-500 text-xs text-center font-mono">#8B5CF6 → #D946EF</p>
-            </div>
-            <div>
-              <div
-                className="h-14 rounded-xl shadow-lg mb-3"
-                style={{ background: 'linear-gradient(to right, #EC4899, #F43F5E, #F97316)' }}
-              />
-              <p className="text-orange-400 font-bold text-center">Resident</p>
-              <p className="text-slate-500 text-xs text-center font-mono">#EC4899 → #F97316</p>
-            </div>
-            <div>
-              <div
-                className="h-14 rounded-xl shadow-lg mb-3"
-                style={{ background: 'linear-gradient(to right, #FB923C, #FBBF24, #FDE047)' }}
-              />
-              <p className="text-yellow-400 font-bold text-center">Searcher</p>
-              <p className="text-slate-500 text-xs text-center font-mono">#FB923C → #FDE047</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Palettes etendues par role - couleurs VIVES */}
-        <div className="space-y-6">
-          <h4 className="font-medium text-white">Palettes etendues (6 nuances par role)</h4>
-
-          {/* Owner */}
-          <div>
-            <p className="text-sm text-purple-400 font-bold mb-3">Owner - Violet/Fuchsia</p>
-            <div className="grid grid-cols-6 gap-3">
-              {[
-                { hex: '#7C3AED' },
-                { hex: '#8B5CF6' },
-                { hex: '#A855F7' },
-                { hex: '#C026D3' },
-                { hex: '#D946EF' },
-                { hex: '#E879F9' },
-              ].map((color, i) => (
-                <div key={i} className="text-center">
-                  <div
-                    className="w-full h-12 rounded-xl shadow-lg"
-                    style={{ backgroundColor: color.hex }}
-                  />
-                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Resident */}
-          <div>
-            <p className="text-sm text-orange-400 font-bold mb-3">Resident - Pink/Orange</p>
-            <div className="grid grid-cols-6 gap-3">
-              {[
-                { hex: '#DB2777' },
-                { hex: '#EC4899' },
-                { hex: '#F43F5E' },
-                { hex: '#EF4444' },
-                { hex: '#F97316' },
-                { hex: '#FB923C' },
-              ].map((color, i) => (
-                <div key={i} className="text-center">
-                  <div
-                    className="w-full h-12 rounded-xl shadow-lg"
-                    style={{ backgroundColor: color.hex }}
-                  />
-                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Searcher */}
-          <div>
-            <p className="text-sm text-yellow-400 font-bold mb-3">Searcher - Orange/Jaune</p>
-            <div className="grid grid-cols-6 gap-3">
-              {[
-                { hex: '#EA580C' },
-                { hex: '#FB923C' },
-                { hex: '#FBBF24' },
-                { hex: '#FACC15' },
-                { hex: '#FDE047' },
-                { hex: '#FEF08A' },
-              ].map((color, i) => (
-                <div key={i} className="text-center">
-                  <div
-                    className="w-full h-12 rounded-xl shadow-lg"
-                    style={{ backgroundColor: color.hex }}
-                  />
-                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Code CSS */}
-        <div className="mt-6 p-4 bg-slate-900 rounded-xl">
-          <p className="text-xs text-slate-400 mb-2">Gradient signature CSS :</p>
-          <code className="text-sm text-green-400 font-mono">
-            linear-gradient(to right, #8B5CF6, #A855F7, #D946EF, #EC4899, #F43F5E, #F97316, #FB923C, #FBBF24, #FDE047)
-          </code>
-        </div>
-      </div>
+      {/* GRADIENT SIGNATURE EASYCO - Avec curseurs interactifs */}
+      <GradientSignatureEditor />
 
       {/* Autres Gradients */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
