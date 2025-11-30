@@ -292,44 +292,39 @@ function GradientSignatureEditor() {
     return rgbToHex(r, g, b);
   };
 
-  // Generateur de palette de couleurs a partir du gradient
+  // Generateur de palette basee sur les couleurs REELLES du gradient du role
+  // Extrait 5 couleurs equidistantes du gradient configure
   const generateColorPalette = (pos: number, width: number) => {
     const start = Math.max(0, pos - width / 2);
     const end = Math.min(100, pos + width / 2);
-    const center = pos;
 
-    // Primary = couleur centrale
-    const primaryRgb = hexToRgb(getColorAtPosition(center));
-    const primary = getColorAtPosition(center);
+    if (width <= 2) {
+      // Si couleur unie, retourner la meme couleur pour tout
+      const solid = getColorAtPosition(pos);
+      return {
+        color1: solid,
+        color2: solid,
+        color3: solid,
+        color4: solid,
+        color5: solid,
+      };
+    }
 
-    // Hover = plus sature/fonce (-10% luminosite)
-    const hover = rgbToHex(
-      Math.max(0, Math.round(primaryRgb.r * 0.85)),
-      Math.max(0, Math.round(primaryRgb.g * 0.85)),
-      Math.max(0, Math.round(primaryRgb.b * 0.85))
-    );
+    // Extraire 5 couleurs equidistantes du gradient (les vraies couleurs du degrade)
+    const step = (end - start) / 4;
+    const color1 = getColorAtPosition(start);            // Debut du gradient
+    const color2 = getColorAtPosition(start + step);     // 25% du gradient
+    const color3 = getColorAtPosition(start + step * 2); // Centre (50%)
+    const color4 = getColorAtPosition(start + step * 3); // 75% du gradient
+    const color5 = getColorAtPosition(end);              // Fin du gradient
 
-    // Light = tres clair (+85% vers blanc)
-    const light = rgbToHex(
-      Math.min(255, Math.round(primaryRgb.r + (255 - primaryRgb.r) * 0.85)),
-      Math.min(255, Math.round(primaryRgb.g + (255 - primaryRgb.g) * 0.85)),
-      Math.min(255, Math.round(primaryRgb.b + (255 - primaryRgb.b) * 0.85))
-    );
-
-    // Dark = beaucoup plus fonce (-40% luminosite)
-    const dark = rgbToHex(
-      Math.max(0, Math.round(primaryRgb.r * 0.6)),
-      Math.max(0, Math.round(primaryRgb.g * 0.6)),
-      Math.max(0, Math.round(primaryRgb.b * 0.6))
-    );
-
-    // Accent = couleur de debut du gradient (ou fin si width > 0)
-    const accent = width <= 2 ? primary : getColorAtPosition(start);
-
-    // Couleur de fin du gradient
-    const gradientEnd = width <= 2 ? primary : getColorAtPosition(end);
-
-    return { primary, hover, light, dark, accent, gradientEnd };
+    return {
+      color1,
+      color2,
+      color3,
+      color4,
+      color5,
+    };
   };
 
   // Curseurs INDEPENDANTS - Position + Largeur (valeurs par defaut basees sur le screenshot)
@@ -382,28 +377,28 @@ function GradientSignatureEditor() {
     setTimeout(() => setSaveMessage(null), 3000);
   };
 
-  // Composant pour afficher les carres de couleurs
-  const ColorSwatches = ({ palette, role }: { palette: ReturnType<typeof generateColorPalette>, role: string }) => (
+  // Composant pour afficher les carres de couleurs REELLES du gradient
+  const ColorSwatches = ({ palette }: { palette: ReturnType<typeof generateColorPalette> }) => (
     <div className="flex gap-1 mt-2">
       <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.primary }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Primary</span>
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color1 }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">0%</span>
       </div>
       <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.hover }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Hover</span>
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color2 }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">25%</span>
       </div>
       <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.light }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Light</span>
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color3 }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">50%</span>
       </div>
       <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.dark }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Dark</span>
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color4 }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">75%</span>
       </div>
       <div className="group relative">
-        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.accent }} />
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Accent</span>
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.color5 }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">100%</span>
       </div>
     </div>
   );
@@ -541,13 +536,13 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={ownerPalette} role="owner" />
+              <ColorSwatches palette={ownerPalette} />
             </div>
             <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Primary: {ownerPalette.primary}</div>
-              <div>Hover: {ownerPalette.hover}</div>
+              <div>Debut: {ownerPalette.color1}</div>
+              <div>Fin: {ownerPalette.color5}</div>
             </div>
           </div>
 
@@ -555,13 +550,13 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={residentPalette} role="resident" />
+              <ColorSwatches palette={residentPalette} />
             </div>
             <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Primary: {residentPalette.primary}</div>
-              <div>Hover: {residentPalette.hover}</div>
+              <div>Debut: {residentPalette.color1}</div>
+              <div>Fin: {residentPalette.color5}</div>
             </div>
           </div>
 
@@ -569,13 +564,13 @@ function GradientSignatureEditor() {
           <div className="text-center">
             <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
               style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
-            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <p className="text-xs text-slate-400 mb-2">Couleurs du gradient:</p>
             <div className="flex justify-center">
-              <ColorSwatches palette={searcherPalette} role="searcher" />
+              <ColorSwatches palette={searcherPalette} />
             </div>
             <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
-              <div>Primary: {searcherPalette.primary}</div>
-              <div>Hover: {searcherPalette.hover}</div>
+              <div>Debut: {searcherPalette.color1}</div>
+              <div>Fin: {searcherPalette.color5}</div>
             </div>
           </div>
         </div>
@@ -593,39 +588,39 @@ function GradientSignatureEditor() {
 
       {/* CSS GENERE - COMPLET */}
       <div className="p-4 bg-slate-900 rounded-xl">
-        <p className="text-xs text-slate-400 mb-3">Variables CSS generees (a copier dans globals.css) :</p>
+        <p className="text-xs text-slate-400 mb-3">Couleurs du gradient (a copier dans globals.css) :</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
           {/* Owner */}
           <div className="space-y-1">
             <div className="text-purple-400 font-bold mb-2">/* OWNER */</div>
-            <div><span className="text-slate-400">--owner-primary:</span> <code className="text-green-400">{ownerPalette.primary};</code></div>
-            <div><span className="text-slate-400">--owner-hover:</span> <code className="text-green-400">{ownerPalette.hover};</code></div>
-            <div><span className="text-slate-400">--owner-light:</span> <code className="text-green-400">{ownerPalette.light};</code></div>
-            <div><span className="text-slate-400">--owner-dark:</span> <code className="text-green-400">{ownerPalette.dark};</code></div>
-            <div><span className="text-slate-400">--owner-accent:</span> <code className="text-green-400">{ownerPalette.accent};</code></div>
-            <div><span className="text-slate-400">--owner-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
+            <div><span className="text-slate-400">--owner-100:</span> <code className="text-green-400">{ownerPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--owner-300:</span> <code className="text-green-400">{ownerPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--owner-500:</span> <code className="text-green-400">{ownerPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--owner-700:</span> <code className="text-green-400">{ownerPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--owner-900:</span> <code className="text-green-400">{ownerPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--owner-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
           </div>
 
           {/* Resident */}
           <div className="space-y-1">
             <div className="text-orange-400 font-bold mb-2">/* RESIDENT */</div>
-            <div><span className="text-slate-400">--resident-primary:</span> <code className="text-green-400">{residentPalette.primary};</code></div>
-            <div><span className="text-slate-400">--resident-hover:</span> <code className="text-green-400">{residentPalette.hover};</code></div>
-            <div><span className="text-slate-400">--resident-light:</span> <code className="text-green-400">{residentPalette.light};</code></div>
-            <div><span className="text-slate-400">--resident-dark:</span> <code className="text-green-400">{residentPalette.dark};</code></div>
-            <div><span className="text-slate-400">--resident-accent:</span> <code className="text-green-400">{residentPalette.accent};</code></div>
-            <div><span className="text-slate-400">--resident-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(residentPos, residentWidth)};</code></div>
+            <div><span className="text-slate-400">--resident-100:</span> <code className="text-green-400">{residentPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--resident-300:</span> <code className="text-green-400">{residentPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--resident-500:</span> <code className="text-green-400">{residentPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--resident-700:</span> <code className="text-green-400">{residentPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--resident-900:</span> <code className="text-green-400">{residentPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--resident-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(residentPos, residentWidth)};</code></div>
           </div>
 
           {/* Searcher */}
           <div className="space-y-1">
             <div className="text-yellow-400 font-bold mb-2">/* SEARCHER */</div>
-            <div><span className="text-slate-400">--searcher-primary:</span> <code className="text-green-400">{searcherPalette.primary};</code></div>
-            <div><span className="text-slate-400">--searcher-hover:</span> <code className="text-green-400">{searcherPalette.hover};</code></div>
-            <div><span className="text-slate-400">--searcher-light:</span> <code className="text-green-400">{searcherPalette.light};</code></div>
-            <div><span className="text-slate-400">--searcher-dark:</span> <code className="text-green-400">{searcherPalette.dark};</code></div>
-            <div><span className="text-slate-400">--searcher-accent:</span> <code className="text-green-400">{searcherPalette.accent};</code></div>
-            <div><span className="text-slate-400">--searcher-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
+            <div><span className="text-slate-400">--searcher-100:</span> <code className="text-green-400">{searcherPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--searcher-300:</span> <code className="text-green-400">{searcherPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--searcher-500:</span> <code className="text-green-400">{searcherPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--searcher-700:</span> <code className="text-green-400">{searcherPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--searcher-900:</span> <code className="text-green-400">{searcherPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--searcher-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
           </div>
         </div>
       </div>
