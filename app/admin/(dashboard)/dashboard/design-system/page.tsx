@@ -1901,16 +1901,54 @@ function getSessionId(): string {
   return sessionId;
 }
 
+// Type for saved design choices from database
+interface SavedChoice {
+  id: string;
+  session_id: string;
+  choice_key: string;
+  choice_title: string;
+  selected_version: 'v1' | 'v2';
+  v1_label: string;
+  v2_label: string;
+  feedback: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 function ChoicesSection() {
   const [selectedChoices, setSelectedChoices] = useState<Record<string, 'v1' | 'v2'>>({});
   const [feedbacks, setFeedbacks] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<Record<string, boolean>>({});
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [sessionId, setSessionId] = useState<string>('');
+  const [savedChoices, setSavedChoices] = useState<SavedChoice[]>([]);
+  const [loadingChoices, setLoadingChoices] = useState(true);
+
+  // Load saved choices from database
+  const loadSavedChoices = useCallback(async () => {
+    setLoadingChoices(true);
+    try {
+      const { data, error } = await supabase
+        .from('design_choices')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading choices:', error);
+      } else {
+        setSavedChoices(data || []);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+    } finally {
+      setLoadingChoices(false);
+    }
+  }, []);
 
   useEffect(() => {
     setSessionId(getSessionId());
-  }, []);
+    loadSavedChoices();
+  }, [loadSavedChoices]);
 
   const choiceDefinitions = {
     cards: { title: 'Style de cartes', v1Label: 'V1 - Flat', v2Label: 'V2 - Glassmorphism' },
@@ -1972,6 +2010,8 @@ function ChoicesSection() {
       }
 
       setSaved(prev => ({ ...prev, [choiceKey]: true }));
+      // Refresh saved choices after saving
+      loadSavedChoices();
       setTimeout(() => {
         setSaved(prev => ({ ...prev, [choiceKey]: false }));
       }, 3000);
@@ -1989,8 +2029,93 @@ function ChoicesSection() {
     }
   };
 
+  // Group choices by session for display
+  const groupedBySession = savedChoices.reduce((acc, choice) => {
+    if (!acc[choice.session_id]) {
+      acc[choice.session_id] = [];
+    }
+    acc[choice.session_id].push(choice);
+    return acc;
+  }, {} as Record<string, SavedChoice[]>);
+
   return (
     <div className="space-y-6">
+      {/* SECTION: Résultats enregistrés */}
+      <div className="bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/20 rounded-xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            Choix enregistrés
+          </h3>
+          <button
+            onClick={loadSavedChoices}
+            className="text-sm text-slate-400 hover:text-white flex items-center gap-1"
+          >
+            <RefreshCw className={`w-4 h-4 ${loadingChoices ? 'animate-spin' : ''}`} />
+            Actualiser
+          </button>
+        </div>
+
+        {loadingChoices ? (
+          <div className="text-center py-8 text-slate-400">
+            <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
+            Chargement des choix...
+          </div>
+        ) : savedChoices.length === 0 ? (
+          <div className="text-center py-8 text-slate-400">
+            <p>Aucun choix enregistré pour le moment.</p>
+            <p className="text-sm mt-1">Fais tes choix ci-dessous et clique sur "Sauvegarder".</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {Object.entries(groupedBySession).map(([sessId, choices]) => (
+              <div key={sessId} className="bg-slate-800/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
+                  <span className="text-xs text-slate-500 font-mono">Session: {sessId.substring(0, 20)}...</span>
+                  <span className="text-xs text-slate-600">
+                    {new Date(choices[0]?.created_at).toLocaleDateString('fr-FR', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {choices.map((choice) => (
+                    <div
+                      key={choice.id}
+                      className={`p-3 rounded-lg border ${
+                        choice.selected_version === 'v1'
+                          ? 'bg-blue-500/10 border-blue-500/30'
+                          : 'bg-green-500/10 border-green-500/30'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-medium text-white text-sm">{choice.choice_title}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          choice.selected_version === 'v1'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : 'bg-green-500/20 text-green-400'
+                        }`}>
+                          {choice.selected_version === 'v1' ? choice.v1_label : choice.v2_label}
+                        </span>
+                      </div>
+                      {choice.feedback && (
+                        <div className="mt-2 pt-2 border-t border-slate-700">
+                          <p className="text-xs text-slate-400 italic">"{choice.feedback}"</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4">
         <p className="text-orange-300">
           <strong>Important :</strong> Cette section permet de choisir entre 2 directions de design.
