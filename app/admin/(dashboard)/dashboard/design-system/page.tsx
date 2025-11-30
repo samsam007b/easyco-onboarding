@@ -614,6 +614,57 @@ function GradientSignatureEditor() {
   );
 }
 
+// Composant pour afficher une couleur avec justification
+interface ColorAuditCardProps {
+  hex: string;
+  name: string;
+  usage: string;
+  justification: string;
+  status: 'keep' | 'review' | 'remove' | 'semantic';
+  location?: string;
+}
+
+function ColorAuditCard({ hex, name, usage, justification, status, location }: ColorAuditCardProps) {
+  const statusColors = {
+    keep: 'border-green-500/50 bg-green-500/10',
+    review: 'border-yellow-500/50 bg-yellow-500/10',
+    remove: 'border-red-500/50 bg-red-500/10',
+    semantic: 'border-blue-500/50 bg-blue-500/10',
+  };
+
+  const statusLabels = {
+    keep: { text: 'A conserver', color: 'text-green-400' },
+    review: { text: 'A revoir', color: 'text-yellow-400' },
+    remove: { text: 'A supprimer?', color: 'text-red-400' },
+    semantic: { text: 'Semantique', color: 'text-blue-400' },
+  };
+
+  return (
+    <div className={`p-4 rounded-xl border ${statusColors[status]}`}>
+      <div className="flex items-start gap-3">
+        <div
+          className="w-12 h-12 rounded-lg border border-slate-600 shadow-inner flex-shrink-0"
+          style={{ background: hex }}
+        />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className="font-semibold text-white text-sm">{name}</h4>
+            <span className={`text-xs ${statusLabels[status].color} font-medium`}>
+              {statusLabels[status].text}
+            </span>
+          </div>
+          <p className="text-xs font-mono text-slate-400 mt-0.5">{hex}</p>
+          <p className="text-xs text-slate-300 mt-1">{usage}</p>
+          <p className="text-xs text-slate-500 mt-1 italic">{justification}</p>
+          {location && (
+            <p className="text-[10px] text-slate-600 mt-1 font-mono">📁 {location}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ColorsSection() {
   return (
     <div className="space-y-8">
@@ -623,6 +674,9 @@ function ColorsSection() {
       {/* Semantic Colors */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-4">Couleurs Semantiques</h3>
+        <p className="text-sm text-slate-400 mb-4">
+          Ces couleurs ont une signification universelle et sont necessaires pour l'UX.
+        </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="p-4 bg-green-500 rounded-xl text-white">
             <p className="font-bold">Success</p>
@@ -640,6 +694,355 @@ function ColorsSection() {
             <p className="font-bold">Info</p>
             <p className="text-sm opacity-80">#3B82F6</p>
           </div>
+        </div>
+      </div>
+
+      {/* AUDIT COMPLET DES COULEURS */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <h3 className="text-lg font-bold text-white">Audit des couleurs de l'application</h3>
+          <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-xs rounded-full">A valider</span>
+        </div>
+        <p className="text-sm text-slate-400 mb-6">
+          Toutes les couleurs presentes dans l'application, avec leur justification.
+          Decidons ensemble lesquelles correspondent a la direction artistique.
+        </p>
+
+        {/* Legende */}
+        <div className="flex flex-wrap gap-4 mb-6 p-3 bg-slate-700/30 rounded-lg">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-green-500/50 border border-green-500"></div>
+            <span className="text-xs text-slate-300">A conserver</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-yellow-500/50 border border-yellow-500"></div>
+            <span className="text-xs text-slate-300">A revoir</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-red-500/50 border border-red-500"></div>
+            <span className="text-xs text-slate-300">A supprimer?</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-blue-500/50 border border-blue-500"></div>
+            <span className="text-xs text-slate-300">Semantique (necessaire)</span>
+          </div>
+        </div>
+
+        {/* 1. COULEURS PRINCIPALES DES ROLES */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 via-orange-500 to-yellow-500"></span>
+            1. Couleurs principales des roles
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Ces couleurs forment le coeur de l'identite visuelle.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <ColorAuditCard
+              hex="#6E56CF"
+              name="Owner Primary (Mauve)"
+              usage="Couleur principale interface proprietaire"
+              justification="Couleur signature du gradient - debut. Evoque la royaute, la possession."
+              status="keep"
+              location="globals.css, tailwind.config"
+            />
+            <ColorAuditCard
+              hex="#FF6F3C"
+              name="Resident Primary (Orange)"
+              usage="Couleur principale interface resident"
+              justification="Couleur signature du gradient - centre. Evoque la chaleur, le foyer."
+              status="keep"
+              location="globals.css, tailwind.config"
+            />
+            <ColorAuditCard
+              hex="#FFD249"
+              name="Searcher Primary (Jaune)"
+              usage="Couleur principale interface chercheur"
+              justification="Couleur signature du gradient - fin. Evoque l'energie, la recherche."
+              status="keep"
+              location="globals.css, tailwind.config"
+            />
+          </div>
+        </div>
+
+        {/* 2. COULEURS SECONDAIRES / ACCENTS */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-cyan-500"></span>
+            2. Couleurs d'accent (hors roles)
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Couleurs utilisees pour les accents, liens, focus...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ColorAuditCard
+              hex="#22D3EE"
+              name="Cyan / Turquoise"
+              usage="Headers de settings, liens, accents secondaires"
+              justification="Couleur froide qui contraste avec les teintes chaudes. Utilisee dans /settings pour les titres."
+              status="review"
+              location="settings/page.tsx, components"
+            />
+            <ColorAuditCard
+              hex="#F472B6"
+              name="Pink 400"
+              usage="Gradients decoratifs, icones feminines"
+              justification="Presente dans certains gradients decoratifs. Ne fait pas partie du gradient signature."
+              status="review"
+              location="landing, settings"
+            />
+            <ColorAuditCard
+              hex="#EC4899"
+              name="Pink 500"
+              usage="Accents roses, certains badges"
+              justification="Variante plus saturee du rose. Coherent avec direction artistique?"
+              status="review"
+              location="components/ui"
+            />
+            <ColorAuditCard
+              hex="#FB7185"
+              name="Rose 400"
+              usage="Gradients secondaires"
+              justification="Rose corail proche de l'orange. Transition dans certains degrades."
+              status="review"
+              location="onboarding"
+            />
+          </div>
+        </div>
+
+        {/* 3. COULEURS UI / INTERFACE */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-slate-500"></span>
+            3. Couleurs d'interface (UI)
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Couleurs utilisees pour les fonds, bordures, textes...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ColorAuditCard
+              hex="#0F172A"
+              name="Slate 900"
+              usage="Fond principal sombre"
+              justification="Fond de l'application en mode sombre. Standard et necessaire."
+              status="keep"
+              location="layout, globals.css"
+            />
+            <ColorAuditCard
+              hex="#1E293B"
+              name="Slate 800"
+              usage="Cartes, conteneurs"
+              justification="Fond des cartes et elements surreleves. Hierarchie visuelle."
+              status="keep"
+              location="components/ui/card"
+            />
+            <ColorAuditCard
+              hex="#334155"
+              name="Slate 700"
+              usage="Bordures, separateurs"
+              justification="Bordures subtiles, lignes de separation."
+              status="keep"
+              location="global"
+            />
+            <ColorAuditCard
+              hex="#94A3B8"
+              name="Slate 400"
+              usage="Texte secondaire, icones inactives"
+              justification="Texte de moindre importance, labels."
+              status="keep"
+              location="global"
+            />
+            <ColorAuditCard
+              hex="#FFFFFF"
+              name="White"
+              usage="Texte principal, fond clair"
+              justification="Texte sur fonds sombres, elements importants."
+              status="keep"
+              location="global"
+            />
+          </div>
+        </div>
+
+        {/* 4. COULEURS ADMIN SPECIFIQUES */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-purple-600"></span>
+            4. Couleurs Admin specifiques
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Couleurs utilisees uniquement dans l'interface admin.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ColorAuditCard
+              hex="#9333EA"
+              name="Purple 600"
+              usage="Accent principal admin, sidebar active"
+              justification="Derive de la couleur Owner. Coherent car admin = 'proprietaire' de la plateforme."
+              status="keep"
+              location="admin/sidebar, admin/layout"
+            />
+            <ColorAuditCard
+              hex="#7C3AED"
+              name="Violet 600"
+              usage="Boutons admin, CTA"
+              justification="Similaire au mauve owner mais plus vif. Distinction admin/owner."
+              status="keep"
+              location="admin components"
+            />
+          </div>
+        </div>
+
+        {/* 5. COULEURS SEMANTIQUES ETENDUES */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-gradient-to-r from-green-500 via-blue-500 to-red-500"></span>
+            5. Couleurs semantiques (fonctionnelles)
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Ces couleurs ont une signification universelle et sont necessaires.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ColorAuditCard
+              hex="#10B981"
+              name="Green 500 / Emerald"
+              usage="Succes, validation, match, disponible"
+              justification="Couleur universelle de succes. Boutons 'Matcher', badges 'Disponible'."
+              status="semantic"
+              location="global, matching"
+            />
+            <ColorAuditCard
+              hex="#EF4444"
+              name="Red 500"
+              usage="Erreur, suppression, refus"
+              justification="Couleur universelle d'erreur. Boutons 'Supprimer', alertes."
+              status="semantic"
+              location="global, forms"
+            />
+            <ColorAuditCard
+              hex="#F59E0B"
+              name="Amber 500"
+              usage="Warning, attention, en attente"
+              justification="Couleur universelle d'avertissement. Badges 'En attente'."
+              status="semantic"
+              location="global, status"
+            />
+            <ColorAuditCard
+              hex="#3B82F6"
+              name="Blue 500"
+              usage="Info, liens, focus"
+              justification="Couleur universelle d'information. Liens, focus ring."
+              status="semantic"
+              location="global, focus"
+            />
+          </div>
+        </div>
+
+        {/* 6. COULEURS PROBLEMATIQUES / A VERIFIER */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-yellow-500" />
+            6. Couleurs a verifier / potentiellement hors charte
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Ces couleurs existent dans le code mais leur presence merite discussion.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ColorAuditCard
+              hex="#06B6D4"
+              name="Cyan 500"
+              usage="Settings: titres et icones de section"
+              justification="Couleur froide qui detonne avec les teintes chaudes de la marque. Alternative: utiliser les couleurs du role actif?"
+              status="review"
+              location="settings/page.tsx"
+            />
+            <ColorAuditCard
+              hex="#8B5CF6"
+              name="Violet 500"
+              usage="Divers: badges, accents"
+              justification="Entre le mauve Owner et le bleu. Redondant avec Owner?"
+              status="review"
+              location="components/ui/badge"
+            />
+            <ColorAuditCard
+              hex="#A855F7"
+              name="Purple 500"
+              usage="Boutons secondaires, hover states"
+              justification="Variation du mauve. Trop de nuances de violet?"
+              status="review"
+              location="buttons, cards"
+            />
+            <ColorAuditCard
+              hex="#818CF8"
+              name="Indigo 400"
+              usage="Liens, accents tertiaires"
+              justification="Bleu-violet utilise pour les liens. Coherent?"
+              status="review"
+              location="components"
+            />
+            <ColorAuditCard
+              hex="#14B8A6"
+              name="Teal 500"
+              usage="Accents specifiques matching"
+              justification="Vert-bleu proche du cyan. Double emploi avec cyan?"
+              status="remove"
+              location="matching"
+            />
+          </div>
+        </div>
+
+        {/* 7. GRADIENTS SECONDAIRES */}
+        <div className="mb-8">
+          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-gradient-to-r from-cyan-400 to-pink-400"></span>
+            7. Gradients secondaires
+          </h4>
+          <p className="text-xs text-slate-500 mb-4">Gradients utilises en dehors du gradient signature.</p>
+          <div className="space-y-4">
+            <div className="p-4 rounded-xl border border-yellow-500/50 bg-yellow-500/10">
+              <div className="flex items-center gap-4 mb-2">
+                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(to right, #22D3EE, #F472B6)' }} />
+                <div>
+                  <h5 className="text-white font-medium">Cyan → Pink</h5>
+                  <p className="text-xs text-slate-400">Settings headers decoratifs</p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 italic">
+                Justification: Gradient decoratif utilise dans les settings. Ne fait pas partie de l'identite principale.
+                Peut-etre remplacer par un gradient base sur le role de l'utilisateur?
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-green-500/50 bg-green-500/10">
+              <div className="flex items-center gap-4 mb-2">
+                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }} />
+                <div>
+                  <h5 className="text-white font-medium">Mauve → Orange → Jaune</h5>
+                  <p className="text-xs text-slate-400">Gradient signature officiel</p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 italic">
+                Justification: C'est LE gradient signature EasyCo. A utiliser pour les CTA principaux et elements de marque.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* RESUME / ACTIONS */}
+        <div className="p-4 bg-slate-700/30 rounded-xl">
+          <h4 className="font-semibold text-white mb-3">Resume des decisions a prendre:</h4>
+          <ul className="space-y-2 text-sm text-slate-300">
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 mt-1">✓</span>
+              <span><strong>Couleurs des roles (Mauve, Orange, Jaune)</strong> - A conserver, c'est le coeur de l'identite</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 mt-1">✓</span>
+              <span><strong>Couleurs semantiques (Vert, Rouge, Jaune, Bleu)</strong> - Necessaires pour l'UX</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 mt-1">✓</span>
+              <span><strong>Nuances de slate</strong> - Necessaires pour l'interface sombre</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-yellow-400 mt-1">?</span>
+              <span><strong>Cyan/Turquoise</strong> - Revoir si coherent avec la direction artistique chaude</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-yellow-400 mt-1">?</span>
+              <span><strong>Pink/Rose</strong> - Revoir l'utilite, peut-etre limiter son usage</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-yellow-400 mt-1">?</span>
+              <span><strong>Trop de nuances de violet</strong> - Simplifier la palette (Purple, Violet, Indigo)</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
