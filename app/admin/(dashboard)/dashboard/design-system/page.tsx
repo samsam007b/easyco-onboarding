@@ -268,6 +268,10 @@ function GradientSignatureEditor() {
     } : { r: 0, g: 0, b: 0 };
   };
 
+  const rgbToHex = (r: number, g: number, b: number): string => {
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
   const getColorAtPosition = (position: number): string => {
     let lower = gradientColors[0];
     let upper = gradientColors[gradientColors.length - 1];
@@ -285,16 +289,59 @@ function GradientSignatureEditor() {
     const r = Math.round(lowerRgb.r + factor * (upperRgb.r - lowerRgb.r));
     const g = Math.round(lowerRgb.g + factor * (upperRgb.g - lowerRgb.g));
     const b = Math.round(lowerRgb.b + factor * (upperRgb.b - lowerRgb.b));
-    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    return rgbToHex(r, g, b);
   };
 
-  // Curseurs INDEPENDANTS - Position + Largeur
-  const [ownerPos, setOwnerPos] = useState(10);
-  const [ownerWidth, setOwnerWidth] = useState(20);
-  const [residentPos, setResidentPos] = useState(55);
-  const [residentWidth, setResidentWidth] = useState(25);
-  const [searcherPos, setSearcherPos] = useState(85);
-  const [searcherWidth, setSearcherWidth] = useState(20);
+  // Generateur de palette de couleurs a partir du gradient
+  const generateColorPalette = (pos: number, width: number) => {
+    const start = Math.max(0, pos - width / 2);
+    const end = Math.min(100, pos + width / 2);
+    const center = pos;
+
+    // Primary = couleur centrale
+    const primaryRgb = hexToRgb(getColorAtPosition(center));
+    const primary = getColorAtPosition(center);
+
+    // Hover = plus sature/fonce (-10% luminosite)
+    const hover = rgbToHex(
+      Math.max(0, Math.round(primaryRgb.r * 0.85)),
+      Math.max(0, Math.round(primaryRgb.g * 0.85)),
+      Math.max(0, Math.round(primaryRgb.b * 0.85))
+    );
+
+    // Light = tres clair (+85% vers blanc)
+    const light = rgbToHex(
+      Math.min(255, Math.round(primaryRgb.r + (255 - primaryRgb.r) * 0.85)),
+      Math.min(255, Math.round(primaryRgb.g + (255 - primaryRgb.g) * 0.85)),
+      Math.min(255, Math.round(primaryRgb.b + (255 - primaryRgb.b) * 0.85))
+    );
+
+    // Dark = beaucoup plus fonce (-40% luminosite)
+    const dark = rgbToHex(
+      Math.max(0, Math.round(primaryRgb.r * 0.6)),
+      Math.max(0, Math.round(primaryRgb.g * 0.6)),
+      Math.max(0, Math.round(primaryRgb.b * 0.6))
+    );
+
+    // Accent = couleur de debut du gradient (ou fin si width > 0)
+    const accent = width <= 2 ? primary : getColorAtPosition(start);
+
+    // Couleur de fin du gradient
+    const gradientEnd = width <= 2 ? primary : getColorAtPosition(end);
+
+    return { primary, hover, light, dark, accent, gradientEnd };
+  };
+
+  // Curseurs INDEPENDANTS - Position + Largeur (valeurs par defaut basees sur le screenshot)
+  const [ownerPos, setOwnerPos] = useState(21);
+  const [ownerWidth, setOwnerWidth] = useState(34);
+  const [residentPos, setResidentPos] = useState(57);
+  const [residentWidth, setResidentWidth] = useState(28);
+  const [searcherPos, setSearcherPos] = useState(95);
+  const [searcherWidth, setSearcherWidth] = useState(50);
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   // Gradient EXACT comme dans globals.css (angle 135deg = oblique)
   const signatureGradient = 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)';
@@ -305,6 +352,61 @@ function GradientSignatureEditor() {
     const end = Math.min(100, pos + width / 2);
     return `linear-gradient(to right, ${getColorAtPosition(start)}, ${getColorAtPosition(end)})`;
   };
+
+  // Palettes generees pour chaque role
+  const ownerPalette = generateColorPalette(ownerPos, ownerWidth);
+  const residentPalette = generateColorPalette(residentPos, residentWidth);
+  const searcherPalette = generateColorPalette(searcherPos, searcherWidth);
+
+  // Fonction de sauvegarde
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveMessage(null);
+
+    const config = {
+      owner: { pos: ownerPos, width: ownerWidth, palette: ownerPalette },
+      resident: { pos: residentPos, width: residentWidth, palette: residentPalette },
+      searcher: { pos: searcherPos, width: searcherWidth, palette: searcherPalette },
+    };
+
+    // Sauvegarder dans localStorage pour l'instant
+    localStorage.setItem('easyco-gradient-config', JSON.stringify(config));
+
+    // Simuler un delai pour le feedback
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    setSaveMessage('Configuration sauvegardee!');
+    setIsSaving(false);
+
+    // Effacer le message apres 3 secondes
+    setTimeout(() => setSaveMessage(null), 3000);
+  };
+
+  // Composant pour afficher les carres de couleurs
+  const ColorSwatches = ({ palette, role }: { palette: ReturnType<typeof generateColorPalette>, role: string }) => (
+    <div className="flex gap-1 mt-2">
+      <div className="group relative">
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.primary }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Primary</span>
+      </div>
+      <div className="group relative">
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.hover }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Hover</span>
+      </div>
+      <div className="group relative">
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.light }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Light</span>
+      </div>
+      <div className="group relative">
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.dark }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Dark</span>
+      </div>
+      <div className="group relative">
+        <div className="w-8 h-8 rounded border border-slate-600" style={{ background: palette.accent }} />
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Accent</span>
+      </div>
+    </div>
+  );
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
@@ -400,17 +502,84 @@ function GradientSignatureEditor() {
         </div>
       </div>
 
-      {/* APERCU DES BOUTONS */}
+      {/* APERCU DES BOUTONS AVEC PALETTES */}
       <div className="mb-8 p-6 bg-slate-700/30 rounded-xl">
-        <h4 className="font-medium text-white mb-4">Apercu des boutons</h4>
-        <div className="flex flex-wrap gap-4 mb-6">
-          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
-          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
-          <button className="px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform"
-            style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-medium text-white">Apercu des boutons</h4>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-800 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+          >
+            {isSaving ? (
+              <>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Sauvegarde...
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Sauvegarder
+              </>
+            )}
+          </button>
         </div>
+
+        {saveMessage && (
+          <div className="mb-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm">
+            {saveMessage}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          {/* Owner */}
+          <div className="text-center">
+            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+              style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
+            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <div className="flex justify-center">
+              <ColorSwatches palette={ownerPalette} role="owner" />
+            </div>
+            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
+              <div>Primary: {ownerPalette.primary}</div>
+              <div>Hover: {ownerPalette.hover}</div>
+            </div>
+          </div>
+
+          {/* Resident */}
+          <div className="text-center">
+            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+              style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
+            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <div className="flex justify-center">
+              <ColorSwatches palette={residentPalette} role="resident" />
+            </div>
+            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
+              <div>Primary: {residentPalette.primary}</div>
+              <div>Hover: {residentPalette.hover}</div>
+            </div>
+          </div>
+
+          {/* Searcher */}
+          <div className="text-center">
+            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+              style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
+            <p className="text-xs text-slate-400 mb-2">Couleurs dominantes:</p>
+            <div className="flex justify-center">
+              <ColorSwatches palette={searcherPalette} role="searcher" />
+            </div>
+            <div className="mt-4 text-[10px] text-slate-500 font-mono space-y-1">
+              <div>Primary: {searcherPalette.primary}</div>
+              <div>Hover: {searcherPalette.hover}</div>
+            </div>
+          </div>
+        </div>
+
         <p className="text-sm text-slate-400 mb-3">Boutons alignes :</p>
         <div className="flex gap-0">
           <button className="flex-1 px-6 py-4 text-white rounded-l-full font-semibold shadow-lg"
@@ -422,13 +591,42 @@ function GradientSignatureEditor() {
         </div>
       </div>
 
-      {/* CSS GENERE */}
+      {/* CSS GENERE - COMPLET */}
       <div className="p-4 bg-slate-900 rounded-xl">
-        <p className="text-xs text-slate-400 mb-2">CSS genere :</p>
-        <div className="space-y-1 text-xs font-mono">
-          <div><span className="text-purple-400">--owner:</span> <code className="text-green-400">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
-          <div><span className="text-orange-400">--resident:</span> <code className="text-green-400">{getRoleGradient(residentPos, residentWidth)};</code></div>
-          <div><span className="text-yellow-400">--searcher:</span> <code className="text-green-400">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
+        <p className="text-xs text-slate-400 mb-3">Variables CSS generees (a copier dans globals.css) :</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+          {/* Owner */}
+          <div className="space-y-1">
+            <div className="text-purple-400 font-bold mb-2">/* OWNER */</div>
+            <div><span className="text-slate-400">--owner-primary:</span> <code className="text-green-400">{ownerPalette.primary};</code></div>
+            <div><span className="text-slate-400">--owner-hover:</span> <code className="text-green-400">{ownerPalette.hover};</code></div>
+            <div><span className="text-slate-400">--owner-light:</span> <code className="text-green-400">{ownerPalette.light};</code></div>
+            <div><span className="text-slate-400">--owner-dark:</span> <code className="text-green-400">{ownerPalette.dark};</code></div>
+            <div><span className="text-slate-400">--owner-accent:</span> <code className="text-green-400">{ownerPalette.accent};</code></div>
+            <div><span className="text-slate-400">--owner-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
+          </div>
+
+          {/* Resident */}
+          <div className="space-y-1">
+            <div className="text-orange-400 font-bold mb-2">/* RESIDENT */</div>
+            <div><span className="text-slate-400">--resident-primary:</span> <code className="text-green-400">{residentPalette.primary};</code></div>
+            <div><span className="text-slate-400">--resident-hover:</span> <code className="text-green-400">{residentPalette.hover};</code></div>
+            <div><span className="text-slate-400">--resident-light:</span> <code className="text-green-400">{residentPalette.light};</code></div>
+            <div><span className="text-slate-400">--resident-dark:</span> <code className="text-green-400">{residentPalette.dark};</code></div>
+            <div><span className="text-slate-400">--resident-accent:</span> <code className="text-green-400">{residentPalette.accent};</code></div>
+            <div><span className="text-slate-400">--resident-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(residentPos, residentWidth)};</code></div>
+          </div>
+
+          {/* Searcher */}
+          <div className="space-y-1">
+            <div className="text-yellow-400 font-bold mb-2">/* SEARCHER */</div>
+            <div><span className="text-slate-400">--searcher-primary:</span> <code className="text-green-400">{searcherPalette.primary};</code></div>
+            <div><span className="text-slate-400">--searcher-hover:</span> <code className="text-green-400">{searcherPalette.hover};</code></div>
+            <div><span className="text-slate-400">--searcher-light:</span> <code className="text-green-400">{searcherPalette.light};</code></div>
+            <div><span className="text-slate-400">--searcher-dark:</span> <code className="text-green-400">{searcherPalette.dark};</code></div>
+            <div><span className="text-slate-400">--searcher-accent:</span> <code className="text-green-400">{searcherPalette.accent};</code></div>
+            <div><span className="text-slate-400">--searcher-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
+          </div>
         </div>
       </div>
     </div>
