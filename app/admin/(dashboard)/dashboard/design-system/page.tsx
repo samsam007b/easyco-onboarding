@@ -2651,52 +2651,52 @@ function DropdownsSection() {
               <span className="text-purple-400 font-semibold">OWNER</span>
             </div>
             <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
-              {/* Header Gradient */}
-              <div className="relative px-4 py-4 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70">
+              {/* Header Gradient - Couleurs OFFICIELLES du gradient Owner */}
+              <div className="relative px-4 py-4" style={{ background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)' }}>
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <svg className="absolute inset-0 -m-1" width="52" height="52">
-                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
-                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(110, 86, 207, 0.5)" strokeWidth="3" strokeLinecap="round"
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"
                         strokeDasharray={`${2 * Math.PI * 24}`}
                         strokeDashoffset={`${2 * Math.PI * 24 * 0.25}`}
                         transform="rotate(-90 26 26)"
                       />
                     </svg>
-                    <div className="w-12 h-12 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
-                      <User className="w-6 h-6 text-gray-700" />
+                    <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-white/50 flex items-center justify-center">
+                      <User className="w-6 h-6 text-white" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900">sam jones</p>
-                    <p className="text-gray-700 text-xs truncate">sam@email.com</p>
+                    <p className="font-bold text-white">sam jones</p>
+                    <p className="text-white/90 text-xs truncate">sam@email.com</p>
                     <div className="mt-1 flex items-center gap-1">
-                      <div className="h-1 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                        <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
+                      <div className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+                        <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
                       </div>
-                      <span className="text-[10px] text-gray-700">75%</span>
+                      <span className="text-[10px] text-white/90">75%</span>
                     </div>
                   </div>
                 </div>
               </div>
               {/* Stats */}
-              <div className="px-3 py-2 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
+              <div className="px-3 py-2 bg-gradient-to-br from-purple-100 to-purple-50 border-b border-purple-200">
                 <div className="grid grid-cols-3 gap-1 text-center">
-                  <div><div className="text-sm font-bold text-gray-900">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
-                  <div className="border-x border-purple-200/50"><div className="text-sm font-bold text-gray-900">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
-                  <div><div className="text-sm font-bold text-gray-900">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
+                  <div><div className="text-sm font-bold text-[#6E56CF]">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
+                  <div className="border-x border-purple-200"><div className="text-sm font-bold text-[#6E56CF]">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
+                  <div><div className="text-sm font-bold text-[#6E56CF]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
                 </div>
               </div>
               {/* Menu */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', color: 'from-purple-100 to-indigo-100' },
-                  { icon: Euro, label: 'Finance', color: 'from-emerald-100 to-emerald-200/70' },
-                  { icon: Settings, label: 'Paramètres', color: 'from-blue-100 to-cyan-200/70' },
+                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' },
+                  { icon: Euro, label: 'Finance', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
+                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-purple-50/50 cursor-pointer group">
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-purple-50 cursor-pointer group">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
+                      <item.icon className="w-3.5 h-3.5 text-white" />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2719,52 +2719,52 @@ function DropdownsSection() {
               <span className="text-orange-400 font-semibold">RESIDENT</span>
             </div>
             <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
-              {/* Header Gradient - Coral/Peach tones */}
-              <div className="relative px-4 py-4 bg-gradient-to-br from-[#F5D5CF]/70 via-[#FFD5C5]/70 to-[#FFDAC9]/70">
+              {/* Header Gradient - Couleurs OFFICIELLES du gradient Resident */}
+              <div className="relative px-4 py-4" style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}>
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <svg className="absolute inset-0 -m-1" width="52" height="52">
-                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
-                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(255, 111, 60, 0.5)" strokeWidth="3" strokeLinecap="round"
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+                      <circle cx="26" cy="26" r="24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"
                         strokeDasharray={`${2 * Math.PI * 24}`}
                         strokeDashoffset={`${2 * Math.PI * 24 * 0.25}`}
                         transform="rotate(-90 26 26)"
                       />
                     </svg>
-                    <div className="w-12 h-12 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
-                      <Key className="w-6 h-6 text-gray-700" />
+                    <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-white/50 flex items-center justify-center">
+                      <Key className="w-6 h-6 text-white" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900">Marie Dupont</p>
-                    <p className="text-gray-700 text-xs truncate">marie@email.com</p>
+                    <p className="font-bold text-white">Marie Dupont</p>
+                    <p className="text-white/90 text-xs truncate">marie@email.com</p>
                     <div className="mt-1 flex items-center gap-1">
-                      <div className="h-1 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                        <div className="h-full bg-[#FF6F3C] rounded-full" style={{ width: '75%' }} />
+                      <div className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+                        <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
                       </div>
-                      <span className="text-[10px] text-gray-700">75%</span>
+                      <span className="text-[10px] text-white/90">75%</span>
                     </div>
                   </div>
                 </div>
               </div>
               {/* Stats */}
-              <div className="px-3 py-2 bg-gradient-to-br from-[#FFF3EF]/50 to-[#FFEBE5]/50 border-b border-[#FFDAC9]/50">
+              <div className="px-3 py-2 bg-gradient-to-br from-orange-100 to-orange-50 border-b border-orange-200">
                 <div className="grid grid-cols-3 gap-1 text-center">
-                  <div><div className="text-sm font-bold text-gray-900">2</div><div className="text-[10px] text-gray-600">Tâches</div></div>
-                  <div className="border-x border-[#FFDAC9]/50"><div className="text-sm font-bold text-gray-900">4</div><div className="text-[10px] text-gray-600">Membres</div></div>
-                  <div><div className="text-sm font-bold text-gray-900">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
+                  <div><div className="text-sm font-bold text-[#FF6F3C]">2</div><div className="text-[10px] text-gray-600">Tâches</div></div>
+                  <div className="border-x border-orange-200"><div className="text-sm font-bold text-[#FF6F3C]">4</div><div className="text-[10px] text-gray-600">Membres</div></div>
+                  <div><div className="text-sm font-bold text-[#FF6F3C]">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
                 </div>
               </div>
               {/* Menu */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', color: 'from-[#F5D5CF] to-[#FFDAC9]/70' },
-                  { icon: Euro, label: 'Finances', color: 'from-emerald-100 to-emerald-200/70' },
-                  { icon: Settings, label: 'Paramètres', color: 'from-blue-100 to-cyan-200/70' },
+                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #D97B6F 0%, #FF8C4B 100%)' },
+                  { icon: Euro, label: 'Finances', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
+                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-[#FFF3EF]/50 cursor-pointer group">
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer group">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
+                      <item.icon className="w-3.5 h-3.5 text-white" />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2826,13 +2826,13 @@ function DropdownsSection() {
               {/* Menu */}
               <div className="py-1">
                 {[
-                  { icon: User, label: 'Mon Profil', color: 'from-orange-100 to-yellow-100' },
-                  { icon: Bookmark, label: 'Recherches', color: 'from-blue-100 to-cyan-100' },
-                  { icon: Settings, label: 'Paramètres', color: 'from-purple-100 to-pink-100' },
+                  { icon: User, label: 'Mon Profil', gradient: 'linear-gradient(135deg, #FFA040 0%, #FFD080 100%)' },
+                  { icon: Bookmark, label: 'Recherches', gradient: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' },
+                  { icon: Settings, label: 'Paramètres', gradient: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50/50 cursor-pointer group">
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <item.icon className="w-3.5 h-3.5 text-gray-700" />
+                  <div key={item.label} className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer group">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: item.gradient }}>
+                      <item.icon className="w-3.5 h-3.5 text-white" />
                     </div>
                     <span className="text-gray-900 text-sm">{item.label}</span>
                   </div>
@@ -2865,23 +2865,23 @@ function DropdownsSection() {
           <div className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2">
             <div className="px-4 py-3 border-b border-purple-200/50">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-purple-600" />
+                <Zap className="w-4 h-4 text-[#6E56CF]" />
                 Actions Rapides
               </h3>
             </div>
             <div className="p-2">
               {[
-                { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien' },
-                { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème' },
-                { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense' },
-                { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées' },
+                { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien', gradient: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' },
+                { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème', gradient: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)' },
+                { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense', gradient: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' },
+                { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées', gradient: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' },
               ].map((action) => (
                 <div
                   key={action.label}
-                  className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition cursor-pointer group"
+                  className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-purple-50 transition cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <action.icon className="w-5 h-5 text-gray-700" />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ background: action.gradient }}>
+                    <action.icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900">{action.label}</p>
@@ -2897,7 +2897,7 @@ function DropdownsSection() {
       {/* Icon Backgrounds par Role */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Icon Backgrounds par Role</h3>
-        <p className="text-sm text-slate-400 mb-6">Chaque role utilise son gradient pour les icones des dropdowns</p>
+        <p className="text-sm text-slate-400 mb-6">Chaque role utilise son gradient OFFICIEL pour les icones - couleurs vives, icônes blanches</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* OWNER */}
@@ -2908,18 +2908,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center">
-                  <User className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 100%)' }}>
+                  <User className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' }}>
+                  <Settings className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center">
-                  <Euro className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' }}>
+                  <Euro className="w-5 h-5 text-white" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">purple/indigo tones</p>
+            <p className="text-xs text-slate-500 font-mono">#7B5FB8 → #A67BB8 (gradient officiel)</p>
           </div>
 
           {/* RESIDENT */}
@@ -2930,18 +2930,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 flex items-center justify-center">
-                  <User className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #FF8C4B 100%)' }}>
+                  <User className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-rose-100 flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' }}>
+                  <Settings className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center">
-                  <Euro className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)' }}>
+                  <Euro className="w-5 h-5 text-white" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">coral/peach tones</p>
+            <p className="text-xs text-slate-500 font-mono">#D97B6F → #FF8C4B (gradient officiel)</p>
           </div>
 
           {/* SEARCHER */}
@@ -2952,18 +2952,18 @@ function DropdownsSection() {
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex flex-wrap gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center">
-                  <User className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FFA040 0%, #FFD080 100%)' }}>
+                  <User className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
-                  <Bookmark className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' }}>
+                  <Bookmark className="w-5 h-5 text-white" />
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)' }}>
+                  <Settings className="w-5 h-5 text-white" />
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">amber/yellow tones</p>
+            <p className="text-xs text-slate-500 font-mono">#FFA040 → #FFD080 (gradient officiel)</p>
           </div>
         </div>
       </div>
