@@ -313,12 +313,178 @@ function ColorsSection() {
         </div>
       </div>
 
-      {/* Gradients */}
+      {/* GRADIENT SIGNATURE EASYCO - Couleurs originales du logo */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Gradients</h3>
+        <h3 className="text-lg font-bold text-white mb-2">Gradient Signature EasyCo</h3>
+        <p className="text-sm text-slate-400 mb-6">Couleurs extraites directement du logo original - VIVES et SATUREES</p>
+
+        {/* Le gradient signature complet */}
+        <div className="mb-8">
+          <p className="text-xs text-slate-400 mb-2">Gradient signature complet :</p>
+          <div
+            className="h-16 rounded-xl shadow-lg"
+            style={{
+              background: 'linear-gradient(to right, #8B5CF6, #A855F7, #D946EF, #EC4899, #F43F5E, #F97316, #FB923C, #FBBF24, #FDE047)',
+            }}
+          />
+          <div className="flex justify-between mt-2 text-sm font-semibold">
+            <span className="text-purple-400">Owner</span>
+            <span className="text-orange-400">Resident</span>
+            <span className="text-yellow-400">Searcher</span>
+          </div>
+        </div>
+
+        {/* Decomposition du gradient - 9 couleurs VIVES */}
+        <div className="mb-8">
+          <h4 className="font-medium text-white mb-4">Decomposition (9 couleurs originales)</h4>
+          <div className="grid grid-cols-9 gap-3">
+            {[
+              { hex: '#8B5CF6', name: 'Violet vif', role: 'Owner' },
+              { hex: '#A855F7', name: 'Violet', role: 'Owner' },
+              { hex: '#D946EF', name: 'Fuchsia', role: 'Owner' },
+              { hex: '#EC4899', name: 'Pink', role: 'Resident' },
+              { hex: '#F43F5E', name: 'Rose', role: 'Resident' },
+              { hex: '#F97316', name: 'Orange', role: 'Resident' },
+              { hex: '#FB923C', name: 'Orange clair', role: 'Searcher' },
+              { hex: '#FBBF24', name: 'Amber', role: 'Searcher' },
+              { hex: '#FDE047', name: 'Jaune vif', role: 'Searcher' },
+            ].map((color, i) => (
+              <div key={i} className="text-center">
+                <div
+                  className="w-full aspect-square rounded-xl shadow-lg mb-2"
+                  style={{ backgroundColor: color.hex }}
+                />
+                <p className="text-[11px] text-white font-mono font-bold">{color.hex}</p>
+                <p className="text-[10px] text-slate-400">{color.name}</p>
+                <p className={`text-[10px] font-semibold ${
+                  color.role === 'Owner' ? 'text-purple-400' :
+                  color.role === 'Resident' ? 'text-orange-400' : 'text-yellow-400'
+                }`}>{color.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Portions par role */}
+        <div className="mb-8">
+          <h4 className="font-medium text-white mb-4">Gradients par role</h4>
+          <div className="grid grid-cols-3 gap-6">
+            <div>
+              <div
+                className="h-14 rounded-xl shadow-lg mb-3"
+                style={{ background: 'linear-gradient(to right, #8B5CF6, #A855F7, #D946EF)' }}
+              />
+              <p className="text-purple-400 font-bold text-center">Owner</p>
+              <p className="text-slate-500 text-xs text-center font-mono">#8B5CF6 → #D946EF</p>
+            </div>
+            <div>
+              <div
+                className="h-14 rounded-xl shadow-lg mb-3"
+                style={{ background: 'linear-gradient(to right, #EC4899, #F43F5E, #F97316)' }}
+              />
+              <p className="text-orange-400 font-bold text-center">Resident</p>
+              <p className="text-slate-500 text-xs text-center font-mono">#EC4899 → #F97316</p>
+            </div>
+            <div>
+              <div
+                className="h-14 rounded-xl shadow-lg mb-3"
+                style={{ background: 'linear-gradient(to right, #FB923C, #FBBF24, #FDE047)' }}
+              />
+              <p className="text-yellow-400 font-bold text-center">Searcher</p>
+              <p className="text-slate-500 text-xs text-center font-mono">#FB923C → #FDE047</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Palettes etendues par role - couleurs VIVES */}
+        <div className="space-y-6">
+          <h4 className="font-medium text-white">Palettes etendues (6 nuances par role)</h4>
+
+          {/* Owner */}
+          <div>
+            <p className="text-sm text-purple-400 font-bold mb-3">Owner - Violet/Fuchsia</p>
+            <div className="grid grid-cols-6 gap-3">
+              {[
+                { hex: '#7C3AED' },
+                { hex: '#8B5CF6' },
+                { hex: '#A855F7' },
+                { hex: '#C026D3' },
+                { hex: '#D946EF' },
+                { hex: '#E879F9' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-12 rounded-xl shadow-lg"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Resident */}
+          <div>
+            <p className="text-sm text-orange-400 font-bold mb-3">Resident - Pink/Orange</p>
+            <div className="grid grid-cols-6 gap-3">
+              {[
+                { hex: '#DB2777' },
+                { hex: '#EC4899' },
+                { hex: '#F43F5E' },
+                { hex: '#EF4444' },
+                { hex: '#F97316' },
+                { hex: '#FB923C' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-12 rounded-xl shadow-lg"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Searcher */}
+          <div>
+            <p className="text-sm text-yellow-400 font-bold mb-3">Searcher - Orange/Jaune</p>
+            <div className="grid grid-cols-6 gap-3">
+              {[
+                { hex: '#EA580C' },
+                { hex: '#FB923C' },
+                { hex: '#FBBF24' },
+                { hex: '#FACC15' },
+                { hex: '#FDE047' },
+                { hex: '#FEF08A' },
+              ].map((color, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="w-full h-12 rounded-xl shadow-lg"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <p className="text-[11px] text-white font-mono mt-2 font-bold">{color.hex}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Code CSS */}
+        <div className="mt-6 p-4 bg-slate-900 rounded-xl">
+          <p className="text-xs text-slate-400 mb-2">Gradient signature CSS :</p>
+          <code className="text-sm text-green-400 font-mono">
+            linear-gradient(to right, #8B5CF6, #A855F7, #D946EF, #EC4899, #F43F5E, #F97316, #FB923C, #FBBF24, #FDE047)
+          </code>
+        </div>
+      </div>
+
+      {/* Autres Gradients */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-4">Autres Gradients</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 rounded-xl bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-400">
-            <p className="text-white font-bold">Gradient Brand</p>
+            <p className="text-white font-bold">Gradient Brand (ancien)</p>
             <p className="text-white/80 text-xs font-mono">--gradient-brand</p>
           </div>
           <div className="p-4 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-400">
