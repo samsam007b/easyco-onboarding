@@ -209,8 +209,8 @@ export function AdvancedFilters({
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-md">
-                  <Filter className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                  <Filter className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">Filtres avancés</h2>
@@ -236,7 +236,7 @@ export function AdvancedFilters({
               </Button>
               <Button
                 onClick={onClose}
-                className="flex-1 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
               >
                 Appliquer
               </Button>
@@ -252,7 +252,7 @@ export function AdvancedFilters({
             <AccordionItem value="price" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Euro className="w-5 h-5 text-orange-600" />
+                  <Euro className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Budget mensuel</span>
                 </div>
               </AccordionTrigger>
@@ -280,7 +280,7 @@ export function AdvancedFilters({
             <AccordionItem value="location" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-5 h-5 text-orange-600" />
+                  <MapPin className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Localisation</span>
                 </div>
               </AccordionTrigger>
@@ -314,7 +314,7 @@ export function AdvancedFilters({
             <AccordionItem value="property-type" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Home className="w-5 h-5 text-orange-600" />
+                  <Home className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Type de logement</span>
                 </div>
               </AccordionTrigger>
@@ -346,7 +346,7 @@ export function AdvancedFilters({
             <AccordionItem value="rooms" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Home className="w-5 h-5 text-orange-600" />
+                  <Home className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Chambres & Salles de bain</span>
                 </div>
               </AccordionTrigger>
@@ -420,7 +420,7 @@ export function AdvancedFilters({
             <AccordionItem value="lifestyle" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Heart className="w-5 h-5 text-orange-600" />
+                  <Heart className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Compatibilité lifestyle</span>
                 </div>
               </AccordionTrigger>
@@ -540,7 +540,7 @@ export function AdvancedFilters({
             <AccordionItem value="schedule" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-orange-600" />
+                  <Clock className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Horaires & Rythme</span>
                 </div>
               </AccordionTrigger>
@@ -628,7 +628,7 @@ export function AdvancedFilters({
             <AccordionItem value="profile" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Users className="w-5 h-5 text-orange-600" />
+                  <Users className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Âge & Profil</span>
                 </div>
               </AccordionTrigger>
@@ -707,7 +707,7 @@ export function AdvancedFilters({
             <AccordionItem value="home-habits" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Coffee className="w-5 h-5 text-orange-600" />
+                  <Coffee className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Habitudes à la maison</span>
                 </div>
               </AccordionTrigger>
@@ -801,7 +801,7 @@ export function AdvancedFilters({
             <AccordionItem value="amenities" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-orange-600" />
+                  <Sparkles className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Équipements</span>
                 </div>
               </AccordionTrigger>
@@ -837,7 +837,7 @@ export function AdvancedFilters({
             <AccordionItem value="match-score" className="border border-gray-200 rounded-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-orange-600" />
+                  <Sparkles className="w-5 h-5 text-gray-600" />
                   <span className="font-semibold">Score de compatibilité</span>
                 </div>
               </AccordionTrigger>
@@ -901,7 +901,7 @@ export function AdvancedFilters({
             </Button>
             <Button
               onClick={onClose}
-              className="flex-1 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
             >
               Voir les résultats
             </Button>
