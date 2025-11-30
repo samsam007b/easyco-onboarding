@@ -129,6 +129,9 @@ import {
   Unlock,
   Moon as MoonIcon,
   Sun as SunIcon,
+  Wrench,
+  BarChart3,
+  LogOut,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -1699,60 +1702,317 @@ function ButtonsSection() {
    ============================================ */
 function CardsSection() {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
-          <p className="text-sm font-medium text-slate-400 mb-3">Default</p>
-          <Card className="bg-white">
-            <CardHeader>
-              <CardTitle>Titre de carte</CardTitle>
-              <CardDescription>Description courte</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Contenu de la carte.</p>
-            </CardContent>
-          </Card>
-        </div>
+    <div className="space-y-8">
+      {/* Card Component - Variantes */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Card Component</h3>
+        <p className="text-sm text-slate-400 mb-4">Composant de base : <code className="bg-slate-700 px-2 py-0.5 rounded">components/ui/card.tsx</code></p>
 
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
-          <p className="text-sm font-medium text-slate-400 mb-3">Bordered</p>
-          <Card variant="bordered" className="bg-white">
-            <CardHeader>
-              <CardTitle>Titre de carte</CardTitle>
-              <CardDescription>Description courte</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Contenu de la carte.</p>
-            </CardContent>
-          </Card>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white/5 rounded-xl p-4">
+            <p className="text-sm font-medium text-purple-400 mb-3">variant="default"</p>
+            <Card className="bg-white">
+              <CardHeader>
+                <CardTitle>Titre de carte</CardTitle>
+                <CardDescription>Description courte</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Contenu de la carte.</p>
+              </CardContent>
+            </Card>
+            <p className="text-xs text-slate-500 mt-2 font-mono">rounded-3xl, border-gray-100</p>
+          </div>
 
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
-          <p className="text-sm font-medium text-slate-400 mb-3">Elevated</p>
-          <Card variant="elevated" className="bg-white">
-            <CardHeader>
-              <CardTitle>Titre de carte</CardTitle>
-              <CardDescription>Description courte</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Contenu de la carte.</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white/5 rounded-xl p-4">
+            <p className="text-sm font-medium text-purple-400 mb-3">variant="bordered"</p>
+            <Card variant="bordered" className="bg-white">
+              <CardHeader>
+                <CardTitle>Titre de carte</CardTitle>
+                <CardDescription>Description courte</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Contenu de la carte.</p>
+              </CardContent>
+            </Card>
+            <p className="text-xs text-slate-500 mt-2 font-mono">border-2 border-gray-200</p>
+          </div>
+
+          <div className="bg-white/5 rounded-xl p-4">
+            <p className="text-sm font-medium text-purple-400 mb-3">variant="elevated"</p>
+            <Card variant="elevated" className="bg-white">
+              <CardHeader>
+                <CardTitle>Titre de carte</CardTitle>
+                <CardDescription>Description courte</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Contenu de la carte.</p>
+              </CardContent>
+            </Card>
+            <p className="text-xs text-slate-500 mt-2 font-mono">shadow-md</p>
+          </div>
         </div>
       </div>
 
+      {/* Card Interactive */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Glassmorphism</h3>
+        <h3 className="text-lg font-bold text-white mb-2">Card Interactive</h3>
+        <p className="text-sm text-slate-400 mb-4">Prop <code className="bg-slate-700 px-2 py-0.5 rounded">interactive=true</code> pour hover effect</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card interactive className="bg-white cursor-pointer">
+            <CardHeader>
+              <CardTitle>Carte Interactive</CardTitle>
+              <CardDescription>Passez la souris pour voir l'effet</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">hover:shadow-lg hover:border-owner-500/20</p>
+            </CardContent>
+          </Card>
+          <div className="p-4 bg-slate-700/30 rounded-xl">
+            <p className="text-xs text-slate-400 font-mono mb-2">Usage:</p>
+            <pre className="text-xs text-green-400 overflow-x-auto">{`<Card interactive>
+  <CardHeader>
+    <CardTitle>Titre</CardTitle>
+  </CardHeader>
+</Card>`}</pre>
+          </div>
+        </div>
+      </div>
+
+      {/* Messages Card - VRAI composant de l'app */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Messages Card (Version App)</h3>
+        <p className="text-sm text-slate-400 mb-4">Telle qu'affichée dans /dashboard/owner/messages</p>
+
+        <div className="bg-gray-100 rounded-xl p-6">
+          {/* Reproduction exacte du screenshot */}
+          <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm max-w-2xl">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center">
+                <MessageCircle className="w-6 h-6 text-purple-600" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Messages</h2>
+                <p className="text-gray-600">Gérez vos conversations avec les candidats et locataires</p>
+              </div>
+            </div>
+
+            {/* Tabs comme dans le screenshot */}
+            <div className="flex gap-2 mb-6">
+              <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 text-purple-700 font-medium">
+                <MessageCircle className="w-4 h-4" />
+                Tous
+                <span className="ml-1 px-2 py-0.5 bg-purple-200 rounded-full text-xs">0</span>
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50">
+                <Users className="w-4 h-4" />
+                Candidats
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50">
+                <Building2 className="w-4 h-4" />
+                Locataires
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cards par Role */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Cards par Role</h3>
+        <p className="text-sm text-slate-400 mb-6">Chaque role a ses couleurs de gradient specifiques</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* OWNER */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-owner)' }} />
+              <span className="text-purple-400 font-semibold">OWNER</span>
+            </div>
+            <div className="bg-white rounded-3xl border border-gray-100 p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-gray-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Ma Propriété</p>
+                  <p className="text-sm text-gray-500">3 locataires</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Revenus</span>
+                <span className="font-bold text-purple-900">€2,400</span>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">from-purple-200/70 to-indigo-200/70</p>
+          </div>
+
+          {/* RESIDENT */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-resident)' }} />
+              <span className="text-orange-400 font-semibold">RESIDENT</span>
+            </div>
+            <div className="bg-white rounded-3xl border border-gray-100 p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-200/70 to-red-200/70 flex items-center justify-center">
+                  <Home className="w-5 h-5 text-gray-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Mon Logement</p>
+                  <p className="text-sm text-gray-500">Coliving Bruxelles</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Prochain paiement</span>
+                <span className="font-bold text-orange-700">15 Dec</span>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">from-orange-200/70 to-red-200/70</p>
+          </div>
+
+          {/* SEARCHER */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-searcher)' }} />
+              <span className="text-yellow-400 font-semibold">SEARCHER</span>
+            </div>
+            <div className="bg-white rounded-3xl border border-gray-100 p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-200/70 to-yellow-200/70 flex items-center justify-center">
+                  <Search className="w-5 h-5 text-gray-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Recherche Active</p>
+                  <p className="text-sm text-gray-500">12 matchs</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Favoris</span>
+                <span className="font-bold text-amber-700">5</span>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">from-amber-200/70 to-yellow-200/70</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Cards - Quick Stats Header */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Quick Stats Cards (Header Owner)</h3>
+        <p className="text-sm text-slate-400 mb-4">Comme affiché dans le header Owner</p>
+
+        <div className="bg-gray-100 rounded-xl p-6">
+          <div className="inline-flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-50/50 to-purple-100/30 border border-purple-200/50">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center">
+                <Euro className="w-4 h-4 text-gray-700" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 font-medium">Revenus</p>
+                <p className="text-sm font-bold text-purple-900">€12,450</p>
+              </div>
+            </div>
+            <div className="w-px h-8 bg-purple-200" />
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-purple-600" />
+              <div>
+                <p className="text-xs text-gray-600 font-medium">ROI</p>
+                <p className="text-sm font-bold text-purple-900">8.5%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Profile Menu Card */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Profile Card (Dans le dropdown)</h3>
+        <p className="text-sm text-slate-400 mb-4">Header avec stats et progress ring</p>
+
+        <div className="bg-gray-100 rounded-xl p-6">
+          <div className="w-80 bg-white rounded-3xl shadow-xl overflow-hidden">
+            {/* Header Gradient */}
+            <div className="relative px-6 py-5 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70">
+              <div className="flex items-center gap-4">
+                {/* Avatar avec Progress Ring */}
+                <div className="relative">
+                  <svg className="absolute inset-0 -m-1.5" width="68" height="68">
+                    <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                    <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(110, 86, 207, 0.5)" strokeWidth="3" strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 32}`}
+                      strokeDashoffset={`${2 * Math.PI * 32 * 0.25}`}
+                      transform="rotate(-90 34 34)"
+                    />
+                  </svg>
+                  <div className="w-16 h-16 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
+                    <User className="w-8 h-8 text-gray-700" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="font-bold text-gray-900 text-lg">sam jones</p>
+                  <p className="text-gray-700 text-sm">sam7777jones@gmail.com</p>
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                      <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
+                    </div>
+                    <span className="text-xs text-gray-700 font-medium">75%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div>
+                  <div className="text-lg font-bold text-gray-900">€0</div>
+                  <div className="text-xs text-gray-600">Revenus</div>
+                </div>
+                <div className="border-x border-purple-200/50">
+                  <div className="text-lg font-bold text-gray-900">0%</div>
+                  <div className="text-xs text-gray-600">ROI</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">0%</div>
+                  <div className="text-xs text-gray-600">Occupation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Glassmorphism */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-4">Glassmorphism (Headers)</h3>
+        <p className="text-sm text-slate-400 mb-4">Utilisé dans tous les headers de l'app</p>
+
         <div className="relative h-48 rounded-xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-purple-500 to-yellow-400" />
           <div className="absolute top-0 left-1/4 w-32 h-32 bg-white/30 rounded-full blur-2xl" />
           <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-purple-300/50 rounded-full blur-2xl" />
-          <div className="absolute inset-8 bg-white/20 backdrop-blur-xl rounded-2xl border border-white/30 p-6 flex items-center justify-center">
-            <div className="text-center text-white">
-              <p className="text-xl font-bold mb-2">Glassmorphism</p>
-              <p className="text-sm opacity-80">backdrop-blur-xl + bg-white/20</p>
+          <div className="absolute inset-8 bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/30 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xl font-bold text-gray-900 mb-1">Header Glassmorphism</p>
+                <p className="text-sm text-gray-600">bg-white/60 backdrop-blur-3xl</p>
+              </div>
+              <div className="flex gap-2">
+                <div className="w-10 h-10 rounded-xl bg-white/50 flex items-center justify-center">
+                  <Bell className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-white/50 flex items-center justify-center">
+                  <User className="w-5 h-5 text-gray-700" />
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
+          <p className="text-xs text-slate-400 font-mono">
+            bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150
+          </p>
         </div>
       </div>
     </div>
@@ -2236,119 +2496,330 @@ function ProfileCardsSection() {
    DROPDOWNS SECTION
    ============================================ */
 function DropdownsSection() {
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <div className="space-y-8">
+      {/* Language Switcher - VRAI composant */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-2">Dropdowns</h3>
-        <p className="text-sm text-slate-400 mb-6">Menus déroulants de l'application.</p>
+        <h3 className="text-lg font-bold text-white mb-2">Language Switcher</h3>
+        <p className="text-sm text-slate-400 mb-4">Composant : <code className="bg-slate-700 px-2 py-0.5 rounded">components/LanguageSwitcher.tsx</code></p>
 
-        {/* Profile Dropdown */}
-        <div className="mb-8">
-          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-            <User className="w-5 h-5 text-purple-400" />
-            Profile Dropdown
-          </h4>
-          <div className="bg-slate-900 rounded-xl p-6 min-h-[320px]">
-            <div className="relative inline-block">
-              <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-2 px-3 py-2 bg-slate-800 rounded-full border border-slate-700 hover:border-slate-600">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center"><User className="w-4 h-4 text-white" /></div>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {profileOpen && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-slate-800 rounded-xl border border-slate-700 shadow-xl overflow-hidden z-10">
-                  <div className="p-4 bg-gradient-to-r from-purple-500/20 via-orange-500/20 to-yellow-500/20">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white font-bold">M</div>
-                      <div><p className="font-semibold text-white">Marie Dupont</p><span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Searcher</span></div>
-                    </div>
+        <div className="bg-gray-100 rounded-xl p-6 min-h-[280px]">
+          <div className="relative inline-block">
+            {/* Trigger */}
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-gray-200 transition-all"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="font-medium">FR</span>
+              <ChevronDown className={cn("w-3 h-3 transition-transform", langOpen && "rotate-180")} />
+            </button>
+
+            {/* Dropdown */}
+            {langOpen && (
+              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden min-w-[160px] z-50">
+                {[
+                  { code: 'fr', label: 'Français', active: true },
+                  { code: 'en', label: 'English', active: false },
+                  { code: 'nl', label: 'Nederlands', active: false },
+                  { code: 'de', label: 'Deutsch', active: false },
+                ].map((lang, index) => (
+                  <div key={lang.code}>
+                    <button
+                      className={cn(
+                        "w-full flex items-center justify-between px-4 py-3 text-sm transition-all",
+                        lang.active ? "bg-orange-50/50" : "hover:bg-orange-50/30"
+                      )}
+                    >
+                      <span className={cn(
+                        "font-medium transition-colors",
+                        lang.active ? "text-[#FFA040]" : "text-gray-700 hover:text-[#FFA040]"
+                      )}>
+                        {lang.label}
+                      </span>
+                      {lang.active && <span className="text-[#FFA040] text-xs">✓</span>}
+                    </button>
+                    {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                   </div>
-                  <div className="p-4 border-b border-slate-700 space-y-2">
-                    <p className="text-sm text-slate-400 flex items-center gap-2"><Mail className="w-4 h-4" /> marie@example.com</p>
-                    <p className="text-sm text-slate-400 flex items-center gap-2"><Calendar className="w-4 h-4" /> 15 mars 1996</p>
-                  </div>
-                  <div className="p-2">
-                    <button className="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 rounded-lg flex items-center gap-2"><Settings className="w-4 h-4" /> Paramètres</button>
-                    <button className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-red-500/10 rounded-lg flex items-center gap-2"><Lock className="w-4 h-4" /> Déconnexion</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="mt-3 p-3 bg-slate-700/30 rounded-lg">
-            <p className="text-xs text-slate-400"><strong className="text-white">Fichier:</strong> components/ProfileDropdown.tsx</p>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Notifications Dropdown */}
-        <div className="mb-8">
-          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-            <Bell className="w-5 h-5 text-orange-400" />
-            Notifications Dropdown
-          </h4>
-          <div className="bg-slate-900 rounded-xl p-6 min-h-[300px]">
-            <div className="relative inline-block">
-              <button onClick={() => setNotifOpen(!notifOpen)} className="relative p-2 bg-slate-800 rounded-full border border-slate-700 hover:border-slate-600">
-                <Bell className="w-5 h-5 text-slate-300" />
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center font-medium">3</span>
-              </button>
-              {notifOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-slate-800 rounded-xl border border-slate-700 shadow-xl overflow-hidden z-10">
-                  <div className="p-4 bg-gradient-to-r from-purple-500/20 to-yellow-500/20 flex items-center justify-between">
-                    <h4 className="font-semibold text-white">Notifications</h4>
-                    <button className="text-xs text-slate-400 hover:text-white">Tout marquer lu</button>
-                  </div>
-                  <div className="max-h-48 overflow-y-auto">
-                    <div className="p-3 border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer">
-                      <div className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center"><Heart className="w-4 h-4 text-green-400" /></div>
-                        <div className="flex-1"><p className="text-sm text-white">Nouveau match!</p><p className="text-xs text-slate-400">Appartement Bastille 92%</p><p className="text-xs text-slate-500 mt-1">Il y a 5 min</p></div>
-                      </div>
-                    </div>
-                    <div className="p-3 border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer">
-                      <div className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center"><MessageCircle className="w-4 h-4 text-blue-400" /></div>
-                        <div className="flex-1"><p className="text-sm text-white">Message de Thomas</p><p className="text-xs text-slate-400">Salut! La chambre est dispo...</p><p className="text-xs text-slate-500 mt-1">Il y a 1h</p></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-3 border-t border-slate-700"><button className="w-full text-center text-sm text-purple-400 hover:text-purple-300">Voir tout</button></div>
+        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
+          <p className="text-xs text-slate-400 font-mono">
+            Couleur active: <span className="text-orange-400">#FFA040</span> (Searcher gradient)
+          </p>
+        </div>
+      </div>
+
+      {/* Quick Actions Dropdown - OWNER */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Quick Actions Dropdown</h3>
+        <p className="text-sm text-slate-400 mb-4">Utilisé dans le header Owner - <code className="bg-slate-700 px-2 py-0.5 rounded">ModernOwnerHeader.tsx</code></p>
+
+        <div className="bg-gray-100 rounded-xl p-6 min-h-[400px]">
+          <div className="relative inline-block">
+            {/* Trigger */}
+            <button
+              onClick={() => setActionsOpen(!actionsOpen)}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-purple-50 transition-all border border-gray-200 hover:border-purple-300"
+            >
+              <Zap className="w-4 h-4 text-purple-600" />
+              <span>Actions Rapides</span>
+              <ChevronDown className={cn("w-4 h-4 transition-transform", actionsOpen && "rotate-180")} />
+            </button>
+
+            {/* Dropdown */}
+            {actionsOpen && (
+              <div className="absolute left-0 mt-2 w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20">
+                <div className="px-4 py-3 border-b border-purple-200/50">
+                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-purple-600" />
+                    Actions Rapides
+                  </h3>
                 </div>
-              )}
-            </div>
-          </div>
-          <div className="mt-3 p-3 bg-slate-700/30 rounded-lg">
-            <p className="text-xs text-slate-400"><strong className="text-white">Fichier:</strong> components/NotificationsDropdown.tsx</p>
+                <div className="p-2">
+                  {[
+                    { icon: Building2, label: 'Ajouter une propriété', desc: 'Créer un nouveau bien' },
+                    { icon: Wrench, label: 'Ticket maintenance', desc: 'Signaler un problème' },
+                    { icon: CreditCard, label: 'Ajouter une dépense', desc: 'Enregistrer une dépense' },
+                    { icon: BarChart3, label: 'Voir les analytics', desc: 'Performances détaillées' },
+                  ].map((action) => (
+                    <div
+                      key={action.label}
+                      className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition cursor-pointer group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <action.icon className="w-5 h-5 text-gray-700" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900">{action.label}</p>
+                        <p className="text-xs text-gray-500">{action.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Language Selector */}
-        <div className="mb-8">
-          <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-            <Globe className="w-5 h-5 text-blue-400" />
-            Language Selector
-          </h4>
-          <div className="bg-slate-900 rounded-xl p-6 min-h-[200px]">
-            <div className="relative inline-block">
-              <button onClick={() => setLangOpen(!langOpen)} className="flex items-center gap-2 px-3 py-2 bg-slate-800 rounded-lg border border-slate-700 hover:border-slate-600">
-                <span className="text-lg">🇫🇷</span><span className="text-sm text-slate-300">FR</span>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${langOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {langOpen && (
-                <div className="absolute top-full left-0 mt-2 w-40 bg-slate-800 rounded-xl border border-slate-700 shadow-xl overflow-hidden z-10">
-                  <button className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2 bg-purple-500/10">
-                    <span className="text-lg">🇫🇷</span><span className="text-sm text-white">Français</span><Check className="w-4 h-4 text-purple-400 ml-auto" />
-                  </button>
-                  <button className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2"><span className="text-lg">🇬🇧</span><span className="text-sm text-slate-300">English</span></button>
-                  <button className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2"><span className="text-lg">🇳🇱</span><span className="text-sm text-slate-300">Nederlands</span></button>
-                  <button className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2"><span className="text-lg">🇩🇪</span><span className="text-sm text-slate-300">Deutsch</span></button>
+        <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
+          <p className="text-xs text-slate-400 font-mono">
+            Icons bg: <span className="text-purple-400">from-purple-200/70 to-indigo-200/70</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Profile Dropdown - VERSION APP (Owner) */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Profile Dropdown (Owner)</h3>
+        <p className="text-sm text-slate-400 mb-4">Version complète avec stats et progress ring</p>
+
+        <div className="bg-gray-100 rounded-xl p-6 min-h-[550px]">
+          <div className="relative inline-block">
+            {/* Trigger */}
+            <button
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-200 transition-all group"
+            >
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
+                style={{ background: 'var(--gradient-owner)' }}
+              >
+                <Building2 className="w-4 h-4 text-white" />
+              </div>
+              <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-purple-900 transition-colors" />
+            </button>
+
+            {/* Dropdown */}
+            {profileOpen && (
+              <div className="absolute left-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20">
+                {/* Header Gradient avec Progress Ring */}
+                <div className="relative px-6 py-5 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <svg className="absolute inset-0 -m-1.5" width="68" height="68">
+                        <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                        <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(110, 86, 207, 0.5)" strokeWidth="3" strokeLinecap="round"
+                          strokeDasharray={`${2 * Math.PI * 32}`}
+                          strokeDashoffset={`${2 * Math.PI * 32 * 0.25}`}
+                          transform="rotate(-90 34 34)"
+                        />
+                      </svg>
+                      <div className="w-16 h-16 rounded-full bg-white/50 border-2 border-gray-300 flex items-center justify-center">
+                        <User className="w-8 h-8 text-gray-700" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 text-lg">sam jones</p>
+                      <p className="text-gray-700 text-sm">sam7777jones@gmail.com</p>
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
+                          <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
+                        </div>
+                        <span className="text-xs text-gray-700 font-medium">75%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {/* Quick Stats */}
+                <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <div className="text-lg font-bold text-gray-900">€0</div>
+                      <div className="text-xs text-gray-600">Revenus</div>
+                    </div>
+                    <div className="border-x border-purple-200/50">
+                      <div className="text-lg font-bold text-gray-900">0%</div>
+                      <div className="text-xs text-gray-600">ROI</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-gray-900">0%</div>
+                      <div className="text-xs text-gray-600">Occupation</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-2">
+                  {[
+                    { icon: User, label: 'Mon Profil', desc: 'Gérer mes informations', color: 'from-purple-100 to-indigo-100' },
+                    { icon: Euro, label: 'Finance', desc: 'Revenus et dépenses', color: 'from-emerald-100 to-emerald-200/70' },
+                    { icon: Settings, label: 'Paramètres', desc: 'Préférences et confidentialité', color: 'from-blue-100 to-cyan-200/70' },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all cursor-pointer"
+                    >
+                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                        <item.icon className="w-4 h-4 text-gray-700" />
+                      </div>
+                      <div className="flex-1">
+                        <span className="text-gray-900 font-medium block">{item.label}</span>
+                        <span className="text-xs text-gray-500">{item.desc}</span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Complete Profile CTA */}
+                <div className="px-4 pb-3">
+                  <div className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-medium text-center hover:shadow-md cursor-pointer">
+                    <div className="flex items-center justify-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      <span>Compléter mon profil</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Logout */}
+                <div className="border-t border-gray-200/80">
+                  <div className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all cursor-pointer text-red-600 group">
+                    <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
+                      <LogOut className="w-4 h-4 text-red-600" />
+                    </div>
+                    <span className="font-medium">Déconnexion</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
+        </div>
+      </div>
+
+      {/* Dropdowns par Role */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Icon Backgrounds par Role</h3>
+        <p className="text-sm text-slate-400 mb-6">Chaque role utilise son gradient pour les icones des dropdowns</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* OWNER */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-owner)' }} />
+              <span className="text-purple-400 font-semibold">OWNER</span>
+            </div>
+            <div className="bg-white rounded-xl p-4">
+              <div className="flex flex-wrap gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center">
+                  <User className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center">
+                  <Euro className="w-5 h-5 text-gray-700" />
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">purple/indigo tones</p>
+          </div>
+
+          {/* RESIDENT */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-resident)' }} />
+              <span className="text-orange-400 font-semibold">RESIDENT</span>
+            </div>
+            <div className="bg-white rounded-xl p-4">
+              <div className="flex flex-wrap gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-200/70 to-red-200/70 flex items-center justify-center">
+                  <User className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-rose-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-100 to-orange-200/70 flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5 text-gray-700" />
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">orange/coral tones</p>
+          </div>
+
+          {/* SEARCHER */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--gradient-searcher)' }} />
+              <span className="text-yellow-400 font-semibold">SEARCHER</span>
+            </div>
+            <div className="bg-white rounded-xl p-4">
+              <div className="flex flex-wrap gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-200/70 to-yellow-200/70 flex items-center justify-center">
+                  <User className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-gray-700" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-200/70 flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-gray-700" />
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 font-mono">amber/yellow tones</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Archived Button Example */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <h3 className="text-lg font-bold text-white mb-2">Bouton Archivées</h3>
+        <p className="text-sm text-slate-400 mb-4">Comme visible dans le screenshot Messages</p>
+
+        <div className="bg-gray-100 rounded-xl p-6">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-300 text-purple-700 hover:bg-purple-50 transition-all">
+            <Folder className="w-4 h-4" />
+            Archivées
+          </button>
         </div>
       </div>
     </div>
