@@ -251,19 +251,12 @@ const residentColors: Record<number, string> = {
    GRADIENT SIGNATURE EDITOR - Curseurs INDEPENDANTS
    ============================================ */
 function GradientSignatureEditor() {
-  // Couleurs VIVES du gradient signature - basées sur globals.css
+  // Gradient EXACT du bouton "S'inscrire" - 3 couleurs seulement (pas de rose!)
+  // Source: globals.css --gradient-brand: linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)
   const gradientColors = [
-    { pos: 0, hex: '#6E56CF' },    // Mauve vif (owner-primary)
-    { pos: 10, hex: '#8B5CF6' },   // Violet
-    { pos: 20, hex: '#A855F7' },   // Violet clair
-    { pos: 30, hex: '#D946EF' },   // Fuchsia
-    { pos: 40, hex: '#EC4899' },   // Pink
-    { pos: 50, hex: '#F43F5E' },   // Rose/Rouge
-    { pos: 60, hex: '#FF6F3C' },   // Orange vif (resident-primary)
-    { pos: 70, hex: '#FB923C' },   // Orange
-    { pos: 80, hex: '#FBBF24' },   // Amber
-    { pos: 90, hex: '#FFD249' },   // Jaune dore (searcher-primary)
-    { pos: 100, hex: '#FDE047' },  // Jaune vif
+    { pos: 0, hex: '#6E56CF' },    // Mauve (owner-primary)
+    { pos: 50, hex: '#FF6F3C' },   // Orange (resident-primary) - au CENTRE
+    { pos: 100, hex: '#FFD249' },  // Jaune (searcher-primary)
   ];
 
   const hexToRgb = (hex: string) => {
@@ -303,7 +296,8 @@ function GradientSignatureEditor() {
   const [searcherPos, setSearcherPos] = useState(85);
   const [searcherWidth, setSearcherWidth] = useState(20);
 
-  const signatureGradient = 'linear-gradient(to right, #6E56CF 0%, #8B5CF6 10%, #A855F7 20%, #D946EF 30%, #EC4899 40%, #F43F5E 50%, #FF6F3C 60%, #FB923C 70%, #FBBF24 80%, #FFD249 90%, #FDE047 100%)';
+  // Gradient EXACT comme dans globals.css (angle 135deg = oblique)
+  const signatureGradient = 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)';
 
   const getRoleGradient = (pos: number, width: number) => {
     if (width <= 2) return getColorAtPosition(pos);
@@ -324,7 +318,7 @@ function GradientSignatureEditor() {
         <p className="text-xs text-slate-400 mb-3">Gradient signature (couleurs vives) :</p>
         <div className="w-full h-24 rounded-2xl shadow-2xl" style={{ background: signatureGradient }} />
         <div className="flex justify-between mt-2 text-[10px] text-slate-500 font-mono">
-          <span>0% Mauve</span><span>25%</span><span>50% Rose</span><span>75%</span><span>100% Jaune</span>
+          <span>0% Mauve</span><span>25%</span><span>50% Orange</span><span>75%</span><span>100% Jaune</span>
         </div>
       </div>
 
