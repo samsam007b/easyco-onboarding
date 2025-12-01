@@ -146,8 +146,8 @@ export default function FinancialInfoPage() {
                 }`}
               >
                 <div
-                  className={`absolute top-[2px] w-[28px] h-[28px] bg-white rounded-full shadow-md transition-all duration-300 ${
-                    hasGuarantor ? 'right-[2px]' : 'left-[2px]'
+                  className={`absolute top-[2px] left-[2px] w-[28px] h-[28px] bg-white rounded-full shadow-md transition-all duration-300 ${
+                    hasGuarantor ? 'translate-x-[20px]' : 'translate-x-0'
                   }`}
                 />
               </button>
