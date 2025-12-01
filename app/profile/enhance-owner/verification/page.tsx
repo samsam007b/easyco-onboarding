@@ -157,7 +157,6 @@ export default function OwnerVerificationPage() {
           role="owner"
           variant="outline"
           onClick={handleSkip}
-          className="flex-1"
         >
           Skip for Now
         </EnhanceProfileButton>

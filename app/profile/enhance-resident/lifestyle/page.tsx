@@ -279,7 +279,7 @@ export default function LifestyleResidentPage() {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 mt-8">
+      <div className="flex gap-4 mt-8">
         <EnhanceProfileButton
           role="resident"
           variant="outline"
@@ -292,6 +292,7 @@ export default function LifestyleResidentPage() {
           role="resident"
           onClick={handleSave}
           disabled={isSaving || !sleepSchedule || !cleanliness || !noiseTolerance}
+          className="flex-1"
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
         </EnhanceProfileButton>

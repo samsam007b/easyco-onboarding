@@ -215,7 +215,7 @@ export default function CommunityEventsResidentPage() {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 mt-12">
+      <div className="flex gap-4 mt-8">
         <EnhanceProfileButton
           role="resident"
           variant="outline"
@@ -228,6 +228,7 @@ export default function CommunityEventsResidentPage() {
           role="resident"
           onClick={handleSave}
           disabled={!canContinue || isSaving}
+          className="flex-1"
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
         </EnhanceProfileButton>

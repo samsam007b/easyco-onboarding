@@ -184,7 +184,7 @@ export default function VerificationResidentPage() {
               Your verification documents are encrypted and stored securely. They're only used for verification purposes and are never shared with other users.
             </EnhanceProfileInfoBox>
 
-            <div className="flex gap-3 mt-8">
+            <div className="flex gap-4 mt-8">
               <EnhanceProfileButton
                 role="resident"
                 variant="outline"
@@ -195,6 +195,7 @@ export default function VerificationResidentPage() {
               <EnhanceProfileButton
                 role="resident"
                 onClick={handleRequestVerification}
+                className="flex-1"
               >
                 Start Verification
               </EnhanceProfileButton>

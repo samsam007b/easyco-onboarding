@@ -197,7 +197,14 @@ export default function FinancialInfoPage() {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 mt-8">
+      <div className="flex gap-4 mt-8">
+        <EnhanceProfileButton
+          role="searcher"
+          variant="outline"
+          onClick={handleSkip}
+        >
+          Skip
+        </EnhanceProfileButton>
         <EnhanceProfileButton
           role="searcher"
           onClick={handleContinue}
@@ -205,14 +212,6 @@ export default function FinancialInfoPage() {
           className="flex-1"
         >
           Continue
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
-          onClick={handleSkip}
-          className="px-8"
-        >
-          Skip
         </EnhanceProfileButton>
       </div>
     </EnhanceProfileLayout>

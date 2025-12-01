@@ -187,12 +187,11 @@ export default function OwnerExperiencePage() {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 mt-8">
+      <div className="flex gap-4 mt-8">
         <EnhanceProfileButton
           role="owner"
           variant="outline"
           onClick={handleCancel}
-          className="flex-1"
         >
           Cancel
         </EnhanceProfileButton>

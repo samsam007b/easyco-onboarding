@@ -141,7 +141,6 @@ export default function OwnerBioPage() {
           role="owner"
           variant="outline"
           onClick={handleCancel}
-          className="flex-1"
         >
           Cancel
         </EnhanceProfileButton>

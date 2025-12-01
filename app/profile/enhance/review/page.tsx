@@ -2,12 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { saveOnboardingData } from '@/lib/onboarding-helpers';
 import { toast } from 'sonner';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileTag,
+  EnhanceProfileSection,
+  EnhanceProfileInfoBox,
+} from '@/components/enhance-profile';
 
 export default function EnhanceReviewPage() {
   const router = useRouter();
@@ -118,18 +125,6 @@ export default function EnhanceReviewPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push('/profile/enhance/values');
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingHouse size={80} />
-      </div>
-    );
-  }
-
   const hasAnyData =
     data.about?.bio ||
     data.about?.aboutMe ||
@@ -140,103 +135,105 @@ export default function EnhanceReviewPage() {
     (data.values?.dealBreakers && data.values.dealBreakers.length > 0);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
-        <button onClick={handleBack} className="mb-6 text-[color:var(--easy-purple)]">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+    <EnhanceProfileLayout
+      role="searcher"
+      backUrl="/profile/enhance/community"
+      backLabel="Back"
+      progress={{
+        current: 6,
+        total: 6,
+        label: 'Step 6 of 6',
+        stepName: 'Review & Save',
+      }}
+      isLoading={isLoading}
+      loadingText="Loading your profile..."
+    >
+      <EnhanceProfileHeading
+        role="searcher"
+        title="Review Your Enhanced Profile"
+        description="Check your information before saving"
+        icon={<CheckCircle2 className="w-8 h-8 text-orange-600" />}
+      />
 
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <CheckCircle2 className="w-8 h-8 text-[color:var(--easy-purple)]" />
-            <h1 className="text-3xl font-bold text-[color:var(--easy-purple)]">Review Your Enhanced Profile</h1>
-          </div>
-          <p className="text-gray-600">Check your information before saving</p>
-        </div>
-
-        {!hasAnyData ? (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-8">
-            <p className="text-yellow-800 text-center">
+      {!hasAnyData ? (
+        <EnhanceProfileInfoBox role="searcher" icon="⚠️">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <p className="text-gray-700">
               You haven't added any enhanced profile information yet. You can go back and add some, or skip this step for now.
             </p>
           </div>
-        ) : (
-          <div className="space-y-6 mb-8">
-            {/* About Section */}
-            {(data.about?.bio || data.about?.aboutMe || data.about?.lookingFor) && (
-              <div className="bg-white p-6 rounded-2xl shadow">
-                <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-4">About You</h2>
-                <div className="space-y-3">
-                  {data.about.bio && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-1">Bio:</p>
-                      <p className="text-gray-600">{data.about.bio}</p>
-                    </div>
-                  )}
-                  {data.about.aboutMe && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-1">About Me:</p>
-                      <p className="text-gray-600">{data.about.aboutMe}</p>
-                    </div>
-                  )}
-                  {data.about.lookingFor && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-1">Looking For:</p>
-                      <p className="text-gray-600">{data.about.lookingFor}</p>
-                    </div>
-                  )}
-                </div>
+        </EnhanceProfileInfoBox>
+      ) : (
+        <div className="space-y-6">
+          {/* About Section */}
+          {(data.about?.bio || data.about?.aboutMe || data.about?.lookingFor) && (
+            <EnhanceProfileSection title="About You">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4">
+                {data.about.bio && (
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-1">Bio:</p>
+                    <p className="text-gray-600">{data.about.bio}</p>
+                  </div>
+                )}
+                {data.about.aboutMe && (
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-1">About Me:</p>
+                    <p className="text-gray-600">{data.about.aboutMe}</p>
+                  </div>
+                )}
+                {data.about.lookingFor && (
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-1">Looking For:</p>
+                    <p className="text-gray-600">{data.about.lookingFor}</p>
+                  </div>
+                )}
               </div>
-            )}
+            </EnhanceProfileSection>
+          )}
 
-            {/* Hobbies Section */}
-            {data.hobbies?.hobbies && data.hobbies.hobbies.length > 0 && (
-              <div className="bg-white p-6 rounded-2xl shadow">
-                <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-4">Hobbies & Interests</h2>
+          {/* Hobbies Section */}
+          {data.hobbies?.hobbies && data.hobbies.hobbies.length > 0 && (
+            <EnhanceProfileSection title="Hobbies & Interests">
+              <div className="bg-white p-6 rounded-xl border border-gray-200">
                 <div className="flex flex-wrap gap-2">
                   {data.hobbies.hobbies.map((hobby: string) => (
-                    <span
-                      key={hobby}
-                      className="px-4 py-2 bg-purple-100 text-[color:var(--easy-purple)] rounded-full text-sm font-medium"
-                    >
+                    <EnhanceProfileTag key={hobby} role="searcher">
                       {hobby}
-                    </span>
+                    </EnhanceProfileTag>
                   ))}
                 </div>
               </div>
-            )}
+            </EnhanceProfileSection>
+          )}
 
-            {/* Values Section */}
-            {(data.values?.coreValues?.length > 0 ||
-              data.values?.importantQualities?.length > 0 ||
-              data.values?.dealBreakers?.length > 0) && (
-              <div className="bg-white p-6 rounded-2xl shadow">
-                <h2 className="text-lg font-semibold text-[color:var(--easy-purple)] mb-4">Values & Preferences</h2>
-
+          {/* Values Section */}
+          {(data.values?.coreValues?.length > 0 ||
+            data.values?.importantQualities?.length > 0 ||
+            data.values?.dealBreakers?.length > 0) && (
+            <EnhanceProfileSection title="Values & Preferences">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4">
                 {data.values.coreValues && data.values.coreValues.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Core Values:</p>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Core Values:</p>
                     <div className="flex flex-wrap gap-2">
                       {data.values.coreValues.map((value: string) => (
-                        <span
-                          key={value}
-                          className="px-3 py-1 bg-purple-100 text-[color:var(--easy-purple)] rounded-full text-sm"
-                        >
+                        <EnhanceProfileTag key={value} role="searcher">
                           {value}
-                        </span>
+                        </EnhanceProfileTag>
                       ))}
                     </div>
                   </div>
                 )}
 
                 {data.values.importantQualities && data.values.importantQualities.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Important Qualities:</p>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Important Qualities:</p>
                     <div className="flex flex-wrap gap-2">
                       {data.values.importantQualities.map((quality: string) => (
                         <span
                           key={quality}
-                          className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm"
+                          className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium"
                         >
                           {quality}
                         </span>
@@ -247,12 +244,12 @@ export default function EnhanceReviewPage() {
 
                 {data.values.dealBreakers && data.values.dealBreakers.length > 0 && (
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Deal Breakers:</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Deal Breakers:</p>
                     <div className="flex flex-wrap gap-2">
                       {data.values.dealBreakers.map((dealBreaker: string) => (
                         <span
                           key={dealBreaker}
-                          className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm"
+                          className="px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-medium"
                         >
                           {dealBreaker}
                         </span>
@@ -261,37 +258,80 @@ export default function EnhanceReviewPage() {
                   </div>
                 )}
               </div>
-            )}
-          </div>
-        )}
+            </EnhanceProfileSection>
+          )}
 
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="flex-1 py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            {isSaving ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-5 h-5" />
-                Save Profile
-              </>
-            )}
-          </button>
-          <button
-            onClick={() => router.push(`/dashboard/${userType}`)}
-            className="px-8 py-4 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300"
-          >
-            Skip for Now
-          </button>
+          {/* Financial Section */}
+          {(data.financial?.incomeRange || data.financial?.employmentType) && (
+            <EnhanceProfileSection title="Financial Information">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-3">
+                {data.financial.incomeRange && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Income Range:</span>
+                    <span className="text-sm font-medium text-gray-900">{data.financial.incomeRange}</span>
+                  </div>
+                )}
+                {data.financial.employmentType && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Employment Type:</span>
+                    <span className="text-sm font-medium text-gray-900">{data.financial.employmentType}</span>
+                  </div>
+                )}
+                {data.financial.hasGuarantor !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Has Guarantor:</span>
+                    <span className="text-sm font-medium text-gray-900">{data.financial.hasGuarantor ? 'Yes' : 'No'}</span>
+                  </div>
+                )}
+              </div>
+            </EnhanceProfileSection>
+          )}
+
+          {/* Community Section */}
+          {data.community?.eventInterest && (
+            <EnhanceProfileSection title="Community Preferences">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Event Interest:</span>
+                  <span className="text-sm font-medium text-gray-900 capitalize">{data.community.eventInterest}</span>
+                </div>
+                {data.community.enjoySharedMeals !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Enjoys Shared Meals:</span>
+                    <span className="text-sm font-medium text-gray-900">{data.community.enjoySharedMeals ? 'Yes' : 'No'}</span>
+                  </div>
+                )}
+                {data.community.openToMeetups !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Open to Meetups:</span>
+                    <span className="text-sm font-medium text-gray-900">{data.community.openToMeetups ? 'Yes' : 'No'}</span>
+                  </div>
+                )}
+              </div>
+            </EnhanceProfileSection>
+          )}
         </div>
+      )}
+
+      {/* Action Buttons */}
+      <div className="flex gap-4 mt-8">
+        <EnhanceProfileButton
+          role="searcher"
+          variant="outline"
+          onClick={() => router.push(`/dashboard/${userType}`)}
+          disabled={isSaving}
+        >
+          Skip for Now
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="searcher"
+          onClick={handleSave}
+          disabled={isSaving}
+          className="flex-1"
+        >
+          {isSaving ? 'Saving...' : 'Save Profile'}
+        </EnhanceProfileButton>
       </div>
-    </main>
+    </EnhanceProfileLayout>
   );
 }

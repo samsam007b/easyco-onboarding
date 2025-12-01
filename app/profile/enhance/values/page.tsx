@@ -209,18 +209,17 @@ export default function EnhanceValuesPage() {
       <div className="mt-8 flex gap-4">
         <EnhanceProfileButton
           role="searcher"
+          variant="outline"
+          onClick={handleSkip}
+        >
+          Skip
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="searcher"
           onClick={handleNext}
           className="flex-1"
         >
           Next
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
-          onClick={handleSkip}
-          className="px-8"
-        >
-          Skip
         </EnhanceProfileButton>
       </div>
     </EnhanceProfileLayout>
