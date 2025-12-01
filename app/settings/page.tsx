@@ -279,53 +279,47 @@ export default function SettingsPage() {
                   const Icon = section.icon;
 
                   return (
-                    <motion.div
+                    <motion.button
                       key={section.id}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: categoryIndex * 0.1 + index * 0.05 }}
                       onClick={() => router.push(section.href)}
-                      className={cn(
-                        "group relative cursor-pointer bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-gray-200 transition-all hover:shadow-xl hover:scale-[1.02]",
-                        colors.cardHover
-                      )}
+                      className="group relative cursor-pointer bg-white rounded-2xl p-6 border-2 border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 text-left w-full"
                     >
-                      {/* Subtle texture overlay */}
-                      <div className="absolute inset-0 rounded-2xl opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iNCIgLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiAvPjwvc3ZnPg==')]" />
-
-                      {/* Hover Gradient Effect */}
-                      <div className={cn(
-                        "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity",
-                        `bg-gradient-to-br ${section.color}`
-                      )} />
-
                       <div className="relative">
                         {/* Icon with Badge */}
                         <div className="flex items-start justify-between mb-3">
                           <div className={cn(
-                            "w-12 h-12 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all backdrop-blur-sm",
+                            "w-12 h-12 rounded-xl flex items-center justify-center",
                             `bg-gradient-to-br ${section.color}`
                           )}>
                             <Icon className="w-6 h-6 text-gray-700" />
                           </div>
                           {section.badge && (
-                            <span className={cn(
-                              "px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm border border-gray-200",
-                              `bg-gradient-to-br ${colors.gradient} text-gray-700`
-                            )}>
+                            <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
                               {section.badge}
                             </span>
                           )}
                         </div>
 
                         {/* Content */}
-                        <h3 className="font-bold text-gray-900 mb-1.5 flex items-center justify-between">
-                          {section.title}
-                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
-                        </h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">{section.description}</p>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">{section.title}</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">{section.description}</p>
+                          </div>
+                          <svg
+                            className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
                       </div>
-                    </motion.div>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -338,13 +332,12 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 rounded-3xl p-8 bg-white/80 backdrop-blur-sm border border-gray-200 relative overflow-hidden shadow-sm"
+          className="mt-8 rounded-3xl p-8 bg-white border-2 border-orange-100 relative overflow-hidden shadow-sm"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-pink-50/30" />
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
-                <HelpCircle className="w-7 h-7 text-gray-700" />
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200">
+                <HelpCircle className="w-7 h-7 text-orange-600" />
               </div>
               <div>
                 <h3 className="text-xl font-bold mb-1 text-gray-900">Besoin d'aide ?</h3>
@@ -352,19 +345,18 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="flex gap-3">
-              <Button
+              <button
                 onClick={() => router.push('/help')}
-                variant="outline"
-                className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl"
+                className="px-4 py-2 rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-50 transition-all duration-300 font-medium"
               >
                 Centre d'aide
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => router.push('/contact')}
-                className="bg-gradient-to-r from-purple-100 to-pink-100/70 text-gray-900 hover:from-purple-200 hover:to-pink-200 border border-gray-200 rounded-xl font-semibold shadow-sm"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all duration-300 font-semibold"
               >
                 Contacter le support
-              </Button>
+              </button>
             </div>
           </div>
         </motion.div>
