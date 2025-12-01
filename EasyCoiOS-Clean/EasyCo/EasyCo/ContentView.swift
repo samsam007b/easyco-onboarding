@@ -68,83 +68,161 @@ struct MainTabView: View {
 struct SearcherTabView: View {
     @State private var selectedTab = 0
     @State private var showSettings = false
+    @State private var showSideMenu = false
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // Browse
-            NavigationStack {
-                PropertiesListView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
-                        }
-                    }
-            }
-            .tabItem {
-                Label("Explorer", systemImage: "magnifyingglass")
-            }
-            .tag(0)
+        ZStack {
+            TabView(selection: $selectedTab) {
+                // Dashboard - Main home screen
+                NavigationStack {
+                    PropertiesListView() // TODO: Replace with SearcherDashboardView when added to Xcode
+                        .navigationTitle("Dashboard")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
 
-            // Favorites
-            NavigationStack {
-                FavoritesView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
+                            }
                         }
+                }
+                .tabItem {
+                    Label {
+                        Text("Accueil")
+                    } icon: {
+                        Image("EasyCoHouseIcon")
+                            .renderingMode(.template)
                     }
-            }
-            .tabItem {
-                Label("Favoris", systemImage: "heart.fill")
-            }
-            .tag(1)
+                }
+                .tag(0)
 
-            // Matches
-            NavigationStack {
-                Text("Matchs") // TODO: Create MatchesView
-                    .navigationTitle("Matchs")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
-                        }
-                    }
-            }
-            .tabItem {
-                Label("Matchs", systemImage: "sparkles")
-            }
-            .tag(2)
+                // Browse - Property search and exploration
+                NavigationStack {
+                    PropertiesListView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
 
-            // Groups
-            NavigationStack {
-                GroupsListView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
+                            }
                         }
-                    }
-            }
-            .tabItem {
-                Label("Groupes", systemImage: "person.3.fill")
-            }
-            .tag(3)
+                }
+                .tabItem {
+                    Label("Explorer", systemImage: "magnifyingglass")
+                }
+                .tag(1)
 
-            // Messages
-            NavigationStack {
-                MessagesListView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
+                // Matches - AI-powered property matches
+                NavigationStack {
+                    MatchesView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Matchs", systemImage: "sparkles")
+                }
+                .tag(2)
+
+                // Favorites
+                NavigationStack {
+                    FavoritesView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Favoris", systemImage: "heart.fill")
+                }
+                .tag(3)
+
+                // Messages
+                NavigationStack {
+                    MessagesListView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Messages", systemImage: "message.fill")
+                }
+                .tag(4)
+            }
+            .tint(Theme.Colors.searcherPrimary)
+            .onAppear {
+                let appearance = UITabBarAppearance()
+
+                // Glassomorphism effect using blur material
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+                appearance.backgroundColor = .clear
+
+                UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+            }
+
+            // Side menu overlay - MUST be after TabView to appear on top
+            if showSideMenu {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showSideMenu = false
                         }
                     }
+
+                HStack(spacing: 0) {
+                    SideMenuView(isShowing: $showSideMenu)
+                        .frame(width: 300)
+                        .transition(.move(edge: .leading))
+
+                    Spacer()
+                }
             }
-            .tabItem {
-                Label("Messages", systemImage: "message.fill")
-            }
-            .tag(4)
-        }
-        .accentColor(Theme.Colors.searcherPrimary)
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
     }
 }
@@ -154,47 +232,160 @@ struct SearcherTabView: View {
 struct OwnerTabView: View {
     @State private var selectedTab = 0
     @State private var showSettings = false
+    @State private var showSideMenu = false
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // Properties - Full featured property management
-            OwnerPropertiesView()
+        ZStack {
+            TabView(selection: $selectedTab) {
+                // Dashboard - Overview with KPIs and analytics
+                NavigationStack {
+                    OwnerDashboardView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "6E56CF"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
-                    Label("Propriétés", systemImage: "building.2.fill")
+                    Label {
+                        Text("Accueil")
+                    } icon: {
+                        Image("EasyCoHouseIcon")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(0)
 
-            // Applications - Full featured applications management
-            ApplicationsView()
+                // Properties - Full featured property management
+                NavigationStack {
+                    OwnerPropertiesView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "6E56CF"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
-                    Label("Candidatures", systemImage: "doc.text.fill")
+                    Label("Propriétés", systemImage: "building.2.fill")
                 }
                 .tag(1)
 
-            // Maintenance - Full featured maintenance management
-            MaintenanceView()
+                // Applications - Full featured applications management
+                NavigationStack {
+                    ApplicationsView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "6E56CF"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
-                    Label("Maintenance", systemImage: "wrench.and.screwdriver.fill")
+                    Label("Candidatures", systemImage: "doc.text.fill")
                 }
                 .tag(2)
 
-            // Messages
-            NavigationStack {
-                MessagesListView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
+                // Finances - Revenue tracking and financial management
+                NavigationStack {
+                    OwnerFinanceView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "6E56CF"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Finances", systemImage: "eurosign.circle.fill")
+                }
+                .tag(3)
+
+                // Messages
+                NavigationStack {
+                    MessagesListView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "6E56CF"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Messages", systemImage: "message.fill")
+                }
+                .tag(4)
+            }
+            .tint(Theme.Colors.ownerPrimary)
+            .onAppear {
+                let appearance = UITabBarAppearance()
+
+                // Glassomorphism effect using blur material
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+                appearance.backgroundColor = .clear
+
+                UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+            }
+
+            // Side menu overlay - MUST be after TabView to appear on top
+            if showSideMenu {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showSideMenu = false
                         }
                     }
+
+                HStack(spacing: 0) {
+                    SideMenuView(isShowing: $showSideMenu)
+                        .frame(width: 300)
+                        .transition(.move(edge: .leading))
+
+                    Spacer()
+                }
             }
-            .tabItem {
-                Label("Messages", systemImage: "message.fill")
-            }
-            .tag(3)
-        }
-        .accentColor(Theme.Colors.ownerPrimary)
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
     }
 }
@@ -204,54 +395,145 @@ struct OwnerTabView: View {
 struct ResidentTabView: View {
     @State private var selectedTab = 0
     @State private var showSettings = false
+    @State private var showSideMenu = false
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // Hub - Full featured dashboard
-            ResidentHubView()
-                .tabItem {
-                    Label("Hub", systemImage: "house.fill")
-                }
-                .tag(0)
+        ZStack {
+            TabView(selection: $selectedTab) {
+                // Hub - Full featured dashboard (already has toolbar built-in)
+                ResidentHubView()
+                    .tabItem {
+                        Label {
+                        Text("Accueil")
+                    } icon: {
+                        Image("EasyCoHouseIcon")
+                            .renderingMode(.template)
+                    }
+                    }
+                    .tag(0)
 
-            // Tasks - Full featured task management
-            TasksView()
+                // Tasks - Full featured task management
+                NavigationStack {
+                    TasksView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "E8865D"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
                     Label("Tâches", systemImage: "checklist")
                 }
                 .tag(1)
 
-            // Finances - Full featured expense management
-            ExpensesView()
+                // Finances - Full featured expense management
+                NavigationStack {
+                    ExpensesView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "E8865D"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
                     Label("Finances", systemImage: "creditcard.fill")
                 }
                 .tag(2)
 
-            // Calendar - Full featured event calendar
-            CalendarView()
+                // Calendar - Full featured event calendar
+                NavigationStack {
+                    CalendarView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "E8865D"))
+                                }
+                            }
+                        }
+                }
                 .tabItem {
                     Label("Calendrier", systemImage: "calendar")
                 }
                 .tag(3)
 
-            // Messages
-            NavigationStack {
-                MessagesListView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            ProfileButton { showSettings = true }
+                // Messages
+                NavigationStack {
+                    MessagesListView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ProfileButton { showSettings = true }
+                            }
+
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: { showSideMenu = true }) {
+                                    Image(systemName: "line.3.horizontal")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(Color(hex: "E8865D"))
+                                }
+                            }
+                        }
+                }
+                .tabItem {
+                    Label("Messages", systemImage: "message.fill")
+                }
+                .tag(4)
+            }
+            .tint(Theme.Colors.residentPrimary)
+            .onAppear {
+                let appearance = UITabBarAppearance()
+
+                // Glassomorphism effect using blur material
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+                appearance.backgroundColor = .clear
+
+                UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+            }
+
+            // Side menu overlay - MUST be after TabView to appear on top
+            if showSideMenu {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showSideMenu = false
                         }
                     }
+
+                HStack(spacing: 0) {
+                    SideMenuView(isShowing: $showSideMenu)
+                        .frame(width: 300)
+                        .transition(.move(edge: .leading))
+
+                    Spacer()
+                }
             }
-            .tabItem {
-                Label("Messages", systemImage: "message.fill")
-            }
-            .tag(4)
-        }
-        .accentColor(Theme.Colors.residentPrimary)
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
     }
 }

@@ -200,7 +200,7 @@ struct HubMembersView: View {
 
                 ContributionStatCard(
                     title: "Dépenses partagées",
-                    value: "€\(viewModel.totalSharedExpenses, specifier: "%.0f")",
+                    value: String(format: "€%.0f", viewModel.totalSharedExpenses),
                     icon: "eurosign.circle.fill",
                     color: Color(hex: "6366F1")
                 )
@@ -500,7 +500,7 @@ struct MemberDetailSheet: View {
                     // Stats
                     HStack(spacing: 20) {
                         MemberStatItem(value: "\(member.tasksCompleted)", label: "Tâches")
-                        MemberStatItem(value: "€\(member.expensesPaid, specifier: "%.0f")", label: "Dépenses")
+                        MemberStatItem(value: String(format: "€%.0f", member.expensesPaid), label: "Dépenses")
                         MemberStatItem(value: "\(member.eventsCreated)", label: "Événements")
                     }
                     .padding(20)

@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MyApplicationsView: View {
     @StateObject private var viewModel = MyApplicationsViewModel()
-    @State private var selectedFilter: ApplicationStatus?
+    @State private var selectedFilter: SearcherApplicationStatus?
 
     var body: some View {
         NavigationStack {
@@ -38,19 +38,17 @@ struct MyApplicationsView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 FilterChip(
-                    title: "Toutes",
-                    isSelected: selectedFilter == nil,
-                    count: viewModel.applications.count
+                    title: "Toutes (\(viewModel.applications.count))",
+                    isSelected: selectedFilter == nil
                 ) {
                     selectedFilter = nil
                     viewModel.filterApplications(by: nil)
                 }
 
-                ForEach([ApplicationStatus.pending, .reviewing, .accepted, .rejected], id: \.self) { status in
+                ForEach([SearcherApplicationStatus.pending, .reviewing, .accepted, .rejected], id: \.self) { status in
                     FilterChip(
-                        title: status.displayName,
-                        isSelected: selectedFilter == status,
-                        count: viewModel.applications.filter { $0.status == status }.count
+                        title: "\(status.displayName) (\(viewModel.applications.filter { $0.status == status }.count))",
+                        isSelected: selectedFilter == status
                     ) {
                         selectedFilter = status
                         viewModel.filterApplications(by: status)
@@ -425,7 +423,7 @@ class MyApplicationsViewModel: ObservableObject {
         isLoading = false
     }
 
-    func filterApplications(by status: ApplicationStatus?) {
+    func filterApplications(by status: SearcherApplicationStatus?) {
         if let status = status {
             filteredApplications = applications.filter { $0.status == status }
         } else {

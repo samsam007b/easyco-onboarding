@@ -195,7 +195,7 @@ struct MatchesView: View {
     private var matchStatsHeader: some View {
         HStack(spacing: 12) {
             // Total matches
-            MatchStatCard(
+            SearcherMatchStatCard(
                 value: "\(viewModel.filteredMatches.count)",
                 label: "Matchs",
                 icon: "sparkles",
@@ -203,7 +203,7 @@ struct MatchesView: View {
             )
 
             // Excellent matches (90%+)
-            MatchStatCard(
+            SearcherMatchStatCard(
                 value: "\(viewModel.excellentMatchesCount)",
                 label: "Excellents",
                 icon: "star.fill",
@@ -211,7 +211,7 @@ struct MatchesView: View {
             )
 
             // Average score
-            MatchStatCard(
+            SearcherMatchStatCard(
                 value: "\(viewModel.averageScore)%",
                 label: "Score moyen",
                 icon: "chart.bar.fill",
@@ -408,7 +408,7 @@ struct ActiveFilterChip: View {
 
 // MARK: - Stat Card
 
-private struct MatchStatCard: View {
+private struct SearcherMatchStatCard: View {
     let value: String
     let label: String
     let icon: String
