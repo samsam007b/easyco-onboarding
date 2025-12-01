@@ -117,9 +117,9 @@ export const SwipeCard = memo(function SwipeCard({
   const getWakeTimeLabel = (time?: string) => {
     if (!time) return null;
     const labels: Record<string, string> = {
-      'early': '🌅 Lève-tôt',
-      'moderate': '☀️ Normal',
-      'late': '🌙 Lève-tard'
+      'early': 'Lève-tôt',
+      'moderate': 'Normal',
+      'late': 'Lève-tard'
     };
     return labels[time] || time;
   };
@@ -127,30 +127,30 @@ export const SwipeCard = memo(function SwipeCard({
   const getSleepTimeLabel = (time?: string) => {
     if (!time) return null;
     const labels: Record<string, string> = {
-      'early': '😴 Couche tôt',
-      'before_23h': '😴 Avant 23h',
-      'moderate': '🌙 Normal',
-      '23h_01h': '🌙 23h-1h',
-      'late': '🦉 Couche tard',
-      'after_01h': '🦉 Après 1h'
+      'early': 'Couche tôt',
+      'before_23h': 'Avant 23h',
+      'moderate': 'Normal',
+      '23h_01h': '23h-1h',
+      'late': 'Couche tard',
+      'after_01h': 'Après 1h'
     };
     return labels[time] || time;
   };
 
   const getCleanlinessLabel = (level?: number) => {
     if (!level) return null;
-    if (level >= 8) return '✨ Très ordonné';
-    if (level >= 6) return '🧹 Ordonné';
-    if (level >= 4) return '😊 Flexible';
-    return '🎨 Décontracté';
+    if (level >= 8) return 'Très ordonné';
+    if (level >= 6) return 'Ordonné';
+    if (level >= 4) return 'Flexible';
+    return 'Décontracté';
   };
 
   const getSocialLabel = (level?: number) => {
     if (!level) return null;
-    if (level >= 8) return '🎉 Très sociable';
-    if (level >= 6) return '😊 Sociable';
-    if (level >= 4) return '🤝 Équilibré';
-    return '📚 Calme';
+    if (level >= 8) return 'Très sociable';
+    if (level >= 6) return 'Sociable';
+    if (level >= 4) return 'Équilibré';
+    return 'Calme';
   };
 
   const handleDragEnd = useCallback(async (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -542,7 +542,10 @@ export const SwipeCard = memo(function SwipeCard({
               {/* Hobbies */}
               {user.hobbies && user.hobbies.length > 0 && (
                 <div>
-                  <p className="text-sm font-bold text-gray-900 mb-2">🎨 Hobbies</p>
+                  <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-gray-500" />
+                    Hobbies
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {user.hobbies.map((hobby, idx) => (
                       <Badge key={idx} variant="secondary" size="sm">{hobby}</Badge>
@@ -570,7 +573,10 @@ export const SwipeCard = memo(function SwipeCard({
 
               {/* Lifestyle Details */}
               <div>
-                <p className="text-sm font-bold text-gray-900 mb-3">🏠 Mode de vie</p>
+                <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <Home className="w-4 h-4 text-gray-500" />
+                  Mode de vie
+                </p>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                   {user.wake_up_time && (
                     <div className="flex justify-between">
@@ -613,7 +619,10 @@ export const SwipeCard = memo(function SwipeCard({
 
               {/* Coliving Preferences */}
               <div>
-                <p className="text-sm font-bold text-gray-900 mb-3">🏡 Préférences coliving</p>
+                <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-gray-500" />
+                  Préférences coliving
+                </p>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                   {user.preferred_coliving_size && (
                     <div className="flex justify-between">

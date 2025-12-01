@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
-import { useState, memo, useCallback } from 'react';
+import { useState, memo, useCallback, useMemo } from 'react';
+import { calculatePropertySearcherMatch, getPropertyMatchQuality } from '@/lib/services/property-matching-service';
+import type { PropertyWithResidents, PropertySearcherProfile } from '@/lib/services/property-matching-service';
 
 interface ResidentProfile {
   id: string;
@@ -33,6 +35,7 @@ interface PropertyCardProps {
   residents?: ResidentProfile[];
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
+  searcherProfile?: PropertySearcherProfile; // NEW: For property matching
   onFavoriteClick?: (id: string) => void;
   isFavorite?: boolean;
   variant?: 'default' | 'compact';
@@ -45,6 +48,7 @@ function PropertyCard({
   residents = [],
   showCompatibilityScore = false,
   compatibilityScore,
+  searcherProfile,
   onFavoriteClick,
   isFavorite = false,
   variant = 'default',
@@ -53,6 +57,46 @@ function PropertyCard({
 }: PropertyCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
+
+  // Calculate property matching score if searcher profile is provided
+  const propertyMatchResult = useMemo(() => {
+    if (!searcherProfile) return null;
+
+    // Convert property to PropertyWithResidents format
+    const propertyWithResidents: PropertyWithResidents = {
+      id: property.id,
+      owner_id: property.owner_id || '',
+      title: property.title,
+      property_type: property.property_type as any,
+      address: property.address || '',
+      city: property.city,
+      postal_code: '', // Not available in current prop
+      bedrooms: property.bedrooms || 0,
+      bathrooms: 0, // Not available in current prop
+      furnished: false, // Not available in current prop
+      monthly_rent: property.monthly_rent,
+      charges: 0, // Not available in current prop
+      deposit: 0, // Not available in current prop
+      is_available: true,
+      amenities: [], // Not available in current prop
+      smoking_allowed: false, // Not available in current prop
+      pets_allowed: false, // Not available in current prop
+      couples_allowed: false, // Not available in current prop
+      images: property.images || [],
+      status: 'published',
+      views_count: property.views_count || 0,
+      inquiries_count: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      residents: [], // Residents would need full profile data
+    };
+
+    return calculatePropertySearcherMatch(propertyWithResidents, searcherProfile);
+  }, [property, searcherProfile, residents]);
+
+  // Use calculated match score or fallback to provided compatibilityScore
+  const displayScore = propertyMatchResult?.score ?? compatibilityScore;
+  const matchQuality = displayScore ? getPropertyMatchQuality(displayScore) : null;
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -133,10 +177,22 @@ function PropertyCard({
               </div>
             )}
 
-            {/* Compatibility Score Badge */}
-            {showCompatibilityScore && compatibilityScore && (
-              <div className="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                {compatibilityScore}% Match
+            {/* Property Match Score Badge - V1 Flat */}
+            {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && (
+              <div className={`absolute top-2 left-2 px-3 py-1 rounded-full text-xs font-bold shadow-md ${
+                matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
+                matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                matchQuality?.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
+                matchQuality?.color === 'orange' ? 'bg-orange-100 text-orange-700' :
+                'bg-red-100 text-red-700'
+              }`}>
+                {displayScore}% Match
+              </div>
+            )}
+            {/* Profile Incomplete Indicator */}
+            {searcherProfile && propertyMatchResult && !propertyMatchResult.isScoreReliable && (
+              <div className="absolute top-2 left-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                Complétez votre profil
               </div>
             )}
           </div>
@@ -246,21 +302,28 @@ function PropertyCard({
             </div>
           )}
 
-          {/* Compatibility Score Badge - V3.A Flat */}
-          {showCompatibilityScore && compatibilityScore && (
-            <div className={`absolute top-3 left-3 px-3 py-1.5 rounded-full text-sm font-bold shadow-md ${
-              compatibilityScore >= 80
-                ? 'bg-green-500 text-white'
-                : compatibilityScore >= 60
-                ? 'bg-orange-500 text-white'
-                : 'bg-gray-500 text-white'
+          {/* Property Match Score Badge - V1 Flat */}
+          {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable && (
+            <div className={`absolute top-3 left-3 px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
+              matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
+              matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
+              matchQuality?.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
+              matchQuality?.color === 'orange' ? 'bg-orange-100 text-orange-700' :
+              'bg-red-100 text-red-700'
             }`}>
-              {compatibilityScore}% Match
+              {displayScore}% Match
+            </div>
+          )}
+
+          {/* Profile Incomplete Badge */}
+          {searcherProfile && propertyMatchResult && !propertyMatchResult.isScoreReliable && (
+            <div className="absolute top-3 left-3 bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+              Complétez votre profil
             </div>
           )}
 
           {/* Property Type Badge */}
-          {!showCompatibilityScore && (
+          {!showCompatibilityScore && !searcherProfile && (
             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
               {property.property_type}
             </div>
