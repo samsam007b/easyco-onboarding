@@ -2,18 +2,13 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { redirect } from 'next/navigation';
 import {
   Shield,
-  UserPlus,
   Crown,
   User,
-  Calendar,
-  Mail,
-  Trash2,
   AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import AddAdminForm from '@/components/admin/AddAdminForm';
+import AdminsList from '@/components/admin/AdminsList';
 
 async function checkSuperAdmin() {
   const supabase = await createClient();
@@ -60,14 +55,6 @@ export default async function AdminsManagementPage() {
 
   const superAdmins = admins.filter(a => a.role === 'super_admin');
   const regularAdmins = admins.filter(a => a.role === 'admin');
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
-  };
 
   return (
     <div className="space-y-6">
@@ -136,73 +123,7 @@ export default async function AdminsManagementPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {admins.length === 0 ? (
-            <div className="text-center py-12">
-              <Shield className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">Aucun administrateur trouvé</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {admins.map((admin) => (
-                <div
-                  key={admin.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                      admin.role === 'super_admin'
-                        ? 'bg-gradient-to-br from-orange-500 to-red-600'
-                        : 'bg-purple-600'
-                    }`}>
-                      {admin.role === 'super_admin' ? (
-                        <Crown className="w-5 h-5 text-white" />
-                      ) : (
-                        <Shield className="w-5 h-5 text-white" />
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-white">{admin.email}</p>
-                        <Badge className={
-                          admin.role === 'super_admin'
-                            ? 'bg-orange-500/20 text-orange-400'
-                            : 'bg-purple-500/20 text-purple-400'
-                        }>
-                          {admin.role === 'super_admin' ? 'Super Admin' : 'Admin'}
-                        </Badge>
-                        {admin.user_id ? (
-                          <Badge className="bg-green-500/20 text-green-400 text-xs">
-                            Lié
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-slate-500/20 text-slate-400 text-xs">
-                            Non lié
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          Ajouté le {formatDate(admin.created_at)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {admin.role !== 'super_admin' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <AdminsList admins={admins} />
         </CardContent>
       </Card>
 
