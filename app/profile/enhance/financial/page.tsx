@@ -203,6 +203,7 @@ export default function FinancialInfoPage() {
           onClick={handleContinue}
           disabled={!canContinue}
           className="w-full"
+          icon={<span />}
         >
           Continue
         </EnhanceProfileButton>
