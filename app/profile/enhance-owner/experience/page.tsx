@@ -102,18 +102,24 @@ export default function OwnerExperiencePage() {
             </div>
             Years of landlord experience
           </label>
-          <select
-            value={experienceYears}
-            onChange={(e) => setExperienceYears(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
-          >
-            <option value="">Select...</option>
-            <option value="0">Less than 1 year</option>
-            <option value="1-2">1-2 years</option>
-            <option value="3-5">3-5 years</option>
-            <option value="5-10">5-10 years</option>
-            <option value="10+">10+ years</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: '0', label: 'Less than 1 year' },
+              { value: '1-2', label: '1-2 years' },
+              { value: '3-5', label: '3-5 years' },
+              { value: '5-10', label: '5-10 years' },
+              { value: '10+', label: '10+ years' },
+            ].map((option) => (
+              <EnhanceProfileSelectionCard
+                key={option.value}
+                role="owner"
+                selected={experienceYears === option.value}
+                onClick={() => setExperienceYears(option.value)}
+              >
+                {option.label}
+              </EnhanceProfileSelectionCard>
+            ))}
+          </div>
         </EnhanceProfileSection>
 
         {/* Management Style */}
@@ -186,23 +192,25 @@ export default function OwnerExperiencePage() {
         </EnhanceProfileSection>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="owner"
-          variant="outline"
-          onClick={handleCancel}
-        >
-          Cancel
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="owner"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className="flex-1"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+            canContinue
+              ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           Save Changes
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={handleCancel}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+        >
+          Cancel
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

@@ -314,23 +314,25 @@ export default function EnhanceReviewPage() {
       )}
 
       {/* Action Buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
-          onClick={() => router.push(`/dashboard/${userType}`)}
-          disabled={isSaving}
-        >
-          Skip for Now
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleSave}
           disabled={isSaving}
-          className="flex-1"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+            !isSaving
+              ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           {isSaving ? 'Saving...' : 'Save Profile'}
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={() => router.push(`/dashboard/${userType}`)}
+          disabled={isSaving}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
+        >
+          Skip for now
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

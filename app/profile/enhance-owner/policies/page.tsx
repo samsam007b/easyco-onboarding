@@ -156,64 +156,85 @@ export default function OwnerPoliciesPage() {
 
         {/* Minimum Lease Duration */}
         <EnhanceProfileSection>
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
               <Calendar className="w-4 h-4 text-blue-600" />
             </div>
             Minimum lease duration (optional)
           </label>
-          <select
-            value={minimumLeaseDuration}
-            onChange={(e) => setMinimumLeaseDuration(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
-          >
-            <option value="">No preference</option>
-            <option value="1">1 month</option>
-            <option value="3">3 months</option>
-            <option value="6">6 months</option>
-            <option value="12">12 months</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: '', label: 'No preference' },
+              { value: '1', label: '1 month' },
+              { value: '3', label: '3 months' },
+              { value: '6', label: '6 months' },
+              { value: '12', label: '12 months' },
+            ].map((option) => (
+              <EnhanceProfileSelectionCard
+                key={option.value || 'none'}
+                role="owner"
+                selected={minimumLeaseDuration === option.value}
+                onClick={() => setMinimumLeaseDuration(option.value)}
+              >
+                {option.label}
+              </EnhanceProfileSelectionCard>
+            ))}
+          </div>
         </EnhanceProfileSection>
 
         {/* Deposit Amount */}
         <EnhanceProfileSection>
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <Euro className="w-4 h-4 text-green-600" />
             </div>
             Typical deposit (optional)
           </label>
-          <select
-            value={depositAmount}
-            onChange={(e) => setDepositAmount(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
-          >
-            <option value="">Not specified</option>
-            <option value="half-month">Half month's rent</option>
-            <option value="1-month">1 month's rent</option>
-            <option value="2-months">2 months' rent</option>
-            <option value="negotiable">Negotiable</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: '', label: 'Not specified' },
+              { value: 'half-month', label: 'Half month\'s rent' },
+              { value: '1-month', label: '1 month\'s rent' },
+              { value: '2-months', label: '2 months\' rent' },
+              { value: 'negotiable', label: 'Negotiable' },
+            ].map((option) => (
+              <EnhanceProfileSelectionCard
+                key={option.value || 'none'}
+                role="owner"
+                selected={depositAmount === option.value}
+                onClick={() => setDepositAmount(option.value)}
+              >
+                {option.label}
+              </EnhanceProfileSelectionCard>
+            ))}
+          </div>
         </EnhanceProfileSection>
 
         {/* Notice Period */}
         <EnhanceProfileSection>
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
               <Shield className="w-4 h-4 text-yellow-600" />
             </div>
             Notice period for move-out (optional)
           </label>
-          <select
-            value={noticePeriod}
-            onChange={(e) => setNoticePeriod(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
-          >
-            <option value="">Not specified</option>
-            <option value="1-month">1 month</option>
-            <option value="2-months">2 months</option>
-            <option value="3-months">3 months</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: '', label: 'Not specified' },
+              { value: '1-month', label: '1 month' },
+              { value: '2-months', label: '2 months' },
+              { value: '3-months', label: '3 months' },
+            ].map((option) => (
+              <EnhanceProfileSelectionCard
+                key={option.value || 'none'}
+                role="owner"
+                selected={noticePeriod === option.value}
+                onClick={() => setNoticePeriod(option.value)}
+              >
+                {option.label}
+              </EnhanceProfileSelectionCard>
+            ))}
+          </div>
         </EnhanceProfileSection>
 
         {/* Info box */}
@@ -224,23 +245,25 @@ export default function OwnerPoliciesPage() {
         </EnhanceProfileInfoBox>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="owner"
-          variant="outline"
-          onClick={handleCancel}
-        >
-          Cancel
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="owner"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className="flex-1"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+            canContinue
+              ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           Save Changes
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={handleCancel}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+        >
+          Cancel
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

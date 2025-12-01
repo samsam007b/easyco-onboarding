@@ -178,21 +178,19 @@ export default function EnhanceHobbiesPage() {
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-8 flex gap-4">
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
-          onClick={handleSkip}
-        >
-          Skip
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleNext}
-          className="flex-1"
+          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           Next
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={handleSkip}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+        >
+          Skip for now
+        </button>
       </div>
     </EnhanceProfileLayout>
   );
