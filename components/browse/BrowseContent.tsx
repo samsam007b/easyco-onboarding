@@ -11,6 +11,7 @@ import PropertyCard from '@/components/PropertyCard';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
+import type { PropertySearcherProfile } from '@/lib/services/property-matching-service';
 import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
 import { SwipeCard } from '@/components/matching/SwipeCard';
 import { CardPile } from '@/components/matching/CardPile';
@@ -162,6 +163,47 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
     };
     loadFavorites();
   }, [userId, supabase]);
+
+  // Fetch searcher profile for property matching
+  const { data: searcherProfile } = useQuery<PropertySearcherProfile | null>({
+    queryKey: ['searcherProfile', userId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error || !data) return null;
+
+      // Convert user_profiles to PropertySearcherProfile format
+      return {
+        user_id: data.user_id,
+        first_name: data.first_name || '',
+        last_name: data.last_name || '',
+        date_of_birth: data.date_of_birth,
+        gender: data.gender,
+        min_budget: data.min_budget,
+        max_budget: data.max_budget,
+        preferred_neighborhoods: data.preferred_neighborhoods || [],
+        preferred_property_type: data.preferred_property_type || [],
+        min_bedrooms: data.min_bedrooms,
+        furnished_required: data.furnished_required,
+        required_amenities: data.required_amenities || [],
+        preferred_amenities: data.preferred_amenities || [],
+        cleanliness_level: data.cleanliness_level,
+        social_energy: data.social_energy,
+        smoking: data.smoking,
+        pets: data.pets,
+        smoking_tolerance: data.smoking_tolerance,
+        pets_tolerance: data.pets_tolerance,
+        core_values: data.core_values || [],
+        wake_up_time: data.wake_up_time,
+        sleep_time: data.sleep_time,
+      };
+    },
+    enabled: !!userId,
+  });
 
   // Handle favorite click
   const handleFavoriteClick = useCallback(async (propertyId: string) => {
@@ -432,6 +474,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       key={property.id}
                       property={property}
                       residents={residents}
+                      searcherProfile={searcherProfile || undefined}
                       showCompatibilityScore
                       variant="default"
                       onFavoriteClick={handleFavoriteClick}
