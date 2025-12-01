@@ -2,19 +2,25 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, User } from 'lucide-react';
+import { ArrowRight, User, Calendar, Globe } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import { useOnboardingFunnel } from '@/lib/analytics/use-analytics';
 import { trackQuickStartFunnel } from '@/lib/analytics/funnels';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+  OnboardingInput,
+} from '@/components/onboarding';
 
 export default function QuickBasicInfoPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -26,17 +32,13 @@ export default function QuickBasicInfoPage() {
 
   const loadExistingData = useCallback(async () => {
     try {
-      // Load from localStorage first
       const saved = safeLocalStorage.get('quickBasicInfo', {}) as any;
       if (saved.firstName) setFirstName(saved.firstName);
       if (saved.lastName) setLastName(saved.lastName);
       if (saved.dateOfBirth) setDateOfBirth(saved.dateOfBirth);
       if (saved.nationality) setNationality(saved.nationality);
 
-      // Load from database if exists
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: profileData } = await supabase
           .from('user_profiles')
@@ -53,13 +55,13 @@ export default function QuickBasicInfoPage() {
       }
     } catch (error) {
       console.error('Error loading data:', error);
+    } finally {
+      setIsPageLoading(false);
     }
   }, [supabase]);
 
   useEffect(() => {
     loadExistingData();
-
-    // Track that user started the Quick Start onboarding
     trackOnboardingStarted();
     trackQuickStartFunnel.modeSelected({ mode: 'quick' });
   }, [loadExistingData, trackOnboardingStarted]);
@@ -76,23 +78,19 @@ export default function QuickBasicInfoPage() {
   }, [firstName, lastName, dateOfBirth, nationality]);
 
   const handleNext = async () => {
-    // Validation
     if (!firstName.trim()) {
       toast.error('Le prénom est requis');
       return;
     }
-
     if (!lastName.trim()) {
       toast.error('Le nom de famille est requis');
       return;
     }
-
     if (!dateOfBirth) {
       toast.error('La date de naissance est requise');
       return;
     }
 
-    // Check age (must be 18+)
     const birthDate = new Date(dateOfBirth);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -100,12 +98,10 @@ export default function QuickBasicInfoPage() {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-
     if (age < 18) {
-      toast.error('Vous devez avoir au moins 18 ans');
+      toast.error('Tu dois avoir au moins 18 ans');
       return;
     }
-
     if (!nationality.trim()) {
       toast.error('La nationalité est requise');
       return;
@@ -114,10 +110,7 @@ export default function QuickBasicInfoPage() {
     setIsLoading(true);
 
     try {
-      // Save to database
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
         const { error } = await supabase
@@ -133,18 +126,15 @@ export default function QuickBasicInfoPage() {
             },
             { onConflict: 'user_id' }
           );
-
         if (error) throw error;
       }
 
-      // Track step completion
       trackStepCompleted('basic_info', 1);
       trackQuickStartFunnel.basicInfoCompleted({
         has_nationality: !!nationality,
         age_range: age < 25 ? '18-24' : age < 35 ? '25-34' : age < 45 ? '35-44' : '45+',
       });
 
-      // Navigate to next step
       router.push('/onboarding/searcher/quick/budget-location');
     } catch (error: any) {
       console.error('Error saving:', error);
@@ -154,115 +144,103 @@ export default function QuickBasicInfoPage() {
     }
   };
 
-  const steps = generateStepsArray('quick', 0);
+  const canContinue = firstName && lastName && dateOfBirth && nationality;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
-      <ProgressBar steps={steps} currentStep={0} mode="quick" />
-
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <User className="w-8 h-8 text-orange-600" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Commençons par les bases
-          </h1>
-          <p className="text-gray-600">
-            Dis-nous qui tu es pour personnaliser ton expérience
-          </p>
+    <OnboardingLayout
+      role="searcher"
+      backUrl="/onboarding/searcher/mode-selection"
+      backLabel="Retour"
+      progress={{
+        current: 1,
+        total: 5,
+        label: 'Étape 1 sur 5',
+        stepName: 'Informations de base',
+      }}
+      isLoading={isPageLoading}
+      loadingText="Chargement..."
+    >
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <User className="w-8 h-8 text-orange-600" />
         </div>
-
-        {/* Form */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
-          {/* First Name */}
-          <div>
-            <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
-              Prénom <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="firstName"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Jean"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              required
-            />
-          </div>
-
-          {/* Last Name */}
-          <div>
-            <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 mb-2">
-              Nom de famille <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="lastName"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Dupont"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              required
-            />
-          </div>
-
-          {/* Date of Birth */}
-          <div>
-            <label htmlFor="dateOfBirth" className="block text-sm font-semibold text-gray-700 mb-2">
-              Date de naissance <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="dateOfBirth"
-              type="date"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              required
-            />
-            <p className="text-xs text-gray-500 mt-1">Tu dois avoir au moins 18 ans</p>
-          </div>
-
-          {/* Nationality */}
-          <div>
-            <label htmlFor="nationality" className="block text-sm font-semibold text-gray-700 mb-2">
-              Nationalité <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="nationality"
-              type="text"
-              value={nationality}
-              onChange={(e) => setNationality(e.target.value)}
-              placeholder="Belge"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              required
-            />
-          </div>
-
-          {/* Continue Button */}
-          <button
-            onClick={handleNext}
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <LoadingHouse size={20} />
-            ) : (
-              <>
-                <span>Continuer</span>
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Footer Note */}
-        <p className="text-center text-sm text-gray-500 mt-6">
-          ✅ Tes informations sont sauvegardées automatiquement
-        </p>
+        <OnboardingHeading
+          role="searcher"
+          title="Commençons par les bases"
+          description="Dis-nous qui tu es pour personnaliser ton expérience"
+        />
       </div>
-    </div>
+
+      <div className="space-y-6">
+        {/* First Name */}
+        <OnboardingInput
+          role="searcher"
+          label="Prénom"
+          required
+          icon={User}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="Jean"
+        />
+
+        {/* Last Name */}
+        <OnboardingInput
+          role="searcher"
+          label="Nom de famille"
+          required
+          icon={User}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Dupont"
+        />
+
+        {/* Date of Birth */}
+        <div>
+          <OnboardingInput
+            role="searcher"
+            label="Date de naissance"
+            required
+            icon={Calendar}
+            type="date"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
+          />
+          <p className="text-xs text-gray-500 mt-1">Tu dois avoir au moins 18 ans</p>
+        </div>
+
+        {/* Nationality */}
+        <OnboardingInput
+          role="searcher"
+          label="Nationalité"
+          required
+          icon={Globe}
+          value={nationality}
+          onChange={(e) => setNationality(e.target.value)}
+          placeholder="Belge"
+        />
+      </div>
+
+      <div className="mt-8">
+        <OnboardingButton
+          role="searcher"
+          onClick={handleNext}
+          disabled={!canContinue || isLoading}
+        >
+          {isLoading ? (
+            'Chargement...'
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              Continuer
+              <ArrowRight className="w-5 h-5" />
+            </span>
+          )}
+        </OnboardingButton>
+      </div>
+
+      <p className="text-center text-sm text-gray-500 mt-6">
+        Tes informations sont sauvegardées automatiquement
+      </p>
+    </OnboardingLayout>
   );
 }

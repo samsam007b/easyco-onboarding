@@ -1,170 +1,211 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Smile, Share2, MessageCircle, Globe } from 'lucide-react';
+import { Smile, Share2, MessageCircle, Globe } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+  OnboardingSelectionCard,
+  OnboardingLabel,
+  OnboardingGrid,
+} from '@/components/onboarding';
 
 export default function SocialVibePage() {
   const { t } = useLanguage();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [socialEnergy, setSocialEnergy] = useState('');
   const [opennessToSharing, setOpennessToSharing] = useState('');
   const [communicationStyle, setCommunicationStyle] = useState('');
   const [culturalOpenness, setCulturalOpenness] = useState('');
 
+  useEffect(() => {
+    loadExistingData();
+  }, []);
+
+  const loadExistingData = () => {
+    try {
+      const saved = safeLocalStorage.get('socialVibe', {}) as any;
+      if (saved.socialEnergy) setSocialEnergy(saved.socialEnergy);
+      if (saved.opennessToSharing) setOpennessToSharing(saved.opennessToSharing);
+      if (saved.communicationStyle) setCommunicationStyle(saved.communicationStyle);
+      if (saved.culturalOpenness) setCulturalOpenness(saved.culturalOpenness);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleContinue = () => {
-    // Save to localStorage
     safeLocalStorage.set('socialVibe', {
       socialEnergy,
       opennessToSharing,
       communicationStyle,
       culturalOpenness,
     });
-
-    // Navigate to next step
     router.push('/onboarding/searcher/ideal-coliving');
   };
 
   const canContinue = socialEnergy && opennessToSharing && communicationStyle && culturalOpenness;
 
+  const socialEnergyOptions = [
+    { value: 'introvert', label: t('onboarding.socialVibe.introvert') },
+    { value: 'moderate', label: t('onboarding.socialVibe.moderate') },
+    { value: 'extrovert', label: t('onboarding.socialVibe.extrovert') },
+  ];
+
+  const sharingOptions = [
+    { value: 'private', label: t('onboarding.socialVibe.private') },
+    { value: 'moderate', label: t('onboarding.socialVibe.moderate') },
+    { value: 'very-open', label: t('onboarding.socialVibe.veryOpen') },
+  ];
+
+  const communicationOptions = [
+    { value: 'direct', label: t('onboarding.socialVibe.directStraightforward') },
+    { value: 'diplomatic', label: t('onboarding.socialVibe.diplomaticTactful') },
+    { value: 'casual', label: t('onboarding.socialVibe.casualFriendly') },
+    { value: 'formal', label: t('onboarding.socialVibe.formalProfessional') },
+  ];
+
+  const culturalOptions = [
+    { value: 'prefer-similar', label: t('onboarding.socialVibe.preferSimilar') },
+    { value: 'moderate', label: t('onboarding.socialVibe.moderate') },
+    { value: 'love-diversity', label: t('onboarding.socialVibe.loveDiversity') },
+  ];
+
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-md mx-auto">
+    <OnboardingLayout
+      role="searcher"
+      backUrl="/onboarding/searcher/home-lifestyle"
+      backLabel={t('common.back')}
+      progress={{
+        current: 4,
+        total: 6,
+        label: 'Étape 4 sur 6',
+        stepName: t('onboarding.socialVibe.title'),
+      }}
+      isLoading={isLoading}
+      loadingText={t('common.loading')}
+    >
+      <OnboardingHeading
+        role="searcher"
+        title={t('onboarding.socialVibe.title')}
+        description={t('onboarding.socialVibe.subtitle')}
+      />
 
-        {/* Language Switcher */}
-        <div className="absolute top-6 right-6 z-50">
-          <LanguageSwitcher />
-        </div>
-
-        {/* Progress bar */}
-        <div className="mb-6">
-          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-orange-600 w-4/6 transition-all" />
-          </div>
-        </div>
-
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-orange-600 hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-600 mb-2">
-            {t('onboarding.socialVibe.title')}
-          </h1>
-          <p className="text-gray-600">
-            {t('onboarding.socialVibe.subtitle')}
-          </p>
-        </div>
-
-        {/* Form */}
-        <div className="space-y-6">
-
-          {/* Social energy */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+      <div className="space-y-6">
+        {/* Social energy */}
+        <div>
+          <OnboardingLabel required>
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
                 <Smile className="w-4 h-4 text-orange-600" />
               </div>
               {t('onboarding.socialVibe.socialEnergy')}
-            </label>
-            <select
-              value={socialEnergy}
-              onChange={(e) => setSocialEnergy(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-            >
-              <option value="">{t('onboarding.dailyHabits.select')}</option>
-              <option value="introvert">{t('onboarding.socialVibe.introvert')}</option>
-              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
-              <option value="extrovert">{t('onboarding.socialVibe.extrovert')}</option>
-            </select>
-            <p className="text-sm text-gray-500 mt-1">{t('onboarding.socialVibe.socialEnergyHelp')}</p>
-          </div>
+            </div>
+          </OnboardingLabel>
+          <OnboardingGrid columns={3}>
+            {socialEnergyOptions.map((option) => (
+              <OnboardingSelectionCard
+                key={option.value}
+                role="searcher"
+                selected={socialEnergy === option.value}
+                onClick={() => setSocialEnergy(option.value)}
+              >
+                <div className="text-center font-medium text-sm">{option.label}</div>
+              </OnboardingSelectionCard>
+            ))}
+          </OnboardingGrid>
+          <p className="text-sm text-gray-500 mt-2">{t('onboarding.socialVibe.socialEnergyHelp')}</p>
+        </div>
 
-          {/* Openness to sharing */}
-          <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        {/* Openness to sharing */}
+        <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
+          <OnboardingLabel required>
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
                 <Share2 className="w-4 h-4 text-yellow-600" />
               </div>
               {t('onboarding.socialVibe.opennessToSharing')}
-            </label>
-            <select
-              value={opennessToSharing}
-              onChange={(e) => setOpennessToSharing(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-            >
-              <option value="">{t('onboarding.dailyHabits.select')}</option>
-              <option value="private">{t('onboarding.socialVibe.private')}</option>
-              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
-              <option value="very-open">{t('onboarding.socialVibe.veryOpen')}</option>
-            </select>
-            <p className="text-sm text-gray-500 mt-2">{t('onboarding.socialVibe.opennessHelp')}</p>
-          </div>
+            </div>
+          </OnboardingLabel>
+          <OnboardingGrid columns={3}>
+            {sharingOptions.map((option) => (
+              <OnboardingSelectionCard
+                key={option.value}
+                role="searcher"
+                selected={opennessToSharing === option.value}
+                onClick={() => setOpennessToSharing(option.value)}
+              >
+                <div className="text-center font-medium text-sm">{option.label}</div>
+              </OnboardingSelectionCard>
+            ))}
+          </OnboardingGrid>
+          <p className="text-sm text-gray-500 mt-3">{t('onboarding.socialVibe.opennessHelp')}</p>
+        </div>
 
-          {/* Communication style */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        {/* Communication style */}
+        <div>
+          <OnboardingLabel required>
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <MessageCircle className="w-4 h-4 text-blue-600" />
               </div>
               {t('onboarding.socialVibe.communicationStyle')}
-            </label>
-            <select
-              value={communicationStyle}
-              onChange={(e) => setCommunicationStyle(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-            >
-              <option value="">{t('onboarding.dailyHabits.select')}</option>
-              <option value="direct">{t('onboarding.socialVibe.directStraightforward')}</option>
-              <option value="diplomatic">{t('onboarding.socialVibe.diplomaticTactful')}</option>
-              <option value="casual">{t('onboarding.socialVibe.casualFriendly')}</option>
-              <option value="formal">{t('onboarding.socialVibe.formalProfessional')}</option>
-            </select>
-          </div>
+            </div>
+          </OnboardingLabel>
+          <OnboardingGrid columns={2}>
+            {communicationOptions.map((option) => (
+              <OnboardingSelectionCard
+                key={option.value}
+                role="searcher"
+                selected={communicationStyle === option.value}
+                onClick={() => setCommunicationStyle(option.value)}
+              >
+                <div className="text-center font-medium text-sm">{option.label}</div>
+              </OnboardingSelectionCard>
+            ))}
+          </OnboardingGrid>
+        </div>
 
-          {/* Cultural openness */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        {/* Cultural openness */}
+        <div>
+          <OnboardingLabel required>
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <Globe className="w-4 h-4 text-blue-600" />
               </div>
               {t('onboarding.socialVibe.culturalOpenness')}
-            </label>
-            <select
-              value={culturalOpenness}
-              onChange={(e) => setCulturalOpenness(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-            >
-              <option value="">{t('onboarding.dailyHabits.select')}</option>
-              <option value="prefer-similar">{t('onboarding.socialVibe.preferSimilar')}</option>
-              <option value="moderate">{t('onboarding.socialVibe.moderate')}</option>
-              <option value="love-diversity">{t('onboarding.socialVibe.loveDiversity')}</option>
-            </select>
-            <p className="text-sm text-gray-500 mt-1">{t('onboarding.socialVibe.culturalOpennessHelp')}</p>
-          </div>
+            </div>
+          </OnboardingLabel>
+          <OnboardingGrid columns={3}>
+            {culturalOptions.map((option) => (
+              <OnboardingSelectionCard
+                key={option.value}
+                role="searcher"
+                selected={culturalOpenness === option.value}
+                onClick={() => setCulturalOpenness(option.value)}
+              >
+                <div className="text-center font-medium text-sm">{option.label}</div>
+              </OnboardingSelectionCard>
+            ))}
+          </OnboardingGrid>
+          <p className="text-sm text-gray-500 mt-2">{t('onboarding.socialVibe.culturalOpennessHelp')}</p>
         </div>
+      </div>
 
-        {/* Continue button */}
-        <button
+      <div className="mt-8">
+        <OnboardingButton
+          role="searcher"
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
-            canContinue
-              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] hover:shadow-lg'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
         >
           {t('common.continue')}
-        </button>
+        </OnboardingButton>
       </div>
-    </main>
+    </OnboardingLayout>
   );
 }
