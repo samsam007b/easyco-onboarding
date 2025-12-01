@@ -4,10 +4,20 @@ import { memo, useMemo } from 'react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { Star, Quote } from 'lucide-react';
 
+// Couleurs extraites du logo gradient pour chaque rôle
+const ROLE_COLORS = {
+  owner: {
+    gradient: { start: '#7B5FB8', end: '#C98B9E' },
+    light: '#F3F1FF',
+  },
+  searcher: {
+    gradient: { start: '#FFA040', end: '#FFD080' },
+    light: '#FFF9E6',
+  },
+};
+
 // ============================================================================
 // PERFORMANCE OPTIMIZATION: Memoized Testimonial Card Component
-// ============================================================================
-// Prevents unnecessary re-renders when parent re-renders
 // ============================================================================
 
 interface TestimonialData {
@@ -16,19 +26,28 @@ interface TestimonialData {
   text: string;
   rating: number;
   avatar: string;
-  gradient: string;
-  bgGradient: string;
+  colors: typeof ROLE_COLORS.owner;
 }
 
-const TestimonialCard = memo(({ testimonial, index }: { testimonial: TestimonialData; index: number }) => (
+const TestimonialCard = memo(({ testimonial }: { testimonial: TestimonialData }) => (
   <div className="relative group">
     {/* Background glow on hover */}
-    <div className={`absolute inset-0 bg-gradient-to-br ${testimonial.bgGradient} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10`}></div>
+    <div
+      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+      style={{ background: `linear-gradient(to bottom right, ${testimonial.colors.gradient.start}15, ${testimonial.colors.gradient.end}15)` }}
+    />
 
-    <div className="relative bg-white rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100 group-hover:border-purple-200 h-full flex flex-col">
+    <div
+      className="relative bg-white rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 hover:scale-105 border h-full flex flex-col"
+      style={{ borderColor: `${testimonial.colors.gradient.start}20` }}
+    >
       {/* Quote Icon */}
       <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
-        <Quote className={`w-16 h-16 bg-gradient-to-br ${testimonial.gradient} bg-clip-text text-transparent`} fill="currentColor" />
+        <Quote
+          className="w-16 h-16"
+          style={{ color: testimonial.colors.gradient.start }}
+          fill="currentColor"
+        />
       </div>
 
       {/* Stars */}
@@ -36,7 +55,8 @@ const TestimonialCard = memo(({ testimonial, index }: { testimonial: Testimonial
         {[...Array(testimonial.rating)].map((_, i) => (
           <Star
             key={`star-${i}`}
-            className="w-6 h-6 fill-yellow-400 text-yellow-400 drop-shadow-sm"
+            className="w-6 h-6 drop-shadow-sm"
+            style={{ fill: testimonial.colors.gradient.start, color: testimonial.colors.gradient.start }}
           />
         ))}
       </div>
@@ -48,11 +68,17 @@ const TestimonialCard = memo(({ testimonial, index }: { testimonial: Testimonial
 
       {/* Author */}
       <div className="flex items-center gap-4 relative z-10">
-        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-3xl shadow-lg transform group-hover:rotate-6 transition-transform duration-300`}>
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+          style={{ background: `linear-gradient(to bottom right, ${testimonial.colors.gradient.start}, ${testimonial.colors.gradient.end})` }}
+        >
           {testimonial.avatar}
         </div>
         <div>
-          <div className={`font-bold text-lg bg-gradient-to-r ${testimonial.gradient} bg-clip-text text-transparent`}>
+          <div
+            className="font-bold text-lg bg-clip-text text-transparent"
+            style={{ backgroundImage: `linear-gradient(to right, ${testimonial.colors.gradient.start}, ${testimonial.colors.gradient.end})` }}
+          >
             {testimonial.name}
           </div>
           <div className="text-sm text-gray-600 font-medium">
@@ -79,8 +105,7 @@ function Testimonials() {
       text: testimonials.testimonial1.text,
       rating: 5,
       avatar: '👨‍💼',
-      gradient: 'from-purple-400 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
+      colors: ROLE_COLORS.owner,
     },
     {
       name: testimonials.testimonial2.name,
@@ -88,8 +113,7 @@ function Testimonials() {
       text: testimonials.testimonial2.text,
       rating: 5,
       avatar: '👩‍🎓',
-      gradient: 'from-yellow-400 to-yellow-600',
-      bgGradient: 'from-yellow-50 to-yellow-100',
+      colors: ROLE_COLORS.searcher,
     },
     {
       name: testimonials.testimonial3.name,
@@ -97,8 +121,7 @@ function Testimonials() {
       text: testimonials.testimonial3.text,
       rating: 5,
       avatar: '👨‍💻',
-      gradient: 'from-purple-400 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
+      colors: ROLE_COLORS.owner,
     },
   ], [testimonials]);
 
@@ -107,7 +130,10 @@ function Testimonials() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-4">
+          <h2
+            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
+            style={{ backgroundImage: `linear-gradient(to right, ${ROLE_COLORS.owner.gradient.start}, ${ROLE_COLORS.owner.gradient.end})` }}
+          >
             {testimonials.title}
           </h2>
           <p className="text-gray-600 text-xl max-w-2xl mx-auto leading-relaxed">
@@ -121,15 +147,23 @@ function Testimonials() {
             <TestimonialCard
               key={`testimonial-${index}`}
               testimonial={testimonial}
-              index={index}
             />
           ))}
         </div>
 
         {/* Trust Badge */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-50 to-amber-50 px-8 py-4 rounded-full shadow-md border border-yellow-200">
-            <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+          <div
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full shadow-md border"
+            style={{
+              background: `linear-gradient(to right, ${ROLE_COLORS.searcher.light}, ${ROLE_COLORS.searcher.gradient.end}20)`,
+              borderColor: `${ROLE_COLORS.searcher.gradient.start}30`,
+            }}
+          >
+            <Star
+              className="w-6 h-6"
+              style={{ fill: ROLE_COLORS.searcher.gradient.start, color: ROLE_COLORS.searcher.gradient.start }}
+            />
             <span className="font-bold text-gray-900 text-lg">{testimonials.rating}</span>
             <span className="text-gray-400">·</span>
             <span className="text-gray-700 font-medium text-lg">{testimonials.reviews}</span>
