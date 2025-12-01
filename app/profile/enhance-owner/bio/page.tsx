@@ -135,22 +135,20 @@ export default function OwnerBioPage() {
         </EnhanceProfileInfoBox>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="owner"
-          variant="outline"
-          onClick={handleCancel}
-        >
-          Cancel
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="owner"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleSave}
-          className="flex-1"
+          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           Save Changes
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={handleCancel}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+        >
+          Cancel
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

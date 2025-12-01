@@ -147,13 +147,13 @@ export default function CommunityEventsPage() {
               </div>
               <button
                 onClick={() => setEnjoySharedMeals(!enjoySharedMeals)}
-                className={`relative w-14 h-8 rounded-full transition flex-shrink-0 ${
-                  enjoySharedMeals ? 'bg-orange-500' : 'bg-gray-300'
+                className={`relative w-[52px] h-[32px] rounded-full transition-all duration-300 flex-shrink-0 ${
+                  enjoySharedMeals ? 'bg-gradient-to-r from-orange-500 to-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
-                  className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow transition ${
-                    enjoySharedMeals ? 'right-1' : 'left-1'
+                  className={`absolute top-[2px] left-[2px] w-[28px] h-[28px] bg-white rounded-full shadow-md transition-all duration-300 ${
+                    enjoySharedMeals ? 'translate-x-[20px]' : 'translate-x-0'
                   }`}
                 />
               </button>
@@ -176,13 +176,13 @@ export default function CommunityEventsPage() {
               </div>
               <button
                 onClick={() => setOpenToMeetups(!openToMeetups)}
-                className={`relative w-14 h-8 rounded-full transition flex-shrink-0 ${
-                  openToMeetups ? 'bg-blue-500' : 'bg-gray-300'
+                className={`relative w-[52px] h-[32px] rounded-full transition-all duration-300 flex-shrink-0 ${
+                  openToMeetups ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gray-300'
                 }`}
               >
                 <div
-                  className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow transition ${
-                    openToMeetups ? 'right-1' : 'left-1'
+                  className={`absolute top-[2px] left-[2px] w-[28px] h-[28px] bg-white rounded-full shadow-md transition-all duration-300 ${
+                    openToMeetups ? 'translate-x-[20px]' : 'translate-x-0'
                   }`}
                 />
               </button>
@@ -217,23 +217,25 @@ export default function CommunityEventsPage() {
         </EnhanceProfileInfoBox>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
-          onClick={handleSkip}
-        >
-          Skip
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className="flex-1"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+            canContinue
+              ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           Continue
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={handleSkip}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+        >
+          Skip for now
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

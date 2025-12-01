@@ -236,13 +236,16 @@ export default function OwnerEnhanceReviewPage() {
         </EnhanceProfileSection>
       </div>
 
-      {/* Action buttons */}
-      <div className="mt-8">
-        <EnhanceProfileButton
-          role="owner"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleSave}
           disabled={isSaving}
-          className="w-full flex items-center justify-center gap-2"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+            !isSaving
+              ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           {isSaving ? (
             <>
@@ -255,7 +258,14 @@ export default function OwnerEnhanceReviewPage() {
               Save Enhanced Profile
             </>
           )}
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={() => router.push('/dashboard/my-profile-owner')}
+          disabled={isSaving}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
+        >
+          Skip for now
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

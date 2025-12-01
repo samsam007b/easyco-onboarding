@@ -227,24 +227,26 @@ export default function PersonalityResidentPage() {
         </EnhanceProfileInfoBox>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-4 mt-8">
-        <EnhanceProfileButton
-          role="resident"
-          variant="outline"
-          onClick={() => router.push('/dashboard/resident')}
-          disabled={isSaving}
-        >
-          Cancel
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="resident"
+      {/* Action Buttons */}
+      <div className="space-y-3 mt-8">
+        <button
           onClick={handleSave}
           disabled={isSaving}
-          className="flex-1"
+          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+            !isSaving
+              ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
-        </EnhanceProfileButton>
+        </button>
+        <button
+          onClick={() => router.push('/dashboard/resident')}
+          disabled={isSaving}
+          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
+        >
+          Cancel
+        </button>
       </div>
     </EnhanceProfileLayout>
   );
