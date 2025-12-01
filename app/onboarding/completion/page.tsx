@@ -126,61 +126,63 @@ export default function OnboardingCompletionPage() {
   }
 
   return (
-    <main className={`min-h-screen bg-gradient-to-br ${theme.gradientBg} flex items-center justify-center p-6`}>
+    <main className={`min-h-screen bg-gradient-to-br ${theme.gradientBg} flex items-center justify-center p-4 sm:p-6`}>
       {/* Language Switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
       </div>
 
-      <div className="max-w-2xl w-full">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12 text-center">
-          {/* Success Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className={`w-24 h-24 bg-gradient-to-br ${theme.gradient} rounded-full flex items-center justify-center animate-bounce`}>
-                <CheckCircle2 className="w-12 h-12 text-white" />
-              </div>
-              <div className={`absolute -top-2 -right-2 w-8 h-8 ${
-                userType === 'owner' ? 'bg-[#FFD600]' : 'bg-yellow-400'
-              } rounded-full flex items-center justify-center`}>
-                <Sparkles className={`w-4 h-4 ${
-                  userType === 'owner' ? 'text-[#4A148C]' : 'text-orange-600'
-                }`} />
-              </div>
+      <div className="max-w-3xl w-full">
+        {/* Success Icon - Outside card for better visual hierarchy */}
+        <div className="flex justify-center mb-8">
+          <div className="relative">
+            <div className={`w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br ${theme.gradient} rounded-full flex items-center justify-center shadow-xl`}>
+              <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+            </div>
+            <div className={`absolute -top-1 -right-1 w-7 h-7 sm:w-8 sm:h-8 ${
+              userType === 'owner' ? 'bg-[#FFD600]' : 'bg-yellow-400'
+            } rounded-full flex items-center justify-center shadow-lg`}>
+              <Sparkles className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                userType === 'owner' ? 'text-[#4A148C]' : 'text-orange-600'
+              }`} />
             </div>
           </div>
+        </div>
 
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-10">
           {/* Success Message */}
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-            <span className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>
-              🎉 {onboarding.completion.congratulations}, {userName}!
-            </span>
-          </h1>
-          <p className="text-lg text-gray-600 mb-8">
-            {onboarding.completion.subtitle}
-          </p>
+          <div className="text-center mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
+              <span className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>
+                🎉 {onboarding.completion.congratulations}, {userName}!
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg text-gray-600">
+              {onboarding.completion.subtitle}
+            </p>
+          </div>
 
           {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-8"></div>
+          <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-8"></div>
 
           {/* Choice Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
             {/* Go to Home */}
             <button
               onClick={handleGoHome}
-              className={`group relative bg-gradient-to-br ${theme.gradient} rounded-2xl p-8 text-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300`}
+              className={`group relative bg-gradient-to-br ${theme.gradient} rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
             >
-              <div className="absolute top-4 right-4">
-                <Home className="w-6 h-6 opacity-50 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                  <Home className="w-5 h-5 sm:w-6 sm:h-6" />
+                </div>
               </div>
 
-              <div className="text-left">
-                <h3 className="text-xl font-bold mb-2">
+              <div className="text-left pr-12">
+                <h3 className="text-lg sm:text-xl font-bold mb-2">
                   {onboarding.completion.goHomeTitle}
                 </h3>
-                <p className={`text-sm mb-4 ${
-                  userType === 'owner' ? 'text-purple-100' : 'text-orange-100'
-                }`}>
+                <p className="text-xs sm:text-sm mb-4 opacity-90">
                   {userType === 'searcher'
                     ? onboarding.completion.goHomeDescriptionSearcher
                     : userType === 'owner'
@@ -188,9 +190,7 @@ export default function OnboardingCompletionPage() {
                     : onboarding.completion.goHomeDescriptionResident}
                 </p>
 
-                <div className={`flex items-center font-semibold ${
-                  userType === 'owner' ? 'text-[#FFD600]' : 'text-yellow-300'
-                }`}>
+                <div className="flex items-center font-semibold text-sm">
                   <span>{onboarding.completion.continueButton}</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -200,30 +200,36 @@ export default function OnboardingCompletionPage() {
             {/* Enhance Profile */}
             <button
               onClick={handleEnhanceProfile}
-              className={`group relative bg-gradient-to-br ${
-                userType === 'owner' ? 'from-[#FFD600] to-yellow-400' : 'from-yellow-400 to-yellow-500'
-              } rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300`}
+              className={`group relative border-2 ${
+                userType === 'owner'
+                  ? 'border-purple-200 bg-purple-50 hover:bg-purple-100 hover:border-purple-300'
+                  : 'border-orange-200 bg-orange-50 hover:bg-orange-100 hover:border-orange-300'
+              } rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
             >
-              <div className="absolute top-4 right-4">
-                <Sparkles className={`w-6 h-6 opacity-50 group-hover:opacity-100 group-hover:animate-pulse transition-opacity ${
-                  userType === 'owner' ? 'text-[#4A148C]' : 'text-orange-600'
-                }`} />
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${
+                  userType === 'owner' ? 'bg-purple-100' : 'bg-orange-100'
+                } rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <Sparkles className={`w-5 h-5 sm:w-6 sm:h-6 ${
+                    userType === 'owner' ? 'text-purple-600' : 'text-orange-600'
+                  }`} />
+                </div>
               </div>
 
-              <div className="text-left">
-                <h3 className={`text-xl font-bold mb-2 ${
-                  userType === 'owner' ? 'text-[#4A148C]' : 'text-gray-900'
+              <div className="text-left pr-12">
+                <h3 className={`text-lg sm:text-xl font-bold mb-2 ${
+                  userType === 'owner' ? 'text-purple-900' : 'text-orange-900'
                 }`}>
                   {onboarding.completion.enhanceProfileTitle}
                 </h3>
-                <p className={`text-sm mb-4 ${
-                  userType === 'owner' ? 'text-purple-900' : 'text-gray-700'
+                <p className={`text-xs sm:text-sm mb-4 ${
+                  userType === 'owner' ? 'text-purple-700' : 'text-orange-700'
                 }`}>
                   {onboarding.completion.enhanceProfileDescription}
                 </p>
 
-                <div className={`flex items-center font-semibold ${
-                  userType === 'owner' ? 'text-[#4A148C]' : 'text-orange-600'
+                <div className={`flex items-center font-semibold text-sm ${
+                  userType === 'owner' ? 'text-purple-600' : 'text-orange-600'
                 }`}>
                   <span>{onboarding.completion.enhanceNowButton}</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -234,10 +240,16 @@ export default function OnboardingCompletionPage() {
 
           {/* Info Message */}
           <div className={`${
-            userType === 'owner' ? 'bg-purple-50' : userType === 'searcher' ? 'bg-orange-50' : 'bg-orange-50'
-          } rounded-xl p-4 text-sm text-gray-600`}>
-            <p>
-              💡 <strong>{onboarding.completion.tipTitle} :</strong> {onboarding.completion.tipMessage}
+            userType === 'owner' ? 'bg-purple-50 border-purple-100' : 'bg-orange-50 border-orange-100'
+          } border rounded-xl p-4 text-sm text-gray-700`}>
+            <p className="flex items-start gap-2">
+              <span className="text-base flex-shrink-0">💡</span>
+              <span>
+                <strong className={userType === 'owner' ? 'text-purple-900' : 'text-orange-900'}>
+                  {onboarding.completion.tipTitle} :
+                </strong>{' '}
+                {onboarding.completion.tipMessage}
+              </span>
             </p>
           </div>
         </div>
