@@ -3,6 +3,18 @@
 import { useLanguage } from '@/lib/i18n/use-language';
 import { Home, Users, Star, CheckCircle } from 'lucide-react';
 
+// Couleurs extraites du logo gradient pour chaque rôle
+const ROLE_COLORS = {
+  owner: {
+    gradient: { start: '#7B5FB8', end: '#C98B9E' },
+    light: '#F3F1FF',
+  },
+  searcher: {
+    gradient: { start: '#FFA040', end: '#FFD080' },
+    light: '#FFF9E6',
+  },
+};
+
 export default function StatsSection() {
   const { getSection } = useLanguage();
   const landing = getSection('landing');
@@ -13,38 +25,37 @@ export default function StatsSection() {
       icon: Home,
       value: '247',
       label: stats.properties,
-      gradient: 'from-purple-400 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
+      colors: ROLE_COLORS.owner,
     },
     {
       icon: Users,
       value: '1,842',
       label: stats.users,
-      gradient: 'from-yellow-400 to-yellow-600',
-      bgGradient: 'from-yellow-50 to-yellow-100',
+      colors: ROLE_COLORS.searcher,
     },
     {
       icon: Star,
       value: '98%',
       label: stats.satisfaction,
-      gradient: 'from-purple-400 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
+      colors: ROLE_COLORS.owner,
     },
     {
       icon: CheckCircle,
       value: '100%',
       label: stats.verified,
-      gradient: 'from-yellow-400 to-yellow-600',
-      bgGradient: 'from-yellow-50 to-yellow-100',
+      colors: ROLE_COLORS.searcher,
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-purple-50/30 to-white">
+    <section className="py-20 bg-gradient-to-b from-white via-gray-50/30 to-white">
       <div className="max-w-6xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-4">
+          <h2
+            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
+            style={{ backgroundImage: `linear-gradient(to right, ${ROLE_COLORS.owner.gradient.start}, ${ROLE_COLORS.owner.gradient.end})` }}
+          >
             {stats.title}
           </h2>
           <p className="text-gray-600 text-xl max-w-2xl mx-auto">
@@ -56,6 +67,7 @@ export default function StatsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {statsData.map((stat, index) => {
             const Icon = stat.icon;
+            const { colors } = stat;
 
             return (
               <div
@@ -63,17 +75,29 @@ export default function StatsSection() {
                 className="group relative"
               >
                 {/* Glow effect on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl`}></div>
+                <div
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
+                  style={{ background: `linear-gradient(to bottom right, ${colors.gradient.start}15, ${colors.gradient.end}15)` }}
+                />
 
                 {/* Stat Card */}
-                <div className="relative bg-white rounded-3xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100">
+                <div
+                  className="relative bg-white rounded-3xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border"
+                  style={{ borderColor: `${colors.gradient.start}20` }}
+                >
                   {/* Icon */}
-                  <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br ${stat.gradient} transform group-hover:rotate-6 transition-transform duration-300`}>
+                  <div
+                    className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+                    style={{ background: `linear-gradient(to bottom right, ${colors.gradient.start}, ${colors.gradient.end})` }}
+                  >
                     <Icon className="w-8 h-8 text-white" />
                   </div>
 
                   {/* Value */}
-                  <div className={`text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}>
+                  <div
+                    className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent"
+                    style={{ backgroundImage: `linear-gradient(to bottom right, ${colors.gradient.start}, ${colors.gradient.end})` }}
+                  >
                     {stat.value}
                   </div>
 
