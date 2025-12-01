@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { logger } from '@/lib/utils/logger';
 import {
   MoreVertical,
   Ban,
@@ -10,10 +12,20 @@ import {
   Mail,
   Eye,
   Trash2,
+  AlertTriangle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface User {
   id: string;
@@ -33,7 +45,15 @@ interface UsersTableProps {
 }
 
 export default function UsersTable({ users }: UsersTableProps) {
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    type: 'ban' | 'delete' | null;
+    userId: string | null;
+    userName: string | null;
+    userEmail: string | null;
+  }>({ type: null, userId: null, userName: null, userEmail: null });
+  const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
   const formatDate = (date: string) => {
@@ -70,44 +90,86 @@ export default function UsersTable({ users }: UsersTableProps) {
     }
   };
 
-  const handleAction = async (userId: string, action: string) => {
-    setOpenMenu(null);
+  const handleBanUser = async () => {
+    if (!confirmDialog.userId) return;
+    setIsLoading(true);
 
     try {
-      switch (action) {
-        case 'view':
-          window.open(`/admin/dashboard/users/${userId}`, '_blank');
-          break;
-        case 'email':
-          const user = users.find(u => u.id === userId);
-          if (user?.email) {
-            window.location.href = `mailto:${user.email}`;
-          }
-          break;
-        case 'ban':
-          // Log the ban action
-          await supabase.from('audit_logs').insert({
-            action: 'user_banned',
-            resource_type: 'user',
-            resource_id: userId,
-            metadata: { reason: 'Admin action' },
-          });
-          toast.success('Utilisateur banni');
-          break;
-        case 'delete':
-          if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
-            await supabase.from('audit_logs').insert({
-              action: 'user_deleted',
-              resource_type: 'user',
-              resource_id: userId,
-            });
-            toast.success('Utilisateur supprimé');
-          }
-          break;
-      }
+      // Update user status
+      await supabase
+        .from('users')
+        .update({ is_banned: true, banned_at: new Date().toISOString() })
+        .eq('id', confirmDialog.userId);
+
+      // Log the action
+      const { data: { user } } = await supabase.auth.getUser();
+      await supabase.from('audit_logs').insert({
+        user_id: user?.id,
+        action: 'user_banned',
+        resource_type: 'user',
+        resource_id: confirmDialog.userId,
+        metadata: {
+          banned_user_email: confirmDialog.userEmail,
+          banned_by: user?.email,
+        },
+      });
+
+      toast.success('Utilisateur banni avec succès');
+      setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null });
+      router.refresh();
     } catch (error) {
-      toast.error('Erreur lors de l\'action');
+      logger.error('Ban user error', error);
+      toast.error('Erreur lors du bannissement');
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!confirmDialog.userId) return;
+    setIsLoading(true);
+
+    try {
+      // Log before deletion
+      const { data: { user } } = await supabase.auth.getUser();
+      await supabase.from('audit_logs').insert({
+        user_id: user?.id,
+        action: 'user_deleted',
+        resource_type: 'user',
+        resource_id: confirmDialog.userId,
+        metadata: {
+          deleted_user_email: confirmDialog.userEmail,
+          deleted_by: user?.email,
+        },
+      });
+
+      // Delete user profile first
+      await supabase.from('user_profiles').delete().eq('user_id', confirmDialog.userId);
+      await supabase.from('notifications').delete().eq('user_id', confirmDialog.userId);
+
+      // Delete user
+      const { error } = await supabase.from('users').delete().eq('id', confirmDialog.userId);
+      if (error) throw error;
+
+      toast.success('Utilisateur supprimé');
+      setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null });
+      router.refresh();
+    } catch (error) {
+      logger.error('Delete user error', error);
+      toast.error('Erreur lors de la suppression');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const openConfirmDialog = (type: 'ban' | 'delete', user: User) => {
+    setOpenMenu(null);
+    setConfirmDialog({
+      type,
+      userId: user.id,
+      userName: user.full_name,
+      userEmail: user.email,
+    });
   };
 
   if (users.length === 0) {
@@ -200,30 +262,32 @@ export default function UsersTable({ users }: UsersTableProps) {
                         onClick={() => setOpenMenu(null)}
                       />
                       <div className="absolute right-0 top-full mt-1 w-48 bg-slate-700 border border-slate-600 rounded-lg shadow-lg z-20">
-                        <button
-                          onClick={() => handleAction(user.id, 'view')}
+                        <Link
+                          href={`/admin/dashboard/users/${user.id}`}
                           className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-600 transition-colors"
+                          onClick={() => setOpenMenu(null)}
                         >
                           <Eye className="w-4 h-4" />
                           Voir le profil
-                        </button>
-                        <button
-                          onClick={() => handleAction(user.id, 'email')}
+                        </Link>
+                        <a
+                          href={`mailto:${user.email}`}
                           className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-600 transition-colors"
+                          onClick={() => setOpenMenu(null)}
                         >
                           <Mail className="w-4 h-4" />
                           Envoyer un email
-                        </button>
+                        </a>
                         <hr className="border-slate-600 my-1" />
                         <button
-                          onClick={() => handleAction(user.id, 'ban')}
+                          onClick={() => openConfirmDialog('ban', user)}
                           className="w-full flex items-center gap-2 px-4 py-2 text-sm text-orange-400 hover:bg-slate-600 transition-colors"
                         >
                           <Ban className="w-4 h-4" />
                           Bannir
                         </button>
                         <button
-                          onClick={() => handleAction(user.id, 'delete')}
+                          onClick={() => openConfirmDialog('delete', user)}
                           className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-600 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -238,6 +302,116 @@ export default function UsersTable({ users }: UsersTableProps) {
           })}
         </tbody>
       </table>
+
+      {/* Ban Confirmation Dialog */}
+      <Dialog
+        open={confirmDialog.type === 'ban'}
+        onOpenChange={(open) => !open && setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null })}
+      >
+        <DialogContent className="bg-slate-800 border-slate-700">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-full bg-orange-500/10">
+                <Ban className="w-6 h-6 text-orange-400" />
+              </div>
+              <div>
+                <DialogTitle className="text-white">Bannir l'utilisateur</DialogTitle>
+                <DialogDescription className="text-slate-400">
+                  Cette action empêchera l'utilisateur d'accéder à la plateforme.
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="p-4 rounded-lg bg-slate-700/50">
+              <p className="text-sm text-slate-300">
+                <strong>Utilisateur :</strong> {confirmDialog.userName || 'Sans nom'}
+              </p>
+              <p className="text-sm text-slate-400 mt-1">
+                <strong>Email :</strong> {confirmDialog.userEmail}
+              </p>
+            </div>
+            <div className="flex items-start gap-2 mt-4 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+              <AlertTriangle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-orange-400">
+                L'utilisateur ne pourra plus se connecter.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null })}
+              disabled={isLoading}
+              className="text-slate-400"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleBanUser}
+              disabled={isLoading}
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              {isLoading ? 'Bannissement...' : 'Confirmer'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={confirmDialog.type === 'delete'}
+        onOpenChange={(open) => !open && setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null })}
+      >
+        <DialogContent className="bg-slate-800 border-slate-700">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-full bg-red-500/10">
+                <Trash2 className="w-6 h-6 text-red-400" />
+              </div>
+              <div>
+                <DialogTitle className="text-white">Supprimer l'utilisateur</DialogTitle>
+                <DialogDescription className="text-slate-400">
+                  Cette action est irréversible.
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="p-4 rounded-lg bg-slate-700/50">
+              <p className="text-sm text-slate-300">
+                <strong>Utilisateur :</strong> {confirmDialog.userName || 'Sans nom'}
+              </p>
+              <p className="text-sm text-slate-400 mt-1">
+                <strong>Email :</strong> {confirmDialog.userEmail}
+              </p>
+            </div>
+            <div className="flex items-start gap-2 mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+              <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-red-400">
+                Toutes les données de l'utilisateur seront supprimées définitivement.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null })}
+              disabled={isLoading}
+              className="text-slate-400"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleDeleteUser}
+              disabled={isLoading}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {isLoading ? 'Suppression...' : 'Supprimer'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
