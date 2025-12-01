@@ -141,13 +141,13 @@ export default function FinancialInfoPage() {
               </div>
               <button
                 onClick={() => setHasGuarantor(!hasGuarantor)}
-                className={`relative w-16 h-9 rounded-full transition-all duration-300 flex-shrink-0 shadow-inner ${
+                className={`relative w-[60px] h-[34px] rounded-full transition-all duration-300 flex-shrink-0 shadow-inner ${
                   hasGuarantor ? 'bg-gradient-to-r from-orange-500 to-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
-                  className={`absolute top-0.5 w-8 h-8 bg-white rounded-full shadow-lg transition-all duration-300 ${
-                    hasGuarantor ? 'right-0.5 scale-105' : 'left-0.5'
+                  className={`absolute top-[3px] w-[28px] h-[28px] bg-white rounded-full shadow-lg transition-all duration-300 ${
+                    hasGuarantor ? 'right-[3px]' : 'left-[3px]'
                   }`}
                 />
               </button>
