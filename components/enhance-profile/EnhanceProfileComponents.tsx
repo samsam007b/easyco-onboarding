@@ -126,20 +126,20 @@ export function EnhanceProfileSelectionCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full p-4 rounded-xl border-2 transition-all ${
+      className={`w-full p-4 rounded-xl border transition-all duration-200 font-medium ${
         selected
-          ? `${theme.selectedBorder} ${theme.selectedBg} shadow-md`
-          : `border-gray-200 ${theme.hoverBg} hover:border-gray-300`
+          ? `bg-gradient-to-br ${theme.gradient} text-white border-transparent shadow-lg hover:shadow-xl transform hover:scale-[1.02]`
+          : `bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-md`
       } ${className}`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 flex-1">
           {icon && <div className="flex-shrink-0">{icon}</div>}
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 text-center">{children}</div>
         </div>
         {selected && (
-          <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center flex-shrink-0`}>
-            <div className="w-2 h-2 bg-white rounded-full" />
+          <div className="w-5 h-5 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+            <div className="w-2.5 h-2.5 bg-white rounded-full" />
           </div>
         )}
       </div>
