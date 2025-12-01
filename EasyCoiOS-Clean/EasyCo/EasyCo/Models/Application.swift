@@ -6,7 +6,7 @@ struct SearcherApplication: Identifiable, Codable {
     let id: UUID
     let propertyId: UUID
     let applicantId: UUID
-    var status: ApplicationStatus
+    var status: SearcherApplicationStatus
     var personalInfo: PersonalInfo
     var professionalInfo: ProfessionalInfo
     var documents: [ApplicationDocument]
@@ -18,7 +18,7 @@ struct SearcherApplication: Identifiable, Codable {
         id: UUID = UUID(),
         propertyId: UUID,
         applicantId: UUID,
-        status: ApplicationStatus = .pending,
+        status: SearcherApplicationStatus = .pending,
         personalInfo: PersonalInfo,
         professionalInfo: ProfessionalInfo,
         documents: [ApplicationDocument] = [],
@@ -39,9 +39,9 @@ struct SearcherApplication: Identifiable, Codable {
     }
 }
 
-// MARK: - Application Status
+// MARK: - Searcher Application Status
 
-enum ApplicationStatus: String, Codable {
+enum SearcherApplicationStatus: String, Codable {
     case pending = "pending"
     case reviewing = "reviewing"
     case accepted = "accepted"

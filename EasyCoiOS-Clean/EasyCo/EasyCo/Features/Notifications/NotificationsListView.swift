@@ -52,7 +52,8 @@ struct NotificationsListView: View {
                 }
             }
             .sheet(isPresented: $showSettings) {
-                NotificationSettingsView()
+                // TODO: Add NotificationSettingsView.swift to Xcode project target
+                PreferencesView()
             }
         }
         .task {
