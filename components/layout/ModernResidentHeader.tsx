@@ -568,11 +568,11 @@ export default function ModernResidentHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center transition-transform">
+                            <User className="w-4 h-4 text-orange-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -583,11 +583,11 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/hub/finances"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <DollarSign className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center transition-transform">
+                            <DollarSign className="w-4 h-4 text-green-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Finances</span>
@@ -598,11 +598,11 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-[#FFF3EF]/50 hover:to-[#FFEBE5]/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Settings className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center transition-transform">
+                            <Settings className="w-4 h-4 text-blue-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Paramètres</span>
@@ -617,8 +617,8 @@ export default function ModernResidentHeader({
                           onClick={handleLogout}
                           className="group w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all rounded-xl"
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-100 to-red-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <LogOut className="w-4 h-4 text-red-700" />
+                          <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center transition-transform">
+                            <LogOut className="w-4 h-4 text-red-600" />
                           </div>
                           <div className="flex-1 text-left">
                             <span className="text-red-600 font-medium block">Se déconnecter</span>

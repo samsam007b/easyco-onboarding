@@ -512,11 +512,11 @@ export default function ModernOwnerHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center transition-transform">
+                            <User className="w-4 h-4 text-purple-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -527,11 +527,11 @@ export default function ModernOwnerHeader({
 
                         <Link
                           href="/dashboard/owner/finance"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <DollarSign className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center transition-transform">
+                            <DollarSign className="w-4 h-4 text-green-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Finance</span>
@@ -542,11 +542,11 @@ export default function ModernOwnerHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Settings className="w-4 h-4 text-gray-700" />
+                          <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center transition-transform">
+                            <Settings className="w-4 h-4 text-blue-600" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Paramètres</span>
