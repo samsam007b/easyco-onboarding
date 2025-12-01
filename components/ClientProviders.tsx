@@ -6,6 +6,7 @@ import { NotificationProvider } from '@/contexts/NotificationContext';
 import { MessagesProvider } from '@/contexts/MessagesContext';
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { APIProvider } from '@vis.gl/react-google-maps';
@@ -27,21 +28,23 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <APIProvider apiKey={googleMapsApiKey || ''}>
-        <LanguageProvider>
-          <RoleProvider>
-            <NotificationProvider>
-              <MessagesProvider>
-                <PaymentProvider>
-                  <FavoritesProvider>
-                    {children}
-                  </FavoritesProvider>
-                </PaymentProvider>
-              </MessagesProvider>
-            </NotificationProvider>
-          </RoleProvider>
-        </LanguageProvider>
-      </APIProvider>
+      <ThemeProvider>
+        <APIProvider apiKey={googleMapsApiKey || ''}>
+          <LanguageProvider>
+            <RoleProvider>
+              <NotificationProvider>
+                <MessagesProvider>
+                  <PaymentProvider>
+                    <FavoritesProvider>
+                      {children}
+                    </FavoritesProvider>
+                  </PaymentProvider>
+                </MessagesProvider>
+              </NotificationProvider>
+            </RoleProvider>
+          </LanguageProvider>
+        </APIProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
