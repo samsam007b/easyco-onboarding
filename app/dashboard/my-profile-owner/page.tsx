@@ -222,11 +222,11 @@ export default function MyProfileOwnerPage() {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <button
-            onClick={() => router.push('/dashboard/owner')}
-            className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
+            onClick={() => router.push('/settings')}
+            className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>{common.backToDashboard}</span>
+            <span>Retour aux paramètres</span>
           </button>
         </div>
       </header>
