@@ -205,7 +205,7 @@ export function EnhanceProfileTag({ role, children, selected = false, onClick, o
     <TagElement
       onClick={disabled ? undefined : onClick}
       disabled={onClick && disabled ? disabled : undefined}
-      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+      className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
         selected
           ? `bg-gradient-to-r ${theme.gradient} text-white shadow-md`
           : `bg-gray-100 text-gray-700 ${onClick && !disabled ? 'hover:bg-gray-200 cursor-pointer' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`
