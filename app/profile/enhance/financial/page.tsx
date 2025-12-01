@@ -128,15 +128,15 @@ export default function FinancialInfoPage() {
 
         {/* Guarantor toggle */}
         <EnhanceProfileSection>
-          <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50 shadow-sm">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 flex-1">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md">
-                  <Shield className="w-5 h-5 text-white" />
+          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-blue-600" />
                 </div>
-                <div className="flex-1">
-                  <span className="font-semibold text-gray-800 block">I have a guarantor available</span>
-                  <span className="text-sm text-gray-600">Someone who can vouch for rent payments</span>
+                <div>
+                  <span className="font-medium text-gray-700 block">I have a guarantor available</span>
+                  <span className="text-sm text-gray-500">Someone who can vouch for rent payments</span>
                 </div>
               </div>
               <button
