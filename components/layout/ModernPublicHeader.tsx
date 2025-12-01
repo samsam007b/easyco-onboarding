@@ -9,6 +9,8 @@ import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'luc
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { useTheme } from '@/contexts/ThemeContext';
+import ThemeToggle from '@/components/ThemeToggle';
 import FranceFlag from '@/components/icons/flags/FranceFlag';
 import UKFlag from '@/components/icons/flags/UKFlag';
 import NetherlandsFlag from '@/components/icons/flags/NetherlandsFlag';
@@ -31,6 +33,7 @@ export default function ModernPublicHeader({
   onNavigate
 }: ModernPublicHeaderProps) {
   const { language, setLanguage, getSection } = useLanguage();
+  const { resolvedTheme } = useTheme();
   const nav = getSection('nav');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -90,14 +93,23 @@ export default function ModernPublicHeader({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Glassmorphism background with gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
-           style={{
-             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-             backdropFilter: 'blur(40px) saturate(150%)'
-           }}
+      {/* Glassmorphism background with gradient overlay - Dark mode support */}
+      <div
+        className="absolute inset-0 backdrop-blur-3xl backdrop-saturate-150"
+        style={{
+          background: resolvedTheme === 'dark'
+            ? 'linear-gradient(to bottom, rgba(15, 15, 18, 0.85), rgba(15, 15, 18, 0.75), rgba(15, 15, 18, 0.65))'
+            : 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.7), rgba(255,255,255,0.6))',
+          WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+          backdropFilter: 'blur(40px) saturate(150%)'
+        }}
       />
-      <div className="absolute inset-0 border-b border-white/30 shadow-lg" />
+      <div
+        className="absolute inset-0 shadow-lg"
+        style={{
+          borderBottom: `1px solid ${resolvedTheme === 'dark' ? 'rgba(42, 42, 48, 0.5)' : 'rgba(255,255,255,0.3)'}`,
+        }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -172,11 +184,19 @@ export default function ModernPublicHeader({
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Theme Toggle */}
+            <ThemeToggle variant="icon" />
+
             {/* Se connecter */}
             <Link href="/auth">
               <Button
                 variant="ghost"
-                className="rounded-full font-medium text-gray-700 hover:bg-gray-100"
+                className={cn(
+                  "rounded-full font-medium",
+                  resolvedTheme === 'dark'
+                    ? "text-gray-200 hover:bg-white/10"
+                    : "text-gray-700 hover:bg-gray-100"
+                )}
               >
                 {nav.login}
               </Button>
@@ -198,7 +218,12 @@ export default function ModernPublicHeader({
             <div ref={langDropdownRef} className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-all",
+                  resolvedTheme === 'dark'
+                    ? "text-gray-200 hover:bg-white/10"
+                    : "text-gray-700 hover:bg-gray-100"
+                )}
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{language.toUpperCase()}</span>
@@ -208,14 +233,21 @@ export default function ModernPublicHeader({
                 )} />
               </button>
 
-              {/* Dropdown Menu - Premium Minimalist */}
+              {/* Dropdown Menu - Premium Minimalist with Dark Mode */}
               <AnimatePresence>
                 {langDropdownOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-50"
+                    className="absolute top-full mt-2 right-0 rounded-xl shadow-2xl overflow-hidden min-w-[180px] z-50"
+                    style={{
+                      background: resolvedTheme === 'dark'
+                        ? 'rgba(26, 26, 31, 0.95)'
+                        : 'rgba(255, 255, 255, 0.98)',
+                      backdropFilter: 'blur(20px)',
+                      border: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}`,
+                    }}
                   >
                     {languages.map((lang, index) => {
                       const FlagComponent = lang.flagComponent;
@@ -229,8 +261,8 @@ export default function ModernPublicHeader({
                             className={cn(
                               "w-full flex items-center gap-3 px-5 py-3 text-sm transition-all group",
                               language === lang.code
-                                ? "bg-gray-50"
-                                : "hover:bg-gray-50"
+                                ? resolvedTheme === 'dark' ? "bg-white/5" : "bg-gray-50"
+                                : resolvedTheme === 'dark' ? "hover:bg-white/5" : "hover:bg-gray-50"
                             )}
                           >
                             <FlagComponent className="w-6 h-6 rounded-sm shadow-sm" />
@@ -238,16 +270,23 @@ export default function ModernPublicHeader({
                               "font-medium transition-all flex-1 text-left",
                               language === lang.code
                                 ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
-                                : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                                : resolvedTheme === 'dark'
+                                  ? "text-gray-200 group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:via-orange-400 group-hover:to-yellow-400 group-hover:bg-clip-text group-hover:text-transparent"
+                                  : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
                             )}>
                               {lang.label}
                             </span>
                             {language === lang.code && (
-                              <span className="text-purple-600 text-xs">✓</span>
+                              <span className="text-purple-500 text-xs">✓</span>
                             )}
                           </button>
                           {index < languages.length - 1 && (
-                            <div className="h-px bg-gray-100 mx-3" />
+                            <div
+                              className="h-px mx-3"
+                              style={{
+                                background: resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB',
+                              }}
+                            />
                           )}
                         </div>
                       );
@@ -261,7 +300,12 @@ export default function ModernPublicHeader({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
+            className={cn(
+              "md:hidden p-2 rounded-lg transition",
+              resolvedTheme === 'dark'
+                ? "text-gray-200 hover:bg-white/10"
+                : "text-gray-700 hover:bg-gray-100"
+            )}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -278,7 +322,11 @@ export default function ModernPublicHeader({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-t border-gray-200 bg-white"
+              className="md:hidden overflow-hidden"
+              style={{
+                background: resolvedTheme === 'dark' ? '#0F0F12' : '#FFFFFF',
+                borderTop: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}`,
+              }}
             >
               <nav className="py-4 flex flex-col gap-2">
                 {navItems.map((item) => {
@@ -295,8 +343,12 @@ export default function ModernPublicHeader({
                       className={cn(
                         "flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left",
                         isActive
-                          ? "bg-purple-100 text-purple-900 font-semibold"
-                          : "text-gray-700 hover:bg-gray-100"
+                          ? resolvedTheme === 'dark'
+                            ? "bg-purple-900/30 text-purple-300 font-semibold"
+                            : "bg-purple-100 text-purple-900 font-semibold"
+                          : resolvedTheme === 'dark'
+                            ? "text-gray-200 hover:bg-white/5"
+                            : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
                       <Icon className="w-5 h-5" />
@@ -305,11 +357,26 @@ export default function ModernPublicHeader({
                   );
                 })}
 
-                <div className="pt-4 mt-4 border-t border-gray-200 flex flex-col gap-3">
+                {/* Theme toggle in mobile menu */}
+                <div className="px-4 py-2">
+                  <ThemeToggle variant="dropdown" className="w-full" />
+                </div>
+
+                <div
+                  className="pt-4 mt-4 flex flex-col gap-3"
+                  style={{
+                    borderTop: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}`,
+                  }}
+                >
                   <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
                     <Button
                       variant="outline"
-                      className="w-full rounded-full border-purple-600 text-purple-600"
+                      className={cn(
+                        "w-full rounded-full",
+                        resolvedTheme === 'dark'
+                          ? "border-purple-400 text-purple-300"
+                          : "border-purple-600 text-purple-600"
+                      )}
                     >
                       {nav.login}
                     </Button>
