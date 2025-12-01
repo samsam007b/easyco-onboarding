@@ -2,13 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, User, Building2, Users } from 'lucide-react';
+import { User, Building2, Users, MapPin } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+  OnboardingSelectionCard,
+  OnboardingLabel,
+  OnboardingInput,
+} from '@/components/onboarding';
 
 export default function OwnerAbout() {
   const router = useRouter();
@@ -27,7 +33,6 @@ export default function OwnerAbout() {
   const loadExistingData = async () => {
     try {
       const saved = safeLocalStorage.get('ownerAbout', {}) as any;
-
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
@@ -50,7 +55,6 @@ export default function OwnerAbout() {
         }
       }
     } catch (error) {
-      // FIXME: Use logger.error('Error loading about data:', error);
       toast.error(t('onboarding.errors.loadFailed'));
     } finally {
       setIsLoading(false);
@@ -77,10 +81,6 @@ export default function OwnerAbout() {
     router.push('/onboarding/owner/property-basics');
   };
 
-  const handleBack = () => {
-    router.push('/onboarding/owner/basic-info');
-  };
-
   const ownerTypes = [
     {
       value: 'individual',
@@ -102,169 +102,135 @@ export default function OwnerAbout() {
     },
   ];
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="text-gray-600">{t('onboarding.owner.about.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  const experienceOptions = [
+    { value: '0-1 year', label: t('onboarding.owner.about.experience0to1') },
+    { value: '1-3 years', label: t('onboarding.owner.about.experience1to3') },
+    { value: '3+ years', label: t('onboarding.owner.about.experience3plus') },
+  ];
+
+  const canContinue = ownerType && primaryLocation && hostingExperience &&
+    (!['agency', 'company'].includes(ownerType) || companyName.trim());
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6 relative">
-      {/* Language Switcher */}
-      <div className="absolute top-6 right-6 z-50">
-        <LanguageSwitcher />
-      </div>
+    <OnboardingLayout
+      role="owner"
+      backUrl="/onboarding/owner/basic-info"
+      backLabel={t('common.back')}
+      progress={{
+        current: 2,
+        total: 3,
+        label: `${t('onboarding.progress.step')} 2 ${t('onboarding.progress.of')} 3`,
+        stepName: t('onboarding.owner.about.title'),
+      }}
+      isLoading={isLoading}
+      loadingText={t('onboarding.owner.about.loading')}
+    >
+      <OnboardingHeading
+        role="owner"
+        title={t('onboarding.owner.about.title')}
+        description={t('onboarding.owner.about.subtitle')}
+      />
 
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-[color:var(--easy-purple)] transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>{t('common.back')}</span>
-          </button>
-        </div>
-
-        {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-[color:var(--easy-purple)] flex items-center justify-center">
-            <User className="w-7 h-7 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)]">EasyCo</h1>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('onboarding.progress.step')} 2 {t('onboarding.progress.of')} 3</span>
-            <span className="text-sm font-semibold text-[color:var(--easy-purple)]">67%</span>
-          </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[color:var(--easy-purple)] rounded-full" style={{ width: '67%' }} />
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('onboarding.owner.about.title')}</h2>
-            <p className="text-gray-600">{t('onboarding.owner.about.subtitle')}</p>
-          </div>
-
-          <div className="space-y-6">
-            {/* Owner Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
-                {t('onboarding.owner.about.ownerTypeLabel')} <span className="text-red-500">*</span>
-              </label>
-              <div className="space-y-3">
-                {ownerTypes.map((type) => {
-                  const Icon = type.icon;
-                  return (
-                    <button
-                      key={type.value}
-                      onClick={() => setOwnerType(type.value)}
-                      className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-                        ownerType === type.value
-                          ? 'border-[color:var(--easy-purple)] bg-purple-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <Icon className={`w-5 h-5 mt-0.5 ${ownerType === type.value ? 'text-[color:var(--easy-purple)]' : 'text-gray-400'}`} />
-                        <div className="flex-1">
-                          <div className="font-semibold text-gray-900">{type.label}</div>
-                          <div className="text-sm text-gray-500">{type.description}</div>
-                        </div>
-                        {ownerType === type.value && (
-                          <div className="w-5 h-5 rounded-full bg-[color:var(--easy-purple)] flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        )}
+      <div className="space-y-6">
+        {/* Owner Type */}
+        <div>
+          <OnboardingLabel required>
+            {t('onboarding.owner.about.ownerTypeLabel')}
+          </OnboardingLabel>
+          <div className="space-y-3">
+            {ownerTypes.map((type) => {
+              const Icon = type.icon;
+              return (
+                <OnboardingSelectionCard
+                  key={type.value}
+                  role="owner"
+                  selected={ownerType === type.value}
+                  onClick={() => setOwnerType(type.value)}
+                  className="w-full"
+                >
+                  <div className="flex items-start gap-3">
+                    <Icon className={`w-5 h-5 mt-0.5 ${ownerType === type.value ? 'text-purple-600' : 'text-gray-400'}`} />
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-gray-900">{type.label}</div>
+                      <div className="text-sm text-gray-500">{type.description}</div>
+                    </div>
+                    {ownerType === type.value && (
+                      <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full" />
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Company Name (conditional) */}
-            {(ownerType === 'agency' || ownerType === 'company') && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('onboarding.owner.about.companyName')} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder={t('onboarding.owner.about.companyNamePlaceholder')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-                />
-              </div>
-            )}
-
-            {/* Primary Location */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('onboarding.owner.about.primaryLocation')} <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={primaryLocation}
-                onChange={(e) => setPrimaryLocation(e.target.value)}
-                placeholder={t('onboarding.owner.about.primaryLocationPlaceholder')}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-              />
-            </div>
-
-            {/* Hosting Experience */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('onboarding.owner.about.hostingExperience')} <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={hostingExperience}
-                onChange={(e) => setHostingExperience(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-              >
-                <option value="">{t('onboarding.owner.about.hostingExperiencePlaceholder')}</option>
-                <option value="0-1 year">{t('onboarding.owner.about.experience0to1')}</option>
-                <option value="1-3 years">{t('onboarding.owner.about.experience1to3')}</option>
-                <option value="3+ years">{t('onboarding.owner.about.experience3plus')}</option>
-              </select>
-              <div className="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                <p className="text-sm text-yellow-800">
-                  {t('onboarding.owner.about.tipComplete')}
-                </p>
-              </div>
-            </div>
+                    )}
+                  </div>
+                </OnboardingSelectionCard>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Buttons */}
-          <div className="flex gap-4 mt-8">
-            <button
-              onClick={handleBack}
-              className="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-            >
-              {t('common.back')}
-            </button>
-            <button
-              onClick={handleContinue}
-              className="flex-1 bg-[color:var(--easy-purple)] text-white py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity"
-            >
-              {t('common.continue')}
-            </button>
+        {/* Company Name (conditional) */}
+        {(ownerType === 'agency' || ownerType === 'company') && (
+          <OnboardingInput
+            role="owner"
+            label={t('onboarding.owner.about.companyName')}
+            required
+            icon={Building2}
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            placeholder={t('onboarding.owner.about.companyNamePlaceholder')}
+          />
+        )}
+
+        {/* Primary Location */}
+        <OnboardingInput
+          role="owner"
+          label={t('onboarding.owner.about.primaryLocation')}
+          required
+          icon={MapPin}
+          value={primaryLocation}
+          onChange={(e) => setPrimaryLocation(e.target.value)}
+          placeholder={t('onboarding.owner.about.primaryLocationPlaceholder')}
+        />
+
+        {/* Hosting Experience */}
+        <div>
+          <OnboardingLabel required>
+            {t('onboarding.owner.about.hostingExperience')}
+          </OnboardingLabel>
+          <div className="grid grid-cols-3 gap-3">
+            {experienceOptions.map((option) => (
+              <OnboardingSelectionCard
+                key={option.value}
+                role="owner"
+                selected={hostingExperience === option.value}
+                onClick={() => setHostingExperience(option.value)}
+              >
+                <div className="text-center font-medium text-sm">{option.label}</div>
+              </OnboardingSelectionCard>
+            ))}
+          </div>
+          <div className="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <p className="text-sm text-yellow-800">
+              {t('onboarding.owner.about.tipComplete')}
+            </p>
           </div>
         </div>
       </div>
-    </main>
+
+      <div className="mt-8 flex gap-4">
+        <OnboardingButton
+          role="owner"
+          variant="secondary"
+          onClick={() => router.push('/onboarding/owner/basic-info')}
+        >
+          {t('common.back')}
+        </OnboardingButton>
+        <OnboardingButton
+          role="owner"
+          onClick={handleContinue}
+          disabled={!canContinue}
+        >
+          {t('common.continue')}
+        </OnboardingButton>
+      </div>
+    </OnboardingLayout>
   );
 }

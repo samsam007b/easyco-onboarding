@@ -2,18 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, CreditCard, Shield } from 'lucide-react';
+import { CreditCard, Shield } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+  OnboardingInput,
+} from '@/components/onboarding';
 
 export default function PaymentInfoPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { t, getSection } = useLanguage();
+  const { getSection } = useLanguage();
   const onboarding = getSection('onboarding');
   const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +50,6 @@ export default function PaymentInfoPage() {
         }
       }
     } catch (error) {
-      // FIXME: Use logger.error('Error loading payment data:', error);
       toast.error(common.errorLoadingData);
     } finally {
       setIsLoading(false);
@@ -62,118 +65,87 @@ export default function PaymentInfoPage() {
     router.push('/dashboard/my-profile-owner');
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="text-gray-600">{onboarding.owner.about.loadingInfo}</p>
-        </div>
-      </div>
-    );
-  }
+  const canSave = iban && swiftBic;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Language Switcher */}
-        <div className="absolute top-6 right-6 z-50">
-          <LanguageSwitcher />
+    <OnboardingLayout
+      role="owner"
+      backUrl="/dashboard/my-profile-owner"
+      backLabel={onboarding.owner.paymentInfo.backToProfile}
+      isLoading={isLoading}
+      loadingText={onboarding.owner.about.loadingInfo}
+    >
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <CreditCard className="w-8 h-8 text-green-600" />
         </div>
+        <OnboardingHeading
+          role="owner"
+          title={onboarding.owner.paymentInfo.title}
+          description={onboarding.owner.paymentInfo.subtitle}
+        />
+      </div>
 
-        {/* Header */}
-        <button
-          onClick={() => router.push('/dashboard/my-profile-owner')}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition flex items-center gap-2"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>{onboarding.owner.paymentInfo.backToProfile}</span>
-        </button>
+      {/* Form */}
+      <div className="space-y-6">
+        {/* IBAN */}
+        <OnboardingInput
+          role="owner"
+          label={onboarding.owner.paymentInfo.iban}
+          required
+          icon={CreditCard}
+          value={iban}
+          onChange={(e) => setIban(e.target.value.toUpperCase())}
+          placeholder={onboarding.owner.paymentInfo.ibanPlaceholder}
+        />
+        <p className="text-xs text-gray-500 -mt-4">
+          {onboarding.owner.paymentInfo.ibanHelp}
+        </p>
 
-        {/* Title */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-              <CreditCard className="w-6 h-6 text-green-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-[color:var(--easy-purple)]">
-              {onboarding.owner.paymentInfo.title}
-            </h1>
-          </div>
-          <p className="text-gray-600">
-            {onboarding.owner.paymentInfo.subtitle}
-          </p>
-        </div>
+        {/* SWIFT/BIC */}
+        <OnboardingInput
+          role="owner"
+          label={onboarding.owner.paymentInfo.swiftBic}
+          required
+          icon={CreditCard}
+          value={swiftBic}
+          onChange={(e) => setSwiftBic(e.target.value.toUpperCase())}
+          placeholder={onboarding.owner.paymentInfo.swiftBicPlaceholder}
+        />
+        <p className="text-xs text-gray-500 -mt-4">
+          {onboarding.owner.paymentInfo.swiftBicHelp}
+        </p>
 
-        {/* Form */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
-          {/* IBAN */}
+        {/* Security Notice */}
+        <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200 flex gap-3">
+          <Shield className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.owner.paymentInfo.iban} <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={iban}
-              onChange={(e) => setIban(e.target.value.toUpperCase())}
-              placeholder={onboarding.owner.paymentInfo.ibanPlaceholder}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              {onboarding.owner.paymentInfo.ibanHelp}
+            <h3 className="font-medium text-gray-900 mb-1">{onboarding.owner.paymentInfo.securityNoticeTitle}</h3>
+            <p className="text-sm text-gray-600">
+              {onboarding.owner.paymentInfo.securityNoticeDesc}
             </p>
           </div>
-
-          {/* SWIFT/BIC */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.owner.paymentInfo.swiftBic} <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={swiftBic}
-              onChange={(e) => setSwiftBic(e.target.value.toUpperCase())}
-              placeholder={onboarding.owner.paymentInfo.swiftBicPlaceholder}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--easy-purple)] focus:border-transparent outline-none transition-all"
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              {onboarding.owner.paymentInfo.swiftBicHelp}
-            </p>
-          </div>
-
-          {/* Security Notice */}
-          <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200 flex gap-3">
-            <Shield className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-medium text-gray-900 mb-1">{onboarding.owner.paymentInfo.securityNoticeTitle}</h3>
-              <p className="text-sm text-gray-600">
-                {onboarding.owner.paymentInfo.securityNoticeDesc}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex gap-4 mt-8">
-          <button
-            onClick={() => router.push('/dashboard/my-profile-owner')}
-            className="flex-1 border-2 border-gray-300 text-gray-700 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-          >
-            {common.cancel}
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={!iban || !swiftBic}
-            className={`flex-1 py-4 rounded-lg font-semibold transition-colors ${
-              iban && swiftBic
-                ? 'bg-[color:var(--easy-purple)] text-white hover:opacity-90'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            {onboarding.owner.paymentInfo.saveChanges}
-          </button>
         </div>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="flex gap-4 mt-8">
+        <OnboardingButton
+          role="owner"
+          variant="secondary"
+          onClick={() => router.push('/dashboard/my-profile-owner')}
+        >
+          {common.cancel}
+        </OnboardingButton>
+        <OnboardingButton
+          role="owner"
+          onClick={handleSave}
+          disabled={!canSave}
+        >
+          {onboarding.owner.paymentInfo.saveChanges}
+        </OnboardingButton>
+      </div>
+    </OnboardingLayout>
   );
 }

@@ -2,18 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, User, Clock, Home, Users, Settings } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { saveOnboardingData } from '@/lib/onboarding-helpers';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+} from '@/components/onboarding';
 
 export default function ReviewPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
@@ -27,6 +32,7 @@ export default function ReviewPage() {
     const testerId = safeLocalStorage.get('tester_id', null);
 
     setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, idealColiving, preferences, verification, testerId });
+    setIsLoading(false);
   }, []);
 
   // Map frontend values to database constraint values with validation
@@ -39,10 +45,7 @@ export default function ReviewPage() {
       'late': 'late'
     };
     const mapped = mapping[value.toLowerCase()];
-    if (!mapped) {
-      // FIXME: Use logger.warn(`Invalid wake_up_time value: ${value}, using default 'average'`);
-      return 'average';
-    }
+    if (!mapped) return 'average';
     return mapped;
   };
 
@@ -57,10 +60,7 @@ export default function ReviewPage() {
       'after_01h': 'after_01h'
     };
     const mapped = mapping[value.toLowerCase()];
-    if (!mapped) {
-      // FIXME: Use logger.warn(`Invalid sleep_time value: ${value}, using default '23h_01h'`);
-      return '23h_01h';
-    }
+    if (!mapped) return '23h_01h';
     return mapped;
   };
 
@@ -75,16 +75,11 @@ export default function ReviewPage() {
       'high': 'high'
     };
     const mapped = mapping[value.toLowerCase()];
-    if (!mapped) {
-      // FIXME: Use logger.warn(`Invalid sociability_level value: ${value}, using default 'medium'`);
-      return 'medium';
-    }
+    if (!mapped) return 'medium';
     return mapped;
   };
 
   const mapHomeActivityLevel = (value: string) => {
-    // Map from frontend values to database constraint values
-    // Database expects: 'quiet', 'social', 'very_active'
     const mapping: Record<string, string> = {
       'calm': 'quiet',
       'balanced': 'social',
@@ -97,7 +92,6 @@ export default function ReviewPage() {
   };
 
   const mapPreferredInteractionType = (value: string) => {
-    // Database expects: 'cozy_evenings', 'independent_living', 'community_events'
     const mapping: Record<string, string> = {
       'cozy': 'cozy_evenings',
       'independent': 'independent_living',
@@ -114,7 +108,6 @@ export default function ReviewPage() {
     try {
       const supabase = createClient();
 
-      // Get current user
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
         toast.error('Please log in to continue');
@@ -122,10 +115,8 @@ export default function ReviewPage() {
         return;
       }
 
-      // Check if this is a dependent profile
       const isDependent = data.basicInfo?.isDependent === true;
 
-      // Prepare lifestyle array from collected data
       const lifestyleArray = [
         data.dailyHabits?.isSmoker ? 'smoker' : 'non-smoker',
         data.homeLifestyle?.cleanliness || '',
@@ -133,7 +124,6 @@ export default function ReviewPage() {
         data.socialVibe?.socialEnergy || '',
       ].filter(Boolean);
 
-      // Prepare complete onboarding data
       const onboardingData = {
         ...data.basicInfo,
         ...data.dailyHabits,
@@ -147,54 +137,39 @@ export default function ReviewPage() {
       };
 
       if (isDependent) {
-        // Save to dependent_profiles table
         const dependentProfileData = {
           parent_user_id: user.id,
           profile_name: data.basicInfo.profileName,
           relationship: data.basicInfo.relationship,
           is_active: true,
-
-          // Basic info
           first_name: data.basicInfo.firstName,
           last_name: data.basicInfo.lastName,
           date_of_birth: data.basicInfo.dateOfBirth,
           nationality: data.basicInfo.nationality,
           languages_spoken: data.basicInfo.languages,
-
-          // Professional (from daily habits or preferences)
           occupation_status: data.dailyHabits?.occupationStatus,
           field_of_study_or_work: data.dailyHabits?.fieldOfStudy,
           institution_or_company: data.dailyHabits?.institution,
-
-          // Location & Budget (from preferences)
           current_city: data.preferences?.currentCity,
           preferred_cities: data.preferences?.preferredCities,
           budget_min: data.preferences?.budgetMin,
           budget_max: data.preferences?.budgetMax,
           move_in_date: data.preferences?.moveInDate,
           preferred_accommodation: data.preferences?.accommodationType,
-
-          // Lifestyle (from homeLifestyle)
           cleanliness_preference: data.homeLifestyle?.cleanlinessLevel,
           is_smoker: data.dailyHabits?.isSmoker || false,
           has_pets: data.homeLifestyle?.hasPets || false,
           pet_types: data.homeLifestyle?.petTypes,
           wake_up_time: data.dailyHabits?.wakeUpTime ? mapWakeUpTime(data.dailyHabits.wakeUpTime) : null,
           sleep_time: data.dailyHabits?.sleepTime ? mapSleepTime(data.dailyHabits.sleepTime) : null,
-
-          // Social (from socialVibe)
           introvert_extrovert_scale: data.socialVibe?.introvertExtrovertScale,
           sociability_level: data.socialVibe?.socialEnergy ? mapSociabilityLevel(data.socialVibe.socialEnergy) : null,
           shared_meals_interest: data.socialVibe?.sharedMealsInterest,
           preferred_interaction_type: data.socialVibe?.interactionPreference ? mapPreferredInteractionType(data.socialVibe.interactionPreference) : null,
           home_activity_level: data.socialVibe?.homeActivity ? mapHomeActivityLevel(data.socialVibe.homeActivity) : null,
-
-          // Profile text (from idealColiving)
           bio: data.idealColiving?.bio,
           about_me: data.idealColiving?.aboutMe,
           looking_for: data.idealColiving?.lookingFor,
-
-          // Enhanced profile (from idealColiving)
           core_values: data.idealColiving?.coreValues,
           important_qualities: data.idealColiving?.importantQualities,
           deal_breakers: data.idealColiving?.dealBreakers,
@@ -205,11 +180,9 @@ export default function ReviewPage() {
           .insert(dependentProfileData);
 
         if (insertError) {
-          // FIXME: Use logger.error('Error saving dependent profile:', insertError);
           throw new Error('Failed to save dependent profile');
         }
 
-        // Mark parent user's onboarding as completed
         const { error: userUpdateError } = await supabase
           .from('users')
           .update({
@@ -218,12 +191,6 @@ export default function ReviewPage() {
           })
           .eq('id', user.id);
 
-        if (userUpdateError) {
-          // FIXME: Use logger.error('Error updating user onboarding status:', userUpdateError);
-          // Don't throw - dependent profile was saved successfully
-        }
-
-        // Clear ALL onboarding localStorage after successful dependent profile creation
         safeLocalStorage.remove('searcherProfileType');
         safeLocalStorage.remove('basicInfo');
         safeLocalStorage.remove('dailyHabits');
@@ -236,7 +203,6 @@ export default function ReviewPage() {
         toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
         router.push('/dashboard/searcher');
       } else {
-        // Save to user_profiles table (original behavior)
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
 
         if (!result.success) {
@@ -246,7 +212,6 @@ export default function ReviewPage() {
         toast.success('Profile saved successfully!');
       }
 
-      // Clear localStorage after successful submission
       safeLocalStorage.remove('basicInfo');
       safeLocalStorage.remove('dailyHabits');
       safeLocalStorage.remove('homeLifestyle');
@@ -258,84 +223,208 @@ export default function ReviewPage() {
 
       router.push('/onboarding/searcher/success');
     } catch (err: any) {
-      // FIXME: Use logger.error('Error submitting:', err);
       toast.error('Error: ' + err.message);
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Language Switcher */}
-        <div className="absolute top-6 right-6 z-50">
-          <LanguageSwitcher />
+    <OnboardingLayout
+      role="searcher"
+      backUrl="/onboarding/searcher/verification"
+      backLabel={t('common.back')}
+      progress={{
+        current: 8,
+        total: 8,
+        label: 'Étape 8 sur 8',
+        stepName: t('onboarding.review.title'),
+      }}
+      isLoading={isLoading}
+      loadingText={t('common.loading')}
+    >
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 className="w-8 h-8 text-orange-600" />
         </div>
-
-        <button onClick={() => router.back()} className="mb-6 text-orange-600">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-orange-600 mb-2">{t('onboarding.review.title')}</h1>
-          <p className="text-gray-600">{t('onboarding.review.subtitle')}</p>
-        </div>
-        <div className="space-y-4 mb-8">
-          {data.basicInfo && Object.keys(data.basicInfo).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.basicInfoSection')}</h2>
-              <dl className="space-y-2 text-sm">
-                {data.basicInfo.firstName && <div className="flex justify-between"><dt>{t('onboarding.review.firstNameLabel')}</dt><dd className="font-medium">{data.basicInfo.firstName}</dd></div>}
-                {data.basicInfo.lastName && <div className="flex justify-between"><dt>{t('onboarding.review.lastNameLabel')}</dt><dd className="font-medium">{data.basicInfo.lastName}</dd></div>}
-                <div className="flex justify-between"><dt>{t('onboarding.review.dateOfBirthLabel')}</dt><dd className="font-medium">{data.basicInfo.dateOfBirth}</dd></div>
-                <div className="flex justify-between"><dt>{t('onboarding.review.nationalityLabel')}</dt><dd className="font-medium">{data.basicInfo.nationality}</dd></div>
-                <div className="flex justify-between"><dt>{t('onboarding.review.languagesLabel')}</dt><dd className="font-medium">{data.basicInfo.languages?.join(', ')}</dd></div>
-              </dl>
-            </div>
-          )}
-          {data.dailyHabits && Object.keys(data.dailyHabits).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.dailyHabitsSection')}</h2>
-              <dl className="space-y-2 text-sm">
-                <div className="flex justify-between"><dt>{t('onboarding.review.wakeUpLabel')}</dt><dd className="font-medium capitalize">{data.dailyHabits.wakeUpTime}</dd></div>
-                <div className="flex justify-between"><dt>{t('onboarding.review.sleepLabel')}</dt><dd className="font-medium capitalize">{data.dailyHabits.sleepTime}</dd></div>
-                <div className="flex justify-between"><dt>{t('onboarding.review.smokerLabel')}</dt><dd className="font-medium">{data.dailyHabits.isSmoker ? t('onboarding.review.yes') : t('onboarding.review.no')}</dd></div>
-              </dl>
-            </div>
-          )}
-          {data.idealColiving && Object.keys(data.idealColiving).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.idealColivingSection')}</h2>
-              <dl className="space-y-2 text-sm">
-                {data.idealColiving.colivingSize && <div className="flex justify-between"><dt>{t('onboarding.review.colivingSizeLabel')}</dt><dd className="font-medium capitalize">{data.idealColiving.colivingSize}</dd></div>}
-                {data.idealColiving.genderMix && <div className="flex justify-between"><dt>{t('onboarding.review.genderMixLabel')}</dt><dd className="font-medium capitalize">{data.idealColiving.genderMix.replace(/-/g, ' ')}</dd></div>}
-                {data.idealColiving.minAge && <div className="flex justify-between"><dt>{t('onboarding.review.ageRangeLabel')}</dt><dd className="font-medium">{data.idealColiving.minAge} - {data.idealColiving.maxAge}</dd></div>}
-                {data.idealColiving.sharedSpaceImportance && <div className="flex justify-between"><dt>{t('onboarding.review.sharedSpaceLabel')}</dt><dd className="font-medium">{data.idealColiving.sharedSpaceImportance}/10</dd></div>}
-              </dl>
-            </div>
-          )}
-          {data.preferences && Object.keys(data.preferences).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.preferencesSection')}</h2>
-              <dl className="space-y-2 text-sm">
-                <div className="flex justify-between"><dt>{t('onboarding.review.budgetLabel')}</dt><dd className="font-medium">€{data.preferences.budgetMin} - €{data.preferences.budgetMax}</dd></div>
-                <div className="flex justify-between"><dt>{t('onboarding.review.districtLabel')}</dt><dd className="font-medium">{data.preferences.preferredDistrict || t('onboarding.review.any')}</dd></div>
-              </dl>
-            </div>
-          )}
-          {data.verification && data.verification.phoneNumber && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold text-orange-600 mb-3">{t('onboarding.review.verificationSection')}</h2>
-              <dl className="space-y-2 text-sm">
-                {data.verification.phoneNumber && <div className="flex justify-between"><dt>{t('onboarding.review.phoneLabel')}</dt><dd className="font-medium">{data.verification.phoneNumber}</dd></div>}
-                {data.verification.idDocument && <div className="flex justify-between"><dt>{t('onboarding.review.idDocumentLabel')}</dt><dd className="font-medium">{t('onboarding.review.uploaded')}</dd></div>}
-              </dl>
-            </div>
-          )}
-        </div>
-        <button onClick={handleSubmit} disabled={isSubmitting} className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-semibold text-lg hover:from-[#FF8C30] hover:to-[#FFA548] disabled:opacity-50 flex items-center justify-center gap-2">
-          {isSubmitting ? (<><Loader2 className="w-5 h-5 animate-spin" />{t('onboarding.review.submitting')}</>) : (<><CheckCircle2 className="w-5 h-5" />{t('onboarding.review.submitMyProfile')}</>)}
-        </button>
+        <OnboardingHeading
+          role="searcher"
+          title={t('onboarding.review.title')}
+          description={t('onboarding.review.subtitle')}
+        />
       </div>
-    </main>
+
+      <div className="space-y-4 mb-8">
+        {/* Basic Info */}
+        {data.basicInfo && Object.keys(data.basicInfo).length > 0 && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <User className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.basicInfoSection')}</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.basicInfo.firstName && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.firstNameLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.basicInfo.firstName}</dd>
+                </div>
+              )}
+              {data.basicInfo.lastName && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.lastNameLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.basicInfo.lastName}</dd>
+                </div>
+              )}
+              {data.basicInfo.dateOfBirth && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.dateOfBirthLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.basicInfo.dateOfBirth}</dd>
+                </div>
+              )}
+              {data.basicInfo.nationality && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.nationalityLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.basicInfo.nationality}</dd>
+                </div>
+              )}
+              {data.basicInfo.languages && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.languagesLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.basicInfo.languages?.join(', ')}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+
+        {/* Daily Habits */}
+        {data.dailyHabits && Object.keys(data.dailyHabits).length > 0 && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <Clock className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.dailyHabitsSection')}</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.dailyHabits.wakeUpTime && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.wakeUpLabel')}</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.dailyHabits.wakeUpTime}</dd>
+                </div>
+              )}
+              {data.dailyHabits.sleepTime && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.sleepLabel')}</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.dailyHabits.sleepTime}</dd>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <dt className="text-gray-600">{t('onboarding.review.smokerLabel')}</dt>
+                <dd className="font-medium text-gray-900">{data.dailyHabits.isSmoker ? t('onboarding.review.yes') : t('onboarding.review.no')}</dd>
+              </div>
+            </dl>
+          </div>
+        )}
+
+        {/* Ideal Coliving */}
+        {data.idealColiving && Object.keys(data.idealColiving).length > 0 && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <Home className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.idealColivingSection')}</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.idealColiving.colivingSize && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.colivingSizeLabel')}</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.idealColiving.colivingSize}</dd>
+                </div>
+              )}
+              {data.idealColiving.genderMix && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.genderMixLabel')}</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.idealColiving.genderMix.replace(/-/g, ' ')}</dd>
+                </div>
+              )}
+              {data.idealColiving.minAge && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.ageRangeLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.idealColiving.minAge} - {data.idealColiving.maxAge}</dd>
+                </div>
+              )}
+              {data.idealColiving.sharedSpaceImportance && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.sharedSpaceLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.idealColiving.sharedSpaceImportance}/10</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+
+        {/* Preferences */}
+        {data.preferences && Object.keys(data.preferences).length > 0 && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <Settings className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.preferencesSection')}</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.preferences.budgetMin && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.budgetLabel')}</dt>
+                  <dd className="font-medium text-gray-900">€{data.preferences.budgetMin} - €{data.preferences.budgetMax}</dd>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <dt className="text-gray-600">{t('onboarding.review.districtLabel')}</dt>
+                <dd className="font-medium text-gray-900">{data.preferences.preferredDistrict || t('onboarding.review.any')}</dd>
+              </div>
+            </dl>
+          </div>
+        )}
+
+        {/* Verification */}
+        {data.verification && data.verification.phoneNumber && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <CheckCircle2 className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.verificationSection')}</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.verification.phoneNumber && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.phoneLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.verification.phoneNumber}</dd>
+                </div>
+              )}
+              {data.verification.idDocument && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.idDocumentLabel')}</dt>
+                  <dd className="font-medium text-green-600">{t('onboarding.review.uploaded')}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+      </div>
+
+      <OnboardingButton
+        role="searcher"
+        onClick={handleSubmit}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <span className="flex items-center justify-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            {t('onboarding.review.submitting')}
+          </span>
+        ) : (
+          <span className="flex items-center justify-center gap-2">
+            <CheckCircle2 className="w-5 h-5" />
+            {t('onboarding.review.submitMyProfile')}
+          </span>
+        )}
+      </OnboardingButton>
+    </OnboardingLayout>
   );
 }

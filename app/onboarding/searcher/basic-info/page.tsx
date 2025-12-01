@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Globe, Users, Baby, UsersRound, UserPlus, Handshake } from 'lucide-react';
+import { Globe, Users, Baby, UsersRound, UserPlus, Handshake, User, Calendar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useAutoSave } from '@/lib/hooks/use-auto-save';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 import IconBadge from '@/components/IconBadge';
 import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingInput,
+  OnboardingButton,
+  OnboardingSelectionCard,
+  OnboardingLabel,
+  OnboardingGrid,
+} from '@/components/onboarding';
 
 export default function BasicInfoPage() {
   const router = useRouter();
@@ -142,207 +149,157 @@ export default function BasicInfoPage() {
     ? firstName && lastName && dateOfBirth && nationality && profileName && relationship
     : firstName && lastName && dateOfBirth && nationality;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="text-gray-600">{common.loadingInfo}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      {/* Language Switcher */}
-      <div className="absolute top-6 right-6 z-50">
-        <LanguageSwitcher />
-      </div>
+    <OnboardingLayout
+      role="searcher"
+      backUrl="/onboarding/searcher/profile-type"
+      backLabel={common.back}
+      progress={{
+        current: 1,
+        total: 6,
+        label: onboarding.basicInfo.progress || 'Étape 1 sur 6',
+        stepName: onboarding.basicInfo.title,
+      }}
+      isLoading={isLoading}
+      loadingText={common.loadingInfo}
+    >
+      <OnboardingHeading
+        role="searcher"
+        title={onboarding.basicInfo.title}
+        description={
+          profileType === 'dependent'
+            ? onboarding.basicInfo.subtitleDependent
+            : onboarding.basicInfo.subtitle
+        }
+      />
 
-      <div className="max-w-md mx-auto">
-
-        {/* Progress bar */}
-        <div className="mb-6">
-          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-orange-600 w-1/6 transition-all" />
+      {/* Dependent Profile Badge */}
+      {profileType === 'dependent' && (
+        <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl flex items-center gap-3">
+          <Users className="w-5 h-5 text-orange-600" />
+          <div>
+            <p className="text-sm font-medium text-orange-600">
+              {onboarding.basicInfo.dependentBadgeTitle}
+            </p>
+            <p className="text-xs text-gray-600">
+              {onboarding.basicInfo.dependentBadgeSubtitle}
+            </p>
           </div>
         </div>
+      )}
 
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-orange-600 hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-600 mb-2">
-            {onboarding.basicInfo.title}
-          </h1>
-          <p className="text-gray-600">
-            {profileType === 'dependent'
-              ? onboarding.basicInfo.subtitleDependent
-              : onboarding.basicInfo.subtitle}
-          </p>
-        </div>
-
-        {/* Dependent Profile Badge */}
+      {/* Form */}
+      <div className="space-y-6">
+        {/* Profile Name (dependent only) */}
         {profileType === 'dependent' && (
-          <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl flex items-center gap-3">
-            <Users className="w-5 h-5 text-orange-600" />
-            <div>
-              <p className="text-sm font-medium text-orange-600">
-                {onboarding.basicInfo.dependentBadgeTitle}
-              </p>
-              <p className="text-xs text-gray-600">
-                {onboarding.basicInfo.dependentBadgeSubtitle}
-              </p>
-            </div>
+          <div>
+            <OnboardingInput
+              role="searcher"
+              label={onboarding.basicInfo.profileName}
+              required
+              value={profileName}
+              onChange={(e) => setProfileName(e.target.value)}
+              placeholder={onboarding.basicInfo.profileNamePlaceholder}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {onboarding.basicInfo.profileNameHelp}
+            </p>
           </div>
         )}
 
-        {/* Form */}
-        <div className="space-y-6">
-
-          {/* Profile Name (dependent only) */}
-          {profileType === 'dependent' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {onboarding.basicInfo.profileName} <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={profileName}
-                onChange={(e) => setProfileName(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-                placeholder={onboarding.basicInfo.profileNamePlaceholder}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {onboarding.basicInfo.profileNameHelp}
-              </p>
-            </div>
-          )}
-
-          {/* Relationship (dependent only) */}
-          {profileType === 'dependent' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
-                {onboarding.basicInfo.relationship} <span className="text-red-500">*</span>
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { value: 'child', label: onboarding.basicInfo.relationshipChild, icon: Baby, variant: 'blue' as const },
-                  { value: 'family_member', label: onboarding.basicInfo.relationshipFamily, icon: UsersRound, variant: 'purple' as const },
-                  { value: 'friend', label: onboarding.basicInfo.relationshipFriend, icon: UserPlus, variant: 'green' as const },
-                  { value: 'other', label: onboarding.basicInfo.relationshipOther, icon: Handshake, variant: 'orange' as const },
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => setRelationship(option.value as any)}
-                    className={`p-4 rounded-xl border-2 transition text-left ${
-                      relationship === option.value
-                        ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="mb-2">
-                      <IconBadge icon={option.icon} variant={option.variant} size="lg" />
-                    </div>
-                    <div className="text-sm font-medium">{option.label}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* First Name */}
+        {/* Relationship (dependent only) */}
+        {profileType === 'dependent' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.basicInfo.firstName}
-            </label>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-              placeholder={onboarding.basicInfo.firstNamePlaceholder}
-            />
+            <OnboardingLabel required>
+              {onboarding.basicInfo.relationship}
+            </OnboardingLabel>
+            <OnboardingGrid columns={2}>
+              {[
+                { value: 'child', label: onboarding.basicInfo.relationshipChild, icon: Baby, variant: 'blue' as const },
+                { value: 'family_member', label: onboarding.basicInfo.relationshipFamily, icon: UsersRound, variant: 'purple' as const },
+                { value: 'friend', label: onboarding.basicInfo.relationshipFriend, icon: UserPlus, variant: 'green' as const },
+                { value: 'other', label: onboarding.basicInfo.relationshipOther, icon: Handshake, variant: 'orange' as const },
+              ].map((option) => (
+                <OnboardingSelectionCard
+                  key={option.value}
+                  role="searcher"
+                  selected={relationship === option.value}
+                  onClick={() => setRelationship(option.value as any)}
+                >
+                  <div className="mb-2">
+                    <IconBadge icon={option.icon} variant={option.variant} size="lg" />
+                  </div>
+                  <div className="text-sm font-medium">{option.label}</div>
+                </OnboardingSelectionCard>
+              ))}
+            </OnboardingGrid>
           </div>
+        )}
 
-          {/* Last Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.basicInfo.lastName}
-            </label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-              placeholder={onboarding.basicInfo.lastNamePlaceholder}
-            />
-          </div>
+        {/* First Name */}
+        <OnboardingInput
+          role="searcher"
+          label={onboarding.basicInfo.firstName}
+          icon={User}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder={onboarding.basicInfo.firstNamePlaceholder}
+        />
 
-          {/* Date of Birth */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.basicInfo.dateOfBirth}
-            </label>
-            <input
-              type="date"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-              placeholder={onboarding.basicInfo.dateOfBirthPlaceholder}
-            />
-          </div>
+        {/* Last Name */}
+        <OnboardingInput
+          role="searcher"
+          label={onboarding.basicInfo.lastName}
+          icon={User}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder={onboarding.basicInfo.lastNamePlaceholder}
+        />
 
-          {/* Nationality */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              {onboarding.basicInfo.nationality}
-            </label>
-            <input
-              type="text"
-              value={nationality}
-              onChange={(e) => setNationality(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-              placeholder={onboarding.basicInfo.nationalityPlaceholder}
-            />
-          </div>
+        {/* Date of Birth */}
+        <OnboardingInput
+          role="searcher"
+          label={onboarding.basicInfo.dateOfBirth}
+          icon={Calendar}
+          type="date"
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
+        />
 
-          {/* Languages Spoken */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {onboarding.basicInfo.languagesSpoken}
-            </label>
-            <LanguagesChipInput
-              value={languages}
-              onChange={setLanguages}
-              maxLanguages={10}
-              placeholder={onboarding.basicInfo.languagesPlaceholder}
-            />
-          </div>
+        {/* Nationality */}
+        <OnboardingInput
+          role="searcher"
+          label={onboarding.basicInfo.nationality}
+          icon={Globe}
+          value={nationality}
+          onChange={(e) => setNationality(e.target.value)}
+          placeholder={onboarding.basicInfo.nationalityPlaceholder}
+        />
+
+        {/* Languages Spoken */}
+        <div>
+          <OnboardingLabel>
+            {onboarding.basicInfo.languagesSpoken}
+          </OnboardingLabel>
+          <LanguagesChipInput
+            value={languages}
+            onChange={setLanguages}
+            maxLanguages={10}
+            placeholder={onboarding.basicInfo.languagesPlaceholder}
+          />
         </div>
+      </div>
 
-        {/* Continue button */}
-        <button
+      {/* Continue button */}
+      <div className="mt-8">
+        <OnboardingButton
+          role="searcher"
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full mt-12 py-4 rounded-full font-semibold text-lg transition shadow-md ${
-            canContinue
-              ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] hover:shadow-lg'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
         >
           {common.continue}
-        </button>
+        </OnboardingButton>
       </div>
-    </main>
+    </OnboardingLayout>
   );
 }
