@@ -174,18 +174,24 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         .eq('user_id', userId)
         .single();
 
-      if (error || !data) return null;
+      if (error || !data) {
+        console.log('❌ No user profile found:', error);
+        return null;
+      }
+
+      console.log('✅ User profile data:', data);
 
       // Convert user_profiles to PropertySearcherProfile format
-      return {
+      // Try both possible column names (min_budget vs budget_min)
+      const profile = {
         user_id: data.user_id,
         first_name: data.first_name || '',
         last_name: data.last_name || '',
         date_of_birth: data.date_of_birth,
         gender: data.gender,
-        min_budget: data.min_budget,
-        max_budget: data.max_budget,
-        preferred_neighborhoods: data.preferred_neighborhoods || [],
+        min_budget: data.min_budget || data.budget_min,
+        max_budget: data.max_budget || data.budget_max,
+        preferred_neighborhoods: data.preferred_neighborhoods || (data.preferred_neighborhood ? [data.preferred_neighborhood] : []),
         preferred_property_type: data.preferred_property_type || [],
         min_bedrooms: data.min_bedrooms,
         furnished_required: data.furnished_required,
@@ -201,6 +207,9 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         wake_up_time: data.wake_up_time,
         sleep_time: data.sleep_time,
       };
+
+      console.log('🔄 Converted searcher profile:', profile);
+      return profile;
     },
     enabled: !!userId,
   });
