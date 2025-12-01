@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { DollarSign, MapPin, PawPrint, Cigarette, Settings } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { useLanguage } from '@/lib/i18n/use-language';
+import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import {
   OnboardingLayout,
   OnboardingHeading,
@@ -39,6 +40,14 @@ export default function PreferencesPage() {
       if (saved.acceptSmokersInHouse !== undefined) setAcceptSmokersInHouse(saved.acceptSmokersInHouse);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+    if (place.formatted_address) {
+      setPreferredDistrict(place.formatted_address);
+    } else if (place.name) {
+      setPreferredDistrict(place.name);
     }
   };
 
@@ -134,13 +143,20 @@ export default function PreferencesPage() {
               {t('onboarding.preferences.preferredDistrict')}
             </div>
           </OnboardingLabel>
-          <OnboardingInput
-            role="searcher"
-            label=""
-            value={preferredDistrict}
-            onChange={(e) => setPreferredDistrict(e.target.value)}
-            placeholder={t('onboarding.preferences.districtPlaceholder')}
-          />
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none z-10" />
+            <SafeGooglePlacesAutocomplete
+              onPlaceSelect={handlePlaceSelect}
+              placeholder={t('onboarding.preferences.districtPlaceholder')}
+              inputClassName="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+            />
+          </div>
+          {preferredDistrict && (
+            <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
+              <MapPin className="w-3 h-3" />
+              Quartier sélectionné: {preferredDistrict}
+            </p>
+          )}
           <p className="text-sm text-gray-500 mt-1">
             {t('onboarding.preferences.districtHelp')}
           </p>
