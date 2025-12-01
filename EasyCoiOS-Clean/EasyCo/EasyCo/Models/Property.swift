@@ -81,6 +81,11 @@ struct Property: Identifiable, Codable {
     var matchInsights: [String]?
     var isFavorited: Bool?
 
+    // Computed property for compatibility
+    var mainImageURL: String? {
+        mainImage ?? images.first
+    }
+
     // Residents (for property cards)
     var residents: [PropertyResident]?
 
@@ -159,7 +164,7 @@ enum PropertyType: String, Codable, CaseIterable {
 
 // MARK: - Property Status
 
-enum PropertyStatus: String, Codable {
+enum PropertyStatus: String, Codable, CaseIterable {
     case draft = "draft"
     case published = "published"
     case archived = "archived"

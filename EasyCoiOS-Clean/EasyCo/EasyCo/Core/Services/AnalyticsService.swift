@@ -61,11 +61,25 @@ class AnalyticsService: ObservableObject {
         return OwnerAnalytics.mock
     }
 
+    /// Get owner stats for dashboard
+    func getOwnerStats() async throws -> OwnerStats {
+        // TODO: Replace with actual API call
+        try await Task.sleep(nanoseconds: 500_000_000) // Simulate network delay
+        return OwnerStats.mock
+    }
+
     /// Get searcher dashboard statistics
     func getSearcherAnalytics(period: AnalyticsPeriod = .month) async throws -> SearcherAnalytics {
         // TODO: Replace with actual API call
         try await Task.sleep(nanoseconds: 500_000_000)
         return SearcherAnalytics.mock
+    }
+
+    /// Get searcher stats for dashboard
+    func getSearcherStats() async throws -> SearcherStats {
+        // TODO: Replace with actual API call
+        try await Task.sleep(nanoseconds: 500_000_000)
+        return SearcherStats.mock
     }
 
     /// Get recently viewed properties

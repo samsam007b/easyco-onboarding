@@ -280,6 +280,7 @@ type Section =
   | 'shadows'
   | 'inputs'
   | 'badges'
+  | 'darkmode'
   | 'choices';
 
 const sections: { id: Section; label: string; icon: React.ElementType }[] = [
@@ -291,6 +292,7 @@ const sections: { id: Section; label: string; icon: React.ElementType }[] = [
   { id: 'shadows', label: 'Ombres & Effets', icon: Moon },
   { id: 'inputs', label: 'Formulaires', icon: ToggleLeft },
   { id: 'badges', label: 'Badges', icon: BoxSelect },
+  { id: 'darkmode', label: 'Dark Mode', icon: Moon },
   { id: 'choices', label: 'V1 vs V2', icon: Sparkles },
 ];
 
@@ -362,6 +364,7 @@ export default function DesignSystemPage() {
               {activeSection === 'shadows' && <ShadowsSection />}
               {activeSection === 'inputs' && <InputsSection />}
               {activeSection === 'badges' && <BadgesSection />}
+              {activeSection === 'darkmode' && <DarkModeSection />}
               {activeSection === 'choices' && <ChoicesSection />}
             </motion.div>
           </AnimatePresence>
@@ -1569,6 +1572,494 @@ function getSessionId(): string {
     localStorage.setItem('design_session_id', sessionId);
   }
   return sessionId;
+}
+
+/* ============================================
+   DARK MODE SECTION
+   Section pour retravailler et prévisualiser les couleurs du dark mode
+============================================ */
+
+// Couleurs dark mode actuelles
+const DARK_MODE_COLORS = {
+  backgrounds: {
+    primary: { value: '#0F0F12', name: 'Primary Background', description: 'Fond principal des pages' },
+    secondary: { value: '#141418', name: 'Secondary Background', description: 'Fond des sections alternées' },
+    card: { value: 'rgba(26, 26, 31, 0.8)', name: 'Card Background', description: 'Fond des cartes avec glassmorphism' },
+    cardSolid: { value: '#1A1A1F', name: 'Card Solid', description: 'Fond des cartes sans transparence' },
+    elevated: { value: '#1E1E24', name: 'Elevated', description: 'Éléments surélevés, dropdowns' },
+  },
+  borders: {
+    default: { value: '#2A2A30', name: 'Default Border', description: 'Bordure standard' },
+    subtle: { value: '#232328', name: 'Subtle Border', description: 'Bordure très discrète' },
+    accent: { value: '#3A3A45', name: 'Accent Border', description: 'Bordure plus visible' },
+  },
+  text: {
+    primary: { value: '#F5F5F7', name: 'Primary Text', description: 'Texte principal, titres' },
+    secondary: { value: '#E5E5E7', name: 'Secondary Text', description: 'Texte secondaire' },
+    muted: { value: '#A0A0A5', name: 'Muted Text', description: 'Texte atténué, placeholders' },
+    subtle: { value: '#6B6B70', name: 'Subtle Text', description: 'Texte très discret' },
+  },
+  gradients: {
+    owner: {
+      current: { start: '#8B6FCF', end: '#D9A0B3' },
+      proposed: { start: '#7B5FB8', end: '#C98B9E' }, // Atténué
+    },
+    searcher: {
+      current: { start: '#FFB050', end: '#FFD890' },
+      proposed: { start: '#E8A045', end: '#E8C880' }, // Atténué
+    },
+    resident: {
+      current: { start: '#E8865D', end: '#FF8C4B' },
+      proposed: { start: '#D87A55', end: '#E88045' }, // Atténué
+    },
+  },
+};
+
+// Propositions d'atténuation
+const ATTENUATION_PROPOSALS = {
+  backgrounds: {
+    // Option A: Plus sombre, plus subtil
+    optionA: {
+      primary: '#0A0A0D',
+      secondary: '#0F0F12',
+      card: 'rgba(20, 20, 24, 0.85)',
+    },
+    // Option B: Légèrement plus clair, gris chaud
+    optionB: {
+      primary: '#121215',
+      secondary: '#171719',
+      card: 'rgba(28, 28, 32, 0.75)',
+    },
+  },
+  gradients: {
+    // Option A: Très atténué (pastels doux)
+    optionA: {
+      owner: { start: '#6B5FA8', end: '#B98B9E' },
+      searcher: { start: '#D89040', end: '#D8B870' },
+    },
+    // Option B: Modérément atténué
+    optionB: {
+      owner: { start: '#7A6FC0', end: '#C9A0A8' },
+      searcher: { start: '#E8A050', end: '#E8C078' },
+    },
+  },
+};
+
+function DarkModeSection() {
+  const [previewMode, setPreviewMode] = useState<'current' | 'optionA' | 'optionB'>('current');
+  const [activeTab, setActiveTab] = useState<'backgrounds' | 'text' | 'borders' | 'gradients' | 'preview'>('backgrounds');
+
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Dark Mode</h2>
+        <p className="text-gray-600">Retravailler les couleurs du mode sombre pour un rendu plus subtil et atténué</p>
+      </div>
+
+      {/* Mode Selector */}
+      <div className="flex gap-4 p-2 bg-gray-100 rounded-2xl w-fit">
+        {[
+          { id: 'current', label: 'Actuel' },
+          { id: 'optionA', label: 'Option A (Sombre)' },
+          { id: 'optionB', label: 'Option B (Chaud)' },
+        ].map((mode) => (
+          <button
+            key={mode.id}
+            onClick={() => setPreviewMode(mode.id as typeof previewMode)}
+            className={cn(
+              'px-6 py-3 rounded-xl font-medium transition-all',
+              previewMode === mode.id
+                ? 'bg-white shadow-lg text-gray-900'
+                : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            {mode.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="flex gap-2 border-b border-gray-200 pb-4">
+        {[
+          { id: 'backgrounds', label: 'Fonds', icon: Layers },
+          { id: 'text', label: 'Textes', icon: Type },
+          { id: 'borders', label: 'Bordures', icon: Square },
+          { id: 'gradients', label: 'Dégradés', icon: Palette },
+          { id: 'preview', label: 'Prévisualisation', icon: Eye },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all',
+                activeTab === tab.id
+                  ? 'bg-purple-100 text-purple-700'
+                  : 'text-gray-500 hover:bg-gray-100'
+              )}
+            >
+              <Icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Backgrounds Tab */}
+      {activeTab === 'backgrounds' && (
+        <div className="space-y-8">
+          <h3 className="text-xl font-bold text-gray-900">Couleurs de fond</h3>
+          <div className="grid grid-cols-2 gap-6">
+            {Object.entries(DARK_MODE_COLORS.backgrounds).map(([key, color]) => (
+              <div key={key} className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-20 h-12 rounded-xl border border-gray-200 shadow-sm"
+                    style={{ backgroundColor: color.value }}
+                  />
+                  <div>
+                    <p className="font-semibold text-gray-900">{color.name}</p>
+                    <p className="text-sm text-gray-500">{color.description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-mono">
+                  <span className="text-gray-600">{color.value}</span>
+                  <button
+                    onClick={() => navigator.clipboard.writeText(color.value)}
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
+                    <Copy className="w-4 h-4 text-gray-400" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Comparison */}
+          <div className="mt-8 p-6 bg-gray-50 rounded-2xl">
+            <h4 className="font-bold text-gray-900 mb-4">Comparaison des fonds</h4>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-600 mb-2">Actuel</p>
+                <div className="h-32 rounded-xl" style={{ backgroundColor: '#0F0F12' }} />
+                <div className="h-24 rounded-xl" style={{ backgroundColor: '#141418' }} />
+                <div className="h-20 rounded-xl border" style={{ backgroundColor: 'rgba(26, 26, 31, 0.8)', borderColor: '#2A2A30' }} />
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-600 mb-2">Option A (Plus sombre)</p>
+                <div className="h-32 rounded-xl" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionA.primary }} />
+                <div className="h-24 rounded-xl" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionA.secondary }} />
+                <div className="h-20 rounded-xl border" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionA.card, borderColor: '#232328' }} />
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-600 mb-2">Option B (Plus chaud)</p>
+                <div className="h-32 rounded-xl" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionB.primary }} />
+                <div className="h-24 rounded-xl" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionB.secondary }} />
+                <div className="h-20 rounded-xl border" style={{ backgroundColor: ATTENUATION_PROPOSALS.backgrounds.optionB.card, borderColor: '#2A2A30' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Text Tab */}
+      {activeTab === 'text' && (
+        <div className="space-y-8">
+          <h3 className="text-xl font-bold text-gray-900">Couleurs de texte</h3>
+          <div className="p-8 rounded-2xl space-y-6" style={{ backgroundColor: '#0F0F12' }}>
+            {Object.entries(DARK_MODE_COLORS.text).map(([key, color]) => (
+              <div key={key} className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <p className="text-2xl font-bold" style={{ color: color.value }}>
+                    {color.name}
+                  </p>
+                  <span className="text-sm font-mono px-2 py-1 rounded" style={{ backgroundColor: '#1A1A1F', color: '#A0A0A5' }}>
+                    {color.value}
+                  </span>
+                </div>
+                <p className="text-sm" style={{ color: '#6B6B70' }}>{color.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Borders Tab */}
+      {activeTab === 'borders' && (
+        <div className="space-y-8">
+          <h3 className="text-xl font-bold text-gray-900">Couleurs de bordure</h3>
+          <div className="p-8 rounded-2xl space-y-6" style={{ backgroundColor: '#0F0F12' }}>
+            {Object.entries(DARK_MODE_COLORS.borders).map(([key, color]) => (
+              <div key={key} className="flex items-center gap-6">
+                <div
+                  className="w-48 h-16 rounded-xl flex items-center justify-center"
+                  style={{
+                    backgroundColor: '#1A1A1F',
+                    border: `2px solid ${color.value}`
+                  }}
+                >
+                  <span className="text-sm font-mono" style={{ color: '#A0A0A5' }}>{color.value}</span>
+                </div>
+                <div>
+                  <p className="font-semibold" style={{ color: '#F5F5F7' }}>{color.name}</p>
+                  <p className="text-sm" style={{ color: '#6B6B70' }}>{color.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Gradients Tab */}
+      {activeTab === 'gradients' && (
+        <div className="space-y-8">
+          <h3 className="text-xl font-bold text-gray-900">Dégradés par rôle</h3>
+          <p className="text-gray-600">Comparaison des dégradés actuels vs propositions atténuées</p>
+
+          {Object.entries(DARK_MODE_COLORS.gradients).map(([role, gradients]) => (
+            <div key={role} className="space-y-4">
+              <h4 className="font-bold text-gray-900 capitalize">{role}</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500">Actuel (Lumineux)</p>
+                  <div
+                    className="h-24 rounded-2xl shadow-lg"
+                    style={{ background: `linear-gradient(135deg, ${gradients.current.start}, ${gradients.current.end})` }}
+                  />
+                  <div className="flex gap-2 text-xs font-mono text-gray-500">
+                    <span>{gradients.current.start}</span>
+                    <span>→</span>
+                    <span>{gradients.current.end}</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500">Proposé (Atténué)</p>
+                  <div
+                    className="h-24 rounded-2xl shadow-lg"
+                    style={{ background: `linear-gradient(135deg, ${gradients.proposed.start}, ${gradients.proposed.end})` }}
+                  />
+                  <div className="flex gap-2 text-xs font-mono text-gray-500">
+                    <span>{gradients.proposed.start}</span>
+                    <span>→</span>
+                    <span>{gradients.proposed.end}</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500">Très atténué</p>
+                  <div
+                    className="h-24 rounded-2xl shadow-lg"
+                    style={{
+                      background: `linear-gradient(135deg, ${
+                        role === 'owner' ? ATTENUATION_PROPOSALS.gradients.optionA.owner.start : ATTENUATION_PROPOSALS.gradients.optionA.searcher.start
+                      }, ${
+                        role === 'owner' ? ATTENUATION_PROPOSALS.gradients.optionA.owner.end : ATTENUATION_PROPOSALS.gradients.optionA.searcher.end
+                      })`
+                    }}
+                  />
+                  <div className="flex gap-2 text-xs font-mono text-gray-500">
+                    <span>{role === 'owner' ? ATTENUATION_PROPOSALS.gradients.optionA.owner.start : ATTENUATION_PROPOSALS.gradients.optionA.searcher.start}</span>
+                    <span>→</span>
+                    <span>{role === 'owner' ? ATTENUATION_PROPOSALS.gradients.optionA.owner.end : ATTENUATION_PROPOSALS.gradients.optionA.searcher.end}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Preview Tab */}
+      {activeTab === 'preview' && (
+        <div className="space-y-8">
+          <h3 className="text-xl font-bold text-gray-900">Prévisualisation complète</h3>
+
+          {/* Dark Mode Preview Container */}
+          <div
+            className="rounded-3xl overflow-hidden"
+            style={{
+              backgroundColor: previewMode === 'optionA' ? ATTENUATION_PROPOSALS.backgrounds.optionA.primary
+                : previewMode === 'optionB' ? ATTENUATION_PROPOSALS.backgrounds.optionB.primary
+                : DARK_MODE_COLORS.backgrounds.primary.value
+            }}
+          >
+            {/* Header Preview */}
+            <div
+              className="p-4 border-b"
+              style={{
+                backgroundColor: 'rgba(15, 15, 18, 0.85)',
+                backdropFilter: 'blur(40px)',
+                borderColor: DARK_MODE_COLORS.borders.default.value,
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl" style={{ background: 'linear-gradient(135deg, #6E56CF, #FF6F3C, #FFD249)' }} />
+                  <span className="font-bold" style={{ color: DARK_MODE_COLORS.text.primary.value }}>EasyCo</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium" style={{ color: DARK_MODE_COLORS.text.secondary.value }}>
+                    Se connecter
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-full text-sm font-semibold text-white"
+                    style={{
+                      background: previewMode === 'optionA'
+                        ? `linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.end})`
+                        : previewMode === 'optionB'
+                        ? `linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.end})`
+                        : `linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.owner.current.start}, ${DARK_MODE_COLORS.gradients.owner.current.end})`
+                    }}
+                  >
+                    S'inscrire
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Preview */}
+            <div className="p-8 space-y-6">
+              {/* Card */}
+              <div
+                className="p-6 rounded-2xl border"
+                style={{
+                  backgroundColor: previewMode === 'optionA' ? ATTENUATION_PROPOSALS.backgrounds.optionA.card
+                    : previewMode === 'optionB' ? ATTENUATION_PROPOSALS.backgrounds.optionB.card
+                    : DARK_MODE_COLORS.backgrounds.card.value,
+                  borderColor: DARK_MODE_COLORS.borders.default.value,
+                  backdropFilter: 'blur(10px)',
+                }}
+              >
+                <h4 className="text-xl font-bold mb-2" style={{ color: DARK_MODE_COLORS.text.primary.value }}>
+                  Exemple de carte
+                </h4>
+                <p className="mb-4" style={{ color: DARK_MODE_COLORS.text.muted.value }}>
+                  Voici un exemple de carte avec les couleurs du dark mode actuel ou proposé.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    className="px-6 py-3 rounded-xl font-semibold text-white"
+                    style={{
+                      background: previewMode === 'optionA'
+                        ? `linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.end})`
+                        : previewMode === 'optionB'
+                        ? `linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.end})`
+                        : `linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.searcher.current.start}, ${DARK_MODE_COLORS.gradients.searcher.current.end})`
+                    }}
+                  >
+                    Action principale
+                  </button>
+                  <button
+                    className="px-6 py-3 rounded-xl font-semibold border"
+                    style={{
+                      color: DARK_MODE_COLORS.text.secondary.value,
+                      borderColor: DARK_MODE_COLORS.borders.accent.value,
+                      backgroundColor: 'transparent',
+                    }}
+                  >
+                    Action secondaire
+                  </button>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                {['Owner', 'Searcher', 'Resident'].map((role, index) => {
+                  const gradientKey = role.toLowerCase() as 'owner' | 'searcher' | 'resident';
+                  const gradient = DARK_MODE_COLORS.gradients[gradientKey] || DARK_MODE_COLORS.gradients.owner;
+                  const proposedA = ATTENUATION_PROPOSALS.gradients.optionA[gradientKey as 'owner' | 'searcher'];
+                  const proposedB = ATTENUATION_PROPOSALS.gradients.optionB[gradientKey as 'owner' | 'searcher'];
+
+                  return (
+                    <div
+                      key={role}
+                      className="p-4 rounded-xl border"
+                      style={{
+                        backgroundColor: DARK_MODE_COLORS.backgrounds.cardSolid.value,
+                        borderColor: `${gradient.current.start}40`,
+                      }}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-lg mb-3 flex items-center justify-center"
+                        style={{
+                          background: previewMode === 'optionA' && proposedA
+                            ? `linear-gradient(135deg, ${proposedA.start}, ${proposedA.end})`
+                            : previewMode === 'optionB' && proposedB
+                            ? `linear-gradient(135deg, ${proposedB.start}, ${proposedB.end})`
+                            : `linear-gradient(135deg, ${gradient.current.start}, ${gradient.current.end})`
+                        }}
+                      >
+                        {index === 0 && <Building2 className="w-5 h-5 text-white" />}
+                        {index === 1 && <Search className="w-5 h-5 text-white" />}
+                        {index === 2 && <Home className="w-5 h-5 text-white" />}
+                      </div>
+                      <p className="font-bold" style={{ color: DARK_MODE_COLORS.text.primary.value }}>{role}</p>
+                      <p className="text-sm" style={{ color: DARK_MODE_COLORS.text.muted.value }}>Interface {role.toLowerCase()}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Code Export */}
+          <div className="p-6 bg-gray-900 rounded-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-white font-bold">CSS Variables ({previewMode === 'current' ? 'Actuelles' : previewMode})</h4>
+              <button
+                onClick={() => {
+                  const css = previewMode === 'optionA' ? `
+:root {
+  --dark-bg-primary: ${ATTENUATION_PROPOSALS.backgrounds.optionA.primary};
+  --dark-bg-secondary: ${ATTENUATION_PROPOSALS.backgrounds.optionA.secondary};
+  --dark-bg-card: ${ATTENUATION_PROPOSALS.backgrounds.optionA.card};
+  --dark-gradient-owner: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.end});
+  --dark-gradient-searcher: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.end});
+}` : previewMode === 'optionB' ? `
+:root {
+  --dark-bg-primary: ${ATTENUATION_PROPOSALS.backgrounds.optionB.primary};
+  --dark-bg-secondary: ${ATTENUATION_PROPOSALS.backgrounds.optionB.secondary};
+  --dark-bg-card: ${ATTENUATION_PROPOSALS.backgrounds.optionB.card};
+  --dark-gradient-owner: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.end});
+  --dark-gradient-searcher: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.end});
+}` : `
+:root {
+  --dark-bg-primary: ${DARK_MODE_COLORS.backgrounds.primary.value};
+  --dark-bg-secondary: ${DARK_MODE_COLORS.backgrounds.secondary.value};
+  --dark-bg-card: ${DARK_MODE_COLORS.backgrounds.card.value};
+  --dark-gradient-owner: linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.owner.current.start}, ${DARK_MODE_COLORS.gradients.owner.current.end});
+  --dark-gradient-searcher: linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.searcher.current.start}, ${DARK_MODE_COLORS.gradients.searcher.current.end});
+}`;
+                  navigator.clipboard.writeText(css);
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-white text-sm transition-colors"
+              >
+                <Copy className="w-4 h-4" />
+                Copier CSS
+              </button>
+            </div>
+            <pre className="text-sm text-gray-300 overflow-x-auto">
+{previewMode === 'optionA' ? `--dark-bg-primary: ${ATTENUATION_PROPOSALS.backgrounds.optionA.primary};
+--dark-bg-secondary: ${ATTENUATION_PROPOSALS.backgrounds.optionA.secondary};
+--dark-bg-card: ${ATTENUATION_PROPOSALS.backgrounds.optionA.card};
+--dark-gradient-owner: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.owner.end});
+--dark-gradient-searcher: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionA.searcher.end});`
+: previewMode === 'optionB' ? `--dark-bg-primary: ${ATTENUATION_PROPOSALS.backgrounds.optionB.primary};
+--dark-bg-secondary: ${ATTENUATION_PROPOSALS.backgrounds.optionB.secondary};
+--dark-bg-card: ${ATTENUATION_PROPOSALS.backgrounds.optionB.card};
+--dark-gradient-owner: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.owner.end});
+--dark-gradient-searcher: linear-gradient(135deg, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.start}, ${ATTENUATION_PROPOSALS.gradients.optionB.searcher.end});`
+: `--dark-bg-primary: ${DARK_MODE_COLORS.backgrounds.primary.value};
+--dark-bg-secondary: ${DARK_MODE_COLORS.backgrounds.secondary.value};
+--dark-bg-card: ${DARK_MODE_COLORS.backgrounds.card.value};
+--dark-gradient-owner: linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.owner.current.start}, ${DARK_MODE_COLORS.gradients.owner.current.end});
+--dark-gradient-searcher: linear-gradient(135deg, ${DARK_MODE_COLORS.gradients.searcher.current.start}, ${DARK_MODE_COLORS.gradients.searcher.current.end});`}
+            </pre>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ChoicesSection() {

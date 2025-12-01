@@ -148,7 +148,7 @@ struct VisitCalendarView: View {
                 GridItem(.flexible())
             ], spacing: 12) {
                 ForEach(timeSlots) { slot in
-                    TimeSlotButton(
+                    CalendarTimeSlotButton(
                         slot: slot,
                         isSelected: selectedTimeSlot?.id == slot.id,
                         action: {
@@ -284,7 +284,7 @@ struct VisitCalendarView: View {
 
 // MARK: - Time Slot Button
 
-struct TimeSlotButton: View {
+private struct CalendarTimeSlotButton: View {
     let slot: TimeSlot
     let isSelected: Bool
     let action: () -> Void

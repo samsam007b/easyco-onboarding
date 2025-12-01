@@ -7,6 +7,38 @@
 
 import SwiftUI
 
+// MARK: - Local Enums
+
+enum RecurrencePattern: String, CaseIterable {
+    case daily = "daily"
+    case weekly = "weekly"
+    case monthly = "monthly"
+
+    var displayName: String {
+        switch self {
+        case .daily: return "Quotidien"
+        case .weekly: return "Hebdomadaire"
+        case .monthly: return "Mensuel"
+        }
+    }
+}
+
+enum ReminderTime: String, CaseIterable {
+    case fifteenMinutes = "15min"
+    case oneHour = "1h"
+    case oneDay = "1d"
+    case oneWeek = "1w"
+
+    var displayName: String {
+        switch self {
+        case .fifteenMinutes: return "15 minutes avant"
+        case .oneHour: return "1 heure avant"
+        case .oneDay: return "1 jour avant"
+        case .oneWeek: return "1 semaine avant"
+        }
+    }
+}
+
 struct CreateEventView: View {
     @ObservedObject var viewModel: CalendarViewModel
     @Environment(\.dismiss) var dismiss
@@ -31,7 +63,7 @@ struct CreateEventView: View {
                     basicInfoSection
                     typeSection
                     dateTimeSection
-                    if selectedType == .guests {
+                    if selectedType == .guest {
                         guestsSection
                     }
                     recurrenceSection
@@ -181,22 +213,40 @@ struct CreateEventView: View {
     }
 
     private func createEvent() {
+        // Convert local RecurrencePattern to model's RecurringPattern
+        let modelRecurringPattern: RecurringPattern? = {
+            guard isRecurring else { return nil }
+            switch recurrencePattern {
+            case .daily: return .daily
+            case .weekly: return .weekly
+            case .monthly: return .monthly
+            }
+        }()
+
+        // Convert ReminderTime to minutes
+        let reminderMinutes: Int? = {
+            guard let reminder = reminderBefore else { return nil }
+            switch reminder {
+            case .fifteenMinutes: return 15
+            case .oneHour: return 60
+            case .oneDay: return 1440
+            case .oneWeek: return 10080
+            }
+        }()
+
         let event = Event(
             householdId: UUID(),
             title: title,
             description: description.isEmpty ? nil : description,
-            eventType: selectedType,
+            type: selectedType,
             startDate: startDate,
             endDate: endDate,
             isAllDay: isAllDay,
-            createdBy: UUID(),
-            createdByName: "Moi",
-            hasGuests: hasGuests,
-            numberOfGuests: numberOfGuests,
-            guestNames: hasGuests ? guestNames.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) } : [],
+            organizerId: UUID(),
+            organizerName: "Moi",
             isRecurring: isRecurring,
-            recurrencePattern: isRecurring ? recurrencePattern : nil,
-            reminderBefore: reminderBefore
+            recurringPattern: modelRecurringPattern,
+            reminderMinutesBefore: reminderMinutes
         )
 
         _Concurrency.Task {
@@ -215,12 +265,12 @@ struct EventTypeButton: View {
         Button(action: action) {
             VStack(spacing: 8) {
                 Circle()
-                    .fill(isSelected ? Color(hex: type.defaultColor) : Color(hex: type.defaultColor).opacity(0.1))
+                    .fill(isSelected ? Color(hex: type.color) : Color(hex: type.color).opacity(0.1))
                     .frame(width: 48, height: 48)
                     .overlay(
                         Image(systemName: type.icon)
                             .font(.system(size: 20))
-                            .foregroundColor(isSelected ? .white : Color(hex: type.defaultColor))
+                            .foregroundColor(isSelected ? .white : Color(hex: type.color))
                     )
 
                 Text(type.displayName)
@@ -233,7 +283,7 @@ struct EventTypeButton: View {
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? Color(hex: type.defaultColor) : Color(hex: "E5E7EB"), lineWidth: isSelected ? 2 : 1)
+                    .stroke(isSelected ? Color(hex: type.color) : Color(hex: "E5E7EB"), lineWidth: isSelected ? 2 : 1)
             )
         }
     }

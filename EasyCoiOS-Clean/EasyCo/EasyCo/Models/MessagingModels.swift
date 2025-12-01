@@ -2,6 +2,13 @@ import Foundation
 
 // MARK: - Supabase Message Models
 
+/// Message type for Supabase messages
+enum SupabaseMessageType: String, Codable {
+    case text
+    case system
+    case application
+}
+
 /// Message from Supabase database
 struct SupabaseMessage: Identifiable, Codable {
     let id: UUID
@@ -12,13 +19,7 @@ struct SupabaseMessage: Identifiable, Codable {
     let updatedAt: Date
     let isRead: Bool
     let attachments: [MessageAttachment]?
-    let messageType: MessageType
-
-    enum MessageType: String, Codable {
-        case text
-        case system
-        case application
-    }
+    let messageType: SupabaseMessageType
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -33,30 +34,7 @@ struct SupabaseMessage: Identifiable, Codable {
     }
 }
 
-/// Message attachment stored in JSONB
-struct MessageAttachment: Codable, Identifiable {
-    let id: UUID
-    let type: AttachmentType
-    let url: String
-    let thumbnailUrl: String?
-    let filename: String?
-    let fileSize: Int?
-
-    enum AttachmentType: String, Codable {
-        case image
-        case document
-        case location
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case type
-        case url
-        case thumbnailUrl = "thumbnail_url"
-        case filename
-        case fileSize = "file_size"
-    }
-}
+// Note: MessageAttachment is defined in Conversation.swift
 
 /// Supabase conversation
 struct SupabaseConversation: Identifiable, Codable {

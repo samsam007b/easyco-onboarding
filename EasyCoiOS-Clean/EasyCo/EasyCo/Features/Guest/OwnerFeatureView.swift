@@ -106,7 +106,7 @@ struct OwnerFeatureView: View {
                 )
 
                 BenefitCard(
-                    icon: "shield.checkmark.fill",
+                    icon: "checkmark.shield.fill",
                     title: "Profils vérifiés",
                     description: "Tous les candidats sont vérifiés pour votre sécurité"
                 )
@@ -136,9 +136,9 @@ struct OwnerFeatureView: View {
                 .foregroundColor(Color(hex: "111827"))
 
             HStack(spacing: 16) {
-                StatCard(number: "10K+", label: "Propriétés")
-                StatCard(number: "50K+", label: "Utilisateurs")
-                StatCard(number: "95%", label: "Satisfaction")
+                GuestStatCard(number: "10K+", label: "Propriétés")
+                GuestStatCard(number: "50K+", label: "Utilisateurs")
+                GuestStatCard(number: "95%", label: "Satisfaction")
             }
             .padding(.horizontal, 16)
         }
@@ -220,9 +220,9 @@ struct BenefitCard: View {
     }
 }
 
-// MARK: - Stat Card Component
+// MARK: - Guest Stat Card Component
 
-struct StatCard: View {
+struct GuestStatCard: View {
     let number: String
     let label: String
 

@@ -2,12 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { Save, Loader2, CheckCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { saveOnboardingData } from '@/lib/onboarding-helpers';
 import { toast } from 'sonner';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileSection,
+  EnhanceProfileTag,
+} from '@/components/enhance-profile';
+
+export const dynamic = 'force-dynamic';
 
 export default function OwnerEnhanceReviewPage() {
   const router = useRouter();
@@ -44,9 +52,9 @@ export default function OwnerEnhanceReviewPage() {
         const servicesData = safeLocalStorage.get('ownerServices', {}) as any;
 
         setData({
-          experience: experienceData,
-          policies: policiesData,
-          services: servicesData
+          experience: experienceData || {},
+          policies: policiesData || {},
+          services: servicesData || {}
         });
       } catch (error) {
         // FIXME: Use logger.error('Error loading data:', error);
@@ -110,178 +118,145 @@ export default function OwnerEnhanceReviewPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingHouse size={80} />
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
+    <EnhanceProfileLayout
+      role="owner"
+      backUrl="/dashboard/my-profile-owner"
+      backLabel="Back to Profile"
+      isLoading={isLoading}
+      loadingText="Loading your information..."
+    >
+      <EnhanceProfileHeading
+        role="owner"
+        title="Review Your Enhanced Profile"
+        description="Make sure everything looks good before saving"
+        icon={<CheckCircle className="w-8 h-8 text-purple-600" />}
+      />
 
-        {/* Progress indicator */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 4 of 4</span>
-            <span className="text-sm text-gray-500">Review & Save</span>
+      <div className="space-y-6">
+        {/* Experience & Motivation */}
+        <EnhanceProfileSection>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Experience & Motivation</h2>
+            <button
+              onClick={() => router.push('/profile/enhance-owner/experience')}
+              className="text-sm text-purple-600 hover:opacity-70"
+            >
+              Edit
+            </button>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '100%' }} />
-          </div>
-        </div>
-
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Review Your Enhanced Profile
-          </h1>
-          <p className="text-gray-600">
-            Make sure everything looks good before saving
-          </p>
-        </div>
-
-        {/* Review Cards */}
-        <div className="space-y-6">
-
-          {/* Experience & Motivation */}
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Experience & Motivation</h2>
-              <button
-                onClick={() => router.push('/profile/enhance-owner/experience')}
-                className="text-sm text-[color:var(--easy-purple)] hover:opacity-70"
-              >
-                Edit
-              </button>
-            </div>
-            <div className="space-y-2 text-sm">
-              {data.experience?.experienceYears && (
-                <div><span className="text-gray-600">Experience:</span> <span className="font-medium">{data.experience.experienceYears} years</span></div>
-              )}
-              {data.experience?.managementStyle && (
-                <div><span className="text-gray-600">Management:</span> <span className="font-medium">{data.experience.managementStyle}</span></div>
-              )}
-              {data.experience?.primaryMotivation && (
-                <div><span className="text-gray-600">Motivation:</span> <span className="font-medium">{data.experience.primaryMotivation}</span></div>
-              )}
-              {data.experience?.bio && (
-                <div className="pt-2 border-t"><span className="text-gray-600">Bio:</span> <p className="text-gray-900 mt-1">{data.experience.bio}</p></div>
-              )}
-              {!data.experience?.experienceYears && <p className="text-gray-400 italic">No data entered</p>}
-            </div>
-          </div>
-
-          {/* Policies */}
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Tenant Policies</h2>
-              <button
-                onClick={() => router.push('/profile/enhance-owner/policies')}
-                className="text-sm text-[color:var(--easy-purple)] hover:opacity-70"
-              >
-                Edit
-              </button>
-            </div>
-            <div className="space-y-2 text-sm">
-              {data.policies?.petsAllowed !== null && (
-                <div><span className="text-gray-600">Pets:</span> <span className="font-medium">{data.policies.petsAllowed ? 'Allowed' : 'Not allowed'}</span></div>
-              )}
-              {data.policies?.smokingAllowed !== null && (
-                <div><span className="text-gray-600">Smoking:</span> <span className="font-medium">{data.policies.smokingAllowed ? 'Allowed' : 'Not allowed'}</span></div>
-              )}
-              {data.policies?.minimumLeaseDuration && (
-                <div><span className="text-gray-600">Min lease:</span> <span className="font-medium">{data.policies.minimumLeaseDuration} months</span></div>
-              )}
-              {data.policies?.depositAmount && (
-                <div><span className="text-gray-600">Deposit:</span> <span className="font-medium">{data.policies.depositAmount}</span></div>
-              )}
-              {data.policies?.noticePeriod && (
-                <div><span className="text-gray-600">Notice period:</span> <span className="font-medium">{data.policies.noticePeriod}</span></div>
-              )}
-              {data.policies?.petsAllowed === null && <p className="text-gray-400 italic">No data entered</p>}
-            </div>
-          </div>
-
-          {/* Services */}
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Services & Amenities</h2>
-              <button
-                onClick={() => router.push('/profile/enhance-owner/services')}
-                className="text-sm text-[color:var(--easy-purple)] hover:opacity-70"
-              >
-                Edit
-              </button>
-            </div>
-            <div className="space-y-3 text-sm">
-              {data.services?.amenities?.length > 0 && (
-                <div>
-                  <span className="text-gray-600 block mb-1">Amenities:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {data.services.amenities.map((amenity: string) => (
-                      <span key={amenity} className="px-3 py-1 bg-purple-100 text-[color:var(--easy-purple)] rounded-full text-xs font-medium">
-                        {amenity}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {data.services?.includedServices?.length > 0 && (
-                <div>
-                  <span className="text-gray-600 block mb-1">Services:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {data.services.includedServices.map((service: string) => (
-                      <span key={service} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {(!data.services?.amenities?.length && !data.services?.includedServices?.length) && (
-                <p className="text-gray-400 italic">No data entered</p>
-              )}
-            </div>
-          </div>
-
-        </div>
-
-        {/* Action buttons */}
-        <div className="mt-8 flex gap-4">
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className={`flex-1 py-4 rounded-full font-semibold text-lg transition shadow-md flex items-center justify-center gap-2 ${
-              isSaving
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
-            }`}
-          >
-            {isSaving ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-5 h-5" />
-                Save Enhanced Profile
-              </>
+          <div className="space-y-2 text-sm">
+            {data.experience?.experienceYears && (
+              <div><span className="text-gray-600">Experience:</span> <span className="font-medium">{data.experience.experienceYears} years</span></div>
             )}
-          </button>
-        </div>
+            {data.experience?.managementStyle && (
+              <div><span className="text-gray-600">Management:</span> <span className="font-medium">{data.experience.managementStyle}</span></div>
+            )}
+            {data.experience?.primaryMotivation && (
+              <div><span className="text-gray-600">Motivation:</span> <span className="font-medium">{data.experience.primaryMotivation}</span></div>
+            )}
+            {data.experience?.bio && (
+              <div className="pt-2 border-t"><span className="text-gray-600">Bio:</span> <p className="text-gray-900 mt-1">{data.experience.bio}</p></div>
+            )}
+            {!data.experience?.experienceYears && <p className="text-gray-400 italic">No data entered</p>}
+          </div>
+        </EnhanceProfileSection>
+
+        {/* Policies */}
+        <EnhanceProfileSection>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Tenant Policies</h2>
+            <button
+              onClick={() => router.push('/profile/enhance-owner/policies')}
+              className="text-sm text-purple-600 hover:opacity-70"
+            >
+              Edit
+            </button>
+          </div>
+          <div className="space-y-2 text-sm">
+            {data.policies?.petsAllowed !== null && data.policies?.petsAllowed !== undefined && (
+              <div><span className="text-gray-600">Pets:</span> <span className="font-medium">{data.policies.petsAllowed ? 'Allowed' : 'Not allowed'}</span></div>
+            )}
+            {data.policies?.smokingAllowed !== null && data.policies?.smokingAllowed !== undefined && (
+              <div><span className="text-gray-600">Smoking:</span> <span className="font-medium">{data.policies.smokingAllowed ? 'Allowed' : 'Not allowed'}</span></div>
+            )}
+            {data.policies?.minimumLeaseDuration && (
+              <div><span className="text-gray-600">Min lease:</span> <span className="font-medium">{data.policies.minimumLeaseDuration} months</span></div>
+            )}
+            {data.policies?.depositAmount && (
+              <div><span className="text-gray-600">Deposit:</span> <span className="font-medium">{data.policies.depositAmount}</span></div>
+            )}
+            {data.policies?.noticePeriod && (
+              <div><span className="text-gray-600">Notice period:</span> <span className="font-medium">{data.policies.noticePeriod}</span></div>
+            )}
+            {(!data.policies || (data.policies.petsAllowed === null && data.policies.smokingAllowed === null)) && <p className="text-gray-400 italic">No data entered</p>}
+          </div>
+        </EnhanceProfileSection>
+
+        {/* Services */}
+        <EnhanceProfileSection>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Services & Amenities</h2>
+            <button
+              onClick={() => router.push('/profile/enhance-owner/services')}
+              className="text-sm text-purple-600 hover:opacity-70"
+            >
+              Edit
+            </button>
+          </div>
+          <div className="space-y-3 text-sm">
+            {data.services?.amenities?.length > 0 && (
+              <div>
+                <span className="text-gray-600 block mb-1">Amenities:</span>
+                <div className="flex flex-wrap gap-2">
+                  {data.services.amenities.map((amenity: string) => (
+                    <EnhanceProfileTag key={amenity} role="owner">
+                      {amenity}
+                    </EnhanceProfileTag>
+                  ))}
+                </div>
+              </div>
+            )}
+            {data.services?.includedServices?.length > 0 && (
+              <div>
+                <span className="text-gray-600 block mb-1">Services:</span>
+                <div className="flex flex-wrap gap-2">
+                  {data.services.includedServices.map((service: string) => (
+                    <span key={service} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                      {service}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {(!data.services?.amenities?.length && !data.services?.includedServices?.length) && (
+              <p className="text-gray-400 italic">No data entered</p>
+            )}
+          </div>
+        </EnhanceProfileSection>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="mt-8">
+        <EnhanceProfileButton
+          role="owner"
+          onClick={handleSave}
+          disabled={isSaving}
+          className="w-full flex items-center justify-center gap-2"
+        >
+          {isSaving ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="w-5 h-5" />
+              Save Enhanced Profile
+            </>
+          )}
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }

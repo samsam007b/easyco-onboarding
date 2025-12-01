@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct OwnerChatView: View {
-    let conversation: Conversation
+    let conversation: OwnerConversation
     @State private var messageText = ""
-    @State private var messages: [Message] = []
+    @State private var messages: [OwnerMessage] = []
     @State private var showingTemplates = false
     @State private var isLoading = false
     @FocusState private var isMessageFieldFocused: Bool
@@ -25,7 +25,7 @@ struct OwnerChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(messages) { message in
-                            MessageBubble(message: message, isOwner: true)
+                            OwnerMessageBubble(message: message, isOwner: true)
                                 .id(message.id)
                         }
                     }
@@ -85,7 +85,7 @@ struct OwnerChatView: View {
             Image(systemName: conversation.contextIcon)
                 .font(.system(size: 12))
 
-            Text(conversation.contextText)
+            Text(conversation.context)
                 .font(.system(size: 13, weight: .medium))
 
             Spacer()
@@ -103,7 +103,7 @@ struct OwnerChatView: View {
                     .font(.system(size: 10, weight: .bold))
                     .foregroundColor(Color(hex: "10B981"))
                     .padding(.horizontal, 8)
-                    .padding(.vertical: 3)
+                    .padding(.vertical, 3)
                     .background(Color(hex: "ECFDF5"))
                     .cornerRadius(8)
             }
@@ -217,7 +217,7 @@ struct OwnerChatView: View {
     private func sendMessage() {
         guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
 
-        let newMessage = Message(
+        let newMessage = OwnerMessage(
             id: UUID(),
             conversationId: conversation.id,
             senderId: "owner-id", // Would be from auth
@@ -245,7 +245,7 @@ struct OwnerChatView: View {
         // Demo mode
         if AppConfig.FeatureFlags.demoMode {
             try? await _Concurrency.Task.sleep(nanoseconds: 300_000_000)
-            messages = Message.mockMessages(for: conversation.id)
+            messages = OwnerMessage.mockMessages(for: conversation.id)
         }
 
         isLoading = false
@@ -278,8 +278,8 @@ struct QuickReplyButton: View {
 
 // MARK: - Message Bubble
 
-struct MessageBubble: View {
-    let message: Message
+struct OwnerMessageBubble: View {
+    let message: OwnerMessage
     let isOwner: Bool
 
     private var isOutgoing: Bool {
@@ -330,69 +330,9 @@ struct MessageBubble: View {
     }
 }
 
-// MARK: - Conversation Model
+// MARK: - Owner Message Model
 
-struct Conversation: Identifiable {
-    let id: UUID
-    let recipientId: String
-    let recipientName: String
-    let recipientAvatar: String?
-    let lastMessage: String
-    let lastMessageTime: Date
-    let unreadCount: Int
-    let isOnline: Bool
-    let type: ConversationType
-    let context: String // e.g., "Candidature pour Studio Paris 15"
-
-    var contextIcon: String {
-        switch type {
-        case .candidate: return "doc.text"
-        case .tenant: return "house"
-        }
-    }
-
-    var contextText: String {
-        context
-    }
-
-    static var mockConversations: [Conversation] {
-        [
-            Conversation(
-                id: UUID(),
-                recipientId: "user-1",
-                recipientName: "Sophie Martin",
-                recipientAvatar: nil,
-                lastMessage: "Merci, je serai là !",
-                lastMessageTime: Date().addingTimeInterval(-3600),
-                unreadCount: 2,
-                isOnline: true,
-                type: .candidate,
-                context: "Candidature pour Studio meublé - Ixelles"
-            ),
-            Conversation(
-                id: UUID(),
-                recipientId: "user-2",
-                recipientName: "Thomas Dubois",
-                recipientAvatar: nil,
-                lastMessage: "Le loyer a été transféré",
-                lastMessageTime: Date().addingTimeInterval(-86400),
-                unreadCount: 0,
-                isOnline: false,
-                type: .tenant,
-                context: "Locataire - 2 chambres Saint-Gilles"
-            )
-        ]
-    }
-}
-
-enum ConversationType {
-    case candidate
-    case tenant
-}
-
-// MARK: - Message Model
-
-struct Message: Identifiable {
+struct OwnerMessage: Identifiable {
     let id: UUID
     let conversationId: UUID
     let senderId: String
@@ -402,9 +342,9 @@ struct Message: Identifiable {
     var isRead: Bool
     let isSent: Bool // true if sent by owner
 
-    static func mockMessages(for conversationId: UUID) -> [Message] {
+    static func mockMessages(for conversationId: UUID) -> [OwnerMessage] {
         [
-            Message(
+            OwnerMessage(
                 id: UUID(),
                 conversationId: conversationId,
                 senderId: "user-1",
@@ -414,7 +354,7 @@ struct Message: Identifiable {
                 isRead: true,
                 isSent: false
             ),
-            Message(
+            OwnerMessage(
                 id: UUID(),
                 conversationId: conversationId,
                 senderId: "owner-id",
@@ -424,7 +364,7 @@ struct Message: Identifiable {
                 isRead: true,
                 isSent: true
             ),
-            Message(
+            OwnerMessage(
                 id: UUID(),
                 conversationId: conversationId,
                 senderId: "user-1",
@@ -434,7 +374,7 @@ struct Message: Identifiable {
                 isRead: true,
                 isSent: false
             ),
-            Message(
+            OwnerMessage(
                 id: UUID(),
                 conversationId: conversationId,
                 senderId: "owner-id",
@@ -444,7 +384,7 @@ struct Message: Identifiable {
                 isRead: true,
                 isSent: true
             ),
-            Message(
+            OwnerMessage(
                 id: UUID(),
                 conversationId: conversationId,
                 senderId: "user-1",
@@ -455,27 +395,5 @@ struct Message: Identifiable {
                 isSent: false
             )
         ]
-    }
-}
-
-// MARK: - Corner Radius Extension
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
     }
 }

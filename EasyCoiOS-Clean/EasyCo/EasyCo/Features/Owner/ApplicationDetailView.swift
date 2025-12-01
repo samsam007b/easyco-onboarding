@@ -153,18 +153,18 @@ struct ApplicationDetailView: View {
                 .foregroundColor(Color(hex: "111827"))
 
             VStack(spacing: 12) {
-                InfoRow(icon: "building.2", label: "Propriété", value: application.propertyTitle)
-                InfoRow(icon: "person.fill", label: "Âge", value: "\(application.applicantAge) ans")
+                ApplicationInfoRow(icon: "building.2", label: "Propriété", value: application.propertyTitle)
+                ApplicationInfoRow(icon: "person.fill", label: "Âge", value: "\(application.applicantAge) ans")
 
                 if application.isGroup {
-                    InfoRow(
+                    ApplicationInfoRow(
                         icon: "person.2.fill",
                         label: "Groupe",
                         value: "\(application.groupSize ?? 0) personnes"
                     )
                 }
 
-                InfoRow(icon: "calendar", label: "Date de candidature", value: application.date.formatted(date: .abbreviated, time: .omitted))
+                ApplicationInfoRow(icon: "calendar", label: "Date de candidature", value: application.date.formatted(date: .abbreviated, time: .omitted))
             }
         }
         .padding(16)
@@ -209,25 +209,25 @@ struct ApplicationDetailView: View {
             }
 
             VStack(spacing: 12) {
-                DocumentRow(
+                ApplicationDocumentRow(
                     icon: "person.text.rectangle",
                     name: "Pièce d'identité",
                     status: .provided
                 )
 
-                DocumentRow(
+                ApplicationDocumentRow(
                     icon: "eurosign.circle",
                     name: "3 derniers bulletins de salaire",
                     status: .provided
                 )
 
-                DocumentRow(
+                ApplicationDocumentRow(
                     icon: "building.columns",
                     name: "Attestation employeur",
                     status: .provided
                 )
 
-                DocumentRow(
+                ApplicationDocumentRow(
                     icon: "person.fill.checkmark",
                     name: "Garant",
                     status: .notProvided
@@ -409,9 +409,9 @@ struct ApplicationDetailView: View {
     }
 }
 
-// MARK: - Info Row
+// MARK: - Application Info Row
 
-struct InfoRow: View {
+struct ApplicationInfoRow: View {
     let icon: String
     let label: String
     let value: String
@@ -463,7 +463,7 @@ enum DocumentStatus {
     }
 }
 
-struct DocumentRow: View {
+struct ApplicationDocumentRow: View {
     let icon: String
     let name: String
     let status: DocumentStatus

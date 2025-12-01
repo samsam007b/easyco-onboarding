@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OwnerMessagesListView: View {
     @State private var selectedTab: MessageTab = .candidates
-    @State private var conversations: [Conversation] = []
+    @State private var conversations: [OwnerConversation] = []
     @State private var searchText = ""
     @State private var isLoading = false
 
@@ -106,7 +106,7 @@ struct OwnerMessagesListView: View {
             LazyVStack(spacing: 12) {
                 ForEach(filteredConversations) { conversation in
                     NavigationLink(destination: OwnerChatView(conversation: conversation)) {
-                        ConversationRow(conversation: conversation)
+                        OwnerConversationRow(conversation: conversation)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -151,7 +151,7 @@ struct OwnerMessagesListView: View {
 
     // MARK: - Filtered Conversations
 
-    private var filteredConversations: [Conversation] {
+    private var filteredConversations: [OwnerConversation] {
         var result = conversations
 
         // Filter by tab
@@ -192,8 +192,8 @@ struct OwnerMessagesListView: View {
         // Demo mode
         if AppConfig.FeatureFlags.demoMode {
             try? await _Concurrency.Task.sleep(nanoseconds: 500_000_000)
-            conversations = Conversation.mockConversations + [
-                Conversation(
+            conversations = OwnerConversation.mockConversations + [
+                OwnerConversation(
                     id: UUID(),
                     recipientId: "user-3",
                     recipientName: "Lucas Bernard",
@@ -205,7 +205,7 @@ struct OwnerMessagesListView: View {
                     type: .candidate,
                     context: "Candidature pour Colocation - Schaerbeek"
                 ),
-                Conversation(
+                OwnerConversation(
                     id: UUID(),
                     recipientId: "user-4",
                     recipientName: "Marie Laurent",
@@ -276,8 +276,8 @@ struct TabButton: View {
 
 // MARK: - Conversation Row
 
-struct ConversationRow: View {
-    let conversation: Conversation
+struct OwnerConversationRow: View {
+    let conversation: OwnerConversation
 
     var body: some View {
         HStack(spacing: 12) {

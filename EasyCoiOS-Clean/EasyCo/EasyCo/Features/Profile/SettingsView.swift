@@ -19,7 +19,7 @@ struct SettingsView: View {
                         SettingsRow(
                             icon: "person.crop.circle",
                             title: "Rôle actuel",
-                            value: authManager.currentUser?.userType?.displayName ?? "Non défini",
+                            value: authManager.currentUser?.userType.displayName ?? "Non défini",
                             color: Color(hex: "FFA040")
                         ) {
                             showRoleSwitcher = true
@@ -128,6 +128,30 @@ struct SettingsView: View {
                         ) {}
                     }
 
+                    // Logout Button
+                    Button(action: {
+                        Task {
+                            await authManager.logout()
+                            dismiss()
+                        }
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                                .font(.system(size: 18))
+                                .foregroundColor(Color(hex: "EF4444"))
+
+                            Text("Se déconnecter")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(Color(hex: "EF4444"))
+
+                            Spacer()
+                        }
+                        .padding(16)
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    }
+
                     // App Info
                     VStack(spacing: 12) {
                         Image("HouseIcon")
@@ -164,8 +188,7 @@ struct SettingsView: View {
                 RoleSwitcherView()
             }
             .sheet(isPresented: $showLanguageSettings) {
-                LanguagePickerView()
-                    .environmentObject(languageManager)
+                LanguageSettingsView()
             }
         }
     }

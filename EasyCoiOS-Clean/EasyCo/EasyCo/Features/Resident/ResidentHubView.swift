@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ResidentHubView: View {
     @StateObject private var viewModel = ResidentHubViewModel()
+    @State private var showSettings = false
 
     var body: some View {
         NavigationStack {
@@ -64,25 +65,33 @@ struct ResidentHubView: View {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    // Badge d'alertes si présentes
-                    if viewModel.getTotalAlerts() > 0 {
-                        ZStack(alignment: .topTrailing) {
-                            Image(systemName: "bell.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(Color(hex: "E8865D"))
+                    HStack(spacing: 16) {
+                        // Badge d'alertes si présentes
+                        if viewModel.getTotalAlerts() > 0 {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "bell.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color(hex: "E8865D"))
 
-                            Circle()
-                                .fill(Color(hex: "EF4444"))
-                                .frame(width: 18, height: 18)
-                                .overlay(
-                                    Text("\(viewModel.getTotalAlerts())")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(.white)
-                                )
-                                .offset(x: 8, y: -8)
+                                Circle()
+                                    .fill(Color(hex: "EF4444"))
+                                    .frame(width: 18, height: 18)
+                                    .overlay(
+                                        Text("\(viewModel.getTotalAlerts())")
+                                            .font(.system(size: 10, weight: .bold))
+                                            .foregroundColor(.white)
+                                    )
+                                    .offset(x: 8, y: -8)
+                            }
                         }
+
+                        // Profile button
+                        ProfileButton { showSettings = true }
                     }
                 }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
         }
         .refreshable {
@@ -424,10 +433,48 @@ struct ResidentHubView: View {
                 .foregroundColor(Color(hex: "111827"))
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                QuickActionCard(icon: "eurosign.circle.fill", title: "Ajouter une dépense", color: Color(hex: "10B981"))
-                QuickActionCard(icon: "checkmark.circle.fill", title: "Créer une tâche", color: Color(hex: "E8865D"))
-                QuickActionCard(icon: "calendar.badge.plus", title: "Nouvel événement", color: Color(hex: "6E56CF"))
-                QuickActionCard(icon: "message.fill", title: "Messages", color: Color(hex: "3B82F6"))
+                NavigationLink(destination: AddExpenseView(viewModel: ExpensesViewModel())) {
+                    QuickActionCard(icon: "eurosign.circle.fill", title: "Ajouter une dépense", color: Color(hex: "10B981"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: CreateTaskView(viewModel: TasksViewModel())) {
+                    QuickActionCard(icon: "checkmark.circle.fill", title: "Créer une tâche", color: Color(hex: "E8865D"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: CreateEventView(viewModel: CalendarViewModel())) {
+                    QuickActionCard(icon: "calendar.badge.plus", title: "Nouvel événement", color: Color(hex: "6E56CF"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: GroupChatView()) {
+                    QuickActionCard(icon: "message.fill", title: "Messages", color: Color(hex: "3B82F6"))
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+
+            // Second row with new actions
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                NavigationLink(destination: HubMembersView()) {
+                    QuickActionCard(icon: "person.3.fill", title: "Membres", color: Color(hex: "8B5CF6"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: HubInviteView()) {
+                    QuickActionCard(icon: "person.badge.plus", title: "Inviter", color: Color(hex: "EC4899"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: CalendarView()) {
+                    QuickActionCard(icon: "calendar", title: "Calendrier", color: Color(hex: "F59E0B"))
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: ProfileEnhancementView(userRole: .resident)) {
+                    QuickActionCard(icon: "sparkles", title: "Mon Profil", color: Color(hex: "10B981"))
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
     }

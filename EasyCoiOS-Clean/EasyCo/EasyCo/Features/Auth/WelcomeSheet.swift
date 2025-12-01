@@ -199,9 +199,8 @@ struct WelcomeSheet: View {
 
     private var googleSignInButton: some View {
         Button(action: {
-            Task {
-                await viewModel.signInWithGoogle()
-            }
+            // TODO: Implement Google Sign-in
+            print("Google Sign-in tapped")
         }) {
             HStack(spacing: 12) {
                 Text("G")

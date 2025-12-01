@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Sparkles, ThumbsUp, AlertTriangle } from 'lucide-react';
+import { Sparkles, ThumbsUp, AlertTriangle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileTag,
+  EnhanceProfileSection,
+} from '@/components/enhance-profile';
 
 export default function EnhanceValuesPage() {
   const router = useRouter();
@@ -96,105 +102,82 @@ export default function EnhanceValuesPage() {
     router.push('/profile/enhance/financial');
   };
 
-  const handleBack = () => {
-    safeLocalStorage.set('enhanceValues', { coreValues, importantQualities, dealBreakers });
-    router.push('/profile/enhance/hobbies');
-  };
-
   const handleSkip = () => {
     router.push('/profile/enhance/financial');
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingHouse size={80} />
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
-        <button onClick={handleBack} className="mb-6 text-[color:var(--easy-purple)]">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+    <EnhanceProfileLayout
+      role="searcher"
+      backUrl="/profile/enhance/hobbies"
+      backLabel="Back"
+      progress={{
+        current: 3,
+        total: 6,
+        label: 'Step 3 of 6',
+        stepName: 'Values & Preferences',
+      }}
+      isLoading={isLoading}
+      loadingText="Loading your values..."
+    >
+      <EnhanceProfileHeading
+        role="searcher"
+        title="Your Values & Preferences"
+        description="Help us understand what matters most to you"
+        icon={<Sparkles className="w-8 h-8 text-orange-600" />}
+      />
 
-        {/* Progress indicator */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 3 of 6</span>
-            <span className="text-sm text-gray-500">Values & Preferences</span>
+      <div className="space-y-6">
+        {/* Core Values */}
+        <EnhanceProfileSection>
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-5 h-5 text-orange-600" />
+            <h2 className="text-lg font-semibold text-gray-800">Core Values</h2>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '50%' }} />
+          <p className="text-sm text-gray-600 mb-4">Select what matters most to you (choose up to 5):</p>
+          <div className="flex flex-wrap gap-2">
+            {valueOptions.map((value) => (
+              <EnhanceProfileTag
+                key={value}
+                role="searcher"
+                selected={coreValues.includes(value)}
+                onClick={() => handleToggleValue(value)}
+                disabled={!coreValues.includes(value) && coreValues.length >= 5}
+              >
+                {value}
+              </EnhanceProfileTag>
+            ))}
           </div>
-        </div>
+          <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 selected</p>
+        </EnhanceProfileSection>
 
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Sparkles className="w-7 h-7 text-[color:var(--easy-purple)]" />
-            <h1 className="text-3xl font-bold text-[color:var(--easy-purple)]">Your Values & Preferences</h1>
+        {/* Important Qualities */}
+        <EnhanceProfileSection>
+          <div className="flex items-center gap-2 mb-3">
+            <ThumbsUp className="w-5 h-5 text-orange-600" />
+            <h2 className="text-lg font-semibold text-gray-800">Important Qualities in a Roommate</h2>
           </div>
-          <p className="text-gray-600">Help us understand what matters most to you</p>
-        </div>
-
-        <div className="space-y-6">
-          {/* Core Values */}
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-5 h-5 text-[color:var(--easy-purple)]" />
-              <h2 className="text-lg font-semibold text-gray-800">Core Values</h2>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">Select what matters most to you (choose up to 5):</p>
-            <div className="flex flex-wrap gap-2">
-              {valueOptions.map((value) => (
-                <button
-                  key={value}
-                  onClick={() => handleToggleValue(value)}
-                  disabled={!coreValues.includes(value) && coreValues.length >= 5}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    coreValues.includes(value)
-                      ? 'bg-[color:var(--easy-purple)] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
-                  }`}
-                >
-                  {value}
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 selected</p>
+          <p className="text-sm text-gray-600 mb-4">What qualities do you value in a roommate?</p>
+          <div className="flex flex-wrap gap-2">
+            {qualityOptions.map((quality) => (
+              <EnhanceProfileTag
+                key={quality}
+                role="searcher"
+                selected={importantQualities.includes(quality)}
+                onClick={() => handleToggleQuality(quality)}
+              >
+                {quality}
+              </EnhanceProfileTag>
+            ))}
           </div>
+          {importantQualities.length > 0 && (
+            <p className="text-xs text-gray-500 mt-3">{importantQualities.length} selected</p>
+          )}
+        </EnhanceProfileSection>
 
-          {/* Important Qualities */}
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <div className="flex items-center gap-2 mb-3">
-              <ThumbsUp className="w-5 h-5 text-[color:var(--easy-purple)]" />
-              <h2 className="text-lg font-semibold text-gray-800">Important Qualities in a Roommate</h2>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">What qualities do you value in a roommate?</p>
-            <div className="flex flex-wrap gap-2">
-              {qualityOptions.map((quality) => (
-                <button
-                  key={quality}
-                  onClick={() => handleToggleQuality(quality)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    importantQualities.includes(quality)
-                      ? 'bg-[color:var(--easy-purple)] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {quality}
-                </button>
-              ))}
-            </div>
-            {importantQualities.length > 0 && (
-              <p className="text-xs text-gray-500 mt-3">{importantQualities.length} selected</p>
-            )}
-          </div>
-
-          {/* Deal Breakers */}
-          <div className="bg-white p-6 rounded-2xl shadow border-2 border-orange-200">
+        {/* Deal Breakers */}
+        <EnhanceProfileSection>
+          <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
               <h2 className="text-lg font-semibold text-orange-600">Deal Breakers</h2>
@@ -219,25 +202,27 @@ export default function EnhanceValuesPage() {
               <p className="text-xs text-gray-500 mt-3">{dealBreakers.length} selected</p>
             )}
           </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="mt-8 flex gap-4">
-          <button
-            onClick={handleNext}
-            className="flex-1 py-4 rounded-full bg-[color:var(--easy-yellow)] text-black font-semibold text-lg hover:opacity-90 flex items-center justify-center gap-2"
-          >
-            Review & Save
-            <ArrowRight className="w-5 h-5" />
-          </button>
-          <button
-            onClick={handleSkip}
-            className="px-8 py-4 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300"
-          >
-            Skip
-          </button>
-        </div>
+        </EnhanceProfileSection>
       </div>
-    </main>
+
+      {/* Action Buttons */}
+      <div className="mt-8 flex gap-4">
+        <EnhanceProfileButton
+          role="searcher"
+          onClick={handleNext}
+          className="flex-1"
+        >
+          Next
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="searcher"
+          variant="outline"
+          onClick={handleSkip}
+          className="px-8"
+        >
+          Skip
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }

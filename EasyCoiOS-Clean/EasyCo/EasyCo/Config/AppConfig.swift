@@ -16,9 +16,9 @@ struct AppConfig {
     }()
 
     // MARK: - Supabase Configuration
-
+    // Même backend que la web app pour partager les données
     static let supabaseURL = "https://fgthoyilfupywmpmiuwd.supabase.co"
-    static let supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY" // À remplacer
+    static let supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZndGhveWlsZnVweXdtcG1pdXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTE4OTAsImV4cCI6MjA3NTY2Nzg5MH0._X7ouZG-SqvQ-iU1zWTvFRJ1WRwbothNjMDUk5LkJMA"
 
     // MARK: - App Information
 
@@ -35,8 +35,16 @@ struct AppConfig {
         static let enableMatchingAlgorithm = true
         static let enableInAppPurchases = false
         static let enableBiometricAuth = true
-        static let showDebugInfo = false
-        static let demoMode = true // Mode démo sans backend
+        static let showDebugInfo: Bool = {
+            #if DEBUG
+            return true
+            #else
+            return false
+            #endif
+        }()
+        /// Mode démo: désactivé pour utiliser le vrai backend Supabase
+        /// Mettre à true pour les tests sans connexion réseau
+        static let demoMode = false
     }
 
     // MARK: - Pagination

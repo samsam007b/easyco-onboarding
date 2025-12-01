@@ -1,32 +1,73 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Euro, Shield, Briefcase } from 'lucide-react';
+import { Euro, Shield, Briefcase } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
+import { getOnboardingData } from '@/lib/onboarding-helpers';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileSelectionCard,
+  EnhanceProfileSection,
+  EnhanceProfileInfoBox,
+} from '@/components/enhance-profile';
 
 export default function FinancialInfoPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [incomeRange, setIncomeRange] = useState('');
   const [hasGuarantor, setHasGuarantor] = useState(false);
   const [employmentType, setEmploymentType] = useState('');
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          router.push('/login');
+          return;
+        }
+
+        // Load from localStorage first
+        const savedData = safeLocalStorage.get('financialInfo', {}) as any;
+        if (savedData.incomeRange) setIncomeRange(savedData.incomeRange);
+        if (savedData.hasGuarantor !== undefined) setHasGuarantor(savedData.hasGuarantor);
+        if (savedData.employmentType) setEmploymentType(savedData.employmentType);
+
+        // If nothing in localStorage, load from database
+        if (!savedData.incomeRange && !savedData.employmentType) {
+          const { data: profileData } = await getOnboardingData(user.id);
+          if (profileData) {
+            setIncomeRange(profileData.incomeRange || '');
+            setHasGuarantor(profileData.hasGuarantor || false);
+            setEmploymentType(profileData.employmentType || '');
+          }
+        }
+      } catch (error) {
+        // FIXME: Use logger.error('Error loading data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [router]);
+
   const handleContinue = () => {
-    // Save to localStorage
     safeLocalStorage.set('financialInfo', {
       incomeRange,
       hasGuarantor,
       employmentType,
     });
-
-    // Navigate to next step (Community Events)
     router.push('/profile/enhance/community');
   };
 
   const handleSkip = () => {
-    // Clear this section from localStorage
-    safeLocalStorage.remove('financialInfo');
-    // Navigate to next step
     router.push('/profile/enhance/community');
   };
 
@@ -42,56 +83,51 @@ export default function FinancialInfoPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-md mx-auto">
+    <EnhanceProfileLayout
+      role="searcher"
+      backUrl="/profile/enhance/values"
+      backLabel="Back"
+      progress={{
+        current: 4,
+        total: 6,
+        label: 'Step 4 of 6',
+        stepName: 'Financial Information',
+      }}
+      isLoading={isLoading}
+      loadingText="Loading your information..."
+    >
+      <EnhanceProfileHeading
+        role="searcher"
+        title="Financial Information"
+        description="Optional information to help landlords understand your financial situation"
+        icon={<Euro className="w-8 h-8 text-orange-600" />}
+      />
 
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Financial Information
-          </h1>
-          <p className="text-gray-600">
-            Optional information to help landlords understand your financial situation.
-          </p>
-        </div>
-
-        {/* Form */}
-        <div className="space-y-6">
-
-          {/* Income range selector */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                <Euro className="w-4 h-4 text-green-600" />
-              </div>
-              Monthly income range
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {incomeRanges.map((range) => (
-                <button
-                  key={range.value}
-                  onClick={() => setIncomeRange(range.value)}
-                  className={`px-4 py-3 rounded-xl font-medium transition border-2 ${
-                    incomeRange === range.value
-                      ? 'bg-[color:var(--easy-purple)] text-white border-[color:var(--easy-purple)]'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[color:var(--easy-purple)]'
-                  }`}
-                >
-                  {range.label}
-                </button>
-              ))}
+      <div className="space-y-6">
+        {/* Income range selector */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <Euro className="w-4 h-4 text-green-600" />
             </div>
+            Monthly income range
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            {incomeRanges.map((range) => (
+              <EnhanceProfileSelectionCard
+                key={range.value}
+                role="searcher"
+                selected={incomeRange === range.value}
+                onClick={() => setIncomeRange(range.value)}
+              >
+                {range.label}
+              </EnhanceProfileSelectionCard>
+            ))}
           </div>
+        </EnhanceProfileSection>
 
-          {/* Guarantor toggle */}
+        {/* Guarantor toggle */}
+        <EnhanceProfileSection>
           <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -106,7 +142,7 @@ export default function FinancialInfoPage() {
               <button
                 onClick={() => setHasGuarantor(!hasGuarantor)}
                 className={`relative w-14 h-8 rounded-full transition flex-shrink-0 ${
-                  hasGuarantor ? 'bg-[color:var(--easy-purple)]' : 'bg-gray-300'
+                  hasGuarantor ? 'bg-orange-500' : 'bg-gray-300'
                 }`}
               >
                 <div
@@ -117,69 +153,68 @@ export default function FinancialInfoPage() {
               </button>
             </div>
           </div>
+        </EnhanceProfileSection>
 
-          {/* Employment type */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-purple-600" />
-              </div>
-              Employment type
-            </label>
-            <select
-              value={employmentType}
-              onChange={(e) => setEmploymentType(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-            >
-              <option value="">Select...</option>
-              <option value="full-time">Full-time</option>
-              <option value="part-time">Part-time</option>
-              <option value="freelance">Freelance</option>
-              <option value="contract">Contract</option>
-              <option value="internship">Internship</option>
-              <option value="student">Student</option>
-              <option value="unemployed">Unemployed</option>
-            </select>
-          </div>
+        {/* Employment type */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+              <Briefcase className="w-4 h-4 text-orange-600" />
+            </div>
+            Employment type
+          </label>
+          <select
+            value={employmentType}
+            onChange={(e) => setEmploymentType(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+          >
+            <option value="">Select...</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="freelance">Freelance</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+            <option value="student">Student</option>
+            <option value="unemployed">Unemployed</option>
+          </select>
+        </EnhanceProfileSection>
 
-          {/* Privacy notice */}
-          <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
-            <div className="flex gap-3">
-              <div className="flex-shrink-0">
-                <Shield className="w-5 h-5 text-yellow-600" />
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-900 mb-1">Your privacy matters</h3>
-                <p className="text-sm text-gray-600">
-                  This information is only shared with verified landlords when you express interest in their properties.
-                  You can update or remove it anytime from your profile settings.
-                </p>
-              </div>
+        {/* Privacy notice */}
+        <EnhanceProfileInfoBox role="searcher">
+          <div className="flex gap-3">
+            <div className="flex-shrink-0">
+              <Shield className="w-5 h-5 text-orange-600" />
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900 mb-1">Your privacy matters</h3>
+              <p className="text-sm text-gray-600">
+                This information is only shared with verified landlords when you express interest in their properties.
+                You can update or remove it anytime from your profile settings.
+              </p>
             </div>
           </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex gap-3 mt-12">
-          <button
-            onClick={handleSkip}
-            className="flex-1 py-4 rounded-full font-semibold text-lg transition border-2 border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Skip
-          </button>
-          <button
-            onClick={handleContinue}
-            disabled={!canContinue}
-            className={`flex-1 py-4 rounded-full font-semibold text-lg transition shadow-md ${
-              canContinue
-                ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            Continue
-          </button>
-        </div>
+        </EnhanceProfileInfoBox>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="flex gap-3 mt-8">
+        <EnhanceProfileButton
+          role="searcher"
+          onClick={handleContinue}
+          disabled={!canContinue}
+          className="flex-1"
+        >
+          Continue
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="searcher"
+          variant="outline"
+          onClick={handleSkip}
+          className="px-8"
+        >
+          Skip
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }

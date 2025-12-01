@@ -276,6 +276,49 @@ extension APIClient {
         try await request(.getCurrentUser, responseType: User.self)
     }
 
+    func saveOnboarding(data: OnboardingData, userType: User.UserType) async throws {
+        let onboardingDict: [String: Any] = [
+            "first_name": data.firstName,
+            "last_name": data.lastName,
+            "date_of_birth": ISO8601DateFormatter().string(from: data.dateOfBirth),
+            "nationality": data.nationality,
+            "phone_number": data.phoneNumber,
+            "languages": data.languages,
+            "user_type": userType.rawValue,
+            "onboarding_completed": true,
+            // Searcher specific
+            "wake_up_time": data.wakeUpTime,
+            "sleep_time": data.sleepTime,
+            "work_schedule": data.workSchedule,
+            "is_smoker": data.isSmoker,
+            "drinks_alcohol": data.drinksAlcohol,
+            "cleanliness": data.cleanliness,
+            "budget_min": data.budgetMin,
+            "budget_max": data.budgetMax,
+            "preferred_city": data.preferredCity,
+            "move_in_date": ISO8601DateFormatter().string(from: data.moveInDate),
+            "social_level": data.socialLevel,
+            "guests_frequency": data.guestsFrequency,
+            "noise_tolerance": data.noiseTolerance,
+            "roommate_count": data.roommateCount,
+            "gender_preference": data.genderPreference,
+            "age_range": data.ageRange,
+            // Owner specific
+            "owner_type": data.ownerType,
+            "has_property": data.hasProperty,
+            "property_city": data.propertyCity,
+            "property_type": data.propertyType,
+            "bank_iban": data.bankIBAN,
+            "bank_account_holder": data.bankAccountHolder,
+            // Resident specific
+            "current_address": data.currentAddress,
+            "reason_for_change": data.reasonForChange,
+            "introvert_extrovert_scale": data.introvertExtrovertScale,
+            "sociability_level": data.sociabilityLevel
+        ]
+        try await request(.saveOnboarding(onboardingData: onboardingDict))
+    }
+
     // Messages
     func getConversations() async throws -> [Conversation] {
         try await request(.getConversations, responseType: [Conversation].self)

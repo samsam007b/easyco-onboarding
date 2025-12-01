@@ -34,6 +34,7 @@ enum Endpoint {
     case getCurrentUser
     case updateProfile(userData: [String: Any])
     case uploadAvatar(imageData: Data)
+    case saveOnboarding(onboardingData: [String: Any])
 
     // MARK: - Properties
     case getProperties(filters: PropertyFilters?)
@@ -60,6 +61,34 @@ enum Endpoint {
     case createGroup(groupData: [String: Any])
     case joinGroup(id: String)
     case leaveGroup(id: String)
+
+    // MARK: - Payments
+    case getPaymentMethods
+    case addPaymentMethod(data: [String: Any])
+    case deletePaymentMethod(id: UUID)
+    case setDefaultPaymentMethod(id: UUID)
+    case getTransactions(page: Int, limit: Int)
+    case getTransactionDetails(id: UUID)
+    case createPaymentIntent(data: [String: Any])
+    case confirmPayment(data: [String: Any])
+    case getPendingPayments
+    case payPendingPayment(data: [String: Any])
+    case updateAutoPaySettings(data: [String: Any])
+
+    // MARK: - Matching
+    case getMatches(filters: PropertyFilters?)
+    case likeProperty(id: UUID)
+    case dislikeProperty(id: UUID)
+    case undoSwipe
+    case getMatchScore(propertyId: UUID)
+
+    // MARK: - Visits
+    case getVisits
+    case getVisit(id: UUID)
+    case createVisit(data: [String: Any])
+    case updateVisit(id: UUID, data: [String: Any])
+    case cancelVisit(id: UUID, reason: String?)
+    case confirmVisit(id: UUID)
 }
 
 // MARK: - Endpoint Implementation
@@ -78,6 +107,7 @@ extension Endpoint: APIEndpoint {
         case .getCurrentUser: return "/api/profile"
         case .updateProfile: return "/api/profile"
         case .uploadAvatar: return "/api/profile/avatar"
+        case .saveOnboarding: return "/api/profile/onboarding"
 
         // Properties
         case .getProperties: return "/api/properties"
@@ -104,19 +134,59 @@ extension Endpoint: APIEndpoint {
         case .createGroup: return "/api/groups"
         case .joinGroup(let id): return "/api/groups/\(id)/join"
         case .leaveGroup(let id): return "/api/groups/\(id)/leave"
+
+        // Payments
+        case .getPaymentMethods: return "/api/payments/methods"
+        case .addPaymentMethod: return "/api/payments/methods"
+        case .deletePaymentMethod(let id): return "/api/payments/methods/\(id.uuidString)"
+        case .setDefaultPaymentMethod(let id): return "/api/payments/methods/\(id.uuidString)/default"
+        case .getTransactions: return "/api/payments/transactions"
+        case .getTransactionDetails(let id): return "/api/payments/transactions/\(id.uuidString)"
+        case .createPaymentIntent: return "/api/payments/intents"
+        case .confirmPayment: return "/api/payments/confirm"
+        case .getPendingPayments: return "/api/payments/pending"
+        case .payPendingPayment: return "/api/payments/pay"
+        case .updateAutoPaySettings: return "/api/payments/auto-pay"
+
+        // Matching
+        case .getMatches: return "/api/matching/matches"
+        case .likeProperty(let id): return "/api/matching/like/\(id.uuidString)"
+        case .dislikeProperty(let id): return "/api/matching/dislike/\(id.uuidString)"
+        case .undoSwipe: return "/api/matching/undo"
+        case .getMatchScore(let propertyId): return "/api/matching/score/\(propertyId.uuidString)"
+
+        // Visits
+        case .getVisits: return "/api/visits"
+        case .getVisit(let id): return "/api/visits/\(id.uuidString)"
+        case .createVisit: return "/api/visits"
+        case .updateVisit(let id, _): return "/api/visits/\(id.uuidString)"
+        case .cancelVisit(let id, _): return "/api/visits/\(id.uuidString)/cancel"
+        case .confirmVisit(let id): return "/api/visits/\(id.uuidString)/confirm"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .login, .signup, .createProperty, .addFavorite, .sendMessage, .createGroup, .joinGroup, .resetPassword:
+        // POST methods
+        case .login, .signup, .createProperty, .addFavorite, .sendMessage, .createGroup, .joinGroup, .resetPassword, .saveOnboarding,
+             .addPaymentMethod, .createPaymentIntent, .confirmPayment, .payPendingPayment,
+             .likeProperty, .dislikeProperty, .undoSwipe,
+             .createVisit, .cancelVisit, .confirmVisit:
             return .post
-        case .updateProfile, .updateProperty:
+
+        // PUT methods
+        case .updateProfile, .updateProperty, .setDefaultPaymentMethod, .updateAutoPaySettings, .updateVisit:
             return .put
-        case .deleteProperty, .removeFavorite, .leaveGroup:
+
+        // DELETE methods
+        case .deleteProperty, .removeFavorite, .leaveGroup, .deletePaymentMethod:
             return .delete
+
+        // PATCH methods
         case .markAsRead:
             return .patch
+
+        // GET methods (default)
         default:
             return .get
         }
@@ -135,10 +205,12 @@ extension Endpoint: APIEndpoint {
 
     var queryParameters: [String: String]? {
         switch self {
-        case .getProperties(let filters):
+        case .getProperties(let filters), .getMatches(let filters):
             return filters?.toDictionary()
         case .searchProperties(let query):
             return ["q": query]
+        case .getTransactions(let page, let limit):
+            return ["page": "\(page)", "limit": "\(limit)"]
         default:
             return nil
         }
@@ -159,6 +231,33 @@ extension Endpoint: APIEndpoint {
             return ["content": content]
         case .resetPassword(let email):
             return ["email": email]
+        case .saveOnboarding(let onboardingData):
+            return onboardingData
+        case .updateProfile(let userData):
+            return userData
+        case .createGroup(let groupData):
+            return groupData
+        case .createProperty(let propertyData):
+            return propertyData
+        case .updateProperty(_, let propertyData):
+            return propertyData
+
+        // Payments
+        case .addPaymentMethod(let data), .createPaymentIntent(let data), .confirmPayment(let data),
+             .payPendingPayment(let data), .updateAutoPaySettings(let data):
+            return data
+
+        // Visits
+        case .createVisit(let data):
+            return data
+        case .updateVisit(_, let data):
+            return data
+        case .cancelVisit(_, let reason):
+            if let reason = reason {
+                return ["reason": reason]
+            }
+            return nil
+
         default:
             return nil
         }

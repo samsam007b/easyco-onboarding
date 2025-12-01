@@ -75,7 +75,11 @@ struct EventDetailView: View {
             InfoRow(icon: "calendar", title: "Date", value: event.startDate.formatted(date: .long, time: .omitted))
 
             if !event.isAllDay {
-                InfoRow(icon: "clock", title: "Heure", value: "\(event.startDate.formatted(date: .omitted, time: .shortened)) - \(event.endDate.formatted(date: .omitted, time: .shortened))")
+                if let endDate = event.endDate {
+                    InfoRow(icon: "clock", title: "Heure", value: "\(event.startDate.formatted(date: .omitted, time: .shortened)) - \(endDate.formatted(date: .omitted, time: .shortened))")
+                } else {
+                    InfoRow(icon: "clock", title: "Heure", value: event.startDate.formatted(date: .omitted, time: .shortened))
+                }
                 InfoRow(icon: "hourglass", title: "Durée", value: event.formattedDuration)
             }
 

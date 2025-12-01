@@ -38,3 +38,18 @@ struct User: Identifiable, Codable {
         self.updatedAt = updatedAt
     }
 }
+
+// MARK: - UserType Display Name Extension
+
+extension User.UserType {
+    var displayName: String {
+        switch self {
+        case .searcher: return "Chercheur"
+        case .owner: return "Propriétaire"
+        case .resident: return "Résident"
+        }
+    }
+}
+
+// MARK: - Global Type Alias for convenience
+typealias UserType = User.UserType

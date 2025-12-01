@@ -126,6 +126,40 @@ struct AnalyticsInsight: Codable, Identifiable {
     }
 }
 
+// MARK: - Searcher Stats (Dashboard)
+
+struct SearcherStats {
+    let unreadMessages: Int
+    let favoritesCount: Int
+    let topMatches: Int
+    let applicationsCount: Int
+    let preferences: SearcherPreferences
+
+    static var mock: SearcherStats {
+        SearcherStats(
+            unreadMessages: 3,
+            favoritesCount: 12,
+            topMatches: 8,
+            applicationsCount: 5,
+            preferences: SearcherPreferences.mock
+        )
+    }
+}
+
+struct SearcherPreferences {
+    var favoriteCity: String?
+    var priceRange: String?
+    var preferredPropertyTypes: [String]
+
+    static var mock: SearcherPreferences {
+        SearcherPreferences(
+            favoriteCity: "Bruxelles",
+            priceRange: "600€ - 900€",
+            preferredPropertyTypes: ["Colocation", "Studio"]
+        )
+    }
+}
+
 // MARK: - Mock Data
 
 extension OwnerAnalytics {

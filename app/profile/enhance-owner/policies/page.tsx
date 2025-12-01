@@ -1,17 +1,68 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Shield, PawPrint, Cigarette, Calendar, Euro } from 'lucide-react';
+import { Shield, PawPrint, Cigarette, Calendar, Euro } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
+import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileSelectionCard,
+  EnhanceProfileSection,
+  EnhanceProfileInfoBox,
+} from '@/components/enhance-profile';
 
 export default function OwnerPoliciesPage() {
   const router = useRouter();
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [petsAllowed, setPetsAllowed] = useState<boolean | null>(null);
   const [smokingAllowed, setSmokingAllowed] = useState<boolean | null>(null);
   const [minimumLeaseDuration, setMinimumLeaseDuration] = useState('');
   const [depositAmount, setDepositAmount] = useState('');
   const [noticePeriod, setNoticePeriod] = useState('');
+
+  useEffect(() => {
+    loadExistingData();
+  }, []);
+
+  const loadExistingData = async () => {
+    try {
+      const saved = safeLocalStorage.get('ownerPolicies', {}) as any;
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileData) {
+          setPetsAllowed(saved.petsAllowed !== undefined ? saved.petsAllowed : profileData.pets_allowed);
+          setSmokingAllowed(saved.smokingAllowed !== undefined ? saved.smokingAllowed : profileData.smoking_allowed);
+          setMinimumLeaseDuration(saved.minimumLeaseDuration || profileData.minimum_lease_duration || '');
+          setDepositAmount(saved.depositAmount || profileData.deposit_amount || '');
+          setNoticePeriod(saved.noticePeriod || profileData.notice_period || '');
+        } else if (saved.petsAllowed !== undefined) {
+          setPetsAllowed(saved.petsAllowed);
+          setSmokingAllowed(saved.smokingAllowed);
+          setMinimumLeaseDuration(saved.minimumLeaseDuration || '');
+          setDepositAmount(saved.depositAmount || '');
+          setNoticePeriod(saved.noticePeriod || '');
+        }
+      }
+    } catch (error) {
+      // FIXME: Use logger.error('Error loading policies data:', error);
+      toast.error('Failed to load existing data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleContinue = () => {
     safeLocalStorage.set('ownerPolicies', {
@@ -21,228 +72,177 @@ export default function OwnerPoliciesPage() {
       depositAmount,
       noticePeriod,
     });
-
-    router.push('/profile/enhance-owner/services');
+    toast.success('Policies saved!');
+    router.push('/dashboard/my-profile-owner');
   };
 
-  const handleSkip = () => {
-    router.push('/profile/enhance-owner/services');
+  const handleCancel = () => {
+    router.push('/dashboard/my-profile-owner');
   };
 
   const canContinue = petsAllowed !== null && smokingAllowed !== null;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-md mx-auto">
+    <EnhanceProfileLayout
+      role="owner"
+      backUrl="/dashboard/my-profile-owner"
+      backLabel="Back to Profile"
+      isLoading={isLoading}
+      loadingText="Loading your information..."
+    >
+      <EnhanceProfileHeading
+        role="owner"
+        title="Your Rental Policies"
+        description="Set clear expectations for potential tenants"
+        icon={<Shield className="w-8 h-8 text-purple-600" />}
+      />
 
-        {/* Progress indicator */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[color:var(--easy-purple)]">Step 2 of 4</span>
-            <span className="text-sm text-gray-500">Tenant Policies</span>
+      <div className="space-y-6">
+        {/* Pets Policy */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+              <PawPrint className="w-4 h-4 text-orange-600" />
+            </div>
+            Do you allow pets?
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <EnhanceProfileSelectionCard
+              role="owner"
+              selected={petsAllowed === true}
+              onClick={() => setPetsAllowed(true)}
+            >
+              <div className="text-2xl mb-1">🐕</div>
+              <div className="text-sm font-semibold">Yes, pets allowed</div>
+            </EnhanceProfileSelectionCard>
+            <EnhanceProfileSelectionCard
+              role="owner"
+              selected={petsAllowed === false}
+              onClick={() => setPetsAllowed(false)}
+            >
+              <div className="text-2xl mb-1">🚫</div>
+              <div className="text-sm font-semibold">No pets</div>
+            </EnhanceProfileSelectionCard>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-[color:var(--easy-purple)] h-2 rounded-full" style={{ width: '50%' }} />
+        </EnhanceProfileSection>
+
+        {/* Smoking Policy */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+              <Cigarette className="w-4 h-4 text-red-600" />
+            </div>
+            Do you allow smoking?
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <EnhanceProfileSelectionCard
+              role="owner"
+              selected={smokingAllowed === true}
+              onClick={() => setSmokingAllowed(true)}
+            >
+              <div className="text-2xl mb-1">✅</div>
+              <div className="text-sm font-semibold">Smoking allowed</div>
+            </EnhanceProfileSelectionCard>
+            <EnhanceProfileSelectionCard
+              role="owner"
+              selected={smokingAllowed === false}
+              onClick={() => setSmokingAllowed(false)}
+            >
+              <div className="text-2xl mb-1">🚭</div>
+              <div className="text-sm font-semibold">Non-smoking</div>
+            </EnhanceProfileSelectionCard>
           </div>
-        </div>
+        </EnhanceProfileSection>
 
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+        {/* Minimum Lease Duration */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+              <Calendar className="w-4 h-4 text-blue-600" />
+            </div>
+            Minimum lease duration (optional)
+          </label>
+          <select
+            value={minimumLeaseDuration}
+            onChange={(e) => setMinimumLeaseDuration(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
+          >
+            <option value="">No preference</option>
+            <option value="1">1 month</option>
+            <option value="3">3 months</option>
+            <option value="6">6 months</option>
+            <option value="12">12 months</option>
+          </select>
+        </EnhanceProfileSection>
 
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[color:var(--easy-purple)] mb-2">
-            Your Rental Policies
-          </h1>
-          <p className="text-gray-600">
-            Set clear expectations for potential tenants
+        {/* Deposit Amount */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <Euro className="w-4 h-4 text-green-600" />
+            </div>
+            Typical deposit (optional)
+          </label>
+          <select
+            value={depositAmount}
+            onChange={(e) => setDepositAmount(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
+          >
+            <option value="">Not specified</option>
+            <option value="half-month">Half month's rent</option>
+            <option value="1-month">1 month's rent</option>
+            <option value="2-months">2 months' rent</option>
+            <option value="negotiable">Negotiable</option>
+          </select>
+        </EnhanceProfileSection>
+
+        {/* Notice Period */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+              <Shield className="w-4 h-4 text-yellow-600" />
+            </div>
+            Notice period for move-out (optional)
+          </label>
+          <select
+            value={noticePeriod}
+            onChange={(e) => setNoticePeriod(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
+          >
+            <option value="">Not specified</option>
+            <option value="1-month">1 month</option>
+            <option value="2-months">2 months</option>
+            <option value="3-months">3 months</option>
+          </select>
+        </EnhanceProfileSection>
+
+        {/* Info box */}
+        <EnhanceProfileInfoBox role="owner" title="Tip:">
+          <p className="text-sm text-gray-700">
+            Clear policies help attract the right tenants and avoid misunderstandings later.
           </p>
-        </div>
-
-        {/* Form */}
-        <div className="space-y-6">
-
-          {/* Pets Policy */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
-                <PawPrint className="w-4 h-4 text-orange-600" />
-              </div>
-              Do you allow pets?
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setPetsAllowed(true)}
-                className={`p-4 rounded-xl border-2 transition ${
-                  petsAllowed === true
-                    ? 'border-[color:var(--easy-purple)] bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <div className="text-2xl mb-1">🐕</div>
-                <div className={`text-sm font-semibold ${
-                  petsAllowed === true ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
-                }`}>
-                  Yes, pets allowed
-                </div>
-              </button>
-              <button
-                onClick={() => setPetsAllowed(false)}
-                className={`p-4 rounded-xl border-2 transition ${
-                  petsAllowed === false
-                    ? 'border-[color:var(--easy-purple)] bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <div className="text-2xl mb-1">🚫</div>
-                <div className={`text-sm font-semibold ${
-                  petsAllowed === false ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
-                }`}>
-                  No pets
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* Smoking Policy */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                <Cigarette className="w-4 h-4 text-red-600" />
-              </div>
-              Do you allow smoking?
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setSmokingAllowed(true)}
-                className={`p-4 rounded-xl border-2 transition ${
-                  smokingAllowed === true
-                    ? 'border-[color:var(--easy-purple)] bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <div className="text-2xl mb-1">✅</div>
-                <div className={`text-sm font-semibold ${
-                  smokingAllowed === true ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
-                }`}>
-                  Smoking allowed
-                </div>
-              </button>
-              <button
-                onClick={() => setSmokingAllowed(false)}
-                className={`p-4 rounded-xl border-2 transition ${
-                  smokingAllowed === false
-                    ? 'border-[color:var(--easy-purple)] bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <div className="text-2xl mb-1">🚭</div>
-                <div className={`text-sm font-semibold ${
-                  smokingAllowed === false ? 'text-[color:var(--easy-purple)]' : 'text-gray-900'
-                }`}>
-                  Non-smoking
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* Minimum Lease Duration */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                <Calendar className="w-4 h-4 text-blue-600" />
-              </div>
-              Minimum lease duration (optional)
-            </label>
-            <select
-              value={minimumLeaseDuration}
-              onChange={(e) => setMinimumLeaseDuration(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-            >
-              <option value="">No preference</option>
-              <option value="1">1 month</option>
-              <option value="3">3 months</option>
-              <option value="6">6 months</option>
-              <option value="12">12 months</option>
-            </select>
-          </div>
-
-          {/* Deposit Amount */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                <Euro className="w-4 h-4 text-green-600" />
-              </div>
-              Typical deposit (optional)
-            </label>
-            <select
-              value={depositAmount}
-              onChange={(e) => setDepositAmount(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-            >
-              <option value="">Not specified</option>
-              <option value="half-month">Half month's rent</option>
-              <option value="1-month">1 month's rent</option>
-              <option value="2-months">2 months' rent</option>
-              <option value="negotiable">Negotiable</option>
-            </select>
-          </div>
-
-          {/* Notice Period */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-yellow-600" />
-              </div>
-              Notice period for move-out (optional)
-            </label>
-            <select
-              value={noticePeriod}
-              onChange={(e) => setNoticePeriod(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-            >
-              <option value="">Not specified</option>
-              <option value="1-month">1 month</option>
-              <option value="2-months">2 months</option>
-              <option value="3-months">3 months</option>
-            </select>
-          </div>
-
-          {/* Info box */}
-          <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <p className="text-sm text-gray-700">
-              <strong className="text-blue-800">Tip:</strong> Clear policies help attract the right tenants and avoid misunderstandings later.
-            </p>
-          </div>
-
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex gap-3 mt-12">
-          <button
-            onClick={handleSkip}
-            className="flex-1 py-4 rounded-full font-semibold text-lg transition border-2 border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Skip
-          </button>
-          <button
-            onClick={handleContinue}
-            disabled={!canContinue}
-            className={`flex-1 py-4 rounded-full font-semibold text-lg transition shadow-md ${
-              canContinue
-                ? 'bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            Continue
-          </button>
-        </div>
+        </EnhanceProfileInfoBox>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="flex gap-3 mt-8">
+        <EnhanceProfileButton
+          role="owner"
+          variant="outline"
+          onClick={handleCancel}
+          className="flex-1"
+        >
+          Cancel
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="owner"
+          onClick={handleContinue}
+          disabled={!canContinue}
+          className="flex-1"
+        >
+          Save Changes
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }

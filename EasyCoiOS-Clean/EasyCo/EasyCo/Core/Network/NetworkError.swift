@@ -15,6 +15,11 @@ enum NetworkError: LocalizedError {
     case networkUnavailable
     case timeout
     case unknown(Error)
+    // Auth specific errors
+    case invalidOTP
+    case emailNotConfirmed
+    case magicLinkExpired
+    case rateLimited
 
     var errorDescription: String? {
         switch self {
@@ -42,6 +47,14 @@ enum NetworkError: LocalizedError {
             return "Délai d'attente dépassé"
         case .unknown(let error):
             return "Erreur inconnue: \(error.localizedDescription)"
+        case .invalidOTP:
+            return "Code de vérification invalide ou expiré"
+        case .emailNotConfirmed:
+            return "Email non confirmé. Vérifiez votre boîte mail."
+        case .magicLinkExpired:
+            return "Le lien magique a expiré. Demandez-en un nouveau."
+        case .rateLimited:
+            return "Trop de tentatives. Réessayez dans quelques minutes."
         }
     }
 
