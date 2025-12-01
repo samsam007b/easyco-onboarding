@@ -197,18 +197,22 @@ export default function MyProfileResidentPage() {
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-6 py-8">
         {/* Profile Header */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
+        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8 border-2 border-orange-100">
           <div className="flex items-center gap-6 mb-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-full flex items-center justify-center text-white font-bold text-3xl">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-lg">
               {profile.full_name.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-[#4A148C] mb-1">
+              <h1 className="text-3xl font-bold text-gray-900 mb-1">
                 {profile.full_name}
               </h1>
-              <p className="text-gray-600 capitalize">{profile.user_type}</p>
+              <p className="text-gray-600 capitalize flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-orange-500"></span>
+                {profile.user_type}
+              </p>
               {profile.current_city && (
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                  <Home className="w-4 h-4" />
                   {dashboard.myProfileResident?.currentlyLiving || 'Living in'} {profile.current_city}
                 </p>
               )}
@@ -216,37 +220,43 @@ export default function MyProfileResidentPage() {
           </div>
 
           {/* Profile Completion */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">
-                {dashboard.myProfileResident?.profileCompletion || 'Profile Completion'}
+          <div className="mb-6 p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl border-2 border-orange-200">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-orange-600" />
+                {dashboard.myProfileResident?.profileCompletion || 'Complétion du profil'}
               </span>
-              <span className="text-sm font-bold text-[#4A148C]">{completionPercentage}%</span>
+              <span className="text-lg font-bold text-orange-600">{completionPercentage}%</span>
             </div>
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2.5 bg-white rounded-full overflow-hidden shadow-inner">
               <div
-                className="h-full bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500 shadow-sm"
                 style={{ width: `${completionPercentage}%` }}
               />
             </div>
+            {completionPercentage < 100 && (
+              <p className="text-xs text-gray-600 mt-2">
+                {dashboard.myProfileResident?.completionHint || '6 sections à compléter'}
+              </p>
+            )}
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-purple-50 rounded-xl">
-              <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.connections}</div>
+            <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="text-2xl font-bold text-orange-600 mb-1">{stats.connections}</div>
               <div className="text-sm text-gray-600">
                 {dashboard.myProfileResident?.stats?.connections || 'Connections'}
               </div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-xl">
-              <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.events}</div>
+            <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="text-2xl font-bold text-orange-600 mb-1">{stats.events}</div>
               <div className="text-sm text-gray-600">
                 {dashboard.myProfileResident?.stats?.events || 'Events'}
               </div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-xl">
-              <div className="text-2xl font-bold text-[#4A148C] mb-1">{stats.posts}</div>
+            <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="text-2xl font-bold text-orange-600 mb-1">{stats.posts}</div>
               <div className="text-sm text-gray-600">
                 {dashboard.myProfileResident?.stats?.posts || 'Posts'}
               </div>
@@ -257,46 +267,55 @@ export default function MyProfileResidentPage() {
         {/* Enhance Your Profile Section */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-6 h-6 text-[#4A148C]" />
-            <h2 className="text-2xl font-bold text-[#4A148C]">
-              {dashboard.myProfile?.enhanceYourProfile || 'Enhance Your Profile'}
+            <TrendingUp className="w-6 h-6 text-orange-600" />
+            <h2 className="text-2xl font-bold text-gray-900">
+              {dashboard.myProfile?.enhanceYourProfile || 'Améliorer mon profil'}
             </h2>
           </div>
           <p className="text-gray-600 mb-6">
-            {dashboard.myProfile?.addMoreDetails || 'Add more details to help you connect with your community'}
+            {dashboard.myProfile?.addMoreDetails || 'Augmentez vos chances de matching'}
           </p>
 
           <div className="grid gap-4">
             {profileSections.map((section) => {
               const IconComponent = section.icon;
+              const iconColorClass = section.icon === Home ? 'bg-green-100' :
+                                    section.icon === Users ? 'bg-blue-100' :
+                                    section.icon === Heart ? 'bg-pink-100' :
+                                    section.icon === MessageCircle ? 'bg-purple-100' :
+                                    'bg-orange-100';
+              const iconClass = section.icon === Home ? 'text-green-600' :
+                               section.icon === Users ? 'text-blue-600' :
+                               section.icon === Heart ? 'text-pink-600' :
+                               section.icon === MessageCircle ? 'text-purple-600' :
+                               'text-orange-600';
+
               return (
-                <div
+                <button
                   key={section.title}
-                  className="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition-shadow"
+                  onClick={() => router.push(section.link)}
+                  className="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 text-left w-full"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                        section.hasData ? 'bg-green-100' : 'bg-orange-100'
-                      }`}>
-                        <IconComponent className={`w-6 h-6 ${
-                          section.hasData ? 'text-green-600' : 'text-[#4A148C]'
-                        }`} />
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${iconColorClass}`}>
+                        <IconComponent className={`w-6 h-6 ${iconClass}`} />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-1">{section.title}</h3>
                         <p className="text-sm text-gray-600">{section.description}</p>
                       </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push(section.link)}
-                      className="ml-4"
+                    <svg
+                      className="w-5 h-5 text-gray-400 flex-shrink-0 ml-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      {section.hasData ? common.edit : (dashboard.myProfile?.addDetails || 'Add')}
-                    </Button>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
