@@ -146,8 +146,8 @@ export default function FinancialInfoPage() {
                 }`}
               >
                 <div
-                  className={`absolute top-1 w-7 h-7 bg-white rounded-full shadow-lg transition-all duration-300 ${
-                    hasGuarantor ? 'right-1 scale-105' : 'left-1'
+                  className={`absolute top-0.5 w-8 h-8 bg-white rounded-full shadow-lg transition-all duration-300 ${
+                    hasGuarantor ? 'right-0.5 scale-105' : 'left-0.5'
                   }`}
                 />
               </button>
