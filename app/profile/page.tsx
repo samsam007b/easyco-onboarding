@@ -461,10 +461,7 @@ export default function ProfilePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Button
-              onClick={() => {
-                const role = activeRole || userData?.user_type || 'searcher'
-                router.push(`/dashboard/${role}`)
-              }}
+              onClick={() => router.push('/settings')}
               variant="ghost"
               className="flex items-center gap-2"
             >

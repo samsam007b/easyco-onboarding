@@ -102,7 +102,7 @@ export default function SettingsPage() {
       description: 'Gérer vos informations personnelles',
       icon: User,
       href: userType === 'owner' ? '/dashboard/my-profile-owner' : userType === 'resident' ? '/dashboard/my-profile-resident' : '/profile',
-      color: 'from-orange-200/80 to-amber-200/80',
+      color: 'bg-orange-100',
       category: 'account',
     },
     {
@@ -111,7 +111,7 @@ export default function SettingsPage() {
       description: 'Mot de passe et authentification',
       icon: Shield,
       href: '/settings/security',
-      color: 'from-red-200/70 to-rose-200/70',
+      color: 'bg-red-100',
       category: 'account',
     },
     {
@@ -120,7 +120,7 @@ export default function SettingsPage() {
       description: 'Contrôler la visibilité de votre profil',
       icon: Eye,
       href: '/settings/privacy',
-      color: 'from-blue-200/70 to-sky-200/70',
+      color: 'bg-blue-100',
       category: 'account',
     },
     {
@@ -129,7 +129,7 @@ export default function SettingsPage() {
       description: 'Codes d\'invitation de votre résidence',
       icon: Lock,
       href: '/settings/private-codes',
-      color: 'from-purple-200/70 to-indigo-200/70',
+      color: 'bg-purple-100',
       badge: userType === 'resident' ? 'Creator' : undefined,
       category: 'account',
     },
@@ -139,7 +139,7 @@ export default function SettingsPage() {
       description: 'Gérer les informations de votre résidence',
       icon: Home,
       href: '/settings/residence-profile',
-      color: 'from-orange-200/70 to-pink-200/70',
+      color: 'bg-pink-100',
       badge: userType === 'resident' ? 'New' : undefined,
       category: 'account',
     },
@@ -149,7 +149,7 @@ export default function SettingsPage() {
       description: 'Configurer vos préférences',
       icon: Bell,
       href: '/dashboard/settings/preferences',
-      color: 'from-yellow-200/70 to-amber-200/70',
+      color: 'bg-yellow-100',
       category: 'preferences',
     },
     {
@@ -158,7 +158,7 @@ export default function SettingsPage() {
       description: 'Changer la langue de l\'interface',
       icon: Globe,
       href: '/settings/language',
-      color: 'from-emerald-200/70 to-teal-200/70',
+      color: 'bg-emerald-100',
       category: 'preferences',
     },
     {
@@ -167,7 +167,7 @@ export default function SettingsPage() {
       description: 'Préférences de communications',
       icon: Mail,
       href: '/settings/email',
-      color: 'from-pink-200/70 to-rose-200/70',
+      color: 'bg-pink-100',
       category: 'preferences',
     },
     {
@@ -176,7 +176,7 @@ export default function SettingsPage() {
       description: 'Gérer vos moyens de paiement',
       icon: CreditCard,
       href: '/settings/payment',
-      color: 'from-indigo-200/70 to-purple-200/70',
+      color: 'bg-indigo-100',
       badge: userType === 'owner' ? 'Pro' : undefined,
       category: 'advanced',
     },
@@ -186,7 +186,7 @@ export default function SettingsPage() {
       description: 'Gérer vos sessions actives',
       icon: Smartphone,
       href: '/settings/devices',
-      color: 'from-cyan-200/70 to-blue-200/70',
+      color: 'bg-cyan-100',
       category: 'advanced',
     },
   ];
@@ -240,8 +240,18 @@ export default function SettingsPage() {
 
             <div className="text-center">
               <div className="inline-flex items-center gap-3 mb-4">
-                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
-                  <SettingsIcon className="w-8 h-8 text-gray-700" />
+                <div className={cn(
+                  "w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-gray-200",
+                  userType === 'owner' ? 'bg-purple-100' :
+                  userType === 'resident' ? 'bg-orange-100' :
+                  'bg-orange-100'
+                )}>
+                  <SettingsIcon className={cn(
+                    "w-8 h-8",
+                    userType === 'owner' ? 'text-purple-600' :
+                    userType === 'resident' ? 'text-orange-600' :
+                    'text-orange-600'
+                  )} />
                 </div>
               </div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
@@ -267,8 +277,18 @@ export default function SettingsPage() {
             >
               {/* Category Header */}
               <div className="flex items-center gap-3 mb-4">
-                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200", `bg-gradient-to-br ${colors.gradient}`)}>
-                  <CategoryIcon className="w-5 h-5 text-gray-700" />
+                <div className={cn(
+                  "w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200",
+                  category.id === 'account' ? 'bg-orange-100' :
+                  category.id === 'preferences' ? 'bg-blue-100' :
+                  'bg-purple-100'
+                )}>
+                  <CategoryIcon className={cn(
+                    "w-5 h-5",
+                    category.id === 'account' ? 'text-orange-600' :
+                    category.id === 'preferences' ? 'text-blue-600' :
+                    'text-purple-600'
+                  )} />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
               </div>
@@ -292,9 +312,22 @@ export default function SettingsPage() {
                         <div className="flex items-start justify-between mb-3">
                           <div className={cn(
                             "w-12 h-12 rounded-xl flex items-center justify-center",
-                            `bg-gradient-to-br ${section.color}`
+                            section.color
                           )}>
-                            <Icon className="w-6 h-6 text-gray-700" />
+                            <Icon className={cn(
+                              "w-6 h-6",
+                              section.id === 'profile' ? 'text-orange-600' :
+                              section.id === 'security' ? 'text-red-600' :
+                              section.id === 'privacy' ? 'text-blue-600' :
+                              section.id === 'private-codes' ? 'text-purple-600' :
+                              section.id === 'residence-profile' ? 'text-pink-600' :
+                              section.id === 'notifications' ? 'text-yellow-600' :
+                              section.id === 'language' ? 'text-emerald-600' :
+                              section.id === 'email' ? 'text-pink-600' :
+                              section.id === 'payment' ? 'text-indigo-600' :
+                              section.id === 'devices' ? 'text-cyan-600' :
+                              'text-gray-700'
+                            )} />
                           </div>
                           {section.badge && (
                             <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
