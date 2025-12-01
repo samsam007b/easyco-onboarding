@@ -128,26 +128,26 @@ export default function FinancialInfoPage() {
 
         {/* Guarantor toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-blue-600" />
+          <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50 shadow-sm">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 flex-1">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md">
+                  <Shield className="w-5 h-5 text-white" />
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700 block">I have a guarantor available</span>
-                  <span className="text-sm text-gray-500">Someone who can vouch for rent payments</span>
+                <div className="flex-1">
+                  <span className="font-semibold text-gray-800 block">I have a guarantor available</span>
+                  <span className="text-sm text-gray-600">Someone who can vouch for rent payments</span>
                 </div>
               </div>
               <button
                 onClick={() => setHasGuarantor(!hasGuarantor)}
-                className={`relative w-14 h-8 rounded-full transition flex-shrink-0 ${
-                  hasGuarantor ? 'bg-orange-500' : 'bg-gray-300'
+                className={`relative w-16 h-9 rounded-full transition-all duration-300 flex-shrink-0 shadow-inner ${
+                  hasGuarantor ? 'bg-gradient-to-r from-orange-500 to-orange-600' : 'bg-gray-300'
                 }`}
               >
                 <div
-                  className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow transition ${
-                    hasGuarantor ? 'right-1' : 'left-1'
+                  className={`absolute top-1 w-7 h-7 bg-white rounded-full shadow-lg transition-all duration-300 ${
+                    hasGuarantor ? 'right-1 scale-105' : 'left-1'
                   }`}
                 />
               </button>
@@ -157,26 +157,32 @@ export default function FinancialInfoPage() {
 
         {/* Employment type */}
         <EnhanceProfileSection>
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <Briefcase className="w-4 h-4 text-orange-600" />
             </div>
             Employment type
           </label>
-          <select
-            value={employmentType}
-            onChange={(e) => setEmploymentType(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-          >
-            <option value="">Select...</option>
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
-            <option value="freelance">Freelance</option>
-            <option value="contract">Contract</option>
-            <option value="internship">Internship</option>
-            <option value="student">Student</option>
-            <option value="unemployed">Unemployed</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: 'full-time', label: 'Full-time' },
+              { value: 'part-time', label: 'Part-time' },
+              { value: 'freelance', label: 'Freelance' },
+              { value: 'contract', label: 'Contract' },
+              { value: 'internship', label: 'Internship' },
+              { value: 'student', label: 'Student' },
+              { value: 'unemployed', label: 'Unemployed' }
+            ].map((type) => (
+              <EnhanceProfileSelectionCard
+                key={type.value}
+                role="searcher"
+                selected={employmentType === type.value}
+                onClick={() => setEmploymentType(type.value)}
+              >
+                {type.label}
+              </EnhanceProfileSelectionCard>
+            ))}
+          </div>
         </EnhanceProfileSection>
 
         {/* Privacy notice */}
