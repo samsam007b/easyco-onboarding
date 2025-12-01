@@ -133,9 +133,11 @@ class CalendarViewModel: ObservableObject {
         guard let index = events.firstIndex(where: { $0.id == eventId }) else { return }
 
         // TODO: Update with real user ID
-        if let participantIndex = events[index].participants.firstIndex(where: { _ in true }) {
-            events[index].participants[participantIndex].rsvpStatus = status
-            events[index].participants[participantIndex].respondedAt = Date()
+        if var attendees = events[index].attendees,
+           let attendeeIndex = attendees.firstIndex(where: { _ in true }) {
+            attendees[attendeeIndex].rsvpStatus = status
+            attendees[attendeeIndex].respondedAt = Date()
+            events[index].attendees = attendees
 
             await updateEvent(events[index])
         }
@@ -147,7 +149,7 @@ class CalendarViewModel: ObservableObject {
         var result = events
 
         if let type = selectedEventType {
-            result = result.filter { $0.eventType == type }
+            result = result.filter { $0.type == type }
         }
 
         filteredEvents = result

@@ -969,7 +969,7 @@ struct EnhancedVerificationView: View {
     private var documentsSection: some View {
         Section {
             ForEach(VerificationDocument.DocumentType.allCases, id: \.self) { docType in
-                DocumentRow(
+                ProfileDocumentRow(
                     docType: docType,
                     document: profile?.verifiedDocuments?.first { $0.type == docType },
                     onUpload: {
@@ -988,19 +988,19 @@ struct EnhancedVerificationView: View {
     private var benefitsSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 12) {
-                BenefitRow(
+                VerificationBenefitRow(
                     icon: "checkmark.shield.fill",
                     title: "Verified Badge",
                     description: "Get a verified badge on your profile"
                 )
 
-                BenefitRow(
+                VerificationBenefitRow(
                     icon: "eye.fill",
                     title: "2x More Views",
                     description: "Verified profiles get double the visibility"
                 )
 
-                BenefitRow(
+                VerificationBenefitRow(
                     icon: "hand.thumbsup.fill",
                     title: "Build Trust",
                     description: "Show you're a serious, trustworthy candidate"
@@ -1052,9 +1052,38 @@ struct EnhancedVerificationView: View {
     }
 }
 
-// MARK: - Document Row
+// MARK: - Verification Benefit Row
 
-struct DocumentRow: View {
+private struct VerificationBenefitRow: View {
+    let icon: String
+    let title: String
+    let description: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(Theme.Colors.primary)
+                .frame(width: 32)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+        }
+    }
+}
+
+// MARK: - Profile Document Row
+
+struct ProfileDocumentRow: View {
     let docType: VerificationDocument.DocumentType
     let document: VerificationDocument?
     let onUpload: () -> Void

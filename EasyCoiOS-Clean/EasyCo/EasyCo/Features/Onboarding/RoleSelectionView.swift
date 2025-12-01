@@ -13,6 +13,7 @@ struct RoleSelectionView: View {
     let onRoleSelected: (UserType) -> Void
 
     @State private var selectedRole: UserType? = nil
+    @State private var showCards = false
 
     var body: some View {
         ZStack {
@@ -24,7 +25,7 @@ struct RoleSelectionView: View {
                 VStack(spacing: 32) {
                     // Header
                     VStack(spacing: 16) {
-                        // Logo
+                        // Logo with animation
                         ZStack {
                             Circle()
                                 .fill(
@@ -35,12 +36,15 @@ struct RoleSelectionView: View {
                                     )
                                 )
                                 .frame(width: 80, height: 80)
+                                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 20, x: 0, y: 10)
 
                             Text("E")
                                 .font(.system(size: 36, weight: .bold))
                                 .foregroundColor(.white)
                         }
                         .padding(.top, 40)
+                        .scaleEffect(showCards ? 1 : 0.5)
+                        .opacity(showCards ? 1 : 0)
 
                         VStack(spacing: 12) {
                             Text("Bienvenue sur EasyCo !")
@@ -54,6 +58,8 @@ struct RoleSelectionView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 24)
                         }
+                        .opacity(showCards ? 1 : 0)
+                        .offset(y: showCards ? 0 : 20)
                     }
 
                     // Role Cards
@@ -76,6 +82,8 @@ struct RoleSelectionView: View {
                                 selectedRole = .searcher
                             }
                         }
+                        .opacity(showCards ? 1 : 0)
+                        .offset(x: showCards ? 0 : -50)
 
                         // Owner Card
                         OnboardingRoleCard(
@@ -95,6 +103,29 @@ struct RoleSelectionView: View {
                                 selectedRole = .owner
                             }
                         }
+                        .opacity(showCards ? 1 : 0)
+                        .offset(x: showCards ? 0 : 50)
+
+                        // Resident Card (new)
+                        OnboardingRoleCard(
+                            role: .resident,
+                            icon: "person.crop.square.fill",
+                            title: "Je suis colocataire",
+                            subtitle: "Gère ta vie en colocation",
+                            benefits: [
+                                "Gère tes paiements de loyer",
+                                "Communique avec tes colocataires",
+                                "Organise les tâches communes",
+                                "Accède au calendrier partagé"
+                            ],
+                            isSelected: selectedRole == .resident
+                        ) {
+                            withAnimation(.spring(response: 0.3)) {
+                                selectedRole = .resident
+                            }
+                        }
+                        .opacity(showCards ? 1 : 0)
+                        .offset(x: showCards ? 0 : -50)
                     }
                     .padding(.horizontal, 20)
 
@@ -113,18 +144,10 @@ struct RoleSelectionView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 18)
-                            .background(
-                                LinearGradient(
-                                    colors: role == .searcher
-                                        ? [Color(hex: "FFA040"), Color(hex: "FFB85C")]
-                                        : [Color(hex: "6E56CF"), Color(hex: "9B8AE3")],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                            .background(gradientForRole(role))
                             .cornerRadius(999)
                             .shadow(
-                                color: (role == .searcher ? Color(hex: "FFA040") : Color(hex: "6E56CF")).opacity(0.4),
+                                color: colorForRole(role).opacity(0.4),
                                 radius: 12,
                                 x: 0,
                                 y: 6
@@ -136,6 +159,42 @@ struct RoleSelectionView: View {
                 }
                 .padding(.bottom, 40)
             }
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
+                showCards = true
+            }
+        }
+    }
+
+    private func gradientForRole(_ role: UserType) -> LinearGradient {
+        switch role {
+        case .searcher:
+            return LinearGradient(
+                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        case .owner:
+            return LinearGradient(
+                colors: [Color(hex: "6E56CF"), Color(hex: "9B8AE3")],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        case .resident:
+            return LinearGradient(
+                colors: [Color(hex: "D97B6F"), Color(hex: "E8865D"), Color(hex: "FF8C4B")],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        }
+    }
+
+    private func colorForRole(_ role: UserType) -> Color {
+        switch role {
+        case .searcher: return Color(hex: "FFA040")
+        case .owner: return Color(hex: "6E56CF")
+        case .resident: return Color(hex: "E8865D")
         }
     }
 }
@@ -152,9 +211,22 @@ struct OnboardingRoleCard: View {
     let onTap: () -> Void
 
     var gradient: [Color] {
-        role == .searcher
-            ? [Color(hex: "FFA040"), Color(hex: "FFB85C")]
-            : [Color(hex: "6E56CF"), Color(hex: "9B8AE3")]
+        switch role {
+        case .searcher:
+            return [Color(hex: "FFA040"), Color(hex: "FFB85C")]
+        case .owner:
+            return [Color(hex: "6E56CF"), Color(hex: "9B8AE3")]
+        case .resident:
+            return [Color(hex: "D97B6F"), Color(hex: "E8865D")]
+        }
+    }
+
+    var roleIconColor: Color {
+        switch role {
+        case .searcher: return Theme.SearcherColors._500
+        case .owner: return Theme.OwnerColors._500
+        case .resident: return Theme.ResidentColors._500
+        }
     }
 
     var body: some View {
@@ -176,7 +248,7 @@ struct OnboardingRoleCard: View {
 
                         Image(systemName: icon)
                             .font(.system(size: 28, weight: .medium))
-                            .foregroundColor(role == .searcher ? Theme.SearcherColors._500 : Theme.OwnerColors._500)
+                            .foregroundColor(roleIconColor)
                     }
 
                     // Title & Subtitle

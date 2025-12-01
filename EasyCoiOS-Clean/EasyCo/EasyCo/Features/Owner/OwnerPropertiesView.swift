@@ -307,9 +307,9 @@ struct OwnerPropertyCard: View {
                     .foregroundColor(Color(hex: "111827"))
 
                 HStack(spacing: 16) {
-                    StatBadge(icon: "eye.fill", value: "\(property.viewsCount)", color: Color(hex: "6E56CF"))
-                    StatBadge(icon: "doc.text.fill", value: "\(property.applicationsCount)", color: Color(hex: "10B981"))
-                    StatBadge(icon: "heart.fill", value: "\(property.favoritesCount)", color: Color(hex: "EF4444"))
+                    PropertyStatBadge(icon: "eye.fill", value: "\(property.viewsCount)", color: Color(hex: "6E56CF"))
+                    PropertyStatBadge(icon: "doc.text.fill", value: "\(property.applicationsCount)", color: Color(hex: "10B981"))
+                    PropertyStatBadge(icon: "heart.fill", value: "\(property.favoritesCount)", color: Color(hex: "EF4444"))
                 }
 
                 Divider()
@@ -332,7 +332,7 @@ struct OwnerPropertyCard: View {
     }
 }
 
-struct StatBadge: View {
+private struct PropertyStatBadge: View {
     let icon: String
     let value: String
     let color: Color

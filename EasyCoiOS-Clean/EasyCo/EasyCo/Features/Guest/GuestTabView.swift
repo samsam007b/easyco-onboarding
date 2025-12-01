@@ -24,10 +24,10 @@ struct GuestTabView: View {
                     }
                     .tag(1)
 
-                // 3. EasyCo Logo (Create Account)
+                // 3. EasyCo Logo (Create Account) - Hidden tab, replaced by custom center button
                 Color.clear
                     .tabItem {
-                        Label("", systemImage: "")
+                        Label(" ", systemImage: "circle.fill")
                     }
                     .tag(2)
 

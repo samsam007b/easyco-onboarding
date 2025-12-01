@@ -45,6 +45,60 @@ struct Event: Identifiable, Codable {
         return Calendar.current.isDate(startDate, inSameDayAs: tomorrow)
     }
 
+    var isUpcoming: Bool {
+        startDate > Date()
+    }
+
+    // Alias for views that use eventType instead of type
+    var eventType: EventType {
+        type
+    }
+
+    // Color from event type
+    var color: String {
+        type.color
+    }
+
+    // RSVP helpers
+    var rsvpRequired: Bool {
+        attendees != nil && !(attendees?.isEmpty ?? true)
+    }
+
+    var participants: [EventAttendee] {
+        attendees ?? []
+    }
+
+    var acceptedCount: Int {
+        participants.filter { $0.rsvpStatus == .accepted }.count
+    }
+
+    var formattedDuration: String {
+        duration ?? ""
+    }
+
+    // Alias for views that use createdByName instead of organizerName
+    var createdByName: String {
+        organizerName ?? "Inconnu"
+    }
+
+    // Alias for views that use recurrencePattern instead of recurringPattern
+    var recurrencePattern: RecurringPattern? {
+        recurringPattern
+    }
+
+    // Guest-related computed properties for EventDetailView
+    var hasGuests: Bool {
+        type == .guest
+    }
+
+    var numberOfGuests: Int {
+        attendees?.count ?? attendeeIds.count
+    }
+
+    var guestNames: [String] {
+        attendees?.map { $0.userName } ?? []
+    }
+
     var isThisWeek: Bool {
         let calendar = Calendar.current
         let now = Date()

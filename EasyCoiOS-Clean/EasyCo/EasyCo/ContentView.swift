@@ -11,6 +11,7 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject var authManager: AuthManager
+    @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
 
     var body: some View {
         ZStack {
@@ -27,7 +28,8 @@ struct RootView: View {
                     MainTabView()
                 }
             } else {
-                LoginView()
+                // Show welcome view with sliding auth sheet
+                WelcomeView()
             }
         }
         .onAppear {
@@ -65,45 +67,85 @@ struct MainTabView: View {
 
 struct SearcherTabView: View {
     @State private var selectedTab = 0
+    @State private var showSettings = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
             // Browse
-            PropertiesListView()
-                .tabItem {
-                    Label("Explorer", systemImage: "magnifyingglass")
-                }
-                .tag(0)
+            NavigationStack {
+                PropertiesListView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Explorer", systemImage: "magnifyingglass")
+            }
+            .tag(0)
 
             // Favorites
-            FavoritesView()
-                .tabItem {
-                    Label("Favoris", systemImage: "heart.fill")
-                }
-                .tag(1)
+            NavigationStack {
+                FavoritesView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Favoris", systemImage: "heart.fill")
+            }
+            .tag(1)
 
             // Matches
-            Text("Matchs") // TODO: Create MatchesView
-                .tabItem {
-                    Label("Matchs", systemImage: "sparkles")
-                }
-                .tag(2)
+            NavigationStack {
+                Text("Matchs") // TODO: Create MatchesView
+                    .navigationTitle("Matchs")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Matchs", systemImage: "sparkles")
+            }
+            .tag(2)
 
             // Groups
-            GroupsListView()
-                .tabItem {
-                    Label("Groupes", systemImage: "person.3.fill")
-                }
-                .tag(3)
+            NavigationStack {
+                GroupsListView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Groupes", systemImage: "person.3.fill")
+            }
+            .tag(3)
 
             // Messages
-            MessagesListView()
-                .tabItem {
-                    Label("Messages", systemImage: "message.fill")
-                }
-                .tag(4)
+            NavigationStack {
+                MessagesListView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Messages", systemImage: "message.fill")
+            }
+            .tag(4)
         }
         .accentColor(Theme.Colors.searcherPrimary)
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
     }
 }
 
@@ -111,38 +153,49 @@ struct SearcherTabView: View {
 
 struct OwnerTabView: View {
     @State private var selectedTab = 0
+    @State private var showSettings = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            // Properties
-            Text("Mes Propriétés") // TODO: Create OwnerPropertiesView
+            // Properties - Full featured property management
+            OwnerPropertiesView()
                 .tabItem {
                     Label("Propriétés", systemImage: "building.2.fill")
                 }
                 .tag(0)
 
-            // Applications
-            Text("Candidatures") // TODO: Create ApplicationsView
+            // Applications - Full featured applications management
+            ApplicationsView()
                 .tabItem {
                     Label("Candidatures", systemImage: "doc.text.fill")
                 }
                 .tag(1)
 
-            // Finance
-            Text("Finance") // TODO: Create FinanceView
+            // Maintenance - Full featured maintenance management
+            MaintenanceView()
                 .tabItem {
-                    Label("Finance", systemImage: "dollarsign.circle.fill")
+                    Label("Maintenance", systemImage: "wrench.and.screwdriver.fill")
                 }
                 .tag(2)
 
             // Messages
-            MessagesListView()
-                .tabItem {
-                    Label("Messages", systemImage: "message.fill")
-                }
-                .tag(3)
+            NavigationStack {
+                MessagesListView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Messages", systemImage: "message.fill")
+            }
+            .tag(3)
         }
         .accentColor(Theme.Colors.ownerPrimary)
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
     }
 }
 
@@ -150,45 +203,273 @@ struct OwnerTabView: View {
 
 struct ResidentTabView: View {
     @State private var selectedTab = 0
+    @State private var showSettings = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            // Hub
-            Text("Hub") // TODO: Create ResidentHubView
+            // Hub - Full featured dashboard
+            ResidentHubView()
                 .tabItem {
                     Label("Hub", systemImage: "house.fill")
                 }
                 .tag(0)
 
-            // Tasks
-            Text("Tâches") // TODO: Create TasksView
+            // Tasks - Full featured task management
+            TasksView()
                 .tabItem {
                     Label("Tâches", systemImage: "checklist")
                 }
                 .tag(1)
 
-            // Finances
-            Text("Finances") // TODO: Create ResidentFinanceView
+            // Finances - Full featured expense management
+            ExpensesView()
                 .tabItem {
                     Label("Finances", systemImage: "creditcard.fill")
                 }
                 .tag(2)
 
-            // Calendar
-            Text("Calendrier") // TODO: Create CalendarView
+            // Calendar - Full featured event calendar
+            CalendarView()
                 .tabItem {
                     Label("Calendrier", systemImage: "calendar")
                 }
                 .tag(3)
 
             // Messages
-            MessagesListView()
-                .tabItem {
-                    Label("Messages", systemImage: "message.fill")
-                }
-                .tag(4)
+            NavigationStack {
+                MessagesListView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            ProfileButton { showSettings = true }
+                        }
+                    }
+            }
+            .tabItem {
+                Label("Messages", systemImage: "message.fill")
+            }
+            .tag(4)
         }
         .accentColor(Theme.Colors.residentPrimary)
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+    }
+}
+
+// MARK: - Profile Button Component
+
+struct ProfileButton: View {
+    @EnvironmentObject var authManager: AuthManager
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            if let imageUrl = authManager.currentUser?.profileImageURL,
+               !imageUrl.isEmpty {
+                AsyncImage(url: URL(string: imageUrl)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    profilePlaceholder
+                }
+                .frame(width: 32, height: 32)
+                .clipShape(Circle())
+            } else {
+                profilePlaceholder
+            }
+        }
+    }
+
+    private var profilePlaceholder: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    LinearGradient(
+                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 32, height: 32)
+
+            Text(initials)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(.white)
+        }
+    }
+
+    private var initials: String {
+        let firstName = authManager.currentUser?.firstName ?? ""
+        let lastName = authManager.currentUser?.lastName ?? ""
+
+        if firstName.isEmpty && lastName.isEmpty {
+            return String(authManager.currentUser?.email.prefix(1).uppercased() ?? "?")
+        }
+
+        let firstInitial = firstName.prefix(1).uppercased()
+        let lastInitial = lastName.prefix(1).uppercased()
+        return "\(firstInitial)\(lastInitial)"
+    }
+}
+
+// MARK: - Resident Hub Placeholder View
+
+struct ResidentHubPlaceholderView: View {
+    @EnvironmentObject var authManager: AuthManager
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                // Welcome Header
+                VStack(spacing: 8) {
+                    Text("Bienvenue, \(authManager.currentUser?.firstName ?? "Résident") !")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(Color(hex: "111827"))
+
+                    Text("Votre espace colocation")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color(hex: "6B7280"))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+
+                // Quick Stats Cards
+                HStack(spacing: 16) {
+                    StatCardView(
+                        title: "Tâches",
+                        value: "3",
+                        subtitle: "à faire",
+                        icon: "checklist",
+                        color: Color(hex: "E8865D")
+                    )
+
+                    StatCardView(
+                        title: "Événements",
+                        value: "2",
+                        subtitle: "cette semaine",
+                        icon: "calendar",
+                        color: Color(hex: "6E56CF")
+                    )
+                }
+                .padding(.horizontal, 20)
+
+                HStack(spacing: 16) {
+                    StatCardView(
+                        title: "Dépenses",
+                        value: "€125",
+                        subtitle: "ce mois",
+                        icon: "creditcard",
+                        color: Color(hex: "10B981")
+                    )
+
+                    StatCardView(
+                        title: "Messages",
+                        value: "5",
+                        subtitle: "non lus",
+                        icon: "message.fill",
+                        color: Color(hex: "3B82F6")
+                    )
+                }
+                .padding(.horizontal, 20)
+
+                // Coming Soon Section
+                VStack(spacing: 16) {
+                    Text("Fonctionnalités à venir")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "111827"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    VStack(spacing: 12) {
+                        FeatureRowView(icon: "person.3.fill", title: "Gestion des colocataires")
+                        FeatureRowView(icon: "doc.text.fill", title: "Documents partagés")
+                        FeatureRowView(icon: "bell.fill", title: "Rappels automatiques")
+                        FeatureRowView(icon: "chart.pie.fill", title: "Statistiques de dépenses")
+                    }
+                    .padding(16)
+                    .background(Color.white)
+                    .cornerRadius(16)
+                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                }
+                .padding(.horizontal, 20)
+
+                Spacer(minLength: 32)
+            }
+        }
+        .background(Color(hex: "F9FAFB"))
+        .navigationTitle("Hub")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Stat Card View
+
+private struct StatCardView: View {
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                    .foregroundColor(color)
+                Spacer()
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(value)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(Color(hex: "111827"))
+
+                Text(subtitle)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color(hex: "6B7280"))
+            }
+
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(Color(hex: "374151"))
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+    }
+}
+
+// MARK: - Feature Row View
+
+private struct FeatureRowView: View {
+    let icon: String
+    let title: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "E8865D"))
+                .frame(width: 24)
+
+            Text(title)
+                .font(.system(size: 15))
+                .foregroundColor(Color(hex: "374151"))
+
+            Spacer()
+
+            Text("Bientôt")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(Color(hex: "9CA3AF"))
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color(hex: "F3F4F6"))
+                .cornerRadius(6)
+        }
     }
 }
 

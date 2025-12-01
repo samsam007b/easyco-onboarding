@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Heart, Music, Book, Coffee } from 'lucide-react';
+import { Heart, Music, Book, Coffee } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileTag,
+  EnhanceProfileSection,
+} from '@/components/enhance-profile';
 
 export default function ExtendedPersonalityPage() {
   const router = useRouter();
@@ -90,6 +96,10 @@ export default function ExtendedPersonalityPage() {
     router.push('/dashboard/my-profile');
   };
 
+  const handleCancel = () => {
+    router.push('/dashboard/my-profile');
+  };
+
   const interestOptions = [
     'Music', 'Sports', 'Reading', 'Cooking', 'Gaming', 'Travel',
     'Art', 'Photography', 'Fitness', 'Movies', 'Technology', 'Nature'
@@ -100,145 +110,119 @@ export default function ExtendedPersonalityPage() {
     'Relaxed', 'Ambitious', 'Friendly', 'Independent', 'Team Player'
   ];
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="text-gray-600">Loading your information...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Back button */}
-        <button
-          onClick={() => router.push('/dashboard/my-profile')}
-          className="mb-6 text-[color:var(--easy-purple)] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+    <EnhanceProfileLayout
+      role="searcher"
+      backUrl="/dashboard/my-profile"
+      backLabel="Back to Profile"
+      progress={undefined}
+      isLoading={isLoading}
+      loadingText="Loading your information..."
+    >
+      <EnhanceProfileHeading
+        role="searcher"
+        title="Extended Personality"
+        description="Share more about yourself to help find compatible roommates"
+        icon={<Heart className="w-8 h-8 text-orange-600" />}
+      />
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-              <Heart className="w-6 h-6 text-red-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-[color:var(--easy-purple)]">
-              Extended Personality
-            </h1>
+      <div className="space-y-6">
+        {/* Hobbies */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Your Hobbies
+          </label>
+          <div className="flex gap-2 mb-3">
+            <input
+              type="text"
+              value={hobbyInput}
+              onChange={(e) => setHobbyInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHobby())}
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+              placeholder="Add a hobby"
+            />
+            <EnhanceProfileButton
+              role="searcher"
+              onClick={addHobby}
+              className="px-6"
+            >
+              Add
+            </EnhanceProfileButton>
           </div>
-          <p className="text-gray-600">
-            Share more about yourself to help find compatible roommates
-          </p>
-        </div>
 
-        {/* Form */}
-        <div className="space-y-6">
-          {/* Hobbies */}
-          <div className="bg-white rounded-2xl p-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Your Hobbies
-            </label>
-            <div className="flex gap-2 mb-3">
-              <input
-                type="text"
-                value={hobbyInput}
-                onChange={(e) => setHobbyInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHobby())}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-[color:var(--easy-purple)] focus:ring-2 focus:ring-purple-100 outline-none transition"
-                placeholder="Add a hobby"
-              />
-              <button
-                onClick={addHobby}
-                className="px-6 py-3 rounded-xl bg-[color:var(--easy-purple)] text-white font-medium hover:opacity-90 transition"
+          {hobbies.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {hobbies.map((hobby) => (
+                <EnhanceProfileTag
+                  key={hobby}
+                  role="searcher"
+                  selected={true}
+                  onRemove={() => removeHobby(hobby)}
+                >
+                  {hobby}
+                </EnhanceProfileTag>
+              ))}
+            </div>
+          )}
+        </EnhanceProfileSection>
+
+        {/* Interests */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Your Interests
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {interestOptions.map((interest) => (
+              <EnhanceProfileTag
+                key={interest}
+                role="searcher"
+                selected={interests.includes(interest)}
+                onClick={() => toggleInterest(interest)}
               >
-                Add
-              </button>
-            </div>
-
-            {hobbies.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {hobbies.map((hobby) => (
-                  <span
-                    key={hobby}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color:var(--easy-yellow)] text-black text-sm font-medium"
-                  >
-                    {hobby}
-                    <button onClick={() => removeHobby(hobby)} className="hover:opacity-70">
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
+                {interest}
+              </EnhanceProfileTag>
+            ))}
           </div>
+        </EnhanceProfileSection>
 
-          {/* Interests */}
-          <div className="bg-white rounded-2xl p-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Your Interests
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {interestOptions.map((interest) => (
-                <button
-                  key={interest}
-                  onClick={() => toggleInterest(interest)}
-                  className={`px-4 py-3 rounded-xl font-medium transition border-2 ${
-                    interests.includes(interest)
-                      ? 'bg-[color:var(--easy-purple)] text-white border-[color:var(--easy-purple)]'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[color:var(--easy-purple)]'
-                  }`}
-                >
-                  {interest}
-                </button>
-              ))}
-            </div>
+        {/* Personality Traits */}
+        <EnhanceProfileSection>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Personality Traits
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {traitOptions.map((trait) => (
+              <EnhanceProfileTag
+                key={trait}
+                role="searcher"
+                selected={personalityTraits.includes(trait)}
+                onClick={() => toggleTrait(trait)}
+              >
+                {trait}
+              </EnhanceProfileTag>
+            ))}
           </div>
-
-          {/* Personality Traits */}
-          <div className="bg-white rounded-2xl p-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Personality Traits
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {traitOptions.map((trait) => (
-                <button
-                  key={trait}
-                  onClick={() => toggleTrait(trait)}
-                  className={`px-4 py-3 rounded-xl font-medium transition border-2 ${
-                    personalityTraits.includes(trait)
-                      ? 'bg-[color:var(--easy-purple)] text-white border-[color:var(--easy-purple)]'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[color:var(--easy-purple)]'
-                  }`}
-                >
-                  {trait}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex gap-3 mt-8">
-          <button
-            onClick={() => router.push('/dashboard/my-profile')}
-            className="flex-1 py-4 rounded-full font-semibold text-lg transition border-2 border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSave}
-            className="flex-1 py-4 rounded-full font-semibold text-lg transition shadow-md bg-[color:var(--easy-yellow)] text-black hover:opacity-90 hover:shadow-lg"
-          >
-            Save Changes
-          </button>
-        </div>
+        </EnhanceProfileSection>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="flex gap-3 mt-8">
+        <EnhanceProfileButton
+          role="searcher"
+          variant="outline"
+          onClick={handleCancel}
+          className="flex-1"
+        >
+          Cancel
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="searcher"
+          onClick={handleSave}
+          className="flex-1"
+        >
+          Save Changes
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }

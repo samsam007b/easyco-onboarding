@@ -147,10 +147,10 @@ struct PropertyFormStep4View: View {
                             .foregroundColor(Color(hex: "111827"))
 
                         VStack(alignment: .leading, spacing: 4) {
-                            TipRow(text: "Prenez des photos en pleine lumière")
-                            TipRow(text: "Montrez toutes les pièces principales")
-                            TipRow(text: "Rangez et nettoyez avant de photographier")
-                            TipRow(text: "Utilisez le mode paysage")
+                            PhotoTipRow(text: "Prenez des photos en pleine lumière")
+                            PhotoTipRow(text: "Montrez toutes les pièces principales")
+                            PhotoTipRow(text: "Rangez et nettoyez avant de photographier")
+                            PhotoTipRow(text: "Utilisez le mode paysage")
                         }
                     }
                 }
@@ -229,7 +229,7 @@ struct PhotoThumbnail: View {
 
 // MARK: - Tip Row
 
-struct TipRow: View {
+private struct PhotoTipRow: View {
     let text: String
 
     var body: some View {

@@ -3,11 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Shield, CheckCircle, Upload, FileText } from 'lucide-react';
+import { Shield, CheckCircle, Upload, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileInfoBox,
+  EnhanceProfileSection,
+} from '@/components/enhance-profile';
 
 export default function VerificationResidentPage() {
   const router = useRouter();
@@ -65,79 +70,65 @@ export default function VerificationResidentPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
-        <LoadingHouse size={80} />
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Back button */}
-        <button
-          onClick={() => router.push('/dashboard/my-profile-resident')}
-          className="mb-6 text-[#4A148C] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-              <Shield className="w-5 h-5 text-orange-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-[#4A148C]">
-              Profile Verification
-            </h1>
-          </div>
-          <p className="text-gray-600">
-            Get verified to build trust with your community
-          </p>
-        </div>
-
-        {verificationStatus === 'verified' ? (
-          /* Already Verified */
-          <div className="bg-white rounded-3xl p-8 shadow-sm text-center">
+    <EnhanceProfileLayout
+      role="resident"
+      backUrl="/dashboard/resident"
+      backLabel="Back to Dashboard"
+      isLoading={isLoading}
+      loadingText="Loading verification status..."
+    >
+      {verificationStatus === 'verified' ? (
+        /* Already Verified */
+        <>
+          <div className="text-center mb-8">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">You're Verified!</h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600">
               Your profile has been verified. This helps build trust in the community.
             </p>
-            <Button
-              onClick={() => router.push('/dashboard/my-profile-resident')}
-              className="bg-[#4A148C] hover:bg-[#4A148C]/90"
-            >
-              Back to Profile
-            </Button>
           </div>
-        ) : verificationStatus === 'pending' ? (
-          /* Pending Verification */
-          <div className="bg-white rounded-3xl p-8 shadow-sm text-center">
+          <EnhanceProfileButton
+            role="resident"
+            onClick={() => router.push('/dashboard/resident')}
+          >
+            Back to Dashboard
+          </EnhanceProfileButton>
+        </>
+      ) : verificationStatus === 'pending' ? (
+        /* Pending Verification */
+        <>
+          <div className="text-center mb-8">
             <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <FileText className="w-10 h-10 text-yellow-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Verification Pending</h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600">
               Your verification request is being reviewed. We'll notify you once it's complete.
             </p>
-            <Button
-              onClick={() => router.push('/dashboard/my-profile-resident')}
-              variant="outline"
-            >
-              Back to Profile
-            </Button>
           </div>
-        ) : (
-          /* Not Verified - Show Benefits */
+          <EnhanceProfileButton
+            role="resident"
+            variant="outline"
+            onClick={() => router.push('/dashboard/resident')}
+          >
+            Back to Dashboard
+          </EnhanceProfileButton>
+        </>
+      ) : (
+        /* Not Verified - Show Benefits */
+        <>
+          <EnhanceProfileHeading
+            role="resident"
+            title="Profile Verification"
+            description="Get verified to build trust with your community"
+            icon={<Shield className="w-8 h-8 text-orange-600" />}
+          />
+
           <div className="space-y-6">
-            <div className="bg-white rounded-3xl p-6 shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Why Get Verified?</h2>
+            <EnhanceProfileSection title="Why Get Verified?">
               <div className="space-y-4">
                 {[
                   {
@@ -170,58 +161,51 @@ export default function VerificationResidentPage() {
                   );
                 })}
               </div>
-            </div>
+            </EnhanceProfileSection>
 
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-orange-200">
-              <h3 className="font-semibold text-gray-900 mb-2">What We'll Need</h3>
-              <ul className="space-y-2 text-sm text-gray-700">
+            <EnhanceProfileInfoBox role="resident" title="What We'll Need" icon="📋">
+              <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                   Valid ID (passport, driver's license, or national ID)
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                   A selfie for identity confirmation
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                   Proof of residence (optional, but recommended)
                 </li>
               </ul>
-            </div>
+            </EnhanceProfileInfoBox>
 
-            <div className="bg-white rounded-3xl p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <Shield className="w-5 h-5 text-green-600" />
-                <h3 className="font-semibold text-gray-900">Your Privacy is Protected</h3>
-              </div>
-              <p className="text-sm text-gray-600">
-                Your verification documents are encrypted and stored securely. They're only used for verification purposes and are never shared with other users.
-              </p>
-            </div>
+            <EnhanceProfileInfoBox role="resident" title="Your Privacy is Protected" icon="🔒">
+              Your verification documents are encrypted and stored securely. They're only used for verification purposes and are never shared with other users.
+            </EnhanceProfileInfoBox>
 
-            <div className="flex gap-3">
-              <Button
-                onClick={() => router.push('/dashboard/my-profile-resident')}
+            <div className="flex gap-3 mt-8">
+              <EnhanceProfileButton
+                role="resident"
                 variant="outline"
-                className="flex-1"
+                onClick={() => router.push('/dashboard/resident')}
               >
                 Later
-              </Button>
-              <Button
+              </EnhanceProfileButton>
+              <EnhanceProfileButton
+                role="resident"
                 onClick={handleRequestVerification}
-                className="flex-1 bg-[#FFD600] text-black hover:bg-[#FFD600]/90"
               >
                 Start Verification
-              </Button>
+              </EnhanceProfileButton>
             </div>
 
             <p className="text-xs text-center text-gray-500">
               Verification typically takes 1-2 business days
             </p>
           </div>
-        )}
-      </div>
-    </main>
+        </>
+      )}
+    </EnhanceProfileLayout>
   );
 }

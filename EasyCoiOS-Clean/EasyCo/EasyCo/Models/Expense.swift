@@ -44,6 +44,10 @@ struct Expense: Identifiable, Codable {
         }
     }
 
+    var hasReceipt: Bool {
+        receiptURL != nil && !(receiptURL?.isEmpty ?? true)
+    }
+
     init(
         id: UUID = UUID(),
         householdId: UUID,
@@ -167,7 +171,7 @@ enum ExpenseCategory: String, Codable, CaseIterable {
 }
 
 // MARK: - Split Type
-enum SplitType: String, Codable {
+enum SplitType: String, Codable, CaseIterable {
     case equal = "equal"
     case custom = "custom"
 

@@ -77,7 +77,7 @@ struct ExpensesView: View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
                 // Total dépenses
-                StatCard(
+                ExpenseStatCard(
                     title: "Total",
                     value: String(format: "%.2f€", viewModel.totalExpenses),
                     icon: "creditcard.fill",
@@ -85,7 +85,7 @@ struct ExpensesView: View {
                 )
 
                 // Ce que je dois
-                StatCard(
+                ExpenseStatCard(
                     title: "Je dois",
                     value: String(format: "%.2f€", viewModel.iOwe),
                     icon: "arrow.up.circle.fill",
@@ -95,7 +95,7 @@ struct ExpensesView: View {
 
             HStack(spacing: 12) {
                 // On me doit
-                StatCard(
+                ExpenseStatCard(
                     title: "On me doit",
                     value: String(format: "%.2f€", viewModel.oweMe),
                     icon: "arrow.down.circle.fill",
@@ -103,7 +103,7 @@ struct ExpensesView: View {
                 )
 
                 // Ma part
-                StatCard(
+                ExpenseStatCard(
                     title: "Ma part",
                     value: String(format: "%.2f€", viewModel.myShare),
                     icon: "person.fill",
@@ -274,9 +274,9 @@ struct ExpensesView: View {
     }
 }
 
-// MARK: - Stat Card Component
+// MARK: - Expense Stat Card Component
 
-struct StatCard: View {
+struct ExpenseStatCard: View {
     let title: String
     let value: String
     let icon: String

@@ -4,20 +4,29 @@ import SwiftUI
 
 struct SearcherDashboardView: View {
     @StateObject private var viewModel = SearcherDashboardViewModel()
-    @EnvironmentObject var languageManager: LanguageManager
+    @State private var showSwipeMode = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: Theme.Spacing._6) {
+                VStack(spacing: 24) {
                     // Hero Search Section
                     heroSearchSection
 
+                    // Quick Actions
+                    quickActionsSection
+
                     // KPI Cards Grid
                     if viewModel.isLoading {
-                        kpiCardsLoadingState
+                        ProgressView("Chargement...")
+                            .frame(height: 200)
                     } else if let stats = viewModel.stats {
                         kpiCardsGrid(stats: stats)
+                    }
+
+                    // Top Matches
+                    if !viewModel.topMatches.isEmpty {
+                        topMatchesSection
                     }
 
                     // Recently Viewed Properties
@@ -25,23 +34,25 @@ struct SearcherDashboardView: View {
                         recentlyViewedSection
                     }
 
-                    // Top Matches
-                    topMatchesSection
-
                     // Analytics Insights
                     if let stats = viewModel.stats {
                         analyticsInsightsSection(stats: stats)
                     }
                 }
-                .padding(Theme.Spacing._4)
+                .padding(16)
             }
-            .background(Theme.Colors.backgroundSecondary)
+            .background(Color(hex: "F9FAFB"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Explorer")
-                        .font(Theme.Typography.body(.semibold))
-                        .foregroundColor(Theme.Colors.textPrimary)
+                    HStack(spacing: 8) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(Color(hex: "FFA040"))
+                        Text("Explorer")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(Color(hex: "111827"))
+                    }
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -50,9 +61,12 @@ struct SearcherDashboardView: View {
                     }) {
                         Image(systemName: "arrow.clockwise")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Theme.SearcherColors._600)
+                            .foregroundColor(Color(hex: "FFA040"))
                     }
                 }
+            }
+            .fullScreenCover(isPresented: $showSwipeMode) {
+                SwipeMatchesView()
             }
         }
         .task {
@@ -63,59 +77,158 @@ struct SearcherDashboardView: View {
     // MARK: - Hero Search Section
 
     private var heroSearchSection: some View {
-        VStack(spacing: Theme.Spacing._4) {
-            // Title
-            VStack(alignment: .leading, spacing: Theme.Spacing._2) {
-                Text("Trouve ta colocation idéale")
-                    .font(Theme.Typography.title2(.bold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+        VStack(spacing: 16) {
+            // Title with greeting
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Bonjour ! 👋")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(Color(hex: "111827"))
 
-                Text("Découvre des centaines de propriétés vérifiées")
-                    .font(Theme.Typography.body())
-                    .foregroundColor(Theme.Colors.textSecondary)
+                Text("Trouve ta colocation idéale parmi des centaines de propriétés vérifiées")
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: "6B7280"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             // Search Button
-            NavigationLink(destination: Text("Search View")) {
-                HStack(spacing: Theme.Spacing._3) {
+            NavigationLink(destination: PropertiesListView()) {
+                HStack(spacing: 12) {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 18, weight: .semibold))
 
                     Text("Rechercher une colocation...")
-                        .font(Theme.Typography.body())
+                        .font(.system(size: 16))
 
                     Spacer()
+
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 14, weight: .semibold))
                 }
                 .foregroundColor(.white)
-                .padding(Theme.Spacing._4)
+                .padding(16)
                 .background(
                     LinearGradient(
                         colors: [
-                            Theme.SearcherColors._400,
-                            Theme.SearcherColors._500,
-                            Theme.SearcherColors._600
+                            Color(hex: "FFA040"),
+                            Color(hex: "FFB85C"),
+                            Color(hex: "FFD080")
                         ],
                         startPoint: .leading,
                         endPoint: .trailing
                     )
                 )
-                .cornerRadius(Theme.CornerRadius.xl)
-                .shadow(color: Theme.SearcherColors._400.opacity(0.3), radius: 8, x: 0, y: 4)
+                .cornerRadius(16)
+                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
             }
         }
-        .padding(Theme.Spacing._5)
+        .padding(20)
         .background(
             LinearGradient(
                 colors: [
-                    Theme.SearcherColors._50,
+                    Color(hex: "FFFBEB"),
                     Color.white
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
-        .cornerRadius(Theme.CornerRadius.xl)
+        .cornerRadius(20)
+        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+    }
+
+    // MARK: - Quick Actions Section
+
+    private var quickActionsSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Actions rapides")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(Color(hex: "111827"))
+
+            // First row
+            HStack(spacing: 12) {
+                // Swipe Mode
+                QuickActionButton(
+                    icon: "hand.draw.fill",
+                    title: "Mode Swipe",
+                    color: Color(hex: "FFA040")
+                ) {
+                    showSwipeMode = true
+                }
+
+                // Favorites
+                NavigationLink(destination: FavoritesView()) {
+                    QuickActionButton(
+                        icon: "heart.fill",
+                        title: "Favoris",
+                        color: Color(hex: "EF4444")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Matches
+                NavigationLink(destination: MatchesView()) {
+                    QuickActionButton(
+                        icon: "sparkles",
+                        title: "Matchs",
+                        color: Color(hex: "F59E0B")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Alerts
+                NavigationLink(destination: AlertsView()) {
+                    QuickActionButton(
+                        icon: "bell.fill",
+                        title: "Alertes",
+                        color: Color(hex: "3B82F6")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+
+            // Second row
+            HStack(spacing: 12) {
+                // My Visits
+                NavigationLink(destination: MyVisitsView()) {
+                    QuickActionButton(
+                        icon: "calendar.badge.clock",
+                        title: "Mes Visites",
+                        color: Color(hex: "10B981")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Profile Enhancement
+                NavigationLink(destination: ProfileEnhancementView(userRole: .searcher)) {
+                    QuickActionButton(
+                        icon: "person.crop.circle.badge.plus",
+                        title: "Mon Profil",
+                        color: Color(hex: "8B5CF6")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Saved Searches
+                NavigationLink(destination: SavedSearchesView()) {
+                    QuickActionButton(
+                        icon: "bookmark.fill",
+                        title: "Recherches",
+                        color: Color(hex: "6366F1")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Groups
+                NavigationLink(destination: GroupsListView()) {
+                    QuickActionButton(
+                        icon: "person.3.fill",
+                        title: "Groupes",
+                        color: Color(hex: "EC4899")
+                    ) {}
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
     }
 
     // MARK: - KPI Cards Grid
@@ -123,77 +236,88 @@ struct SearcherDashboardView: View {
     private func kpiCardsGrid(stats: SearcherStats) -> some View {
         LazyVGrid(
             columns: [
-                GridItem(.flexible(), spacing: Theme.Spacing._4),
-                GridItem(.flexible(), spacing: Theme.Spacing._4)
+                GridItem(.flexible(), spacing: 16),
+                GridItem(.flexible(), spacing: 16)
             ],
-            spacing: Theme.Spacing._4
+            spacing: 16
         ) {
-            KPICard(
-                metric: KPIMetric(
-                    id: "messages",
-                    title: "Messages non lus",
+            NavigationLink(destination: MessagesListView()) {
+                SearcherKPICard(
+                    title: "Messages",
                     value: "\(stats.unreadMessages)",
-                    trend: stats.unreadMessages > 0 ?
-                        KPIMetric.Trend(value: "Nouveau", direction: .neutral) : nil,
+                    subtitle: stats.unreadMessages > 0 ? "non lus" : "tout lu",
                     icon: "envelope.fill",
-                    color: .orange
+                    color: Color(hex: "F59E0B"),
+                    hasNotification: stats.unreadMessages > 0
                 )
-            ) {
-                // Navigate to messages
             }
+            .buttonStyle(PlainButtonStyle())
 
-            KPICard(
-                metric: KPIMetric(
-                    id: "favorites",
+            NavigationLink(destination: FavoritesView()) {
+                SearcherKPICard(
                     title: "Favoris",
                     value: "\(stats.favoritesCount)",
-                    trend: nil,
+                    subtitle: "propriétés",
                     icon: "heart.fill",
-                    color: .red
+                    color: Color(hex: "EF4444"),
+                    hasNotification: false
                 )
-            ) {
-                // Navigate to favorites
             }
+            .buttonStyle(PlainButtonStyle())
 
-            KPICard(
-                metric: KPIMetric(
-                    id: "matches",
+            NavigationLink(destination: MatchesView()) {
+                SearcherKPICard(
                     title: "Top Matchs",
                     value: "\(stats.topMatches)",
-                    trend: stats.topMatches > 5 ?
-                        KPIMetric.Trend(value: "+\(stats.topMatches - 5)", direction: .up) : nil,
+                    subtitle: "compatibles",
                     icon: "star.fill",
-                    color: .yellow
+                    color: Color(hex: "FFA040"),
+                    hasNotification: stats.topMatches > 0
                 )
-            ) {
-                // Navigate to matches
             }
+            .buttonStyle(PlainButtonStyle())
 
-            KPICard(
-                metric: KPIMetric(
-                    id: "applications",
-                    title: "Demandes envoyées",
-                    value: "\(stats.applicationsCount)",
-                    trend: nil,
-                    icon: "paperplane.fill",
-                    color: .blue
-                )
-            ) {
-                // Navigate to applications
-            }
+            SearcherKPICard(
+                title: "Candidatures",
+                value: "\(stats.applicationsCount)",
+                subtitle: "envoyées",
+                icon: "paperplane.fill",
+                color: Color(hex: "3B82F6"),
+                hasNotification: false
+            )
         }
     }
 
-    private var kpiCardsLoadingState: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: Theme.Spacing._4),
-                GridItem(.flexible(), spacing: Theme.Spacing._4)
-            ],
-            spacing: Theme.Spacing._4
-        ) {
-            ForEach(0..<4, id: \.self) { _ in
-                SkeletonView(height: 140)
+    // MARK: - Top Matches Section
+
+    private var topMatchesSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                HStack(spacing: 8) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color(hex: "FFA040"))
+                    Text("Top Matchs pour vous")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "111827"))
+                }
+
+                Spacer()
+
+                NavigationLink(destination: MatchesView()) {
+                    Text("Voir tout")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Color(hex: "FFA040"))
+                }
+            }
+
+            VStack(spacing: 12) {
+                ForEach(viewModel.topMatches.prefix(3)) { property in
+                    NavigationLink(destination: PropertyDetailView(property: property)) {
+                        TopMatchCard(property: property)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
             }
         }
     }
@@ -201,57 +325,29 @@ struct SearcherDashboardView: View {
     // MARK: - Recently Viewed Section
 
     private var recentlyViewedSection: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._4) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("Récemment consultées")
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
 
                 Spacer()
 
-                Button("Voir tout") {
+                Button("Historique") {
                     // Navigate to full history
                 }
-                .font(Theme.Typography.bodySmall(.medium))
-                .foregroundColor(Theme.SearcherColors._600)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(Color(hex: "FFA040"))
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: Theme.Spacing._4) {
+                HStack(spacing: 16) {
                     ForEach(viewModel.recentlyViewed.prefix(5)) { property in
-                        PropertyCompactCard(property: property)
+                        NavigationLink(destination: PropertyDetailView(property: property)) {
+                            PropertyCompactCard(property: property)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                }
-            }
-        }
-    }
-
-    // MARK: - Top Matches Section
-
-    private var topMatchesSection: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._4) {
-            HStack {
-                Text("Top Matchs pour vous")
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-
-                Spacer()
-
-                NavigationLink("Voir tout") {
-                    Text("Matches View")
-                }
-                .font(Theme.Typography.bodySmall(.medium))
-                .foregroundColor(Theme.SearcherColors._600)
-            }
-
-            VStack(spacing: Theme.Spacing._3) {
-                ForEach(0..<3, id: \.self) { index in
-                    MatchCard(
-                        score: 95 - (index * 5),
-                        propertyTitle: "Colocation moderne Centre-Ville",
-                        city: "Bruxelles",
-                        price: 750 - (index * 50)
-                    )
                 }
             }
         }
@@ -260,17 +356,22 @@ struct SearcherDashboardView: View {
     // MARK: - Analytics Insights Section
 
     private func analyticsInsightsSection(stats: SearcherStats) -> some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._4) {
-            Text("Vos préférences")
-                .font(Theme.Typography.body(.semibold))
-                .foregroundColor(Theme.Colors.textPrimary)
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "chart.bar.fill")
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: "FFA040"))
+                Text("Vos préférences")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
+            }
 
-            VStack(spacing: Theme.Spacing._3) {
+            VStack(spacing: 12) {
                 InsightRow(
                     icon: "mappin.circle.fill",
                     title: "Ville favorite",
                     value: stats.preferences.favoriteCity ?? "Non défini",
-                    color: Theme.SearcherColors._500
+                    color: Color(hex: "FFA040")
                 )
 
                 InsightRow(
@@ -284,12 +385,169 @@ struct SearcherDashboardView: View {
                     InsightRow(
                         icon: "house.circle.fill",
                         title: "Type de logement",
-                        value: stats.preferences.preferredPropertyTypes.first ?? "",
-                        color: Theme.SearcherColors._400
+                        value: stats.preferences.preferredPropertyTypes.joined(separator: ", "),
+                        color: Color(hex: "3B82F6")
                     )
                 }
             }
+
+            // Edit Preferences Button
+            NavigationLink(destination: Text("Préférences de recherche")) {
+                HStack {
+                    Image(systemName: "slider.horizontal.3")
+                        .font(.system(size: 14, weight: .semibold))
+                    Text("Modifier mes préférences")
+                        .font(.system(size: 14, weight: .semibold))
+                }
+                .foregroundColor(Color(hex: "FFA040"))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color(hex: "FFA040").opacity(0.1))
+                .cornerRadius(12)
+            }
         }
+    }
+}
+
+// MARK: - Quick Action Button
+
+private struct QuickActionButton: View {
+    let icon: String
+    let title: String
+    let color: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(color)
+                    .frame(width: 44, height: 44)
+                    .background(color.opacity(0.1))
+                    .cornerRadius(12)
+
+                Text(title)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(Color(hex: "6B7280"))
+                    .lineLimit(1)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        }
+    }
+}
+
+// MARK: - Searcher KPI Card
+
+private struct SearcherKPICard: View {
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+    let hasNotification: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 22))
+                    .foregroundColor(color)
+
+                Spacer()
+
+                if hasNotification {
+                    Circle()
+                        .fill(color)
+                        .frame(width: 8, height: 8)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(value)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(Color(hex: "111827"))
+
+                Text(subtitle)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color(hex: "6B7280"))
+            }
+
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(Color(hex: "374151"))
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+    }
+}
+
+// MARK: - Top Match Card
+
+private struct TopMatchCard: View {
+    let property: Property
+
+    var body: some View {
+        HStack(spacing: 16) {
+            // Match score badge
+            VStack(spacing: 4) {
+                Text("\(property.compatibilityScore ?? 85)%")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(Color(hex: "FFA040"))
+
+                Text("Match")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(Color(hex: "6B7280"))
+            }
+            .frame(width: 64)
+            .padding(.vertical, 14)
+            .background(
+                LinearGradient(
+                    colors: [Color(hex: "FFFBEB"), Color(hex: "FEF3C7")],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .cornerRadius(12)
+
+            // Property info
+            VStack(alignment: .leading, spacing: 6) {
+                Text(property.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
+                    .lineLimit(1)
+
+                HStack(spacing: 4) {
+                    Image(systemName: "mappin")
+                        .font(.system(size: 11))
+                    Text(property.city)
+                        .font(.system(size: 13))
+                }
+                .foregroundColor(Color(hex: "6B7280"))
+
+                Text("\(property.monthlyRent)€/mois")
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(Color(hex: "FFA040"))
+            }
+
+            Spacer()
+
+            // Arrow
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(Color(hex: "D1D5DB"))
+        }
+        .padding(16)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
 
@@ -299,97 +557,83 @@ private struct PropertyCompactCard: View {
     let property: Property
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._3) {
+        VStack(alignment: .leading, spacing: 12) {
             // Property image
-            if let imageUrl = property.mainImageURL, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
+            ZStack(alignment: .topTrailing) {
+                if let imageUrl = property.mainImageURL, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .overlay(
+                                Image(systemName: "building.2.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundColor(.white.opacity(0.5))
+                            )
+                    }
+                    .frame(width: 160, height: 100)
+                    .clipped()
+                    .cornerRadius(12)
+                } else {
                     Rectangle()
-                        .fill(Theme.GrayColors._200)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 160, height: 100)
+                        .cornerRadius(12)
+                        .overlay(
+                            Image(systemName: "building.2.fill")
+                                .font(.system(size: 28))
+                                .foregroundColor(.white.opacity(0.5))
+                        )
                 }
-                .frame(width: 160, height: 120)
-                .clipped()
-                .cornerRadius(Theme.CornerRadius.lg)
+
+                // Match badge
+                if let score = property.compatibilityScore, score >= 80 {
+                    Text("\(score)%")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 3)
+                        .background(Color(hex: "FFA040"))
+                        .cornerRadius(6)
+                        .padding(8)
+                }
             }
 
             // Property info
-            VStack(alignment: .leading, spacing: Theme.Spacing._1) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(property.title)
-                    .font(Theme.Typography.bodySmall(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
                     .lineLimit(1)
 
                 Text(property.city)
-                    .font(Theme.Typography.caption())
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color(hex: "6B7280"))
 
                 Text("\(property.monthlyRent)€/mois")
-                    .font(Theme.Typography.bodySmall(.bold))
-                    .foregroundColor(Theme.SearcherColors._700)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(Color(hex: "FFA040"))
             }
         }
         .frame(width: 160)
-        .padding(Theme.Spacing._3)
+        .padding(12)
         .background(Color.white)
-        .cornerRadius(Theme.CornerRadius.xl)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-    }
-}
-
-// MARK: - Match Card
-
-private struct MatchCard: View {
-    let score: Int
-    let propertyTitle: String
-    let city: String
-    let price: Int
-
-    var body: some View {
-        HStack(spacing: Theme.Spacing._4) {
-            // Match score badge
-            VStack(spacing: Theme.Spacing._1) {
-                Text("\(score)%")
-                    .font(Theme.Typography.body(.bold))
-                    .foregroundColor(Theme.SearcherColors._700)
-
-                Text("Match")
-                    .font(Theme.Typography.caption())
-                    .foregroundColor(Theme.Colors.textSecondary)
-            }
-            .frame(width: 60)
-            .padding(.vertical, Theme.Spacing._3)
-            .background(Theme.SearcherColors._100)
-            .cornerRadius(Theme.CornerRadius.lg)
-
-            // Property info
-            VStack(alignment: .leading, spacing: Theme.Spacing._1) {
-                Text(propertyTitle)
-                    .font(Theme.Typography.bodySmall(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .lineLimit(1)
-
-                Text(city)
-                    .font(Theme.Typography.caption())
-                    .foregroundColor(Theme.Colors.textSecondary)
-
-                Text("\(price)€/mois")
-                    .font(Theme.Typography.bodySmall(.bold))
-                    .foregroundColor(Theme.SearcherColors._700)
-            }
-
-            Spacer()
-
-            // Arrow
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(Theme.Colors.textSecondary)
-        }
-        .padding(Theme.Spacing._4)
-        .background(Color.white)
-        .cornerRadius(Theme.CornerRadius.lg)
+        .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
@@ -403,30 +647,34 @@ private struct InsightRow: View {
     let color: Color
 
     var body: some View {
-        HStack(spacing: Theme.Spacing._3) {
+        HStack(spacing: 12) {
             Image(systemName: icon)
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(color)
                 .frame(width: 40, height: 40)
                 .background(color.opacity(0.1))
-                .cornerRadius(Theme.CornerRadius.lg)
+                .cornerRadius(10)
 
-            VStack(alignment: .leading, spacing: Theme.Spacing._1) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(Theme.Typography.caption(.medium))
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(Color(hex: "6B7280"))
 
                 Text(value)
-                    .font(Theme.Typography.bodySmall(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
             }
 
             Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12))
+                .foregroundColor(Color(hex: "D1D5DB"))
         }
-        .padding(Theme.Spacing._4)
+        .padding(14)
         .background(Color.white)
-        .cornerRadius(Theme.CornerRadius.lg)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 2)
     }
 }
 
@@ -436,6 +684,7 @@ private struct InsightRow: View {
 class SearcherDashboardViewModel: ObservableObject {
     @Published var stats: SearcherStats?
     @Published var recentlyViewed: [Property] = []
+    @Published var topMatches: [Property] = []
     @Published var isLoading = false
     @Published var error: NetworkError?
 
@@ -451,23 +700,21 @@ class SearcherDashboardViewModel: ObservableObject {
 
             // Load recently viewed
             recentlyViewed = try await analyticsService.getRecentlyViewedProperties(limit: 10)
+
+            // Load top matches (demo mode)
+            if AppConfig.FeatureFlags.demoMode {
+                topMatches = Property.mockProperties
+                    .filter { ($0.compatibilityScore ?? 0) >= 80 }
+                    .sorted { ($0.compatibilityScore ?? 0) > ($1.compatibilityScore ?? 0) }
+            }
         } catch let error as NetworkError {
             self.error = error
         } catch {
-            self.error = .unknown
+            self.error = .unknown(error)
         }
     }
 
     func refresh() async {
         await loadData()
-    }
-}
-
-// MARK: - Preview
-
-struct SearcherDashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearcherDashboardView()
-            .environmentObject(LanguageManager.shared)
     }
 }

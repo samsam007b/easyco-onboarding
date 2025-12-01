@@ -163,25 +163,25 @@ struct PropertyFormStep5View: View {
 
                 // Règles
                 VStack(spacing: 12) {
-                    PreferenceToggle(
+                    PropertyPreferenceToggle(
                         icon: "smoke",
                         label: "Fumeur accepté",
                         isOn: $viewModel.smokingAllowed
                     )
 
-                    PreferenceToggle(
+                    PropertyPreferenceToggle(
                         icon: "pawprint.fill",
                         label: "Animaux acceptés",
                         isOn: $viewModel.petsAllowed
                     )
 
-                    PreferenceToggle(
+                    PropertyPreferenceToggle(
                         icon: "heart.fill",
                         label: "Couples acceptés",
                         isOn: $viewModel.couplesAllowed
                     )
 
-                    PreferenceToggle(
+                    PropertyPreferenceToggle(
                         icon: "figure.2.and.child.holdinghands",
                         label: "Enfants acceptés",
                         isOn: $viewModel.childrenAllowed
@@ -194,9 +194,9 @@ struct PropertyFormStep5View: View {
     }
 }
 
-// MARK: - Preference Toggle
+// MARK: - Property Preference Toggle
 
-struct PreferenceToggle: View {
+struct PropertyPreferenceToggle: View {
     let icon: String
     let label: String
     @Binding var isOn: Bool

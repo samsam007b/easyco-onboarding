@@ -119,25 +119,25 @@ struct ProfileCompletionView: View {
                 .font(.headline)
 
             VStack(spacing: 12) {
-                BenefitRow(
+                CompletionBenefitRow(
                     icon: "sparkles",
                     title: "Better Matches",
                     description: "Find roommates who truly match your lifestyle"
                 )
 
-                BenefitRow(
+                CompletionBenefitRow(
                     icon: "eye",
                     title: "Increased Visibility",
                     description: "Complete profiles get 3x more views"
                 )
 
-                BenefitRow(
+                CompletionBenefitRow(
                     icon: "checkmark.seal.fill",
                     title: "Build Trust",
                     description: "Show you're serious about finding the right home"
                 )
 
-                BenefitRow(
+                CompletionBenefitRow(
                     icon: "bell.fill",
                     title: "Smart Alerts",
                     description: "Get notified about perfect matches instantly"
@@ -230,7 +230,7 @@ struct ProfileStepCard: View {
 
 // MARK: - Benefit Row
 
-struct BenefitRow: View {
+private struct CompletionBenefitRow: View {
     let icon: String
     let title: String
     let description: String

@@ -10,7 +10,7 @@ import SwiftUI
 struct MaintenanceView: View {
     @State private var tasks: [MaintenanceTask] = []
     @State private var isLoading = false
-    @State private var selectedFilter: TaskFilter = .all
+    @State private var selectedFilter: MaintenanceTaskFilter = .all
     @State private var selectedProperty: UUID?
     @State private var showingCreateTask = false
     @State private var showingStats = false
@@ -78,28 +78,28 @@ struct MaintenanceView: View {
 
         return ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
-                QuickStatCard(
+                MaintenanceQuickStatCard(
                     value: "\(stats.pendingTasks)",
                     label: "À faire",
                     icon: "clock.fill",
                     color: Color(hex: "9CA3AF")
                 )
 
-                QuickStatCard(
+                MaintenanceQuickStatCard(
                     value: "\(stats.inProgressTasks)",
                     label: "En cours",
                     icon: "gear",
                     color: Color(hex: "3B82F6")
                 )
 
-                QuickStatCard(
+                MaintenanceQuickStatCard(
                     value: "\(stats.urgentTasks)",
                     label: "Urgent",
                     icon: "exclamationmark.triangle.fill",
                     color: Color(hex: "EF4444")
                 )
 
-                QuickStatCard(
+                MaintenanceQuickStatCard(
                     value: String(format: "%.0f€", stats.monthlyAverageCost),
                     label: "Moy./mois",
                     icon: "eurosign.circle.fill",
@@ -143,7 +143,7 @@ struct MaintenanceView: View {
             // Filter buttons
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(TaskFilter.allCases, id: \.self) { filter in
+                    ForEach(MaintenanceTaskFilter.allCases, id: \.self) { filter in
                         FilterButton(
                             title: filter.displayName,
                             count: countFor(filter),
@@ -269,7 +269,7 @@ struct MaintenanceView: View {
         }
     }
 
-    private func countFor(_ filter: TaskFilter) -> Int {
+    private func countFor(_ filter: MaintenanceTaskFilter) -> Int {
         switch filter {
         case .all: return tasks.count
         case .pending: return tasks.filter { $0.status == .pending }.count
@@ -305,9 +305,9 @@ struct MaintenanceView: View {
     }
 }
 
-// MARK: - Task Filter
+// MARK: - Maintenance Task Filter
 
-enum TaskFilter: String, CaseIterable {
+enum MaintenanceTaskFilter: String, CaseIterable {
     case all = "Toutes"
     case pending = "À faire"
     case inProgress = "En cours"
@@ -352,7 +352,7 @@ struct FilterButton: View {
 
 // MARK: - Quick Stat Card
 
-struct QuickStatCard: View {
+private struct MaintenanceQuickStatCard: View {
     let value: String
     let label: String
     let icon: String
@@ -423,7 +423,7 @@ struct MaintenanceTaskCard: View {
                     }
                     .foregroundColor(Color(hex: task.status.color))
                     .padding(.horizontal, 8)
-                    .padding(.vertical: 3)
+                    .padding(.vertical, 3)
                     .background(Color(hex: task.status.color).opacity(0.1))
                     .cornerRadius(8)
                 }

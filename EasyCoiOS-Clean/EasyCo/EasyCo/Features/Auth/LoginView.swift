@@ -46,9 +46,10 @@ struct LoginView: View {
                         VStack(spacing: 0) {
                             // Logo and title
                             VStack(spacing: 16) {
-                                Image(systemName: "house.fill")
-                                    .font(.system(size: 56, weight: .bold))
-                                    .foregroundColor(Color(hex: "4A148C"))
+                                Image("HouseIcon")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
 
                                 Text("EasyCo")
                                     .font(.system(size: 32, weight: .bold))

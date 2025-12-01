@@ -1,33 +1,30 @@
+//
+//  OwnerDashboardView.swift
+//  EasyCo
+//
+//  Owner Dashboard - Simplified version
+//
+
 import SwiftUI
-import Charts
 
 // MARK: - Owner Dashboard View
 
 struct OwnerDashboardView: View {
     @StateObject private var viewModel = OwnerDashboardViewModel()
-    @EnvironmentObject var languageManager: LanguageManager
-
-    private var dashboard: DashboardTranslations {
-        languageManager.getSection(\.dashboard)
-    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: Theme.Spacing._6) {
+                VStack(spacing: 24) {
                     // Welcome Section
                     welcomeSection
 
                     // KPI Cards Grid
                     if viewModel.isLoading {
-                        kpiCardsLoadingState
+                        ProgressView("Chargement...")
+                            .frame(height: 200)
                     } else if let stats = viewModel.stats {
                         kpiCardsGrid(stats: stats)
-                    }
-
-                    // Charts Section
-                    if let stats = viewModel.stats {
-                        chartsSection(stats: stats)
                     }
 
                     // Recent Properties
@@ -38,15 +35,15 @@ struct OwnerDashboardView: View {
                     // Quick Actions
                     quickActionsSection
                 }
-                .padding(Theme.Spacing._4)
+                .padding(16)
             }
-            .background(Theme.Colors.backgroundSecondary)
+            .background(Color(hex: "F9FAFB"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Tableau de bord")
-                        .font(Theme.Typography.body(.semibold))
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "111827"))
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -55,7 +52,7 @@ struct OwnerDashboardView: View {
                     }) {
                         Image(systemName: "arrow.clockwise")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Theme.OwnerColors._600)
+                            .foregroundColor(Color(hex: "6E56CF"))
                     }
                 }
             }
@@ -68,28 +65,25 @@ struct OwnerDashboardView: View {
     // MARK: - Welcome Section
 
     private var welcomeSection: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._3) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("Bonjour 👋")
-                .font(Theme.Typography.title2(.bold))
-                .foregroundColor(Theme.Colors.textPrimary)
+                .font(.system(size: 28, weight: .bold))
+                .foregroundColor(Color(hex: "111827"))
 
             Text("Voici un résumé de vos propriétés et performances")
-                .font(Theme.Typography.body())
-                .foregroundColor(Theme.Colors.textSecondary)
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "6B7280"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Theme.Spacing._5)
+        .padding(20)
         .background(
             LinearGradient(
-                colors: [
-                    Theme.OwnerColors._50,
-                    Color.white
-                ],
+                colors: [Color(hex: "F3F0FF"), Color.white],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
-        .cornerRadius(Theme.CornerRadius.xl)
+        .cornerRadius(16)
     }
 
     // MARK: - KPI Cards Grid
@@ -97,159 +91,63 @@ struct OwnerDashboardView: View {
     private func kpiCardsGrid(stats: OwnerStats) -> some View {
         LazyVGrid(
             columns: [
-                GridItem(.flexible(), spacing: Theme.Spacing._4),
-                GridItem(.flexible(), spacing: Theme.Spacing._4)
+                GridItem(.flexible(), spacing: 16),
+                GridItem(.flexible(), spacing: 16)
             ],
-            spacing: Theme.Spacing._4
+            spacing: 16
         ) {
-            KPICard(
-                metric: KPIMetric(
-                    id: "revenue",
-                    title: "Revenu mensuel",
-                    value: "€\(Int(stats.monthlyRevenue))",
-                    trend: KPIMetric.Trend(value: "+12%", direction: .up),
-                    icon: "eurosign.circle.fill",
-                    color: .emerald
-                )
-            ) {
-                // Navigate to finance page
-            }
-
-            KPICard(
-                metric: KPIMetric(
-                    id: "properties",
-                    title: "Propriétés publiées",
-                    value: "\(stats.publishedProperties)",
-                    trend: nil,
-                    icon: "building.2.fill",
-                    color: .purple
-                )
-            ) {
-                // Navigate to properties page
-            }
-
-            KPICard(
-                metric: KPIMetric(
-                    id: "occupation",
-                    title: "Taux d'occupation",
-                    value: "\(Int(stats.occupationRate))%",
-                    trend: KPIMetric.Trend(value: "+5%", direction: .up),
-                    icon: "chart.bar.fill",
-                    color: .blue
-                )
+            DashboardKPICard(
+                title: "Revenu mensuel",
+                value: "€\(Int(stats.monthlyRevenue))",
+                icon: "eurosign.circle.fill",
+                color: Color(hex: "10B981")
             )
 
-            KPICard(
-                metric: KPIMetric(
-                    id: "applications",
-                    title: "Demandes en attente",
-                    value: "\(stats.pendingApplications)",
-                    trend: KPIMetric.Trend(value: "Urgent", direction: .neutral),
-                    icon: "person.2.fill",
-                    color: .yellow
-                )
-            ) {
-                // Navigate to applications page
-            }
-        }
-    }
+            DashboardKPICard(
+                title: "Propriétés",
+                value: "\(stats.publishedProperties)",
+                icon: "building.2.fill",
+                color: Color(hex: "8B5CF6")
+            )
 
-    private var kpiCardsLoadingState: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: Theme.Spacing._4),
-                GridItem(.flexible(), spacing: Theme.Spacing._4)
-            ],
-            spacing: Theme.Spacing._4
-        ) {
-            ForEach(0..<4, id: \.self) { _ in
-                SkeletonView(height: 140)
-            }
-        }
-    }
+            DashboardKPICard(
+                title: "Taux d'occupation",
+                value: "\(Int(stats.occupationRate))%",
+                icon: "chart.bar.fill",
+                color: Color(hex: "3B82F6")
+            )
 
-    // MARK: - Charts Section
-
-    private func chartsSection(stats: OwnerStats) -> some View {
-        VStack(spacing: Theme.Spacing._4) {
-            // Revenue & Expenses Chart
-            if #available(iOS 16.0, *) {
-                TrendLineChart(
-                    title: "Revenu & Dépenses (12 mois)",
-                    data: stats.revenueData.map { revenue in
-                        ChartDataPoint(
-                            id: revenue.month,
-                            label: revenue.month,
-                            value: revenue.revenue,
-                            secondaryValue: revenue.expenses
-                        )
-                    },
-                    showSecondary: true
-                )
-            } else {
-                // Fallback for iOS 15
-                VStack(alignment: .leading, spacing: Theme.Spacing._3) {
-                    Text("Revenu & Dépenses (12 mois)")
-                        .font(Theme.Typography.body(.semibold))
-
-                    Text("Graphiques disponibles sur iOS 16+")
-                        .font(Theme.Typography.caption())
-                        .foregroundColor(Theme.Colors.textSecondary)
-                }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(Theme.CornerRadius.xl)
-            }
-
-            // Occupation Chart
-            VStack(alignment: .leading, spacing: Theme.Spacing._3) {
-                Text("Occupation par propriété")
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .padding(.horizontal, Theme.Spacing._5)
-
-                SimpleBarChart(
-                    data: stats.occupationData.map { occupation in
-                        ChartDataPoint(
-                            id: occupation.id.uuidString,
-                            label: String(occupation.propertyName.prefix(12)),
-                            value: occupation.occupation,
-                            secondaryValue: nil
-                        )
-                    },
-                    color: Theme.OwnerColors._600
-                )
-                .padding(.horizontal, Theme.Spacing._5)
-            }
-            .padding(.vertical, Theme.Spacing._4)
-            .background(Color.white)
-            .cornerRadius(Theme.CornerRadius.xl)
-            .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+            DashboardKPICard(
+                title: "Demandes",
+                value: "\(stats.pendingApplications)",
+                icon: "person.2.fill",
+                color: Color(hex: "F59E0B")
+            )
         }
     }
 
     // MARK: - Recent Properties Section
 
     private var recentPropertiesSection: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._4) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("Vos propriétés")
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
 
                 Spacer()
 
                 Button("Voir tout") {
                     // Navigate to properties list
                 }
-                .font(Theme.Typography.bodySmall(.medium))
-                .foregroundColor(Theme.OwnerColors._600)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(Color(hex: "6E56CF"))
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: Theme.Spacing._4) {
+                HStack(spacing: 16) {
                     ForEach(viewModel.properties.prefix(5)) { property in
-                        PropertyCompactCard(property: property)
+                        DashboardPropertyCard(property: property)
                     }
                 }
             }
@@ -259,89 +157,187 @@ struct OwnerDashboardView: View {
     // MARK: - Quick Actions Section
 
     private var quickActionsSection: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._4) {
+        VStack(alignment: .leading, spacing: 16) {
             Text("Actions rapides")
-                .font(Theme.Typography.body(.semibold))
-                .foregroundColor(Theme.Colors.textPrimary)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(Color(hex: "111827"))
 
-            VStack(spacing: Theme.Spacing._3) {
-                QuickActionButton(
-                    title: "Ajouter une propriété",
-                    icon: "plus.circle.fill",
-                    color: Theme.OwnerColors._600
-                ) {
-                    // Navigate to add property
+            VStack(spacing: 12) {
+                NavigationLink(destination: CreatePropertyView()) {
+                    DashboardQuickActionRow(
+                        title: "Ajouter une propriété",
+                        icon: "plus.circle.fill",
+                        color: Color(hex: "6E56CF")
+                    )
                 }
+                .buttonStyle(PlainButtonStyle())
 
-                QuickActionButton(
-                    title: "Voir les demandes",
-                    icon: "person.2.fill",
-                    color: Theme.OwnerColors._500
-                ) {
-                    // Navigate to applications
+                NavigationLink(destination: ApplicationsView()) {
+                    DashboardQuickActionRow(
+                        title: "Voir les demandes",
+                        icon: "person.2.fill",
+                        color: Color(hex: "8B5CF6")
+                    )
                 }
+                .buttonStyle(PlainButtonStyle())
 
-                QuickActionButton(
-                    title: "Rapports financiers",
-                    icon: "chart.line.uptrend.xyaxis",
-                    color: Theme.OwnerColors._400
-                ) {
-                    // Navigate to finance reports
+                NavigationLink(destination: OwnerFinanceView()) {
+                    DashboardQuickActionRow(
+                        title: "Finances",
+                        icon: "chart.pie.fill",
+                        color: Color(hex: "10B981")
+                    )
                 }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: MaintenanceView()) {
+                    DashboardQuickActionRow(
+                        title: "Maintenance",
+                        icon: "wrench.and.screwdriver.fill",
+                        color: Color(hex: "F59E0B")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: VisitScheduleView()) {
+                    DashboardQuickActionRow(
+                        title: "Calendrier des visites",
+                        icon: "calendar",
+                        color: Color(hex: "3B82F6")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: ProfileEnhancementView(userRole: .owner)) {
+                    DashboardQuickActionRow(
+                        title: "Améliorer mon profil",
+                        icon: "person.crop.circle.badge.plus",
+                        color: Color(hex: "EC4899")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
     }
 }
 
-// MARK: - Property Compact Card
+// MARK: - Dashboard Quick Action Row
 
-private struct PropertyCompactCard: View {
+private struct DashboardQuickActionRow: View {
+    let title: String
+    let icon: String
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 20))
+                .foregroundColor(color)
+                .frame(width: 44, height: 44)
+                .background(color.opacity(0.1))
+                .cornerRadius(12)
+
+            Text(title)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(Color(hex: "111827"))
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "D1D5DB"))
+        }
+        .padding(14)
+        .background(Color.white)
+        .cornerRadius(14)
+        .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
+    }
+}
+
+// MARK: - Dashboard KPI Card
+
+private struct DashboardKPICard: View {
+    let title: String
+    let value: String
+    let icon: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                    .foregroundColor(color)
+
+                Spacer()
+            }
+
+            Text(value)
+                .font(.system(size: 28, weight: .bold))
+                .foregroundColor(Color(hex: "111827"))
+
+            Text(title)
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "6B7280"))
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+    }
+}
+
+// MARK: - Dashboard Property Card
+
+private struct DashboardPropertyCard: View {
     let property: Property
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing._3) {
-            // Property image
-            if let imageUrl = property.mainImageURL, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Rectangle()
-                        .fill(Theme.GrayColors._200)
-                }
-                .frame(width: 160, height: 120)
-                .clipped()
-                .cornerRadius(Theme.CornerRadius.lg)
-            }
+        VStack(alignment: .leading, spacing: 12) {
+            // Property image placeholder
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [Color(hex: "6E56CF"), Color(hex: "8B5CF6")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 160, height: 100)
+                .cornerRadius(12)
+                .overlay(
+                    Image(systemName: "building.2.fill")
+                        .font(.system(size: 32))
+                        .foregroundColor(.white.opacity(0.5))
+                )
 
-            // Property info
-            VStack(alignment: .leading, spacing: Theme.Spacing._1) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(property.title)
-                    .font(Theme.Typography.bodySmall(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color(hex: "111827"))
                     .lineLimit(1)
 
                 Text(property.city)
-                    .font(Theme.Typography.caption())
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color(hex: "6B7280"))
 
                 Text("\(property.monthlyRent)€/mois")
-                    .font(Theme.Typography.bodySmall(.bold))
-                    .foregroundColor(Theme.OwnerColors._700)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(Color(hex: "6E56CF"))
             }
         }
         .frame(width: 160)
-        .padding(Theme.Spacing._3)
+        .padding(12)
         .background(Color.white)
-        .cornerRadius(Theme.CornerRadius.xl)
+        .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
 
-// MARK: - Quick Action Button
+// MARK: - Dashboard Quick Action Button
 
-private struct QuickActionButton: View {
+private struct DashboardQuickActionButton: View {
     let title: String
     let icon: String
     let color: Color
@@ -349,27 +345,27 @@ private struct QuickActionButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: Theme.Spacing._3) {
+            HStack(spacing: 12) {
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(color)
                     .frame(width: 40, height: 40)
                     .background(color.opacity(0.1))
-                    .cornerRadius(Theme.CornerRadius.lg)
+                    .cornerRadius(10)
 
                 Text(title)
-                    .font(Theme.Typography.body(.medium))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(Color(hex: "111827"))
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(Color(hex: "9CA3AF"))
             }
-            .padding(Theme.Spacing._4)
+            .padding(16)
             .background(Color.white)
-            .cornerRadius(Theme.CornerRadius.lg)
+            .cornerRadius(12)
             .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
         }
         .buttonStyle(PlainButtonStyle())
@@ -386,7 +382,6 @@ class OwnerDashboardViewModel: ObservableObject {
     @Published var error: NetworkError?
 
     private let analyticsService = AnalyticsService.shared
-    private let apiClient = APIClient.shared
 
     func loadData() async {
         isLoading = true
@@ -396,26 +391,18 @@ class OwnerDashboardViewModel: ObservableObject {
             // Load stats
             stats = try await analyticsService.getOwnerStats()
 
-            // Load properties
-            let endpoint = APIEndpoint(path: "/api/properties/owner")
-            properties = try await apiClient.request(endpoint, method: .get)
+            // Load mock properties for demo
+            if AppConfig.FeatureFlags.demoMode {
+                properties = Property.mockProperties
+            }
         } catch let error as NetworkError {
             self.error = error
         } catch {
-            self.error = .unknown
+            self.error = .unknown(error)
         }
     }
 
     func refresh() async {
         await loadData()
-    }
-}
-
-// MARK: - Preview
-
-struct OwnerDashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        OwnerDashboardView()
-            .environmentObject(LanguageManager.shared)
     }
 }

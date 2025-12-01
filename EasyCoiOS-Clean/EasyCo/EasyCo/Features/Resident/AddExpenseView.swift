@@ -27,13 +27,13 @@ struct AddExpenseView: View {
     @State private var hasReceipt = false
 
     // Roommates (mock data - à remplacer par données réelles)
-    @State private var roommates: [Roommate] = [
-        Roommate(id: UUID(), name: "Marie"),
-        Roommate(id: UUID(), name: "Thomas"),
-        Roommate(id: UUID(), name: "Julie"),
-        Roommate(id: UUID(), name: "Marc")
+    @State private var roommates: [ExpenseRoommate] = [
+        ExpenseRoommate(id: UUID(), name: "Marie"),
+        ExpenseRoommate(id: UUID(), name: "Thomas"),
+        ExpenseRoommate(id: UUID(), name: "Julie"),
+        ExpenseRoommate(id: UUID(), name: "Marc")
     ]
-    @State private var selectedPayer: Roommate?
+    @State private var selectedPayer: ExpenseRoommate?
 
     // Custom split
     @State private var customSplits: [UUID: String] = [:] // RoommateID -> amount string
@@ -201,7 +201,7 @@ struct AddExpenseView: View {
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 ForEach(ExpenseCategory.allCases, id: \.self) { category in
-                    CategoryButton(
+                    ExpenseCategoryButton(
                         category: category,
                         isSelected: selectedCategory == category,
                         action: { selectedCategory = category }
@@ -287,44 +287,11 @@ struct AddExpenseView: View {
 
             VStack(spacing: 8) {
                 ForEach(SplitType.allCases, id: \.self) { type in
-                    Button(action: { splitType = type }) {
-                        HStack {
-                            Circle()
-                                .fill(splitType == type ? Color(hex: "E8865D") : Color.white)
-                                .frame(width: 20, height: 20)
-                                .overlay(
-                                    Circle()
-                                        .stroke(splitType == type ? Color(hex: "E8865D") : Color(hex: "E5E7EB"), lineWidth: 2)
-                                )
-                                .overlay(
-                                    Circle()
-                                        .fill(Color.white)
-                                        .frame(width: 8, height: 8)
-                                        .opacity(splitType == type ? 1 : 0)
-                                )
-
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(type.displayName)
-                                    .font(.system(size: 16, weight: .medium))
-                                    .foregroundColor(Color(hex: "111827"))
-
-                                if let desc = type.description {
-                                    Text(desc)
-                                        .font(.system(size: 13))
-                                        .foregroundColor(Color(hex: "6B7280"))
-                                }
-                            }
-
-                            Spacer()
-                        }
-                        .padding(12)
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(splitType == type ? Color(hex: "E8865D") : Color(hex: "E5E7EB"), lineWidth: 1)
-                        )
-                    }
+                    SplitTypeButton(
+                        type: type,
+                        isSelected: splitType == type,
+                        action: { splitType = type }
+                    )
                 }
             }
         }
@@ -536,9 +503,9 @@ struct AddExpenseView: View {
     }
 }
 
-// MARK: - Category Button Component
+// MARK: - ExpenseCategoryButton Component
 
-struct CategoryButton: View {
+struct ExpenseCategoryButton: View {
     let category: ExpenseCategory
     let isSelected: Bool
     let action: () -> Void
@@ -572,9 +539,62 @@ struct CategoryButton: View {
     }
 }
 
-// MARK: - Roommate Model
+// MARK: - SplitTypeButton Component
 
-struct Roommate: Identifiable {
+struct SplitTypeButton: View {
+    let type: SplitType
+    let isSelected: Bool
+    let action: () -> Void
+
+    private var radioCircle: some View {
+        Circle()
+            .fill(isSelected ? Color(hex: "E8865D") : Color.white)
+            .frame(width: 20, height: 20)
+            .overlay(
+                Circle()
+                    .stroke(isSelected ? Color(hex: "E8865D") : Color(hex: "E5E7EB"), lineWidth: 2)
+            )
+            .overlay(
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 8, height: 8)
+                    .opacity(isSelected ? 1 : 0)
+            )
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                radioCircle
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(type.displayName)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color(hex: "111827"))
+
+                    if let desc = type.description {
+                        Text(desc)
+                            .font(.system(size: 13))
+                            .foregroundColor(Color(hex: "6B7280"))
+                    }
+                }
+
+                Spacer()
+            }
+            .padding(12)
+            .background(Color.white)
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected ? Color(hex: "E8865D") : Color(hex: "E5E7EB"), lineWidth: 1)
+            )
+        }
+    }
+}
+
+// MARK: - ExpenseRoommate Model (local to avoid conflicts)
+
+struct ExpenseRoommate: Identifiable {
     let id: UUID
     let name: String
 }

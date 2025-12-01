@@ -173,12 +173,31 @@ struct NotificationsListView: View {
     // MARK: - Loading State
 
     private var loadingState: some View {
-        VStack(spacing: Theme.Spacing._4) {
+        VStack(spacing: 16) {
             ForEach(0..<5, id: \.self) { _ in
-                SkeletonView(height: 100)
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(hex: "E5E7EB"))
+                    .frame(height: 100)
+                    .shimmer()
             }
         }
-        .padding(Theme.Spacing._4)
+        .padding(16)
+    }
+}
+
+// MARK: - Shimmer Effect
+
+private extension View {
+    func shimmer() -> some View {
+        self.overlay(
+            LinearGradient(
+                colors: [.clear, .white.opacity(0.4), .clear],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .offset(x: -200)
+        )
+        .mask(self)
     }
 }
 

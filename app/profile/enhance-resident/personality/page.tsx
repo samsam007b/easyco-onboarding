@@ -3,12 +3,19 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Heart, Plus, X } from 'lucide-react';
+import { Heart, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LoadingHouse from '@/components/ui/LoadingHouse';
+import {
+  EnhanceProfileLayout,
+  EnhanceProfileHeading,
+  EnhanceProfileButton,
+  EnhanceProfileSelectionCard,
+  EnhanceProfileTag,
+  EnhanceProfileInfoBox,
+  EnhanceProfileSection,
+} from '@/components/enhance-profile';
 
 export default function PersonalityResidentPage() {
   const router = useRouter();
@@ -113,7 +120,7 @@ export default function PersonalityResidentPage() {
       if (error) throw error;
 
       toast.success('Personality details saved!');
-      router.push('/dashboard/my-profile-resident');
+      router.push('/dashboard/resident');
     } catch (error) {
       // FIXME: Use logger.error('Error saving personality:', error);
       toast.error(common.errors.unexpected);
@@ -132,139 +139,112 @@ export default function PersonalityResidentPage() {
     'Relaxed', 'Ambitious', 'Friendly', 'Independent', 'Team Player'
   ];
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
-        <LoadingHouse size={80} />
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
-      <div className="max-w-2xl mx-auto">
-        {/* Back button */}
-        <button
-          onClick={() => router.push('/dashboard/my-profile-resident')}
-          className="mb-6 text-[#4A148C] hover:opacity-70 transition"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+    <EnhanceProfileLayout
+      role="resident"
+      backUrl="/dashboard/resident"
+      backLabel="Back to Dashboard"
+      isLoading={isLoading}
+      loadingText="Loading your personality details..."
+    >
+      {/* Header */}
+      <EnhanceProfileHeading
+        role="resident"
+        title="Personality & Interests"
+        description="Share more about yourself to connect with like-minded neighbors"
+        icon={<Heart className="w-8 h-8 text-orange-600" />}
+      />
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-              <Heart className="w-5 h-5 text-orange-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-[#4A148C]">
-              Personality & Interests
-            </h1>
+      <div className="space-y-6">
+        {/* Hobbies */}
+        <EnhanceProfileSection title="Your Hobbies">
+          <div className="flex gap-2 mb-4">
+            <Input
+              type="text"
+              value={hobbyInput}
+              onChange={(e) => setHobbyInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && addHobby()}
+              placeholder="Add a hobby..."
+              className="flex-1 focus:ring-orange-500"
+            />
+            <button
+              onClick={addHobby}
+              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:shadow-md transition-all"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
           </div>
-          <p className="text-gray-600">
-            Share more about yourself to connect with like-minded neighbors
-          </p>
-        </div>
-
-        <div className="space-y-6">
-          {/* Hobbies */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-            <h3 className="font-semibold text-gray-900 mb-4">Your Hobbies</h3>
-            <div className="flex gap-2 mb-4">
-              <Input
-                type="text"
-                value={hobbyInput}
-                onChange={(e) => setHobbyInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addHobby()}
-                placeholder="Add a hobby..."
-                className="flex-1"
-              />
-              <Button onClick={addHobby} className="bg-[#4A148C] hover:bg-[#4A148C]/90">
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {hobbies.map((hobby) => (
-                <span
-                  key={hobby}
-                  className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm flex items-center gap-2"
-                >
-                  {hobby}
-                  <button onClick={() => removeHobby(hobby)} className="hover:text-purple-900">
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Interests */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-            <h3 className="font-semibold text-gray-900 mb-4">Interests</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {interestOptions.map((interest) => (
-                <button
-                  key={interest}
-                  onClick={() => toggleInterest(interest)}
-                  className={`p-3 rounded-xl text-sm font-medium transition border-2 ${
-                    interests.includes(interest)
-                      ? 'bg-[#4A148C] text-white border-[#4A148C]'
-                      : 'bg-white text-gray-700 border-gray-200 hover:border-[#4A148C]'
-                  }`}
-                >
-                  {interest}
+          <div className="flex flex-wrap gap-2">
+            {hobbies.map((hobby) => (
+              <span
+                key={hobby}
+                className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm flex items-center gap-2"
+              >
+                {hobby}
+                <button onClick={() => removeHobby(hobby)} className="hover:text-orange-900">
+                  <X className="w-3 h-3" />
                 </button>
-              ))}
-            </div>
+              </span>
+            ))}
           </div>
+        </EnhanceProfileSection>
 
-          {/* Personality Traits */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-            <h3 className="font-semibold text-gray-900 mb-4">Personality Traits</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {traitOptions.map((trait) => (
-                <button
-                  key={trait}
-                  onClick={() => toggleTrait(trait)}
-                  className={`p-3 rounded-xl text-sm font-medium transition border-2 ${
-                    personalityTraits.includes(trait)
-                      ? 'bg-[#FFD600] text-black border-[#FFD600]'
-                      : 'bg-white text-gray-700 border-gray-200 hover:border-[#FFD600]'
-                  }`}
-                >
-                  {trait}
-                </button>
-              ))}
-            </div>
+        {/* Interests */}
+        <EnhanceProfileSection title="Interests">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {interestOptions.map((interest) => (
+              <EnhanceProfileTag
+                key={interest}
+                role="resident"
+                selected={interests.includes(interest)}
+                onClick={() => toggleInterest(interest)}
+              >
+                {interest}
+              </EnhanceProfileTag>
+            ))}
           </div>
+        </EnhanceProfileSection>
 
-          {/* Info callout */}
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-4 border border-orange-200">
-            <p className="text-sm text-gray-700">
-              <strong>Tip:</strong> Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!
-            </p>
+        {/* Personality Traits */}
+        <EnhanceProfileSection title="Personality Traits">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {traitOptions.map((trait) => (
+              <EnhanceProfileTag
+                key={trait}
+                role="resident"
+                selected={personalityTraits.includes(trait)}
+                onClick={() => toggleTrait(trait)}
+              >
+                {trait}
+              </EnhanceProfileTag>
+            ))}
           </div>
-        </div>
+        </EnhanceProfileSection>
 
-        {/* Action buttons */}
-        <div className="flex gap-3 mt-8">
-          <Button
-            onClick={() => router.push('/dashboard/my-profile-resident')}
-            variant="outline"
-            className="flex-1"
-            disabled={isSaving}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="flex-1 bg-[#FFD600] text-black hover:bg-[#FFD600]/90"
-          >
-            {isSaving ? 'Saving...' : 'Save'}
-          </Button>
-        </div>
+        {/* Info callout */}
+        <EnhanceProfileInfoBox role="resident" title="Tip" icon="💡">
+          Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!
+        </EnhanceProfileInfoBox>
       </div>
-    </main>
+
+      {/* Action buttons */}
+      <div className="flex gap-3 mt-8">
+        <EnhanceProfileButton
+          role="resident"
+          variant="outline"
+          onClick={() => router.push('/dashboard/resident')}
+          disabled={isSaving}
+        >
+          Cancel
+        </EnhanceProfileButton>
+        <EnhanceProfileButton
+          role="resident"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? 'Saving...' : 'Save Changes'}
+        </EnhanceProfileButton>
+      </div>
+    </EnhanceProfileLayout>
   );
 }
