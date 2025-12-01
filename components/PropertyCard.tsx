@@ -60,7 +60,12 @@ function PropertyCard({
 
   // Calculate property matching score if searcher profile is provided
   const propertyMatchResult = useMemo(() => {
-    if (!searcherProfile) return null;
+    if (!searcherProfile) {
+      console.log('🚫 No searcher profile provided to PropertyCard');
+      return null;
+    }
+
+    console.log('🏠 PropertyCard calculating match for:', property.title, 'with profile:', searcherProfile);
 
     // Convert property to PropertyWithResidents format
     const propertyWithResidents: PropertyWithResidents = {
@@ -91,12 +96,16 @@ function PropertyCard({
       residents: [], // Residents would need full profile data
     };
 
-    return calculatePropertySearcherMatch(propertyWithResidents, searcherProfile);
+    const result = calculatePropertySearcherMatch(propertyWithResidents, searcherProfile);
+    console.log('📊 Match result:', result);
+    return result;
   }, [property, searcherProfile, residents]);
 
   // Use calculated match score or fallback to provided compatibilityScore
   const displayScore = propertyMatchResult?.score ?? compatibilityScore;
   const matchQuality = displayScore ? getPropertyMatchQuality(displayScore) : null;
+
+  console.log('🎯 PropertyCard display score:', displayScore, 'quality:', matchQuality, 'showCompatibilityScore:', showCompatibilityScore, 'hasSearcherProfile:', !!searcherProfile);
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
