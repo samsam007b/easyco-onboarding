@@ -132,6 +132,7 @@ struct MainTabView: View {
 // MARK: - Searcher Tab View
 
 struct SearcherTabView: View {
+    @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
     @State private var showSideMenu = false
@@ -149,7 +150,12 @@ struct SearcherTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "FFA040"))
@@ -176,7 +182,12 @@ struct SearcherTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "FFA040"))
@@ -203,7 +214,12 @@ struct SearcherTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "FFA040"))
@@ -230,7 +246,12 @@ struct SearcherTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "FFA040"))
@@ -257,7 +278,12 @@ struct SearcherTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "FFA040"))
@@ -291,24 +317,9 @@ struct SearcherTabView: View {
                 SettingsView()
             }
 
-            // Side menu overlay - MUST be after TabView to appear on top
-            if showSideMenu {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation {
-                            showSideMenu = false
-                        }
-                    }
-
-                HStack(spacing: 0) {
-                    SideMenuView(isShowing: $showSideMenu)
-                        .frame(width: 300)
-                        .transition(.move(edge: .leading))
-
-                    Spacer()
-                }
-            }
+            // Side menu - let it handle its own overlay and animations
+            SideMenuView(isShowing: $showSideMenu)
+                .zIndex(100)
         }
     }
 }
@@ -316,6 +327,7 @@ struct SearcherTabView: View {
 // MARK: - Owner Tab View
 
 struct OwnerTabView: View {
+    @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
     @State private var showSideMenu = false
@@ -332,7 +344,12 @@ struct OwnerTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "6E56CF"))
@@ -359,7 +376,12 @@ struct OwnerTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "6E56CF"))
@@ -386,7 +408,12 @@ struct OwnerTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "6E56CF"))
@@ -413,7 +440,12 @@ struct OwnerTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "6E56CF"))
@@ -440,7 +472,12 @@ struct OwnerTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "6E56CF"))
@@ -474,24 +511,9 @@ struct OwnerTabView: View {
                 SettingsView()
             }
 
-            // Side menu overlay - MUST be after TabView to appear on top
-            if showSideMenu {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation {
-                            showSideMenu = false
-                        }
-                    }
-
-                HStack(spacing: 0) {
-                    SideMenuView(isShowing: $showSideMenu)
-                        .frame(width: 300)
-                        .transition(.move(edge: .leading))
-
-                    Spacer()
-                }
-            }
+            // Side menu - let it handle its own overlay and animations
+            SideMenuView(isShowing: $showSideMenu)
+                .zIndex(100)
         }
     }
 }
@@ -527,7 +549,12 @@ struct ResidentTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "E8865D"))
@@ -554,7 +581,12 @@ struct ResidentTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "E8865D"))
@@ -581,7 +613,12 @@ struct ResidentTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "E8865D"))
@@ -608,7 +645,12 @@ struct ResidentTabView: View {
                             }
 
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: { showSideMenu = true }) {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        showSideMenu = true
+                                    }
+                                    Haptic.impact(.light)
+                                }) {
                                     Image(systemName: "line.3.horizontal")
                                         .font(.system(size: 18, weight: .medium))
                                         .foregroundColor(Color(hex: "E8865D"))
@@ -642,24 +684,9 @@ struct ResidentTabView: View {
                 SettingsView()
             }
 
-            // Side menu overlay - MUST be after TabView to appear on top
-            if showSideMenu {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation {
-                            showSideMenu = false
-                        }
-                    }
-
-                HStack(spacing: 0) {
-                    SideMenuView(isShowing: $showSideMenu)
-                        .frame(width: 300)
-                        .transition(.move(edge: .leading))
-
-                    Spacer()
-                }
-            }
+            // Side menu - let it handle its own overlay and animations
+            SideMenuView(isShowing: $showSideMenu)
+                .zIndex(100)
         }
     }
 }
