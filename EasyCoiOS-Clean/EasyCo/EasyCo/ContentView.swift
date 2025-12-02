@@ -142,7 +142,7 @@ struct SearcherTabView: View {
             TabView(selection: $selectedTab) {
                 // Dashboard - Main home screen
                 NavigationStack {
-                    PropertiesListView() // TODO: Replace with SearcherDashboardView when added to Xcode
+                    SearcherDashboardView()
                         .navigationTitle("Dashboard")
                         .toolbar {
                             ToolbarItem(placement: .navigationBarLeading) {
@@ -521,6 +521,7 @@ struct OwnerTabView: View {
 // MARK: - Resident Tab View
 
 struct ResidentTabView: View {
+    @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
     @State private var showSideMenu = false

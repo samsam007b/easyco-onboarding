@@ -174,27 +174,19 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
   return (
     <div className="px-4 pt-1 pb-2">
-      {/* Main Unified Card - Orange/Yellow dominant with better contrast */}
+      {/* Main Unified Card - Flat Modern Design */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E88A2D] via-[#F5A035] to-[#FFB85C] shadow-xl"
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 border-2 border-orange-600"
       >
-        {/* Grain texture overlay - reduced opacity */}
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }} />
-
-        {/* Subtle dark overlay for better text contrast */}
-        <div className="absolute inset-0 bg-black/5" />
-
-        <div className="relative z-10 p-4">
+        <div className="p-4">
           {/* Header: Profile + Quick actions */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white/50 shadow-lg">
+                <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
@@ -204,7 +196,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                       className="object-cover w-full h-full"
                     />
                   ) : (
-                    <div className="w-full h-full bg-white/30 flex items-center justify-center">
+                    <div className="w-full h-full bg-white/20 flex items-center justify-center">
                       <span className="text-white text-lg font-bold">
                         {userData.full_name.charAt(0)}
                       </span>
@@ -213,7 +205,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 </div>
                 {/* Profile completion badge */}
                 {stats.profileCompletion < 100 && (
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-md">
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full border-2 border-orange-500 flex items-center justify-center">
                     <span className="text-[9px] font-bold text-orange-600">{stats.profileCompletion}%</span>
                   </div>
                 )}
@@ -221,10 +213,10 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
               {/* Welcome text */}
               <div>
-                <h1 className="text-base font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+                <h1 className="text-base font-bold text-white">
                   Salut, {userData.full_name.split(' ')[0]} !
                 </h1>
-                <p className="text-xs text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
+                <p className="text-xs text-white/90 font-medium">
                   {preferences.cities.length > 0
                     ? `Recherche à ${preferences.cities.slice(0, 2).join(', ')}`
                     : 'Configure ta recherche'}
@@ -236,90 +228,92 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             <div className="flex gap-2">
               <button
                 onClick={() => router.push('/dashboard/my-profile')}
-                className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition backdrop-blur-sm"
+                className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition border border-white/30"
               >
                 <Edit3 className="w-4 h-4 text-white" />
               </button>
               <button
                 onClick={() => router.push('/settings')}
-                className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition backdrop-blur-sm"
+                className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition border border-white/30"
               >
                 <Settings className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>
 
-          {/* KPIs Row - Inline, compact with larger numbers */}
+          {/* KPIs Row - Flat design with borders */}
           <div className="grid grid-cols-4 gap-2 mb-3">
             {/* Groupes / Matchs */}
             <button
               onClick={() => router.push('/dashboard/searcher/groups')}
-              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center shadow-sm"
+              className="bg-white/20 hover:bg-white/30 border-2 border-white/30 rounded-xl py-3 px-2 transition text-center"
             >
-              <Users className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
-              <p className="text-xl font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.likedProfiles}</p>
-              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Groupes</p>
+              <Users className="w-5 h-5 text-white mx-auto mb-1" />
+              <p className="text-2xl font-bold text-white">{stats.likedProfiles}</p>
+              <p className="text-[10px] text-white font-semibold">Groupes</p>
             </button>
 
             {/* Favoris */}
             <button
               onClick={() => router.push('/dashboard/searcher/favorites')}
-              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center shadow-sm"
+              className="bg-white/20 hover:bg-white/30 border-2 border-white/30 rounded-xl py-3 px-2 transition text-center"
             >
-              <Bookmark className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
-              <p className="text-xl font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.favoritesCount}</p>
-              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Favoris</p>
+              <Bookmark className="w-5 h-5 text-white mx-auto mb-1" />
+              <p className="text-2xl font-bold text-white">{stats.favoritesCount}</p>
+              <p className="text-[10px] text-white font-semibold">Favoris</p>
             </button>
 
             {/* Messages */}
             <button
               onClick={() => router.push('/dashboard/searcher/messages')}
-              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center relative shadow-sm"
+              className="bg-white/20 hover:bg-white/30 border-2 border-white/30 rounded-xl py-3 px-2 transition text-center relative"
             >
               {stats.unreadMessages > 0 && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-[8px] font-bold text-white">{stats.unreadMessages}</span>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center">
+                  <span className="text-[9px] font-bold text-white">{stats.unreadMessages}</span>
                 </div>
               )}
-              <MessageCircle className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
-              <p className="text-xl font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.unreadMessages}</p>
-              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Messages</p>
+              <MessageCircle className="w-5 h-5 text-white mx-auto mb-1" />
+              <p className="text-2xl font-bold text-white">{stats.unreadMessages}</p>
+              <p className="text-[10px] text-white font-semibold">Messages</p>
             </button>
 
             {/* Profil */}
             <button
               onClick={() => router.push('/dashboard/my-profile')}
-              className="bg-white/25 hover:bg-white/35 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center shadow-sm"
+              className="bg-white/20 hover:bg-white/30 border-2 border-white/30 rounded-xl py-3 px-2 transition text-center"
             >
               {stats.profileCompletion >= 100 ? (
-                <CheckCircle2 className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
+                <CheckCircle2 className="w-5 h-5 text-white mx-auto mb-1" />
               ) : (
-                <AlertCircle className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
+                <AlertCircle className="w-5 h-5 text-white mx-auto mb-1" />
               )}
-              <p className="text-xl font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">{stats.profileCompletion}%</p>
-              <p className="text-[10px] text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">Profil</p>
+              <p className="text-2xl font-bold text-white">{stats.profileCompletion}%</p>
+              <p className="text-[10px] text-white font-semibold">Profil</p>
             </button>
           </div>
 
-          {/* Collapsible Sections - Inside the card */}
-          <div className="space-y-1.5">
+          {/* Collapsible Sections - Flat design */}
+          <div className="space-y-2">
             {/* Ma Recherche Idéale */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
+            <div className="bg-white/20 border-2 border-white/30 rounded-xl overflow-hidden">
               <button
                 onClick={() => toggleSection('search')}
-                className="w-full px-3 py-2.5 flex items-center justify-between hover:bg-white/10 transition"
+                className="w-full px-3 py-3 flex items-center justify-between hover:bg-white/10 transition"
               >
-                <div className="flex items-center gap-2.5">
-                  <Target className="w-4 h-4 text-white drop-shadow-sm" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center border border-white/30">
+                    <Target className="w-4 h-4 text-white" />
+                  </div>
                   <div className="text-left">
-                    <p className="text-sm font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">Ma Recherche</p>
-                    <p className="text-xs text-white/90 font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                    <p className="text-sm font-bold text-white">Ma Recherche</p>
+                    <p className="text-xs text-white/90 font-medium">
                       <span className="font-bold">{preferences.minBudget}-{preferences.maxBudget}€</span> • {preferences.cities.slice(0, 2).join(', ') || 'Non défini'}
                     </p>
                   </div>
                 </div>
                 <ChevronDown className={cn(
-                  'w-4 h-4 text-white/70 transition-transform',
+                  'w-4 h-4 text-white transition-transform',
                   expandedSection === 'search' && 'rotate-180'
                 )} />
               </button>
@@ -331,26 +325,26 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="border-t border-white/10"
+                    className="border-t-2 border-white/20"
                   >
-                    <div className="p-3 space-y-2">
+                    <div className="p-3 space-y-3">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-white/80 flex items-center gap-2">
+                        <span className="text-white flex items-center gap-2 font-medium">
                           <Euro className="w-4 h-4" /> Budget
                         </span>
                         <span className="font-bold text-white text-base">{preferences.minBudget}€ - {preferences.maxBudget}€</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-white/80 flex items-center gap-2">
+                        <span className="text-white flex items-center gap-2 font-medium">
                           <MapPin className="w-4 h-4" /> Villes
                         </span>
-                        <span className="font-semibold text-white">{preferences.cities.join(', ') || 'Non définies'}</span>
+                        <span className="font-bold text-white">{preferences.cities.join(', ') || 'Non définies'}</span>
                       </div>
                       <Button
                         onClick={() => router.push('/onboarding/searcher-preferences')}
                         variant="ghost"
                         size="sm"
-                        className="w-full mt-2 rounded-full bg-white/20 hover:bg-white/30 text-white border-0"
+                        className="w-full mt-2 rounded-lg bg-white hover:bg-white/90 text-orange-600 font-semibold border-2 border-white"
                       >
                         <Edit3 className="w-3 h-3 mr-2" />
                         Modifier

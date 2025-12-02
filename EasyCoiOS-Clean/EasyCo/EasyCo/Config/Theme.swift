@@ -454,4 +454,33 @@ struct HapticFeedback {
     static func selection() {
         UISelectionFeedbackGenerator().selectionChanged()
     }
+
+    // MARK: - Convenience Methods
+
+    enum ImpactStyle {
+        case light, medium, heavy
+    }
+
+    enum NotificationStyle {
+        case success, warning, error
+    }
+
+    static func impact(_ style: ImpactStyle) {
+        switch style {
+        case .light: light()
+        case .medium: medium()
+        case .heavy: heavy()
+        }
+    }
+
+    static func notification(_ style: NotificationStyle) {
+        switch style {
+        case .success: success()
+        case .warning: warning()
+        case .error: error()
+        }
+    }
 }
+
+// Typealias for shorter syntax
+typealias Haptic = HapticFeedback

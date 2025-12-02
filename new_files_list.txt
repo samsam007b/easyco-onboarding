@@ -1,0 +1,35 @@
+# Phase 6: Dashboards
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Dashboard/SearcherDashboardView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Dashboard/OwnerDashboardView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Dashboard/ResidentDashboardView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Dashboard/DashboardViewModels.swift
+
+# Phase 6: Charts
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Charts/KPICard.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Charts/BarChart.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Charts/LineChart.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Charts/DonutChart.swift
+
+# Phase 7: Advanced Features
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Applications/ApplicationFormView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Applications/ApplicationStatusView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Applications/ApplicationViewModel.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Visits/VisitSchedulerView.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Reviews/ReviewsSystem.swift
+
+# Phase 8: Polish
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/UI/LoadingAndEmptyStates.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/UI/AccessibilityHelpers.swift
+
+# Backend Integration
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Networking/NetworkManager.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Networking/APIEndpoints.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Networking/WebSocketManager.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Services/AuthService.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Services/PropertyService.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Core/Services/MessagingService.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Properties/PropertiesViewModel.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Properties/SwipeViewModel.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Messaging/MessagesViewModel.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Properties/PropertiesListView+Integration.swift
+EasyCoiOS-Clean/EasyCo/EasyCo/Features/Auth/AuthFlowIntegration.swift
