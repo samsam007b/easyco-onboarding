@@ -19,12 +19,19 @@ export default function ResidentReviewPage() {
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
-    const basicInfo = safeLocalStorage.get('residentBasicInfo', {});
-    const lifestyle = safeLocalStorage.get('residentLifestyle', {});
+    const coreBasicInfo = safeLocalStorage.get('coreBasicInfo', {});
+    const coreDailyLife = safeLocalStorage.get('coreDailyLife', {});
+    const coreSocialPersonality = safeLocalStorage.get('coreSocialPersonality', {});
+    const coreValuesPreferences = safeLocalStorage.get('coreValuesPreferences', {});
     const livingSituation = safeLocalStorage.get('residentLivingSituation', {});
-    const personality = safeLocalStorage.get('residentPersonality', {});
 
-    setData({ basicInfo, lifestyle, livingSituation, personality });
+    setData({
+      coreBasicInfo,
+      coreDailyLife,
+      coreSocialPersonality,
+      coreValuesPreferences,
+      livingSituation
+    });
   }, []);
 
   const handleSubmit = async () => {
@@ -72,10 +79,11 @@ export default function ResidentReviewPage() {
       toast.success('Profile completed successfully!');
 
       // Clear localStorage after successful submission
-      safeLocalStorage.remove('residentBasicInfo');
-      safeLocalStorage.remove('residentLifestyle');
+      safeLocalStorage.remove('coreBasicInfo');
+      safeLocalStorage.remove('coreDailyLife');
+      safeLocalStorage.remove('coreSocialPersonality');
+      safeLocalStorage.remove('coreValuesPreferences');
       safeLocalStorage.remove('residentLivingSituation');
-      safeLocalStorage.remove('residentPersonality');
 
       // Redirect to property setup (final step before success)
       router.push('/onboarding/resident/property-setup');
@@ -109,63 +117,123 @@ export default function ResidentReviewPage() {
 
         <div className="space-y-4 mb-8">
           {/* Basic Info */}
-          {data.basicInfo && Object.keys(data.basicInfo).length > 0 && (
+          {data.coreBasicInfo && Object.keys(data.coreBasicInfo).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-3">
                 {resident.basicInfo?.stepLabel || 'Basic Information'}
               </h2>
               <dl className="space-y-2 text-sm">
-                {data.basicInfo.firstName && (
+                {data.coreBasicInfo.firstName && (
                   <div className="flex justify-between">
                     <dt>{resident.basicInfo?.firstName || 'First Name'}</dt>
-                    <dd className="font-medium">{data.basicInfo.firstName}</dd>
+                    <dd className="font-medium">{data.coreBasicInfo.firstName}</dd>
                   </div>
                 )}
-                {data.basicInfo.lastName && (
+                {data.coreBasicInfo.lastName && (
                   <div className="flex justify-between">
                     <dt>{resident.basicInfo?.lastName || 'Last Name'}</dt>
-                    <dd className="font-medium">{data.basicInfo.lastName}</dd>
+                    <dd className="font-medium">{data.coreBasicInfo.lastName}</dd>
                   </div>
                 )}
-                {data.basicInfo.dateOfBirth && (
+                {data.coreBasicInfo.dateOfBirth && (
                   <div className="flex justify-between">
                     <dt>{resident.basicInfo?.dateOfBirth || 'Date of Birth'}</dt>
-                    <dd className="font-medium">{data.basicInfo.dateOfBirth}</dd>
+                    <dd className="font-medium">{data.coreBasicInfo.dateOfBirth}</dd>
                   </div>
                 )}
-                {data.basicInfo.nationality && (
+                {data.coreBasicInfo.nationality && (
                   <div className="flex justify-between">
                     <dt>{resident.basicInfo?.nationality || 'Nationality'}</dt>
-                    <dd className="font-medium">{data.basicInfo.nationality}</dd>
+                    <dd className="font-medium">{data.coreBasicInfo.nationality}</dd>
                   </div>
                 )}
               </dl>
             </div>
           )}
 
-          {/* Lifestyle */}
-          {data.lifestyle && Object.keys(data.lifestyle).length > 0 && (
+          {/* Daily Life */}
+          {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-3">
-                {resident.lifestyle?.stepLabel || 'Lifestyle'}
+                Daily Life
               </h2>
               <dl className="space-y-2 text-sm">
-                {data.lifestyle.occupationStatus && (
+                {data.coreDailyLife.occupationStatus && (
                   <div className="flex justify-between">
-                    <dt>{resident.lifestyle?.occupationStatus || 'Occupation'}</dt>
-                    <dd className="font-medium capitalize">{data.lifestyle.occupationStatus}</dd>
+                    <dt>Occupation</dt>
+                    <dd className="font-medium capitalize">{data.coreDailyLife.occupationStatus.replace(/_/g, ' ')}</dd>
                   </div>
                 )}
-                {data.lifestyle.wakeUpTime && (
+                {data.coreDailyLife.wakeUpTime && (
                   <div className="flex justify-between">
-                    <dt>{resident.lifestyle?.wakeUpTime || 'Wake Up Time'}</dt>
-                    <dd className="font-medium capitalize">{data.lifestyle.wakeUpTime}</dd>
+                    <dt>Wake Up Time</dt>
+                    <dd className="font-medium capitalize">{data.coreDailyLife.wakeUpTime}</dd>
                   </div>
                 )}
-                {data.lifestyle.sleepTime && (
+                {data.coreDailyLife.sleepTime && (
                   <div className="flex justify-between">
-                    <dt>{resident.lifestyle?.sleepTime || 'Sleep Time'}</dt>
-                    <dd className="font-medium capitalize">{data.lifestyle.sleepTime}</dd>
+                    <dt>Sleep Time</dt>
+                    <dd className="font-medium capitalize">{data.coreDailyLife.sleepTime}</dd>
+                  </div>
+                )}
+                {data.coreDailyLife.workSchedule && (
+                  <div className="flex justify-between">
+                    <dt>Work Schedule</dt>
+                    <dd className="font-medium capitalize">{data.coreDailyLife.workSchedule}</dd>
+                  </div>
+                )}
+                {data.coreDailyLife.cleanliness && (
+                  <div className="flex justify-between">
+                    <dt>Cleanliness Level</dt>
+                    <dd className="font-medium">{data.coreDailyLife.cleanliness}/10</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          )}
+
+          {/* Social & Personality */}
+          {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-3">
+                Social Life
+              </h2>
+              <dl className="space-y-2 text-sm">
+                {data.coreSocialPersonality.socialEnergy !== undefined && (
+                  <div className="flex justify-between">
+                    <dt>Social Energy</dt>
+                    <dd className="font-medium">{data.coreSocialPersonality.socialEnergy}/10</dd>
+                  </div>
+                )}
+                {data.coreSocialPersonality.eventParticipationInterest && (
+                  <div className="flex justify-between">
+                    <dt>Event Participation</dt>
+                    <dd className="font-medium capitalize">{data.coreSocialPersonality.eventParticipationInterest}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          )}
+
+          {/* Values & Preferences */}
+          {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-3">
+                Values
+              </h2>
+              <dl className="space-y-2 text-sm">
+                {data.coreValuesPreferences.coreValues && data.coreValuesPreferences.coreValues.length > 0 && (
+                  <div>
+                    <dt className="mb-1">Core Values</dt>
+                    <dd className="font-medium">
+                      <div className="flex flex-wrap gap-1">
+                        {data.coreValuesPreferences.coreValues.map((value: string) => (
+                          <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs capitalize">
+                            {value}
+                          </span>
+                        ))}
+                      </div>
+                    </dd>
                   </div>
                 )}
               </dl>
@@ -195,28 +263,6 @@ export default function ResidentReviewPage() {
             </div>
           )}
 
-          {/* Personality */}
-          {data.personality && Object.keys(data.personality).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-3">
-                {resident.personality?.stepLabel || 'Personality'}
-              </h2>
-              <dl className="space-y-2 text-sm">
-                {data.personality.sociabilityLevel && (
-                  <div className="flex justify-between">
-                    <dt>{resident.personality?.sociabilityLevel || 'Sociability'}</dt>
-                    <dd className="font-medium capitalize">{data.personality.sociabilityLevel}</dd>
-                  </div>
-                )}
-                {data.personality.introvertExtrovertScale && (
-                  <div className="flex justify-between">
-                    <dt>{resident.personality?.introvertExtrovertScale || 'Introvert/Extrovert'}</dt>
-                    <dd className="font-medium">{data.personality.introvertExtrovertScale}/5</dd>
-                  </div>
-                )}
-              </dl>
-            </div>
-          )}
         </div>
 
         <button

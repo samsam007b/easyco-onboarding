@@ -22,16 +22,24 @@ export default function ReviewPage() {
   const [data, setData] = useState<any>({});
 
   useEffect(() => {
-    const basicInfo = safeLocalStorage.get('basicInfo', {});
-    const dailyHabits = safeLocalStorage.get('dailyHabits', {});
-    const homeLifestyle = safeLocalStorage.get('homeLifestyle', {});
-    const socialVibe = safeLocalStorage.get('socialVibe', {});
-    const idealColiving = safeLocalStorage.get('idealColiving', {});
+    // Load from new CORE localStorage keys
+    const coreBasicInfo = safeLocalStorage.get('coreBasicInfo', {});
+    const coreDailyLife = safeLocalStorage.get('coreDailyLife', {});
+    const coreSocialPersonality = safeLocalStorage.get('coreSocialPersonality', {});
+    const coreValuesPreferences = safeLocalStorage.get('coreValuesPreferences', {});
     const preferences = safeLocalStorage.get('preferences', {});
     const verification = safeLocalStorage.get('verification', {});
     const testerId = safeLocalStorage.get('tester_id', null);
 
-    setData({ basicInfo, dailyHabits, homeLifestyle, socialVibe, idealColiving, preferences, verification, testerId });
+    setData({
+      coreBasicInfo,
+      coreDailyLife,
+      coreSocialPersonality,
+      coreValuesPreferences,
+      preferences,
+      verification,
+      testerId
+    });
     setIsLoading(false);
   }, []);
 
@@ -115,21 +123,20 @@ export default function ReviewPage() {
         return;
       }
 
-      const isDependent = data.basicInfo?.isDependent === true;
+      const isDependent = data.coreBasicInfo?.isDependent === true;
 
       const lifestyleArray = [
-        data.dailyHabits?.isSmoker ? 'smoker' : 'non-smoker',
-        data.homeLifestyle?.cleanliness || '',
-        data.homeLifestyle?.hasPets ? 'has-pets' : 'no-pets',
-        data.socialVibe?.socialEnergy || '',
+        data.coreDailyLife?.smoking ? 'smoker' : 'non-smoker',
+        data.coreDailyLife?.cleanliness ? `cleanliness-${data.coreDailyLife.cleanliness}` : '',
+        data.coreDailyLife?.hasPets ? 'has-pets' : 'no-pets',
+        data.coreSocialPersonality?.socialEnergy ? `social-energy-${data.coreSocialPersonality.socialEnergy}` : '',
       ].filter(Boolean);
 
       const onboardingData = {
-        ...data.basicInfo,
-        ...data.dailyHabits,
-        ...data.homeLifestyle,
-        ...data.socialVibe,
-        ...data.idealColiving,
+        ...data.coreBasicInfo,
+        ...data.coreDailyLife,
+        ...data.coreSocialPersonality,
+        ...data.coreValuesPreferences,
         ...data.preferences,
         ...data.verification,
         lifestyle: lifestyleArray,
@@ -139,40 +146,40 @@ export default function ReviewPage() {
       if (isDependent) {
         const dependentProfileData = {
           parent_user_id: user.id,
-          profile_name: data.basicInfo.profileName,
-          relationship: data.basicInfo.relationship,
+          profile_name: data.coreBasicInfo.profileName,
+          relationship: data.coreBasicInfo.relationship,
           is_active: true,
-          first_name: data.basicInfo.firstName,
-          last_name: data.basicInfo.lastName,
-          date_of_birth: data.basicInfo.dateOfBirth,
-          nationality: data.basicInfo.nationality,
-          languages_spoken: data.basicInfo.languages,
-          occupation_status: data.dailyHabits?.occupationStatus,
-          field_of_study_or_work: data.dailyHabits?.fieldOfStudy,
-          institution_or_company: data.dailyHabits?.institution,
+          first_name: data.coreBasicInfo.firstName,
+          last_name: data.coreBasicInfo.lastName,
+          date_of_birth: data.coreBasicInfo.dateOfBirth,
+          nationality: data.coreBasicInfo.nationality,
+          languages_spoken: data.coreBasicInfo.languages,
+          occupation_status: data.coreDailyLife?.occupationStatus,
+          field_of_study_or_work: data.coreDailyLife?.fieldOfStudy,
+          institution_or_company: data.coreDailyLife?.institution,
           current_city: data.preferences?.currentCity,
           preferred_cities: data.preferences?.preferredCities,
           budget_min: data.preferences?.budgetMin,
           budget_max: data.preferences?.budgetMax,
           move_in_date: data.preferences?.moveInDate,
           preferred_accommodation: data.preferences?.accommodationType,
-          cleanliness_preference: data.homeLifestyle?.cleanlinessLevel,
-          is_smoker: data.dailyHabits?.isSmoker || false,
-          has_pets: data.homeLifestyle?.hasPets || false,
-          pet_types: data.homeLifestyle?.petTypes,
-          wake_up_time: data.dailyHabits?.wakeUpTime ? mapWakeUpTime(data.dailyHabits.wakeUpTime) : null,
-          sleep_time: data.dailyHabits?.sleepTime ? mapSleepTime(data.dailyHabits.sleepTime) : null,
-          introvert_extrovert_scale: data.socialVibe?.introvertExtrovertScale,
-          sociability_level: data.socialVibe?.socialEnergy ? mapSociabilityLevel(data.socialVibe.socialEnergy) : null,
-          shared_meals_interest: data.socialVibe?.sharedMealsInterest,
-          preferred_interaction_type: data.socialVibe?.interactionPreference ? mapPreferredInteractionType(data.socialVibe.interactionPreference) : null,
-          home_activity_level: data.socialVibe?.homeActivity ? mapHomeActivityLevel(data.socialVibe.homeActivity) : null,
-          bio: data.idealColiving?.bio,
-          about_me: data.idealColiving?.aboutMe,
-          looking_for: data.idealColiving?.lookingFor,
-          core_values: data.idealColiving?.coreValues,
-          important_qualities: data.idealColiving?.importantQualities,
-          deal_breakers: data.idealColiving?.dealBreakers,
+          cleanliness_preference: data.coreDailyLife?.cleanliness,
+          is_smoker: data.coreDailyLife?.smoking || false,
+          has_pets: data.coreDailyLife?.hasPets || false,
+          pet_types: data.coreDailyLife?.petType ? [data.coreDailyLife.petType] : null,
+          wake_up_time: data.coreDailyLife?.wakeUpTime ? mapWakeUpTime(data.coreDailyLife.wakeUpTime) : null,
+          sleep_time: data.coreDailyLife?.sleepTime ? mapSleepTime(data.coreDailyLife.sleepTime) : null,
+          introvert_extrovert_scale: data.coreSocialPersonality?.socialEnergy || 5,
+          sociability_level: data.coreSocialPersonality?.eventParticipationInterest || 'medium',
+          shared_meals_interest: data.coreSocialPersonality?.sharedMealsInterest,
+          preferred_interaction_type: 'independent_living',
+          home_activity_level: 'social',
+          bio: null,
+          about_me: null,
+          looking_for: null,
+          core_values: data.coreValuesPreferences?.coreValues,
+          important_qualities: null,
+          deal_breakers: null,
         };
 
         const { error: insertError } = await supabase
@@ -192,15 +199,14 @@ export default function ReviewPage() {
           .eq('id', user.id);
 
         safeLocalStorage.remove('searcherProfileType');
-        safeLocalStorage.remove('basicInfo');
-        safeLocalStorage.remove('dailyHabits');
-        safeLocalStorage.remove('homeLifestyle');
-        safeLocalStorage.remove('socialVibe');
-        safeLocalStorage.remove('idealColiving');
+        safeLocalStorage.remove('coreBasicInfo');
+        safeLocalStorage.remove('coreDailyLife');
+        safeLocalStorage.remove('coreSocialPersonality');
+        safeLocalStorage.remove('coreValuesPreferences');
         safeLocalStorage.remove('preferences');
         safeLocalStorage.remove('verification');
 
-        toast.success(`Profile for ${data.basicInfo.profileName} saved successfully!`);
+        toast.success(`Profile for ${data.coreBasicInfo.profileName} saved successfully!`);
         router.push('/dashboard/searcher');
       } else {
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
@@ -212,11 +218,10 @@ export default function ReviewPage() {
         toast.success('Profile saved successfully!');
       }
 
-      safeLocalStorage.remove('basicInfo');
-      safeLocalStorage.remove('dailyHabits');
-      safeLocalStorage.remove('homeLifestyle');
-      safeLocalStorage.remove('socialVibe');
-      safeLocalStorage.remove('idealColiving');
+      safeLocalStorage.remove('coreBasicInfo');
+      safeLocalStorage.remove('coreDailyLife');
+      safeLocalStorage.remove('coreSocialPersonality');
+      safeLocalStorage.remove('coreValuesPreferences');
       safeLocalStorage.remove('preferences');
       safeLocalStorage.remove('verification');
       safeLocalStorage.remove('searcherProfileType');
@@ -234,9 +239,9 @@ export default function ReviewPage() {
       backUrl="/onboarding/searcher/verification"
       backLabel={t('common.back')}
       progress={{
-        current: 8,
-        total: 8,
-        label: 'Étape 8 sur 8',
+        current: 6,
+        total: 6,
+        label: 'Étape 6 sur 6',
         stepName: t('onboarding.review.title'),
       }}
       isLoading={isLoading}
@@ -256,105 +261,177 @@ export default function ReviewPage() {
 
       <div className="space-y-4 mb-8">
         {/* Basic Info */}
-        {data.basicInfo && Object.keys(data.basicInfo).length > 0 && (
+        {data.coreBasicInfo && Object.keys(data.coreBasicInfo).length > 0 && (
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <User className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.basicInfoSection')}</h2>
             </div>
             <dl className="space-y-2 text-sm">
-              {data.basicInfo.firstName && (
+              {data.coreBasicInfo.firstName && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.firstNameLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.basicInfo.firstName}</dd>
+                  <dd className="font-medium text-gray-900">{data.coreBasicInfo.firstName}</dd>
                 </div>
               )}
-              {data.basicInfo.lastName && (
+              {data.coreBasicInfo.lastName && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.lastNameLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.basicInfo.lastName}</dd>
+                  <dd className="font-medium text-gray-900">{data.coreBasicInfo.lastName}</dd>
                 </div>
               )}
-              {data.basicInfo.dateOfBirth && (
+              {data.coreBasicInfo.dateOfBirth && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.dateOfBirthLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.basicInfo.dateOfBirth}</dd>
+                  <dd className="font-medium text-gray-900">{data.coreBasicInfo.dateOfBirth}</dd>
                 </div>
               )}
-              {data.basicInfo.nationality && (
+              {data.coreBasicInfo.nationality && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.nationalityLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.basicInfo.nationality}</dd>
+                  <dd className="font-medium text-gray-900">{data.coreBasicInfo.nationality}</dd>
                 </div>
               )}
-              {data.basicInfo.languages && (
+              {data.coreBasicInfo.languages && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.languagesLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.basicInfo.languages?.join(', ')}</dd>
+                  <dd className="font-medium text-gray-900">
+                    {Array.isArray(data.coreBasicInfo.languages)
+                      ? data.coreBasicInfo.languages.map((l: any) =>
+                          typeof l === 'string' ? l : l.display || l.canonicalEn || l.code
+                        ).join(', ')
+                      : data.coreBasicInfo.languages}
+                  </dd>
                 </div>
               )}
             </dl>
           </div>
         )}
 
-        {/* Daily Habits */}
-        {data.dailyHabits && Object.keys(data.dailyHabits).length > 0 && (
+        {/* Daily Life */}
+        {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Clock className="w-5 h-5 text-orange-600" />
-              <h2 className="font-semibold text-gray-900">{t('onboarding.review.dailyHabitsSection')}</h2>
+              <h2 className="font-semibold text-gray-900">Daily Life</h2>
             </div>
             <dl className="space-y-2 text-sm">
-              {data.dailyHabits.wakeUpTime && (
+              {data.coreDailyLife.occupationStatus && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">{t('onboarding.review.wakeUpLabel')}</dt>
-                  <dd className="font-medium text-gray-900 capitalize">{data.dailyHabits.wakeUpTime}</dd>
+                  <dt className="text-gray-600">Occupation</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.occupationStatus.replace(/_/g, ' ')}</dd>
                 </div>
               )}
-              {data.dailyHabits.sleepTime && (
+              {data.coreDailyLife.wakeUpTime && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">{t('onboarding.review.wakeUpLabel')}</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.wakeUpTime}</dd>
+                </div>
+              )}
+              {data.coreDailyLife.sleepTime && (
                 <div className="flex justify-between">
                   <dt className="text-gray-600">{t('onboarding.review.sleepLabel')}</dt>
-                  <dd className="font-medium text-gray-900 capitalize">{data.dailyHabits.sleepTime}</dd>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.sleepTime}</dd>
+                </div>
+              )}
+              {data.coreDailyLife.workSchedule && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Work Schedule</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.workSchedule}</dd>
                 </div>
               )}
               <div className="flex justify-between">
                 <dt className="text-gray-600">{t('onboarding.review.smokerLabel')}</dt>
-                <dd className="font-medium text-gray-900">{data.dailyHabits.isSmoker ? t('onboarding.review.yes') : t('onboarding.review.no')}</dd>
+                <dd className="font-medium text-gray-900">{data.coreDailyLife.smoking ? t('onboarding.review.yes') : t('onboarding.review.no')}</dd>
               </div>
+              {data.coreDailyLife.hasPets !== undefined && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Pets</dt>
+                  <dd className="font-medium text-gray-900">
+                    {data.coreDailyLife.hasPets
+                      ? `Yes${data.coreDailyLife.petType ? ` (${data.coreDailyLife.petType})` : ''}`
+                      : 'No'}
+                  </dd>
+                </div>
+              )}
+              {data.coreDailyLife.cleanliness && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Cleanliness Level</dt>
+                  <dd className="font-medium text-gray-900">{data.coreDailyLife.cleanliness}/10</dd>
+                </div>
+              )}
             </dl>
           </div>
         )}
 
-        {/* Ideal Coliving */}
-        {data.idealColiving && Object.keys(data.idealColiving).length > 0 && (
+        {/* Social & Personality */}
+        {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
+          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <div className="flex items-center gap-2 mb-3">
+              <Users className="w-5 h-5 text-orange-600" />
+              <h2 className="font-semibold text-gray-900">Social Life</h2>
+            </div>
+            <dl className="space-y-2 text-sm">
+              {data.coreSocialPersonality.socialEnergy !== undefined && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Social Energy</dt>
+                  <dd className="font-medium text-gray-900">{data.coreSocialPersonality.socialEnergy}/10</dd>
+                </div>
+              )}
+              {data.coreSocialPersonality.sharedMealsInterest !== undefined && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Shared Meals</dt>
+                  <dd className="font-medium text-gray-900">{data.coreSocialPersonality.sharedMealsInterest ? 'Interested' : 'Not interested'}</dd>
+                </div>
+              )}
+              {data.coreSocialPersonality.eventParticipationInterest && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Event Participation</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreSocialPersonality.eventParticipationInterest}</dd>
+                </div>
+              )}
+              {data.coreSocialPersonality.guestFrequency && (
+                <div className="flex justify-between">
+                  <dt className="text-gray-600">Guest Frequency</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreSocialPersonality.guestFrequency}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+
+        {/* Values & Preferences */}
+        {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Home className="w-5 h-5 text-orange-600" />
-              <h2 className="font-semibold text-gray-900">{t('onboarding.review.idealColivingSection')}</h2>
+              <h2 className="font-semibold text-gray-900">Values & Openness</h2>
             </div>
             <dl className="space-y-2 text-sm">
-              {data.idealColiving.colivingSize && (
-                <div className="flex justify-between">
-                  <dt className="text-gray-600">{t('onboarding.review.colivingSizeLabel')}</dt>
-                  <dd className="font-medium text-gray-900 capitalize">{data.idealColiving.colivingSize}</dd>
+              {data.coreValuesPreferences.coreValues && data.coreValuesPreferences.coreValues.length > 0 && (
+                <div>
+                  <dt className="text-gray-600 mb-1">Core Values</dt>
+                  <dd className="font-medium text-gray-900">
+                    <div className="flex flex-wrap gap-1">
+                      {data.coreValuesPreferences.coreValues.map((value: string) => (
+                        <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs capitalize">
+                          {value}
+                        </span>
+                      ))}
+                    </div>
+                  </dd>
                 </div>
               )}
-              {data.idealColiving.genderMix && (
+              {data.coreValuesPreferences.opennessToSharing && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">{t('onboarding.review.genderMixLabel')}</dt>
-                  <dd className="font-medium text-gray-900 capitalize">{data.idealColiving.genderMix.replace(/-/g, ' ')}</dd>
+                  <dt className="text-gray-600">Openness to Sharing</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreValuesPreferences.opennessToSharing.replace(/_/g, ' ')}</dd>
                 </div>
               )}
-              {data.idealColiving.minAge && (
+              {data.coreValuesPreferences.culturalOpenness && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">{t('onboarding.review.ageRangeLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.idealColiving.minAge} - {data.idealColiving.maxAge}</dd>
-                </div>
-              )}
-              {data.idealColiving.sharedSpaceImportance && (
-                <div className="flex justify-between">
-                  <dt className="text-gray-600">{t('onboarding.review.sharedSpaceLabel')}</dt>
-                  <dd className="font-medium text-gray-900">{data.idealColiving.sharedSpaceImportance}/10</dd>
+                  <dt className="text-gray-600">Cultural Openness</dt>
+                  <dd className="font-medium text-gray-900 capitalize">{data.coreValuesPreferences.culturalOpenness}</dd>
                 </div>
               )}
             </dl>
