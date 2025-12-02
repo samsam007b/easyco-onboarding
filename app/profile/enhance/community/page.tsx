@@ -217,19 +217,20 @@ export default function CommunityEventsPage() {
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-3 mt-8">
-        <EnhanceProfileButton
-          role="searcher"
-          onClick={handleContinue}
-          disabled={!canContinue}
-        >
-          Continue
-        </EnhanceProfileButton>
+      <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleSkip}
-          className="w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200 py-2"
+          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip for now
+          Skip
+          <span className="text-lg">→</span>
+        </button>
+        <button
+          onClick={handleContinue}
+          disabled={!canContinue}
+          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+        >
+          Continue
         </button>
       </div>
     </EnhanceProfileLayout>

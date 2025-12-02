@@ -206,21 +206,20 @@ export default function EnhanceValuesPage() {
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-8 flex gap-4">
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
+      <div className="mt-8 flex justify-between items-center gap-4">
+        <button
           onClick={handleSkip}
+          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           Skip
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
+          <span className="text-lg">→</span>
+        </button>
+        <button
           onClick={handleNext}
-          className="flex-1"
+          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
           Next
-        </EnhanceProfileButton>
+        </button>
       </div>
     </EnhanceProfileLayout>
   );
