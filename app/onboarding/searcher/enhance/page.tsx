@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { safeLocalStorage } from '@/lib/browser';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { User, Heart, Palette, Users, DollarSign, ShieldCheck, X } from 'lucide-react';
+import { User, Heart, Palette, Users, DollarSign, ShieldCheck, X, Music, Home, Dumbbell } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface EnhanceSection {
@@ -61,9 +61,36 @@ export default function OnboardingEnhanceMenu() {
       completed: false,
     },
     {
+      id: 'lifestyle-details',
+      title: 'Style de vie',
+      description: 'Musique, cuisine, communication',
+      icon: Music,
+      path: '/onboarding/searcher/enhance/lifestyle-details',
+      color: 'bg-teal-100 text-teal-600',
+      completed: false,
+    },
+    {
+      id: 'ideal-living',
+      title: 'Logement idéal',
+      description: 'Taille, mix, préférences',
+      icon: Home,
+      path: '/onboarding/searcher/enhance/ideal-living',
+      color: 'bg-cyan-100 text-cyan-600',
+      completed: false,
+    },
+    {
+      id: 'community-activities',
+      title: 'Activités',
+      description: 'Sport et vie communautaire',
+      icon: Dumbbell,
+      path: '/onboarding/searcher/enhance/community-activities',
+      color: 'bg-lime-100 text-lime-600',
+      completed: false,
+    },
+    {
       id: 'community',
       title: 'Communauté',
-      description: 'Votre vie sociale',
+      description: 'Événements et repas partagés',
       icon: Users,
       path: '/onboarding/searcher/enhance/community',
       color: 'bg-orange-100 text-orange-600',
@@ -118,6 +145,9 @@ export default function OnboardingEnhanceMenu() {
       'personality': 'extendedPersonality',
       'values': 'enhanceValues',
       'hobbies': 'enhanceHobbies',
+      'lifestyle-details': 'lifestyleDetails',
+      'ideal-living': 'idealLiving',
+      'community-activities': 'communityActivities',
       'community': 'communityEvents',
       'financial': 'financialInfo',
       'verification': 'verification',
@@ -168,6 +198,7 @@ export default function OnboardingEnhanceMenu() {
             </div>
             <Progress value={progressPercentage} className="h-2" />
           </div>
+
         </div>
       </header>
 
