@@ -360,6 +360,16 @@ html::after {
   }
 }
 
+/* Spin animation for rotating elements */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Pattern de points décoratifs pour l'overscroll */
 @keyframes dotPattern {
   0%, 100% {
