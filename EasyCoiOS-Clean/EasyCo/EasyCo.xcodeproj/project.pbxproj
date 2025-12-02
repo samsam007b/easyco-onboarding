@@ -51,10 +51,7 @@
 		F465F2102EDF79C700A64D6A /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E72EDF79C700A64D6A /* LanguageManager.swift */; };
 		F465F2152EDF79C700A64D6A /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E62EDF79C700A64D6A /* Language.swift */; };
 		F465F2172EDF79C700A64D6A /* AuthManager+OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1DB2EDF79C700A64D6A /* AuthManager+OAuth.swift */; };
-		F465F2182EDF79C700A64D6A /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1F52EDF79C700A64D6A /* PaymentService.swift */; };
 		F465F2192EDF79C700A64D6A /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1D92EDF79C700A64D6A /* AppleSignInManager.swift */; };
-		F465F21A2EDF79C700A64D6A /* Translations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E82EDF79C700A64D6A /* Translations.swift */; };
-		F465F21E2EDF79C700A64D6A /* SupabaseAuth+OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1DF2EDF79C700A64D6A /* SupabaseAuth+OAuth.swift */; };
 		F465F21F2EDF79C700A64D6A /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E32EDF79C700A64D6A /* HapticFeedback.swift */; };
 		F465F2232EDF79C700A64D6A /* SupabaseRealtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2042EDF79C700A64D6A /* SupabaseRealtime.swift */; };
 		F465F2262EDF79C700A64D6A /* GuestModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1DD2EDF79C700A64D6A /* GuestModeManager.swift */; };
@@ -62,7 +59,6 @@
 		F465F22B2EDF79C700A64D6A /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1F32EDF79C700A64D6A /* NotificationManager.swift */; };
 		F465F22F2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F22D2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift */; };
 		F465F2302EDF7A2A00A64D6A /* PropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F22E2EDF7A2A00A64D6A /* PropertiesViewModel.swift */; };
-		F465F2322EDF7A3800A64D6A /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2312EDF7A3800A64D6A /* MessagesViewModel.swift */; };
 		F465F2342EDF7A6200A64D6A /* AuthFlowIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2332EDF7A6200A64D6A /* AuthFlowIntegration.swift */; };
 		F46BC49D2EC2D716003F453A /* MessagesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4692EC2D70D003F453A /* MessagesListView.swift */; };
 		F46BC49E2EC2D716003F453A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC46B2EC2D70D003F453A /* LoginView.swift */; };
@@ -244,21 +240,17 @@
 		F465F1DB2EDF79C700A64D6A /* AuthManager+OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthManager+OAuth.swift"; sourceTree = "<group>"; };
 		F465F1DD2EDF79C700A64D6A /* GuestModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestModeManager.swift; sourceTree = "<group>"; };
 		F465F1DE2EDF79C700A64D6A /* SupabaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuth.swift; sourceTree = "<group>"; };
-		F465F1DF2EDF79C700A64D6A /* SupabaseAuth+OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SupabaseAuth+OAuth.swift"; sourceTree = "<group>"; };
 		F465F1E12EDF79C700A64D6A /* DeepLinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
 		F465F1E32EDF79C700A64D6A /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
 		F465F1E42EDF79C700A64D6A /* SwiftUI+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+UIKit.swift"; sourceTree = "<group>"; };
 		F465F1E62EDF79C700A64D6A /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		F465F1E72EDF79C700A64D6A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
-		F465F1E82EDF79C700A64D6A /* Translations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translations.swift; sourceTree = "<group>"; };
 		F465F1F32EDF79C700A64D6A /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		F465F1F52EDF79C700A64D6A /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		F465F2012EDF79C700A64D6A /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		F465F2022EDF79C700A64D6A /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		F465F2042EDF79C700A64D6A /* SupabaseRealtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRealtime.swift; sourceTree = "<group>"; };
 		F465F22D2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PropertiesListView+Integration.swift"; sourceTree = "<group>"; };
 		F465F22E2EDF7A2A00A64D6A /* PropertiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesViewModel.swift; sourceTree = "<group>"; };
-		F465F2312EDF7A3800A64D6A /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		F465F2332EDF7A6200A64D6A /* AuthFlowIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowIntegration.swift; sourceTree = "<group>"; };
 		F46BC4692EC2D70D003F453A /* MessagesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesListView.swift; sourceTree = "<group>"; };
 		F46BC46B2EC2D70D003F453A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -531,7 +523,6 @@
 				F465F1DB2EDF79C700A64D6A /* AuthManager+OAuth.swift */,
 				F465F1DD2EDF79C700A64D6A /* GuestModeManager.swift */,
 				F465F1DE2EDF79C700A64D6A /* SupabaseAuth.swift */,
-				F465F1DF2EDF79C700A64D6A /* SupabaseAuth+OAuth.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -558,7 +549,6 @@
 			children = (
 				F465F1E62EDF79C700A64D6A /* Language.swift */,
 				F465F1E72EDF79C700A64D6A /* LanguageManager.swift */,
-				F465F1E82EDF79C700A64D6A /* Translations.swift */,
 			);
 			path = i18n;
 			sourceTree = "<group>";
@@ -574,7 +564,6 @@
 		F465F1F62EDF79C700A64D6A /* Payment */ = {
 			isa = PBXGroup;
 			children = (
-				F465F1F52EDF79C700A64D6A /* PaymentService.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -652,7 +641,6 @@
 		F46BC4682EC2D70D003F453A /* Messages */ = {
 			isa = PBXGroup;
 			children = (
-				F465F2312EDF7A3800A64D6A /* MessagesViewModel.swift */,
 				F4C54BA42EDCFE3600A86C28 /* MessageTemplatesView.swift */,
 				F4C54BA22EDCFD8900A86C28 /* OwnerChatView.swift */,
 				F46BC4692EC2D70D003F453A /* MessagesListView.swift */,
@@ -1205,7 +1193,6 @@
 				F4C54B2B2EDCEE1300A86C28 /* EventDetailView.swift in Sources */,
 				F4C54B2C2EDCEE1300A86C28 /* TasksViewModel.swift in Sources */,
 				F4C54B2D2EDCEE1300A86C28 /* ExpensesView.swift in Sources */,
-				F465F2322EDF7A3800A64D6A /* MessagesViewModel.swift in Sources */,
 				F4C54B2E2EDCEE1300A86C28 /* CreateTaskView.swift in Sources */,
 				F4D17A802ECD183600FA5393 /* Notification.swift in Sources */,
 				F46BC4A42EC2D716003F453A /* ProfileView.swift in Sources */,
@@ -1288,10 +1275,7 @@
 				F465F2102EDF79C700A64D6A /* LanguageManager.swift in Sources */,
 				F465F2152EDF79C700A64D6A /* Language.swift in Sources */,
 				F465F2172EDF79C700A64D6A /* AuthManager+OAuth.swift in Sources */,
-				F465F2182EDF79C700A64D6A /* PaymentService.swift in Sources */,
 				F465F2192EDF79C700A64D6A /* AppleSignInManager.swift in Sources */,
-				F465F21A2EDF79C700A64D6A /* Translations.swift in Sources */,
-				F465F21E2EDF79C700A64D6A /* SupabaseAuth+OAuth.swift in Sources */,
 				F465F21F2EDF79C700A64D6A /* HapticFeedback.swift in Sources */,
 				F465F2232EDF79C700A64D6A /* SupabaseRealtime.swift in Sources */,
 				F465F2262EDF79C700A64D6A /* GuestModeManager.swift in Sources */,

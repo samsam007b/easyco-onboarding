@@ -70,16 +70,16 @@ extension View {
             .easyCoShadow(Theme.Shadows.small)
     }
 
-    /// Error alert
-    func errorAlert(error: Binding<NetworkError?>) -> some View {
-        self.alert("Erreur", isPresented: .constant(error.wrappedValue != nil)) {
-            Button("OK") {
-                error.wrappedValue = nil
-            }
-        } message: {
-            Text(error.wrappedValue?.userMessage ?? "Une erreur est survenue")
-        }
-    }
+    /// Error alert - Commented out due to missing NetworkError type
+    // func errorAlert(error: Binding<NetworkError?>) -> some View {
+    //     self.alert("Erreur", isPresented: .constant(error.wrappedValue != nil)) {
+    //         Button("OK") {
+    //             error.wrappedValue = nil
+    //         }
+    //     } message: {
+    //         Text(error.wrappedValue?.userMessage ?? "Une erreur est survenue")
+    //     }
+    // }
 }
 
 // MARK: - Rounded Corner Shape

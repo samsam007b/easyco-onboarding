@@ -72,19 +72,19 @@ struct EventDetailView: View {
 
     private var dateTimeSection: some View {
         VStack(spacing: 12) {
-            InfoRow(icon: "calendar", title: "Date", value: event.startDate.formatted(date: .long, time: .omitted))
+            EventInfoRow(icon: "calendar", title: "Date", value: event.startDate.formatted(date: .long, time: .omitted))
 
             if !event.isAllDay {
                 if let endDate = event.endDate {
-                    InfoRow(icon: "clock", title: "Heure", value: "\(event.startDate.formatted(date: .omitted, time: .shortened)) - \(endDate.formatted(date: .omitted, time: .shortened))")
+                    EventInfoRow(icon: "clock", title: "Heure", value: "\(event.startDate.formatted(date: .omitted, time: .shortened)) - \(endDate.formatted(date: .omitted, time: .shortened))")
                 } else {
-                    InfoRow(icon: "clock", title: "Heure", value: event.startDate.formatted(date: .omitted, time: .shortened))
+                    EventInfoRow(icon: "clock", title: "Heure", value: event.startDate.formatted(date: .omitted, time: .shortened))
                 }
-                InfoRow(icon: "hourglass", title: "Durée", value: event.formattedDuration)
+                EventInfoRow(icon: "hourglass", title: "Durée", value: event.formattedDuration)
             }
 
             if event.isRecurring, let pattern = event.recurrencePattern {
-                InfoRow(icon: "repeat", title: "Récurrence", value: pattern.displayName)
+                EventInfoRow(icon: "repeat", title: "Récurrence", value: pattern.displayName)
             }
         }
         .padding(16)
@@ -215,7 +215,7 @@ struct EventDetailView: View {
     }
 }
 
-struct InfoRow: View {
+struct EventInfoRow: View {
     let icon: String
     let title: String
     let value: String

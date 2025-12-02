@@ -167,7 +167,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
   if (isLoading) {
     return (
       <div className="animate-pulse p-4">
-        <div className="h-48 bg-gradient-to-br from-orange-100 to-orange-200 rounded-3xl" />
+        <div className="h-48 bg-[#FFF9E6]/40 rounded-3xl" />
       </div>
     );
   }
@@ -178,9 +178,9 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl backdrop-blur-xl bg-gradient-to-br from-yellow-100/60 via-amber-50/50 to-orange-50/40 border-2 border-yellow-300/60"
+        className="relative overflow-hidden rounded-2xl backdrop-blur-xl border-2 border-[#FFC107]/30"
         style={{
-          background: 'linear-gradient(135deg, rgba(254, 249, 195, 0.7) 0%, rgba(254, 243, 199, 0.6) 50%, rgba(255, 237, 213, 0.5) 100%)',
+          background: 'rgba(255, 249, 230, 0.5)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
@@ -191,7 +191,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             <div className="flex items-center gap-3">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-500/50 shadow-sm">
+                <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#FFC107]/50 shadow-sm">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
@@ -201,8 +201,8 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                       className="object-cover w-full h-full"
                     />
                   ) : (
-                    <div className="w-full h-full bg-yellow-200/40 flex items-center justify-center">
-                      <span className="text-yellow-800 text-lg font-bold">
+                    <div className="w-full h-full bg-[#FFF9E6] flex items-center justify-center">
+                      <span className="text-[#F9A825] text-lg font-bold">
                         {userData.full_name.charAt(0)}
                       </span>
                     </div>
@@ -210,8 +210,8 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 </div>
                 {/* Profile completion badge */}
                 {stats.profileCompletion < 100 && (
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full border-2 border-yellow-500 flex items-center justify-center shadow-sm">
-                    <span className="text-[9px] font-bold text-yellow-700">{stats.profileCompletion}%</span>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full border-2 border-[#FFC107] flex items-center justify-center shadow-sm">
+                    <span className="text-[9px] font-bold text-[#F9A825]">{stats.profileCompletion}%</span>
                   </div>
                 )}
               </div>
@@ -233,13 +233,13 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             <div className="flex gap-2">
               <button
                 onClick={() => router.push('/dashboard/my-profile')}
-                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-yellow-300/50 shadow-sm"
+                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-[#FFC107]/30 shadow-sm"
               >
                 <Edit3 className="w-4 h-4 text-gray-700" />
               </button>
               <button
                 onClick={() => router.push('/settings')}
-                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-yellow-300/50 shadow-sm"
+                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-[#FFC107]/30 shadow-sm"
               >
                 <Settings className="w-4 h-4 text-gray-700" />
               </button>
@@ -251,9 +251,9 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             {/* Groupes / Matchs */}
             <button
               onClick={() => router.push('/dashboard/searcher/groups')}
-              className="bg-white/50 hover:bg-white/70 border border-yellow-300/50 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
+              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
             >
-              <Users className="w-5 h-5 text-yellow-700 mx-auto mb-1" />
+              <Users className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
               <p className="text-2xl font-bold text-gray-900">{stats.likedProfiles}</p>
               <p className="text-[10px] text-gray-700 font-semibold">Groupes</p>
             </button>
@@ -261,9 +261,9 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             {/* Favoris */}
             <button
               onClick={() => router.push('/dashboard/searcher/favorites')}
-              className="bg-white/50 hover:bg-white/70 border border-yellow-300/50 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
+              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
             >
-              <Bookmark className="w-5 h-5 text-yellow-700 mx-auto mb-1" />
+              <Bookmark className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
               <p className="text-2xl font-bold text-gray-900">{stats.favoritesCount}</p>
               <p className="text-[10px] text-gray-700 font-semibold">Favoris</p>
             </button>
@@ -271,14 +271,14 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             {/* Messages */}
             <button
               onClick={() => router.push('/dashboard/searcher/messages')}
-              className="bg-white/50 hover:bg-white/70 border border-yellow-300/50 rounded-xl py-3 px-2 transition text-center relative shadow-sm backdrop-blur-sm"
+              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center relative shadow-sm backdrop-blur-sm"
             >
               {stats.unreadMessages > 0 && (
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center shadow-md">
                   <span className="text-[9px] font-bold text-white">{stats.unreadMessages}</span>
                 </div>
               )}
-              <MessageCircle className="w-5 h-5 text-yellow-700 mx-auto mb-1" />
+              <MessageCircle className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
               <p className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</p>
               <p className="text-[10px] text-gray-700 font-semibold">Messages</p>
             </button>
@@ -286,12 +286,12 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             {/* Profil */}
             <button
               onClick={() => router.push('/dashboard/my-profile')}
-              className="bg-white/50 hover:bg-white/70 border border-yellow-300/50 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
+              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
             >
               {stats.profileCompletion >= 100 ? (
                 <CheckCircle2 className="w-5 h-5 text-green-600 mx-auto mb-1" />
               ) : (
-                <AlertCircle className="w-5 h-5 text-yellow-700 mx-auto mb-1" />
+                <AlertCircle className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
               )}
               <p className="text-2xl font-bold text-gray-900">{stats.profileCompletion}%</p>
               <p className="text-[10px] text-gray-700 font-semibold">Profil</p>
@@ -301,14 +301,14 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
           {/* Collapsible Sections - Glassmorphism design */}
           <div className="space-y-2">
             {/* Ma Recherche Idéale */}
-            <div className="bg-white/50 border border-yellow-300/50 rounded-xl overflow-hidden shadow-sm backdrop-blur-sm">
+            <div className="bg-white/50 border border-[#FFC107]/30 rounded-xl overflow-hidden shadow-sm backdrop-blur-sm">
               <button
                 onClick={() => toggleSection('search')}
                 className="w-full px-3 py-3 flex items-center justify-between hover:bg-white/30 transition"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-yellow-100/60 flex items-center justify-center border border-yellow-300/50">
-                    <Target className="w-4 h-4 text-yellow-700" />
+                  <div className="w-8 h-8 rounded-lg bg-[#FFF9E6] flex items-center justify-center border border-[#FFC107]/30">
+                    <Target className="w-4 h-4 text-[#F9A825]" />
                   </div>
                   <div className="text-left">
                     <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
@@ -330,7 +330,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="border-t border-yellow-300/30"
+                    className="border-t border-[#FFC107]/20"
                   >
                     <div className="p-3 space-y-3 bg-white/30">
                       <div className="flex items-center justify-between text-sm">
@@ -349,7 +349,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                         onClick={() => router.push('/onboarding/searcher-preferences')}
                         variant="ghost"
                         size="sm"
-                        className="w-full mt-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold border border-yellow-600 shadow-sm"
+                        className="w-full mt-2 rounded-lg bg-[#FFC107] hover:bg-[#F9A825] text-white font-semibold border border-[#F9A825] shadow-sm"
                       >
                         <Edit3 className="w-3 h-3 mr-2" />
                         Modifier
