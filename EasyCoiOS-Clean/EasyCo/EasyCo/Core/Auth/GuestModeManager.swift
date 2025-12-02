@@ -169,82 +169,100 @@ struct LockedFeatureView: View {
     @State private var showLoginSheet = false
 
     var body: some View {
+        contentView
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(hex: "F9FAFB"))
+            .sheet(isPresented: $showLoginSheet) {
+                SignupView()
+            }
+    }
+
+    private var contentView: some View {
         VStack(spacing: 24) {
-            // Icon
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color(hex: "FFA040").opacity(0.1),
-                                Color(hex: "FFB85C").opacity(0.1)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 40))
-                    .foregroundColor(Color(hex: "FFA040"))
-            }
-
-            // Text Content
-            VStack(spacing: 12) {
-                let prompt = GuestModeManager.shared.showLoginPrompt(for: feature)
-
-                Text(prompt.title)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-                    .multilineTextAlignment(.center)
-
-                Text(prompt.message)
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
-
-            // CTA Button
-            Button(action: {
-                showLoginSheet = true
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Créer mon compte")
-                        .font(.system(size: 16, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(
-                    LinearGradient(
-                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C"), Color(hex: "FFD080")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .cornerRadius(999)
-                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
-            }
-            .padding(.horizontal, 32)
-
-            // Continue as guest
-            Button(action: {
-                // Dismiss back to browsing
-            }) {
-                Text("Continuer la navigation")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .underline()
-            }
+            lockIcon
+            textContent
+            ctaButton
+            guestButton
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(hex: "F9FAFB"))
-        .sheet(isPresented: $showLoginSheet) {
-            SignupView()
+    }
+
+    private var lockIcon: some View {
+        ZStack {
+            let gradientColors = [
+                Color(hex: "FFA040").opacity(0.1),
+                Color(hex: "FFB85C").opacity(0.1)
+            ]
+            let gradient = LinearGradient(
+                colors: gradientColors,
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+
+            Circle()
+                .fill(gradient)
+                .frame(width: 100, height: 100)
+
+            Image(systemName: "lock.fill")
+                .font(.system(size: 40))
+                .foregroundColor(Color(hex: "FFA040"))
+        }
+    }
+
+    private var textContent: some View {
+        VStack(spacing: 12) {
+            let prompt = GuestModeManager.shared.showLoginPrompt(for: feature)
+
+            Text(prompt.title)
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(Color(hex: "111827"))
+                .multilineTextAlignment(.center)
+
+            Text(prompt.message)
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "6B7280"))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+        }
+    }
+
+    private var ctaButton: some View {
+        Button(action: {
+            showLoginSheet = true
+        }) {
+            ctaButtonContent
+        }
+        .padding(.horizontal, 32)
+    }
+
+    private var ctaButtonContent: some View {
+        let buttonGradient = LinearGradient(
+            colors: [Color(hex: "FFA040"), Color(hex: "FFB85C"), Color(hex: "FFD080")],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+
+        return HStack(spacing: 8) {
+            Image(systemName: "person.fill")
+                .font(.system(size: 16, weight: .semibold))
+            Text("Créer mon compte")
+                .font(.system(size: 16, weight: .semibold))
+        }
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(buttonGradient)
+        .cornerRadius(999)
+        .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
+    }
+
+    private var guestButton: some View {
+        Button(action: {
+            // Dismiss back to browsing
+        }) {
+            Text("Continuer la navigation")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(Color(hex: "6B7280"))
+                .underline()
         }
     }
 }
