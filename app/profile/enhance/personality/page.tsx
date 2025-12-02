@@ -93,11 +93,11 @@ export default function ExtendedPersonalityPage() {
       personalityTraits,
     });
     toast.success('Personality details saved!');
-    router.push('/dashboard/my-profile');
+    router.push('/profile');
   };
 
   const handleCancel = () => {
-    router.push('/dashboard/my-profile');
+    router.push('/profile');
   };
 
   const interestOptions = [
@@ -113,7 +113,7 @@ export default function ExtendedPersonalityPage() {
   return (
     <EnhanceProfileLayout
       role="searcher"
-      backUrl="/dashboard/my-profile"
+      backUrl="/profile"
       backLabel="Back to Profile"
       progress={undefined}
       isLoading={isLoading}
@@ -206,22 +206,20 @@ export default function ExtendedPersonalityPage() {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-3 mt-8">
-        <EnhanceProfileButton
-          role="searcher"
-          variant="outline"
+      <div className="mt-8 flex justify-between items-center gap-4">
+        <button
           onClick={handleCancel}
-          className="flex-1"
+          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Cancel
-        </EnhanceProfileButton>
-        <EnhanceProfileButton
-          role="searcher"
+          Skip
+          <span className="text-lg">→</span>
+        </button>
+        <button
           onClick={handleSave}
-          className="flex-1"
+          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Save Changes
-        </EnhanceProfileButton>
+          Save
+        </button>
       </div>
     </EnhanceProfileLayout>
   );

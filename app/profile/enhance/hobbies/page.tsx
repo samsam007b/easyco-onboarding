@@ -80,24 +80,19 @@ export default function EnhanceHobbiesPage() {
 
   const handleNext = () => {
     safeLocalStorage.set('enhanceHobbies', { hobbies });
-    router.push('/profile/enhance/values');
+    router.push('/profile');
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/values');
+    router.push('/profile');
   };
 
   return (
     <EnhanceProfileLayout
       role="searcher"
-      backUrl="/profile/enhance/about"
-      backLabel="Back"
-      progress={{
-        current: 2,
-        total: 6,
-        label: 'Step 2 of 6',
-        stepName: 'Hobbies & Interests',
-      }}
+      backUrl="/profile"
+      backLabel="Back to Profile"
+      progress={undefined}
       isLoading={isLoading}
       loadingText="Loading your hobbies..."
     >
@@ -178,18 +173,19 @@ export default function EnhanceHobbiesPage() {
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-3 mt-8">
-        <button
-          onClick={handleNext}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-        >
-          Next
-        </button>
+      <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleSkip}
-          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip for now
+          Skip
+          <span className="text-lg">→</span>
+        </button>
+        <button
+          onClick={handleNext}
+          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+        >
+          Save
         </button>
       </div>
     </EnhanceProfileLayout>

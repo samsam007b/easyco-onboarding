@@ -175,29 +175,67 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {/* Avatar */}
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-white/70 shadow-lg flex items-center justify-center grain-medium overflow-hidden">
+              <motion.button
+                onClick={() => router.push('/dashboard/my-profile')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative group cursor-pointer"
+              >
+                {/* Circular progress ring */}
+                {stats.profileCompletion < 100 && (
+                  <svg className="absolute -inset-1 w-12 h-12 -rotate-90 transition-transform group-hover:rotate-0 duration-500">
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="22"
+                      stroke="#FFF9E6"
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="22"
+                      stroke="#FFC107"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 22}`}
+                      strokeDashoffset={`${2 * Math.PI * 22 * (1 - stats.profileCompletion / 100)}`}
+                      className="transition-all duration-500 group-hover:stroke-[#F9A825]"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                )}
+
+                {/* Avatar container */}
+                <div className="relative w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-white shadow-lg flex items-center justify-center overflow-hidden transition-transform group-hover:border-[#FFC107]/50">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
                       alt={userData.full_name}
                       width={40}
                       height={40}
-                      className="object-cover w-full h-full absolute inset-0"
+                      className="object-cover w-full h-full absolute inset-0 transition-transform group-hover:scale-110"
                     />
                   ) : (
-                    <span className="text-sm font-bold text-[#F9A825] relative z-10">
+                    <span className="text-sm font-bold text-[#F9A825] relative z-10 transition-all group-hover:scale-110">
                       {userData.full_name.charAt(0)}
                     </span>
                   )}
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-[#FFC107]/0 group-hover:bg-[#FFC107]/10 transition-all duration-300" />
                 </div>
-                {/* Profile completion badge */}
+
+                {/* Percentage tooltip on hover */}
                 {stats.profileCompletion < 100 && (
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full border-2 border-[#FFC107] flex items-center justify-center shadow-sm">
-                    <span className="text-[9px] font-bold text-[#F9A825]">{stats.profileCompletion}%</span>
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-gray-900 text-white text-[10px] font-bold px-2 py-1 rounded whitespace-nowrap">
+                      {stats.profileCompletion}% complété
+                    </div>
                   </div>
                 )}
-              </div>
+              </motion.button>
 
               {/* Welcome text */}
               <div>

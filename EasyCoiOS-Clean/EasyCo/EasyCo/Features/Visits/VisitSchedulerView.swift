@@ -112,7 +112,7 @@ struct VisitSchedulerView: View {
                         .frame(width: 12, height: 12)
                         .foregroundColor(Theme.Colors.textTertiary)
 
-                    Text(property.location)
+                    Text("\(property.city), \(property.country)")
                         .font(Theme.Typography.bodySmall())
                         .foregroundColor(Theme.Colors.textSecondary)
                         .lineLimit(1)

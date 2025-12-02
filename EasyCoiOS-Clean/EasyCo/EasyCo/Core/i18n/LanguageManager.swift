@@ -36,13 +36,21 @@ class LanguageManager: ObservableObject {
 
     /// Gets a translation for a key in the current language
     func translate(_ key: String) -> String {
-        Translations.t(key, language: currentLanguage)
+        // TODO: Implement real translation system
+        // For now, return the key as-is
+        return key
+        // Translations.t(key, language: currentLanguage)
     }
 
+    // TODO: Re-enable when TranslationSections is implemented
+    /*
     /// Gets a section of translations in the current language
     func getSection<T>(_ keyPath: KeyPath<TranslationSections, T>) -> T {
-        Translations.getSection(keyPath, language: currentLanguage)
+        // TODO: Implement real translation sections
+        fatalError("Translation sections not yet implemented")
+        // Translations.getSection(keyPath, language: currentLanguage)
     }
+    */
 
     // MARK: - Private Methods
 
