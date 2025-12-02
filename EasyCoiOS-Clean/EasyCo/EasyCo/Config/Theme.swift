@@ -364,7 +364,10 @@ struct Theme {
 }
 
 // MARK: - Color Extension for Hex
+// NOTE: Color.init(hex:) is now defined in Core/DesignSystem/DesignTokens.swift
+// This duplicate extension has been commented out to avoid ambiguity
 
+/*
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -391,6 +394,7 @@ extension Color {
         )
     }
 }
+*/
 
 // MARK: - View Extensions for Theme
 
