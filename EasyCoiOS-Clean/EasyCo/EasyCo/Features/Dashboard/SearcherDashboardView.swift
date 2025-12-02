@@ -473,7 +473,7 @@ enum VisitStatus {
     }
 }
 
-struct Application: Identifiable {
+struct DashboardApplication: Identifiable {
     let id: String
     let property: Property
     let status: ApplicationStatus
@@ -487,7 +487,7 @@ struct Application: Identifiable {
     }
 }
 
-enum ApplicationStatus {
+enum DashboardApplicationStatus {
     case pending
     case underReview
     case accepted
@@ -720,7 +720,7 @@ struct SavedSearchCard: View {
 }
 
 struct ApplicationCard: View {
-    let application: Application
+    let application: DashboardApplication
 
     var body: some View {
         HStack(spacing: 12) {

@@ -523,7 +523,7 @@ private func formatDateShort(_ date: Date) -> String {
 
 // MARK: - Quick Action Card
 
-struct QuickActionCard: View {
+struct ResidentQuickActionCard: View {
     let icon: String
     let title: String
     let color: Color

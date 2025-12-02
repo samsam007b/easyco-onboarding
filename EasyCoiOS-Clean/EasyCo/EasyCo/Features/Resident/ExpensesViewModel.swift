@@ -29,7 +29,7 @@ class ExpensesViewModel: ObservableObject {
     @Published var selectedSort: ExpenseSort = .dateDescending
     @Published var searchText = ""
     @Published var selectedCategory: ExpenseCategory?
-    @Published var selectedPeriod: TimePeriod = .month
+    @Published var selectedPeriod: ExpenseTimePeriod = .month
 
     // Stats
     @Published var totalExpenses: Double = 0
@@ -373,7 +373,7 @@ enum ExpenseSort: String, CaseIterable {
     }
 }
 
-enum TimePeriod: String, CaseIterable {
+enum ExpenseTimePeriod: String, CaseIterable {
     case week = "week"
     case month = "month"
     case year = "year"

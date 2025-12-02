@@ -12,7 +12,7 @@ import SwiftUI
 
 /// This is the root view that handles authentication state
 /// Replace your current App's main view with this pattern
-struct RootView: View {
+struct AuthRootView: View {
     @StateObject private var authService = AuthService.shared
     @StateObject private var webSocketManager = WebSocketManager.shared
 

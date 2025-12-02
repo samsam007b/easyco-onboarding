@@ -5528,12 +5528,12 @@ function SearcherDashboardSection() {
 
             {/* Dashboard Preview */}
             <div className="relative overflow-hidden rounded-2xl" style={{
-              background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%)',
+              background: 'rgba(255, 249, 230, 0.8)',
             }}>
               {/* Multi-layer blur overlays */}
               <div className="absolute inset-0">
-                <div className="absolute top-10 left-1/4 w-32 h-32 bg-yellow-400/40 rounded-full blur-3xl" />
-                <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-amber-400/30 rounded-full blur-3xl" />
+                <div className="absolute top-10 left-1/4 w-32 h-32 bg-[#FFC107]/30 rounded-full blur-3xl" />
+                <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-[#F9A825]/20 rounded-full blur-3xl" />
               </div>
 
               {/* Grain texture overlay */}
@@ -5545,9 +5545,9 @@ function SearcherDashboardSection() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white/60 shadow-xl backdrop-blur-sm bg-white/50">
-                      <div className="w-full h-full bg-gradient-to-br from-yellow-200 to-amber-300 flex items-center justify-center">
-                        <span className="text-white text-lg font-bold">S</span>
+                    <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#FFC107]/50 shadow-xl backdrop-blur-sm bg-white/50">
+                      <div className="w-full h-full bg-[#FFF9E6] flex items-center justify-center">
+                        <span className="text-[#F9A825] text-lg font-bold">S</span>
                       </div>
                     </div>
                     <div>
@@ -5562,15 +5562,15 @@ function SearcherDashboardSection() {
                   {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
                     <div
                       key={label}
-                      className="relative overflow-hidden rounded-xl backdrop-blur-2xl bg-white/50 border border-white/60 py-2.5 px-2 shadow-lg hover:shadow-xl transition group"
+                      className="relative overflow-hidden rounded-xl backdrop-blur-2xl bg-white/50 border border-[#FFC107]/30 py-2.5 px-2 shadow-lg hover:shadow-xl transition group"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/30 via-transparent to-amber-200/20" />
+                      <div className="absolute inset-0 bg-[#FFF9E6]/20" />
                       <div className="relative text-center">
                         <div className={cn(
                           "w-6 h-6 rounded-lg mx-auto mb-1 flex items-center justify-center",
-                          "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200/50 grain-subtle"
+                          "bg-[#FFF9E6] border border-[#FFC107]/30 grain-subtle"
                         )}>
-                          <Users className="w-3.5 h-3.5 text-gray-700" />
+                          <Users className="w-3.5 h-3.5 text-[#F9A825]" />
                         </div>
                         <p className="text-lg font-bold text-gray-900">{i + 3}</p>
                         <p className="text-[10px] text-gray-700 font-medium">{label}</p>
@@ -5580,11 +5580,11 @@ function SearcherDashboardSection() {
                 </div>
 
                 {/* Collapsible Section Preview */}
-                <div className="bg-white/40 backdrop-blur-xl rounded-xl overflow-hidden shadow-md border border-white/50">
+                <div className="bg-white/40 backdrop-blur-xl rounded-xl overflow-hidden shadow-md border border-[#FFC107]/30">
                   <div className="px-3 py-2.5 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-200 to-amber-200 flex items-center justify-center grain-subtle border border-yellow-200/50">
-                        <Target className="w-3.5 h-3.5 text-gray-700" />
+                      <div className="w-6 h-6 rounded-full bg-[#FFF9E6] flex items-center justify-center grain-subtle border border-[#FFC107]/30">
+                        <Target className="w-3.5 h-3.5 text-[#F9A825]" />
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-900">Ma Recherche</p>
@@ -5628,7 +5628,7 @@ function SearcherDashboardSection() {
 
             {/* Dashboard Preview */}
             <div className="relative overflow-hidden rounded-2xl" style={{
-              background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
+              background: 'rgba(255, 249, 230, 0.6)',
             }}>
               <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
@@ -5638,13 +5638,13 @@ function SearcherDashboardSection() {
                 {/* Floating White Card with Glass Effect */}
                 <div className="relative rounded-3xl backdrop-blur-2xl bg-white/70 border border-white/80 shadow-2xl p-4 overflow-hidden">
                   {/* Gradient blob inside */}
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-yellow-200/60 to-amber-200/40 rounded-full blur-2xl" />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
 
                   <div className="relative">
                     {/* Profile Header */}
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 border-2 border-white/70 shadow-lg flex items-center justify-center grain-medium">
-                        <span className="text-sm font-bold text-gray-800">S</span>
+                      <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-white/70 shadow-lg flex items-center justify-center grain-medium">
+                        <span className="text-sm font-bold text-[#F9A825]">S</span>
                       </div>
                       <div>
                         <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
@@ -5655,20 +5655,20 @@ function SearcherDashboardSection() {
                     {/* Stats inline */}
                     <div className="grid grid-cols-4 gap-2">
                       {[
-                        { label: 'Groupes', value: '5', icon: Users, color: 'from-yellow-50 to-amber-50' },
-                        { label: 'Favoris', value: '12', icon: Home, color: 'from-amber-50 to-yellow-50' },
-                        { label: 'Messages', value: '3', icon: MessageCircle, color: 'from-yellow-50 to-amber-50' },
-                        { label: 'Profil', value: '85%', icon: Target, color: 'from-amber-50 to-yellow-50' }
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
                           <div key={stat.label} className={cn(
-                            "relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-yellow-200/40",
-                            `bg-gradient-to-br ${stat.color}`
+                            "relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFC107]/30",
+                            "bg-[#FFF9E6]"
                           )}>
                             <div className="absolute inset-0 grain-subtle opacity-40" />
                             <div className="relative">
-                              <Icon className="w-4 h-4 mx-auto mb-1 text-gray-700" />
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
                               <p className="text-base font-bold text-gray-900">{stat.value}</p>
                               <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
                             </div>
@@ -5727,8 +5727,8 @@ function SearcherDashboardSection() {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl overflow-hidden border border-gray-200">
-                      <div className="w-full h-full bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center grain-medium">
-                        <span className="text-white text-lg font-bold text-gray-700">S</span>
+                      <div className="w-full h-full bg-[#FFF9E6] flex items-center justify-center grain-medium">
+                        <span className="text-white text-lg font-bold text-[#F9A825]">S</span>
                       </div>
                     </div>
                     <div>
@@ -5743,15 +5743,15 @@ function SearcherDashboardSection() {
                   {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
                     <div
                       key={label}
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200/60 py-2.5 px-2 hover:from-yellow-100 hover:to-amber-100 transition-colors"
+                      className="relative overflow-hidden rounded-2xl bg-[#FFF9E6] border border-[#FFC107]/40 py-2.5 px-2 hover:bg-[#FFF9E6]/80 transition-colors"
                     >
                       <div className="absolute inset-0 grain-subtle opacity-50" />
                       <div className="relative text-center">
                         <div className={cn(
-                          "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border border-yellow-200/70",
-                          "bg-gradient-to-br from-yellow-100 to-amber-100 grain-medium"
+                          "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border border-[#FFC107]/40",
+                          "bg-[#FFF9E6] grain-medium"
                         )}>
-                          <Users className="w-4 h-4 text-gray-700" />
+                          <Users className="w-4 h-4 text-[#F9A825]" />
                         </div>
                         <p className="text-xl font-bold text-gray-900">{i + 3}</p>
                         <p className="text-[10px] text-gray-600 font-medium">{label}</p>
@@ -5761,12 +5761,12 @@ function SearcherDashboardSection() {
                 </div>
 
                 {/* Collapsible Section */}
-                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl overflow-hidden border border-yellow-200/60 relative">
+                <div className="bg-[#FFF9E6] rounded-2xl overflow-hidden border border-[#FFC107]/40 relative">
                   <div className="absolute inset-0 grain-subtle opacity-40" />
                   <div className="relative px-3 py-2.5 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200/70 flex items-center justify-center grain-medium">
-                        <Target className="w-4 h-4 text-gray-700" />
+                      <div className="w-7 h-7 rounded-xl bg-[#FFF9E6] border border-[#FFC107]/40 flex items-center justify-center grain-medium">
+                        <Target className="w-4 h-4 text-[#F9A825]" />
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-900">Ma Recherche</p>
@@ -5811,8 +5811,8 @@ function SearcherDashboardSection() {
             {/* Dashboard Preview */}
             <div className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl relative overflow-hidden">
               {/* Background gradient blobs */}
-              <div className="absolute top-0 left-1/4 w-32 h-32 bg-yellow-200/40 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-amber-200/30 rounded-full blur-3xl" />
+              <div className="absolute top-0 left-1/4 w-32 h-32 bg-[#FFF9E6]/60 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#FFC107]/20 rounded-full blur-3xl" />
 
               {/* Main Card */}
               <div className="relative bg-white rounded-3xl p-4 border-2 border-gray-200">
@@ -5824,9 +5824,9 @@ function SearcherDashboardSection() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-gray-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] grain-medium" />
+                        <div className="absolute inset-0 bg-[#FFF9E6] grain-medium" />
                         <div className="relative w-full h-full flex items-center justify-center">
-                          <span className="text-lg font-bold text-gray-700">S</span>
+                          <span className="text-lg font-bold text-[#F9A825]">S</span>
                         </div>
                       </div>
                       <div>
@@ -5839,26 +5839,20 @@ function SearcherDashboardSection() {
                   {/* KPI Grid */}
                   <div className="grid grid-cols-4 gap-2.5 mb-3">
                     {[
-                      { label: 'Groupes', value: '5', gradient: 'from-[#FEF3C7] to-[#FDE68A]' },
-                      { label: 'Favoris', value: '12', gradient: 'from-[#FDE68A] to-[#FCD34D]' },
-                      { label: 'Messages', value: '3', gradient: 'from-[#FEF3C7] to-[#FDE68A]' },
-                      { label: 'Profil', value: '85%', gradient: 'from-[#FDE68A] to-[#FCD34D]' }
+                      { label: 'Groupes', value: '5' },
+                      { label: 'Favoris', value: '12' },
+                      { label: 'Messages', value: '3' },
+                      { label: 'Profil', value: '85%' }
                     ].map((stat) => (
                       <div
                         key={stat.label}
                         className="relative overflow-hidden rounded-2xl border-2 border-gray-200 py-2.5"
                       >
-                        <div className={cn(
-                          "absolute inset-0 grain-medium opacity-60",
-                          `bg-gradient-to-br ${stat.gradient}`
-                        )} />
+                        <div className="absolute inset-0 grain-medium opacity-60 bg-[#FFF9E6]" />
                         <div className="relative text-center">
-                          <div className={cn(
-                            "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border-2 border-gray-300 overflow-hidden",
-                            `bg-gradient-to-br ${stat.gradient}`
-                          )}>
+                          <div className="w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border-2 border-gray-300 overflow-hidden bg-[#FFF9E6]">
                             <div className="absolute inset-0 grain-medium opacity-80" />
-                            <Users className="w-4 h-4 text-gray-700 relative z-10" />
+                            <Users className="w-4 h-4 text-[#F9A825] relative z-10" />
                           </div>
                           <p className="text-xl font-bold text-gray-900">{stat.value}</p>
                           <p className="text-[10px] text-gray-600 font-semibold">{stat.label}</p>
@@ -5869,13 +5863,13 @@ function SearcherDashboardSection() {
 
                   {/* Search Section */}
                   <div className="relative overflow-hidden rounded-2xl border-2 border-gray-200">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] grain-medium opacity-70" />
+                    <div className="absolute inset-0 bg-[#FFF9E6] grain-medium opacity-70" />
                     <div className="relative px-3 py-2.5 flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         <div className="relative w-7 h-7 rounded-xl border-2 border-gray-300 overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#FDE68A] to-[#FCD34D] grain-medium opacity-80" />
+                          <div className="absolute inset-0 bg-[#FFF9E6] grain-medium opacity-80" />
                           <div className="relative w-full h-full flex items-center justify-center">
-                            <Target className="w-4 h-4 text-gray-700" />
+                            <Target className="w-4 h-4 text-[#F9A825]" />
                           </div>
                         </div>
                         <div>

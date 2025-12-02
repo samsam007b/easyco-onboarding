@@ -652,7 +652,7 @@ enum MaintenancePriority {
 struct Document: Identifiable {
     let id: String
     let title: String
-    let type: DocumentType
+    let type: ResidentDocumentType
     let uploadedAt: Date
     let size: String
 
@@ -664,7 +664,7 @@ struct Document: Identifiable {
     }
 }
 
-enum DocumentType {
+enum ResidentDocumentType {
     case contract
     case inventory
     case receipt
