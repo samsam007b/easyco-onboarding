@@ -4,22 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   MessageCircle,
   Bookmark,
-  ChevronDown,
-  MapPin,
-  Euro,
   Users,
-  Settings,
   Target,
-  Edit3,
   CheckCircle2,
-  AlertCircle,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 interface SearcherDashboardCompactProps {
@@ -53,7 +45,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
   const supabase = createClient();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const [stats, setStats] = useState<DashboardStats>({
     favoritesCount: 0,
@@ -160,10 +151,6 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
     }
   };
 
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
-
   if (isLoading) {
     return (
       <div className="animate-pulse p-4">
@@ -174,38 +161,43 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
   return (
     <div className="px-4 pt-1 pb-2">
-      {/* Main Unified Card - Glassmorphism Design with Searcher Colors */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl backdrop-blur-xl border-2 border-[#FFC107]/30"
-        style={{
-          background: 'rgba(255, 249, 230, 0.5)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        }}
-      >
-        <div className="p-4">
+      {/* Background with grain texture */}
+      <div className="relative overflow-hidden rounded-2xl" style={{
+        background: 'rgba(255, 249, 230, 0.6)',
+      }}>
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }} />
+
+        <div className="relative p-5">
+          {/* Floating White Card with Glass Effect */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative overflow-hidden rounded-3xl backdrop-blur-2xl bg-white/70 border border-white/80 shadow-2xl p-4"
+          >
+            {/* Gradient blob inside */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
+
+            <div className="relative">
           {/* Header: Profile + Quick actions */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#FFC107]/50 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-white/70 shadow-lg flex items-center justify-center grain-medium overflow-hidden">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
                       alt={userData.full_name}
-                      width={48}
-                      height={48}
-                      className="object-cover w-full h-full"
+                      width={40}
+                      height={40}
+                      className="object-cover w-full h-full absolute inset-0"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[#FFF9E6] flex items-center justify-center">
-                      <span className="text-[#F9A825] text-lg font-bold">
-                        {userData.full_name.charAt(0)}
-                      </span>
-                    </div>
+                    <span className="text-sm font-bold text-[#F9A825] relative z-10">
+                      {userData.full_name.charAt(0)}
+                    </span>
                   )}
                 </div>
                 {/* Profile completion badge */}
@@ -218,151 +210,52 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
               {/* Welcome text */}
               <div>
-                <h1 className="text-base font-bold text-gray-900">
+                <h1 className="text-sm font-bold text-gray-900">
                   Salut, {userData.full_name.split(' ')[0]} !
                 </h1>
-                <p className="text-xs text-gray-700 font-medium">
+                <p className="text-[10px] text-gray-600">
                   {preferences.cities.length > 0
-                    ? `Recherche à ${preferences.cities.slice(0, 2).join(', ')}`
+                    ? `${preferences.cities.slice(0, 2).join(', ')} • ${preferences.minBudget}-${preferences.maxBudget}€`
                     : 'Configure ta recherche'}
                 </p>
               </div>
             </div>
-
-            {/* Quick actions */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => router.push('/dashboard/my-profile')}
-                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-[#FFC107]/30 shadow-sm"
-              >
-                <Edit3 className="w-4 h-4 text-gray-700" />
-              </button>
-              <button
-                onClick={() => router.push('/settings')}
-                className="p-2 rounded-lg bg-white/60 hover:bg-white/80 transition border border-[#FFC107]/30 shadow-sm"
-              >
-                <Settings className="w-4 h-4 text-gray-700" />
-              </button>
-            </div>
           </div>
 
-          {/* KPIs Row - Glassmorphism design */}
-          <div className="grid grid-cols-4 gap-2 mb-3">
-            {/* Groupes / Matchs */}
-            <button
-              onClick={() => router.push('/dashboard/searcher/groups')}
-              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
-            >
-              <Users className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
-              <p className="text-2xl font-bold text-gray-900">{stats.likedProfiles}</p>
-              <p className="text-[10px] text-gray-700 font-semibold">Groupes</p>
-            </button>
-
-            {/* Favoris */}
-            <button
-              onClick={() => router.push('/dashboard/searcher/favorites')}
-              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
-            >
-              <Bookmark className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
-              <p className="text-2xl font-bold text-gray-900">{stats.favoritesCount}</p>
-              <p className="text-[10px] text-gray-700 font-semibold">Favoris</p>
-            </button>
-
-            {/* Messages */}
-            <button
-              onClick={() => router.push('/dashboard/searcher/messages')}
-              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center relative shadow-sm backdrop-blur-sm"
-            >
-              {stats.unreadMessages > 0 && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-[9px] font-bold text-white">{stats.unreadMessages}</span>
-                </div>
-              )}
-              <MessageCircle className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
-              <p className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</p>
-              <p className="text-[10px] text-gray-700 font-semibold">Messages</p>
-            </button>
-
-            {/* Profil */}
-            <button
-              onClick={() => router.push('/dashboard/my-profile')}
-              className="bg-white/50 hover:bg-white/70 border border-[#FFC107]/30 rounded-xl py-3 px-2 transition text-center shadow-sm backdrop-blur-sm"
-            >
-              {stats.profileCompletion >= 100 ? (
-                <CheckCircle2 className="w-5 h-5 text-green-600 mx-auto mb-1" />
-              ) : (
-                <AlertCircle className="w-5 h-5 text-[#F9A825] mx-auto mb-1" />
-              )}
-              <p className="text-2xl font-bold text-gray-900">{stats.profileCompletion}%</p>
-              <p className="text-[10px] text-gray-700 font-semibold">Profil</p>
-            </button>
-          </div>
-
-          {/* Collapsible Sections - Glassmorphism design */}
-          <div className="space-y-2">
-            {/* Ma Recherche Idéale */}
-            <div className="bg-white/50 border border-[#FFC107]/30 rounded-xl overflow-hidden shadow-sm backdrop-blur-sm">
-              <button
-                onClick={() => toggleSection('search')}
-                className="w-full px-3 py-3 flex items-center justify-between hover:bg-white/30 transition"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#FFF9E6] flex items-center justify-center border border-[#FFC107]/30">
-                    <Target className="w-4 h-4 text-[#F9A825]" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
-                    <p className="text-xs text-gray-700 font-medium">
-                      <span className="font-bold">{preferences.minBudget}-{preferences.maxBudget}€</span> • {preferences.cities.slice(0, 2).join(', ') || 'Non défini'}
-                    </p>
-                  </div>
-                </div>
-                <ChevronDown className={cn(
-                  'w-4 h-4 text-gray-600 transition-transform',
-                  expandedSection === 'search' && 'rotate-180'
-                )} />
-              </button>
-
-              <AnimatePresence>
-                {expandedSection === 'search' && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="border-t border-[#FFC107]/20"
-                  >
-                    <div className="p-3 space-y-3 bg-white/30">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-700 flex items-center gap-2 font-medium">
-                          <Euro className="w-4 h-4" /> Budget
-                        </span>
-                        <span className="font-bold text-gray-900 text-base">{preferences.minBudget}€ - {preferences.maxBudget}€</span>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-700 flex items-center gap-2 font-medium">
-                          <MapPin className="w-4 h-4" /> Villes
-                        </span>
-                        <span className="font-bold text-gray-900">{preferences.cities.join(', ') || 'Non définies'}</span>
-                      </div>
-                      <Button
-                        onClick={() => router.push('/onboarding/searcher-preferences')}
-                        variant="ghost"
-                        size="sm"
-                        className="w-full mt-2 rounded-lg bg-[#FFC107] hover:bg-[#F9A825] text-white font-semibold border border-[#F9A825] shadow-sm"
-                      >
-                        <Edit3 className="w-3 h-3 mr-2" />
-                        Modifier
-                      </Button>
+          {/* Stats inline */}
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: 'Groupes', value: stats.likedProfiles.toString(), icon: Users, route: '/dashboard/searcher/groups' },
+              { label: 'Favoris', value: stats.favoritesCount.toString(), icon: Bookmark, route: '/dashboard/searcher/favorites' },
+              { label: 'Messages', value: stats.unreadMessages.toString(), icon: MessageCircle, route: '/dashboard/searcher/messages', badge: stats.unreadMessages },
+              { label: 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/my-profile' }
+            ].map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <button
+                  key={stat.label}
+                  onClick={() => router.push(stat.route)}
+                  className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFC107]/30 bg-[#FFF9E6] transition-transform hover:scale-105"
+                >
+                  <div className="absolute inset-0 grain-subtle opacity-40" />
+                  {stat.badge && stat.badge > 0 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center shadow-md z-10">
+                      <span className="text-[9px] font-bold text-white">{stat.badge}</span>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
+                  )}
+                  <div className="relative">
+                    <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
+                    <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                    <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
