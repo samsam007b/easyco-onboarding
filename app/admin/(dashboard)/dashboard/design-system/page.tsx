@@ -290,11 +290,11 @@ export default function AdminDesignSystemPage() {
    ============================================ */
 function GradientSignatureEditor() {
   // Gradient EXACT du bouton "S'inscrire" - 3 couleurs seulement (pas de rose!)
-  // Source: globals.css --gradient-brand: linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)
+  // Source: globals.css --gradient-brand: linear-gradient(135deg, #6E56CF 0%, #FF5722 50%, #FFC107 100%)
   const gradientColors = [
     { pos: 0, hex: '#6E56CF' },    // Mauve (owner-primary)
-    { pos: 50, hex: '#FF6F3C' },   // Orange (resident-primary) - au CENTRE
-    { pos: 100, hex: '#FFD249' },  // Jaune (searcher-primary)
+    { pos: 50, hex: '#FF5722' },   // Orange/Coral (resident-primary) - au CENTRE
+    { pos: 100, hex: '#FFC107' },  // Amber (searcher-primary)
   ];
 
   const hexToRgb = (hex: string) => {
@@ -381,8 +381,35 @@ function GradientSignatureEditor() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
+  // Charger la configuration sauvegardée au démarrage
+  useEffect(() => {
+    const savedConfig = localStorage.getItem('easyco-gradient-config');
+    if (savedConfig) {
+      try {
+        const config = JSON.parse(savedConfig);
+        if (config.owner) {
+          setOwnerPos(config.owner.pos);
+          setOwnerWidth(config.owner.width);
+          setOwnerDominant(config.owner.dominantIndex);
+        }
+        if (config.resident) {
+          setResidentPos(config.resident.pos);
+          setResidentWidth(config.resident.width);
+          setResidentDominant(config.resident.dominantIndex);
+        }
+        if (config.searcher) {
+          setSearcherPos(config.searcher.pos);
+          setSearcherWidth(config.searcher.width);
+          setSearcherDominant(config.searcher.dominantIndex);
+        }
+      } catch (e) {
+        console.error('Error loading gradient config:', e);
+      }
+    }
+  }, []);
+
   // Gradient EXACT comme dans globals.css (angle 135deg = oblique)
-  const signatureGradient = 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)';
+  const signatureGradient = 'linear-gradient(135deg, #6E56CF 0%, #FF5722 50%, #FFC107 100%)';
 
   const getRoleGradient = (pos: number, width: number) => {
     if (width <= 2) return getColorAtPosition(pos);
@@ -884,16 +911,16 @@ function ColorsSection() {
               location="globals.css, tailwind.config"
             />
             <ColorAuditCard
-              hex="#FF6F3C"
-              name="Resident Primary (Orange)"
+              hex="#FF5722"
+              name="Resident Primary (Orange/Coral)"
               usage="Couleur principale interface resident"
               justification="Couleur signature du gradient - centre. Evoque la chaleur, le foyer."
               status="keep"
               location="globals.css, tailwind.config"
             />
             <ColorAuditCard
-              hex="#FFD249"
-              name="Searcher Primary (Jaune)"
+              hex="#FFC107"
+              name="Searcher Primary (Amber)"
               usage="Couleur principale interface chercheur"
               justification="Couleur signature du gradient - fin. Evoque l'energie, la recherche."
               status="keep"
