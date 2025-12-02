@@ -268,22 +268,22 @@ export default function OnboardingIdealLivingPage() {
         {/* Info box */}
         <EnhanceProfileInfoBox role="searcher">
           <p className="text-sm text-gray-600">
-            💡 These preferences help us match you with properties and communities that fit your ideal living situation.
+            These preferences help us match you with properties and communities that fit your ideal living situation.
           </p>
         </EnhanceProfileInfoBox>
       </div>
 
       {/* Action Buttons */}
       <div className="space-y-3 mt-8">
-        <button
+        <EnhanceProfileButton
+          role="searcher"
           onClick={handleSave}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
-        </button>
+          Continue
+        </EnhanceProfileButton>
         <button
           onClick={handleSkip}
-          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+          className="w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200 py-2"
         >
           Skip for now
         </button>

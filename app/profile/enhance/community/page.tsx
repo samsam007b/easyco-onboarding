@@ -74,9 +74,9 @@ export default function CommunityEventsPage() {
   const canContinue = eventInterest !== '';
 
   const interestLevels = [
-    { value: 'low' as const, emoji: '😐', label: 'Low', description: 'Prefer quiet independence' },
-    { value: 'medium' as const, emoji: '😊', label: 'Medium', description: 'Occasional socializing' },
-    { value: 'high' as const, emoji: '🎉', label: 'High', description: 'Love community events!' },
+    { value: 'low' as const, label: 'Low', description: 'Prefer quiet independence' },
+    { value: 'medium' as const, label: 'Medium', description: 'Occasional socializing' },
+    { value: 'high' as const, label: 'High', description: 'Love community events!' },
   ];
 
   return (
@@ -120,7 +120,6 @@ export default function CommunityEventsPage() {
                     : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
                 }`}
               >
-                <span className="text-3xl">{level.emoji}</span>
                 <span className="font-semibold text-sm">{level.label}</span>
                 <span className={`text-xs text-center ${
                   eventInterest === level.value ? 'text-orange-100' : 'text-gray-500'
@@ -219,20 +218,16 @@ export default function CommunityEventsPage() {
 
       {/* Action Buttons */}
       <div className="space-y-3 mt-8">
-        <button
+        <EnhanceProfileButton
+          role="searcher"
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
-            canContinue
-              ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
-          }`}
         >
           Continue
-        </button>
+        </EnhanceProfileButton>
         <button
           onClick={handleSkip}
-          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
+          className="w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200 py-2"
         >
           Skip for now
         </button>
