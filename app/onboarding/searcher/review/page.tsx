@@ -132,13 +132,38 @@ export default function ReviewPage() {
         data.coreSocialPersonality?.socialEnergy ? `social-energy-${data.coreSocialPersonality.socialEnergy}` : '',
       ].filter(Boolean);
 
+      // Map CORE data to expected saveOnboardingData format
       const onboardingData = {
-        ...data.coreBasicInfo,
-        ...data.coreDailyLife,
-        ...data.coreSocialPersonality,
-        ...data.coreValuesPreferences,
+        // From coreBasicInfo
+        firstName: data.coreBasicInfo?.firstName,
+        lastName: data.coreBasicInfo?.lastName,
+        dateOfBirth: data.coreBasicInfo?.dateOfBirth,
+        nationality: data.coreBasicInfo?.nationality,
+        languagesSpoken: data.coreBasicInfo?.languages, // Map 'languages' to 'languagesSpoken'
+
+        // From coreDailyLife
+        occupationStatus: data.coreDailyLife?.occupationStatus,
+        workSchedule: data.coreDailyLife?.workSchedule,
+        earlyBirdNightOwl: data.coreDailyLife?.wakeUpTime, // Map wakeUpTime to earlyBirdNightOwl
+        isSmoker: data.coreDailyLife?.smoking,
+        hasPets: data.coreDailyLife?.hasPets,
+        petType: data.coreDailyLife?.petType,
+        cleanlinessPreference: data.coreDailyLife?.cleanliness, // Map cleanliness to cleanlinessPreference
+
+        // From coreSocialPersonality
+        introvertExtrovertScale: data.coreSocialPersonality?.socialEnergy, // Map socialEnergy to introvertExtrovertScale
+        sharedMealsFrequency: data.coreSocialPersonality?.sharedMealsInterest ? 'often' : 'never',
+        guestFrequency: data.coreSocialPersonality?.guestFrequency,
+
+        // From coreValuesPreferences
+        coreValues: data.coreValuesPreferences?.coreValues,
+
+        // From preferences (Searcher-specific)
         ...data.preferences,
+
+        // From verification
         ...data.verification,
+
         lifestyle: lifestyleArray,
         completedAt: new Date().toISOString()
       };

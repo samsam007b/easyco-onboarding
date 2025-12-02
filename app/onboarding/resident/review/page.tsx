@@ -47,6 +47,44 @@ export default function ResidentReviewPage() {
         return;
       }
 
+      // Map CORE data to expected saveOnboardingData format
+      const onboardingData = {
+        // From coreBasicInfo
+        firstName: data.coreBasicInfo?.firstName,
+        lastName: data.coreBasicInfo?.lastName,
+        dateOfBirth: data.coreBasicInfo?.dateOfBirth,
+        nationality: data.coreBasicInfo?.nationality,
+        languagesSpoken: data.coreBasicInfo?.languages,
+
+        // From coreDailyLife
+        occupationStatus: data.coreDailyLife?.occupationStatus,
+        workSchedule: data.coreDailyLife?.workSchedule,
+        earlyBirdNightOwl: data.coreDailyLife?.wakeUpTime,
+        isSmoker: data.coreDailyLife?.smoking,
+        hasPets: data.coreDailyLife?.hasPets,
+        petType: data.coreDailyLife?.petType,
+        cleanlinessPreference: data.coreDailyLife?.cleanliness,
+
+        // From coreSocialPersonality
+        introvertExtrovertScale: data.coreSocialPersonality?.socialEnergy,
+        sharedMealsFrequency: data.coreSocialPersonality?.sharedMealsInterest ? 'often' : 'never',
+        guestFrequency: data.coreSocialPersonality?.guestFrequency,
+
+        // From coreValuesPreferences
+        coreValues: data.coreValuesPreferences?.coreValues,
+
+        // From livingSituation
+        ...data.livingSituation,
+
+        completedAt: new Date().toISOString()
+      };
+
+      // Save onboarding data to user_profiles table
+      const saveResult = await saveOnboardingData(user.id, onboardingData, 'resident');
+      if (!saveResult.success) {
+        throw new Error('Failed to save profile data');
+      }
+
       // Mark onboarding as completed in users table AND set user_type
       const { error: userUpdateError } = await supabase
         .from('users')
