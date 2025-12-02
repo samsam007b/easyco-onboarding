@@ -12,15 +12,17 @@ import SwiftUI
 struct SideMenuView: View {
     @EnvironmentObject var authManager: AuthManager
     @Binding var isShowing: Bool
+    @State private var selectedDestination: AnyView?
+    @State private var showDestination = false
 
     var body: some View {
         ZStack {
             if isShowing {
                 // Background overlay
-                Color.black.opacity(0.3)
+                Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.3)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             isShowing = false
                         }
                     }
@@ -30,56 +32,42 @@ struct SideMenuView: View {
                     Spacer()
 
                     menuContent
-                        .frame(width: 320)
+                        .frame(width: 340)
                         .background(
-                            ZStack {
-                                // Gradient background
-                                LinearGradient(
-                                    colors: [
-                                        Color.white.opacity(0.95),
-                                        Color.white.opacity(0.90)
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-
-                                // Blur effect
-                                Rectangle()
-                                    .fill(.ultraThinMaterial)
-                            }
+                            LinearGradient(
+                                colors: [
+                                    Color(hex: "FAFAFA"),
+                                    Color(hex: "F5F5F5")
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
                         )
-                        .clipShape(RoundedCornersShape(corners: [.topLeft, .bottomLeft], radius: 32))
-                        .shadow(color: .black.opacity(0.15), radius: 30, x: -10, y: 0)
-                        .overlay(
-                            // Subtle border
-                            RoundedCornersShape(corners: [.topLeft, .bottomLeft], radius: 32)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [
-                                            Color.white.opacity(0.8),
-                                            Color.white.opacity(0.2)
-                                        ],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
-                        )
+                        .clipShape(RoundedCornersShape(corners: [.topLeft, .bottomLeft], radius: 0))
+                        .shadow(color: .black.opacity(0.2), radius: 40, x: -15, y: 0)
                 }
                 .transition(.move(edge: .trailing))
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: isShowing)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isShowing)
+        .fullScreenCover(isPresented: $showDestination) {
+            if let destination = selectedDestination {
+                NavigationStack {
+                    destination
+                }
+            }
+        }
     }
 
     private var menuContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
             menuHeader
+                .padding(.bottom, 8)
 
             // Menu items based on role
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 16) {
                     if let user = authManager.currentUser {
                         switch user.userType {
                         case .searcher:
@@ -91,9 +79,9 @@ struct SideMenuView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 24)
             }
-
-            Spacer()
 
             // Footer
             menuFooter
@@ -103,58 +91,94 @@ struct SideMenuView: View {
     // MARK: - Header
 
     private var menuHeader: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 20) {
+            // Close button
             HStack {
                 Spacer()
                 Button(action: {
-                    withAnimation {
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                         isShowing = false
                     }
                 }) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "6B7280"))
-                        .frame(width: 32, height: 32)
+                    ZStack {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 36, height: 36)
+                            .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+
+                        Image.lucide("xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 14, height: 14)
+                            .foregroundColor(Color(hex: "6B7280"))
+                    }
                 }
             }
-            .padding(.top, 16)
+            .padding(.top, 20)
             .padding(.horizontal, 20)
 
             // User profile section
-            HStack(spacing: 12) {
-                // Profile image
-                if let imageUrl = authManager.currentUser?.profileImageURL,
-                   !imageUrl.isEmpty,
-                   let url = URL(string: imageUrl) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    } placeholder: {
+            HStack(spacing: 14) {
+                // Profile image with gradient border
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 64, height: 64)
+
+                    if let imageUrl = authManager.currentUser?.profileImageURL,
+                       !imageUrl.isEmpty,
+                       let url = URL(string: imageUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        } placeholder: {
+                            profilePlaceholder
+                        }
+                        .frame(width: 60, height: 60)
+                        .clipShape(Circle())
+                    } else {
                         profilePlaceholder
+                            .frame(width: 60, height: 60)
                     }
-                    .frame(width: 56, height: 56)
-                    .clipShape(Circle())
-                } else {
-                    profilePlaceholder
-                        .frame(width: 56, height: 56)
                 }
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text("\(authManager.currentUser?.firstName ?? "") \(authManager.currentUser?.lastName ?? "")")
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.system(size: 17, weight: .bold))
                         .foregroundColor(Color(hex: "111827"))
+                        .lineLimit(1)
 
                     Text(authManager.currentUser?.email ?? "")
-                        .font(.system(size: 13))
-                        .foregroundColor(Color(hex: "6B7280"))
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(Color(hex: "9CA3AF"))
                         .lineLimit(1)
+
+                    // Role badge
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(Color(hex: "FFA040"))
+                            .frame(width: 6, height: 6)
+
+                        Text(authManager.currentUser?.userType.displayName ?? "")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "FFA040"))
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color(hex: "FFA040").opacity(0.1))
+                    .cornerRadius(12)
                 }
 
                 Spacer()
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 16)
         }
     }
 
@@ -170,7 +194,7 @@ struct SideMenuView: View {
                 )
 
             Text(initials)
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.white)
         }
     }
@@ -191,96 +215,106 @@ struct SideMenuView: View {
     // MARK: - Searcher Menu Items
 
     private var searcherMenuItems: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            MenuSection(title: "Recherche") {
-                MenuItem(icon: "magnifyingglass", title: "Explorer les propriétés", destination: AnyView(PropertiesListView()))
-                MenuItem(icon: "sparkles", title: "Mes Matchs", destination: AnyView(MatchesView()))
-                MenuItem(icon: "heart.fill", title: "Favoris", destination: AnyView(FavoritesView()))
-                MenuItem(icon: "bell.fill", title: "Alertes", destination: AnyView(AlertsView()))
-                MenuItem(icon: "bookmark.fill", title: "Recherches sauvegardées", destination: AnyView(SavedSearchesWrapper()))
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            MenuCard(title: "Recherche", items: [
+                MenuItemData(icon: "search", title: "Explorer les propriétés", destination: AnyView(PropertiesListView())),
+                MenuItemData(icon: "sparkles", title: "Mes Matchs", destination: AnyView(MatchesView())),
+                MenuItemData(icon: "heart", title: "Favoris", destination: AnyView(FavoritesView())),
+                MenuItemData(icon: "bell", title: "Alertes", destination: AnyView(AlertsView())),
+                MenuItemData(icon: "bookmark", title: "Recherches sauvegardées", destination: AnyView(SavedSearchesWrapper()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Mes candidatures") {
-                MenuItem(icon: "doc.text.fill", title: "Candidatures", destination: AnyView(MyApplicationsView()))
-                MenuItem(icon: "calendar.badge.clock", title: "Mes visites", destination: AnyView(MyVisitsView()))
-            }
+            MenuCard(title: "Mes candidatures", items: [
+                MenuItemData(icon: "file-text", title: "Candidatures", destination: AnyView(MyApplicationsView())),
+                MenuItemData(icon: "calendar-clock", title: "Mes visites", destination: AnyView(MyVisitsView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Social") {
-                MenuItem(icon: "person.3.fill", title: "Groupes", destination: AnyView(GroupsListView()))
-                MenuItem(icon: "message.fill", title: "Messages", destination: AnyView(MessagesListView()))
-            }
+            MenuCard(title: "Social", items: [
+                MenuItemData(icon: "users", title: "Groupes", destination: AnyView(GroupsListView())),
+                MenuItemData(icon: "message-circle", title: "Messages", destination: AnyView(MessagesListView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Mon compte") {
-                MenuItem(icon: "person.crop.circle", title: "Mon profil", destination: AnyView(ProfileView()))
-                MenuItem(icon: "slider.horizontal.3", title: "Préférences", destination: AnyView(PreferencesView()))
-                MenuItem(icon: "bell.badge", title: "Notifications", destination: AnyView(NotificationsListView()))
-                MenuItem(icon: "gear", title: "Paramètres", destination: AnyView(SettingsView()))
-            }
+            MenuCard(title: "Mon compte", items: [
+                MenuItemData(icon: "user", title: "Mon profil", destination: AnyView(ProfileView())),
+                MenuItemData(icon: "sliders-horizontal", title: "Préférences", destination: AnyView(PreferencesView())),
+                MenuItemData(icon: "bell", title: "Notifications", destination: AnyView(NotificationsListView())),
+                MenuItemData(icon: "settings", title: "Paramètres", destination: AnyView(SettingsView()))
+            ], onItemTap: handleItemTap)
         }
     }
 
     // MARK: - Owner Menu Items
 
     private var ownerMenuItems: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            MenuSection(title: "Gestion") {
-                MenuItem(icon: "chart.bar.fill", title: "Dashboard", destination: AnyView(OwnerDashboardView()))
-                MenuItem(icon: "building.2.fill", title: "Mes propriétés", destination: AnyView(OwnerPropertiesView()))
-                MenuItem(icon: "plus.square.fill", title: "Ajouter une propriété", destination: AnyView(CreatePropertyView()))
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            MenuCard(title: "Gestion", items: [
+                MenuItemData(icon: "bar-chart-2", title: "Dashboard", destination: AnyView(OwnerDashboardView())),
+                MenuItemData(icon: "building-2", title: "Mes propriétés", destination: AnyView(OwnerPropertiesView())),
+                MenuItemData(icon: "plus-square", title: "Ajouter une propriété", destination: AnyView(CreatePropertyView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Candidatures & Visites") {
-                MenuItem(icon: "doc.text.fill", title: "Candidatures", destination: AnyView(ApplicationsView()))
-                MenuItem(icon: "calendar.badge.clock", title: "Calendrier des visites", destination: AnyView(VisitScheduleView()))
-            }
+            MenuCard(title: "Candidatures & Visites", items: [
+                MenuItemData(icon: "file-text", title: "Candidatures", destination: AnyView(ApplicationsView())),
+                MenuItemData(icon: "calendar-clock", title: "Calendrier des visites", destination: AnyView(VisitScheduleView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Finances & Maintenance") {
-                MenuItem(icon: "eurosign.circle.fill", title: "Finances", destination: AnyView(OwnerFinanceView()))
-                MenuItem(icon: "wrench.and.screwdriver.fill", title: "Maintenance", destination: AnyView(MaintenanceView()))
-                MenuItem(icon: "hammer.fill", title: "Prestataires", destination: AnyView(ContractorsView()))
-            }
+            MenuCard(title: "Finances & Maintenance", items: [
+                MenuItemData(icon: "euro", title: "Finances", destination: AnyView(OwnerFinanceView())),
+                MenuItemData(icon: "wrench", title: "Maintenance", destination: AnyView(MaintenanceView())),
+                MenuItemData(icon: "hammer", title: "Prestataires", destination: AnyView(ContractorsView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Communication") {
-                MenuItem(icon: "message.fill", title: "Messages", destination: AnyView(MessagesListView()))
-                MenuItem(icon: "bell.badge", title: "Notifications", destination: AnyView(NotificationsListView()))
-            }
+            MenuCard(title: "Communication", items: [
+                MenuItemData(icon: "message-circle", title: "Messages", destination: AnyView(MessagesListView())),
+                MenuItemData(icon: "bell", title: "Notifications", destination: AnyView(NotificationsListView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Mon compte") {
-                MenuItem(icon: "person.crop.circle", title: "Mon profil", destination: AnyView(ProfileView()))
-                MenuItem(icon: "slider.horizontal.3", title: "Préférences", destination: AnyView(PreferencesView()))
-                MenuItem(icon: "gear", title: "Paramètres", destination: AnyView(SettingsView()))
-            }
+            MenuCard(title: "Mon compte", items: [
+                MenuItemData(icon: "user", title: "Mon profil", destination: AnyView(ProfileView())),
+                MenuItemData(icon: "sliders-horizontal", title: "Préférences", destination: AnyView(PreferencesView())),
+                MenuItemData(icon: "settings", title: "Paramètres", destination: AnyView(SettingsView()))
+            ], onItemTap: handleItemTap)
         }
     }
 
     // MARK: - Resident Menu Items
 
     private var residentMenuItems: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            MenuSection(title: "Mon espace") {
-                MenuItem(icon: "house.fill", title: "Hub", destination: AnyView(ResidentHubView()))
-                MenuItem(icon: "checklist", title: "Tâches", destination: AnyView(TasksView()))
-                MenuItem(icon: "calendar", title: "Calendrier", destination: AnyView(CalendarView()))
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            MenuCard(title: "Mon espace", items: [
+                MenuItemData(icon: "home", title: "Hub", destination: AnyView(ResidentHubView())),
+                MenuItemData(icon: "check-square", title: "Tâches", destination: AnyView(TasksView())),
+                MenuItemData(icon: "calendar", title: "Calendrier", destination: AnyView(CalendarView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Finances") {
-                MenuItem(icon: "creditcard.fill", title: "Dépenses", destination: AnyView(ExpensesView()))
-                MenuItem(icon: "chart.bar.fill", title: "Statistiques", destination: AnyView(ExpenseStatsView(viewModel: ExpensesViewModel())))
-                MenuItem(icon: "scale.3d", title: "Soldes", destination: AnyView(BalanceView(viewModel: ExpensesViewModel())))
-            }
+            MenuCard(title: "Finances", items: [
+                MenuItemData(icon: "credit-card", title: "Dépenses", destination: AnyView(ExpensesView())),
+                MenuItemData(icon: "bar-chart-2", title: "Statistiques", destination: AnyView(ExpenseStatsView(viewModel: ExpensesViewModel()))),
+                MenuItemData(icon: "scale", title: "Soldes", destination: AnyView(BalanceView(viewModel: ExpensesViewModel())))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Colocation") {
-                MenuItem(icon: "person.3.fill", title: "Colocataires", destination: AnyView(RoommatesView()))
-                MenuItem(icon: "megaphone.fill", title: "Annonces", destination: AnyView(AnnouncementsView()))
-                MenuItem(icon: "message.fill", title: "Messages", destination: AnyView(MessagesListView()))
-            }
+            MenuCard(title: "Colocation", items: [
+                MenuItemData(icon: "users", title: "Colocataires", destination: AnyView(RoommatesView())),
+                MenuItemData(icon: "megaphone", title: "Annonces", destination: AnyView(AnnouncementsView())),
+                MenuItemData(icon: "message-circle", title: "Messages", destination: AnyView(MessagesListView()))
+            ], onItemTap: handleItemTap)
 
-            MenuSection(title: "Mon compte") {
-                MenuItem(icon: "person.crop.circle", title: "Mon profil", destination: AnyView(ProfileView()))
-                MenuItem(icon: "slider.horizontal.3", title: "Préférences", destination: AnyView(PreferencesView()))
-                MenuItem(icon: "bell.badge", title: "Notifications", destination: AnyView(NotificationsListView()))
-                MenuItem(icon: "gear", title: "Paramètres", destination: AnyView(SettingsView()))
-            }
+            MenuCard(title: "Mon compte", items: [
+                MenuItemData(icon: "user", title: "Mon profil", destination: AnyView(ProfileView())),
+                MenuItemData(icon: "sliders-horizontal", title: "Préférences", destination: AnyView(PreferencesView())),
+                MenuItemData(icon: "bell", title: "Notifications", destination: AnyView(NotificationsListView())),
+                MenuItemData(icon: "settings", title: "Paramètres", destination: AnyView(SettingsView()))
+            ], onItemTap: handleItemTap)
+        }
+    }
+
+    private func handleItemTap(destination: AnyView) {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            isShowing = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            selectedDestination = destination
+            showDestination = true
         }
     }
 
@@ -289,24 +323,34 @@ struct SideMenuView: View {
     private var menuFooter: some View {
         VStack(spacing: 0) {
             Divider()
+                .background(Color(hex: "E5E7EB"))
+                .padding(.horizontal, 16)
 
             Button(action: {
-                withAnimation {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                     isShowing = false
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     Task {
                         await AuthManager.shared.logout()
                     }
                 }
             }) {
                 HStack(spacing: 12) {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                        .font(.system(size: 18))
-                        .foregroundColor(Color(hex: "EF4444"))
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "FEE2E2"))
+                            .frame(width: 36, height: 36)
+
+                        Image.lucide("log-out")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(Color(hex: "EF4444"))
+                    }
 
                     Text("Se déconnecter")
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(Color(hex: "EF4444"))
 
                     Spacer()
@@ -315,130 +359,157 @@ struct SideMenuView: View {
                 .padding(.vertical, 16)
             }
         }
+        .background(Color(hex: "FAFAFA"))
     }
 }
 
-// MARK: - Menu Section
+// MARK: - Menu Item Data
 
-struct MenuSection<Content: View>: View {
+struct MenuItemData {
+    let icon: String
     let title: String
-    @ViewBuilder let content: Content
+    let destination: AnyView
+}
+
+// MARK: - Menu Card
+
+struct MenuCard: View {
+    let title: String
+    let items: [MenuItemData]
+    let onItemTap: (AnyView) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Section title
             Text(title)
-                .font(.system(size: 11, weight: .semibold))
+                .font(.system(size: 12, weight: .bold))
                 .foregroundColor(Color(hex: "9CA3AF"))
                 .textCase(.uppercase)
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 8)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
 
-            content
+            // Card container
+            VStack(spacing: 0) {
+                ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                    ModernMenuItem(
+                        icon: item.icon,
+                        title: item.title,
+                        destination: item.destination,
+                        onTap: onItemTap
+                    )
+
+                    if index < items.count - 1 {
+                        Divider()
+                            .background(Color(hex: "F3F4F6"))
+                            .padding(.leading, 56)
+                    }
+                }
+            }
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
         }
     }
 }
 
-// MARK: - Menu Item
+// MARK: - Modern Menu Item
 
-struct MenuItem: View {
+struct ModernMenuItem: View {
     let icon: String
     let title: String
     let destination: AnyView
-    let iconColor: Color?
-    @Environment(\.dismiss) private var dismiss
-
-    init(icon: String, title: String, destination: AnyView, iconColor: Color? = nil) {
-        self.icon = icon
-        self.title = title
-        self.destination = destination
-        self.iconColor = iconColor
-    }
+    let onTap: (AnyView) -> Void
+    @State private var isPressed = false
 
     var body: some View {
-        NavigationLink(destination: destination) {
-            HStack(spacing: 16) {
-                // Icon only (no container background)
-                Image(systemName: icon)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(effectiveIconColor)
-                    .frame(width: 24)
+        Button(action: {
+            onTap(destination)
+        }) {
+            HStack(spacing: 14) {
+                // Icon with gradient background
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(
+                            LinearGradient(
+                                colors: [iconColor.opacity(0.15), iconColor.opacity(0.08)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 40, height: 40)
+
+                    Image.lucide(icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 18, height: 18)
+                        .foregroundColor(iconColor)
+                }
 
                 Text(title)
-                    .font(.system(size: 15))
+                    .font(.system(size: 15, weight: .medium))
                     .foregroundColor(Color(hex: "111827"))
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color(hex: "9CA3AF"))
+                Image.lucide("chevron-right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(Color(hex: "D1D5DB"))
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(isPressed ? Color(hex: "F9FAFB") : Color.clear)
         }
         .buttonStyle(PlainButtonStyle())
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in isPressed = true }
+                .onEnded { _ in isPressed = false }
+        )
     }
 
-    private var effectiveIconColor: Color {
-        iconColor ?? inferColorFromIcon()
-    }
-
-    // Infer color based on icon semantics (matching design system color palette)
-    private func inferColorFromIcon() -> Color {
-        // Navigation & Search - Orange (primary brand)
-        if icon.contains("magnifyingglass") || icon.contains("sparkles") {
-            return Color(hex: "FFA040") // Orange
+    private var iconColor: Color {
+        // Infer color based on icon semantics
+        if icon.contains("search") || icon.contains("sparkles") {
+            return Color(hex: "FFA040")
         }
-        // Favorites & Likes - Pink/Red
         if icon.contains("heart") {
-            return Color(hex: "EF4444") // Red
+            return Color(hex: "EF4444")
         }
-        // Alerts & Notifications - Blue
         if icon.contains("bell") {
-            return Color(hex: "3B82F6") // Blue
+            return Color(hex: "3B82F6")
         }
-        // Bookmarks & Saved - Purple
         if icon.contains("bookmark") {
-            return Color(hex: "6E56CF") // Purple
+            return Color(hex: "6E56CF")
         }
-        // Documents & Applications - Green
-        if icon.contains("doc") {
-            return Color(hex: "10B981") // Green
+        if icon.contains("file") || icon.contains("doc") {
+            return Color(hex: "10B981")
         }
-        // Calendar & Time - Amber
         if icon.contains("calendar") || icon.contains("clock") {
-            return Color(hex: "F59E0B") // Amber
+            return Color(hex: "F59E0B")
         }
-        // Social & Groups - Indigo
-        if icon.contains("person") {
-            return Color(hex: "6366F1") // Indigo
+        if icon.contains("user") || icon.contains("person") {
+            return Color(hex: "6366F1")
         }
-        // Messages - Sky Blue
         if icon.contains("message") {
-            return Color(hex: "0EA5E9") // Sky
+            return Color(hex: "0EA5E9")
         }
-        // Finance - Emerald
-        if icon.contains("eurosign") || icon.contains("creditcard") {
-            return Color(hex: "10B981") // Emerald
+        if icon.contains("euro") || icon.contains("credit") {
+            return Color(hex: "10B981")
         }
-        // Property & Building - Teal
-        if icon.contains("building") || icon.contains("house") {
-            return Color(hex: "14B8A6") // Teal
+        if icon.contains("building") || icon.contains("home") {
+            return Color(hex: "14B8A6")
         }
-        // Maintenance & Tools - Orange
         if icon.contains("wrench") || icon.contains("hammer") {
-            return Color(hex: "F97316") // Orange
+            return Color(hex: "F97316")
         }
-        // Settings - Gray
-        if icon.contains("gear") || icon.contains("slider") {
-            return Color(hex: "6B7280") // Gray
+        if icon.contains("settings") || icon.contains("sliders") {
+            return Color(hex: "6B7280")
         }
-        // Chart & Stats - Purple
-        if icon.contains("chart") {
-            return Color(hex: "8B5CF6") // Purple
+        if icon.contains("chart") || icon.contains("bar") {
+            return Color(hex: "8B5CF6")
         }
-        // Default to primary orange
         return Color(hex: "FFA040")
     }
 }

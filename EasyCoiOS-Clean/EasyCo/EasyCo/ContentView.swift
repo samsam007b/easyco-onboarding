@@ -7,6 +7,72 @@
 
 import SwiftUI
 
+// MARK: - Lucide Icon Helper
+
+extension Image {
+    /// Create a Lucide icon from SF Symbol name - maps to custom Lucide SVG assets
+    static func lucide(_ sfSymbolName: String) -> Image {
+        // Map SF Symbol names to Lucide icon names
+        let iconMapping: [String: String] = [
+            // TabBar icons
+            "house.fill": "home",
+            "magnifyingglass": "search",
+            "heart.fill": "heart",
+            "bell.fill": "bell",
+            "bookmark.fill": "bookmark",
+            // Menu icons
+            "doc.text.fill": "file-text",
+            "calendar.badge.clock": "calendar-clock",
+            "person.3.fill": "users",
+            "message.fill": "message-circle",
+            "person.crop.circle": "user",
+            "slider.horizontal.3": "sliders-horizontal",
+            "gear": "settings",
+            "chart.bar.fill": "bar-chart",
+            "building.2.fill": "building-2",
+            "eurosign.circle.fill": "euro",
+            "mappin.circle.fill": "map-pin",
+            "wrench.and.screwdriver.fill": "wrench",
+            "checklist": "list-checks",
+            "calendar": "calendar",
+            "creditcard.fill": "credit-card",
+            "megaphone.fill": "megaphone",
+            "sparkles": "sparkles",
+            // Profile icons
+            "person.fill": "user-circle",
+            "lock.fill": "lock",
+            "questionmark.circle.fill": "help-circle",
+            "rectangle.portrait.and.arrow.right": "log-out",
+            // Settings icons
+            "envelope.fill": "mail",
+            "key.fill": "key",
+            "globe": "globe",
+            "paintbrush.fill": "paintbrush",
+            "shield.fill": "shield",
+            // UI elements
+            "plus": "plus",
+            "plus.square.fill": "plus",
+            "trash": "trash-2",
+            "trash.fill": "trash-2",
+            "chevron.right": "chevron-right",
+            "chevron.left": "chevron-left",
+            "xmark": "x",
+            "bell.badge": "bell",
+            "hammer.fill": "wrench",
+            "message.badge.fill": "message-circle",
+        ]
+
+        let lucideName = iconMapping[sfSymbolName] ?? sfSymbolName
+
+        // Try to load from Assets, fall back to SF Symbol if not found
+        if UIImage(named: lucideName) != nil {
+            return Image(lucideName)
+        } else {
+            return Image(systemName: sfSymbolName)
+        }
+    }
+}
+
 // MARK: - Root View (Auth Router)
 
 struct RootView: View {
@@ -119,7 +185,12 @@ struct SearcherTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Explorer", systemImage: "magnifyingglass")
+                    Label {
+                        Text("Explorer")
+                    } icon: {
+                        Image.lucide("magnifyingglass")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(1)
 
@@ -141,7 +212,12 @@ struct SearcherTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Matchs", systemImage: "sparkles")
+                    Label {
+                        Text("Matchs")
+                    } icon: {
+                        Image.lucide("sparkles")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(2)
 
@@ -163,7 +239,12 @@ struct SearcherTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Favoris", systemImage: "heart.fill")
+                    Label {
+                        Text("Favoris")
+                    } icon: {
+                        Image.lucide("heart.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(3)
 
@@ -185,7 +266,12 @@ struct SearcherTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Messages", systemImage: "message.fill")
+                    Label {
+                        Text("Messages")
+                    } icon: {
+                        Image.lucide("message.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(4)
             }
@@ -282,7 +368,12 @@ struct OwnerTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Propriétés", systemImage: "building.2.fill")
+                    Label {
+                        Text("Propriétés")
+                    } icon: {
+                        Image.lucide("building.2.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(1)
 
@@ -304,7 +395,12 @@ struct OwnerTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Candidatures", systemImage: "doc.text.fill")
+                    Label {
+                        Text("Candidatures")
+                    } icon: {
+                        Image.lucide("doc.text.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(2)
 
@@ -326,7 +422,12 @@ struct OwnerTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Finances", systemImage: "eurosign.circle.fill")
+                    Label {
+                        Text("Finances")
+                    } icon: {
+                        Image.lucide("eurosign.circle.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(3)
 
@@ -348,7 +449,12 @@ struct OwnerTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Messages", systemImage: "message.fill")
+                    Label {
+                        Text("Messages")
+                    } icon: {
+                        Image.lucide("message.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(4)
             }
@@ -430,7 +536,12 @@ struct ResidentTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Tâches", systemImage: "checklist")
+                    Label {
+                        Text("Tâches")
+                    } icon: {
+                        Image.lucide("checklist")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(1)
 
@@ -452,7 +563,12 @@ struct ResidentTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Finances", systemImage: "creditcard.fill")
+                    Label {
+                        Text("Finances")
+                    } icon: {
+                        Image.lucide("creditcard.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(2)
 
@@ -474,7 +590,12 @@ struct ResidentTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Calendrier", systemImage: "calendar")
+                    Label {
+                        Text("Calendrier")
+                    } icon: {
+                        Image.lucide("calendar")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(3)
 
@@ -496,7 +617,12 @@ struct ResidentTabView: View {
                         }
                 }
                 .tabItem {
-                    Label("Messages", systemImage: "message.fill")
+                    Label {
+                        Text("Messages")
+                    } icon: {
+                        Image.lucide("message.fill")
+                            .renderingMode(.template)
+                    }
                 }
                 .tag(4)
             }

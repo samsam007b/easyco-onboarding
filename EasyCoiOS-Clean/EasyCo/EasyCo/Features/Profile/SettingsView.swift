@@ -136,8 +136,10 @@ struct SettingsView: View {
                         }
                     }) {
                         HStack(spacing: 12) {
-                            Image(systemName: "rectangle.portrait.and.arrow.right")
-                                .font(.system(size: 18))
+                            Image.lucide("rectangle.portrait.and.arrow.right")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 18, height: 18)
                                 .foregroundColor(Color(hex: "EF4444"))
 
                             Text("Se déconnecter")
@@ -178,8 +180,10 @@ struct SettingsView: View {
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .semibold))
+                        Image.lucide("xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
                             .foregroundColor(Color(hex: "6B7280"))
                     }
                 }
@@ -224,8 +228,10 @@ struct SettingsRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                Image(systemName: icon)
-                    .font(.system(size: 18))
+                Image.lucide(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 18, height: 18)
                     .foregroundColor(color)
                     .frame(width: 24)
 
@@ -241,8 +247,10 @@ struct SettingsRow: View {
                         .foregroundColor(Color(hex: "6B7280"))
                 }
 
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold))
+                Image.lucide("chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
                     .foregroundColor(Color(hex: "9CA3AF"))
             }
             .padding(16)
@@ -260,8 +268,10 @@ struct SettingsToggleRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 18))
+            Image.lucide(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
                 .foregroundColor(color)
                 .frame(width: 24)
 
@@ -380,8 +390,10 @@ struct RoleSwitcherView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .semibold))
+                        Image.lucide("xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
                             .foregroundColor(Color(hex: "6B7280"))
                     }
                 }

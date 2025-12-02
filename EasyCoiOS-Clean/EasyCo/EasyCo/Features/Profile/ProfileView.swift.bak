@@ -1,0 +1,1289 @@
+import SwiftUI
+
+// MARK: - Profile View
+
+struct ProfileView: View {
+    @EnvironmentObject var authManager: AuthManager
+    @State private var showEditProfile = false
+    @State private var showLogoutAlert = false
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: Theme.Spacing.lg) {
+                    // Header
+                    VStack(spacing: Theme.Spacing.md) {
+                        // Avatar
+                        if let profileImageURL = authManager.currentUser?.profileImageURL,
+                           let url = URL(string: profileImageURL) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                avatarPlaceholder
+                            }
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                        } else {
+                            avatarPlaceholder
+                        }
+
+                        // Name
+                        Text(displayName)
+                            .font(Theme.Typography.title2())
+                            .foregroundColor(Theme.Colors.textPrimary)
+
+                        // Email
+                        Text(authManager.currentUser?.email ?? "")
+                            .font(Theme.Typography.body())
+                            .foregroundColor(Theme.Colors.textSecondary)
+
+                        // Edit Button
+                        Button {
+                            showEditProfile = true
+                        } label: {
+                            Text("Modifier le profil")
+                                .font(Theme.Typography.body(.semibold))
+                                .foregroundColor(Theme.Colors.primary)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Theme.Colors.primary.opacity(0.1))
+                                .cornerRadius(Theme.CornerRadius.md)
+                        }
+                        .padding(.horizontal)
+                    }
+                    .padding(.top, Theme.Spacing.lg)
+
+                    // Menu Items
+                    VStack(spacing: 0) {
+                        NavigationLink(destination: MyInformationsView()) {
+                            ProfileMenuItemRow(icon: "person.fill", title: "Mes informations")
+                        }
+
+                        NavigationLink(destination: FavoritesView()) {
+                            ProfileMenuItemRow(icon: "heart.fill", title: "Mes favoris")
+                        }
+
+                        NavigationLink(destination: MyAnnouncementsView()) {
+                            ProfileMenuItemRow(icon: "doc.text.fill", title: "Mes annonces")
+                        }
+
+                        NavigationLink(destination: NotificationsListView()) {
+                            ProfileMenuItemRow(icon: "bell.fill", title: "Notifications")
+                        }
+
+                        NavigationLink(destination: PrivacySettingsView()) {
+                            ProfileMenuItemRow(icon: "lock.fill", title: "Confidentialité")
+                        }
+
+                        NavigationLink(destination: HelpView()) {
+                            ProfileMenuItemRow(icon: "questionmark.circle.fill", title: "Aide")
+                        }
+
+                        Divider()
+                            .padding(.vertical, Theme.Spacing.sm)
+
+                        ProfileMenuItem(icon: "rectangle.portrait.and.arrow.right", title: "Déconnexion", isDestructive: true) {
+                            showLogoutAlert = true
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .navigationTitle("Profil")
+            .sheet(isPresented: $showEditProfile) {
+                EditProfileView()
+            }
+            .alert("Déconnexion", isPresented: $showLogoutAlert) {
+                Button("Annuler", role: .cancel) {}
+                Button("Déconnexion", role: .destructive) {
+                    Task {
+                        await authManager.logout()
+                    }
+                }
+            } message: {
+                Text("Êtes-vous sûr de vouloir vous déconnecter ?")
+            }
+        }
+    }
+
+    private var displayName: String {
+        guard let user = authManager.currentUser else { return "" }
+
+        if let firstName = user.firstName, let lastName = user.lastName {
+            return "\(firstName) \(lastName)"
+        } else if let firstName = user.firstName {
+            return firstName
+        } else if let lastName = user.lastName {
+            return lastName
+        } else {
+            return user.email
+        }
+    }
+
+    private var initials: String {
+        guard let user = authManager.currentUser else { return "?" }
+
+        if let firstName = user.firstName, let lastName = user.lastName {
+            return "\(firstName.prefix(1))\(lastName.prefix(1))".uppercased()
+        } else if let firstName = user.firstName {
+            return String(firstName.prefix(1)).uppercased()
+        } else if let lastName = user.lastName {
+            return String(lastName.prefix(1)).uppercased()
+        } else {
+            return String(user.email.prefix(1)).uppercased()
+        }
+    }
+
+    private var avatarPlaceholder: some View {
+        Circle()
+            .fill(Theme.Colors.primary.opacity(0.2))
+            .frame(width: 100, height: 100)
+            .overlay {
+                Text(initials)
+                    .font(Theme.Typography.title1(.bold))
+                    .foregroundColor(Theme.Colors.primary)
+            }
+    }
+}
+
+// MARK: - Profile Menu Item Row (for NavigationLink)
+
+struct ProfileMenuItemRow: View {
+    let icon: String
+    let title: String
+
+    var body: some View {
+        HStack(spacing: Theme.Spacing.md) {
+            Image.lucide(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+                .foregroundColor(Theme.Colors.primary)
+                .frame(width: 30)
+
+            Text(title)
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Spacer()
+
+            Image.lucide("chevron.right")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 12, height: 12)
+                .foregroundColor(Theme.Colors.textTertiary)
+        }
+        .padding()
+        .background(Theme.Colors.backgroundSecondary)
+        .cornerRadius(Theme.CornerRadius.md)
+    }
+}
+
+// MARK: - Profile Menu Item (for Button actions)
+
+struct ProfileMenuItem: View {
+    let icon: String
+    let title: String
+    var isDestructive: Bool = false
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: Theme.Spacing.md) {
+                Image.lucide(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(isDestructive ? Theme.Colors.error : Theme.Colors.primary)
+                    .frame(width: 30)
+
+                Text(title)
+                    .font(Theme.Typography.body())
+                    .foregroundColor(isDestructive ? Theme.Colors.error : Theme.Colors.textPrimary)
+
+                Spacer()
+
+                Image.lucide("chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(Theme.Colors.textTertiary)
+            }
+            .padding()
+            .background(Theme.Colors.backgroundSecondary)
+            .cornerRadius(Theme.CornerRadius.md)
+        }
+    }
+}
+
+struct EditProfileView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Informations personnelles") {
+                    TextField("Nom", text: .constant(""))
+                    TextField("Email", text: .constant(""))
+                }
+            }
+            .navigationTitle("Modifier le profil")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler") { dismiss() }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Enregistrer") { dismiss() }
+                }
+            }
+        }
+    }
+}
+
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
+            .environmentObject(AuthManager.shared)
+    }
+}
+//
+//  MyInformationsView.swift
+//  EasyCo
+//
+//  User personal information management
+//
+
+import SwiftUI
+
+struct MyInformationsView: View {
+    @EnvironmentObject var authManager: AuthManager
+    @State private var firstName = ""
+    @State private var lastName = ""
+    @State private var email = ""
+    @State private var phone = ""
+    @State private var dateOfBirth = Date()
+    @State private var address = ""
+    @State private var city = ""
+    @State private var postalCode = ""
+    @State private var showSaveAlert = false
+    @State private var isEditing = false
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: Theme.Spacing.lg) {
+                // Profile Picture Section
+                VStack(spacing: Theme.Spacing.md) {
+                    if let profileImageURL = authManager.currentUser?.profileImageURL,
+                       let url = URL(string: profileImageURL) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Circle()
+                                .fill(Theme.Colors.primary.opacity(0.2))
+                                .overlay {
+                                    Text(initials)
+                                        .font(Theme.Typography.title1(.bold))
+                                        .foregroundColor(Theme.Colors.primary)
+                                }
+                        }
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                    } else {
+                        Circle()
+                            .fill(Theme.Colors.primary.opacity(0.2))
+                            .frame(width: 100, height: 100)
+                            .overlay {
+                                Text(initials)
+                                    .font(Theme.Typography.title1(.bold))
+                                    .foregroundColor(Theme.Colors.primary)
+                            }
+                    }
+
+                    Button {
+                        // TODO: Image picker
+                    } label: {
+                        Text("Changer la photo")
+                            .font(Theme.Typography.caption(.semibold))
+                            .foregroundColor(Theme.Colors.primary)
+                    }
+                }
+                .padding(.top, Theme.Spacing.lg)
+
+                // Information Sections
+                VStack(spacing: Theme.Spacing.md) {
+                    // Personal Info Section
+                    SectionCard(title: "Informations personnelles") {
+                        VStack(spacing: Theme.Spacing.sm) {
+                            InfoField(label: "Prénom", text: $firstName, isEditing: isEditing)
+                            InfoField(label: "Nom", text: $lastName, isEditing: isEditing)
+                            DateField(label: "Date de naissance", date: $dateOfBirth, isEditing: isEditing)
+                        }
+                    }
+
+                    // Contact Section
+                    SectionCard(title: "Contact") {
+                        VStack(spacing: Theme.Spacing.sm) {
+                            InfoField(label: "Email", text: $email, isEditing: false) // Email non modifiable
+                            InfoField(label: "Téléphone", text: $phone, isEditing: isEditing, keyboardType: .phonePad)
+                        }
+                    }
+
+                    // Address Section
+                    SectionCard(title: "Adresse") {
+                        VStack(spacing: Theme.Spacing.sm) {
+                            InfoField(label: "Adresse", text: $address, isEditing: isEditing)
+                            InfoField(label: "Ville", text: $city, isEditing: isEditing)
+                            InfoField(label: "Code postal", text: $postalCode, isEditing: isEditing, keyboardType: .numberPad)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+
+                // Action Buttons
+                if isEditing {
+                    HStack(spacing: Theme.Spacing.md) {
+                        Button {
+                            loadUserData()
+                            isEditing = false
+                        } label: {
+                            Text("Annuler")
+                                .font(Theme.Typography.body(.semibold))
+                                .foregroundColor(Theme.Colors.textSecondary)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Theme.Colors.backgroundSecondary)
+                                .cornerRadius(Theme.CornerRadius.md)
+                        }
+
+                        Button {
+                            saveChanges()
+                        } label: {
+                            Text("Enregistrer")
+                                .font(Theme.Typography.body(.semibold))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Theme.Colors.primary)
+                                .cornerRadius(Theme.CornerRadius.md)
+                        }
+                    }
+                    .padding(.horizontal)
+                } else {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Text("Modifier")
+                            .font(Theme.Typography.body(.semibold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Theme.Colors.primary)
+                            .cornerRadius(Theme.CornerRadius.md)
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .padding(.bottom, Theme.Spacing.xl)
+        }
+        .navigationTitle("Mes informations")
+        .navigationBarTitleDisplayMode(.large)
+        .onAppear {
+            loadUserData()
+        }
+        .alert("Modifications enregistrées", isPresented: $showSaveAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Vos informations ont été mises à jour avec succès")
+        }
+    }
+
+    private var initials: String {
+        guard let user = authManager.currentUser else { return "?" }
+
+        if let first = user.firstName, let last = user.lastName {
+            return "\(first.prefix(1))\(last.prefix(1))".uppercased()
+        } else if let first = user.firstName {
+            return String(first.prefix(1)).uppercased()
+        } else if let last = user.lastName {
+            return String(last.prefix(1)).uppercased()
+        } else {
+            return String(user.email.prefix(1)).uppercased()
+        }
+    }
+
+    private func loadUserData() {
+        guard let user = authManager.currentUser else { return }
+
+        firstName = user.firstName ?? ""
+        lastName = user.lastName ?? ""
+        email = user.email
+        phone = user.phone ?? ""
+        // dateOfBirth, address, city, postalCode would come from user model
+    }
+
+    private func saveChanges() {
+        // TODO: Save to backend
+        isEditing = false
+        showSaveAlert = true
+    }
+}
+
+// MARK: - Section Card
+
+struct SectionCard<Content: View>: View {
+    let title: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+            Text(title)
+                .font(Theme.Typography.headline(.semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            VStack(spacing: Theme.Spacing.md) {
+                content
+            }
+            .padding()
+            .background(Theme.Colors.backgroundSecondary)
+            .cornerRadius(Theme.CornerRadius.md)
+        }
+    }
+}
+
+// MARK: - Info Field
+
+struct InfoField: View {
+    let label: String
+    @Binding var text: String
+    let isEditing: Bool
+    var keyboardType: UIKeyboardType = .default
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(Theme.Typography.caption())
+                .foregroundColor(Theme.Colors.textSecondary)
+
+            if isEditing {
+                TextField("", text: $text)
+                    .font(Theme.Typography.body())
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .keyboardType(keyboardType)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background(Color.white)
+                    .cornerRadius(8)
+            } else {
+                Text(text.isEmpty ? "Non renseigné" : text)
+                    .font(Theme.Typography.body())
+                    .foregroundColor(text.isEmpty ? Theme.Colors.textTertiary : Theme.Colors.textPrimary)
+                    .padding(.vertical, 8)
+            }
+        }
+    }
+}
+
+// MARK: - Date Field
+
+struct DateField: View {
+    let label: String
+    @Binding var date: Date
+    let isEditing: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(Theme.Typography.caption())
+                .foregroundColor(Theme.Colors.textSecondary)
+
+            if isEditing {
+                DatePicker("", selection: $date, displayedComponents: .date)
+                    .datePickerStyle(.compact)
+                    .labelsHidden()
+            } else {
+                Text(date.formatted(date: .long, time: .omitted))
+                    .font(Theme.Typography.body())
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .padding(.vertical, 8)
+            }
+        }
+    }
+}
+
+// MARK: - Preview
+
+struct MyInformationsView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            MyInformationsView()
+                .environmentObject(AuthManager.shared)
+        }
+    }
+}
+//
+//  MyAnnouncementsView.swift
+//  EasyCo
+//
+//  User's personal announcements and posts
+//
+
+import SwiftUI
+
+struct MyAnnouncementsView: View {
+    @StateObject private var viewModel = MyAnnouncementsViewModel()
+    @State private var showCreateAnnouncement = false
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: Theme.Spacing.md) {
+                if viewModel.announcements.isEmpty {
+                    emptyStateView
+                } else {
+                    ForEach(viewModel.announcements) { announcement in
+                        ProfileAnnouncementCard(
+                            announcement: announcement,
+                            onEdit: {
+                                viewModel.selectedAnnouncement = announcement
+                                showCreateAnnouncement = true
+                            },
+                            onDelete: {
+                                viewModel.deleteAnnouncement(announcement)
+                            }
+                        )
+                    }
+                }
+            }
+            .padding()
+        }
+        .navigationTitle("Mes annonces")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.selectedAnnouncement = nil
+                    showCreateAnnouncement = true
+                } label: {
+                    Image.lucide("plus")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(Theme.Colors.primary)
+                }
+            }
+        }
+        .sheet(isPresented: $showCreateAnnouncement) {
+            ProfileCreateAnnouncementView(
+                announcement: viewModel.selectedAnnouncement,
+                onSave: { title, description in
+                    if let existing = viewModel.selectedAnnouncement {
+                        viewModel.updateAnnouncement(existing, title: title, description: description)
+                    } else {
+                        viewModel.createAnnouncement(title: title, description: description)
+                    }
+                    showCreateAnnouncement = false
+                }
+            )
+        }
+        .task {
+            await viewModel.loadAnnouncements()
+        }
+    }
+
+    private var emptyStateView: some View {
+        VStack(spacing: Theme.Spacing.lg) {
+            Image.lucide("megaphone.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80, height: 80)
+                .foregroundColor(Theme.Colors.textTertiary)
+                .padding(.top, 60)
+
+            VStack(spacing: Theme.Spacing.sm) {
+                Text("Aucune annonce")
+                    .font(Theme.Typography.title3(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text("Créez votre première annonce pour partager des informations avec votre communauté")
+                    .font(Theme.Typography.body())
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+
+            Button {
+                showCreateAnnouncement = true
+            } label: {
+                HStack(spacing: 8) {
+                    Image.lucide("plus")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                    Text("Créer une annonce")
+                }
+                .font(Theme.Typography.body(.semibold))
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(Theme.Colors.primary)
+                .cornerRadius(Theme.CornerRadius.md)
+            }
+            .padding(.top, Theme.Spacing.md)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+// MARK: - Announcement Card
+
+struct ProfileAnnouncementCard: View {
+    let announcement: Announcement
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+    @State private var showDeleteAlert = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(announcement.title)
+                        .font(Theme.Typography.headline(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Text(announcement.createdAt.formatted(date: .abbreviated, time: .shortened))
+                        .font(Theme.Typography.caption())
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
+
+                Spacer()
+
+                Menu {
+                    Button {
+                        onEdit()
+                    } label: {
+                        Label("Modifier", systemImage: "pencil")
+                    }
+
+                    Button(role: .destructive) {
+                        showDeleteAlert = true
+                    } label: {
+                        Label("Supprimer", systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.title3)
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .frame(width: 32, height: 32)
+                }
+            }
+
+            Text(announcement.description)
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textSecondary)
+                .lineLimit(3)
+
+            HStack(spacing: Theme.Spacing.sm) {
+                Label("\(announcement.views)", systemImage: "eye")
+                    .font(Theme.Typography.caption())
+                    .foregroundColor(Theme.Colors.textTertiary)
+            }
+        }
+        .padding()
+        .background(Theme.Colors.backgroundSecondary)
+        .cornerRadius(Theme.CornerRadius.md)
+        .alert("Supprimer l'annonce", isPresented: $showDeleteAlert) {
+            Button("Annuler", role: .cancel) {}
+            Button("Supprimer", role: .destructive) {
+                onDelete()
+            }
+        } message: {
+            Text("Êtes-vous sûr de vouloir supprimer cette annonce ?")
+        }
+    }
+}
+
+// MARK: - Create Announcement View
+
+struct ProfileCreateAnnouncementView: View {
+    let announcement: Announcement?
+    let onSave: (String, String) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var title = ""
+    @State private var description = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Titre") {
+                    TextField("Titre de l'annonce", text: $title)
+                }
+
+                Section("Description") {
+                    TextEditor(text: $description)
+                        .frame(minHeight: 150)
+                }
+            }
+            .navigationTitle(announcement == nil ? "Nouvelle annonce" : "Modifier l'annonce")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler") {
+                        dismiss()
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Publier") {
+                        onSave(title, description)
+                    }
+                    .disabled(title.isEmpty || description.isEmpty)
+                }
+            }
+            .onAppear {
+                if let announcement = announcement {
+                    title = announcement.title
+                    description = announcement.description
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Model
+
+struct ProfileAnnouncement: Identifiable {
+    let id: String
+    var title: String
+    var description: String
+    let createdAt: Date
+    var views: Int
+}
+
+// MARK: - View Model
+
+@MainActor
+class MyAnnouncementsViewModel: ObservableObject {
+    @Published var announcements: [Announcement] = []
+    @Published var isLoading = false
+    @Published var selectedAnnouncement: Announcement?
+
+    func loadAnnouncements() async {
+        isLoading = true
+
+        // Simulate API call
+        try? await Task.sleep(nanoseconds: 500_000_000)
+
+        // Mock data
+        announcements = [
+            Announcement(
+                id: "1",
+                title: "Recherche colocataire",
+                description: "Je recherche un colocataire pour partager un appartement T3 dans le centre-ville. Loyer 600€/mois.",
+                createdAt: Date().addingTimeInterval(-86400 * 3),
+                views: 24
+            ),
+            Announcement(
+                id: "2",
+                title: "Vide grenier dimanche",
+                description: "Organisation d'un vide grenier dans la résidence ce dimanche de 10h à 18h. Tout le monde est le bienvenu!",
+                createdAt: Date().addingTimeInterval(-86400 * 7),
+                views: 56
+            )
+        ]
+
+        isLoading = false
+    }
+
+    func createAnnouncement(title: String, description: String) {
+        let newAnnouncement = Announcement(
+            id: UUID().uuidString,
+            title: title,
+            description: description,
+            createdAt: Date(),
+            views: 0
+        )
+        announcements.insert(newAnnouncement, at: 0)
+    }
+
+    func updateAnnouncement(_ announcement: Announcement, title: String, description: String) {
+        if let index = announcements.firstIndex(where: { $0.id == announcement.id }) {
+            announcements[index].title = title
+            announcements[index].description = description
+        }
+    }
+
+    func deleteAnnouncement(_ announcement: Announcement) {
+        announcements.removeAll { $0.id == announcement.id }
+    }
+}
+
+// MARK: - Preview
+
+struct MyAnnouncementsView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            MyAnnouncementsView()
+        }
+    }
+}
+//
+//  HelpView.swift
+//  EasyCo
+//
+//  Help and support center
+//
+
+import SwiftUI
+
+struct HelpView: View {
+    @State private var searchText = ""
+    @State private var selectedCategory: HelpCategory?
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: Theme.Spacing.lg) {
+                // Search Bar
+                HStack {
+                    Image.lucide("magnifyingglass")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(Theme.Colors.textTertiary)
+
+                    TextField("Rechercher dans l'aide...", text: $searchText)
+                        .font(Theme.Typography.body())
+                }
+                .padding()
+                .background(Theme.Colors.backgroundSecondary)
+                .cornerRadius(Theme.CornerRadius.md)
+                .padding(.horizontal)
+
+                // Quick Actions
+                VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                    Text("Actions rapides")
+                        .font(Theme.Typography.headline(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .padding(.horizontal)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: Theme.Spacing.sm) {
+                            QuickActionCard(
+                                icon: "message-circle",
+                                title: "Chat support",
+                                color: Color(hex: "3B82F6")
+                            ) {
+                                // TODO: Open chat
+                            }
+
+                            QuickActionCard(
+                                icon: "mail",
+                                title: "Email",
+                                color: Color(hex: "10B981")
+                            ) {
+                                // TODO: Send email
+                            }
+
+                            QuickActionCard(
+                                icon: "help-circle",
+                                title: "FAQ",
+                                color: Color(hex: "F59E0B")
+                            ) {
+                                selectedCategory = .faq
+                            }
+
+                            QuickActionCard(
+                                icon: "phone",
+                                title: "Téléphone",
+                                color: Color(hex: "EF4444")
+                            ) {
+                                // TODO: Call
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+
+                // Help Categories
+                VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                    Text("Catégories d'aide")
+                        .font(Theme.Typography.headline(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .padding(.horizontal)
+
+                    VStack(spacing: Theme.Spacing.sm) {
+                        NavigationLink(destination: HelpCategoryView(category: .gettingStarted)) {
+                            HelpCategoryRow(
+                                icon: "sparkles",
+                                title: "Démarrage",
+                                subtitle: "Premiers pas sur EasyCo",
+                                articlesCount: 8
+                            )
+                        }
+
+                        NavigationLink(destination: HelpCategoryView(category: .account)) {
+                            HelpCategoryRow(
+                                icon: "user",
+                                title: "Mon compte",
+                                subtitle: "Gérer vos informations",
+                                articlesCount: 12
+                            )
+                        }
+
+                        NavigationLink(destination: HelpCategoryView(category: .properties)) {
+                            HelpCategoryRow(
+                                icon: "home",
+                                title: "Propriétés",
+                                subtitle: "Recherche et location",
+                                articlesCount: 15
+                            )
+                        }
+
+                        NavigationLink(destination: HelpCategoryView(category: .payments)) {
+                            HelpCategoryRow(
+                                icon: "credit-card",
+                                title: "Paiements",
+                                subtitle: "Facturation et remboursements",
+                                articlesCount: 10
+                            )
+                        }
+
+                        NavigationLink(destination: HelpCategoryView(category: .safety)) {
+                            HelpCategoryRow(
+                                icon: "lock",
+                                title: "Sécurité",
+                                subtitle: "Confidentialité et sécurité",
+                                articlesCount: 6
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+
+                // Contact Information
+                VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                    Text("Nous contacter")
+                        .font(Theme.Typography.headline(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .padding(.horizontal)
+
+                    VStack(spacing: Theme.Spacing.sm) {
+                        ContactInfoRow(icon: "mail", label: "Email", value: "support@easyco.fr")
+                        ContactInfoRow(icon: "phone", label: "Téléphone", value: "+33 1 23 45 67 89")
+                        ContactInfoRow(icon: "clock", label: "Horaires", value: "Lun-Ven 9h-18h")
+                    }
+                    .padding()
+                    .background(Theme.Colors.backgroundSecondary)
+                    .cornerRadius(Theme.CornerRadius.md)
+                    .padding(.horizontal)
+                }
+            }
+            .padding(.vertical)
+        }
+        .navigationTitle("Aide et support")
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Quick Action Card
+
+struct QuickActionCard: View {
+    let icon: String
+    let title: String
+    let color: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image.lucide(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.white)
+                    .frame(width: 50, height: 50)
+                    .background(color)
+                    .cornerRadius(12)
+
+                Text(title)
+                    .font(Theme.Typography.caption(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+            .frame(width: 100)
+            .padding(.vertical, 12)
+            .background(Theme.Colors.backgroundSecondary)
+            .cornerRadius(Theme.CornerRadius.md)
+        }
+    }
+}
+
+// MARK: - Help Category Row
+
+struct HelpCategoryRow: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let articlesCount: Int
+
+    var body: some View {
+        HStack(spacing: Theme.Spacing.md) {
+            Image.lucide(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundColor(Theme.Colors.primary)
+                .frame(width: 48, height: 48)
+                .background(Theme.Colors.primary.opacity(0.1))
+                .cornerRadius(12)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(Theme.Typography.body(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text(subtitle)
+                    .font(Theme.Typography.caption())
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text("\(articlesCount)")
+                    .font(Theme.Typography.caption(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text("articles")
+                    .font(Theme.Typography.caption())
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+
+            Image.lucide("chevron.right")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 12, height: 12)
+                .foregroundColor(Theme.Colors.textTertiary)
+        }
+        .padding()
+        .background(Theme.Colors.backgroundSecondary)
+        .cornerRadius(Theme.CornerRadius.md)
+    }
+}
+
+// MARK: - Contact Info Row
+
+struct ContactInfoRow: View {
+    let icon: String
+    let label: String
+    let value: String
+
+    var body: some View {
+        HStack(spacing: Theme.Spacing.md) {
+            Image.lucide(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+                .foregroundColor(Theme.Colors.primary)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(Theme.Typography.caption())
+                    .foregroundColor(Theme.Colors.textSecondary)
+
+                Text(value)
+                    .font(Theme.Typography.body(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+
+            Spacer()
+        }
+    }
+}
+
+// MARK: - Help Category View
+
+struct HelpCategoryView: View {
+    let category: HelpCategory
+
+    var body: some View {
+        List {
+            ForEach(category.articles, id: \.self) { article in
+                NavigationLink(destination: HelpArticleView(article: article)) {
+                    Text(article)
+                        .font(Theme.Typography.body())
+                }
+            }
+        }
+        .navigationTitle(category.title)
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Help Article View
+
+struct HelpArticleView: View {
+    let article: String
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                Text("Article d'aide")
+                    .font(Theme.Typography.title3(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text("Contenu de l'article à venir...")
+                    .font(Theme.Typography.body())
+                    .foregroundColor(Theme.Colors.textSecondary)
+
+                // Helpful buttons
+                HStack(spacing: Theme.Spacing.md) {
+                    Button {
+                        // Mark as helpful
+                    } label: {
+                        HStack {
+                            Image(systemName: "hand.thumbsup")
+                            Text("Utile")
+                        }
+                        .font(Theme.Typography.body(.semibold))
+                        .foregroundColor(Theme.Colors.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Theme.Colors.primary.opacity(0.1))
+                        .cornerRadius(Theme.CornerRadius.md)
+                    }
+
+                    Button {
+                        // Mark as not helpful
+                    } label: {
+                        HStack {
+                            Image(systemName: "hand.thumbsdown")
+                            Text("Pas utile")
+                        }
+                        .font(Theme.Typography.body(.semibold))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Theme.Colors.backgroundSecondary)
+                        .cornerRadius(Theme.CornerRadius.md)
+                    }
+                }
+                .padding(.top)
+            }
+            .padding()
+        }
+        .navigationTitle(article)
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Models
+
+enum HelpCategory {
+    case gettingStarted
+    case account
+    case properties
+    case payments
+    case safety
+    case faq
+
+    var title: String {
+        switch self {
+        case .gettingStarted: return "Démarrage"
+        case .account: return "Mon compte"
+        case .properties: return "Propriétés"
+        case .payments: return "Paiements"
+        case .safety: return "Sécurité"
+        case .faq: return "FAQ"
+        }
+    }
+
+    var articles: [String] {
+        switch self {
+        case .gettingStarted:
+            return [
+                "Comment créer un compte",
+                "Première connexion",
+                "Configurer son profil",
+                "Comprendre l'interface",
+                "Rechercher une propriété",
+                "Créer une alerte",
+                "Enregistrer des favoris",
+                "Contacter un propriétaire"
+            ]
+        case .account:
+            return [
+                "Modifier mes informations",
+                "Changer mon mot de passe",
+                "Gérer mes notifications",
+                "Paramètres de confidentialité",
+                "Supprimer mon compte",
+                "Vérifier mon identité",
+                "Ajouter une photo de profil",
+                "Gérer mes préférences",
+                "Historique d'activité",
+                "Codes d'accès privés",
+                "Gérer mes appareils",
+                "Sécurité du compte"
+            ]
+        case .properties:
+            return [
+                "Rechercher une propriété",
+                "Filtrer les résultats",
+                "Comprendre les annonces",
+                "Visiter une propriété",
+                "Candidater à une propriété",
+                "Suivre ma candidature",
+                "Annuler une candidature",
+                "Critères de matching",
+                "Propriétés favorites",
+                "Alertes de nouvelles annonces",
+                "Comparer des propriétés",
+                "Questions fréquentes",
+                "Conditions de location",
+                "Documents requis",
+                "Délais de réponse"
+            ]
+        case .payments:
+            return [
+                "Modes de paiement acceptés",
+                "Ajouter une carte bancaire",
+                "Payer un loyer",
+                "Historique des paiements",
+                "Remboursements",
+                "Frais de service",
+                "Facturation",
+                "Caution et dépôt de garantie",
+                "Paiements récurrents",
+                "Résoudre un problème de paiement"
+            ]
+        case .safety:
+            return [
+                "Conseils de sécurité",
+                "Signaler un problème",
+                "Confidentialité des données",
+                "Authentification à deux facteurs",
+                "Détecter les arnaques",
+                "Nos engagements"
+            ]
+        case .faq:
+            return [
+                "Questions générales",
+                "Problèmes techniques",
+                "Autres questions"
+            ]
+        }
+    }
+}
+
+// MARK: - Preview
+
+struct HelpView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            HelpView()
+        }
+    }
+}

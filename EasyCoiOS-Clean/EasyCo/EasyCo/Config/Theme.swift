@@ -126,6 +126,22 @@ struct Theme {
         static let divider = Color(hex: "F3F4F6")
         static let overlay = Color.black.opacity(0.5)
 
+        // Additional UI colors for new components
+        static let backgroundPrimary = Color.white
+        static let primaryGradient = LinearGradient(
+            colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        static let gray50 = Color(hex: "F9FAFB")
+        static let gray100 = Color(hex: "F3F4F6")
+        static let gray200 = Color(hex: "E5E7EB")
+        static let gray300 = Color(hex: "D1D5DB")
+        static let gray400 = Color(hex: "9CA3AF")
+        static let heartRed = Color(hex: "EF4444")
+        static let messageBlue = Color(hex: "0EA5E9")
+        static let matchPink = Color(hex: "EC4899")
+
         // Property Status Colors
         static let available = Color(hex: "10B981")
         static let pending = Color(hex: "F59E0B")
@@ -243,12 +259,16 @@ struct Theme {
         }
 
         // Body
-        static func body(_ weight: Font.Weight = .regular) -> Font {
+        static func bodyLarge(_ weight: Font.Weight = .regular) -> Font {
             .system(size: 17, weight: weight, design: .default)
         }
 
-        static func bodySmall(_ weight: Font.Weight = .regular) -> Font {
+        static func body(_ weight: Font.Weight = .regular) -> Font {
             .system(size: 15, weight: weight, design: .default)
+        }
+
+        static func bodySmall(_ weight: Font.Weight = .regular) -> Font {
+            .system(size: 13, weight: weight, design: .default)
         }
 
         // Caption
@@ -294,6 +314,10 @@ struct Theme {
         static let _2xl: CGFloat = 20
         static let _3xl: CGFloat = 24
         static let full: CGFloat = 9999
+
+        // Additional aliases for new components
+        static let card: CGFloat = 12
+        static let button: CGFloat = 8
     }
 
     // MARK: - Shadows
@@ -314,6 +338,17 @@ struct Theme {
         let radius: CGFloat
         let x: CGFloat
         let y: CGFloat
+    }
+
+    // MARK: - Sizes
+
+    struct Size {
+        static let buttonHeight: CGFloat = 48
+        static let cardImageHeight: CGFloat = 240
+        static let cardImageHeightCompact: CGFloat = 180
+        static let iconSmall: CGFloat = 16
+        static let iconMedium: CGFloat = 20
+        static let iconLarge: CGFloat = 24
     }
 
     // MARK: - Animations
@@ -376,6 +411,16 @@ extension View {
             .background(Color.white)
             .cornerRadius(cornerRadius)
             .themeShadow(Theme.Shadows.small)
+    }
+
+    /// Apply card shadow
+    func cardShadow() -> some View {
+        self.shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+    }
+
+    /// Apply button shadow
+    func buttonShadow() -> some View {
+        self.shadow(color: .black.opacity(0.12), radius: 4, x: 0, y: 2)
     }
 }
 

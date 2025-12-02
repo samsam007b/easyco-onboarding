@@ -31,7 +31,7 @@ export default function ResidentBasicInfoPage() {
 
   const loadExistingData = async () => {
     try {
-      const saved = safeLocalStorage.get('residentBasicInfo', {}) as any;
+      const saved = safeLocalStorage.get('coreBasicInfo', {}) as any;
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
@@ -116,7 +116,7 @@ export default function ResidentBasicInfoPage() {
       return;
     }
 
-    safeLocalStorage.set('residentBasicInfo', {
+    safeLocalStorage.set('coreBasicInfo', {
       firstName,
       lastName,
       dateOfBirth,
@@ -125,7 +125,7 @@ export default function ResidentBasicInfoPage() {
       languages,
     });
 
-    router.push('/onboarding/resident/lifestyle');
+    router.push('/onboarding/core/daily-life?role=resident');
   };
 
   const canContinue = firstName && lastName && dateOfBirth && nationality && phoneNumber && languages.length > 0;
