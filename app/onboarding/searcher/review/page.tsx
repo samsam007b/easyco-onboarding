@@ -221,7 +221,7 @@ export default function ReviewPage() {
       safeLocalStorage.remove('verification');
       safeLocalStorage.remove('searcherProfileType');
 
-      router.push('/onboarding/searcher/success');
+      router.push('/onboarding/searcher/enhance');
     } catch (err: any) {
       toast.error('Error: ' + err.message);
       setIsSubmitting(false);
