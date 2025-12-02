@@ -5,91 +5,79 @@
 
 export const ROLE_COLORS = {
   searcher: {
-    primary: '#FFD700', // Gold/Yellow
-    primaryRgb: '255, 215, 0',
+    primary: '#FFC107', // Amber (from iOS Theme)
+    primaryRgb: '255, 193, 7',
     light: '#FFF9E6',
-    dark: '#E6C200',
-    gradient: {
-      from: '#FFD700',
-      to: '#FFA500',
-    },
+    dark: '#F9A825',
     bg: {
-      light: 'from-yellow-50 to-orange-50',
-      medium: 'from-yellow-100 to-orange-100',
-      card: 'bg-yellow-50',
+      light: 'bg-[#FFFEF0]', // _50
+      medium: 'bg-[#FFF9E6]', // _100
+      card: 'bg-[#FFF9E6]',
     },
     text: {
-      primary: 'text-yellow-600',
-      dark: 'text-yellow-700',
-      light: 'text-yellow-500',
+      primary: 'text-[#FFC107]',
+      dark: 'text-[#F9A825]',
+      light: 'text-[#FFD249]',
     },
     border: {
-      primary: 'border-yellow-300',
-      hover: 'hover:border-yellow-400',
+      primary: 'border-[#FFC107]',
+      hover: 'hover:border-[#FFD249]',
     },
     button: {
-      primary: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-      outline: 'border-yellow-500 text-yellow-600 hover:bg-yellow-50',
+      primary: 'bg-[#FFC107] hover:bg-[#F9A825] text-white',
+      outline: 'border-[#FFC107] text-[#FFC107] hover:bg-[#FFF9E6]',
     },
-    badge: 'bg-yellow-500',
+    badge: 'bg-[#FFC107]',
   },
   owner: {
-    primary: '#4A148C', // Deep Purple
-    primaryRgb: '74, 20, 140',
-    light: '#E1BEE7',
-    dark: '#311B92',
-    gradient: {
-      from: '#4A148C',
-      to: '#7B1FA2',
-    },
+    primary: '#6E56CF', // Mauve/Purple (from iOS Theme)
+    primaryRgb: '110, 86, 207',
+    light: '#F3F1FF',
+    dark: '#5B45B8',
     bg: {
-      light: 'from-purple-50 to-purple-100',
-      medium: 'from-purple-100 to-purple-200',
-      card: 'bg-purple-50',
+      light: 'bg-[#F9F8FF]', // _50
+      medium: 'bg-[#F3F1FF]', // _100
+      card: 'bg-[#F3F1FF]',
     },
     text: {
-      primary: 'text-purple-900',
-      dark: 'text-purple-950',
-      light: 'text-purple-700',
+      primary: 'text-[#6E56CF]',
+      dark: 'text-[#5B45B8]',
+      light: 'text-[#8E7AD6]',
     },
     border: {
-      primary: 'border-purple-300',
-      hover: 'hover:border-purple-400',
+      primary: 'border-[#6E56CF]',
+      hover: 'hover:border-[#8E7AD6]',
     },
     button: {
-      primary: 'bg-purple-900 hover:bg-purple-950 text-white',
-      outline: 'border-purple-900 text-purple-900 hover:bg-purple-50',
+      primary: 'bg-[#6E56CF] hover:bg-[#5B45B8] text-white',
+      outline: 'border-[#6E56CF] text-[#6E56CF] hover:bg-[#F3F1FF]',
     },
-    badge: 'bg-purple-900',
+    badge: 'bg-[#6E56CF]',
   },
   resident: {
-    primary: '#FF6F3C', // Orange
-    primaryRgb: '255, 111, 60',
-    light: '#FFE6DC',
-    dark: '#E65A28',
-    gradient: {
-      from: '#FF6F3C',
-      to: '#FF8C5A',
-    },
+    primary: '#FF5722', // Orange/Coral (from iOS Theme)
+    primaryRgb: '255, 87, 34',
+    light: '#FFF3EF',
+    dark: '#E64A19',
     bg: {
-      light: 'from-orange-50 to-red-50',
-      medium: 'from-orange-100 to-red-100',
-      card: 'bg-orange-50',
+      light: 'bg-[#FFFAF8]', // _50
+      medium: 'bg-[#FFF3EF]', // _100
+      card: 'bg-[#FFF3EF]',
     },
     text: {
-      primary: 'text-orange-600',
-      dark: 'text-orange-700',
-      light: 'text-orange-500',
+      primary: 'text-[#FF5722]',
+      dark: 'text-[#E64A19]',
+      light: 'text-[#FF6F3C]',
     },
     border: {
-      primary: 'border-orange-300',
-      hover: 'hover:border-orange-400',
+      primary: 'border-[#FF5722]',
+      hover: 'hover:border-[#FF6F3C]',
     },
     button: {
-      primary: 'bg-orange-600 hover:bg-orange-700 text-white',
-      outline: 'border-orange-600 text-orange-600 hover:bg-orange-50',
+      primary: 'bg-[#FF5722] hover:bg-[#E64A19] text-white',
+      outline: 'border-[#FF5722] text-[#FF5722] hover:bg-[#FFF3EF]',
     },
-    badge: 'bg-orange-600',
+    badge: 'bg-[#FF5722]',
   },
 } as const;
 
@@ -103,10 +91,10 @@ export function getRoleColors(role: UserRole) {
 }
 
 /**
- * Get role gradient classes for backgrounds
+ * Get role background classes
  */
-export function getRoleGradient(role: UserRole, intensity: 'light' | 'medium' = 'light') {
-  return `bg-gradient-to-br ${ROLE_COLORS[role].bg[intensity]}`;
+export function getRoleBackground(role: UserRole, intensity: 'light' | 'medium' = 'light') {
+  return ROLE_COLORS[role].bg[intensity];
 }
 
 /**
