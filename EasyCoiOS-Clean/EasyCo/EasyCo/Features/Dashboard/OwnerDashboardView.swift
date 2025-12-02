@@ -440,13 +440,13 @@ struct OwnerProperty: Identifiable {
     let title: String
     let location: String
     let price: Int
-    let status: PropertyStatus
+    let status: OwnerPropertyStatus
     let views: Int
     let applications: Int
     let imageURL: String
 }
 
-enum PropertyStatus {
+enum OwnerPropertyStatus {
     case occupied
     case vacant
     case maintenance

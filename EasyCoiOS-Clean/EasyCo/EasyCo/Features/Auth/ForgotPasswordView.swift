@@ -64,7 +64,7 @@ struct ForgotPasswordView: View {
                 Spacer()
             }
             .dismissKeyboardOnTap()
-            .errorAlert(error: $viewModel.error)
+            // .errorAlert(error: $viewModel.error) // Commented out - errorAlert not available
             .alert("Email envoyé", isPresented: $showSuccess) {
                 Button("OK") {
                     dismiss()

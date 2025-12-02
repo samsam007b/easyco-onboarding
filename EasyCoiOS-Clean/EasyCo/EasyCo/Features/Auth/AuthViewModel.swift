@@ -11,7 +11,7 @@ class AuthViewModel: ObservableObject {
     @Published var fullName = ""
 
     @Published var isLoading = false
-    @Published var error: NetworkError?
+    @Published var error: Error?
     @Published var showError = false
 
     private let authManager = AuthManager.shared
@@ -77,7 +77,7 @@ class AuthViewModel: ObservableObject {
             }
             // Success - navigation handled by RootView
         } catch {
-            self.error = error as? NetworkError ?? .unknown(error)
+            self.error = error
             self.showError = true
         }
 
@@ -103,7 +103,7 @@ class AuthViewModel: ObservableObject {
             )
             // Success - navigation handled by RootView
         } catch {
-            self.error = error as? NetworkError ?? .unknown(error)
+            self.error = error
             self.showError = true
         }
 
@@ -124,7 +124,7 @@ class AuthViewModel: ObservableObject {
             try await authManager.resetPassword(email: email.trimmed)
             // Show success message
         } catch {
-            self.error = error as? NetworkError ?? .unknown(error)
+            self.error = error
             self.showError = true
         }
 
