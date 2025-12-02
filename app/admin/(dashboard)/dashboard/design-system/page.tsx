@@ -185,6 +185,7 @@ type Section =
   | 'inputs'
   | 'badges'
   | 'gradient-usage'
+  | 'dashboard-variants'
   | 'choices';
 
 const sections: { id: Section; label: string; icon: React.ElementType }[] = [
@@ -195,6 +196,7 @@ const sections: { id: Section; label: string; icon: React.ElementType }[] = [
   { id: 'cards', label: 'Cartes UI', icon: Layers },
   { id: 'property-cards', label: 'Property Cards', icon: Building2 },
   { id: 'profile-cards', label: 'Profile Cards', icon: User },
+  { id: 'dashboard-variants', label: 'Dashboard Variants', icon: BarChart3 },
   { id: 'dropdowns', label: 'Dropdowns', icon: ChevronDown },
   { id: 'gradient-usage', label: 'Gradient Signature', icon: Zap },
   { id: 'shadows', label: 'Ombres & Effets', icon: Moon },
@@ -263,6 +265,7 @@ export default function AdminDesignSystemPage() {
           {activeSection === 'cards' && <CardsSection />}
           {activeSection === 'property-cards' && <PropertyCardsSection />}
           {activeSection === 'profile-cards' && <ProfileCardsSection />}
+          {activeSection === 'dashboard-variants' && <DashboardVariantsSection />}
           {activeSection === 'dropdowns' && <DropdownsSection />}
           {activeSection === 'gradient-usage' && <GradientUsageSection />}
           {activeSection === 'shadows' && <ShadowsSection />}
@@ -4189,6 +4192,431 @@ interface SavedChoice {
   feedback: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/* ============================================
+   DASHBOARD VARIANTS SECTION
+   ============================================ */
+function DashboardVariantsSection() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-white mb-2">Dashboard Searcher - Variantes de Design</h2>
+        <p className="text-slate-400">Explorez différentes propositions de design pour le dashboard Searcher</p>
+      </div>
+
+      {/* Variant 1: Flat Minimal */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-white">V1 - Flat Minimal</CardTitle>
+              <CardDescription>Design épuré, bordures nettes, couleurs jaunes Searcher</CardDescription>
+            </div>
+            <Badge className="bg-green-600">Recommandé</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-gray-50 p-4 rounded-xl">
+            {/* Flat Minimal Dashboard */}
+            <div className="max-w-md mx-auto space-y-4">
+              {/* Header */}
+              <div className="bg-white border-2 border-yellow-400 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-yellow-100 border-2 border-yellow-400 rounded-xl flex items-center justify-center">
+                      <User className="w-6 h-6 text-yellow-700" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Salut, Sam !</p>
+                      <p className="text-xs text-gray-600">Recherche à Paris</p>
+                    </div>
+                  </div>
+                  <Settings className="w-5 h-5 text-gray-600" />
+                </div>
+
+                {/* KPIs */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-2 text-center">
+                    <Users className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">1</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Groupes</p>
+                  </div>
+                  <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-2 text-center">
+                    <Bookmark className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Favoris</p>
+                  </div>
+                  <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-2 text-center">
+                    <MessageCircle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Messages</p>
+                  </div>
+                  <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-2 text-center">
+                    <AlertTriangle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">46%</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Profil</p>
+                  </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-yellow-700" />
+                    <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
+                  </div>
+                  <p className="text-xs text-gray-700"><span className="font-bold">0-2000€</span> • Non défini</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
+            <div>
+              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Très lisible</li>
+                <li>• Bordures nettes et modernes</li>
+                <li>• Couleurs Searcher correctes</li>
+                <li>• Aucune ombre</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Peut sembler basique</li>
+                <li>• Jaune très présent</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variant 2: Soft Gradient */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white">V2 - Soft Gradient</CardTitle>
+          <CardDescription>Dégradé doux du jaune vers le blanc, plus élégant</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-gray-50 p-4 rounded-xl">
+            {/* Soft Gradient Dashboard */}
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="bg-gradient-to-br from-yellow-50 via-amber-50 to-white border border-yellow-200 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white border border-yellow-300 rounded-xl flex items-center justify-center shadow-sm">
+                      <User className="w-6 h-6 text-yellow-700" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Salut, Sam !</p>
+                      <p className="text-xs text-gray-600">Recherche à Paris</p>
+                    </div>
+                  </div>
+                  <Settings className="w-5 h-5 text-gray-600" />
+                </div>
+
+                {/* KPIs */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-white border border-yellow-200 rounded-lg p-2 text-center shadow-sm">
+                    <Users className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">1</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Groupes</p>
+                  </div>
+                  <div className="bg-white border border-yellow-200 rounded-lg p-2 text-center shadow-sm">
+                    <Bookmark className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Favoris</p>
+                  </div>
+                  <div className="bg-white border border-yellow-200 rounded-lg p-2 text-center shadow-sm">
+                    <MessageCircle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Messages</p>
+                  </div>
+                  <div className="bg-white border border-yellow-200 rounded-lg p-2 text-center shadow-sm">
+                    <AlertTriangle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">46%</p>
+                    <p className="text-[8px] text-gray-600 font-semibold">Profil</p>
+                  </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="mt-4 bg-white border border-yellow-200 rounded-lg p-3 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-yellow-700" />
+                    <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
+                  </div>
+                  <p className="text-xs text-gray-700"><span className="font-bold">0-2000€</span> • Non défini</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
+            <div>
+              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Dégradé élégant</li>
+                <li>• Ombres légères</li>
+                <li>• Plus doux visuellement</li>
+                <li>• Lisible</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Ombres subtiles</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variant 3: Card on Neutral */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white">V3 - Card on Neutral</CardTitle>
+          <CardDescription>Carte jaune sur fond gris neutre, maximum contraste</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-gray-100 p-4 rounded-xl">
+            {/* Card on Neutral Dashboard */}
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="bg-yellow-400 border-2 border-yellow-500 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white border-2 border-yellow-600 rounded-xl flex items-center justify-center">
+                      <User className="w-6 h-6 text-yellow-700" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Salut, Sam !</p>
+                      <p className="text-xs text-gray-800">Recherche à Paris</p>
+                    </div>
+                  </div>
+                  <Settings className="w-5 h-5 text-gray-800" />
+                </div>
+
+                {/* KPIs */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-white border-2 border-yellow-600 rounded-lg p-2 text-center">
+                    <Users className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">1</p>
+                    <p className="text-[8px] text-gray-700 font-semibold">Groupes</p>
+                  </div>
+                  <div className="bg-white border-2 border-yellow-600 rounded-lg p-2 text-center">
+                    <Bookmark className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-700 font-semibold">Favoris</p>
+                  </div>
+                  <div className="bg-white border-2 border-yellow-600 rounded-lg p-2 text-center">
+                    <MessageCircle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-700 font-semibold">Messages</p>
+                  </div>
+                  <div className="bg-white border-2 border-yellow-600 rounded-lg p-2 text-center">
+                    <AlertTriangle className="w-4 h-4 text-yellow-700 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">46%</p>
+                    <p className="text-[8px] text-gray-700 font-semibold">Profil</p>
+                  </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="mt-4 bg-yellow-300 border-2 border-yellow-600 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-yellow-800" />
+                    <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
+                  </div>
+                  <p className="text-xs text-gray-800"><span className="font-bold">0-2000€</span> • Non défini</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
+            <div>
+              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Contraste maximum</li>
+                <li>• Très visible</li>
+                <li>• Jaune dominant</li>
+                <li>• Flat design</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Très agressif visuellement</li>
+                <li>• Beaucoup de jaune vif</li>
+                <li>• Peut fatiguer</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variant 4: Minimalist White */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white">V4 - Minimalist White</CardTitle>
+          <CardDescription>Fond blanc pur, accents jaunes subtils</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-white p-4 rounded-xl">
+            {/* Minimalist White Dashboard */}
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="border border-gray-200 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-yellow-100 border border-yellow-300 rounded-xl flex items-center justify-center">
+                      <User className="w-6 h-6 text-yellow-700" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Salut, Sam !</p>
+                      <p className="text-xs text-gray-600">Recherche à Paris</p>
+                    </div>
+                  </div>
+                  <Settings className="w-5 h-5 text-gray-400" />
+                </div>
+
+                {/* KPIs */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="border border-gray-200 rounded-lg p-2 text-center hover:border-yellow-300 transition">
+                    <Users className="w-4 h-4 text-gray-600 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">1</p>
+                    <p className="text-[8px] text-gray-500 font-semibold">Groupes</p>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-2 text-center hover:border-yellow-300 transition">
+                    <Bookmark className="w-4 h-4 text-gray-600 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-500 font-semibold">Favoris</p>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-2 text-center hover:border-yellow-300 transition">
+                    <MessageCircle className="w-4 h-4 text-gray-600 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">0</p>
+                    <p className="text-[8px] text-gray-500 font-semibold">Messages</p>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-2 text-center hover:border-yellow-300 transition">
+                    <AlertTriangle className="w-4 h-4 text-yellow-600 mx-auto mb-1" />
+                    <p className="text-xl font-bold text-gray-900">46%</p>
+                    <p className="text-[8px] text-gray-500 font-semibold">Profil</p>
+                  </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="mt-4 border border-gray-200 rounded-lg p-3 hover:border-yellow-300 transition">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-gray-600" />
+                    <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
+                  </div>
+                  <p className="text-xs text-gray-600"><span className="font-bold">0-2000€</span> • Non défini</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
+            <div>
+              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Ultra minimaliste</li>
+                <li>• Très lisible</li>
+                <li>• Jaune subtil</li>
+                <li>• Professionnel</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Peut manquer de personnalité</li>
+                <li>• Couleur Searcher peu visible</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Variant 5: Bold Accent */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white">V5 - Bold Accent</CardTitle>
+          <CardDescription>Fond neutre avec accents jaunes vifs, séparation claire</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-gray-50 p-4 rounded-xl">
+            {/* Bold Accent Dashboard */}
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="bg-white rounded-2xl overflow-hidden">
+                {/* Yellow header bar */}
+                <div className="bg-yellow-400 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                        <User className="w-6 h-6 text-yellow-700" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900">Salut, Sam !</p>
+                        <p className="text-xs text-gray-800">Recherche à Paris</p>
+                      </div>
+                    </div>
+                    <Settings className="w-5 h-5 text-gray-800" />
+                  </div>
+                </div>
+
+                {/* White content */}
+                <div className="p-4 space-y-4">
+                  {/* KPIs */}
+                  <div className="grid grid-cols-4 gap-2">
+                    <div className="border border-gray-200 rounded-lg p-2 text-center">
+                      <Users className="w-4 h-4 text-yellow-600 mx-auto mb-1" />
+                      <p className="text-xl font-bold text-gray-900">1</p>
+                      <p className="text-[8px] text-gray-600 font-semibold">Groupes</p>
+                    </div>
+                    <div className="border border-gray-200 rounded-lg p-2 text-center">
+                      <Bookmark className="w-4 h-4 text-yellow-600 mx-auto mb-1" />
+                      <p className="text-xl font-bold text-gray-900">0</p>
+                      <p className="text-[8px] text-gray-600 font-semibold">Favoris</p>
+                    </div>
+                    <div className="border border-gray-200 rounded-lg p-2 text-center">
+                      <MessageCircle className="w-4 h-4 text-yellow-600 mx-auto mb-1" />
+                      <p className="text-xl font-bold text-gray-900">0</p>
+                      <p className="text-[8px] text-gray-600 font-semibold">Messages</p>
+                    </div>
+                    <div className="border border-gray-200 rounded-lg p-2 text-center">
+                      <AlertTriangle className="w-4 h-4 text-yellow-600 mx-auto mb-1" />
+                      <p className="text-xl font-bold text-gray-900">46%</p>
+                      <p className="text-[8px] text-gray-600 font-semibold">Profil</p>
+                    </div>
+                  </div>
+
+                  {/* Search Section */}
+                  <div className="border-l-4 border-yellow-400 bg-gray-50 rounded-r-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target className="w-4 h-4 text-yellow-600" />
+                      <p className="text-sm font-bold text-gray-900">Ma Recherche</p>
+                    </div>
+                    <p className="text-xs text-gray-700"><span className="font-bold">0-2000€</span> • Non défini</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
+            <div>
+              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Séparation header claire</li>
+                <li>• Jaune bien dosé</li>
+                <li>• Structure visible</li>
+                <li>• Moderne</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Barre jaune imposante</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 function ChoicesSection() {
