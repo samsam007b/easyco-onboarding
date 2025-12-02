@@ -5828,6 +5828,522 @@ function SearcherDashboardSection() {
           </div>
         </div>
 
+      {/* Nouvelles variantes créatives - Animations & Couleurs */}
+      <div className="space-y-6 pt-8 border-t border-slate-700">
+        <div className="flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-white">Variantes Créatives - Animations & Couleurs</h3>
+          <span className="px-3 py-1 bg-gradient-to-r from-[#FFC107] to-[#F9A825] text-gray-900 rounded-full text-sm font-bold">Expérimental</span>
+        </div>
+        <p className="text-slate-400">Explorations créatives avec animations fluides, couleurs inversées, et glassmorphism avancé</p>
+
+        {/* Variant C1: Amber Glow Pulse - Boutons animés avec glow pulsé */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c1' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c1')}
+        >
+          {selectedVariant === 'c1' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C1</span>
+              <span className="text-sm font-medium text-white">Amber Glow Pulse - Boutons animés</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, rgba(255, 249, 230, 0.7) 0%, rgba(255, 193, 7, 0.3) 100%)',
+            }}>
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/85 border-2 border-[#FFC107]/50 shadow-2xl p-4 overflow-hidden" style={{
+                  boxShadow: '0 0 40px rgba(255, 193, 7, 0.3), 0 8px 32px rgba(0, 0, 0, 0.1)'
+                }}>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFC107]/30 rounded-full blur-3xl animate-pulse" />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFC107] to-[#F9A825] border-2 border-white shadow-lg flex items-center justify-center animate-pulse">
+                        <span className="text-sm font-bold text-white">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-700 font-medium">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat, idx) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#FFC107] to-[#F9A825] rounded-2xl blur-sm opacity-0 group-hover:opacity-60 transition-opacity duration-300" style={{
+                              animation: `pulse 2s ease-in-out infinite ${idx * 0.2}s`
+                            }} />
+                            <div className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-white border-2 border-[#FFC107]/40 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-[#FFC107]">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825] transition-transform duration-300 group-hover:scale-110" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Pulse animation</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Hover scale</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Glow effect</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Gradient borders</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C2: Dark Amber Inverse - Couleurs inversées */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c2' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c2')}
+        >
+          {selectedVariant === 'c2' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C2</span>
+              <span className="text-sm font-medium text-white">Dark Amber Inverse - Couleurs inversées</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, #2D2416 0%, #1A1410 100%)',
+            }}>
+              <div className="absolute inset-0 opacity-10" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-gradient-to-br from-[#2D2416]/80 to-[#1A1410]/80 border-2 border-[#FFC107]/60 shadow-2xl p-4 overflow-hidden" style={{
+                  boxShadow: '0 0 40px rgba(255, 193, 7, 0.4), inset 0 1px 0 rgba(255, 193, 7, 0.2)'
+                }}>
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-[#FFC107]/20 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#F9A825]/10 rounded-full blur-3xl" />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFC107] to-[#F9A825] border-2 border-[#FFC107]/30 shadow-xl flex items-center justify-center">
+                        <span className="text-sm font-bold text-gray-900">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-[#FFF9E6]">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-[#FFC107] font-medium">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gradient-to-br from-[#FFC107] to-[#F9A825] border border-[#FFD249] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                            <div className="relative">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-gray-900" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-800 font-semibold">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Dark mode</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Amber buttons</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Gradient fills</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Inverse colors</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C3: Liquid Glass - Glass morphism extrême avec animations fluides */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c3' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c3')}
+        >
+          {selectedVariant === 'c3' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C3</span>
+              <span className="text-sm font-medium text-white">Liquid Glass - Glassmorphism extrême</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, rgba(255, 249, 230, 0.8) 0%, rgba(255, 215, 100, 0.6) 50%, rgba(255, 193, 7, 0.4) 100%)',
+            }}>
+              {/* Animated blobs */}
+              <div className="absolute top-0 left-1/4 w-40 h-40 bg-[#FFC107]/40 rounded-full blur-3xl" style={{
+                animation: 'float 8s ease-in-out infinite'
+              }} />
+              <div className="absolute bottom-0 right-1/4 w-36 h-36 bg-[#F9A825]/30 rounded-full blur-3xl" style={{
+                animation: 'float 6s ease-in-out infinite reverse'
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-3xl bg-white/40 border border-white/80 shadow-2xl p-4 overflow-hidden" style={{
+                  boxShadow: '0 8px 32px rgba(255, 193, 7, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(255, 193, 7, 0.2)'
+                }}>
+                  <div className="absolute inset-0" style={{
+                    background: 'radial-gradient(circle at 30% 20%, rgba(255, 249, 230, 0.6) 0%, transparent 50%)',
+                  }} />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-2xl backdrop-blur-xl bg-white/70 border-2 border-white/90 shadow-xl flex items-center justify-center" style={{
+                        boxShadow: '0 4px 16px rgba(255, 193, 7, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.9)'
+                      }}>
+                        <span className="text-sm font-bold bg-gradient-to-br from-[#FFC107] to-[#F9A825] bg-clip-text text-transparent">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-700 font-medium">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat, idx) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative group">
+                            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFC107] to-[#F9A825] rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity duration-500" />
+                            <div className="relative rounded-2xl p-2.5 text-center overflow-hidden backdrop-blur-2xl bg-white/60 border border-white/90 shadow-lg transition-all duration-500 group-hover:bg-white/80 group-hover:scale-110" style={{
+                              boxShadow: '0 2px 12px rgba(255, 193, 7, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+                              animation: `float 3s ease-in-out infinite ${idx * 0.3}s`
+                            }}>
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825] transition-all duration-500 group-hover:text-[#FFC107] group-hover:scale-125" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Float animation</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Blur layers</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Animated blobs</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Ultra glass</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C4: Neon Amber - Néon moderne avec effets lumineux */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c4' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c4')}
+        >
+          {selectedVariant === 'c4' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C4</span>
+              <span className="text-sm font-medium text-white">Neon Amber - Effets néon modernes</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900">
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-xl bg-gray-900/60 border-2 border-[#FFC107] p-4 overflow-hidden" style={{
+                  boxShadow: '0 0 60px rgba(255, 193, 7, 0.6), 0 0 30px rgba(255, 193, 7, 0.4), inset 0 0 20px rgba(255, 193, 7, 0.1)'
+                }}>
+                  {/* Neon glow lines */}
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#FFC107] to-transparent" style={{
+                    boxShadow: '0 0 8px rgba(255, 193, 7, 0.8)'
+                  }} />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-xl bg-gray-900 border-2 border-[#FFC107] flex items-center justify-center" style={{
+                        boxShadow: '0 0 20px rgba(255, 193, 7, 0.8), inset 0 0 10px rgba(255, 193, 7, 0.2)'
+                      }}>
+                        <span className="text-sm font-bold text-[#FFC107]" style={{
+                          textShadow: '0 0 10px rgba(255, 193, 7, 0.8)'
+                        }}>S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-white">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-[#FFC107] font-medium" style={{
+                          textShadow: '0 0 8px rgba(255, 193, 7, 0.5)'
+                        }}>Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gray-900/80 border-2 border-[#FFC107]/60 transition-all duration-300 hover:border-[#FFC107] hover:scale-105" style={{
+                            boxShadow: '0 0 20px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.1)'
+                          }}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#FFC107]/10 to-transparent" />
+                            <div className="relative">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#FFC107]" style={{
+                                filter: 'drop-shadow(0 0 4px rgba(255, 193, 7, 0.6))'
+                              }} />
+                              <p className="text-base font-bold text-white" style={{
+                                textShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
+                              }}>{stat.value}</p>
+                              <p className="text-[9px] text-[#FFC107]/80 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Neon glow</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Dark theme</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Text shadows</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Cyberpunk</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C5: Gradient Paradise - Dégradés colorés avec animations */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c5' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c5')}
+        >
+          {selectedVariant === 'c5' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C5</span>
+              <span className="text-sm font-medium text-white">Gradient Paradise - Dégradés animés</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 25%, #FFD89B 50%, #FFC966 75%, #FFC107 100%)',
+            }}>
+              <div className="absolute inset-0" style={{
+                background: 'radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(249, 168, 37, 0.3) 0%, transparent 50%)',
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-xl bg-white/50 border-2 border-white/80 shadow-2xl p-4 overflow-hidden" style={{
+                  boxShadow: '0 8px 32px rgba(255, 193, 7, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.9)'
+                }}>
+                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full" style={{
+                    background: 'radial-gradient(circle, rgba(255, 193, 7, 0.4) 0%, transparent 70%)',
+                    animation: 'spin 20s linear infinite'
+                  }} />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-2xl border-2 border-white shadow-2xl flex items-center justify-center" style={{
+                        background: 'linear-gradient(135deg, #FFC107 0%, #F9A825 100%)',
+                      }}>
+                        <span className="text-sm font-bold text-white">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-700 font-medium">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users, gradient: 'from-[#FFC107] to-[#FFD54F]' },
+                        { label: 'Favoris', value: '12', icon: Home, gradient: 'from-[#FFD54F] to-[#FFECB3]' },
+                        { label: 'Messages', value: '3', icon: MessageCircle, gradient: 'from-[#FFCA28] to-[#FFC107]' },
+                        { label: 'Profil', value: '85%', icon: Target, gradient: 'from-[#F9A825] to-[#FFB300]' }
+                      ].map((stat, idx) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative group">
+                            <div className={cn(
+                              "absolute inset-0 bg-gradient-to-br rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity duration-500",
+                              stat.gradient
+                            )} />
+                            <div className={cn(
+                              "relative rounded-2xl p-2.5 text-center overflow-hidden bg-gradient-to-br border-2 border-white shadow-xl transition-all duration-500 group-hover:scale-110",
+                              stat.gradient
+                            )} style={{
+                              animation: `float 4s ease-in-out infinite ${idx * 0.5}s`
+                            }}>
+                              <div className="absolute inset-0 bg-white/40" />
+                              <div className="relative">
+                                <Icon className="w-4 h-4 mx-auto mb-1 text-gray-900 transition-transform duration-500 group-hover:rotate-12" />
+                                <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                                <p className="text-[9px] text-gray-800 font-semibold">{stat.label}</p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Multi gradients</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Float + rotate</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Colorful</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Radial blurs</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant C6: Minimal Zen - Minimaliste avec micro-interactions */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'c6' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('c6')}
+        >
+          {selectedVariant === 'c6' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C6</span>
+              <span className="text-sm font-medium text-white">Minimal Zen - Micro-interactions subtiles</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl bg-white">
+              <div className="relative p-5">
+                <div className="relative rounded-3xl bg-[#FFFEF8] border border-gray-200 shadow-sm p-4 overflow-hidden transition-all duration-500 hover:shadow-xl">
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#FFC107] to-[#F9A825] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-6">
+                        <span className="text-sm font-bold text-white">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-600 font-medium">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-3">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#FFC107] to-[#F9A825] rounded-xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500" />
+                            <div className="relative rounded-xl p-3 text-center bg-white border border-gray-200 transition-all duration-300 group-hover:border-transparent group-hover:-translate-y-1">
+                              <Icon className="w-5 h-5 mx-auto mb-1.5 text-gray-400 transition-all duration-300 group-hover:text-[#FFC107] group-hover:scale-125" />
+                              <p className="text-lg font-bold text-gray-900 transition-all duration-300 group-hover:text-[#FFC107]">{stat.value}</p>
+                              <p className="text-[9px] text-gray-500 font-medium uppercase tracking-wide">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Minimal clean</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Hover lift</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Color shift</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Micro-interactions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Suppression de la section B - Matte Stylized */}
       <div className="space-y-6 pt-8 border-t border-slate-700" style={{display: 'none'}}>
         <div className="flex items-center gap-3">
