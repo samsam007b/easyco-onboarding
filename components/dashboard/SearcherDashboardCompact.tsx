@@ -161,23 +161,14 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
 
   return (
     <div className="px-4 pt-1 pb-2">
-      {/* Background with grain texture */}
-      <div className="relative overflow-hidden rounded-2xl" style={{
-        background: 'rgba(255, 249, 230, 0.6)',
-      }}>
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }} />
-
-        <div className="relative p-5">
-          {/* Floating White Card with Glass Effect */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden rounded-3xl backdrop-blur-2xl bg-white/70 border border-white/80 shadow-2xl p-4"
-          >
-            {/* Gradient blob inside */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
+      {/* Floating White Card with Glass Effect */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-lg p-4"
+      >
+        {/* Gradient blob inside */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
 
             <div className="relative">
           {/* Header: Profile + Quick actions */}
@@ -252,10 +243,8 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               );
             })}
           </div>
-            </div>
-          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

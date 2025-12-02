@@ -86,6 +86,12 @@ class NotificationManager: NSObject, ObservableObject {
             return
         }
 
+        // TODO: Re-enable when APIClient and SupabaseClient are fully implemented
+        // For now, just log the token
+        print("📱 Device token received: \(token)")
+        print("⚠️ Token saving to backend disabled (stub mode)")
+
+        /*
         do {
             let userId = try APIClient.shared.getUserIdFromToken(authToken)
 
@@ -117,6 +123,7 @@ class NotificationManager: NSObject, ObservableObject {
         } catch {
             print("❌ Error saving device token: \(error)")
         }
+        */
     }
 
     // MARK: - Notification Categories & Actions
@@ -367,6 +374,12 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             return
         }
 
+        // TODO: Re-enable when APIClient.sendMessage() is implemented
+        print("💬 Quick reply: \(text)")
+        print("📧 Conversation ID: \(uuid)")
+        print("⚠️ Message sending disabled (stub mode)")
+
+        /*
         do {
             _ = try await APIClient.shared.sendMessage(
                 conversationId: uuid,
@@ -376,6 +389,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         } catch {
             print("❌ Error sending quick reply: \(error)")
         }
+        */
     }
 
     @MainActor

@@ -563,6 +563,6 @@ struct DetailRow: View {
 
 struct VisitSchedulerView_Previews: PreviewProvider {
     static var previews: some View {
-        VisitSchedulerView(property: .mock)
+        VisitSchedulerView(property: Property.mock)
     }
 }
