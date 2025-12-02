@@ -64,11 +64,11 @@ export default function FinancialInfoPage() {
       hasGuarantor,
       employmentType,
     });
-    router.push('/profile/enhance/community');
+    router.push('/profile');
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/community');
+    router.push('/profile');
   };
 
   const canContinue = incomeRange && employmentType;
@@ -85,14 +85,9 @@ export default function FinancialInfoPage() {
   return (
     <EnhanceProfileLayout
       role="searcher"
-      backUrl="/profile/enhance/values"
-      backLabel="Back"
-      progress={{
-        current: 4,
-        total: 6,
-        label: 'Step 4 of 6',
-        stepName: 'Financial Information',
-      }}
+      backUrl="/profile"
+      backLabel="Back to Profile"
+      progress={undefined}
       isLoading={isLoading}
       loadingText="Loading your information..."
     >
@@ -203,23 +198,20 @@ export default function FinancialInfoPage() {
       </div>
 
       {/* Action buttons */}
-      <div className="space-y-3 mt-8">
+      <div className="mt-8 flex justify-between items-center gap-4">
+        <button
+          onClick={handleSkip}
+          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
+        >
+          Skip
+          <span className="text-lg">→</span>
+        </button>
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
-            canContinue
-              ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-              : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
-          }`}
+          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Continue
-        </button>
-        <button
-          onClick={handleSkip}
-          className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
-        >
-          Skip for now
+          Save
         </button>
       </div>
     </EnhanceProfileLayout>

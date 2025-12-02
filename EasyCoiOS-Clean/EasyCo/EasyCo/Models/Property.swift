@@ -275,6 +275,10 @@ struct PropertyResident: Identifiable, Codable {
 // MARK: - Mock Data
 
 extension Property {
+    static var mock: Property {
+        mockProperties[0]
+    }
+
     static var mockProperties: [Property] {
         [
             Property(

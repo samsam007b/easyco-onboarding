@@ -68,6 +68,7 @@
 		F465F2C02EDFAA1700A64D6A /* MatchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2BC2EDFAA1700A64D6A /* MatchFilters.swift */; };
 		F465F2C32EDFAB3A00A64D6A /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2C12EDFAB3A00A64D6A /* Group.swift */; };
 		F465F2C42EDFAB3A00A64D6A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2C22EDFAB3A00A64D6A /* Notification.swift */; };
+		F465F2C62EDFB26100A64D6A /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2C52EDFB26100A64D6A /* Property.swift */; };
 		F46BC49D2EC2D716003F453A /* MessagesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4692EC2D70D003F453A /* MessagesListView.swift */; };
 		F46BC49E2EC2D716003F453A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC46B2EC2D70D003F453A /* LoginView.swift */; };
 		F46BC49F2EC2D716003F453A /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC46C2EC2D70D003F453A /* AuthViewModel.swift */; };
@@ -272,6 +273,7 @@
 		F465F2BD2EDFAA1700A64D6A /* PropertyFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyFilters.swift; sourceTree = "<group>"; };
 		F465F2C12EDFAB3A00A64D6A /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		F465F2C22EDFAB3A00A64D6A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		F465F2C52EDFB26100A64D6A /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		F46BC4692EC2D70D003F453A /* MessagesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesListView.swift; sourceTree = "<group>"; };
 		F46BC46B2EC2D70D003F453A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		F46BC46C2EC2D70D003F453A /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 		F46BC4BE2EC2D863003F453A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F465F2C52EDFB26100A64D6A /* Property.swift */,
 				F465F2C12EDFAB3A00A64D6A /* Group.swift */,
 				F465F2C22EDFAB3A00A64D6A /* Notification.swift */,
 				F465F2BB2EDFAA1700A64D6A /* DashboardData.swift */,
@@ -1249,6 +1252,7 @@
 				F4C54B972EDCFB7A00A86C28 /* VisitScheduleView.swift in Sources */,
 				F4C54B982EDCFB7A00A86C28 /* PropertyFormStep3View.swift in Sources */,
 				F4C54BA52EDCFE3600A86C28 /* MessageTemplatesView.swift in Sources */,
+				F465F2C62EDFB26100A64D6A /* Property.swift in Sources */,
 				F4C54B992EDCFB7A00A86C28 /* PropertyStatsView.swift in Sources */,
 				F4C54B9A2EDCFB7A00A86C28 /* PropertyFormStep2View.swift in Sources */,
 				F4C54B9B2EDCFB7A00A86C28 /* PropertyFormStep5View.swift in Sources */,

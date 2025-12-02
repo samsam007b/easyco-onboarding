@@ -64,11 +64,11 @@ export default function CommunityEventsPage() {
       enjoySharedMeals,
       openToMeetups,
     });
-    router.push('/profile/enhance/verification');
+    router.push('/profile');
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/verification');
+    router.push('/profile');
   };
 
   const canContinue = eventInterest !== '';
@@ -82,14 +82,9 @@ export default function CommunityEventsPage() {
   return (
     <EnhanceProfileLayout
       role="searcher"
-      backUrl="/profile/enhance/financial"
-      backLabel="Back"
-      progress={{
-        current: 5,
-        total: 6,
-        label: 'Step 5 of 6',
-        stepName: 'Community & Events',
-      }}
+      backUrl="/profile"
+      backLabel="Back to Profile"
+      progress={undefined}
       isLoading={isLoading}
       loadingText="Loading your preferences..."
     >
@@ -230,7 +225,7 @@ export default function CommunityEventsPage() {
           disabled={!canContinue}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Continue
+          Save
         </button>
       </div>
     </EnhanceProfileLayout>
