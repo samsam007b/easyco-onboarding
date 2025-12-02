@@ -271,6 +271,7 @@ export default function AdminDesignSystemPage() {
           {activeSection === 'shadows' && <ShadowsSection />}
           {activeSection === 'inputs' && <InputsSection />}
           {activeSection === 'badges' && <BadgesSection />}
+          {activeSection === 'dashboard-variants' && <SearcherDashboardSection />}
           {activeSection === 'choices' && <ChoicesSection />}
         </motion.div>
       </AnimatePresence>
@@ -5453,6 +5454,450 @@ function ChoiceCard({
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <CheckCircle className="w-4 h-4" /> : <Save className="w-4 h-4" />}
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function SearcherDashboardSection() {
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2">Searcher Dashboard Variants</h2>
+        <p className="text-slate-400">
+          Propositions de redesign du dashboard Searcher, inspirées du dashboard Resident avec les couleurs Searcher (Yellow/Gold)
+        </p>
+      </div>
+
+      {/* Direction A: Enhanced Glassmorphism */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-white">Direction A - Enhanced Glassmorphism</h3>
+          <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium">Premium</span>
+        </div>
+        <p className="text-slate-400">Multi-layer glass effect avec backdrop-blur intense, grain texture, et gradient backgrounds jaune/or</p>
+
+        {/* Variant A1: Glassmorphism Heavy Blur */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'a1' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('a1')}
+        >
+          {selectedVariant === 'a1' && (
+            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded text-xs font-semibold">A1</span>
+              <span className="text-sm font-medium text-white">Glassmorphism Heavy Blur</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%)',
+            }}>
+              {/* Multi-layer blur overlays */}
+              <div className="absolute inset-0">
+                <div className="absolute top-10 left-1/4 w-32 h-32 bg-yellow-400/40 rounded-full blur-3xl" />
+                <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-amber-400/30 rounded-full blur-3xl" />
+              </div>
+
+              {/* Grain texture overlay */}
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5 backdrop-blur-3xl bg-white/40">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white/60 shadow-xl backdrop-blur-sm bg-white/50">
+                      <div className="w-full h-full bg-gradient-to-br from-yellow-200 to-amber-300 flex items-center justify-center">
+                        <span className="text-white text-lg font-bold">S</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h1 className="text-base font-bold text-gray-900">Salut, Sophie !</h1>
+                      <p className="text-xs text-gray-700">Recherche à Paris, Lyon</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* KPIs Grid */}
+                <div className="grid grid-cols-4 gap-2.5 mb-3">
+                  {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
+                    <div
+                      key={label}
+                      className="relative overflow-hidden rounded-xl backdrop-blur-2xl bg-white/50 border border-white/60 py-2.5 px-2 shadow-lg hover:shadow-xl transition group"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/30 via-transparent to-amber-200/20" />
+                      <div className="relative text-center">
+                        <div className={cn(
+                          "w-6 h-6 rounded-lg mx-auto mb-1 flex items-center justify-center",
+                          "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200/50 grain-subtle"
+                        )}>
+                          <Users className="w-3.5 h-3.5 text-gray-700" />
+                        </div>
+                        <p className="text-lg font-bold text-gray-900">{i + 3}</p>
+                        <p className="text-[10px] text-gray-700 font-medium">{label}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Collapsible Section Preview */}
+                <div className="bg-white/40 backdrop-blur-xl rounded-xl overflow-hidden shadow-md border border-white/50">
+                  <div className="px-3 py-2.5 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-200 to-amber-200 flex items-center justify-center grain-subtle border border-yellow-200/50">
+                        <Target className="w-3.5 h-3.5 text-gray-700" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-900">Ma Recherche</p>
+                        <p className="text-[10px] text-gray-700"><span className="font-bold">600-900€</span> • Paris</p>
+                      </div>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-700" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">backdrop-blur-3xl</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">bg-white/40-50</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">grain-subtle</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Multi-layer blur</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant A2: Glassmorphism avec Cards superposées */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'a2' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('a2')}
+        >
+          {selectedVariant === 'a2' && (
+            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded text-xs font-semibold">A2</span>
+              <span className="text-sm font-medium text-white">Glassmorphism Layered Cards</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
+            }}>
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5">
+                {/* Floating White Card with Glass Effect */}
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/70 border border-white/80 shadow-2xl p-4 overflow-hidden">
+                  {/* Gradient blob inside */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-yellow-200/60 to-amber-200/40 rounded-full blur-2xl" />
+
+                  <div className="relative">
+                    {/* Profile Header */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 border-2 border-white/70 shadow-lg flex items-center justify-center grain-medium">
+                        <span className="text-sm font-bold text-gray-800">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-600">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    {/* Stats inline */}
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users, color: 'from-yellow-50 to-amber-50' },
+                        { label: 'Favoris', value: '12', icon: Home, color: 'from-amber-50 to-yellow-50' },
+                        { label: 'Messages', value: '3', icon: MessageCircle, color: 'from-yellow-50 to-amber-50' },
+                        { label: 'Profil', value: '85%', icon: Target, color: 'from-amber-50 to-yellow-50' }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className={cn(
+                            "relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-yellow-200/40",
+                            `bg-gradient-to-br ${stat.color}`
+                          )}>
+                            <div className="absolute inset-0 grain-subtle opacity-40" />
+                            <div className="relative">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-gray-700" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Layered Glass</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">bg-white/70</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Gradient blobs</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">grain-medium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Direction B: Matte Stylized */}
+      <div className="space-y-6 pt-8 border-t border-slate-700">
+        <div className="flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-white">Direction B - Matte Stylized</h3>
+          <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium">Clean & Modern</span>
+        </div>
+        <p className="text-slate-400">Design matte/flat ultra-poli, inspiré du dashboard Resident avec grain texture et gradients subtils jaune</p>
+
+        {/* Variant B1: Pure Matte White Cards */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'b1' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('b1')}
+        >
+          {selectedVariant === 'b1' && (
+            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded text-xs font-semibold">B1</span>
+              <span className="text-sm font-medium text-white">Pure Matte White Cards</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="p-5 bg-gray-50 rounded-2xl">
+              {/* Main White Card - NO SHADOWS */}
+              <div className="bg-white rounded-3xl p-4 border border-gray-100">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden border border-gray-200">
+                      <div className="w-full h-full bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center grain-medium">
+                        <span className="text-white text-lg font-bold text-gray-700">S</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h1 className="text-base font-bold text-gray-900">Salut, Sophie !</h1>
+                      <p className="text-xs text-gray-600">Recherche à Paris, Lyon</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* KPIs - Pure Matte */}
+                <div className="grid grid-cols-4 gap-2.5 mb-3">
+                  {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
+                    <div
+                      key={label}
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200/60 py-2.5 px-2 hover:from-yellow-100 hover:to-amber-100 transition-colors"
+                    >
+                      <div className="absolute inset-0 grain-subtle opacity-50" />
+                      <div className="relative text-center">
+                        <div className={cn(
+                          "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border border-yellow-200/70",
+                          "bg-gradient-to-br from-yellow-100 to-amber-100 grain-medium"
+                        )}>
+                          <Users className="w-4 h-4 text-gray-700" />
+                        </div>
+                        <p className="text-xl font-bold text-gray-900">{i + 3}</p>
+                        <p className="text-[10px] text-gray-600 font-medium">{label}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Collapsible Section */}
+                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl overflow-hidden border border-yellow-200/60 relative">
+                  <div className="absolute inset-0 grain-subtle opacity-40" />
+                  <div className="relative px-3 py-2.5 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200/70 flex items-center justify-center grain-medium">
+                        <Target className="w-4 h-4 text-gray-700" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-900">Ma Recherche</p>
+                        <p className="text-[10px] text-gray-600"><span className="font-bold">600-900€</span> • Paris</p>
+                      </div>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">NO shadows</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">bg-white</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">grain-medium/subtle</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Yellow gradients</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Variant B2: Matte avec Grain Texture Prononcé */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'b2' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('b2')}
+        >
+          {selectedVariant === 'b2' && (
+            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded text-xs font-semibold">B2</span>
+              <span className="text-sm font-medium text-white">Matte Grain Texture Premium</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl relative overflow-hidden">
+              {/* Background gradient blobs */}
+              <div className="absolute top-0 left-1/4 w-32 h-32 bg-yellow-200/40 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-amber-200/30 rounded-full blur-3xl" />
+
+              {/* Main Card */}
+              <div className="relative bg-white rounded-3xl p-4 border-2 border-gray-200">
+                {/* Grain texture background */}
+                <div className="absolute inset-0 grain-medium opacity-10 rounded-3xl" />
+
+                <div className="relative">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-gray-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] grain-medium" />
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <span className="text-lg font-bold text-gray-700">S</span>
+                        </div>
+                      </div>
+                      <div>
+                        <h1 className="text-base font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-xs text-gray-600">Recherche à Paris, Lyon</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* KPI Grid */}
+                  <div className="grid grid-cols-4 gap-2.5 mb-3">
+                    {[
+                      { label: 'Groupes', value: '5', gradient: 'from-[#FEF3C7] to-[#FDE68A]' },
+                      { label: 'Favoris', value: '12', gradient: 'from-[#FDE68A] to-[#FCD34D]' },
+                      { label: 'Messages', value: '3', gradient: 'from-[#FEF3C7] to-[#FDE68A]' },
+                      { label: 'Profil', value: '85%', gradient: 'from-[#FDE68A] to-[#FCD34D]' }
+                    ].map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="relative overflow-hidden rounded-2xl border-2 border-gray-200 py-2.5"
+                      >
+                        <div className={cn(
+                          "absolute inset-0 grain-medium opacity-60",
+                          `bg-gradient-to-br ${stat.gradient}`
+                        )} />
+                        <div className="relative text-center">
+                          <div className={cn(
+                            "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border-2 border-gray-300 overflow-hidden",
+                            `bg-gradient-to-br ${stat.gradient}`
+                          )}>
+                            <div className="absolute inset-0 grain-medium opacity-80" />
+                            <Users className="w-4 h-4 text-gray-700 relative z-10" />
+                          </div>
+                          <p className="text-xl font-bold text-gray-900">{stat.value}</p>
+                          <p className="text-[10px] text-gray-600 font-semibold">{stat.label}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Search Section */}
+                  <div className="relative overflow-hidden rounded-2xl border-2 border-gray-200">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] grain-medium opacity-70" />
+                    <div className="relative px-3 py-2.5 flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="relative w-7 h-7 rounded-xl border-2 border-gray-300 overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#FDE68A] to-[#FCD34D] grain-medium opacity-80" />
+                          <div className="relative w-full h-full flex items-center justify-center">
+                            <Target className="w-4 h-4 text-gray-700" />
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900">Ma Recherche</p>
+                          <p className="text-[10px] text-gray-700"><span className="font-bold">600-900€</span> • Paris</p>
+                        </div>
+                      </div>
+                      <ChevronDown className="w-4 h-4 text-gray-700" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">grain-medium</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">NO shadows</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Bold borders</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Yellow gradients</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Summary */}
+      <div className="bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/20 rounded-xl p-6">
+        <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-yellow-400" />
+          Résumé des Propositions
+        </h4>
+        <div className="space-y-3 text-sm text-slate-300">
+          <div>
+            <strong className="text-blue-300">Direction A (Glassmorphism):</strong>
+            <ul className="mt-1 ml-4 space-y-1 text-xs text-slate-400">
+              <li>• A1: Heavy blur (backdrop-blur-3xl), multi-layer, grain-subtle, très premium</li>
+              <li>• A2: Layered cards, white card floating sur fond gradient, grain-medium</li>
+            </ul>
+          </div>
+          <div>
+            <strong className="text-purple-300">Direction B (Matte):</strong>
+            <ul className="mt-1 ml-4 space-y-1 text-xs text-slate-400">
+              <li>• B1: Pure matte white, NO shadows, grain-subtle/medium, gradients jaune délicats</li>
+              <li>• B2: Matte grain texture premium, grain-medium prononcé, bold borders, texture tactile</li>
+            </ul>
+          </div>
+        </div>
+        <p className="mt-4 text-xs text-slate-400 italic">
+          Toutes les propositions suivent la structure du dashboard Resident: rounded-3xl, grain texture, gradients jaune/or (Searcher colors), et focus sur la qualité premium.
+        </p>
       </div>
     </div>
   );
