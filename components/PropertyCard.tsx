@@ -187,7 +187,7 @@ function PropertyCard({
             )}
 
             {/* Property Match Score Badge - V1 Flat */}
-            {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && (
+            {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable !== false && (
               <div className={`absolute top-2 left-2 px-3 py-1 rounded-full text-xs font-bold shadow-md ${
                 matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
                 matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
@@ -199,7 +199,7 @@ function PropertyCard({
               </div>
             )}
             {/* Profile Incomplete Indicator */}
-            {searcherProfile && propertyMatchResult && !propertyMatchResult.isScoreReliable && (
+            {searcherProfile && propertyMatchResult && propertyMatchResult.isScoreReliable === false && (
               <div className="absolute top-2 left-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold shadow-md">
                 Complétez votre profil
               </div>
@@ -312,7 +312,7 @@ function PropertyCard({
           )}
 
           {/* Property Match Score Badge - V1 Flat */}
-          {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable && (
+          {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable !== false && (
             <div className={`absolute top-3 left-3 px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
               matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
               matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
@@ -325,7 +325,7 @@ function PropertyCard({
           )}
 
           {/* Profile Incomplete Badge */}
-          {searcherProfile && propertyMatchResult && !propertyMatchResult.isScoreReliable && (
+          {searcherProfile && propertyMatchResult && propertyMatchResult.isScoreReliable === false && (
             <div className="absolute top-3 left-3 bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-bold shadow-lg">
               Complétez votre profil
             </div>
