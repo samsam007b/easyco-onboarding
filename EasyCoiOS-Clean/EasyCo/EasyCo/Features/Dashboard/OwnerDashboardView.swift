@@ -426,7 +426,7 @@ struct OwnerDashboardView: View {
 
 // MARK: - Supporting Models
 
-enum TimePeriod: String, CaseIterable {
+enum DashboardTimePeriod: String, CaseIterable {
     case week = "7j"
     case month = "30j"
     case quarter = "3m"

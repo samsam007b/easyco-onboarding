@@ -362,7 +362,7 @@ struct InfoSection<Content: View>: View {
 
 // MARK: - Detail Row
 
-struct DetailRow: View {
+struct ApplicationDetailRow: View {
     let label: String
     let value: String
 

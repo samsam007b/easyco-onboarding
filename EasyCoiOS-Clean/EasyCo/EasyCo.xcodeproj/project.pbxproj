@@ -50,14 +50,11 @@
 		F465F20E2EDF79C700A64D6A /* AccessibilityHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1D72EDF79C700A64D6A /* AccessibilityHelpers.swift */; };
 		F465F2102EDF79C700A64D6A /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E72EDF79C700A64D6A /* LanguageManager.swift */; };
 		F465F2152EDF79C700A64D6A /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E62EDF79C700A64D6A /* Language.swift */; };
-		F465F2172EDF79C700A64D6A /* AuthManager+OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1DB2EDF79C700A64D6A /* AuthManager+OAuth.swift */; };
 		F465F2192EDF79C700A64D6A /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1D92EDF79C700A64D6A /* AppleSignInManager.swift */; };
 		F465F21F2EDF79C700A64D6A /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E32EDF79C700A64D6A /* HapticFeedback.swift */; };
 		F465F2232EDF79C700A64D6A /* SupabaseRealtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2042EDF79C700A64D6A /* SupabaseRealtime.swift */; };
 		F465F2262EDF79C700A64D6A /* GuestModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1DD2EDF79C700A64D6A /* GuestModeManager.swift */; };
-		F465F2272EDF79C700A64D6A /* SwiftUI+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1E42EDF79C700A64D6A /* SwiftUI+UIKit.swift */; };
 		F465F22B2EDF79C700A64D6A /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F1F32EDF79C700A64D6A /* NotificationManager.swift */; };
-		F465F22F2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F22D2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift */; };
 		F465F2302EDF7A2A00A64D6A /* PropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F22E2EDF7A2A00A64D6A /* PropertiesViewModel.swift */; };
 		F465F2342EDF7A6200A64D6A /* AuthFlowIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465F2332EDF7A6200A64D6A /* AuthFlowIntegration.swift */; };
 		F46BC49D2EC2D716003F453A /* MessagesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4692EC2D70D003F453A /* MessagesListView.swift */; };
@@ -75,9 +72,6 @@
 		F46BC4AB2EC2D716003F453A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46BC4812EC2D70F003F453A /* Preview Assets.xcassets */; };
 		F46BC4AC2EC2D716003F453A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4832EC2D710003F453A /* Theme.swift */; };
 		F46BC4AD2EC2D716003F453A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4842EC2D710003F453A /* AppConfig.swift */; };
-		F46BC4B42EC2D716003F453A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC48F2EC2D713003F453A /* String+Extensions.swift */; };
-		F46BC4B52EC2D716003F453A /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4902EC2D713003F453A /* View+Extensions.swift */; };
-		F46BC4B62EC2D716003F453A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4912EC2D713003F453A /* Date+Extensions.swift */; };
 		F46BC4B72EC2D716003F453A /* SupabaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4942EC2D714003F453A /* SupabaseAuth.swift */; };
 		F46BC4B82EC2D716003F453A /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC4952EC2D714003F453A /* AuthManager.swift */; };
 		F46BC4BD2EC2D716003F453A /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46BC49C2EC2D714003F453A /* UserDefaultsManager.swift */; };
@@ -237,19 +231,16 @@
 		F465F1D72EDF79C700A64D6A /* AccessibilityHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelpers.swift; sourceTree = "<group>"; };
 		F465F1D92EDF79C700A64D6A /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
 		F465F1DA2EDF79C700A64D6A /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
-		F465F1DB2EDF79C700A64D6A /* AuthManager+OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthManager+OAuth.swift"; sourceTree = "<group>"; };
 		F465F1DD2EDF79C700A64D6A /* GuestModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestModeManager.swift; sourceTree = "<group>"; };
 		F465F1DE2EDF79C700A64D6A /* SupabaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuth.swift; sourceTree = "<group>"; };
 		F465F1E12EDF79C700A64D6A /* DeepLinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
 		F465F1E32EDF79C700A64D6A /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
-		F465F1E42EDF79C700A64D6A /* SwiftUI+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+UIKit.swift"; sourceTree = "<group>"; };
 		F465F1E62EDF79C700A64D6A /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		F465F1E72EDF79C700A64D6A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		F465F1F32EDF79C700A64D6A /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		F465F2012EDF79C700A64D6A /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		F465F2022EDF79C700A64D6A /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		F465F2042EDF79C700A64D6A /* SupabaseRealtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRealtime.swift; sourceTree = "<group>"; };
-		F465F22D2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PropertiesListView+Integration.swift"; sourceTree = "<group>"; };
 		F465F22E2EDF7A2A00A64D6A /* PropertiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesViewModel.swift; sourceTree = "<group>"; };
 		F465F2332EDF7A6200A64D6A /* AuthFlowIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowIntegration.swift; sourceTree = "<group>"; };
 		F46BC4692EC2D70D003F453A /* MessagesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesListView.swift; sourceTree = "<group>"; };
@@ -268,9 +259,6 @@
 		F46BC4812EC2D70F003F453A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F46BC4832EC2D710003F453A /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		F46BC4842EC2D710003F453A /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
-		F46BC48F2EC2D713003F453A /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		F46BC4902EC2D713003F453A /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
-		F46BC4912EC2D713003F453A /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		F46BC4942EC2D714003F453A /* SupabaseAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupabaseAuth.swift; sourceTree = "<group>"; };
 		F46BC4952EC2D714003F453A /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F46BC49C2EC2D714003F453A /* UserDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
@@ -1174,7 +1162,6 @@
 				F4D17A9E2ECD385C00FA5393 /* PropertyComparisonView.swift in Sources */,
 				F4C54BA72EDD000600A86C28 /* MessageTemplate.swift in Sources */,
 				F4C54B1C2EDCEE1300A86C28 /* ResidentHubView.swift in Sources */,
-				F465F22F2EDF7A2A00A64D6A /* PropertiesListView+Integration.swift in Sources */,
 				F465F2302EDF7A2A00A64D6A /* PropertiesViewModel.swift in Sources */,
 				F4C54B1D2EDCEE1300A86C28 /* TasksView.swift in Sources */,
 				F4C54B1F2EDCEE1300A86C28 /* ExpensesViewModel.swift in Sources */,
@@ -1225,7 +1212,6 @@
 				F4CED5192EC2D0130099AC70 /* ContentView.swift in Sources */,
 				F4BE8F9E2EC3680F00ABA917 /* OnboardingPreferencesView.swift in Sources */,
 				F46BC4A52EC2D716003F453A /* FiltersView.swift in Sources */,
-				F46BC4B62EC2D716003F453A /* Date+Extensions.swift in Sources */,
 				F4BE8F9C2EC3680F00ABA917 /* OnboardingCoordinator.swift in Sources */,
 				F465F1BE2EDDC89F00A64D6A /* NotificationsListView.swift in Sources */,
 				F465F1BB2EDDC89200A64D6A /* ApplyView.swift in Sources */,
@@ -1246,7 +1232,6 @@
 				F46BC4A72EC2D716003F453A /* PropertiesListView.swift in Sources */,
 				F4D17A892ECD1CE400FA5393 /* EnhancedProfile.swift in Sources */,
 				F4C54BA32EDCFD8900A86C28 /* OwnerChatView.swift in Sources */,
-				F46BC4B42EC2D716003F453A /* String+Extensions.swift in Sources */,
 				F46BC4C82EC2DADC003F453A /* KeychainManager.swift in Sources */,
 				F465F1922EDD8F4C00A64D6A /* LegalPagesView.swift in Sources */,
 				F4C54BCF2EDD16E700A86C28 /* CustomButton.swift in Sources */,
@@ -1274,16 +1259,13 @@
 				F465F20E2EDF79C700A64D6A /* AccessibilityHelpers.swift in Sources */,
 				F465F2102EDF79C700A64D6A /* LanguageManager.swift in Sources */,
 				F465F2152EDF79C700A64D6A /* Language.swift in Sources */,
-				F465F2172EDF79C700A64D6A /* AuthManager+OAuth.swift in Sources */,
 				F465F2192EDF79C700A64D6A /* AppleSignInManager.swift in Sources */,
 				F465F21F2EDF79C700A64D6A /* HapticFeedback.swift in Sources */,
 				F465F2232EDF79C700A64D6A /* SupabaseRealtime.swift in Sources */,
 				F465F2262EDF79C700A64D6A /* GuestModeManager.swift in Sources */,
-				F465F2272EDF79C700A64D6A /* SwiftUI+UIKit.swift in Sources */,
 				F465F22B2EDF79C700A64D6A /* NotificationManager.swift in Sources */,
 				F4BE8F9D2EC3680F00ABA917 /* OnboardingPersonalityView.swift in Sources */,
 				F465F1D52EDF797F00A64D6A /* VisitSchedulerView.swift in Sources */,
-				F46BC4B52EC2D716003F453A /* View+Extensions.swift in Sources */,
 				F4BE8FA62EC3680F00ABA917 /* OnboardingDailyHabitsView.swift in Sources */,
 				F465F1C02EDDC9A600A64D6A /* PreferencesView.swift in Sources */,
 				F4C54B012EDCE9EE00A86C28 /* Expense.swift in Sources */,
