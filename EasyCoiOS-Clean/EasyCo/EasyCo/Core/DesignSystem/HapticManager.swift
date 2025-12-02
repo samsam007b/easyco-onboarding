@@ -153,7 +153,7 @@ class HapticManager {
 
 // MARK: - Global Convenience Functions
 
-enum Haptic {
+enum HapticHelper {
     // Impact
     static func light() { HapticManager.shared.light() }
     static func medium() { HapticManager.shared.medium() }
@@ -188,15 +188,15 @@ extension View {
             TapGesture()
                 .onEnded { _ in
                     switch haptic {
-                    case .light: Haptic.light()
-                    case .medium: Haptic.medium()
-                    case .heavy: Haptic.heavy()
-                    case .soft: Haptic.soft()
-                    case .rigid: Haptic.rigid()
-                    case .selection: Haptic.selection()
-                    case .success: Haptic.success()
-                    case .warning: Haptic.warning()
-                    case .error: Haptic.error()
+                    case .light: HapticHelper.light()
+                    case .medium: HapticHelper.medium()
+                    case .heavy: HapticHelper.heavy()
+                    case .soft: HapticHelper.soft()
+                    case .rigid: HapticHelper.rigid()
+                    case .selection: HapticHelper.selection()
+                    case .success: HapticHelper.success()
+                    case .warning: HapticHelper.warning()
+                    case .error: HapticHelper.error()
                     }
                 }
         )
@@ -227,15 +227,15 @@ struct ButtonHapticModifier: ViewModifier {
         Button(action: {
             // Trigger haptic
             switch haptic {
-            case .light: Haptic.light()
-            case .medium: Haptic.medium()
-            case .heavy: Haptic.heavy()
-            case .soft: Haptic.soft()
-            case .rigid: Haptic.rigid()
-            case .selection: Haptic.selection()
-            case .success: Haptic.success()
-            case .warning: Haptic.warning()
-            case .error: Haptic.error()
+            case .light: HapticHelper.light()
+            case .medium: HapticHelper.medium()
+            case .heavy: HapticHelper.heavy()
+            case .soft: HapticHelper.soft()
+            case .rigid: HapticHelper.rigid()
+            case .selection: HapticHelper.selection()
+            case .success: HapticHelper.success()
+            case .warning: HapticHelper.warning()
+            case .error: HapticHelper.error()
             }
             // Execute action
             action()

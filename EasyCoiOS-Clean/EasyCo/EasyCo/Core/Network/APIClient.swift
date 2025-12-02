@@ -80,6 +80,12 @@ class APIClient {
         // TODO: Implement token retrieval from keychain
         return nil
     }
+
+    func getUserIdFromToken(_ token: String) throws -> String {
+        // TODO: Implement JWT token parsing to extract user ID
+        // For now, return a stub value to fix compilation
+        return "stub-user-id"
+    }
 }
 
 enum HTTPMethod: String {
