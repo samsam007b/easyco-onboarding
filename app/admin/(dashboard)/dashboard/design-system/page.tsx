@@ -5498,132 +5498,111 @@ function SearcherDashboardSection() {
         </p>
       </div>
 
-      {/* Direction A: Enhanced Glassmorphism */}
+      {/* Glassmorphism Layered Cards - Déclinaisons */}
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <h3 className="text-2xl font-bold text-white">Direction A - Enhanced Glassmorphism</h3>
-          <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium">Premium</span>
+          <h3 className="text-2xl font-bold text-white">Glassmorphism Layered Cards - Déclinaisons</h3>
+          <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium">Premium Glass</span>
         </div>
-        <p className="text-slate-400">Multi-layer glass effect avec backdrop-blur intense, grain texture, et gradient backgrounds jaune/or</p>
+        <p className="text-slate-400">Variations du style glassmorphism avec cartes superposées, basées sur votre variante préférée A2</p>
 
-        {/* Variant A1: Glassmorphism Heavy Blur */}
+        {/* Variant V1: High Contrast - Bordures plus marquées */}
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'a1' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v1' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
-          onClick={() => setSelectedVariant('a1')}
+          onClick={() => setSelectedVariant('v1')}
         >
-          {selectedVariant === 'a1' && (
-            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+          {selectedVariant === 'v1' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded text-xs font-semibold">A1</span>
-              <span className="text-sm font-medium text-white">Glassmorphism Heavy Blur</span>
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V1</span>
+              <span className="text-sm font-medium text-white">High Contrast - Bordures marquées</span>
             </div>
 
             {/* Dashboard Preview */}
             <div className="relative overflow-hidden rounded-2xl" style={{
-              background: 'rgba(255, 249, 230, 0.8)',
+              background: 'rgba(255, 249, 230, 0.7)',
             }}>
-              {/* Multi-layer blur overlays */}
-              <div className="absolute inset-0">
-                <div className="absolute top-10 left-1/4 w-32 h-32 bg-[#FFC107]/30 rounded-full blur-3xl" />
-                <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-[#F9A825]/20 rounded-full blur-3xl" />
-              </div>
-
-              {/* Grain texture overlay */}
-              <div className="absolute inset-0 opacity-30" style={{
+              <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
               }} />
 
-              <div className="relative p-5 backdrop-blur-3xl bg-white/40">
-                {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-[#FFC107]/50 shadow-xl backdrop-blur-sm bg-white/50">
-                      <div className="w-full h-full bg-[#FFF9E6] flex items-center justify-center">
-                        <span className="text-[#F9A825] text-lg font-bold">S</span>
-                      </div>
-                    </div>
-                    <div>
-                      <h1 className="text-base font-bold text-gray-900">Salut, Sophie !</h1>
-                      <p className="text-xs text-gray-700">Recherche à Paris, Lyon</p>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative p-5">
+                {/* Floating White Card with Strong Borders */}
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/80 border-2 border-[#FFC107]/40 shadow-2xl p-4 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/70 rounded-full blur-2xl" />
 
-                {/* KPIs Grid */}
-                <div className="grid grid-cols-4 gap-2.5 mb-3">
-                  {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
-                    <div
-                      key={label}
-                      className="relative overflow-hidden rounded-xl backdrop-blur-2xl bg-white/50 border border-[#FFC107]/30 py-2.5 px-2 shadow-lg hover:shadow-xl transition group"
-                    >
-                      <div className="absolute inset-0 bg-[#FFF9E6]/20" />
-                      <div className="relative text-center">
-                        <div className={cn(
-                          "w-6 h-6 rounded-lg mx-auto mb-1 flex items-center justify-center",
-                          "bg-[#FFF9E6] border border-[#FFC107]/30 grain-subtle"
-                        )}>
-                          <Users className="w-3.5 h-3.5 text-[#F9A825]" />
-                        </div>
-                        <p className="text-lg font-bold text-gray-900">{i + 3}</p>
-                        <p className="text-[10px] text-gray-700 font-medium">{label}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Collapsible Section Preview */}
-                <div className="bg-white/40 backdrop-blur-xl rounded-xl overflow-hidden shadow-md border border-[#FFC107]/30">
-                  <div className="px-3 py-2.5 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-[#FFF9E6] flex items-center justify-center grain-subtle border border-[#FFC107]/30">
-                        <Target className="w-3.5 h-3.5 text-[#F9A825]" />
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-[#FFC107]/60 shadow-lg flex items-center justify-center grain-medium">
+                        <span className="text-sm font-bold text-[#F9A825]">S</span>
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-gray-900">Ma Recherche</p>
-                        <p className="text-[10px] text-gray-700"><span className="font-bold">600-900€</span> • Paris</p>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-700">Paris • 600-900€</p>
                       </div>
                     </div>
-                    <ChevronDown className="w-4 h-4 text-gray-700" />
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border-2 border-[#FFC107]/40 bg-[#FFF9E6]">
+                            <div className="absolute inset-0 grain-subtle opacity-40" />
+                            <div className="relative">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
-              <span className="px-2 py-1 bg-slate-800 rounded">backdrop-blur-3xl</span>
-              <span className="px-2 py-1 bg-slate-800 rounded">bg-white/40-50</span>
-              <span className="px-2 py-1 bg-slate-800 rounded">grain-subtle</span>
-              <span className="px-2 py-1 bg-slate-800 rounded">Multi-layer blur</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">High Contrast</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">border-2</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">bg-white/80</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Strong borders</span>
             </div>
           </div>
         </div>
 
-        {/* Variant A2: Glassmorphism avec Cards superposées */}
+        {/* Variant V2: Original - Votre préféré */}
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'a2' ? 'border-yellow-400 shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v2' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
-          onClick={() => setSelectedVariant('a2')}
+          onClick={() => setSelectedVariant('v2')}
         >
-          {selectedVariant === 'a2' && (
-            <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
-              Sélectionné
+          {selectedVariant === 'v2' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné ⭐
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded text-xs font-semibold">A2</span>
-              <span className="text-sm font-medium text-white">Glassmorphism Layered Cards</span>
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V2</span>
+              <span className="text-sm font-medium text-white">Original - Votre favori</span>
+              <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs font-medium">✓ Préféré</span>
             </div>
 
             {/* Dashboard Preview */}
@@ -5691,8 +5670,166 @@ function SearcherDashboardSection() {
         </div>
       </div>
 
-      {/* Direction B: Matte Stylized */}
-      <div className="space-y-6 pt-8 border-t border-slate-700">
+      {/* V3: Soft Shadow - Ombres douces */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'v3' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('v3')}
+        >
+          {selectedVariant === 'v3' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V3</span>
+              <span className="text-sm font-medium text-white">Soft Shadow - Ombres douces</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'rgba(255, 249, 230, 0.6)',
+            }}>
+              <div className="absolute inset-0 opacity-15" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-5">
+                <div className="relative rounded-3xl backdrop-blur-xl bg-white/75 border border-white/60 shadow-xl p-4 overflow-hidden" style={{
+                  boxShadow: '0 8px 32px rgba(255, 193, 7, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5)'
+                }}>
+                  <div className="absolute top-0 right-0 w-28 h-28 bg-[#FFF9E6]/50 rounded-full blur-3xl" />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border border-white/60 shadow-md flex items-center justify-center grain-medium">
+                        <span className="text-sm font-bold text-[#F9A825]">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[10px] text-gray-700">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden border border-[#FFC107]/20 bg-[#FFF9E6]" style={{
+                            boxShadow: '0 2px 8px rgba(255, 193, 7, 0.08)'
+                          }}>
+                            <div className="absolute inset-0 grain-subtle opacity-30" />
+                            <div className="relative">
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
+                              <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Soft shadows</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Amber glow</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">bg-white/75</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Subtle depth</span>
+            </div>
+          </div>
+        </div>
+
+      {/* V4: Compact - Plus compact */}
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
+            selectedVariant === 'v4' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+          )}
+          onClick={() => setSelectedVariant('v4')}
+        >
+          {selectedVariant === 'v4' && (
+            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+              Sélectionné
+            </div>
+          )}
+
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V4</span>
+              <span className="text-sm font-medium text-white">Compact - Optimisé espace</span>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className="relative overflow-hidden rounded-2xl" style={{
+              background: 'rgba(255, 249, 230, 0.65)',
+            }}>
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }} />
+
+              <div className="relative p-4">
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/70 border border-white/80 shadow-2xl p-3 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="w-9 h-9 rounded-lg bg-[#FFF9E6] border-2 border-white/70 shadow-md flex items-center justify-center grain-medium">
+                        <span className="text-xs font-bold text-[#F9A825]">S</span>
+                      </div>
+                      <div>
+                        <h1 className="text-xs font-bold text-gray-900">Salut, Sophie !</h1>
+                        <p className="text-[9px] text-gray-600">Paris • 600-900€</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {[
+                        { label: 'Groupes', value: '5', icon: Users },
+                        { label: 'Favoris', value: '12', icon: Home },
+                        { label: 'Messages', value: '3', icon: MessageCircle },
+                        { label: 'Profil', value: '85%', icon: Target }
+                      ].map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                          <div key={stat.label} className="relative rounded-xl p-2 text-center overflow-hidden shadow-sm border border-[#FFC107]/25 bg-[#FFF9E6]">
+                            <div className="absolute inset-0 grain-subtle opacity-35" />
+                            <div className="relative">
+                              <Icon className="w-3.5 h-3.5 mx-auto mb-0.5 text-[#F9A825]" />
+                              <p className="text-sm font-bold text-gray-900">{stat.value}</p>
+                              <p className="text-[8px] text-gray-600 font-medium">{stat.label}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <span className="px-2 py-1 bg-slate-800 rounded">Compact</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Space optimized</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Smaller gaps</span>
+              <span className="px-2 py-1 bg-slate-800 rounded">Tighter layout</span>
+            </div>
+          </div>
+        </div>
+
+      {/* Suppression de la section B - Matte Stylized */}
+      <div className="space-y-6 pt-8 border-t border-slate-700" style={{display: 'none'}}>
         <div className="flex items-center gap-3">
           <h3 className="text-2xl font-bold text-white">Direction B - Matte Stylized</h3>
           <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium">Clean & Modern</span>
