@@ -105,6 +105,25 @@ class APIClient {
         // TODO: Implement API call to fetch groups
         return []
     }
+
+    func getMessages(conversationId: UUID) async throws -> [Message] {
+        // TODO: Implement API call to fetch messages
+        return []
+    }
+
+    func sendMessage(conversationId: UUID, content: String) async throws -> Message {
+        // TODO: Implement API call to send message
+        fatalError("Not implemented")
+    }
+
+    func getProperties(filters: PropertyFilters?) async throws -> [Property] {
+        // TODO: Implement API call to fetch properties
+        return []
+    }
+
+    func addFavorite(_ propertyId: UUID) async throws {
+        // TODO: Implement API call to add favorite
+    }
 }
 
 enum HTTPMethod: String {

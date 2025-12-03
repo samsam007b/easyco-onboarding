@@ -66,6 +66,31 @@ export interface UserProfile {
   email_verified?: boolean | null;
   phone_verified?: boolean | null;
   background_check?: boolean | null;
+
+  // CORE Onboarding field aliases (for backward compatibility)
+  budget_min?: number | null;
+  budget_max?: number | null;
+  current_city?: string | null;
+  preferred_move_in_date?: string | null;
+  preferred_room_type?: string | null;
+  occupation_status?: string | null;
+  cleanliness_preference?: string | null;
+  is_smoker?: boolean | null;
+  wake_up_time?: string | null;
+  home_activity_level?: string | null;
+  introvert_extrovert_scale?: number | null;
+  event_interest?: string | null;
+  core_values?: string[] | null;
+}
+
+/**
+ * Helper function to convert introvert_extrovert_scale (1-10) to text
+ */
+function convertScaleToText(scale: number | null | undefined): string | null {
+  if (scale === null || scale === undefined) return null;
+  if (scale <= 3) return 'introvert';
+  if (scale <= 7) return 'ambivert';
+  return 'extrovert';
 }
 
 /**
@@ -88,53 +113,82 @@ export function calculateProfileCompletion(profile: UserProfile | null): Profile
     };
   }
 
+  // ============================================
+  // NORMALIZE PROFILE: Map CORE onboarding field names to expected names
+  // This ensures data from both CORE onboarding and profile enhancement is recognized
+  // ============================================
+  const normalizedProfile: UserProfile = {
+    ...profile,
+
+    // Preferences aliases (CORE uses budget_min/max, we expect min_budget/max_budget)
+    min_budget: profile.min_budget ?? profile.budget_min,
+    max_budget: profile.max_budget ?? profile.budget_max,
+    preferred_cities: profile.preferred_cities ?? (profile.current_city ? [profile.current_city] : null),
+    move_in_date: profile.move_in_date ?? profile.preferred_move_in_date,
+    room_type: profile.room_type ?? profile.preferred_room_type,
+
+    // Lifestyle aliases
+    occupation: profile.occupation ?? profile.occupation_status,
+    cleanliness_level: profile.cleanliness_level ?? (profile.cleanliness_preference ? parseInt(profile.cleanliness_preference) : null),
+    smoking: profile.smoking !== null && profile.smoking !== undefined ? profile.smoking : profile.is_smoker,
+    morning_person: profile.morning_person !== null && profile.morning_person !== undefined
+      ? profile.morning_person
+      : (profile.wake_up_time === 'early'),
+
+    // Personality aliases
+    social_level: profile.social_level ?? profile.home_activity_level,
+    introvert_extrovert: profile.introvert_extrovert ?? convertScaleToText(profile.introvert_extrovert_scale),
+    event_participation: profile.event_participation ?? profile.event_interest,
+    community_values: profile.community_values ?? profile.core_values,
+  };
+
   const missingFields: string[] = [];
 
   // Basic Info (Weight: 5 fields)
   const basicFields = [
-    { key: 'first_name', value: profile.first_name, label: 'Prénom' },
-    { key: 'last_name', value: profile.last_name, label: 'Nom' },
-    { key: 'date_of_birth', value: profile.date_of_birth, label: 'Date de naissance' },
-    { key: 'phone_number', value: profile.phone_number, label: 'Téléphone' },
-    { key: 'profile_photo_url', value: profile.profile_photo_url, label: 'Photo de profil' },
+    { key: 'first_name', value: normalizedProfile.first_name, label: 'Prénom' },
+    { key: 'last_name', value: normalizedProfile.last_name, label: 'Nom' },
+    { key: 'date_of_birth', value: normalizedProfile.date_of_birth, label: 'Date de naissance' },
+    { key: 'phone_number', value: normalizedProfile.phone_number, label: 'Téléphone' },
+    { key: 'profile_photo_url', value: normalizedProfile.profile_photo_url, label: 'Photo de profil' },
   ];
 
   // Search Preferences (Weight: 5 fields)
   const preferenceFields = [
-    { key: 'preferred_cities', value: profile.preferred_cities, label: 'Villes préférées' },
-    { key: 'min_budget', value: profile.min_budget, label: 'Budget minimum' },
-    { key: 'max_budget', value: profile.max_budget, label: 'Budget maximum' },
-    { key: 'move_in_date', value: profile.move_in_date, label: 'Date d\'emménagement' },
-    { key: 'room_type', value: profile.room_type, label: 'Type de chambre' },
+    { key: 'preferred_cities', value: normalizedProfile.preferred_cities, label: 'Villes préférées' },
+    { key: 'min_budget', value: normalizedProfile.min_budget, label: 'Budget minimum' },
+    { key: 'max_budget', value: normalizedProfile.max_budget, label: 'Budget maximum' },
+    { key: 'move_in_date', value: normalizedProfile.move_in_date, label: 'Date d\'emménagement' },
+    { key: 'room_type', value: normalizedProfile.room_type, label: 'Type de chambre' },
   ];
 
   // Lifestyle (Weight: 8 fields)
   const lifestyleFields = [
-    { key: 'occupation', value: profile.occupation, label: 'Profession' },
-    { key: 'bio', value: profile.bio, label: 'Biographie' },
-    { key: 'cleanliness_level', value: profile.cleanliness_level, label: 'Niveau de propreté' },
-    { key: 'noise_tolerance', value: profile.noise_tolerance, label: 'Tolérance au bruit' },
-    { key: 'smoking', value: profile.smoking, label: 'Fumeur' },
-    { key: 'pets', value: profile.pets !== null || profile.has_pets !== null, label: 'Animaux' },
-    { key: 'morning_person', value: profile.morning_person, label: 'Personne matinale' },
-    { key: 'hobbies', value: profile.hobbies, label: 'Loisirs' },
+    { key: 'occupation', value: normalizedProfile.occupation, label: 'Profession' },
+    { key: 'bio', value: normalizedProfile.bio, label: 'Biographie' },
+    { key: 'cleanliness_level', value: normalizedProfile.cleanliness_level, label: 'Niveau de propreté' },
+    { key: 'noise_tolerance', value: normalizedProfile.noise_tolerance, label: 'Tolérance au bruit' },
+    { key: 'smoking', value: normalizedProfile.smoking, label: 'Fumeur' },
+    { key: 'pets', value: normalizedProfile.pets !== null || normalizedProfile.has_pets !== null, label: 'Animaux' },
+    { key: 'morning_person', value: normalizedProfile.morning_person, label: 'Personne matinale' },
+    { key: 'hobbies', value: normalizedProfile.hobbies, label: 'Loisirs' },
   ];
 
   // Personality (Weight: 5 fields)
   const personalityFields = [
-    { key: 'social_level', value: profile.social_level, label: 'Niveau social' },
-    { key: 'introvert_extrovert', value: profile.introvert_extrovert, label: 'Introvert/Extraverti' },
-    { key: 'shared_meals_interest', value: profile.shared_meals_interest, label: 'Repas partagés' },
-    { key: 'event_participation', value: profile.event_participation, label: 'Participation événements' },
-    { key: 'community_values', value: profile.community_values, label: 'Valeurs communautaires' },
+    { key: 'social_level', value: normalizedProfile.social_level, label: 'Niveau social' },
+    { key: 'introvert_extrovert', value: normalizedProfile.introvert_extrovert, label: 'Introvert/Extraverti' },
+    { key: 'shared_meals_interest', value: normalizedProfile.shared_meals_interest, label: 'Repas partagés' },
+    { key: 'event_participation', value: normalizedProfile.event_participation, label: 'Participation événements' },
+    { key: 'community_values', value: normalizedProfile.community_values, label: 'Valeurs communautaires' },
   ];
 
   // Verification (Weight: 4 fields)
   const verificationFields = [
-    { key: 'id_verified', value: profile.id_verified, label: 'ID vérifié' },
-    { key: 'email_verified', value: profile.email_verified, label: 'Email vérifié' },
-    { key: 'phone_verified', value: profile.phone_verified, label: 'Téléphone vérifié' },
-    { key: 'background_check', value: profile.background_check, label: 'Vérification antécédents' },
+    { key: 'id_verified', value: normalizedProfile.id_verified, label: 'ID vérifié' },
+    { key: 'email_verified', value: normalizedProfile.email_verified, label: 'Email vérifié' },
+    { key: 'phone_verified', value: normalizedProfile.phone_verified, label: 'Téléphone vérifié' },
+    { key: 'background_check', value: normalizedProfile.background_check, label: 'Vérification antécédents' },
   ];
 
   // Helper to check if field is filled

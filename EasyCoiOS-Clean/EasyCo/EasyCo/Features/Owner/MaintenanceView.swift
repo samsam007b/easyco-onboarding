@@ -412,7 +412,7 @@ struct MaintenanceTaskCard: View {
                     // Priority badge
                     Image(systemName: task.priority.icon)
                         .font(.system(size: 12))
-                        .foregroundColor(Color(hex: task.priority.color))
+                        .foregroundColor(task.priority.color)
 
                     // Status badge
                     HStack(spacing: 4) {
@@ -421,10 +421,10 @@ struct MaintenanceTaskCard: View {
                         Text(task.status.displayName)
                             .font(.system(size: 11, weight: .medium))
                     }
-                    .foregroundColor(Color(hex: task.status.color))
+                    .foregroundColor(task.status.color)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
-                    .background(Color(hex: task.status.color).opacity(0.1))
+                    .background(task.status.color.opacity(0.1))
                     .cornerRadius(8)
                 }
             }

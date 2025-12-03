@@ -84,7 +84,7 @@ struct ConversationView: View {
 
                 ToolbarItem(placement: .principal) {
                     HStack(spacing: 12) {
-                        AsyncImage(url: URL(string: conversation.match.property.images.first ?? "")) { image in
+                        AsyncImage(url: URL(string: conversation.propertyImageURL ?? "")) { image in
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -137,9 +137,10 @@ struct ConversationView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showPropertyCard) {
-                PropertyDetailView(property: conversation.match.property)
-            }
+            // TODO: Fix - Conversation doesn't have match property
+            // .sheet(isPresented: $showPropertyCard) {
+            //     PropertyDetailView(property: conversation.match.property)
+            // }
         }
         .onAppear {
             loadMessages()
@@ -153,7 +154,7 @@ struct ConversationView: View {
             showPropertyCard = true
         }) {
             HStack(spacing: 12) {
-                AsyncImage(url: URL(string: conversation.match.property.images.first ?? "")) { image in
+                AsyncImage(url: URL(string: conversation.propertyImageURL ?? "")) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -214,18 +215,19 @@ struct ConversationView: View {
     // MARK: - Actions
 
     private func loadMessages() {
-        messages = conversation.messages
+        // TODO: Load messages from API
+        messages = []
     }
 
     private func sendMessage() {
         guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
 
         let newMessage = Message(
-            id: UUID().uuidString,
-            text: messageText,
-            sentAt: Date(),
-            isFromCurrentUser: true,
-            isRead: false
+            conversationId: conversation.id,
+            senderId: UUID(), // TODO: Get current user ID
+            senderName: "Me", // TODO: Get current user name
+            content: messageText,
+            isSentByCurrentUser: true
         )
 
         messages.append(newMessage)
@@ -254,23 +256,23 @@ struct MessageBubble: View {
 
     var body: some View {
         HStack {
-            if message.isFromCurrentUser {
+            if message.isSentByCurrentUser {
                 Spacer(minLength: 60)
             }
 
-            VStack(alignment: message.isFromCurrentUser ? .trailing : .leading, spacing: 4) {
+            VStack(alignment: message.isSentByCurrentUser ? .trailing : .leading, spacing: 4) {
                 // Message bubble
-                Text(message.text)
+                Text(message.content)
                     .font(Theme.Typography.body())
-                    .foregroundColor(message.isFromCurrentUser ? .white : Theme.Colors.textPrimary)
+                    .foregroundColor(message.isSentByCurrentUser ? .white : Theme.Colors.textPrimary)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                     .background(
-                        message.isFromCurrentUser ?
+                        message.isSentByCurrentUser ?
                         AnyView(Theme.Colors.primaryGradient) :
                         AnyView(LinearGradient(colors: [Theme.Colors.backgroundPrimary], startPoint: .leading, endPoint: .trailing))
                     )
-                    .cornerRadius(20, corners: message.isFromCurrentUser ?
+                    .cornerRadius(20, corners: message.isSentByCurrentUser ?
                         [.topLeft, .topRight, .bottomLeft] :
                         [.topLeft, .topRight, .bottomRight]
                     )
@@ -403,18 +405,15 @@ private struct PropertyCardFeature: View {
 
 struct ConversationView_Previews: PreviewProvider {
     static var previews: some View {
-        let calendar = Calendar.current
-        let now = Date()
-
-        let mockMatch = Match(
-            id: "1",
-            property: .mock,
-            matchedAt: calendar.date(byAdding: .day, value: -2, to: now)!,
-            hasUnreadMessages: true,
-            lastMessage: "Quand puis-je visiter ?",
-            lastMessageAt: calendar.date(byAdding: .minute, value: -15, to: now)!
+        // TODO: Fix preview with updated Conversation model
+        let mockConversation = Conversation(
+            otherUserId: UUID(),
+            otherUserName: "Jean Dupont",
+            otherUserRole: .owner,
+            propertyTitle: "Studio à Paris"
         )
 
+        /* Old preview code - needs updating
         let mockConversation = Conversation(
             id: "1",
             match: mockMatch,

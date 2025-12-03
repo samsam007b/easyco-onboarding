@@ -233,7 +233,7 @@ struct MatchCard: View {
                                     .frame(width: 12, height: 12)
                                     .foregroundColor(Theme.Colors.textTertiary)
 
-                                Text(match.property?.location ?? "")
+                                Text(match.property?.locationString ?? "")
                                     .font(Theme.Typography.bodySmall())
                                     .foregroundColor(Theme.Colors.textSecondary)
                                     .lineLimit(1)

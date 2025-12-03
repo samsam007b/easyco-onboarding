@@ -371,10 +371,10 @@ struct PriorityButton: View {
                 Text(priority.displayName)
                     .font(.system(size: 13, weight: .medium))
             }
-            .foregroundColor(isSelected ? .white : Color(hex: priority.color))
+            .foregroundColor(isSelected ? .white : priority.color)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
-            .background(isSelected ? Color(hex: priority.color) : Color(hex: priority.color).opacity(0.1))
+            .background(isSelected ? priority.color : priority.color.opacity(0.1))
             .cornerRadius(8)
         }
     }
