@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket, ChevronDown } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket, ChevronDown, MapPin, Euro, ShieldCheck, Edit } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
@@ -739,6 +739,148 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Profile Card Hero - "What others see" */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6"
+                >
+                  {/* Hero Message */}
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-gray-600 font-medium">Voici ce que les autres voient de toi</p>
+                  </div>
+
+                  {/* Large Profile Card */}
+                  <div className={`relative overflow-hidden rounded-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-orange-50 opacity-50" />
+                    <div className="relative">
+                      {/* Header: Photo + Basic Info */}
+                      <div className="flex items-start gap-4 mb-4">
+                        {/* Photo with Progress Ring */}
+                        <div className="relative flex-shrink-0">
+                          <svg className="absolute -inset-1" width="88" height="88">
+                            <circle cx="44" cy="44" r="42" fill="none" stroke="#e5e7eb" strokeWidth="2" />
+                            <circle
+                              cx="44" cy="44" r="42"
+                              fill="none"
+                              stroke="#FFA040"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              strokeDasharray="264"
+                              strokeDashoffset={264 * (1 - profileCompletion / 100)}
+                              transform="rotate(-90 44 44)"
+                            />
+                          </svg>
+                          {userData.avatar_url ? (
+                            <img
+                              src={userData.avatar_url}
+                              alt="Profile"
+                              className="w-20 h-20 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFD080] flex items-center justify-center text-white text-2xl font-bold">
+                              {userData.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Name + Quick Info */}
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-gray-900 mb-1">
+                            {userData.full_name || 'Nom non renseigné'}
+                          </h3>
+                          <div className="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4" />
+                              Paris
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Euro className="w-4 h-4" />
+                              800-1200€
+                            </span>
+                          </div>
+                          <div className="mt-2 flex items-center gap-2 flex-wrap">
+                            {userData.email_verified && (
+                              <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <ShieldCheck className="w-3 h-3" />
+                                Vérifié
+                              </span>
+                            )}
+                            <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                              profileCompletion === 100 ? 'bg-green-100 text-green-700' :
+                              profileCompletion >= 60 ? 'bg-[#FFF9E6] text-[#F9A825]' :
+                              'bg-orange-100 text-orange-700'
+                            }`}>
+                              {profileCompletion}% complet
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bio */}
+                      {userProfile?.about_me && (
+                        <p className="text-sm text-gray-700 mb-3 line-clamp-2">
+                          {userProfile.about_me}
+                        </p>
+                      )}
+
+                      {/* Tags */}
+                      <div className="space-y-2 mb-4">
+                        {/* Hobbies */}
+                        {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs font-semibold text-gray-600">🎨 Loisirs:</span>
+                            {userProfile.hobbies.slice(0, 3).map((hobby, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                                {hobby}
+                              </span>
+                            ))}
+                            {userProfile.hobbies.length > 3 && (
+                              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                +{userProfile.hobbies.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Values */}
+                        {userProfile?.core_values && userProfile.core_values.length > 0 && (
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs font-semibold text-gray-600">❤️ Valeurs:</span>
+                            {userProfile.core_values.slice(0, 3).map((value, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">
+                                {value}
+                              </span>
+                            ))}
+                            {userProfile.core_values.length > 3 && (
+                              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                +{userProfile.core_values.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Buttons */}
+                      <div className="flex gap-2">
+                        <button
+                          className={`flex-1 px-4 py-2 bg-gradient-to-r ${colors.gradient} text-white text-sm font-semibold rounded-xl hover:shadow-lg transition-all`}
+                          onClick={() => router.push('/profile/public-view')}
+                        >
+                          <Eye className="w-4 h-4 inline mr-1" />
+                          Voir en mode public
+                        </button>
+                        <button
+                          className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                          onClick={() => setIsEditingName(true)}
+                        >
+                          <Edit className="w-4 h-4 inline" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
 
                 {/* Compact Profile Completion - Just below Personal Info */}
                 <motion.div
