@@ -13,6 +13,7 @@ import { useRole } from '@/lib/role/role-context'
 import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion'
+import { calculateProfileCompletion } from '@/lib/profile/profile-completion'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,23 +36,80 @@ interface UserData {
 }
 
 interface UserProfile {
-  about_me: string | null
-  looking_for: string | null
-  hobbies: string[] | null
-  core_values: string[] | null
-  important_qualities: string[] | null
-  deal_breakers: string[] | null
-  financial_info: any
-  community_preferences: any
-  extended_personality: any
-  advanced_preferences: any
-  verification_status: string | null
-  current_city: string | null
-  preferred_cities: string[] | null
-  budget_min: number | null
-  budget_max: number | null
-  min_budget: number | null
-  max_budget: number | null
+  // Basic Info
+  first_name?: string | null
+  last_name?: string | null
+  date_of_birth?: string | null
+  phone_number?: string | null
+  profile_photo_url?: string | null
+
+  // Search Preferences
+  preferred_cities?: string[] | null
+  min_budget?: number | null
+  max_budget?: number | null
+  move_in_date?: string | null
+  room_type?: string | null
+
+  // Lifestyle
+  occupation?: string | null
+  bio?: string | null
+  cleanliness_level?: number | null
+  noise_tolerance?: string | null
+  smoking?: boolean | null
+  pets?: boolean | null
+  has_pets?: boolean | null
+  pet_friendly?: boolean | null
+
+  // Personality & Compatibility
+  morning_person?: boolean | null
+  social_level?: string | null
+  introvert_extrovert?: string | null
+  shared_meals_interest?: boolean | null
+  event_participation?: string | null
+
+  // Hobbies & Interests
+  hobbies?: string[] | null
+  interests?: string[] | null
+
+  // Values
+  sustainability_importance?: string | null
+  community_values?: string[] | null
+
+  // Financial
+  income_range?: string | null
+  employment_status?: string | null
+
+  // Verification
+  id_verified?: boolean | null
+  email_verified?: boolean | null
+  phone_verified?: boolean | null
+  background_check?: boolean | null
+
+  // CORE Onboarding field aliases (for backward compatibility)
+  budget_min?: number | null
+  budget_max?: number | null
+  current_city?: string | null
+  preferred_move_in_date?: string | null
+  preferred_room_type?: string | null
+  occupation_status?: string | null
+  cleanliness_preference?: string | null
+  is_smoker?: boolean | null
+  wake_up_time?: string | null
+  home_activity_level?: string | null
+  introvert_extrovert_scale?: number | null
+  event_interest?: string | null
+  core_values?: string[] | null
+
+  // Legacy fields for enhance sections
+  about_me?: string | null
+  looking_for?: string | null
+  important_qualities?: string[] | null
+  deal_breakers?: string[] | null
+  financial_info?: any
+  community_preferences?: any
+  extended_personality?: any
+  advanced_preferences?: any
+  verification_status?: string | null
 }
 
 const USER_TYPES = [
@@ -130,10 +188,10 @@ export default function ProfilePage() {
       setFullName(data.full_name || '')
       setSelectedUserType(data.user_type)
 
-      // Fetch user profile data
+      // Fetch user profile data - fetch ALL fields for profile completion calculation
       const { data: profileData } = await supabase
         .from('user_profiles')
-        .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status, current_city, preferred_cities, budget_min, budget_max, min_budget, max_budget')
+        .select('*')
         .eq('user_id', user.id)
         .single()
 
@@ -436,36 +494,9 @@ export default function ProfilePage() {
 
   const colors = getRoleColors()
 
-  // Calculate comprehensive profile completion
-  const calculateProfileCompletion = () => {
-    let completed = 0
-    const total = 7 // 7 sections total
-
-    // 1. Basic profile (name + avatar)
-    if (userData?.full_name && userData?.avatar_url) completed++
-
-    // 2. About (bio, about_me, looking_for)
-    if (userProfile?.about_me || userProfile?.looking_for) completed++
-
-    // 3. Hobbies
-    if (userProfile?.hobbies && userProfile.hobbies.length > 0) completed++
-
-    // 4. Personality
-    if (userProfile?.extended_personality) completed++
-
-    // 5. Values
-    if (userProfile?.core_values && userProfile.core_values.length > 0) completed++
-
-    // 6. Financial info
-    if (userProfile?.financial_info) completed++
-
-    // 7. Community preferences
-    if (userProfile?.community_preferences) completed++
-
-    return Math.round((completed / total) * 100)
-  }
-
-  const profileCompletion = calculateProfileCompletion()
+  // Calculate comprehensive profile completion using the proper function
+  const profileCompletionResult = calculateProfileCompletion(userProfile)
+  const profileCompletion = profileCompletionResult.percentage
 
   // Tab content components
   const tabs = [
