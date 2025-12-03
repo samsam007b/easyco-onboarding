@@ -196,7 +196,7 @@ struct TranslationExampleView: View {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Language Settings") {
     NavigationStack {
         LanguageSettingsView()
             .environmentObject(LanguageManager.shared)

@@ -264,81 +264,81 @@ class SwipeMatchesViewModel: ObservableObject {
 
 // MARK: - Match Filters
 
-struct MatchFilters: Equatable {
-    var cities: [String] = []
-    var minPrice: Int?
-    var maxPrice: Int?
-    var propertyTypes: [PropertyType] = []
-    var minBedrooms: Int?
-    var minBathrooms: Int?
-    var minSurface: Int?
-    var requiredAmenities: [PropertyAmenity] = []
-    var furnished: Bool?
-    var petsAllowed: Bool?
-    var availableFrom: Date?
-
-    func toPropertyFilters() -> PropertyFilters {
-        var filters = PropertyFilters()
-        filters.cities = cities
-        filters.minPrice = minPrice
-        filters.maxPrice = maxPrice
-        filters.propertyTypes = propertyTypes
-        filters.minBedrooms = minBedrooms
-        filters.amenities = requiredAmenities
-        filters.availableFrom = availableFrom
-        return filters
-    }
-
-    func matches(property: Property) -> Bool {
+// struct MatchFilters: Equatable {
+//     var cities: [String] = []
+//     var minPrice: Int?
+//     var maxPrice: Int?
+//     var propertyTypes: [PropertyType] = []
+//     var minBedrooms: Int?
+//     var minBathrooms: Int?
+//     var minSurface: Int?
+//     var requiredAmenities: [PropertyAmenity] = []
+//     var furnished: Bool?
+//     var petsAllowed: Bool?
+//     var availableFrom: Date?
+// 
+//     func toPropertyFilters() -> PropertyFilters {
+//         var filters = PropertyFilters()
+//         filters.cities = cities
+//         filters.minPrice = minPrice
+//         filters.maxPrice = maxPrice
+//         filters.propertyTypes = propertyTypes
+//         filters.minBedrooms = minBedrooms
+//         filters.amenities = requiredAmenities
+//         filters.availableFrom = availableFrom
+//         return filters
+//     }
+// 
+//     func matches(property: Property) -> Bool {
         // Price check
-        if let minPrice = minPrice, property.monthlyRent < Double(minPrice) {
-            return false
-        }
-        if let maxPrice = maxPrice, property.monthlyRent > Double(maxPrice) {
-            return false
-        }
-
+//         if let minPrice = minPrice, property.monthlyRent < Double(minPrice) {
+//             return false
+//         }
+//         if let maxPrice = maxPrice, property.monthlyRent > Double(maxPrice) {
+//             return false
+//         }
+// 
         // City check
-        if !cities.isEmpty && !cities.contains(property.city) {
-            return false
-        }
-
+//         if !cities.isEmpty && !cities.contains(property.city) {
+//             return false
+//         }
+// 
         // Property type check
-        if !propertyTypes.isEmpty && !propertyTypes.contains(property.propertyType) {
-            return false
-        }
-
+//         if !propertyTypes.isEmpty && !propertyTypes.contains(property.propertyType) {
+//             return false
+//         }
+// 
         // Bedrooms check
-        if let minBedrooms = minBedrooms, property.bedrooms < minBedrooms {
-            return false
-        }
-
+//         if let minBedrooms = minBedrooms, property.bedrooms < minBedrooms {
+//             return false
+//         }
+// 
         // Surface check
-        if let minSurface = minSurface, let surface = property.surfaceArea, Int(surface) < minSurface {
-            return false
-        }
-
+//         if let minSurface = minSurface, let surface = property.surfaceArea, Int(surface) < minSurface {
+//             return false
+//         }
+// 
         // Furnished check
-        if let furnished = furnished, property.furnished != furnished {
-            return false
-        }
-
+//         if let furnished = furnished, property.furnished != furnished {
+//             return false
+//         }
+// 
         // Pets check
-        if let petsAllowed = petsAllowed, petsAllowed && !property.petsAllowed {
-            return false
-        }
-
+//         if let petsAllowed = petsAllowed, petsAllowed && !property.petsAllowed {
+//             return false
+//         }
+// 
         // Required amenities check
-        if !requiredAmenities.isEmpty {
-            let hasAll = requiredAmenities.allSatisfy { property.amenities.contains($0) }
-            if !hasAll {
-                return false
-            }
-        }
-
-        return true
-    }
-}
+//         if !requiredAmenities.isEmpty {
+//             let hasAll = requiredAmenities.allSatisfy { property.amenities.contains($0) }
+//             if !hasAll {
+//                 return false
+//             }
+//         }
+// 
+//         return true
+//     }
+// }
 
 // MARK: - Match Score Response
 

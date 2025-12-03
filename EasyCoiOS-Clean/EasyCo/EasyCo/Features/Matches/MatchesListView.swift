@@ -7,33 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Match Model
-
-struct Match: Identifiable {
-    let id: String
-    let property: Property
-    let matchedAt: Date
-    let hasUnreadMessages: Bool
-    let lastMessage: String?
-    let lastMessageAt: Date?
-
-    var timeAgo: String {
-        let now = Date()
-        let interval = now.timeIntervalSince(matchedAt)
-
-        if interval < 3600 {
-            let minutes = Int(interval / 60)
-            return "Il y a \(minutes)m"
-        } else if interval < 86400 {
-            let hours = Int(interval / 3600)
-            return "Il y a \(hours)h"
-        } else {
-            let days = Int(interval / 86400)
-            return "Il y a \(days)j"
-        }
-    }
-}
-
 // MARK: - Matches List View
 
 struct MatchesListView: View {

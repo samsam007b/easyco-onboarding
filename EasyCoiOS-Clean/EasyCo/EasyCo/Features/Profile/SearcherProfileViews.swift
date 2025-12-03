@@ -495,32 +495,32 @@ enum OccupationType: String, Codable, CaseIterable {
 
 // MARK: - Preferences Model
 
-struct SearcherPreferences: Codable {
-    var minBudget: Double = 400
-    var maxBudget: Double = 1200
-    var propertyTypes: [PropertyType] = []
-    var preferredAmenities: [String] = []
-    var nearPublicTransport: Bool = true
-    var cityCenter: Bool = false
-    var maxDistanceKm: Double = 10
-    var notifyNewMatches: Bool = true
-    var notifyPriceDrops: Bool = true
-    var notifyNewListings: Bool = true
-
-    func save() {
-        if let encoded = try? JSONEncoder().encode(self) {
-            UserDefaults.standard.set(encoded, forKey: "searcher_preferences")
-        }
-    }
-
-    static func load() -> SearcherPreferences {
-        guard let data = UserDefaults.standard.data(forKey: "searcher_preferences"),
-              let preferences = try? JSONDecoder().decode(SearcherPreferences.self, from: data) else {
-            return SearcherPreferences()
-        }
-        return preferences
-    }
-}
+// struct SearcherPreferences: Codable {
+//     var minBudget: Double = 400
+//     var maxBudget: Double = 1200
+//     var propertyTypes: [PropertyType] = []
+//     var preferredAmenities: [String] = []
+//     var nearPublicTransport: Bool = true
+//     var cityCenter: Bool = false
+//     var maxDistanceKm: Double = 10
+//     var notifyNewMatches: Bool = true
+//     var notifyPriceDrops: Bool = true
+//     var notifyNewListings: Bool = true
+// 
+//     func save() {
+//         if let encoded = try? JSONEncoder().encode(self) {
+//             UserDefaults.standard.set(encoded, forKey: "searcher_preferences")
+//         }
+//     }
+// 
+//     static func load() -> SearcherPreferences {
+//         guard let data = UserDefaults.standard.data(forKey: "searcher_preferences"),
+//               let preferences = try? JSONDecoder().decode(SearcherPreferences.self, from: data) else {
+//             return SearcherPreferences()
+//         }
+//         return preferences
+//     }
+// }
 
 // MARK: - ViewModels
 

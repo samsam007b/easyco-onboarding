@@ -4,8 +4,15 @@
 //
 
 import Foundation
+import Combine
 
-class WebSocketManager {
+@MainActor
+class WebSocketManager: ObservableObject {
     static let shared = WebSocketManager()
+
+    @Published var isConnected = false
+
     private init() {}
+
+    // TODO: Implement WebSocket connection methods
 }

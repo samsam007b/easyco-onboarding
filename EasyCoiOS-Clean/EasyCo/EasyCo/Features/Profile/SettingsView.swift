@@ -470,54 +470,54 @@ struct RoleCard: View {
 
 // MARK: - Language Settings View
 
-struct LanguageSettingsView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var selectedLanguage = "fr"
+// struct LanguageSettingsView: View {
+//     @Environment(\.dismiss) private var dismiss
+//     @State private var selectedLanguage = "fr"
+// 
+//     var body: some View {
+//         NavigationStack {
+//             List {
+//                 LanguageRow(code: "fr", name: "Français", isSelected: selectedLanguage == "fr") {
+//                     selectedLanguage = "fr"
+//                 }
+//                 LanguageRow(code: "en", name: "English", isSelected: selectedLanguage == "en") {
+//                     selectedLanguage = "en"
+//                 }
+//                 LanguageRow(code: "nl", name: "Nederlands", isSelected: selectedLanguage == "nl") {
+//                     selectedLanguage = "nl"
+//                 }
+//             }
+//             .navigationTitle("Langue")
+//             .navigationBarTitleDisplayMode(.inline)
+//             .toolbar {
+//                 ToolbarItem(placement: .navigationBarTrailing) {
+//                     Button("Terminé") { dismiss() }
+//                 }
+//             }
+//         }
+//     }
+// }
 
-    var body: some View {
-        NavigationStack {
-            List {
-                LanguageRow(code: "fr", name: "Français", isSelected: selectedLanguage == "fr") {
-                    selectedLanguage = "fr"
-                }
-                LanguageRow(code: "en", name: "English", isSelected: selectedLanguage == "en") {
-                    selectedLanguage = "en"
-                }
-                LanguageRow(code: "nl", name: "Nederlands", isSelected: selectedLanguage == "nl") {
-                    selectedLanguage = "nl"
-                }
-            }
-            .navigationTitle("Langue")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Terminé") { dismiss() }
-                }
-            }
-        }
-    }
-}
-
-struct LanguageRow: View {
-    let code: String
-    let name: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(name)
-                    .foregroundColor(Color(hex: "111827"))
-                Spacer()
-                if isSelected {
-                    Image(systemName: "checkmark")
-                        .foregroundColor(Color(hex: "FFA040"))
-                }
-            }
-        }
-    }
-}
+// struct LanguageRow: View {
+//     let code: String
+//     let name: String
+//     let isSelected: Bool
+//     let action: () -> Void
+// 
+//     var body: some View {
+//         Button(action: action) {
+//             HStack {
+//                 Text(name)
+//                     .foregroundColor(Color(hex: "111827"))
+//                 Spacer()
+//                 if isSelected {
+//                     Image(systemName: "checkmark")
+//                         .foregroundColor(Color(hex: "FFA040"))
+//                 }
+//             }
+//         }
+//     }
+// }
 
 // MARK: - Preview
 

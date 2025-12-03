@@ -315,29 +315,29 @@ struct RoomDetailSheet: View {
 
 // MARK: - Detail Row
 
-private struct DetailRow: View {
-    let icon: String
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundColor(Theme.Colors.primary)
-                .frame(width: 30)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(label)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text(value)
-                    .font(.body)
-                    .fontWeight(.medium)
-            }
-        }
-    }
-}
+// private struct DetailRow: View {
+//     let icon: String
+//     let label: String
+//     let value: String
+// 
+//     var body: some View {
+//         HStack(spacing: 12) {
+//             Image(systemName: icon)
+//                 .font(.title3)
+//                 .foregroundColor(Theme.Colors.primary)
+//                 .frame(width: 30)
+// 
+//             VStack(alignment: .leading, spacing: 2) {
+//                 Text(label)
+//                     .font(.caption)
+//                     .foregroundColor(.secondary)
+//                 Text(value)
+//                     .font(.body)
+//                     .fontWeight(.medium)
+//             }
+//         }
+//     }
+// }
 
 // MARK: - Preview
 

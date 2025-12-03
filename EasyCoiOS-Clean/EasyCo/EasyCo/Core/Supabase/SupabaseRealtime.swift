@@ -216,16 +216,19 @@ class SupabaseRealtime: NSObject {
                 //     new: data["record"] as? [String: Any],
                 //     eventTime: Date()
                 // )
-                let realtimePayload = RealtimePayload<[String: Any]>(
-                    event: event,
-                    old: nil,
-                    new: data["record"] as? [String: Any],
-                    eventTime: Date()
-                )
+                // let realtimePayload = RealtimePayload<[String: Any]>(
+                //     event: event,
+                //     old: nil,
+                //     new: data["record"] as? [String: Any],
+                //     eventTime: Date()
+                // )
 
-                Task { @MainActor in
-                    subscription.callback(realtimePayload)
-                }
+                // Task { @MainActor in
+                //     subscription.callback(realtimePayload)
+                // }
+
+                // TODO: Fix - [String: Any] doesn't conform to Decodable
+                // Temporarily disabled until proper Codable model is available
             }
         }
     }

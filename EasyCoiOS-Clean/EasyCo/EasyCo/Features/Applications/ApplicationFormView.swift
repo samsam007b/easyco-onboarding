@@ -20,7 +20,7 @@ struct ApplicationFormView: View {
     @State private var nationality = ""
     @State private var currentAddress = ""
 
-    @State private var employmentStatus: EmploymentStatus = .employed
+    @State private var employmentStatus: EmploymentStatus = .employee
     @State private var employer = ""
     @State private var position = ""
     @State private var monthlyIncome = ""
@@ -225,7 +225,7 @@ struct ApplicationFormView: View {
                     }
                 }
 
-                if employmentStatus == .employed || employmentStatus == .selfEmployed {
+                if employmentStatus == .employee || employmentStatus == .selfEmployed {
                     FormField(label: "Employeur / Entreprise", text: $employer, placeholder: "Nom de l'entreprise")
                     FormField(label: "Poste", text: $position, placeholder: "Votre fonction")
 
@@ -604,23 +604,23 @@ struct ApplicationFormView: View {
 
 // MARK: - Supporting Models
 
-enum EmploymentStatus: String, CaseIterable {
-    case employed = "employed"
-    case selfEmployed = "self_employed"
-    case student = "student"
-    case retired = "retired"
-    case unemployed = "unemployed"
-
-    var label: String {
-        switch self {
-        case .employed: return "Salarié(e)"
-        case .selfEmployed: return "Indépendant(e)"
-        case .student: return "Étudiant(e)"
-        case .retired: return "Retraité(e)"
-        case .unemployed: return "Sans emploi"
-        }
-    }
-}
+// enum EmploymentStatus: String, CaseIterable {
+//     case employed = "employed"
+//     case selfEmployed = "self_employed"
+//     case student = "student"
+//     case retired = "retired"
+//     case unemployed = "unemployed"
+//
+//     var label: String {
+//         switch self {
+//         case .employed: return "Salarié(e)"
+//         case .selfEmployed: return "Indépendant(e)"
+//         case .student: return "Étudiant(e)"
+//         case .retired: return "Retraité(e)"
+//         case .unemployed: return "Sans emploi"
+//         }
+//     }
+// }
 
 enum ContractType: String, CaseIterable {
     case permanent = "permanent"
@@ -661,58 +661,58 @@ enum LeaseDuration: String, CaseIterable {
     }
 }
 
-enum DocumentType {
-    case identity
-    case addressProof
-    case payslips
-    case workContract
-    case taxNotice
-}
+// enum DocumentType {
+//     case identity
+//     case addressProof
+//     case payslips
+//     case workContract
+//     case taxNotice
+// }
 
-struct UploadedDocument: Identifiable {
-    let id = UUID().uuidString
-    let type: DocumentType
-    let fileName: String
-    let size: Int
-}
+// struct UploadedDocument: Identifiable {
+//     let id = UUID().uuidString
+//     let type: DocumentType
+//     let fileName: String
+//     let size: Int
+// }
 
 // MARK: - Supporting Views
 
-struct FormField: View {
-    let label: String
-    @Binding var text: String
-    let placeholder: String
-    var keyboardType: UIKeyboardType = .default
-    var suffix: String? = nil
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(label)
-                .font(Theme.Typography.bodySmall(.semibold))
-                .foregroundColor(Theme.Colors.textPrimary)
-
-            HStack {
-                TextField(placeholder, text: $text)
-                    .font(Theme.Typography.body())
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .keyboardType(keyboardType)
-
-                if let suffix = suffix {
-                    Text(suffix)
-                        .font(Theme.Typography.body())
-                        .foregroundColor(Theme.Colors.textSecondary)
-                }
-            }
-            .padding(16)
-            .background(Theme.Colors.backgroundPrimary)
-            .cornerRadius(Theme.CornerRadius.md)
-            .overlay(
-                RoundedRectangle(cornerRadius: Theme.CornerRadius.md)
-                    .stroke(Theme.Colors.gray200, lineWidth: 1)
-            )
-        }
-    }
-}
+// struct FormField: View {
+//     let label: String
+//     @Binding var text: String
+//     let placeholder: String
+//     var keyboardType: UIKeyboardType = .default
+//     var suffix: String? = nil
+// 
+//     var body: some View {
+//         VStack(alignment: .leading, spacing: 8) {
+//             Text(label)
+//                 .font(Theme.Typography.bodySmall(.semibold))
+//                 .foregroundColor(Theme.Colors.textPrimary)
+// 
+//             HStack {
+//                 TextField(placeholder, text: $text)
+//                     .font(Theme.Typography.body())
+//                     .foregroundColor(Theme.Colors.textPrimary)
+//                     .keyboardType(keyboardType)
+// 
+//                 if let suffix = suffix {
+//                     Text(suffix)
+//                         .font(Theme.Typography.body())
+//                         .foregroundColor(Theme.Colors.textSecondary)
+//                 }
+//             }
+//             .padding(16)
+//             .background(Theme.Colors.backgroundPrimary)
+//             .cornerRadius(Theme.CornerRadius.md)
+//             .overlay(
+//                 RoundedRectangle(cornerRadius: Theme.CornerRadius.md)
+//                     .stroke(Theme.Colors.gray200, lineWidth: 1)
+//             )
+//         }
+//     }
+// }
 
 struct DocumentUploadCard: View {
     let title: String

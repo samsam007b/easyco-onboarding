@@ -90,8 +90,8 @@ struct IconButton_Previews: PreviewProvider {
                 IconButton(
                     icon: "settings",
                     action: {},
-                    backgroundColor: Theme.Colors.primary,
-                    color: .white
+                    color: .white,
+                    backgroundColor: Theme.Colors.primary
                 )
             }
         }

@@ -138,6 +138,7 @@ struct Theme {
         static let gray200 = Color(hex: "E5E7EB")
         static let gray300 = Color(hex: "D1D5DB")
         static let gray400 = Color(hex: "9CA3AF")
+        static let gray700 = Gray._700  // Alias to Gray._700
         static let heartRed = Color(hex: "EF4444")
         static let messageBlue = Color(hex: "0EA5E9")
         static let matchPink = Color(hex: "EC4899")
@@ -349,18 +350,23 @@ struct Theme {
         static let iconSmall: CGFloat = 16
         static let iconMedium: CGFloat = 20
         static let iconLarge: CGFloat = 24
+        static let touchTarget: CGFloat = 44  // Minimum touch target size
     }
 
     // MARK: - Animations
 
     struct Animations {
-        static let fast = Animation.easeInOut(duration: 0.15)
-        static let quick = Animation.easeInOut(duration: 0.2)
-        static let standard = Animation.easeInOut(duration: 0.3)
-        static let slow = Animation.easeInOut(duration: 0.5)
-        static let spring = Animation.spring(response: 0.3, dampingFraction: 0.7)
-        static let bouncy = Animation.spring(response: 0.4, dampingFraction: 0.6)
+        static let fast = SwiftUI.Animation.easeInOut(duration: 0.15)
+        static let quick = SwiftUI.Animation.easeInOut(duration: 0.2)
+        static let standard = SwiftUI.Animation.easeInOut(duration: 0.3)
+        static let slow = SwiftUI.Animation.easeInOut(duration: 0.5)
+        static let spring = SwiftUI.Animation.spring(response: 0.3, dampingFraction: 0.7)
+        static let bouncy = SwiftUI.Animation.spring(response: 0.4, dampingFraction: 0.6)
+        static let springFast = SwiftUI.Animation.spring(response: 0.25, dampingFraction: 0.7)
     }
+
+    // Alias for backward compatibility
+    typealias Animation = Animations
 }
 
 // MARK: - Color Extension for Hex
@@ -425,6 +431,11 @@ extension View {
     /// Apply button shadow
     func buttonShadow() -> some View {
         self.shadow(color: .black.opacity(0.12), radius: 4, x: 0, y: 2)
+    }
+
+    /// Apply soft shadow
+    func softShadow() -> some View {
+        self.shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
     }
 }
 

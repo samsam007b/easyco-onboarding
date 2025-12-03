@@ -146,7 +146,7 @@ struct SearcherStats {
     }
 }
 
-struct SearcherPreferences {
+struct SearcherPreferences: Codable {
     var favoriteCity: String?
     var priceRange: String?
     var preferredPropertyTypes: [String]
@@ -157,6 +157,20 @@ struct SearcherPreferences {
             priceRange: "600€ - 900€",
             preferredPropertyTypes: ["Colocation", "Studio"]
         )
+    }
+
+    static func load() -> SearcherPreferences {
+        guard let data = UserDefaults.standard.data(forKey: "searcher_preferences"),
+              let preferences = try? JSONDecoder().decode(SearcherPreferences.self, from: data) else {
+            return mock
+        }
+        return preferences
+    }
+
+    func save() {
+        if let encoded = try? JSONEncoder().encode(self) {
+            UserDefaults.standard.set(encoded, forKey: "searcher_preferences")
+        }
     }
 }
 

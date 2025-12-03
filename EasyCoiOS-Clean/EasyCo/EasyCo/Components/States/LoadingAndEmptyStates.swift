@@ -108,71 +108,71 @@ struct PropertyCardSkeleton: View {
 
 // MARK: - Empty State View
 
-struct EmptyStateView: View {
-    let icon: String
-    let title: String
-    let message: String
-    let actionTitle: String?
-    let action: (() -> Void)?
-
-    init(
-        icon: String,
-        title: String,
-        message: String,
-        actionTitle: String? = nil,
-        action: (() -> Void)? = nil
-    ) {
-        self.icon = icon
-        self.title = title
-        self.message = message
-        self.actionTitle = actionTitle
-        self.action = action
-    }
-
-    var body: some View {
-        VStack(spacing: 24) {
-            Spacer()
-
-            Image.lucide(icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100, height: 100)
-                .foregroundColor(Theme.Colors.gray300)
-
-            VStack(spacing: 12) {
-                Text(title)
-                    .font(Theme.Typography.title2())
-                    .foregroundColor(Theme.Colors.textPrimary)
-
-                Text(message)
-                    .font(Theme.Typography.body())
-                    .foregroundColor(Theme.Colors.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
-
-            if let actionTitle = actionTitle, let action = action {
-                Button(action: {
-                    Haptic.impact(.medium)
-                    action()
-                }) {
-                    Text(actionTitle)
-                        .font(Theme.Typography.body(.semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: 300)
-                        .frame(height: Theme.Size.buttonHeight)
-                        .background(Theme.Colors.primaryGradient)
-                        .cornerRadius(Theme.CornerRadius.button)
-                }
-                .padding(.top, 8)
-            }
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Theme.Colors.backgroundSecondary)
-    }
-}
+// struct EmptyStateView: View {
+//     let icon: String
+//     let title: String
+//     let message: String
+//     let actionTitle: String?
+//     let action: (() -> Void)?
+// 
+//     init(
+//         icon: String,
+//         title: String,
+//         message: String,
+//         actionTitle: String? = nil,
+//         action: (() -> Void)? = nil
+//     ) {
+//         self.icon = icon
+//         self.title = title
+//         self.message = message
+//         self.actionTitle = actionTitle
+//         self.action = action
+//     }
+// 
+//     var body: some View {
+//         VStack(spacing: 24) {
+//             Spacer()
+// 
+//             Image.lucide(icon)
+//                 .resizable()
+//                 .scaledToFit()
+//                 .frame(width: 100, height: 100)
+//                 .foregroundColor(Theme.Colors.gray300)
+// 
+//             VStack(spacing: 12) {
+//                 Text(title)
+//                     .font(Theme.Typography.title2())
+//                     .foregroundColor(Theme.Colors.textPrimary)
+// 
+//                 Text(message)
+//                     .font(Theme.Typography.body())
+//                     .foregroundColor(Theme.Colors.textSecondary)
+//                     .multilineTextAlignment(.center)
+//                     .padding(.horizontal, 32)
+//             }
+//
+//             if let actionTitle = actionTitle, let action = action {
+//                 Button(action: {
+//                     Haptic.impact(.medium)
+//                     action()
+//                 }) {
+//                     Text(actionTitle)
+//                         .font(Theme.Typography.body(.semibold))
+//                         .foregroundColor(.white)
+//                         .frame(maxWidth: 300)
+//                         .frame(height: Theme.Size.buttonHeight)
+//                         .background(Theme.Colors.primaryGradient)
+//                         .cornerRadius(Theme.CornerRadius.button)
+//                 }
+//                 .padding(.top, 8)
+//             }
+//
+//             Spacer()
+//         }
+//         .frame(maxWidth: .infinity, maxHeight: .infinity)
+//         .background(Theme.Colors.backgroundSecondary)
+//     }
+// }
 
 // MARK: - Error State View
 
@@ -314,54 +314,54 @@ enum ToastType {
 
 // MARK: - App Error Model
 
-struct AppError: Identifiable {
-    let id = UUID()
-    let type: ErrorType
-    let title: String
-    let message: String
-    let icon: String
-    let hasSupport: Bool
-
-    enum ErrorType {
-        case network
-        case server
-        case notFound
-        case unauthorized
-        case unknown
-    }
-
-    static let networkError = AppError(
-        type: .network,
-        title: "Pas de connexion",
-        message: "Vérifiez votre connexion internet et réessayez",
-        icon: "wifi-off",
-        hasSupport: false
-    )
-
-    static let serverError = AppError(
-        type: .server,
-        title: "Erreur serveur",
-        message: "Nos serveurs rencontrent un problème. Veuillez réessayer dans quelques instants",
-        icon: "server",
-        hasSupport: true
-    )
-
-    static let notFoundError = AppError(
-        type: .notFound,
-        title: "Introuvable",
-        message: "Le contenu que vous recherchez n'existe pas ou a été supprimé",
-        icon: "search-x",
-        hasSupport: false
-    )
-
-    static let unauthorizedError = AppError(
-        type: .unauthorized,
-        title: "Non autorisé",
-        message: "Vous devez vous connecter pour accéder à ce contenu",
-        icon: "lock",
-        hasSupport: false
-    )
-}
+// struct AppError: Identifiable {
+//     let id = UUID()
+//     let type: ErrorType
+//     let title: String
+//     let message: String
+//     let icon: String
+//     let hasSupport: Bool
+// 
+//     enum ErrorType {
+//         case network
+//         case server
+//         case notFound
+//         case unauthorized
+//         case unknown
+//     }
+// 
+//     static let networkError = AppError(
+//         type: .network,
+//         title: "Pas de connexion",
+//         message: "Vérifiez votre connexion internet et réessayez",
+//         icon: "wifi-off",
+//         hasSupport: false
+//     )
+// 
+//     static let serverError = AppError(
+//         type: .server,
+//         title: "Erreur serveur",
+//         message: "Nos serveurs rencontrent un problème. Veuillez réessayer dans quelques instants",
+//         icon: "server",
+//         hasSupport: true
+//     )
+// 
+//     static let notFoundError = AppError(
+//         type: .notFound,
+//         title: "Introuvable",
+//         message: "Le contenu que vous recherchez n'existe pas ou a été supprimé",
+//         icon: "search-x",
+//         hasSupport: false
+//     )
+//
+//     static let unauthorizedError = AppError(
+//         type: .unauthorized,
+//         title: "Non autorisé",
+//         message: "Vous devez vous connecter pour accéder à ce contenu",
+//         icon: "lock",
+//         hasSupport: false
+//     )
+// }
 
 // MARK: - Loading Overlay
 

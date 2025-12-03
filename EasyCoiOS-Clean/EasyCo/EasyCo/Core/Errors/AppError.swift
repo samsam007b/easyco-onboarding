@@ -43,11 +43,13 @@ enum NetworkError: LocalizedError {
     case decodingError(Error)
     case encodingError(Error)
     case serverError(Int)
+    case httpError(statusCode: Int, data: Data?)
     case timeout
     case noInternetConnection
     case unauthorized
     case forbidden
     case notFound
+    case invalidOTP
     case unknown(Error)
 
     var errorDescription: String? {
@@ -62,6 +64,8 @@ enum NetworkError: LocalizedError {
             return "Erreur d'encodage: \(error.localizedDescription)"
         case .serverError(let code):
             return "Erreur serveur (code \(code))"
+        case .httpError(let statusCode, _):
+            return "Erreur HTTP (code \(statusCode))"
         case .timeout:
             return "Délai d'attente dépassé"
         case .noInternetConnection:
@@ -72,6 +76,8 @@ enum NetworkError: LocalizedError {
             return "Accès refusé"
         case .notFound:
             return "Ressource introuvable"
+        case .invalidOTP:
+            return "Code OTP invalide"
         case .unknown(let error):
             return "Erreur réseau: \(error.localizedDescription)"
         }

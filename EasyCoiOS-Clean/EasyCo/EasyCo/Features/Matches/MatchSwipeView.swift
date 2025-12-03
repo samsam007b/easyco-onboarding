@@ -321,36 +321,36 @@ struct MatchSwipeView: View {
 
 // MARK: - Supporting Views
 
-struct StatBadge: View {
-    let icon: String
-    let value: String
-    let label: String
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image.lucide(icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 16, height: 16)
-                .foregroundColor(Theme.Colors.primary)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(value)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-
-                Text(label)
-                    .font(.system(size: 11))
-                    .foregroundColor(Theme.Colors.textSecondary)
-            }
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
-    }
-}
+// struct StatBadge: View {
+//     let icon: String
+//     let value: String
+//     let label: String
+// 
+//     var body: some View {
+//         HStack(spacing: 8) {
+//             Image.lucide(icon)
+//                 .resizable()
+//                 .scaledToFit()
+//                 .frame(width: 16, height: 16)
+//                 .foregroundColor(Theme.Colors.primary)
+// 
+//             VStack(alignment: .leading, spacing: 2) {
+//                 Text(value)
+//                     .font(.system(size: 16, weight: .bold))
+//                     .foregroundColor(Theme.Colors.textPrimary)
+// 
+//                 Text(label)
+//                     .font(.system(size: 11))
+//                     .foregroundColor(Theme.Colors.textSecondary)
+//             }
+//         }
+//         .padding(.horizontal, 12)
+//         .padding(.vertical, 8)
+//         .background(Theme.Colors.backgroundPrimary)
+//         .cornerRadius(12)
+//         .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+//     }
+// }
 
 struct SwipeActionButton: View {
     let icon: String

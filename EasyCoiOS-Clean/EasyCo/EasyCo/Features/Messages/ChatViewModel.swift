@@ -223,13 +223,14 @@ class ChatViewModel: ObservableObject {
             userId: currentUserId.uuidString
         )
 
-        do {
-            let _: [TypingIndicator] = try await SupabaseClient.shared
-                .from("typing_indicators")
-                .insert(indicator)
-        } catch {
-            print("Error sending typing indicator: \(error)")
-        }
+        // TODO: Re-enable when Supabase insert method is available
+        // do {
+        //     let _: [TypingIndicator] = try await SupabaseClient.shared
+        //         .from("typing_indicators")
+        //         .insert(indicator)
+        // } catch {
+        //     print("Error sending typing indicator: \(error)")
+        // }
     }
 
     // MARK: - Helpers

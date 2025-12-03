@@ -196,35 +196,35 @@ private struct FeatureIcon: View {
 
 // MARK: - Corner Radius Extension
 
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
+// extension View {
+//     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+//         clipShape(RoundedCorner(radius: radius, corners: corners))
+//     }
+// }
 
 // MARK: - Mock Data
 
-extension Property {
-    static let mock = Property(
-        id: UUID().uuidString,
-        title: "Appartement moderne 2 chambres",
-        location: "Bruxelles, Ixelles",
-        price: 850,
-        bedrooms: 2,
-        bathrooms: 1,
-        area: 75,
-        images: [
-            "https://via.placeholder.com/400x300",
-            "https://via.placeholder.com/400x300/FF6347",
-            "https://via.placeholder.com/400x300/4682B4"
-        ],
-        isNew: true,
-        isVerified: true,
-        matchScore: 85,
-        distance: 2.3,
-        availableFrom: "15 mars"
-    )
-}
+// extension Property {
+//     static let mock = Property(
+//         id: UUID().uuidString,
+//         title: "Appartement moderne 2 chambres",
+//         location: "Bruxelles, Ixelles",
+//         price: 850,
+//         bedrooms: 2,
+//         bathrooms: 1,
+//         area: 75,
+//         images: [
+//             "https://via.placeholder.com/400x300",
+//             "https://via.placeholder.com/400x300/FF6347",
+//             "https://via.placeholder.com/400x300/4682B4"
+//         ],
+//         isNew: true,
+//         isVerified: true,
+//         matchScore: 85,
+//         distance: 2.3,
+//         availableFrom: "15 mars"
+//     )
+// }
 
 // MARK: - Preview
 

@@ -250,14 +250,14 @@ struct ApplicationStatusView: View {
 
 // MARK: - Supporting Models
 
-struct ApplicationDetail {
-    let id: String
-    let property: Property
-    let status: DetailedApplicationStatus
-    let submittedAt: Date
-    let timeline: [TimelineEvent]
-    let documents: [ApplicationDocument]
-}
+// struct ApplicationDetail {
+//     let id: String
+//     let property: Property
+//     let status: DetailedApplicationStatus
+//     let submittedAt: Date
+//     let timeline: [TimelineEvent]
+//     let documents: [ApplicationDocument]
+// }
 
 enum DetailedApplicationStatus {
     case pending
@@ -350,20 +350,20 @@ struct TimelineEvent: Identifiable {
     }
 }
 
-struct ApplicationDocument: Identifiable {
-    let id = UUID().uuidString
-    let name: String
-    let type: String
-    let size: String
-    let uploadedAt: Date
-
-    var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d MMM yyyy"
-        formatter.locale = Locale(identifier: "fr_FR")
-        return formatter.string(from: uploadedAt)
-    }
-}
+// struct ApplicationDocument: Identifiable {
+//     let id = UUID().uuidString
+//     let name: String
+//     let type: String
+//     let size: String
+//     let uploadedAt: Date
+//
+//     var formattedDate: String {
+//         let formatter = DateFormatter()
+//         formatter.dateFormat = "d MMM yyyy"
+//         formatter.locale = Locale(identifier: "fr_FR")
+//         return formatter.string(from: uploadedAt)
+//     }
+// }
 
 // MARK: - Supporting Views
 
@@ -413,64 +413,64 @@ struct TimelineEventView: View {
     }
 }
 
-struct DocumentRow: View {
-    let document: ApplicationDocument
-
-    var body: some View {
-        HStack(spacing: 16) {
-            Image.lucide("file-text")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundColor(Theme.Colors.primary)
-                .frame(width: 48, height: 48)
-                .background(Theme.Colors.primary.opacity(0.1))
-                .cornerRadius(12)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(document.name)
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .lineLimit(1)
-
-                HStack(spacing: 8) {
-                    Text(document.type)
-                        .font(Theme.Typography.bodySmall())
-                        .foregroundColor(Theme.Colors.textSecondary)
-
-                    Text("•")
-                        .foregroundColor(Theme.Colors.textTertiary)
-
-                    Text(document.size)
-                        .font(Theme.Typography.bodySmall())
-                        .foregroundColor(Theme.Colors.textSecondary)
-
-                    Text("•")
-                        .foregroundColor(Theme.Colors.textTertiary)
-
-                    Text(document.formattedDate)
-                        .font(Theme.Typography.bodySmall())
-                        .foregroundColor(Theme.Colors.textSecondary)
-                }
-            }
-
-            Spacer()
-
-            Button(action: {
-                Haptic.impact(.light)
-            }) {
-                Image.lucide("download")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(Theme.Colors.primary)
-            }
-        }
-        .padding(12)
-        .background(Theme.Colors.backgroundSecondary)
-        .cornerRadius(8)
-    }
-}
+// struct DocumentRow: View {
+//     let document: ApplicationDocument
+//
+//     var body: some View {
+//         HStack(spacing: 16) {
+//             Image.lucide("file-text")
+//                 .resizable()
+//                 .scaledToFit()
+//                 .frame(width: 20, height: 20)
+//                 .foregroundColor(Theme.Colors.primary)
+//                 .frame(width: 48, height: 48)
+//                 .background(Theme.Colors.primary.opacity(0.1))
+//                 .cornerRadius(12)
+//
+//             VStack(alignment: .leading, spacing: 4) {
+//                 Text(document.name)
+//                     .font(Theme.Typography.body(.semibold))
+//                     .foregroundColor(Theme.Colors.textPrimary)
+//                     .lineLimit(1)
+//
+//                 HStack(spacing: 8) {
+//                     Text(document.type)
+//                         .font(Theme.Typography.bodySmall())
+//                         .foregroundColor(Theme.Colors.textSecondary)
+//
+//                     Text("•")
+//                         .foregroundColor(Theme.Colors.textTertiary)
+//
+//                     Text(document.size)
+//                         .font(Theme.Typography.bodySmall())
+//                         .foregroundColor(Theme.Colors.textSecondary)
+//
+//                     Text("•")
+//                         .foregroundColor(Theme.Colors.textTertiary)
+//
+//                     Text(document.formattedDate)
+//                         .font(Theme.Typography.bodySmall())
+//                         .foregroundColor(Theme.Colors.textSecondary)
+//                 }
+//             }
+//
+//             Spacer()
+//
+//             Button(action: {
+//                 Haptic.impact(.light)
+//             }) {
+//                 Image.lucide("download")
+//                     .resizable()
+//                     .scaledToFit()
+//                     .frame(width: 20, height: 20)
+//                     .foregroundColor(Theme.Colors.primary)
+//             }
+//         }
+//         .padding(12)
+//         .background(Theme.Colors.backgroundSecondary)
+//         .cornerRadius(8)
+//     }
+// }
 
 // MARK: - Preview
 

@@ -333,49 +333,49 @@ struct VoteButton: View {
 
 // MARK: - Member Row
 
-struct MemberRow: View {
-    let member: GroupMember
-    let isAdmin: Bool
-
-    var body: some View {
-        HStack(spacing: 12) {
+// struct MemberRow: View {
+//     let member: GroupMember
+//     let isAdmin: Bool
+// 
+//     var body: some View {
+//         HStack(spacing: 12) {
             // Avatar
-            Circle()
-                .fill(Color(hex: "FFA040").opacity(0.2))
-                .frame(width: 44, height: 44)
-                .overlay(
-                    Text(member.initials)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color(hex: "FFA040"))
-                )
-
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 6) {
-                    Text(member.name)
-                        .font(.system(size: 15, weight: .semibold))
-                    if isAdmin {
-                        Text("Admin")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color(hex: "FFA040"))
-                            .cornerRadius(4)
-                    }
-                }
-
-                Text(member.email)
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-
-            Spacer()
-        }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(12)
-    }
-}
+//             Circle()
+//                 .fill(Color(hex: "FFA040").opacity(0.2))
+//                 .frame(width: 44, height: 44)
+//                 .overlay(
+//                     Text(member.initials)
+//                         .font(.system(size: 16, weight: .semibold))
+//                         .foregroundColor(Color(hex: "FFA040"))
+//                 )
+// 
+//             VStack(alignment: .leading, spacing: 2) {
+//                 HStack(spacing: 6) {
+//                     Text(member.name)
+//                         .font(.system(size: 15, weight: .semibold))
+//                     if isAdmin {
+//                         Text("Admin")
+//                             .font(.system(size: 11, weight: .semibold))
+//                             .foregroundColor(.white)
+//                             .padding(.horizontal, 6)
+//                             .padding(.vertical, 2)
+//                             .background(Color(hex: "FFA040"))
+//                             .cornerRadius(4)
+//                     }
+//                 }
+// 
+//                 Text(member.email)
+//                     .font(.system(size: 13))
+//                     .foregroundColor(Color(hex: "6B7280"))
+//             }
+// 
+//             Spacer()
+//         }
+//         .padding(16)
+//         .background(Color.white)
+//         .cornerRadius(12)
+//     }
+// }
 
 // MARK: - Supporting Models
 

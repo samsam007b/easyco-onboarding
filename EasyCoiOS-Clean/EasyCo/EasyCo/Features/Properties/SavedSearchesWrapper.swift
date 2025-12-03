@@ -3,79 +3,79 @@ import SwiftUI
 // MARK: - Saved Searches Wrapper
 // Simple standalone view for saved searches accessible from menu
 
-struct SavedSearchesWrapper: View {
-    @StateObject private var viewModel = SavedSearchesWrapperViewModel()
-
-    var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    LoadingView(message: "Chargement de vos recherches...")
-                } else if viewModel.searches.isEmpty {
-                    emptyStateView
-                } else {
-                    searchesList
-                }
-            }
-            .background(Color(hex: "F9FAFB"))
-            .navigationTitle("Recherches sauvegardées")
-            .navigationBarTitleDisplayMode(.inline)
-        }
-        .task {
-            await viewModel.loadSearches()
-        }
-    }
-
+// struct SavedSearchesWrapper: View {
+//     @StateObject private var viewModel = SavedSearchesWrapperViewModel()
+// 
+//     var body: some View {
+//         NavigationStack {
+//             Group {
+//                 if viewModel.isLoading {
+//                     LoadingView(message: "Chargement de vos recherches...")
+//                 } else if viewModel.searches.isEmpty {
+//                     emptyStateView
+//                 } else {
+//                     searchesList
+//                 }
+//             }
+//             .background(Color(hex: "F9FAFB"))
+//             .navigationTitle("Recherches sauvegardées")
+//             .navigationBarTitleDisplayMode(.inline)
+//         }
+//         .task {
+//             await viewModel.loadSearches()
+//         }
+//     }
+// 
     // MARK: - Searches List
-
-    private var searchesList: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(viewModel.searches) { search in
-                    SimpleSavedSearchCard(search: search) {
+// 
+//     private var searchesList: some View {
+//         ScrollView {
+//             LazyVStack(spacing: 16) {
+//                 ForEach(viewModel.searches) { search in
+//                     SimpleSavedSearchCard(search: search) {
                         // Apply search logic here
-                    } onDelete: {
-                        viewModel.deleteSearch(search.id)
-                    }
-                }
-            }
-            .padding(16)
-        }
-    }
-
+//                     } onDelete: {
+//                         viewModel.deleteSearch(search.id)
+//                     }
+//                 }
+//             }
+//             .padding(16)
+//         }
+//     }
+// 
     // MARK: - Empty State
-
-    private var emptyStateView: some View {
-        VStack(spacing: 24) {
-            Spacer()
-
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "FFF4ED"))
-                    .frame(width: 120, height: 120)
-
-                Image(systemName: "bookmark.fill")
-                    .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "FFA040"))
-            }
-
-            VStack(spacing: 12) {
-                Text("Aucune recherche sauvegardée")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-
-                Text("Sauvegardez vos recherches favorites pour y accéder rapidement")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
+// 
+//     private var emptyStateView: some View {
+//         VStack(spacing: 24) {
+//             Spacer()
+// 
+//             ZStack {
+//                 Circle()
+//                     .fill(Color(hex: "FFF4ED"))
+//                     .frame(width: 120, height: 120)
+// 
+//                 Image(systemName: "bookmark.fill")
+//                     .font(.system(size: 48))
+//                     .foregroundColor(Color(hex: "FFA040"))
+//             }
+// 
+//             VStack(spacing: 12) {
+//                 Text("Aucune recherche sauvegardée")
+//                     .font(.system(size: 24, weight: .bold))
+//                     .foregroundColor(Color(hex: "111827"))
+// 
+//                 Text("Sauvegardez vos recherches favorites pour y accéder rapidement")
+//                     .font(.system(size: 16))
+//                     .foregroundColor(Color(hex: "6B7280"))
+//                     .multilineTextAlignment(.center)
+//                     .padding(.horizontal, 32)
+//             }
+// 
+//             Spacer()
+//         }
+//         .frame(maxWidth: .infinity, maxHeight: .infinity)
+//     }
+// }
 
 // MARK: - Simple Saved Search Card
 

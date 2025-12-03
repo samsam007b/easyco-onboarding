@@ -439,41 +439,41 @@ struct PropertyPerformanceCard: View {
 
 // MARK: - Transaction Row
 
-struct TransactionRow: View {
-    let transaction: FinanceTransaction
-
-    var body: some View {
-        HStack(spacing: 14) {
+// struct TransactionRow: View {
+//     let transaction: FinanceTransaction
+// 
+//     var body: some View {
+//         HStack(spacing: 14) {
             // Icon
-            Image(systemName: transaction.isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                .font(.system(size: 28))
-                .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(transaction.title)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(Color(hex: "111827"))
-
-                Text(transaction.subtitle)
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-
-            Spacer()
-
-            VStack(alignment: .trailing, spacing: 4) {
-                Text("\(transaction.isIncome ? "+" : "-")€\(abs(transaction.amount), specifier: "%.2f")")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
-
-                Text(transaction.formattedDate)
-                    .font(.system(size: 11))
-                    .foregroundColor(Color(hex: "9CA3AF"))
-            }
-        }
-        .padding(16)
-    }
-}
+//             Image(systemName: transaction.isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
+//                 .font(.system(size: 28))
+//                 .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
+// 
+//             VStack(alignment: .leading, spacing: 4) {
+//                 Text(transaction.title)
+//                     .font(.system(size: 15, weight: .medium))
+//                     .foregroundColor(Color(hex: "111827"))
+// 
+//                 Text(transaction.subtitle)
+//                     .font(.system(size: 13))
+//                     .foregroundColor(Color(hex: "6B7280"))
+//             }
+// 
+//             Spacer()
+// 
+//             VStack(alignment: .trailing, spacing: 4) {
+//                 Text("\(transaction.isIncome ? "+" : "-")€\(abs(transaction.amount), specifier: "%.2f")")
+//                     .font(.system(size: 15, weight: .semibold))
+//                     .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
+// 
+//                 Text(transaction.formattedDate)
+//                     .font(.system(size: 11))
+//                     .foregroundColor(Color(hex: "9CA3AF"))
+//             }
+//         }
+//         .padding(16)
+//     }
+// }
 
 // MARK: - Add Owner Expense Sheet
 

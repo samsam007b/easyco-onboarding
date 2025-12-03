@@ -11,66 +11,65 @@ import Combine
 // MARK: - Searcher Dashboard ViewModel
 
 @MainActor
-class SearcherDashboardViewModel: ObservableObject {
-    @Published var stats: SearcherDashboardData.Stats?
-    @Published var activityData: [LineChartData] = []
-    @Published var upcomingVisits: [Visit] = []
-    @Published var recentMatches: [Match] = []
-    @Published var savedSearches: [SavedSearch] = []
-    @Published var applications: [ApplicationDetail] = []
-
-    @Published var isLoading = false
-    @Published var error: AppError?
-
-    private let networkManager = NetworkManager.shared
-    private var cancellables = Set<AnyCancellable>()
-
+// class SearcherDashboardViewModel: ObservableObject {
+//     @Published var stats: SearcherDashboardData.Stats?
+//     @Published var activityData: [LineChartData] = []
+//     @Published var upcomingVisits: [Visit] = []
+//     @Published var recentMatches: [Match] = []
+//     @Published var savedSearches: [SavedSearch] = []
+//     @Published var applications: [ApplicationDetail] = []
+// 
+//     @Published var isLoading = false
+//     @Published var error: AppError?
+// 
+//     private let networkManager = NetworkManager.shared
+//     private var cancellables = Set<AnyCancellable>()
+// 
     // MARK: - Load Dashboard
-
-    func loadDashboard() async {
-        isLoading = true
-        error = nil
-
-        do {
-            let request = GetSearcherDashboardRequest()
-            let data = try await networkManager.execute(request)
-
+// 
+//     func loadDashboard() async {
+//         isLoading = true
+//         error = nil
+// 
+//         do {
+//             let request = GetSearcherDashboardRequest()
+//             let data = try await networkManager.execute(request)
+// 
             // Update stats
-            stats = data.stats
-
+//             stats = data.stats
+// 
             // Convert activity data to chart format
-            activityData = data.activityData.map { point in
-                LineChartData(label: point.label, value: point.value)
-            }
-
+//             activityData = data.activityData.map { point in
+//                 LineChartData(label: point.label, value: point.value)
+//             }
+// 
             // Update lists
-            upcomingVisits = data.upcomingVisits
-            recentMatches = data.recentMatches
-            savedSearches = data.savedSearches
-            applications = data.applications
-
-            isLoading = false
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = .server
-            isLoading = false
-        }
-    }
-
-    func refresh() async {
-        await loadDashboard()
-    }
-}
+//             upcomingVisits = data.upcomingVisits
+//             recentMatches = data.recentMatches
+//             savedSearches = data.savedSearches
+//             applications = data.applications
+// 
+//             isLoading = false
+// 
+//         } catch let apiError as APIError {
+//             error = apiError.toAppError
+//             isLoading = false
+//         } catch {
+//             self.error = .server
+//             isLoading = false
+//         }
+//     }
+// 
+//     func refresh() async {
+//         await loadDashboard()
+//     }
+// }
 
 // MARK: - Owner Dashboard ViewModel
 
-@MainActor
 class OwnerDashboardViewModel: ObservableObject {
     @Published var selectedPeriod: TimePeriod = .month
-    @Published var stats: OwnerDashboardData.Stats?
+    @Published var stats: OwnerDashboardData?
     @Published var revenueData: [BarChartData] = []
     @Published var occupancyData: [DonutChartData] = []
     @Published var viewsData: [LineChartData] = []
@@ -273,21 +272,21 @@ class ResidentDashboardViewModel: ObservableObject {
 
 // MARK: - Supporting Types for Charts
 
-struct LineChartData: Identifiable {
-    let id = UUID().uuidString
-    let label: String
-    let value: Double
-}
+// struct LineChartData: Identifiable {
+//     let id = UUID().uuidString
+//     let label: String
+//     let value: Double
+// }
 
-struct BarChartData: Identifiable {
-    let id = UUID().uuidString
-    let label: String
-    let value: Double
-}
+// struct BarChartData: Identifiable {
+//     let id = UUID().uuidString
+//     let label: String
+//     let value: Double
+// }
 
-struct DonutChartData: Identifiable {
-    let id = UUID().uuidString
-    let label: String
-    let value: Double
-    let color: Color
-}
+// struct DonutChartData: Identifiable {
+//     let id = UUID().uuidString
+//     let label: String
+//     let value: Double
+//     let color: Color
+// }

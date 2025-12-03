@@ -263,21 +263,21 @@ struct CreateSavedSearchView: View {
 
 // MARK: - Saved Search Model
 
-struct SavedSearch: Identifiable {
-    let id: String
-    let name: String
-    let location: String?
-    let priceRange: String?
-    let propertyType: String?
-    let notificationsEnabled: Bool
-    let createdAt: Date
-
-    var formattedDate: String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: createdAt, relativeTo: Date())
-    }
-}
+// struct SavedSearch: Identifiable {
+//     let id: String
+//     let name: String
+//     let location: String?
+//     let priceRange: String?
+//     let propertyType: String?
+//     let notificationsEnabled: Bool
+//     let createdAt: Date
+// 
+//     var formattedDate: String {
+//         let formatter = RelativeDateTimeFormatter()
+//         formatter.unitsStyle = .short
+//         return formatter.localizedString(for: createdAt, relativeTo: Date())
+//     }
+// }
 
 // MARK: - View Model
 

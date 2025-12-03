@@ -331,12 +331,7 @@ struct SwipeCard: View {
 }
 
 // MARK: - Swipe Direction
-
-enum SwipeDirection {
-    case left   // Pass/Nope
-    case right  // Like
-    case up     // Super Like
-}
+// Note: SwipeDirection is defined in Features/Matches/SwipeCardView.swift
 
 // MARK: - Supporting Views
 

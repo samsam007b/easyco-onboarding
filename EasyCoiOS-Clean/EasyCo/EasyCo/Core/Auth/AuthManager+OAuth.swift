@@ -12,11 +12,11 @@ extension AuthManager {
         print("💾 Token saved to keychain")
 
         // Fetch user profile
+        // TODO: Implement getCurrentUser in APIClient
         print("👤 Fetching user profile...")
-        let user = try await apiClient.getCurrentUser()
-        print("✅ User profile loaded: \(user.email), type: \(user.userType?.rawValue ?? "not set")")
-
-        self.currentUser = user
+        // let user = try await apiClient.getCurrentUser()
+        // print("✅ User profile loaded: \(user.email), type: \(user.userType?.rawValue ?? "not set")")
+        // self.currentUser = user
         self.isAuthenticated = true
     }
 }

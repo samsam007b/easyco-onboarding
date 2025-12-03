@@ -68,10 +68,10 @@ class ApplicationFormViewModel: ObservableObject {
     @Published var currentAddress = ""
 
     // Step 2: Employment
-    @Published var employmentStatus: EmploymentStatus = .employed
+    @Published var employmentStatus: EmploymentStatus = .employee
     @Published var employer = ""
     @Published var position = ""
-    @Published var contractType: ContractType = .cdi
+    @Published var contractType: ContractType = .permanent
     @Published var monthlyIncome = ""
 
     // Step 3: Guarantor
@@ -111,7 +111,7 @@ class ApplicationFormViewModel: ObservableObject {
         case 0:
             return !firstName.isEmpty && !lastName.isEmpty && !email.isEmpty && !phone.isEmpty
         case 1:
-            if employmentStatus == .employed {
+            if employmentStatus == .employee {
                 return !employer.isEmpty && !position.isEmpty && !monthlyIncome.isEmpty
             }
             return !monthlyIncome.isEmpty
@@ -174,7 +174,7 @@ class ApplicationFormViewModel: ObservableObject {
                     status: employmentStatus,
                     employer: employer.isEmpty ? nil : employer,
                     position: position.isEmpty ? nil : position,
-                    contractType: employmentStatus == .employed ? contractType : nil,
+                    contractType: employmentStatus == .employee ? contractType : nil,
                     monthlyIncome: Int(monthlyIncome) ?? 0
                 ),
                 guarantor: hasGuarantor ? ApplicationFormData.Guarantor(
@@ -323,32 +323,32 @@ struct UploadedDocument: Identifiable {
     let uploadedAt: Date
 }
 
-enum DocumentType: String, Codable {
-    case identity = "identity"
-    case addressProof = "address_proof"
-    case payslips = "payslips"
-    case employmentContract = "employment_contract"
-    case taxReturn = "tax_return"
-
-    var displayName: String {
-        switch self {
-        case .identity: return "Pièce d'identité"
-        case .addressProof: return "Justificatif de domicile"
-        case .payslips: return "Bulletins de salaire (3 derniers mois)"
-        case .employmentContract: return "Contrat de travail"
-        case .taxReturn: return "Avis d'imposition"
-        }
-    }
-
-    var isRequired: Bool {
-        switch self {
-        case .identity, .addressProof, .payslips:
-            return true
-        case .employmentContract, .taxReturn:
-            return false
-        }
-    }
-}
+// enum DocumentType: String, Codable {
+//     case identity = "identity"
+//     case addressProof = "address_proof"
+//     case payslips = "payslips"
+//     case employmentContract = "employment_contract"
+//     case taxReturn = "tax_return"
+//
+//     var displayName: String {
+//         switch self {
+//         case .identity: return "Pièce d'identité"
+//         case .addressProof: return "Justificatif de domicile"
+//         case .payslips: return "Bulletins de salaire (3 derniers mois)"
+//         case .employmentContract: return "Contrat de travail"
+//         case .taxReturn: return "Avis d'imposition"
+//         }
+//     }
+//
+//     var isRequired: Bool {
+//         switch self {
+//         case .identity, .addressProof, .payslips:
+//             return true
+//         case .employmentContract, .taxReturn:
+//             return false
+//         }
+//     }
+// }
 
 // MARK: - Notifications
 

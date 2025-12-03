@@ -1,0 +1,296 @@
+# LISTE COMPLÈTE DES 240 FICHIERS À AJOUTER AU PROJET XCODE
+
+## INSTRUCTIONS:
+
+1. Ouvre Xcode: open EasyCo.xcodeproj
+2. Clique droit sur le groupe racine "EasyCo"
+3. "Add Files to EasyCo..."
+4. Appuie sur Cmd+Shift+G pour "Go to folder"
+5. Colle: /Users/samuelbaudon/.claude-worktrees/easyco-onboarding/gracious-euler/EasyCoiOS-Clean/EasyCo/EasyCo/
+6. Maintiens Cmd enfoncé et sélectionne TOUS ces dossiers:
+   - Components
+   - Config
+   - ContentView.swift
+   - Core
+   - EasyCoApp.swift
+   - Extensions
+   - Features
+   - Models
+   - Utilities
+
+7. OPTIONS IMPORTANTES:
+   ✅ Add to targets: EasyCo
+   ❌ Copy items if needed (DÉCOCHER!)
+   ✅ Create folder references (dossier bleu)
+
+8. Cliquer "Add"
+
+9. Clean Build Folder: Product → Clean Build Folder (Shift+Cmd+K)
+
+10. Build: Product → Build (Cmd+B)
+
+---
+
+## FICHIERS QUI SERONT AJOUTÉS (240 au total):
+
+### Components/ (25 fichiers)
+- Components/Buttons/IconButton.swift
+- Components/Buttons/PrimaryButton.swift
+- Components/Buttons/SecondaryButton.swift
+- Components/Cards/PropertyCard.swift
+- Components/Cards/PropertyCardCompact.swift
+- Components/Charts/BarChart.swift
+- Components/Charts/DonutChart.swift
+- Components/Charts/KPICard.swift
+- Components/Charts/LineChart.swift
+- Components/Common/Badge.swift
+- Components/Common/BottomSheet.swift
+- Components/Common/CustomButton.swift
+- Components/Common/CustomIcons.swift
+- Components/Common/EmptyStateView.swift
+- Components/Common/ErrorView.swift
+- Components/Common/FilterChip.swift
+- Components/Common/FormComponents.swift
+- Components/Common/LoadingView.swift
+- Components/Common/TabBarIcon.swift
+- Components/Inputs/ModernTextField.swift
+- Components/Inputs/SearchBar.swift
+- Components/Navigation/CustomTabBar.swift
+- Components/States/LoadingAndEmptyStates.swift
+- Components/Swipe/SwipeCard.swift
+- Components/Swipe/SwipeCardStack.swift
+
+### Config/ (3 fichiers)
+- Config/AppConfig.swift
+- Config/Theme+DarkMode.swift
+- Config/Theme.swift
+
+### Core/ (30 fichiers)
+- Core/Accessibility/AccessibilityHelpers.swift
+- Core/Auth/AppleSignInManager.swift
+- Core/Auth/AuthManager+OAuth.swift
+- Core/Auth/AuthManager.swift
+- Core/Auth/GuestModeManager.swift
+- Core/Auth/SupabaseAuth.swift
+- Core/DeepLink/DeepLinkHandler.swift
+- Core/DesignSystem/AnimationPresets.swift
+- Core/DesignSystem/DesignTokens.swift
+- Core/DesignSystem/GlassmorphismModifiers.swift
+- Core/DesignSystem/HapticManager.swift
+- Core/Errors/AppError.swift
+- Core/Extensions/HapticFeedback.swift
+- Core/Extensions/SwiftUI+UIKit.swift
+- Core/Network/APIClient.swift
+- Core/Notifications/NotificationManager.swift
+- Core/Services/AlertsManager.swift
+- Core/Services/AuthService.swift
+- Core/Services/NotificationService.swift
+- Core/Services/PropertyComparisonManager.swift
+- Core/Services/PropertyService.swift
+- Core/Services/PushNotificationService.swift
+- Core/Services/SupabaseClient.swift
+- Core/Services/WebSocketManager.swift
+- Core/Storage/KeychainManager.swift
+- Core/Storage/UserDefaultsManager.swift
+- Core/Supabase/SupabaseRealtime.swift
+- Core/i18n/Language.swift
+- Core/i18n/LanguageManager.swift
+- Core/i18n/TranslationSections.swift
+
+### Extensions/ (5 fichiers)
+- Extensions/Animation+Extensions.swift
+- Extensions/Date+Extensions.swift
+- Extensions/String+Extensions.swift
+- Extensions/UIImage+Resize.swift
+- Extensions/View+Extensions.swift
+
+### Features/ (147 fichiers)
+- Features/Alerts/AlertsView.swift
+- Features/Alerts/CreateAlertView.swift
+- Features/Applications/ApplicationFormView.swift
+- Features/Applications/ApplicationStatusView.swift
+- Features/Applications/ApplicationViewModel.swift
+- Features/Applications/ApplyView.swift
+- Features/Applications/MyApplicationsView.swift
+- Features/Auth/AuthFlowIntegration.swift
+- Features/Auth/AuthViewModel+OAuth.swift
+- Features/Auth/AuthViewModel.swift
+- Features/Auth/ForgotPasswordView.swift
+- Features/Auth/LoginView.swift
+- Features/Auth/MagicLinkView.swift
+- Features/Auth/OAuthButtonsView.swift
+- Features/Auth/SignupView.swift
+- Features/Auth/WelcomeSheet.swift
+- Features/Community/CommunityView.swift
+- Features/Dashboard/DashboardViewModels.swift
+- Features/Dashboard/OwnerDashboardView.swift
+- Features/Dashboard/ResidentDashboardView.swift
+- Features/Favorites/FavoritesView.swift
+- Features/Groups/CreateGroupView.swift
+- Features/Groups/GroupDetailView.swift
+- Features/Groups/GroupSettingsView.swift
+- Features/Groups/GroupsJoinView.swift
+- Features/Groups/GroupsListView.swift
+- Features/Guest/GuestTabView.swift
+- Features/Guest/OwnerFeatureView.swift
+- Features/Guest/ResidentFeatureView.swift
+- Features/Legal/LegalPagesView.swift
+- Features/Matches/MatchCelebrationView.swift
+- Features/Matches/MatchFiltersView.swift
+- Features/Matches/MatchPropertyCard.swift
+- Features/Matches/MatchSwipeView.swift
+- Features/Matches/MatchesListView.swift
+- Features/Matches/MatchesView.swift
+- Features/Matches/PropertyMatchingView.swift
+- Features/Matches/SwipeCardView.swift
+- Features/Matches/SwipeMatchesView.swift
+- Features/Matches/SwipeMatchesViewModel.swift
+- Features/Messages/ChatView.swift
+- Features/Messages/ChatViewModel.swift
+- Features/Messages/ConversationView.swift
+- Features/Messages/ConversationsListView.swift
+- Features/Messages/MessageTemplatesView.swift
+- Features/Messages/MessagesListView.swift
+- Features/Messages/OwnerChatView.swift
+- Features/Navigation/SideMenuView.swift
+- Features/Notifications/NotificationCenterView.swift
+- Features/Notifications/NotificationSettingsView.swift
+- Features/Notifications/NotificationsListView.swift
+- Features/Onboarding/OnboardingCoordinator.swift
+- Features/Onboarding/OnboardingView.swift
+- Features/Onboarding/RoleSelectionView.swift
+- Features/Onboarding/Steps/OnboardingBasicInfoView.swift
+- Features/Onboarding/Steps/OnboardingDailyHabitsView.swift
+- Features/Onboarding/Steps/OnboardingHomeLifestyleView.swift
+- Features/Onboarding/Steps/OnboardingIdealColivingView.swift
+- Features/Onboarding/Steps/OnboardingLifestyleView.swift
+- Features/Onboarding/Steps/OnboardingLivingSituationView.swift
+- Features/Onboarding/Steps/OnboardingOwnerAboutView.swift
+- Features/Onboarding/Steps/OnboardingPaymentInfoView.swift
+- Features/Onboarding/Steps/OnboardingPersonalityView.swift
+- Features/Onboarding/Steps/OnboardingPreferencesView.swift
+- Features/Onboarding/Steps/OnboardingPropertyBasicsView.swift
+- Features/Onboarding/Steps/OnboardingReviewView.swift
+- Features/Onboarding/Steps/OnboardingSocialVibeView.swift
+- Features/Onboarding/Steps/OnboardingVerificationView.swift
+- Features/Owner/ApplicationDetailView.swift
+- Features/Owner/ApplicationsView.swift
+- Features/Owner/ContractorsView.swift
+- Features/Owner/CreateMaintenanceTaskView.swift
+- Features/Owner/CreatePropertyView.swift
+- Features/Owner/CreatePropertyViewModel.swift
+- Features/Owner/MaintenanceView.swift
+- Features/Owner/OwnerFinanceView.swift
+- Features/Owner/OwnerFormComponents.swift
+- Features/Owner/OwnerMessagesListView.swift
+- Features/Owner/OwnerPropertiesView.swift
+- Features/Owner/PropertyFormStep1View.swift
+- Features/Owner/PropertyFormStep2View.swift
+- Features/Owner/PropertyFormStep3View.swift
+- Features/Owner/PropertyFormStep4View.swift
+- Features/Owner/PropertyFormStep5View.swift
+- Features/Owner/PropertyStatsView.swift
+- Features/Owner/PropertyStatsViewModel.swift
+- Features/Owner/VisitCalendarView.swift
+- Features/Owner/VisitScheduleView.swift
+- Features/Payments/PaymentsView.swift
+- Features/Profile/EnhancedProfileStepViews.swift
+- Features/Profile/Enhancement/ProfileEnhancementCoordinator.swift
+- Features/Profile/HelpView.swift
+- Features/Profile/MyAnnouncementsView.swift
+- Features/Profile/MyInformationsView.swift
+- Features/Profile/ProfileCompletionView.swift
+- Features/Profile/ProfileView.swift
+- Features/Profile/SearcherProfileViews.swift
+- Features/Profile/SettingsView.swift
+- Features/Properties/Detail/PropertyDetailView.swift
+- Features/Properties/Filters/FiltersView.swift
+- Features/Properties/List/PropertiesListView.swift
+- Features/Properties/List/PropertyCardView.swift
+- Features/Properties/PropertiesListView+Integration.swift
+- Features/Properties/PropertiesViewModel.swift
+- Features/Properties/PropertyComparisonView.swift
+- Features/Properties/RoomCardView.swift
+- Features/Properties/RoomsListView.swift
+- Features/Properties/RoomsViewModel.swift
+- Features/Properties/SavedSearchesWrapper.swift
+- Features/Properties/Search/SearchBarView.swift
+- Features/Properties/VirtualTourViewer.swift
+- Features/Resident/AddExpenseView.swift
+- Features/Resident/AnnouncementsView.swift
+- Features/Resident/BalanceView.swift
+- Features/Resident/CalendarView.swift
+- Features/Resident/CalendarViewModel.swift
+- Features/Resident/CreateEventView.swift
+- Features/Resident/CreateTaskView.swift
+- Features/Resident/EventDetailView.swift
+- Features/Resident/ExpenseStatsView.swift
+- Features/Resident/ExpensesView.swift
+- Features/Resident/ExpensesViewModel.swift
+- Features/Resident/GroupChatView.swift
+- Features/Resident/HubInviteView.swift
+- Features/Resident/HubMembersView.swift
+- Features/Resident/ResidentHubView.swift
+- Features/Resident/ResidentHubViewModel.swift
+- Features/Resident/ResidentMatchingView.swift
+- Features/Resident/RoommatesView.swift
+- Features/Resident/TaskStatsView.swift
+- Features/Resident/TasksView.swift
+- Features/Resident/TasksViewModel.swift
+- Features/Reviews/ReviewsSystem.swift
+- Features/SavedSearches/SavedSearchesView.swift
+- Features/Searcher/SearcherDashboardView.swift
+- Features/Settings/DevicesSettingsView.swift
+- Features/Settings/LanguageSettingsView.swift
+- Features/Settings/PreferencesView.swift
+- Features/Settings/PrivacyActionsViews.swift
+- Features/Settings/PrivacySettingsView.swift
+- Features/Settings/PrivateCodesView.swift
+- Features/Settings/SecuritySettingsView.swift
+- Features/Swipe/SwipeViewModel.swift
+- Features/Visits/MyVisitsView.swift
+- Features/Visits/VisitSchedulerView.swift
+- Features/Welcome/WelcomeView.swift
+
+### Models/ (28 fichiers)
+- Models/Alert.swift
+- Models/Analytics.swift
+- Models/Application.swift
+- Models/Contractor.swift
+- Models/Conversation.swift
+- Models/DashboardData.swift
+- Models/EnhancedProfile.swift
+- Models/Event.swift
+- Models/Expense.swift
+- Models/Group.swift
+- Models/Household.swift
+- Models/Lease.swift
+- Models/Location.swift
+- Models/MaintenanceTask.swift
+- Models/Match.swift
+- Models/MatchFilters.swift
+- Models/MessageTemplate.swift
+- Models/MessagingModels.swift
+- Models/Notification.swift
+- Models/OwnerStats.swift
+- Models/Privacy.swift
+- Models/Property.swift
+- Models/PropertyFilters.swift
+- Models/ResidentTask.swift
+- Models/Room.swift
+- Models/SavedSearch.swift
+- Models/User.swift
+- Models/Visit.swift
+
+### Utilities/ (1 fichier)
+- Utilities/LucideIcon.swift
+
+### Racine/ (2 fichiers)
+- ContentView.swift
+- EasyCoApp.swift
+
+---
+
+TOTAL: 240 fichiers Swift
+
+Une fois ajoutés, build avec Cmd+B et dis-moi s'il y a des erreurs!

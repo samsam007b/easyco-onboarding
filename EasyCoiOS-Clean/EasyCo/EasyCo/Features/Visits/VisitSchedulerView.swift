@@ -368,11 +368,11 @@ enum VisitType: String, CaseIterable {
     }
 }
 
-struct TimeSlot: Identifiable {
-    let id = UUID().uuidString
-    let time: String
-    let isFeatured: Bool
-}
+// struct TimeSlot: Identifiable {
+//     let id = UUID().uuidString
+//     let time: String
+//     let isFeatured: Bool
+// }
 
 // MARK: - Confirmation View
 

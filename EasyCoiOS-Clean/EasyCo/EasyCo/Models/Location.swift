@@ -41,13 +41,13 @@ extension Property {
     var fullAddress: String {
         var components = [String]()
 
-        if let address = address {
+        if !address.isEmpty {
             components.append(address)
         }
 
         components.append(city)
 
-        if let postalCode = postalCode {
+        if !postalCode.isEmpty {
             components.append(postalCode)
         }
 

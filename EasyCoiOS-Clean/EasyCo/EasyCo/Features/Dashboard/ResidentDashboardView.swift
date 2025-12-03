@@ -605,49 +605,49 @@ struct MaintenanceRequest: Identifiable {
     }
 }
 
-enum MaintenanceStatus {
-    case pending
-    case inProgress
-    case completed
+// enum MaintenanceStatus {
+//     case pending
+//     case inProgress
+//     case completed
+// 
+//     var color: Color {
+//         switch self {
+//         case .pending: return Theme.Colors.warning
+//         case .inProgress: return Color(hex: "60A5FA")
+//         case .completed: return Theme.Colors.success
+//         }
+//     }
+// 
+//     var label: String {
+//         switch self {
+//         case .pending: return "En attente"
+//         case .inProgress: return "En cours"
+//         case .completed: return "Terminé"
+//         }
+//     }
+// }
 
-    var color: Color {
-        switch self {
-        case .pending: return Theme.Colors.warning
-        case .inProgress: return Color(hex: "60A5FA")
-        case .completed: return Theme.Colors.success
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .pending: return "En attente"
-        case .inProgress: return "En cours"
-        case .completed: return "Terminé"
-        }
-    }
-}
-
-enum MaintenancePriority {
-    case low
-    case medium
-    case high
-
-    var color: Color {
-        switch self {
-        case .low: return Theme.Colors.success
-        case .medium: return Theme.Colors.warning
-        case .high: return Theme.Colors.error
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .low: return "Basse"
-        case .medium: return "Moyenne"
-        case .high: return "Haute"
-        }
-    }
-}
+// enum MaintenancePriority {
+//     case low
+//     case medium
+//     case high
+// 
+//     var color: Color {
+//         switch self {
+//         case .low: return Theme.Colors.success
+//         case .medium: return Theme.Colors.warning
+//         case .high: return Theme.Colors.error
+//         }
+//     }
+// 
+//     var label: String {
+//         switch self {
+//         case .low: return "Basse"
+//         case .medium: return "Moyenne"
+//         case .high: return "Haute"
+//         }
+//     }
+// }
 
 struct Document: Identifiable {
     let id: String
@@ -739,45 +739,45 @@ struct InfoRow: View {
     }
 }
 
-struct QuickActionCard: View {
-    let icon: String
-    let title: String
-    let color: Color
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: {
-            Haptic.impact(.light)
-            action()
-        }) {
-            VStack(spacing: 12) {
-                Image.lucide(icon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.white)
-                    .frame(width: 60, height: 60)
-                    .background(
-                        LinearGradient(
-                            colors: [color, color.opacity(0.8)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .cornerRadius(16)
-
-                Text(title)
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 20)
-            .background(Theme.Colors.backgroundPrimary)
-            .cornerRadius(Theme.CornerRadius.card)
-            .cardShadow()
-        }
-    }
-}
+// struct QuickActionCard: View {
+//     let icon: String
+//     let title: String
+//     let color: Color
+//     let action: () -> Void
+// 
+//     var body: some View {
+//         Button(action: {
+//             Haptic.impact(.light)
+//             action()
+//         }) {
+//             VStack(spacing: 12) {
+//                 Image.lucide(icon)
+//                     .resizable()
+//                     .scaledToFit()
+//                     .frame(width: 24, height: 24)
+//                     .foregroundColor(.white)
+//                     .frame(width: 60, height: 60)
+//                     .background(
+//                         LinearGradient(
+//                             colors: [color, color.opacity(0.8)],
+//                             startPoint: .topLeading,
+//                             endPoint: .bottomTrailing
+//                         )
+//                     )
+//                     .cornerRadius(16)
+// 
+//                 Text(title)
+//                     .font(Theme.Typography.body(.semibold))
+//                     .foregroundColor(Theme.Colors.textPrimary)
+//             }
+//             .frame(maxWidth: .infinity)
+//             .padding(.vertical, 20)
+//             .background(Theme.Colors.backgroundPrimary)
+//             .cornerRadius(Theme.CornerRadius.card)
+//             .cardShadow()
+//         }
+//     }
+// }
 
 struct PaymentHistoryCard: View {
     let payment: RentPayment

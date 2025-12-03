@@ -9,56 +9,56 @@ import SwiftUI
 
 // MARK: - Conversation Model
 
-struct Conversation: Identifiable {
-    let id: String
-    let match: Match
-    let messages: [Message]
-    let lastReadAt: Date?
-
-    var unreadCount: Int {
-        guard let lastReadAt = lastReadAt else { return messages.count }
-        return messages.filter { $0.sentAt > lastReadAt && !$0.isFromCurrentUser }.count
-    }
-
-    var lastMessage: Message? {
-        messages.last
-    }
-}
+// struct Conversation: Identifiable {
+//     let id: String
+//     let match: Match
+//     let messages: [Message]
+//     let lastReadAt: Date?
+// 
+//     var unreadCount: Int {
+//         guard let lastReadAt = lastReadAt else { return messages.count }
+//         return messages.filter { $0.sentAt > lastReadAt && !$0.isFromCurrentUser }.count
+//     }
+// 
+//     var lastMessage: Message? {
+//         messages.last
+//     }
+// }
 
 // MARK: - Message Model
 
-struct Message: Identifiable {
-    let id: String
-    let text: String
-    let sentAt: Date
-    let isFromCurrentUser: Bool
-    var isRead: Bool
-    var attachmentURL: String?
-
-    var timeAgo: String {
-        let now = Date()
-        let interval = now.timeIntervalSince(sentAt)
-
-        if interval < 60 {
-            return "À l'instant"
-        } else if interval < 3600 {
-            let minutes = Int(interval / 60)
-            return "\(minutes)m"
-        } else if interval < 86400 {
-            let hours = Int(interval / 3600)
-            return "\(hours)h"
-        } else {
-            let days = Int(interval / 86400)
-            return "\(days)j"
-        }
-    }
-
-    var formattedTime: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: sentAt)
-    }
-}
+// struct Message: Identifiable {
+//     let id: String
+//     let text: String
+//     let sentAt: Date
+//     let isFromCurrentUser: Bool
+//     var isRead: Bool
+//     var attachmentURL: String?
+// 
+//     var timeAgo: String {
+//         let now = Date()
+//         let interval = now.timeIntervalSince(sentAt)
+// 
+//         if interval < 60 {
+//             return "À l'instant"
+//         } else if interval < 3600 {
+//             let minutes = Int(interval / 60)
+//             return "\(minutes)m"
+//         } else if interval < 86400 {
+//             let hours = Int(interval / 3600)
+//             return "\(hours)h"
+//         } else {
+//             let days = Int(interval / 86400)
+//             return "\(days)j"
+//         }
+//     }
+// 
+//     var formattedTime: String {
+//         let formatter = DateFormatter()
+//         formatter.timeStyle = .short
+//         return formatter.string(from: sentAt)
+//     }
+// }
 
 // MARK: - Conversations List View
 

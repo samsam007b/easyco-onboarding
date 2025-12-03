@@ -175,17 +175,17 @@ struct RoomCardView: View {
 
 // MARK: - Detail Item
 
-private struct DetailItem: View {
-    let icon: String
-    let text: String
-
-    var body: some View {
-        HStack(spacing: 4) {
-            Image(systemName: icon)
-            Text(text)
-        }
-    }
-}
+// private struct DetailItem: View {
+//     let icon: String
+//     let text: String
+// 
+//     var body: some View {
+//         HStack(spacing: 4) {
+//             Image(systemName: icon)
+//             Text(text)
+//         }
+//     }
+// }
 
 // MARK: - Feature Tag
 

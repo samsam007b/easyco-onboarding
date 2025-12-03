@@ -12,7 +12,7 @@ import SwiftUI
 struct PropertyComparisonView: View {
     @StateObject private var comparisonManager = PropertyComparisonManager.shared
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedFeatures: Set<ComparisonFeature> = Set(ComparisonFeature.allCases)
+    @State private var selectedFeatures: Set<ComparisonFeature> = []
 
     var body: some View {
         NavigationStack {
