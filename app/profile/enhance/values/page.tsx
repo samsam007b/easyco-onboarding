@@ -99,11 +99,11 @@ export default function EnhanceValuesPage() {
 
   const handleNext = () => {
     safeLocalStorage.set('enhanceValues', { coreValues, importantQualities, dealBreakers });
-    router.push('/profile/enhance/financial');
+    router.push('/profile');
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/financial');
+    router.push('/profile');
   };
 
   return (
@@ -218,7 +218,7 @@ export default function EnhanceValuesPage() {
           onClick={handleNext}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Next
+          Save
         </button>
       </div>
     </EnhanceProfileLayout>
