@@ -346,10 +346,10 @@ struct CustomIcons_Previews: PreviewProvider {
                         .font(.headline)
 
                     HStack(spacing: 16) {
-                        IconContainer(.user, style: .muted, color: Color.iconColors.orange)
-                        IconContainer(.settings, style: .muted, color: .iconColors.info)
-                        IconContainer(.bell, style: .muted, color: .iconColors.warning)
-                        IconContainer(.shield, style: .muted, color: .iconColors.error)
+                        IconContainer(AppIcon.user.sfSymbol, style: .muted, color: Color.iconColors.orange)
+                        IconContainer(AppIcon.settings.sfSymbol, style: .muted, color: .iconColors.info)
+                        IconContainer(AppIcon.bell.sfSymbol, style: .muted, color: .iconColors.warning)
+                        IconContainer(AppIcon.shield.sfSymbol, style: .muted, color: .iconColors.error)
                     }
                 }
 
@@ -359,10 +359,10 @@ struct CustomIcons_Previews: PreviewProvider {
                         .font(.headline)
 
                     HStack(spacing: 16) {
-                        IconContainer(.user, style: .vivid, color: .iconColors.orange)
-                        IconContainer(.settings, style: .vivid, color: .iconColors.purple)
-                        IconContainer(.bell, style: .vivid, color: .iconColors.info)
-                        IconContainer(.shield, style: .vivid, color: .iconColors.error)
+                        IconContainer(AppIcon.user.sfSymbol, style: .vivid, color: .iconColors.orange)
+                        IconContainer(AppIcon.settings.sfSymbol, style: .vivid, color: .iconColors.purple)
+                        IconContainer(AppIcon.bell.sfSymbol, style: .vivid, color: .iconColors.info)
+                        IconContainer(AppIcon.shield.sfSymbol, style: .vivid, color: .iconColors.error)
                     }
                 }
 
@@ -372,10 +372,10 @@ struct CustomIcons_Previews: PreviewProvider {
                         .font(.headline)
 
                     HStack(spacing: 16) {
-                        IconContainer(.user, style: .gradient, color: .iconColors.orange)
-                        IconContainer(.settings, style: .gradient, color: .iconColors.purple)
-                        IconContainer(.bell, style: .gradient, color: .iconColors.info)
-                        IconContainer(.shield, style: .gradient, color: .iconColors.error)
+                        IconContainer(AppIcon.user.sfSymbol, style: .gradient, color: .iconColors.orange)
+                        IconContainer(AppIcon.settings.sfSymbol, style: .gradient, color: .iconColors.purple)
+                        IconContainer(AppIcon.bell.sfSymbol, style: .gradient, color: .iconColors.info)
+                        IconContainer(AppIcon.shield.sfSymbol, style: .gradient, color: .iconColors.error)
                     }
                 }
 
@@ -388,7 +388,7 @@ struct CustomIcons_Previews: PreviewProvider {
                         ForEach([
                             (AppIcon.home, Color.iconColors.orange),
                             (AppIcon.search, Color.iconColors.purple),
-                            (AppIcon.user, Color.iconColors.user),
+                            (AppIcon.user, Color.iconColors.orange),
                             (AppIcon.building, Color.iconColors.property),
                             (AppIcon.message, Color.iconColors.message),
                             (AppIcon.euro, Color.iconColors.finance),

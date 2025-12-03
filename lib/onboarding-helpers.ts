@@ -227,6 +227,14 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.includedServices) profileData.included_services = data.includedServices
 
     // Upsert to user_profiles (insert or update)
+    // 🔍 DETAILED LOGGING FOR DEBUGGING
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('🔍 UPSERT ATTEMPT - saveOnboardingData Helper');
+    console.log('🆔 User ID:', userId);
+    console.log('📦 User Type:', userType);
+    console.log('📝 Profile Data:', JSON.stringify(profileData, null, 2));
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
     const { error: profileError } = await supabase
       .from('user_profiles')
       .upsert(profileData, {
@@ -234,14 +242,19 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
       })
 
     if (profileError) {
-      // FIXME: Use logger.error - '❌ Profile save error:', profileError)
-      // FIXME: Use logger.error - '   Code:', profileError.code)
-      // FIXME: Use logger.error - '   Message:', profileError.message)
-      // FIXME: Use logger.error - '   Details:', profileError.details)
-      // FIXME: Use logger.error - '   Hint:', profileError.hint)
-      // FIXME: Use logger.error - '   Data sent:', profileData)
+      console.error('❌ PROFILE SAVE ERROR:', {
+        code: profileError.code,
+        message: profileError.message,
+        details: profileError.details,
+        hint: profileError.hint,
+      });
+      console.error('📝 Data that caused error:', profileData);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       throw profileError
     }
+
+    console.log('✅ UPSERT SUCCESS');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     // Save verification data if present
     if (data.phoneVerification || data.idDocument || data.proofOfOwnership ||

@@ -443,7 +443,7 @@ struct LoadingStateView_Previews: PreviewProvider {
                 )
 
                 ErrorStateView(
-                    error: .networkError,
+                    error: .network(.noInternetConnection),
                     retryAction: {}
                 )
 
