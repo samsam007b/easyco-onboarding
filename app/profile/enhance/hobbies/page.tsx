@@ -78,8 +78,24 @@ export default function EnhanceHobbiesPage() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('enhanceHobbies', { hobbies });
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'hobbies',
+          data: { hobbies }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+    }
+
     router.push('/profile');
   };
 

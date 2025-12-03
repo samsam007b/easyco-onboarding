@@ -58,17 +58,33 @@ export default function CommunityEventsPage() {
     loadData();
   }, [router]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('communityEvents', {
       eventInterest,
       enjoySharedMeals,
       openToMeetups,
     });
-    router.push('/profile/enhance/verification');
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'community',
+          data: { eventInterest, enjoySharedMeals, openToMeetups }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+    }
+
+    router.push('/profile');
   };
 
   const handleSkip = () => {
-    router.push('/profile/enhance/verification');
+    router.push('/profile');
   };
 
   const canContinue = eventInterest !== '';

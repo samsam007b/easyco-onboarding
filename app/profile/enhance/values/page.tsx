@@ -97,8 +97,24 @@ export default function EnhanceValuesPage() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('enhanceValues', { coreValues, importantQualities, dealBreakers });
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'values',
+          data: { coreValues, importantQualities, dealBreakers }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+    }
+
     router.push('/profile');
   };
 

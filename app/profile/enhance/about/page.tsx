@@ -57,8 +57,24 @@ export default function EnhanceAboutPage() {
     loadData();
   }, [router]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('enhanceAbout', { bio, aboutMe, lookingFor });
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'about',
+          data: { bio, aboutMe, lookingFor }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+    }
+
     router.push('/profile');
   };
 

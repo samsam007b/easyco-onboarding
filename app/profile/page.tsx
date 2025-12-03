@@ -35,6 +35,12 @@ interface UserData {
 }
 
 interface UserProfile {
+  about_me: string | null
+  looking_for: string | null
+  hobbies: string[] | null
+  core_values: string[] | null
+  important_qualities: string[] | null
+  deal_breakers: string[] | null
   financial_info: any
   community_preferences: any
   extended_personality: any
@@ -118,7 +124,7 @@ export default function ProfilePage() {
         // Fetch user profile data
         const { data: profileData } = await supabase
           .from('user_profiles')
-          .select('financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
+          .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
           .eq('user_id', user.id)
           .single()
 
@@ -422,25 +428,28 @@ export default function ProfilePage() {
   // Calculate comprehensive profile completion
   const calculateProfileCompletion = () => {
     let completed = 0
-    const total = 6 // 6 sections total
+    const total = 7 // 7 sections total
 
     // 1. Basic profile (name + avatar)
     if (userData?.full_name && userData?.avatar_url) completed++
 
-    // 2. Financial info
-    if (userProfile?.financial_info) completed++
+    // 2. About (bio, about_me, looking_for)
+    if (userProfile?.about_me || userProfile?.looking_for) completed++
 
-    // 3. Community preferences
-    if (userProfile?.community_preferences) completed++
+    // 3. Hobbies
+    if (userProfile?.hobbies && userProfile.hobbies.length > 0) completed++
 
-    // 4. Extended personality
+    // 4. Personality
     if (userProfile?.extended_personality) completed++
 
-    // 5. Advanced preferences
-    if (userProfile?.advanced_preferences) completed++
+    // 5. Values
+    if (userProfile?.core_values && userProfile.core_values.length > 0) completed++
 
-    // 6. Profile verification
-    if (userProfile?.verification_status === 'verified') completed++
+    // 6. Financial info
+    if (userProfile?.financial_info) completed++
+
+    // 7. Community preferences
+    if (userProfile?.community_preferences) completed++
 
     return Math.round((completed / total) * 100)
   }
@@ -775,7 +784,7 @@ export default function ProfilePage() {
                           {profileCompletion === 100 ? (
                             "Profil complet"
                           ) : (
-                            `${6 - Math.round((profileCompletion / 100) * 6)} section${6 - Math.round((profileCompletion / 100) * 6) > 1 ? 's' : ''} à compléter`
+                            `${7 - Math.round((profileCompletion / 100) * 7)} section${7 - Math.round((profileCompletion / 100) * 7) > 1 ? 's' : ''} à compléter`
                           )}
                         </p>
                       </div>
@@ -821,6 +830,90 @@ export default function ProfilePage() {
                             </div>
                           </div>
 
+                          {/* À propos */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <User className={`w-4 h-4 ${userProfile?.about_me || userProfile?.looking_for ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">À propos</span>
+                              </div>
+                              {userProfile?.about_me || userProfile?.looking_for ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-blue-500 to-sky-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.about_me || userProfile?.looking_for ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Loisirs */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Sparkles className={`w-4 h-4 ${userProfile?.hobbies && userProfile.hobbies.length > 0 ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Loisirs</span>
+                              </div>
+                              {userProfile?.hobbies && userProfile.hobbies.length > 0 ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.hobbies && userProfile.hobbies.length > 0 ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Personality */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Personnalité</span>
+                              </div>
+                              {userProfile?.extended_personality ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-pink-500 to-rose-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.extended_personality ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Valeurs */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Shield className={`w-4 h-4 ${userProfile?.core_values && userProfile.core_values.length > 0 ? 'text-green-600' : 'text-gray-400'}`} />
+                                <span className="text-xs font-medium text-gray-700">Valeurs</span>
+                              </div>
+                              {userProfile?.core_values && userProfile.core_values.length > 0 ? (
+                                <Check className="w-4 h-4 text-green-600" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-purple-500 to-violet-600 transition-all duration-500"
+                                style={{ width: `${userProfile?.core_values && userProfile.core_values.length > 0 ? 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+
                           {/* Financial Info */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
@@ -836,7 +929,7 @@ export default function ProfilePage() {
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500"
+                                className="h-full bg-gradient-to-r from-yellow-500 to-amber-600 transition-all duration-500"
                                 style={{ width: `${userProfile?.financial_info ? 100 : 0}%` }}
                               />
                             </div>
@@ -857,71 +950,8 @@ export default function ProfilePage() {
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500"
+                                className="h-full bg-gradient-to-r from-orange-500 to-amber-600 transition-all duration-500"
                                 style={{ width: `${userProfile?.community_preferences ? 100 : 0}%` }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Personality */}
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Personnalité étendue</span>
-                              </div>
-                              {userProfile?.extended_personality ? (
-                                <Check className="w-4 h-4 text-green-600" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 text-gray-400" />
-                              )}
-                            </div>
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-pink-500 to-rose-600 transition-all duration-500"
-                                style={{ width: `${userProfile?.extended_personality ? 100 : 0}%` }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Advanced Preferences */}
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Settings className={`w-4 h-4 ${userProfile?.advanced_preferences ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Préférences avancées</span>
-                              </div>
-                              {userProfile?.advanced_preferences ? (
-                                <Check className="w-4 h-4 text-green-600" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 text-gray-400" />
-                              )}
-                            </div>
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-purple-500 to-violet-600 transition-all duration-500"
-                                style={{ width: `${userProfile?.advanced_preferences ? 100 : 0}%` }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Verification */}
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Shield className={`w-4 h-4 ${userProfile?.verification_status === 'verified' ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Vérification du profil</span>
-                              </div>
-                              {userProfile?.verification_status === 'verified' ? (
-                                <Check className="w-4 h-4 text-green-600" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 text-gray-400" />
-                              )}
-                            </div>
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-amber-500 to-orange-600 transition-all duration-500"
-                                style={{ width: `${userProfile?.verification_status === 'verified' ? 100 : 0}%` }}
                               />
                             </div>
                           </div>

@@ -86,13 +86,30 @@ export default function ExtendedPersonalityPage() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('extendedPersonality', {
       hobbies,
       interests,
       personalityTraits,
     });
-    toast.success('Personality details saved!');
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'personality',
+          data: { hobbies, interests, personalityTraits }
+        })
+      });
+      toast.success('Personality details saved!');
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+      toast.error('Failed to save changes');
+    }
+
     router.push('/profile');
   };
 

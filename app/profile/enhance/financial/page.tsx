@@ -58,12 +58,28 @@ export default function FinancialInfoPage() {
     loadData();
   }, [router]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    // Save to localStorage for immediate feedback
     safeLocalStorage.set('financialInfo', {
       incomeRange,
       hasGuarantor,
       employmentType,
     });
+
+    // Save to database
+    try {
+      await fetch('/api/profile/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: 'financial',
+          data: { incomeRange, hasGuarantor, employmentType }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to save to database:', error);
+    }
+
     router.push('/profile');
   };
 
