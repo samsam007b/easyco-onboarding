@@ -6547,6 +6547,414 @@ function SearcherDashboardSection() {
         </div>
       </div>
 
+      {/* Profile Card Layouts Section */}
+      <div className="mb-12">
+        <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+          <User className="w-7 h-7 text-[#FFA040]" />
+          Profile Card Layouts
+          <span className="text-sm font-normal text-slate-400">5 options pour /profile</span>
+        </h3>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Option 1: Card Hero (Ma recommandation) */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" />
+                Option 1: Card Hero
+              </h4>
+              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-semibold rounded">Recommandé</span>
+            </div>
+
+            {/* Preview */}
+            <div className="bg-gradient-to-br from-orange-50 via-white to-yellow-50 rounded-xl p-6 space-y-4">
+              {/* Hero Message */}
+              <div className="text-center mb-2">
+                <p className="text-sm text-gray-600 font-medium">Voici ce que les autres voient de toi</p>
+              </div>
+
+              {/* Large Profile Card */}
+              <div className="relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm p-6">
+                <div className="absolute inset-0 grain-subtle opacity-30" />
+                <div className="relative">
+                  {/* Header: Photo + Basic Info */}
+                  <div className="flex items-start gap-4 mb-4">
+                    {/* Photo with Progress Ring */}
+                    <div className="relative">
+                      <svg className="absolute -inset-1" width="88" height="88">
+                        <circle cx="44" cy="44" r="42" fill="none" stroke="#e5e7eb" strokeWidth="2" />
+                        <circle
+                          cx="44" cy="44" r="42"
+                          fill="none"
+                          stroke="#FFA040"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeDasharray="264"
+                          strokeDashoffset="80"
+                          transform="rotate(-90 44 44)"
+                        />
+                      </svg>
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFD080] flex items-center justify-center text-white text-2xl font-bold">
+                        S
+                      </div>
+                    </div>
+
+                    {/* Name + Quick Info */}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-900 mb-1">Samuel, 25 ans</h3>
+                      <div className="flex items-center gap-3 text-sm text-gray-600">
+                        <span className="flex items-center gap-1"><MapPin className="w-4 h-4" />Paris</span>
+                        <span className="flex items-center gap-1"><Euro className="w-4 h-4" />800-1200€</span>
+                      </div>
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                          <ShieldCheck className="w-3 h-3" />Vérifié
+                        </span>
+                        <span className="px-2 py-0.5 bg-[#FFF9E6] text-[#F9A825] text-xs font-semibold rounded-full">71% complet</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bio */}
+                  <p className="text-sm text-gray-700 mb-3">
+                    Développeur passionné, j'aime le calme mais aussi sortir pour explorer Paris...
+                  </p>
+
+                  {/* Tags */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-xs font-semibold text-gray-600">🎨 Loisirs:</span>
+                      <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">Musique</span>
+                      <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full">Voyage</span>
+                      <span className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full">Cuisine</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-xs font-semibold text-gray-600">❤️ Valeurs:</span>
+                      <span className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">Respect</span>
+                      <span className="px-2 py-1 bg-orange-50 text-orange-700 text-xs rounded-full">Fun</span>
+                    </div>
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="mt-4 flex gap-2">
+                    <button className="flex-1 px-4 py-2 bg-gradient-to-r from-[#FFA040] to-[#FFD080] text-white text-sm font-semibold rounded-xl hover:shadow-lg transition-shadow">
+                      <Eye className="w-4 h-4 inline mr-1" />Voir en mode public
+                    </button>
+                    <button className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50">
+                      <Edit className="w-4 h-4 inline" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Completion dropdown (small) */}
+              <div className="flex items-center justify-between px-4 py-2 bg-purple-50/50 rounded-xl border border-purple-200">
+                <span className="text-xs text-gray-700">📊 5/7 sections complètes</span>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-300">Avantages:</strong> Impact immédiat, mobile-friendly, preview public clair</p>
+              <p><strong className="text-slate-300">Layout:</strong> Stack vertical - Hero card → Completion → Enhance sections</p>
+            </div>
+          </div>
+
+          {/* Option 2: Side by Side */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <Layers className="w-5 h-5 text-blue-400" />
+              Option 2: Side by Side
+            </h4>
+
+            {/* Preview */}
+            <div className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-xl p-4">
+              <div className="grid grid-cols-2 gap-3">
+                {/* Left: Profile Card (Sticky) */}
+                <div className="space-y-2">
+                  <div className="bg-white/90 backdrop-blur rounded-xl border-2 border-gray-200 p-3 sticky top-0">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 mx-auto mb-2 flex items-center justify-center text-white text-xl font-bold">
+                      S
+                    </div>
+                    <h4 className="text-sm font-bold text-center text-gray-900">Samuel, 25</h4>
+                    <p className="text-xs text-gray-600 text-center mb-2">Paris · 800-1200€</p>
+                    <div className="space-y-1.5">
+                      <div className="text-xs"><span className="text-gray-500">Bio:</span> <span className="text-gray-700">Développeur...</span></div>
+                      <div className="flex gap-1 flex-wrap">
+                        <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded">Musique</span>
+                        <span className="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] rounded">Voyage</span>
+                      </div>
+                    </div>
+                    <button className="w-full mt-2 px-2 py-1.5 bg-blue-500 text-white text-xs font-semibold rounded-lg">
+                      Éditer
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right: Enhance Sections */}
+                <div className="space-y-2">
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-2">
+                    <p className="text-xs font-semibold text-purple-900">71% complet</p>
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                    <p className="text-xs font-semibold text-blue-900">À propos</p>
+                  </div>
+                  <div className="bg-pink-50 border border-pink-200 rounded-lg p-2">
+                    <p className="text-xs font-semibold text-pink-900">Personnalité</p>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-2">
+                    <p className="text-xs font-semibold text-green-900">Valeurs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-300">Avantages:</strong> Desktop optimal, carte toujours visible (sticky)</p>
+              <p><strong className="text-slate-300">Layout:</strong> 2 colonnes - Card (left, sticky) | Sections (right, scroll)</p>
+            </div>
+          </div>
+
+          {/* Option 3: Tabs */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <BoxSelect className="w-5 h-5 text-purple-400" />
+              Option 3: Tabs
+            </h4>
+
+            {/* Preview */}
+            <div className="bg-gradient-to-br from-purple-50 via-white to-pink-50 rounded-xl p-4 space-y-3">
+              {/* Tabs */}
+              <div className="flex gap-2 border-b-2 border-gray-200 pb-2">
+                <button className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-t-lg border-2 border-purple-500">
+                  Mon Profil Public
+                </button>
+                <button className="px-3 py-1.5 text-gray-600 text-xs font-semibold rounded-t-lg hover:bg-gray-100">
+                  Améliorer
+                </button>
+                <button className="px-3 py-1.5 text-gray-600 text-xs font-semibold rounded-t-lg hover:bg-gray-100">
+                  Paramètres
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              <div className="bg-white/80 backdrop-blur rounded-xl border-2 border-gray-200 p-4">
+                <div className="text-center mb-3">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 mx-auto mb-2 flex items-center justify-center text-white text-2xl font-bold">
+                    S
+                  </div>
+                  <h3 className="text-base font-bold text-gray-900">Samuel, 25 ans</h3>
+                  <p className="text-xs text-gray-600">Paris · 800-1200€</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex gap-1 flex-wrap justify-center">
+                    <span className="px-2 py-1 bg-purple-100 text-purple-700 text-[10px] rounded-full">Musique</span>
+                    <span className="px-2 py-1 bg-pink-100 text-pink-700 text-[10px] rounded-full">Voyage</span>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] rounded-full">Cuisine</span>
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <button className="flex-1 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-lg">
+                      Partager
+                    </button>
+                    <button className="px-3 py-1.5 border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg">
+                      Mode swipe
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-300">Avantages:</strong> Séparation claire voir/modifier, moins de scroll</p>
+              <p><strong className="text-slate-300">Layout:</strong> Tabs - Public (view) | Améliorer (edit) | Paramètres</p>
+            </div>
+          </div>
+
+          {/* Option 4: Before/After Gamification */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <Target className="w-5 h-5 text-green-400" />
+              Option 4: Before/After
+            </h4>
+
+            {/* Preview */}
+            <div className="bg-gradient-to-br from-green-50 via-white to-emerald-50 rounded-xl p-4 space-y-3">
+              {/* Profile Card with Missing Indicators */}
+              <div className="bg-white/80 backdrop-blur rounded-xl border-2 border-gray-200 p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-xl font-bold">
+                    S
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-bold text-gray-900">Samuel, 25 ans</h3>
+                    <p className="text-xs text-gray-600">Paris · 800-1200€</p>
+                  </div>
+                </div>
+
+                {/* Missing Info Indicator */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 px-2 py-1.5 bg-red-50 border border-red-200 rounded-lg">
+                    <CircleX className="w-4 h-4 text-red-500" />
+                    <span className="text-xs text-red-700"><strong>Bio manquante</strong> - Clique pour ajouter</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-2 py-1.5 bg-green-50 border border-green-200 rounded-lg">
+                    <CircleCheck className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-green-700"><strong>Loisirs complétés</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Enhance Sections with Progress */}
+              <div className="grid grid-cols-3 gap-2">
+                <div className="bg-red-50 border-2 border-red-300 rounded-lg p-2 text-center cursor-pointer hover:bg-red-100">
+                  <CircleX className="w-5 h-5 text-red-500 mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-red-700">À propos</p>
+                  <p className="text-xs font-bold text-red-900">0%</p>
+                </div>
+                <div className="bg-green-50 border-2 border-green-300 rounded-lg p-2 text-center">
+                  <CircleCheck className="w-5 h-5 text-green-500 mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-green-700">Loisirs</p>
+                  <p className="text-xs font-bold text-green-900">100%</p>
+                </div>
+                <div className="bg-green-50 border-2 border-green-300 rounded-lg p-2 text-center">
+                  <CircleCheck className="w-5 h-5 text-green-500 mx-auto mb-1" />
+                  <p className="text-[10px] font-bold text-green-700">Valeurs</p>
+                  <p className="text-xs font-bold text-green-900">100%</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-300">Avantages:</strong> Gamification, motivation, lien direct preview ↔ sections</p>
+              <p><strong className="text-slate-300">Layout:</strong> Card avec indicateurs manquants → Sections avec % de complétion</p>
+            </div>
+          </div>
+
+          {/* Option 5: Compact Card Grid */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 lg:col-span-2">
+            <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <Square className="w-5 h-5 text-orange-400" />
+              Option 5: Compact Grid
+            </h4>
+
+            {/* Preview */}
+            <div className="bg-gradient-to-br from-orange-50 via-white to-red-50 rounded-xl p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Left: Compact Profile */}
+                <div className="md:col-span-1 bg-white/80 backdrop-blur rounded-xl border-2 border-gray-200 p-4">
+                  <div className="text-center mb-3">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-600 mx-auto mb-2 flex items-center justify-center text-white text-2xl font-bold">
+                      S
+                    </div>
+                    <h3 className="text-base font-bold text-gray-900">Samuel, 25</h3>
+                    <p className="text-xs text-gray-600">Paris</p>
+                    <div className="mt-2 px-2 py-1 bg-[#FFF9E6] text-[#F9A825] text-xs font-semibold rounded-full inline-block">
+                      71% complet
+                    </div>
+                  </div>
+                  <button className="w-full px-3 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-semibold rounded-xl">
+                    Voir mon profil
+                  </button>
+                </div>
+
+                {/* Right: Enhance Grid */}
+                <div className="md:col-span-2 grid grid-cols-2 gap-3">
+                  <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 hover:border-blue-400 cursor-pointer transition-colors">
+                    <User className="w-5 h-5 text-blue-600 mb-1" />
+                    <p className="text-xs font-bold text-blue-900">À propos</p>
+                    <p className="text-[10px] text-blue-700">Ajouter une bio</p>
+                  </div>
+                  <div className="bg-pink-50 border-2 border-pink-200 rounded-xl p-3 hover:border-pink-400 cursor-pointer transition-colors">
+                    <Heart className="w-5 h-5 text-pink-600 mb-1" />
+                    <p className="text-xs font-bold text-pink-900">Personnalité</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <CircleCheck className="w-3 h-3 text-green-500" />
+                      <span className="text-[10px] text-green-700">Complet</span>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 border-2 border-green-200 rounded-xl p-3">
+                    <Sparkles className="w-5 h-5 text-green-600 mb-1" />
+                    <p className="text-xs font-bold text-green-900">Loisirs</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <CircleCheck className="w-3 h-3 text-green-500" />
+                      <span className="text-[10px] text-green-700">Complet</span>
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-3 hover:border-purple-400 cursor-pointer transition-colors">
+                    <Shield className="w-5 h-5 text-purple-600 mb-1" />
+                    <p className="text-xs font-bold text-purple-900">Valeurs</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <CircleCheck className="w-3 h-3 text-green-500" />
+                      <span className="text-[10px] text-green-700">Complet</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-300">Avantages:</strong> Compact, vue d'ensemble immédiate, grid moderne</p>
+              <p><strong className="text-slate-300">Layout:</strong> 1/3 profile card | 2/3 enhance sections en grid</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Comparison Summary */}
+        <div className="mt-6 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/20 rounded-xl p-6">
+          <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-blue-400" />
+            Comparaison Rapide
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs">
+            <div>
+              <p className="font-bold text-yellow-400 mb-2">Option 1: Card Hero</p>
+              <ul className="space-y-1 text-slate-400">
+                <li>✅ Impact visuel</li>
+                <li>✅ Mobile-first</li>
+                <li>✅ Preview claire</li>
+                <li>⚠️ Beaucoup de scroll</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-bold text-blue-400 mb-2">Option 2: Side by Side</p>
+              <ul className="space-y-1 text-slate-400">
+                <li>✅ Desktop optimal</li>
+                <li>✅ Sticky card</li>
+                <li>⚠️ Moins mobile-friendly</li>
+                <li>⚠️ Plus complexe</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-bold text-purple-400 mb-2">Option 3: Tabs</p>
+              <ul className="space-y-1 text-slate-400">
+                <li>✅ Séparation claire</li>
+                <li>✅ Moins de scroll</li>
+                <li>✅ UX moderne</li>
+                <li>⚠️ Cache les sections</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-bold text-green-400 mb-2">Option 4: Before/After</p>
+              <ul className="space-y-1 text-slate-400">
+                <li>✅ Gamification</li>
+                <li>✅ Motivation</li>
+                <li>✅ Lien direct</li>
+                <li>⚠️ Peut être anxiogène</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-bold text-orange-400 mb-2">Option 5: Compact Grid</p>
+              <ul className="space-y-1 text-slate-400">
+                <li>✅ Vue d'ensemble</li>
+                <li>✅ Compact</li>
+                <li>✅ Grid moderne</li>
+                <li>⚠️ Card petite</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Summary */}
       <div className="bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/20 rounded-xl p-6">
         <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
