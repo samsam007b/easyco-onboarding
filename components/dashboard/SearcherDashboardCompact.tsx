@@ -179,60 +179,32 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 onClick={() => router.push('/dashboard/my-profile')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer flex-shrink-0"
               >
-                {/* Circular progress ring */}
-                {stats.profileCompletion < 100 && (
-                  <svg className="absolute -inset-1 w-12 h-12 -rotate-90 transition-transform group-hover:rotate-0 duration-500">
-                    <circle
-                      cx="24"
-                      cy="24"
-                      r="22"
-                      stroke="#FFF9E6"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-                    <circle
-                      cx="24"
-                      cy="24"
-                      r="22"
-                      stroke="#FFC107"
-                      strokeWidth="2"
-                      fill="none"
-                      strokeDasharray={`${2 * Math.PI * 22}`}
-                      strokeDashoffset={`${2 * Math.PI * 22 * (1 - stats.profileCompletion / 100)}`}
-                      className="transition-all duration-500 group-hover:stroke-[#F9A825]"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                )}
-
                 {/* Avatar container */}
-                <div className="relative w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-white shadow-lg flex items-center justify-center overflow-hidden transition-transform group-hover:border-[#FFC107]/50">
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFF9E6] to-[#FFE082] flex items-center justify-center overflow-hidden shadow-md transition-all group-hover:shadow-lg group-hover:from-[#FFE082] group-hover:to-[#FFC107]">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
                       alt={userData.full_name}
-                      width={40}
-                      height={40}
-                      className="object-cover w-full h-full absolute inset-0 transition-transform group-hover:scale-110"
+                      width={44}
+                      height={44}
+                      className="object-cover w-full h-full transition-transform group-hover:scale-110"
                     />
                   ) : (
-                    <span className="text-sm font-bold text-[#F9A825] relative z-10 transition-all group-hover:scale-110">
+                    <span className="text-base font-bold text-[#F9A825] transition-all group-hover:scale-110">
                       {userData.full_name.charAt(0)}
                     </span>
                   )}
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-[#FFC107]/0 group-hover:bg-[#FFC107]/10 transition-all duration-300" />
                 </div>
 
-                {/* Percentage tooltip on hover */}
+                {/* Minimal progress bar below avatar */}
                 {stats.profileCompletion < 100 && (
-                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    <div className="bg-gray-900 text-white text-[10px] font-bold px-2 py-1 rounded whitespace-nowrap">
-                      {stats.profileCompletion}% complété
-                    </div>
+                  <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-[#FFC107] transition-all duration-500 group-hover:bg-[#F9A825]"
+                      style={{ width: `${stats.profileCompletion}%` }}
+                    />
                   </div>
                 )}
               </motion.button>
