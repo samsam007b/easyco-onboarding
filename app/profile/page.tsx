@@ -46,6 +46,12 @@ interface UserProfile {
   extended_personality: any
   advanced_preferences: any
   verification_status: string | null
+  current_city: string | null
+  preferred_cities: string[] | null
+  budget_min: number | null
+  budget_max: number | null
+  min_budget: number | null
+  max_budget: number | null
 }
 
 const USER_TYPES = [
