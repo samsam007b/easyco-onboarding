@@ -127,7 +127,7 @@ export default function ProfilePage() {
       // Fetch user profile data
       const { data: profileData } = await supabase
         .from('user_profiles')
-        .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
+        .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status, current_city, preferred_cities, budget_min, budget_max, min_budget, max_budget')
         .eq('user_id', user.id)
         .single()
 
@@ -791,14 +791,21 @@ export default function ProfilePage() {
                             {userData.full_name || 'Nom non renseigné'}
                           </h3>
                           <div className="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-4 h-4" />
-                              Paris
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Euro className="w-4 h-4" />
-                              800-1200€
-                            </span>
+                            {/* City */}
+                            {(userProfile?.current_city || (userProfile?.preferred_cities && userProfile.preferred_cities.length > 0)) && (
+                              <span className="flex items-center gap-1">
+                                <MapPin className="w-4 h-4" />
+                                {userProfile?.current_city || userProfile?.preferred_cities?.[0]}
+                              </span>
+                            )}
+
+                            {/* Budget */}
+                            {((userProfile?.budget_min || userProfile?.min_budget) && (userProfile?.budget_max || userProfile?.max_budget)) && (
+                              <span className="flex items-center gap-1">
+                                <Euro className="w-4 h-4" />
+                                {userProfile?.budget_min || userProfile?.min_budget}-{userProfile?.budget_max || userProfile?.max_budget}€
+                              </span>
+                            )}
                           </div>
                           <div className="mt-2 flex items-center gap-2 flex-wrap">
                             {userData.email_verified && (
@@ -1133,151 +1140,152 @@ export default function ProfilePage() {
                   </AnimatePresence>
                 </motion.div>
 
-                {/* Enhanced Profile Sections */}
+                {/* Enhanced Profile Sections - Uniform Style */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">Améliorer mon profil</h2>
                     <span className="text-sm text-gray-500">Augmentez vos chances de matching</span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* About Me */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/about')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-blue-50 to-sky-50 rounded-2xl p-5 border border-blue-200 hover:border-blue-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-sky-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-md">
-                            <User className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <User className="w-6 h-6 text-blue-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">À propos</h3>
+                            <p className="text-sm text-gray-600">Parlez-nous de vous</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">À propos</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Parlez-nous de vous</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Personality */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/personality')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-5 border border-pink-200 hover:border-pink-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-md">
-                            <Heart className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
+                            <Heart className="w-6 h-6 text-pink-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">Personnalité</h3>
+                            <p className="text-sm text-gray-600">Votre style de vie</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Personnalité</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Votre style de vie</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Values */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/values')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-5 border border-purple-200 hover:border-purple-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-md">
-                            <Shield className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
+                            <Shield className="w-6 h-6 text-purple-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">Valeurs</h3>
+                            <p className="text-sm text-gray-600">Ce qui compte pour vous</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Valeurs</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Ce qui compte pour vous</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Hobbies */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/hobbies')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-200 hover:border-green-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-md">
-                            <Sparkles className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                            <Sparkles className="w-6 h-6 text-green-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">Loisirs</h3>
+                            <p className="text-sm text-gray-600">Vos passions et activités</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Loisirs</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Vos passions et activités</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Community Events */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/community')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-5 border border-orange-200 hover:border-orange-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-md">
-                            <Users className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+                            <Users className="w-6 h-6 text-orange-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">Communauté</h3>
+                            <p className="text-sm text-gray-600">Événements et repas partagés</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Communauté</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Événements et repas partagés</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Financial Info */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/financial')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-5 border border-yellow-200 hover:border-yellow-300 hover:shadow-lg transition-all"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center shadow-md">
-                            <DollarSign className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                            <DollarSign className="w-6 h-6 text-yellow-600" />
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">Financier</h3>
+                            <p className="text-sm text-gray-600">Situation professionnelle</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Financier</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Situation professionnelle</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
 
                     {/* Profile Verification */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
                       onClick={() => router.push('/profile/enhance/verification')}
-                      className="group relative cursor-pointer bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 border border-indigo-200 hover:border-indigo-300 hover:shadow-lg transition-all md:col-span-2"
+                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all md:col-span-2 lg:col-span-3"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-md">
-                            <Shield className="w-6 h-6 text-white" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                            <ShieldCheck className="w-6 h-6 text-indigo-600" />
                           </div>
-                          {userProfile?.verification_status === 'verified' ? (
-                            <span className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-lg font-semibold">
-                              <Check className="w-3 h-3" />
-                              Vérifié
-                            </span>
-                          ) : (
-                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
-                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold text-gray-900">Vérification</h3>
+                              {userProfile?.verification_status === 'verified' && (
+                                <span className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full font-semibold">
+                                  <Check className="w-3 h-3" />
+                                  Vérifié
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600 leading-relaxed">Vérifiez votre identité</p>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1.5">Vérification</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">Vérifiez votre identité</p>
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                       </div>
                     </motion.div>
                   </div>
