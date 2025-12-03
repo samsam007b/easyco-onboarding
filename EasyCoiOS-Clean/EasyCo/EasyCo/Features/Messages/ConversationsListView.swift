@@ -72,8 +72,8 @@ struct ConversationsListView: View {
             return conversations
         }
         return conversations.filter { conversation in
-            conversation.match.property.title.localizedCaseInsensitiveContains(searchText) ||
-            conversation.match.property.location.localizedCaseInsensitiveContains(searchText)
+            (conversation.propertyTitle?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            conversation.otherUserName.localizedCaseInsensitiveContains(searchText)
         }
     }
 
@@ -190,65 +190,8 @@ struct ConversationsListView: View {
     // MARK: - Data Loading
 
     private func loadConversations() {
-        // Mock data
-        let calendar = Calendar.current
-        let now = Date()
-
-        let mockMatch1 = Match(
-            id: "1",
-            property: .mock,
-            matchedAt: calendar.date(byAdding: .day, value: -2, to: now)!,
-            hasUnreadMessages: true,
-            lastMessage: "Quand puis-je visiter ?",
-            lastMessageAt: calendar.date(byAdding: .minute, value: -15, to: now)!
-        )
-
-        let mockMatch2 = Match(
-            id: "2",
-            property: Property(
-                id: "2",
-                title: "Studio lumineux avec balcon",
-                location: "Bruxelles, Louise",
-                price: 680,
-                bedrooms: 1,
-                bathrooms: 1,
-                area: 35,
-                images: ["https://via.placeholder.com/400x300/90EE90"],
-                isNew: false,
-                isVerified: true,
-                matchScore: 92,
-                distance: 0.8,
-                availableFrom: "1er avril"
-            ),
-            matchedAt: calendar.date(byAdding: .day, value: -5, to: now)!,
-            hasUnreadMessages: false,
-            lastMessage: "Parfait, merci !",
-            lastMessageAt: calendar.date(byAdding: .hour, value: -3, to: now)!
-        )
-
-        conversations = [
-            Conversation(
-                id: "1",
-                match: mockMatch1,
-                messages: [
-                    Message(id: "1", text: "Bonjour ! Je suis intéressé par votre propriété.", sentAt: calendar.date(byAdding: .hour, value: -2, to: now)!, isFromCurrentUser: true, isRead: true),
-                    Message(id: "2", text: "Bonjour ! Merci pour votre intérêt. La propriété est toujours disponible.", sentAt: calendar.date(byAdding: .hour, value: -1, to: now)!, isFromCurrentUser: false, isRead: true),
-                    Message(id: "3", text: "Quand puis-je visiter ?", sentAt: calendar.date(byAdding: .minute, value: -15, to: now)!, isFromCurrentUser: false, isRead: false)
-                ],
-                lastReadAt: calendar.date(byAdding: .hour, value: -1, to: now)!
-            ),
-            Conversation(
-                id: "2",
-                match: mockMatch2,
-                messages: [
-                    Message(id: "4", text: "Le studio m'intéresse beaucoup !", sentAt: calendar.date(byAdding: .day, value: -1, to: now)!, isFromCurrentUser: true, isRead: true),
-                    Message(id: "5", text: "Parfait ! Quand souhaitez-vous venir le voir ?", sentAt: calendar.date(byAdding: .hour, value: -20, to: now)!, isFromCurrentUser: false, isRead: true),
-                    Message(id: "6", text: "Demain après-midi si possible", sentAt: calendar.date(byAdding: .hour, value: -18, to: now)!, isFromCurrentUser: true, isRead: true),
-                    Message(id: "7", text: "Parfait, merci !", sentAt: calendar.date(byAdding: .hour, value: -3, to: now)!, isFromCurrentUser: false, isRead: true)
-                ],
-                lastReadAt: now
-            )
-        ]
+        // Use mock data
+        conversations = Conversation.mockConversations
     }
 }
 
@@ -265,7 +208,7 @@ struct ConversationRow: View {
         }) {
             HStack(spacing: 16) {
                 // Property image
-                AsyncImage(url: URL(string: conversation.match.property.images.first ?? "")) { image in
+                AsyncImage(url: URL(string: conversation.propertyImageURL ?? "")) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -283,12 +226,12 @@ struct ConversationRow: View {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(conversation.match.property.title)
+                            Text(conversation.propertyTitle ?? "Sans titre")
                                 .font(Theme.Typography.body(.semibold))
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .lineLimit(1)
 
-                            Text(conversation.match.property.location)
+                            Text(conversation.otherUserName)
                                 .font(Theme.Typography.bodySmall())
                                 .foregroundColor(Theme.Colors.textSecondary)
                                 .lineLimit(1)
@@ -318,7 +261,7 @@ struct ConversationRow: View {
                     // Last message
                     if let lastMessage = conversation.lastMessage {
                         HStack(spacing: 4) {
-                            if lastMessage.isFromCurrentUser {
+                            if lastMessage.isSentByCurrentUser {
                                 Image.lucide(lastMessage.isRead ? "check-check" : "check")
                                     .resizable()
                                     .scaledToFit()
@@ -326,7 +269,7 @@ struct ConversationRow: View {
                                     .foregroundColor(lastMessage.isRead ? Theme.Colors.primary : Theme.Colors.textTertiary)
                             }
 
-                            Text(lastMessage.text)
+                            Text(lastMessage.content)
                                 .font(Theme.Typography.bodySmall())
                                 .foregroundColor(conversation.unreadCount > 0 ? Theme.Colors.textPrimary : Theme.Colors.textSecondary)
                                 .fontWeight(conversation.unreadCount > 0 ? .semibold : .regular)

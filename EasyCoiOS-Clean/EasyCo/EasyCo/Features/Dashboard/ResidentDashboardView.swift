@@ -605,50 +605,6 @@ struct MaintenanceRequest: Identifiable {
     }
 }
 
-// enum MaintenanceStatus {
-//     case pending
-//     case inProgress
-//     case completed
-// 
-//     var color: Color {
-//         switch self {
-//         case .pending: return Theme.Colors.warning
-//         case .inProgress: return Color(hex: "60A5FA")
-//         case .completed: return Theme.Colors.success
-//         }
-//     }
-// 
-//     var label: String {
-//         switch self {
-//         case .pending: return "En attente"
-//         case .inProgress: return "En cours"
-//         case .completed: return "Terminé"
-//         }
-//     }
-// }
-
-// enum MaintenancePriority {
-//     case low
-//     case medium
-//     case high
-// 
-//     var color: Color {
-//         switch self {
-//         case .low: return Theme.Colors.success
-//         case .medium: return Theme.Colors.warning
-//         case .high: return Theme.Colors.error
-//         }
-//     }
-// 
-//     var label: String {
-//         switch self {
-//         case .low: return "Basse"
-//         case .medium: return "Moyenne"
-//         case .high: return "Haute"
-//         }
-//     }
-// }
-
 struct Document: Identifiable {
     let id: String
     let title: String

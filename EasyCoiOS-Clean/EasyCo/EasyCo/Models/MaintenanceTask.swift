@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // MARK: - Maintenance Task
 
@@ -215,12 +216,25 @@ enum MaintenancePriority: String, Codable, CaseIterable {
         self.rawValue
     }
 
-    var color: String {
+    var label: String {
+        self.rawValue
+    }
+
+    var colorHex: String {
         switch self {
         case .urgent: return "EF4444"   // Red
         case .high: return "F97316"     // Orange
         case .normal: return "FBBF24"   // Yellow
         case .low: return "10B981"      // Green
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .urgent: return Color(hex: "EF4444")
+        case .high: return Color(hex: "F97316")
+        case .normal: return Color(hex: "FBBF24")
+        case .low: return Color(hex: "10B981")
         }
     }
 
@@ -246,12 +260,25 @@ enum MaintenanceStatus: String, Codable, CaseIterable {
         self.rawValue
     }
 
-    var color: String {
+    var label: String {
+        self.rawValue
+    }
+
+    var colorHex: String {
         switch self {
         case .pending: return "9CA3AF"      // Gray
         case .inProgress: return "3B82F6"   // Blue
         case .completed: return "10B981"    // Green
         case .cancelled: return "EF4444"    // Red
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .pending: return Color(hex: "9CA3AF")
+        case .inProgress: return Color(hex: "3B82F6")
+        case .completed: return Color(hex: "10B981")
+        case .cancelled: return Color(hex: "EF4444")
         }
     }
 

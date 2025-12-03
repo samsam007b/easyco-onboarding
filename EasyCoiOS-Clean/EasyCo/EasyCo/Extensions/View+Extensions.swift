@@ -70,30 +70,30 @@ extension View {
             .easyCoShadow(Theme.Shadows.small)
     }
 
-    /// Error alert - Commented out due to missing NetworkError type
-    // func errorAlert(error: Binding<NetworkError?>) -> some View {
-    //     self.alert("Erreur", isPresented: .constant(error.wrappedValue != nil)) {
-    //         Button("OK") {
-    //             error.wrappedValue = nil
-    //         }
-    //     } message: {
-    //         Text(error.wrappedValue?.userMessage ?? "Une erreur est survenue")
-    //     }
-    // }
+    /// Error alert
+    func errorAlert(error: Binding<AppError?>) -> some View {
+        self.alert("Erreur", isPresented: .constant(error.wrappedValue != nil)) {
+            Button("OK") {
+                error.wrappedValue = nil
+            }
+        } message: {
+            Text(error.wrappedValue?.localizedDescription ?? "Une erreur est survenue")
+        }
+    }
 }
 
 // MARK: - Rounded Corner Shape
 
-// struct RoundedCorner: Shape {
-//     var radius: CGFloat = .infinity
-//     var corners: UIRectCorner = .allCorners
-// 
-//     func path(in rect: CGRect) -> Path {
-//         let path = UIBezierPath(
-//             roundedRect: rect,
-//             byRoundingCorners: corners,
-//             cornerRadii: CGSize(width: radius, height: radius)
-//         )
-//         return Path(path.cgPath)
-//     }
-// }
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}

@@ -19,8 +19,9 @@ struct MatchesListView: View {
             return matches
         }
         return matches.filter { match in
-            match.property.title.localizedCaseInsensitiveContains(searchText) ||
-            match.property.location.localizedCaseInsensitiveContains(searchText)
+            guard let property = match.property else { return false }
+            return property.title.localizedCaseInsensitiveContains(searchText) ||
+                property.locationString.localizedCaseInsensitiveContains(searchText)
         }
     }
 
@@ -171,82 +172,19 @@ struct MatchesListView: View {
     private func loadMatches() {
         // Mock data
         let calendar = Calendar.current
-        matches = [
+        let mockProperties = Property.mockProperties
+
+        matches = mockProperties.enumerated().map { index, property in
             Match(
-                id: "1",
-                property: .mock,
-                matchedAt: calendar.date(byAdding: .hour, value: -2, to: Date())!,
-                hasUnreadMessages: true,
-                lastMessage: "Bonjour ! Quand puis-je visiter ?",
-                lastMessageAt: calendar.date(byAdding: .minute, value: -30, to: Date())!
-            ),
-            Match(
-                id: "2",
-                property: Property(
-                    id: "2",
-                    title: "Studio lumineux avec balcon",
-                    location: "Bruxelles, Louise",
-                    price: 680,
-                    bedrooms: 1,
-                    bathrooms: 1,
-                    area: 35,
-                    images: ["https://via.placeholder.com/400x300/90EE90"],
-                    isNew: false,
-                    isVerified: true,
-                    matchScore: 92,
-                    distance: 0.8,
-                    availableFrom: "1er avril"
-                ),
-                matchedAt: calendar.date(byAdding: .day, value: -1, to: Date())!,
-                hasUnreadMessages: false,
-                lastMessage: "Parfait, à demain !",
-                lastMessageAt: calendar.date(byAdding: .hour, value: -5, to: Date())!
-            ),
-            Match(
-                id: "3",
-                property: Property(
-                    id: "3",
-                    title: "Loft moderne avec terrasse",
-                    location: "Bruxelles, Flagey",
-                    price: 1100,
-                    bedrooms: 2,
-                    bathrooms: 1,
-                    area: 90,
-                    images: ["https://via.placeholder.com/400x300/DDA0DD"],
-                    isNew: true,
-                    isVerified: true,
-                    matchScore: 88,
-                    distance: 1.5,
-                    availableFrom: "1er juin"
-                ),
-                matchedAt: calendar.date(byAdding: .day, value: -3, to: Date())!,
-                hasUnreadMessages: true,
-                lastMessage: "Je vous envoie le dossier",
-                lastMessageAt: calendar.date(byAdding: .day, value: -1, to: Date())!
-            ),
-            Match(
-                id: "4",
-                property: Property(
-                    id: "4",
-                    title: "Appartement 2 chambres meublé",
-                    location: "Bruxelles, Etterbeek",
-                    price: 950,
-                    bedrooms: 2,
-                    bathrooms: 1,
-                    area: 80,
-                    images: ["https://via.placeholder.com/400x300/87CEEB"],
-                    isNew: false,
-                    isVerified: false,
-                    matchScore: 85,
-                    distance: 3.1,
-                    availableFrom: "15 mai"
-                ),
-                matchedAt: calendar.date(byAdding: .day, value: -10, to: Date())!,
-                hasUnreadMessages: false,
-                lastMessage: nil,
-                lastMessageAt: nil
+                id: UUID(),
+                searcherId: UUID(),
+                propertyId: property.id,
+                matchScore: Double(85 + index * 3),
+                createdAt: calendar.date(byAdding: .day, value: -(index + 1), to: Date())!,
+                matchedAt: calendar.date(byAdding: .day, value: -(index + 1), to: Date())!,
+                property: property
             )
-        ]
+        }
     }
 }
 
@@ -263,7 +201,7 @@ struct MatchCard: View {
         }) {
             HStack(spacing: 0) {
                 // Property image
-                AsyncImage(url: URL(string: match.property.images.first ?? "")) { image in
+                AsyncImage(url: URL(string: match.property?.images.first ?? "")) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -283,7 +221,7 @@ struct MatchCard: View {
                     // Header
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(match.property.title)
+                            Text(match.property?.title ?? "Propriété")
                                 .font(Theme.Typography.body(.semibold))
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .lineLimit(2)
@@ -295,7 +233,7 @@ struct MatchCard: View {
                                     .frame(width: 12, height: 12)
                                     .foregroundColor(Theme.Colors.textTertiary)
 
-                                Text(match.property.location)
+                                Text(match.property?.location ?? "")
                                     .font(Theme.Typography.bodySmall())
                                     .foregroundColor(Theme.Colors.textSecondary)
                                     .lineLimit(1)
@@ -314,7 +252,7 @@ struct MatchCard: View {
 
                     // Price
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text("\(match.property.price)€")
+                        Text("\(match.property?.price ?? 0)€")
                             .font(.system(size: 20, weight: .bold))
                             .foregroundColor(Theme.Colors.primary)
 
@@ -353,7 +291,7 @@ struct MatchCard: View {
                     }
 
                     // Match score
-                    if let matchScore = match.property.matchScore {
+                    if let matchScore = match.property?.matchScore {
                         HStack(spacing: 4) {
                             Circle()
                                 .fill(Theme.Colors.success)
@@ -394,7 +332,7 @@ struct ConversationPlaceholder: View {
                     .font(Theme.Typography.body())
                     .foregroundColor(Theme.Colors.textSecondary)
 
-                Text(match.property.title)
+                Text(match.property?.title ?? "Propriété")
                     .font(Theme.Typography.title2())
                     .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)

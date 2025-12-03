@@ -15,6 +15,23 @@ struct Message: Identifiable, Codable, Equatable {
     var isSentByCurrentUser: Bool
     var createdAt: Date { timestamp }
 
+    var timeAgo: String {
+        let interval = Date().timeIntervalSince(timestamp)
+        if interval < 60 {
+            return "À l'instant"
+        } else if interval < 3600 {
+            return "\(Int(interval / 60))m"
+        } else if interval < 86400 {
+            return "\(Int(interval / 3600))h"
+        } else if interval < 604800 {
+            return "\(Int(interval / 86400))j"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd/MM"
+            return formatter.string(from: timestamp)
+        }
+    }
+
     init(
         id: UUID = UUID(),
         conversationId: UUID,

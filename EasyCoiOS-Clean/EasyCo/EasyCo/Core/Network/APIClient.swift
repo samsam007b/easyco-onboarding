@@ -86,6 +86,25 @@ class APIClient {
         // For now, return a stub value to fix compilation
         return "stub-user-id"
     }
+
+    func getConversations() async throws -> [Conversation] {
+        // TODO: Implement API call to fetch conversations
+        return []
+    }
+
+    func getFavorites() async throws -> [Property] {
+        // TODO: Implement API call to fetch favorites
+        return []
+    }
+
+    func removeFavorite(_ propertyId: UUID) async throws {
+        // TODO: Implement API call to remove favorite
+    }
+
+    func getGroups() async throws -> [SearchGroup] {
+        // TODO: Implement API call to fetch groups
+        return []
+    }
 }
 
 enum HTTPMethod: String {
