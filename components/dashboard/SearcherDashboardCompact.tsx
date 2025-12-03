@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
+import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
 interface SearcherDashboardCompactProps {
   userId: string;
@@ -32,6 +33,7 @@ interface DashboardStats {
   profileCompletion: number;
   unreadMessages: number;
   likedProfiles: number;
+  verificationLevel: VerificationLevel;
 }
 
 interface SearchPreferences {
@@ -54,6 +56,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
     profileCompletion: 0,
     unreadMessages: 0,
     likedProfiles: 0,
+    verificationLevel: 'starter',
   });
 
   const [preferences, setPreferences] = useState<SearchPreferences>({
@@ -111,6 +114,14 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
       const completionResult = calculateProfileCompletion(profile as UserProfile);
       const profileCompletion = completionResult.percentage;
 
+      // Calculate verification level
+      const verificationLevel = getVerificationLevel({
+        email_verified: profile?.email_verified,
+        phone_verified: profile?.phone_verified,
+        id_verified: profile?.id_verified,
+        background_check: profile?.background_check,
+      });
+
       if (profile) {
         // Set preferences from profile
         setPreferences({
@@ -128,6 +139,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
         profileCompletion,
         unreadMessages: unreadCount,
         likedProfiles: likedCount || 0,
+        verificationLevel,
       });
 
     } catch (error) {
@@ -182,6 +194,11 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                       {userData.full_name.charAt(0)}
                     </span>
                   )}
+                </div>
+
+                {/* Verification Badge - positioned at bottom right */}
+                <div className="absolute -bottom-0.5 -right-0.5 z-10">
+                  <VerificationBadge level={stats.verificationLevel} size="sm" />
                 </div>
 
                 {/* Minimal progress bar below avatar */}
