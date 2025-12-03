@@ -33,6 +33,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
+import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
 interface ModernSearcherHeaderProps {
   profile: {
@@ -62,6 +63,7 @@ export default function ModernSearcherHeader({
   const [showNotifications, setShowNotifications] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(stats.favoritesCount || 0);
   const [profileCompletion, setProfileCompletion] = useState(0);
+  const [verificationLevel, setVerificationLevel] = useState<VerificationLevel>('starter');
 
   const {
     matchesCount = 0,
@@ -91,6 +93,15 @@ export default function ModernSearcherHeader({
 
       const completion = calculateProfileCompletion(profile as UserProfile);
       setProfileCompletion(completion.percentage);
+
+      // Calculate verification level
+      const level = getVerificationLevel({
+        email_verified: profile?.email_verified,
+        phone_verified: profile?.phone_verified,
+        id_verified: profile?.id_verified,
+        background_check: profile?.background_check,
+      });
+      setVerificationLevel(level);
     };
 
     loadData();
@@ -411,6 +422,11 @@ export default function ModernSearcherHeader({
                               ) : (
                                 <User className="w-8 h-8 text-white" />
                               )}
+                            </div>
+
+                            {/* Verification Badge */}
+                            <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5">
+                              <VerificationBadge level={verificationLevel} size="md" />
                             </div>
                           </div>
 
