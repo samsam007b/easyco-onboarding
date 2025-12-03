@@ -96,12 +96,12 @@ struct ConversationView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(conversation.match.property.title)
+                            Text(conversation.propertyTitle ?? "Propriété")
                                 .font(Theme.Typography.body(.semibold))
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .lineLimit(1)
 
-                            Text(conversation.match.property.location)
+                            Text(conversation.otherUserName)
                                 .font(Theme.Typography.caption())
                                 .foregroundColor(Theme.Colors.textSecondary)
                                 .lineLimit(1)
@@ -166,13 +166,13 @@ struct ConversationView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(conversation.match.property.title)
+                    Text(conversation.propertyTitle ?? "Propriété")
                         .font(Theme.Typography.body(.semibold))
                         .foregroundColor(Theme.Colors.textPrimary)
                         .lineLimit(2)
 
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text("\(conversation.match.property.price)€")
+                        Text("Prix non disponible")
                             .font(.system(size: 18, weight: .bold))
                             .foregroundColor(Theme.Colors.primary)
 
@@ -236,12 +236,14 @@ struct ConversationView: View {
         Haptic.impact(.light)
 
         // Simulate response after 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        Task {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
             let response = Message(
-                id: UUID().uuidString,
-                text: "Merci pour votre message ! Je vous réponds au plus vite.",
-                sentAt: Date(),
-                isFromCurrentUser: false,
+                conversationId: conversation.id,
+                senderId: conversation.otherUserId,
+                senderName: conversation.otherUserName,
+                content: "Merci pour votre message ! Je vous réponds au plus vite.",
+                isSentByCurrentUser: false,
                 isRead: false
             )
             messages.append(response)
@@ -280,11 +282,11 @@ struct MessageBubble: View {
 
                 // Timestamp and read receipt
                 HStack(spacing: 4) {
-                    Text(message.formattedTime)
+                    Text(message.timeAgo)
                         .font(.system(size: 11))
                         .foregroundColor(Theme.Colors.textTertiary)
 
-                    if message.isFromCurrentUser {
+                    if message.isSentByCurrentUser {
                         Image.lucide(message.isRead ? "check-check" : "check")
                             .resizable()
                             .scaledToFit()
@@ -407,10 +409,10 @@ struct ConversationView_Previews: PreviewProvider {
     static var previews: some View {
         // TODO: Fix preview with updated Conversation model
         let mockConversation = Conversation(
+            propertyTitle: "Studio à Paris",
             otherUserId: UUID(),
             otherUserName: "Jean Dupont",
-            otherUserRole: .owner,
-            propertyTitle: "Studio à Paris"
+            otherUserRole: .owner
         )
 
         /* Old preview code - needs updating

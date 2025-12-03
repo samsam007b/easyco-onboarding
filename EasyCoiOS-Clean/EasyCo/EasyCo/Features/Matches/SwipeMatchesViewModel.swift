@@ -58,7 +58,7 @@ class SwipeMatchesViewModel: ObservableObject {
 
     private func loadFallbackProperties() async {
         do {
-            let allProperties = try await apiClient.getProperties()
+            let allProperties = try await apiClient.getProperties(filters: nil)
 
             // Apply local filtering and scoring
             properties = allProperties
@@ -143,7 +143,7 @@ class SwipeMatchesViewModel: ObservableObject {
         } catch {
             print("❌ Error liking property: \(error)")
             // Still add to favorites as fallback
-            try? await apiClient.addFavorite(propertyId: property.id.uuidString)
+            try? await apiClient.addFavorite(property.id)
         }
     }
 

@@ -93,51 +93,56 @@ export default function ProfilePage() {
   // Profile completion dropdown state
   const [showCompletionDetails, setShowCompletionDetails] = useState(false)
 
+  // Refresh state
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
   const supabase = createClient()
 
   // Fetch user data
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const { data: { user }, error: authError } = await supabase.auth.getUser()
+  const fetchUserData = async () => {
+    setIsRefreshing(true)
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-        if (authError || !user) {
-          router.push('/login')
-          return
-        }
-
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', user.id)
-          .single()
-
-        if (error) {
-          toast.error('Failed to load profile')
-          return
-        }
-
-        setUserData(data)
-        setFullName(data.full_name || '')
-        setSelectedUserType(data.user_type)
-
-        // Fetch user profile data
-        const { data: profileData } = await supabase
-          .from('user_profiles')
-          .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
-          .eq('user_id', user.id)
-          .single()
-
-        if (profileData) {
-          setUserProfile(profileData)
-        }
-      } catch (error) {
-        toast.error('An unexpected error occurred')
-      } finally {
-        setIsLoading(false)
+      if (authError || !user) {
+        router.push('/login')
+        return
       }
-    }
 
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+
+      if (error) {
+        toast.error('Failed to load profile')
+        return
+      }
+
+      setUserData(data)
+      setFullName(data.full_name || '')
+      setSelectedUserType(data.user_type)
+
+      // Fetch user profile data
+      const { data: profileData } = await supabase
+        .from('user_profiles')
+        .select('about_me, looking_for, hobbies, core_values, important_qualities, deal_breakers, financial_info, community_preferences, extended_personality, advanced_preferences, verification_status')
+        .eq('user_id', user.id)
+        .single()
+
+      if (profileData) {
+        setUserProfile(profileData)
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred')
+    } finally {
+      setIsLoading(false)
+      setIsRefreshing(false)
+    }
+  }
+
+  useEffect(() => {
     fetchUserData()
   }, [supabase, router])
 
@@ -742,11 +747,12 @@ export default function ProfilePage() {
                   className={`bg-gradient-to-br from-purple-50/50 to-pink-50/50 backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
                 >
                   {/* Header - Always visible */}
-                  <button
-                    onClick={() => setShowCompletionDetails(!showCompletionDetails)}
-                    className="w-full flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => setShowCompletionDetails(!showCompletionDetails)}
+                      className="flex-1 flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
                       {/* Small Progress Circle */}
                       <div className="relative w-12 h-12">
                         <svg className="w-12 h-12 transform -rotate-90">
@@ -797,6 +803,21 @@ export default function ProfilePage() {
                       <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${showCompletionDetails ? 'rotate-180' : ''}`} />
                     </div>
                   </button>
+
+                  {/* Refresh Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      fetchUserData()
+                      toast.success('Données actualisées')
+                    }}
+                    disabled={isRefreshing}
+                    className="p-2 hover:bg-white/50 rounded-lg transition-colors disabled:opacity-50"
+                    title="Actualiser les données"
+                  >
+                    <RefreshCw className={`w-4 h-4 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  </button>
+                </div>
 
                   {/* Dropdown Details */}
                   <AnimatePresence>

@@ -23,16 +23,15 @@ struct MatchFilters: Codable, Equatable {
     }
 
     func toPropertyFilters() -> PropertyFilters {
-        PropertyFilters(
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            cities: cities,
-            propertyTypes: propertyTypes,
-            minBedrooms: minBedrooms,
-            minSurface: minSurface,
-            amenities: requiredAmenities,
-            furnished: furnished,
-            petsAllowed: petsAllowed
-        )
+        var filters = PropertyFilters()
+        filters.minPrice = minPrice.map { Int($0) }
+        filters.maxPrice = maxPrice.map { Int($0) }
+        filters.city = cities.first
+        filters.propertyTypes = propertyTypes.isEmpty ? nil : propertyTypes
+        filters.minBedrooms = minBedrooms
+        filters.minSurface = minSurface.map { Int($0) }
+        filters.furnished = furnished
+        filters.petsAllowed = petsAllowed
+        return filters
     }
 }

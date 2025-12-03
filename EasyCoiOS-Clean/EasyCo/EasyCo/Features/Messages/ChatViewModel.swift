@@ -128,11 +128,12 @@ class ChatViewModel: ObservableObject {
                 if newMessage.senderId != self.currentUserId.uuidString {
                     let message = Message(
                         id: UUID(uuidString: newMessage.id) ?? UUID(),
-                        conversationID: self.conversation.id,
-                        senderID: UUID(uuidString: newMessage.senderId) ?? UUID(),
+                        conversationId: self.conversation.id,
+                        senderId: UUID(uuidString: newMessage.senderId) ?? UUID(),
+                        senderName: "Unknown", // TODO: Get sender name from newMessage
                         content: newMessage.content,
-                        isRead: newMessage.readByRecipient,
-                        createdAt: self.parseDate(newMessage.createdAt) ?? Date()
+                        timestamp: self.parseDate(newMessage.createdAt) ?? Date(),
+                        isRead: newMessage.readByRecipient
                     )
 
                     withAnimation {
