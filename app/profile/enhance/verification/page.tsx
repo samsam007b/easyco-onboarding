@@ -11,8 +11,7 @@ import {
   EnhanceProfileSection,
   EnhanceProfileInfoBox,
 } from '@/components/enhance-profile';
-
-type BadgeLevel = 'starter' | 'verified' | 'trusted' | 'premium';
+import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
 export default function VerificationPage() {
   const router = useRouter();
@@ -20,9 +19,8 @@ export default function VerificationPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [emailVerified, setEmailVerified] = useState(false);
   const [phoneVerified, setPhoneVerified] = useState(false);
-  const [photoVerified, setPhotoVerified] = useState(false);
-  const [linkedinVerified, setLinkedinVerified] = useState(false);
-  const [kycStatus, setKycStatus] = useState<'not_started' | 'pending' | 'verified' | 'rejected'>('not_started');
+  const [idVerified, setIdVerified] = useState(false);
+  const [backgroundCheck, setBackgroundCheck] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
@@ -47,16 +45,16 @@ export default function VerificationPage() {
       // Load verification data from user_profiles
       const { data: profileData } = await supabase
         .from('user_profiles')
-        .select('phone_number, phone_verified, verification_status, profile_picture, linkedin_url')
+        .select('phone_number, phone_verified, id_verified, background_check, email_verified')
         .eq('user_id', user.id)
         .single();
 
       if (profileData) {
         setPhoneNumber(profileData.phone_number || '');
         setPhoneVerified(profileData.phone_verified || false);
-        setPhotoVerified(!!profileData.profile_picture);
-        setLinkedinVerified(!!profileData.linkedin_url);
-        setKycStatus(profileData.verification_status || 'not_started');
+        setIdVerified(profileData.id_verified || false);
+        setBackgroundCheck(profileData.background_check || false);
+        setEmailVerified(profileData.email_verified || false);
       }
     } catch (error) {
       toast.error('Failed to load verification status');
@@ -65,55 +63,50 @@ export default function VerificationPage() {
     }
   };
 
-  const calculateBadgeLevel = (): BadgeLevel => {
-    const verifications = [emailVerified, phoneVerified, photoVerified, linkedinVerified];
-    const count = verifications.filter(Boolean).length;
-
-    if (kycStatus === 'verified') return 'premium';
-    if (count >= 3) return 'trusted';
-    if (count >= 2) return 'verified';
-    return 'starter';
+  const calculateBadgeLevel = (): VerificationLevel => {
+    return getVerificationLevel({
+      email_verified: emailVerified,
+      phone_verified: phoneVerified,
+      id_verified: idVerified,
+      background_check: backgroundCheck,
+    });
   };
 
   const calculateProgress = (): number => {
-    const checks = [emailVerified, phoneVerified, photoVerified, linkedinVerified, kycStatus === 'verified'];
+    const checks = [emailVerified, phoneVerified, idVerified, backgroundCheck];
     const completed = checks.filter(Boolean).length;
     return Math.round((completed / checks.length) * 100);
   };
 
-  const getBadgeInfo = (level: BadgeLevel) => {
+  const getBadgeInfo = (level: VerificationLevel) => {
     const badges = {
       starter: {
         name: 'Starter',
         color: 'text-gray-600',
         bg: 'bg-gray-50',
         border: 'border-gray-200',
-        badgeColor: 'bg-gray-400',
-        description: 'Basic verification'
+        description: 'Aucune vérification'
+      },
+      basic: {
+        name: 'Basic',
+        color: 'text-blue-600',
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        description: 'Email ou téléphone vérifié'
       },
       verified: {
         name: 'Verified',
-        color: 'text-amber-700',
-        bg: 'bg-amber-50',
-        border: 'border-amber-200',
-        badgeColor: 'bg-amber-400',
-        description: 'Trusted profile'
-      },
-      trusted: {
-        name: 'Trusted',
         color: 'text-blue-700',
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        badgeColor: 'bg-blue-400',
-        description: 'Highly trusted'
+        bg: 'bg-blue-100',
+        border: 'border-blue-300',
+        description: 'Email + Téléphone vérifiés'
       },
       premium: {
         name: 'Premium',
-        color: 'text-orange-700',
-        bg: 'bg-orange-50',
-        border: 'border-orange-200',
-        badgeColor: 'bg-orange-400',
-        description: 'Fully verified'
+        color: 'text-blue-900',
+        bg: 'bg-blue-900/10',
+        border: 'border-blue-900',
+        description: 'Tout vérifié (4/4)'
       }
     };
     return badges[level];
@@ -143,17 +136,6 @@ export default function VerificationPage() {
     }
   };
 
-  const handlePhotoUpload = () => {
-    toast.info('Photo upload is coming soon!');
-  };
-
-  const handleLinkedinConnect = () => {
-    toast.info('LinkedIn connection is coming soon!');
-  };
-
-  const handleKycVerification = () => {
-    toast.info('KYC verification with itsme is coming soon!');
-  };
 
   const handleSkip = () => {
     router.push('/profile');
@@ -187,8 +169,10 @@ export default function VerificationPage() {
         {/* Badge Status Card */}
         <div className={`p-6 rounded-2xl border ${badgeInfo.bg} ${badgeInfo.border}`}>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className={`w-3 h-3 rounded-full ${badgeInfo.badgeColor}`} />
+            <div className="flex items-center gap-4">
+              <div className="bg-white rounded-full p-2 shadow-md">
+                <VerificationBadge level={badgeLevel} size="lg" />
+              </div>
               <div>
                 <h2 className={`text-2xl font-bold ${badgeInfo.color}`}>{badgeInfo.name}</h2>
                 <p className="text-sm text-gray-600">{badgeInfo.description}</p>
@@ -212,9 +196,9 @@ export default function VerificationPage() {
           {badgeLevel !== 'premium' && (
             <div className="mt-4 p-3 bg-white/50 rounded-lg border border-gray-200">
               <p className="text-xs font-medium text-gray-700">
-                {badgeLevel === 'starter' && 'Complete 2 verifications to unlock Verified badge'}
-                {badgeLevel === 'verified' && 'Complete 3 verifications to unlock Trusted badge'}
-                {badgeLevel === 'trusted' && 'Complete KYC to unlock Premium badge'}
+                {badgeLevel === 'starter' && '✨ Complète 1 vérification pour débloquer le badge Basic (bleu clair)'}
+                {badgeLevel === 'basic' && '✨ Complète 2 vérifications pour débloquer le badge Verified (bleu)'}
+                {badgeLevel === 'verified' && '✨ Complète les 4 vérifications pour débloquer le badge Premium (bleu foncé)'}
               </p>
             </div>
           )}
@@ -323,190 +307,97 @@ export default function VerificationPage() {
           </div>
         </EnhanceProfileSection>
 
-        {/* Photo Verification */}
+        {/* ID Verification */}
         <EnhanceProfileSection>
           <div className={`p-6 rounded-2xl border-2 ${
-            photoVerified ? 'bg-green-50 border-green-200' : 'bg-purple-50 border-purple-200'
+            idVerified ? 'bg-green-50 border-green-200' : 'bg-purple-50 border-purple-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  photoVerified ? 'bg-green-100' : 'bg-purple-100'
+                  idVerified ? 'bg-green-100' : 'bg-purple-100'
                 }`}>
-                  <Camera className={`w-6 h-6 ${photoVerified ? 'text-green-600' : 'text-purple-600'}`} />
+                  <Shield className={`w-6 h-6 ${idVerified ? 'text-green-600' : 'text-purple-600'}`} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Profile Photo</h3>
-                  <p className="text-sm text-gray-600">Show you're a real person</p>
+                  <h3 className="text-lg font-semibold text-gray-900">ID Verification</h3>
+                  <p className="text-sm text-gray-600">Vérifie ton identité avec itsme®</p>
                 </div>
               </div>
-              {photoVerified ? (
+              {idVerified ? (
                 <CheckCircle className="w-6 h-6 text-green-600" />
               ) : (
                 <Clock className="w-6 h-6 text-gray-400" />
               )}
             </div>
 
-            {photoVerified ? (
+            {idVerified ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>Profile photo added</span>
+                <span>Identité vérifiée</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-purple-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Coming soon: Upload your photo</span>
+                  <span>Bientôt disponible : Vérification d'identité avec itsme®</span>
                 </div>
                 <button
-                  onClick={handlePhotoUpload}
                   disabled
                   className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
-                  <Camera className="w-4 h-4" />
-                  Upload Photo
+                  <Shield className="w-4 h-4" />
+                  Vérifier avec itsme®
                 </button>
               </div>
             )}
           </div>
         </EnhanceProfileSection>
 
-        {/* LinkedIn Verification */}
+        {/* Background Check */}
         <EnhanceProfileSection>
           <div className={`p-6 rounded-2xl border-2 ${
-            linkedinVerified ? 'bg-green-50 border-green-200' : 'bg-indigo-50 border-indigo-200'
+            backgroundCheck ? 'bg-green-50 border-green-200' : 'bg-indigo-50 border-indigo-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  linkedinVerified ? 'bg-green-100' : 'bg-indigo-100'
+                  backgroundCheck ? 'bg-green-100' : 'bg-indigo-100'
                 }`}>
-                  <Linkedin className={`w-6 h-6 ${linkedinVerified ? 'text-green-600' : 'text-indigo-600'}`} />
+                  <Award className={`w-6 h-6 ${backgroundCheck ? 'text-green-600' : 'text-indigo-600'}`} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">LinkedIn Profile</h3>
-                  <p className="text-sm text-gray-600">Professional verification</p>
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    Background Check
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Premium</span>
+                  </h3>
+                  <p className="text-sm text-gray-600">Vérification des antécédents</p>
                 </div>
               </div>
-              {linkedinVerified ? (
+              {backgroundCheck ? (
                 <CheckCircle className="w-6 h-6 text-green-600" />
               ) : (
                 <Clock className="w-6 h-6 text-gray-400" />
               )}
             </div>
 
-            {linkedinVerified ? (
+            {backgroundCheck ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>LinkedIn connected</span>
+                <span>Vérification des antécédents complétée - Badge Premium débloqué !</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-indigo-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Coming soon: Connect your LinkedIn</span>
+                  <span>Bientôt disponible : Vérification approfondie des antécédents</span>
                 </div>
                 <button
-                  onClick={handleLinkedinConnect}
                   disabled
                   className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
-                  <Linkedin className="w-4 h-4" />
-                  Connect LinkedIn
-                </button>
-              </div>
-            )}
-          </div>
-        </EnhanceProfileSection>
-
-        {/* KYC Verification with itsme */}
-        <EnhanceProfileSection>
-          <div className={`p-6 rounded-2xl border-2 ${
-            kycStatus === 'verified'
-              ? 'bg-green-50 border-green-200'
-              : kycStatus === 'pending'
-              ? 'bg-yellow-50 border-yellow-200'
-              : kycStatus === 'rejected'
-              ? 'bg-red-50 border-red-200'
-              : 'bg-amber-50 border-amber-200'
-          }`}>
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  kycStatus === 'verified'
-                    ? 'bg-green-100'
-                    : kycStatus === 'pending'
-                    ? 'bg-yellow-100'
-                    : kycStatus === 'rejected'
-                    ? 'bg-red-100'
-                    : 'bg-amber-100'
-                }`}>
-                  <Shield className={`w-6 h-6 ${
-                    kycStatus === 'verified'
-                      ? 'text-green-600'
-                      : kycStatus === 'pending'
-                      ? 'text-yellow-600'
-                      : kycStatus === 'rejected'
-                      ? 'text-red-600'
-                      : 'text-amber-600'
-                  }`} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    Identity Verification (KYC)
-                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-medium">Premium</span>
-                  </h3>
-                  <p className="text-sm text-gray-600">Verify with itsme®</p>
-                </div>
-              </div>
-              {kycStatus === 'verified' ? (
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              ) : kycStatus === 'pending' ? (
-                <Clock className="w-6 h-6 text-yellow-600" />
-              ) : kycStatus === 'rejected' ? (
-                <XCircle className="w-6 h-6 text-red-600" />
-              ) : (
-                <Award className="w-6 h-6 text-gray-400" />
-              )}
-            </div>
-
-            {kycStatus === 'verified' ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
-                <CheckCircle className="w-4 h-4" />
-                <span>Identity verified - Premium Badge unlocked!</span>
-              </div>
-            ) : kycStatus === 'pending' ? (
-              <div className="flex items-center gap-2 text-sm text-yellow-700 bg-yellow-100 px-4 py-2 rounded-lg">
-                <Clock className="w-4 h-4" />
-                <span>Verification in progress...</span>
-              </div>
-            ) : kycStatus === 'rejected' ? (
-              <div>
-                <div className="flex items-center gap-2 text-sm text-red-700 bg-red-100 px-4 py-2 rounded-lg mb-3">
-                  <XCircle className="w-4 h-4" />
-                  <span>Verification failed. Please try again.</span>
-                </div>
-                <button
-                  onClick={handleKycVerification}
-                  disabled
-                  className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium"
-                >
-                  Retry with itsme® (Coming Soon)
-                </button>
-              </div>
-            ) : (
-              <div>
-                <div className="flex items-center gap-2 text-sm text-amber-700 mb-3">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>Coming soon: Ultimate verification with itsme®</span>
-                </div>
-                <button
-                  onClick={handleKycVerification}
-                  disabled
-                  className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
-                >
-                  <Shield className="w-4 h-4" />
-                  Verify with itsme®
+                  <Award className="w-4 h-4" />
+                  Demander une vérification
                 </button>
               </div>
             )}
@@ -520,30 +411,38 @@ export default function VerificationPage() {
               <Award className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Unlock Benefits with Each Badge</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Débloque des avantages avec chaque badge</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-gray-400 mt-1.5" />
+                  <div className="flex-shrink-0 mt-1">
+                    <VerificationBadge level="starter" size="sm" />
+                  </div>
                   <div>
-                    <span className="font-medium">Starter:</span> Create profile & browse
+                    <span className="font-medium">Starter (V gris):</span> Créer un profil & parcourir
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5" />
+                  <div className="flex-shrink-0 mt-1">
+                    <VerificationBadge level="basic" size="sm" />
+                  </div>
                   <div>
-                    <span className="font-medium">Verified:</span> Appear in searches + verified badge
+                    <span className="font-medium">Basic (V bleu clair):</span> Apparaître dans les recherches + badge vérifié
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5" />
+                  <div className="flex-shrink-0 mt-1">
+                    <VerificationBadge level="verified" size="sm" />
+                  </div>
                   <div>
-                    <span className="font-medium">Trusted:</span> Priority in results + faster responses
+                    <span className="font-medium">Verified (V bleu):</span> Priorité dans les résultats + réponses plus rapides
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-orange-400 mt-1.5" />
+                  <div className="flex-shrink-0 mt-1">
+                    <VerificationBadge level="premium" size="sm" />
+                  </div>
                   <div>
-                    <span className="font-medium">Premium:</span> Best offers + instant applications
+                    <span className="font-medium">Premium (V bleu foncé):</span> Meilleures offres + candidatures instantanées
                   </div>
                 </div>
               </div>
