@@ -426,7 +426,8 @@ struct ConversationView_Previews: PreviewProvider {
             ],
             lastReadAt: calendar.date(byAdding: .hour, value: -1, to: now)!
         )
+        */
 
-        ConversationView(conversation: mockConversation)
+        return ConversationView(conversation: mockConversation)
     }
 }

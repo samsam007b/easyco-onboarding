@@ -229,6 +229,52 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     if (data.amenities) profileData.amenities = data.amenities
     if (data.includedServices) profileData.included_services = data.includedServices
 
+    // ============================================
+    // CREATE JSONB OBJECTS FOR "ENHANCE" SECTIONS
+    // These ensure CORE onboarding data populates the 7 "enhance" profile sections
+    // ============================================
+
+    // 1. Extended Personality (JSONB) - Maps to "Personnalité" section
+    if (!profileData.extended_personality && (data.hobbies || data.introvertExtrovertScale || data.communicationStyle)) {
+      profileData.extended_personality = {
+        hobbies: data.hobbies || [],
+        interests: [], // Can be added later via enhance
+        personalityTraits: [
+          data.introvertExtrovertScale ? {
+            type: 'social_energy',
+            scale: data.introvertExtrovertScale,
+            text: data.introvertExtrovertScale <= 3 ? 'introvert' : (data.introvertExtrovertScale <= 7 ? 'ambivert' : 'extrovert')
+          } : null,
+          data.communicationStyle ? {
+            type: 'communication',
+            value: data.communicationStyle
+          } : null,
+          data.conflictResolution ? {
+            type: 'conflict_resolution',
+            value: data.conflictResolution
+          } : null,
+        ].filter(Boolean)
+      }
+    }
+
+    // 2. Financial Info (JSONB) - Maps to "Financier" section
+    if (!profileData.financial_info && (data.monthlyIncomeBracket || data.incomeRange || data.hasGuarantor !== undefined || data.employmentType || data.occupationStatus)) {
+      profileData.financial_info = {
+        incomeRange: data.monthlyIncomeBracket || data.incomeRange,
+        hasGuarantor: data.hasGuarantor ?? false,
+        employmentType: data.employmentType || data.occupationStatus
+      }
+    }
+
+    // 3. Community Preferences (JSONB) - Maps to "Communauté" section
+    if (!profileData.community_preferences && (data.eventInterest || data.sharedMealsFrequency || data.enjoySharedMeals !== undefined || data.openToMeetups !== undefined)) {
+      profileData.community_preferences = {
+        eventInterest: data.eventInterest || 'medium',
+        enjoySharedMeals: data.enjoySharedMeals ?? (data.sharedMealsFrequency === 'often' || data.sharedMealsFrequency === 'sometimes'),
+        openToMeetups: data.openToMeetups ?? false
+      }
+    }
+
     // Upsert to user_profiles (insert or update)
     // 🔍 DETAILED LOGGING FOR DEBUGGING
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
