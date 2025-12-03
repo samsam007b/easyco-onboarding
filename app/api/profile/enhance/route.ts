@@ -23,13 +23,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if profile exists
-    const { data: existingProfile } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-
     let updateData: Record<string, any> = {};
 
     // Map sections to appropriate columns
@@ -81,22 +74,20 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    let result;
-    if (existingProfile) {
-      // Update existing profile
-      result = await supabase
-        .from('user_profiles')
-        .update(updateData)
-        .eq('user_id', user.id);
-    } else {
-      // Insert new profile
-      result = await supabase
-        .from('user_profiles')
-        .insert({
+    // Use native upsert instead of manual INSERT/UPDATE logic
+    // This avoids 400 errors from NOT NULL constraints
+    const result = await supabase
+      .from('user_profiles')
+      .upsert(
+        {
           user_id: user.id,
           ...updateData,
-        });
-    }
+        },
+        {
+          onConflict: 'user_id',
+          ignoreDuplicates: false,
+        }
+      );
 
     if (result.error) {
       console.error('Database error:', result.error);
