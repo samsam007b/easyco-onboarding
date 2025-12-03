@@ -209,7 +209,14 @@ class SupabaseRealtime: NSObject {
         // Notify subscribers
         for subscription in subscriptions.values {
             if subscription.event == .all || subscription.event == event {
-                let realtimePayload = RealtimePayload<AnyCodable>(
+                // TODO: Re-enable when AnyCodable dependency is added
+                // let realtimePayload = RealtimePayload<AnyCodable>(
+                //     event: event,
+                //     old: nil,
+                //     new: data["record"] as? [String: Any],
+                //     eventTime: Date()
+                // )
+                let realtimePayload = RealtimePayload<[String: Any]>(
                     event: event,
                     old: nil,
                     new: data["record"] as? [String: Any],

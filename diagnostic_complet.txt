@@ -1,0 +1,616 @@
+🔍 Analyzing Xcode project...
+
+✅ Found 240 Swift files on disk
+📦 Found 0 Swift files in Xcode project
+
+⚠️  Found 240 files missing from Xcode project:
+
+ 1. EasyCo/Components/Buttons/IconButton.swift
+ 2. EasyCo/Components/Buttons/PrimaryButton.swift
+ 3. EasyCo/Components/Buttons/SecondaryButton.swift
+ 4. EasyCo/Components/Cards/PropertyCard.swift
+ 5. EasyCo/Components/Cards/PropertyCardCompact.swift
+ 6. EasyCo/Components/Charts/BarChart.swift
+ 7. EasyCo/Components/Charts/DonutChart.swift
+ 8. EasyCo/Components/Charts/KPICard.swift
+ 9. EasyCo/Components/Charts/LineChart.swift
+10. EasyCo/Components/Common/Badge.swift
+11. EasyCo/Components/Common/BottomSheet.swift
+12. EasyCo/Components/Common/CustomButton.swift
+13. EasyCo/Components/Common/CustomIcons.swift
+14. EasyCo/Components/Common/EmptyStateView.swift
+15. EasyCo/Components/Common/ErrorView.swift
+16. EasyCo/Components/Common/FilterChip.swift
+17. EasyCo/Components/Common/FormComponents.swift
+18. EasyCo/Components/Common/LoadingView.swift
+19. EasyCo/Components/Common/TabBarIcon.swift
+20. EasyCo/Components/Inputs/ModernTextField.swift
+21. EasyCo/Components/Inputs/SearchBar.swift
+22. EasyCo/Components/Navigation/CustomTabBar.swift
+23. EasyCo/Components/States/LoadingAndEmptyStates.swift
+24. EasyCo/Components/Swipe/SwipeCard.swift
+25. EasyCo/Components/Swipe/SwipeCardStack.swift
+26. EasyCo/Config/AppConfig.swift
+27. EasyCo/Config/Theme+DarkMode.swift
+28. EasyCo/Config/Theme.swift
+29. EasyCo/ContentView.swift
+30. EasyCo/Core/Accessibility/AccessibilityHelpers.swift
+31. EasyCo/Core/Auth/AppleSignInManager.swift
+32. EasyCo/Core/Auth/AuthManager+OAuth.swift
+33. EasyCo/Core/Auth/AuthManager.swift
+34. EasyCo/Core/Auth/GuestModeManager.swift
+35. EasyCo/Core/Auth/SupabaseAuth.swift
+36. EasyCo/Core/DeepLink/DeepLinkHandler.swift
+37. EasyCo/Core/DesignSystem/AnimationPresets.swift
+38. EasyCo/Core/DesignSystem/DesignTokens.swift
+39. EasyCo/Core/DesignSystem/GlassmorphismModifiers.swift
+40. EasyCo/Core/DesignSystem/HapticManager.swift
+41. EasyCo/Core/Errors/AppError.swift
+42. EasyCo/Core/Extensions/HapticFeedback.swift
+43. EasyCo/Core/Extensions/SwiftUI+UIKit.swift
+44. EasyCo/Core/Network/APIClient.swift
+45. EasyCo/Core/Notifications/NotificationManager.swift
+46. EasyCo/Core/Services/AlertsManager.swift
+47. EasyCo/Core/Services/AuthService.swift
+48. EasyCo/Core/Services/NotificationService.swift
+49. EasyCo/Core/Services/PropertyComparisonManager.swift
+50. EasyCo/Core/Services/PropertyService.swift
+51. EasyCo/Core/Services/PushNotificationService.swift
+52. EasyCo/Core/Services/SupabaseClient.swift
+53. EasyCo/Core/Services/WebSocketManager.swift
+54. EasyCo/Core/Storage/KeychainManager.swift
+55. EasyCo/Core/Storage/UserDefaultsManager.swift
+56. EasyCo/Core/Supabase/SupabaseRealtime.swift
+57. EasyCo/Core/i18n/Language.swift
+58. EasyCo/Core/i18n/LanguageManager.swift
+59. EasyCo/Core/i18n/TranslationSections.swift
+60. EasyCo/EasyCoApp.swift
+61. EasyCo/Extensions/Animation+Extensions.swift
+62. EasyCo/Extensions/Date+Extensions.swift
+63. EasyCo/Extensions/String+Extensions.swift
+64. EasyCo/Extensions/UIImage+Resize.swift
+65. EasyCo/Extensions/View+Extensions.swift
+66. EasyCo/Features/Alerts/AlertsView.swift
+67. EasyCo/Features/Alerts/CreateAlertView.swift
+68. EasyCo/Features/Applications/ApplicationFormView.swift
+69. EasyCo/Features/Applications/ApplicationStatusView.swift
+70. EasyCo/Features/Applications/ApplicationViewModel.swift
+71. EasyCo/Features/Applications/ApplyView.swift
+72. EasyCo/Features/Applications/MyApplicationsView.swift
+73. EasyCo/Features/Auth/AuthFlowIntegration.swift
+74. EasyCo/Features/Auth/AuthViewModel+OAuth.swift
+75. EasyCo/Features/Auth/AuthViewModel.swift
+76. EasyCo/Features/Auth/ForgotPasswordView.swift
+77. EasyCo/Features/Auth/LoginView.swift
+78. EasyCo/Features/Auth/MagicLinkView.swift
+79. EasyCo/Features/Auth/OAuthButtonsView.swift
+80. EasyCo/Features/Auth/SignupView.swift
+81. EasyCo/Features/Auth/WelcomeSheet.swift
+82. EasyCo/Features/Community/CommunityView.swift
+83. EasyCo/Features/Dashboard/DashboardViewModels.swift
+84. EasyCo/Features/Dashboard/OwnerDashboardView.swift
+85. EasyCo/Features/Dashboard/ResidentDashboardView.swift
+86. EasyCo/Features/Favorites/FavoritesView.swift
+87. EasyCo/Features/Groups/CreateGroupView.swift
+88. EasyCo/Features/Groups/GroupDetailView.swift
+89. EasyCo/Features/Groups/GroupSettingsView.swift
+90. EasyCo/Features/Groups/GroupsJoinView.swift
+91. EasyCo/Features/Groups/GroupsListView.swift
+92. EasyCo/Features/Guest/GuestTabView.swift
+93. EasyCo/Features/Guest/OwnerFeatureView.swift
+94. EasyCo/Features/Guest/ResidentFeatureView.swift
+95. EasyCo/Features/Legal/LegalPagesView.swift
+96. EasyCo/Features/Matches/MatchCelebrationView.swift
+97. EasyCo/Features/Matches/MatchFiltersView.swift
+98. EasyCo/Features/Matches/MatchPropertyCard.swift
+99. EasyCo/Features/Matches/MatchSwipeView.swift
+100. EasyCo/Features/Matches/MatchesListView.swift
+101. EasyCo/Features/Matches/MatchesView.swift
+102. EasyCo/Features/Matches/PropertyMatchingView.swift
+103. EasyCo/Features/Matches/SwipeCardView.swift
+104. EasyCo/Features/Matches/SwipeMatchesView.swift
+105. EasyCo/Features/Matches/SwipeMatchesViewModel.swift
+106. EasyCo/Features/Messages/ChatView.swift
+107. EasyCo/Features/Messages/ChatViewModel.swift
+108. EasyCo/Features/Messages/ConversationView.swift
+109. EasyCo/Features/Messages/ConversationsListView.swift
+110. EasyCo/Features/Messages/MessageTemplatesView.swift
+111. EasyCo/Features/Messages/MessagesListView.swift
+112. EasyCo/Features/Messages/OwnerChatView.swift
+113. EasyCo/Features/Navigation/SideMenuView.swift
+114. EasyCo/Features/Notifications/NotificationCenterView.swift
+115. EasyCo/Features/Notifications/NotificationSettingsView.swift
+116. EasyCo/Features/Notifications/NotificationsListView.swift
+117. EasyCo/Features/Onboarding/OnboardingCoordinator.swift
+118. EasyCo/Features/Onboarding/OnboardingView.swift
+119. EasyCo/Features/Onboarding/RoleSelectionView.swift
+120. EasyCo/Features/Onboarding/Steps/OnboardingBasicInfoView.swift
+121. EasyCo/Features/Onboarding/Steps/OnboardingDailyHabitsView.swift
+122. EasyCo/Features/Onboarding/Steps/OnboardingHomeLifestyleView.swift
+123. EasyCo/Features/Onboarding/Steps/OnboardingIdealColivingView.swift
+124. EasyCo/Features/Onboarding/Steps/OnboardingLifestyleView.swift
+125. EasyCo/Features/Onboarding/Steps/OnboardingLivingSituationView.swift
+126. EasyCo/Features/Onboarding/Steps/OnboardingOwnerAboutView.swift
+127. EasyCo/Features/Onboarding/Steps/OnboardingPaymentInfoView.swift
+128. EasyCo/Features/Onboarding/Steps/OnboardingPersonalityView.swift
+129. EasyCo/Features/Onboarding/Steps/OnboardingPreferencesView.swift
+130. EasyCo/Features/Onboarding/Steps/OnboardingPropertyBasicsView.swift
+131. EasyCo/Features/Onboarding/Steps/OnboardingReviewView.swift
+132. EasyCo/Features/Onboarding/Steps/OnboardingSocialVibeView.swift
+133. EasyCo/Features/Onboarding/Steps/OnboardingVerificationView.swift
+134. EasyCo/Features/Owner/ApplicationDetailView.swift
+135. EasyCo/Features/Owner/ApplicationsView.swift
+136. EasyCo/Features/Owner/ContractorsView.swift
+137. EasyCo/Features/Owner/CreateMaintenanceTaskView.swift
+138. EasyCo/Features/Owner/CreatePropertyView.swift
+139. EasyCo/Features/Owner/CreatePropertyViewModel.swift
+140. EasyCo/Features/Owner/MaintenanceView.swift
+141. EasyCo/Features/Owner/OwnerFinanceView.swift
+142. EasyCo/Features/Owner/OwnerFormComponents.swift
+143. EasyCo/Features/Owner/OwnerMessagesListView.swift
+144. EasyCo/Features/Owner/OwnerPropertiesView.swift
+145. EasyCo/Features/Owner/PropertyFormStep1View.swift
+146. EasyCo/Features/Owner/PropertyFormStep2View.swift
+147. EasyCo/Features/Owner/PropertyFormStep3View.swift
+148. EasyCo/Features/Owner/PropertyFormStep4View.swift
+149. EasyCo/Features/Owner/PropertyFormStep5View.swift
+150. EasyCo/Features/Owner/PropertyStatsView.swift
+151. EasyCo/Features/Owner/PropertyStatsViewModel.swift
+152. EasyCo/Features/Owner/VisitCalendarView.swift
+153. EasyCo/Features/Owner/VisitScheduleView.swift
+154. EasyCo/Features/Payments/PaymentsView.swift
+155. EasyCo/Features/Profile/EnhancedProfileStepViews.swift
+156. EasyCo/Features/Profile/Enhancement/ProfileEnhancementCoordinator.swift
+157. EasyCo/Features/Profile/HelpView.swift
+158. EasyCo/Features/Profile/MyAnnouncementsView.swift
+159. EasyCo/Features/Profile/MyInformationsView.swift
+160. EasyCo/Features/Profile/ProfileCompletionView.swift
+161. EasyCo/Features/Profile/ProfileView.swift
+162. EasyCo/Features/Profile/SearcherProfileViews.swift
+163. EasyCo/Features/Profile/SettingsView.swift
+164. EasyCo/Features/Properties/Detail/PropertyDetailView.swift
+165. EasyCo/Features/Properties/Filters/FiltersView.swift
+166. EasyCo/Features/Properties/List/PropertiesListView.swift
+167. EasyCo/Features/Properties/List/PropertyCardView.swift
+168. EasyCo/Features/Properties/PropertiesListView+Integration.swift
+169. EasyCo/Features/Properties/PropertiesViewModel.swift
+170. EasyCo/Features/Properties/PropertyComparisonView.swift
+171. EasyCo/Features/Properties/RoomCardView.swift
+172. EasyCo/Features/Properties/RoomsListView.swift
+173. EasyCo/Features/Properties/RoomsViewModel.swift
+174. EasyCo/Features/Properties/SavedSearchesWrapper.swift
+175. EasyCo/Features/Properties/Search/SearchBarView.swift
+176. EasyCo/Features/Properties/VirtualTourViewer.swift
+177. EasyCo/Features/Resident/AddExpenseView.swift
+178. EasyCo/Features/Resident/AnnouncementsView.swift
+179. EasyCo/Features/Resident/BalanceView.swift
+180. EasyCo/Features/Resident/CalendarView.swift
+181. EasyCo/Features/Resident/CalendarViewModel.swift
+182. EasyCo/Features/Resident/CreateEventView.swift
+183. EasyCo/Features/Resident/CreateTaskView.swift
+184. EasyCo/Features/Resident/EventDetailView.swift
+185. EasyCo/Features/Resident/ExpenseStatsView.swift
+186. EasyCo/Features/Resident/ExpensesView.swift
+187. EasyCo/Features/Resident/ExpensesViewModel.swift
+188. EasyCo/Features/Resident/GroupChatView.swift
+189. EasyCo/Features/Resident/HubInviteView.swift
+190. EasyCo/Features/Resident/HubMembersView.swift
+191. EasyCo/Features/Resident/ResidentHubView.swift
+192. EasyCo/Features/Resident/ResidentHubViewModel.swift
+193. EasyCo/Features/Resident/ResidentMatchingView.swift
+194. EasyCo/Features/Resident/RoommatesView.swift
+195. EasyCo/Features/Resident/TaskStatsView.swift
+196. EasyCo/Features/Resident/TasksView.swift
+197. EasyCo/Features/Resident/TasksViewModel.swift
+198. EasyCo/Features/Reviews/ReviewsSystem.swift
+199. EasyCo/Features/SavedSearches/SavedSearchesView.swift
+200. EasyCo/Features/Searcher/SearcherDashboardView.swift
+201. EasyCo/Features/Settings/DevicesSettingsView.swift
+202. EasyCo/Features/Settings/LanguageSettingsView.swift
+203. EasyCo/Features/Settings/PreferencesView.swift
+204. EasyCo/Features/Settings/PrivacyActionsViews.swift
+205. EasyCo/Features/Settings/PrivacySettingsView.swift
+206. EasyCo/Features/Settings/PrivateCodesView.swift
+207. EasyCo/Features/Settings/SecuritySettingsView.swift
+208. EasyCo/Features/Swipe/SwipeViewModel.swift
+209. EasyCo/Features/Visits/MyVisitsView.swift
+210. EasyCo/Features/Visits/VisitSchedulerView.swift
+211. EasyCo/Features/Welcome/WelcomeView.swift
+212. EasyCo/Models/Alert.swift
+213. EasyCo/Models/Analytics.swift
+214. EasyCo/Models/Application.swift
+215. EasyCo/Models/Contractor.swift
+216. EasyCo/Models/Conversation.swift
+217. EasyCo/Models/DashboardData.swift
+218. EasyCo/Models/EnhancedProfile.swift
+219. EasyCo/Models/Event.swift
+220. EasyCo/Models/Expense.swift
+221. EasyCo/Models/Group.swift
+222. EasyCo/Models/Household.swift
+223. EasyCo/Models/Lease.swift
+224. EasyCo/Models/Location.swift
+225. EasyCo/Models/MaintenanceTask.swift
+226. EasyCo/Models/Match.swift
+227. EasyCo/Models/MatchFilters.swift
+228. EasyCo/Models/MessageTemplate.swift
+229. EasyCo/Models/MessagingModels.swift
+230. EasyCo/Models/Notification.swift
+231. EasyCo/Models/OwnerStats.swift
+232. EasyCo/Models/Privacy.swift
+233. EasyCo/Models/Property.swift
+234. EasyCo/Models/PropertyFilters.swift
+235. EasyCo/Models/ResidentTask.swift
+236. EasyCo/Models/Room.swift
+237. EasyCo/Models/SavedSearch.swift
+238. EasyCo/Models/User.swift
+239. EasyCo/Models/Visit.swift
+240. EasyCo/Utilities/LucideIcon.swift
+
+📋 Files that need to be added:
+
+📁 EasyCo/
+   - ContentView.swift
+   - EasyCoApp.swift
+
+📁 EasyCo/Components/Buttons/
+   - IconButton.swift
+   - PrimaryButton.swift
+   - SecondaryButton.swift
+
+📁 EasyCo/Components/Cards/
+   - PropertyCard.swift
+   - PropertyCardCompact.swift
+
+📁 EasyCo/Components/Charts/
+   - BarChart.swift
+   - DonutChart.swift
+   - KPICard.swift
+   - LineChart.swift
+
+📁 EasyCo/Components/Common/
+   - Badge.swift
+   - BottomSheet.swift
+   - CustomButton.swift
+   - CustomIcons.swift
+   - EmptyStateView.swift
+   - ErrorView.swift
+   - FilterChip.swift
+   - FormComponents.swift
+   - LoadingView.swift
+   - TabBarIcon.swift
+
+📁 EasyCo/Components/Inputs/
+   - ModernTextField.swift
+   - SearchBar.swift
+
+📁 EasyCo/Components/Navigation/
+   - CustomTabBar.swift
+
+📁 EasyCo/Components/States/
+   - LoadingAndEmptyStates.swift
+
+📁 EasyCo/Components/Swipe/
+   - SwipeCard.swift
+   - SwipeCardStack.swift
+
+📁 EasyCo/Config/
+   - AppConfig.swift
+   - Theme+DarkMode.swift
+   - Theme.swift
+
+📁 EasyCo/Core/Accessibility/
+   - AccessibilityHelpers.swift
+
+📁 EasyCo/Core/Auth/
+   - AppleSignInManager.swift
+   - AuthManager+OAuth.swift
+   - AuthManager.swift
+   - GuestModeManager.swift
+   - SupabaseAuth.swift
+
+📁 EasyCo/Core/DeepLink/
+   - DeepLinkHandler.swift
+
+📁 EasyCo/Core/DesignSystem/
+   - AnimationPresets.swift
+   - DesignTokens.swift
+   - GlassmorphismModifiers.swift
+   - HapticManager.swift
+
+📁 EasyCo/Core/Errors/
+   - AppError.swift
+
+📁 EasyCo/Core/Extensions/
+   - HapticFeedback.swift
+   - SwiftUI+UIKit.swift
+
+📁 EasyCo/Core/Network/
+   - APIClient.swift
+
+📁 EasyCo/Core/Notifications/
+   - NotificationManager.swift
+
+📁 EasyCo/Core/Services/
+   - AlertsManager.swift
+   - AuthService.swift
+   - NotificationService.swift
+   - PropertyComparisonManager.swift
+   - PropertyService.swift
+   - PushNotificationService.swift
+   - SupabaseClient.swift
+   - WebSocketManager.swift
+
+📁 EasyCo/Core/Storage/
+   - KeychainManager.swift
+   - UserDefaultsManager.swift
+
+📁 EasyCo/Core/Supabase/
+   - SupabaseRealtime.swift
+
+📁 EasyCo/Core/i18n/
+   - Language.swift
+   - LanguageManager.swift
+   - TranslationSections.swift
+
+📁 EasyCo/Extensions/
+   - Animation+Extensions.swift
+   - Date+Extensions.swift
+   - String+Extensions.swift
+   - UIImage+Resize.swift
+   - View+Extensions.swift
+
+📁 EasyCo/Features/Alerts/
+   - AlertsView.swift
+   - CreateAlertView.swift
+
+📁 EasyCo/Features/Applications/
+   - ApplicationFormView.swift
+   - ApplicationStatusView.swift
+   - ApplicationViewModel.swift
+   - ApplyView.swift
+   - MyApplicationsView.swift
+
+📁 EasyCo/Features/Auth/
+   - AuthFlowIntegration.swift
+   - AuthViewModel+OAuth.swift
+   - AuthViewModel.swift
+   - ForgotPasswordView.swift
+   - LoginView.swift
+   - MagicLinkView.swift
+   - OAuthButtonsView.swift
+   - SignupView.swift
+   - WelcomeSheet.swift
+
+📁 EasyCo/Features/Community/
+   - CommunityView.swift
+
+📁 EasyCo/Features/Dashboard/
+   - DashboardViewModels.swift
+   - OwnerDashboardView.swift
+   - ResidentDashboardView.swift
+
+📁 EasyCo/Features/Favorites/
+   - FavoritesView.swift
+
+📁 EasyCo/Features/Groups/
+   - CreateGroupView.swift
+   - GroupDetailView.swift
+   - GroupSettingsView.swift
+   - GroupsJoinView.swift
+   - GroupsListView.swift
+
+📁 EasyCo/Features/Guest/
+   - GuestTabView.swift
+   - OwnerFeatureView.swift
+   - ResidentFeatureView.swift
+
+📁 EasyCo/Features/Legal/
+   - LegalPagesView.swift
+
+📁 EasyCo/Features/Matches/
+   - MatchCelebrationView.swift
+   - MatchFiltersView.swift
+   - MatchPropertyCard.swift
+   - MatchSwipeView.swift
+   - MatchesListView.swift
+   - MatchesView.swift
+   - PropertyMatchingView.swift
+   - SwipeCardView.swift
+   - SwipeMatchesView.swift
+   - SwipeMatchesViewModel.swift
+
+📁 EasyCo/Features/Messages/
+   - ChatView.swift
+   - ChatViewModel.swift
+   - ConversationView.swift
+   - ConversationsListView.swift
+   - MessageTemplatesView.swift
+   - MessagesListView.swift
+   - OwnerChatView.swift
+
+📁 EasyCo/Features/Navigation/
+   - SideMenuView.swift
+
+📁 EasyCo/Features/Notifications/
+   - NotificationCenterView.swift
+   - NotificationSettingsView.swift
+   - NotificationsListView.swift
+
+📁 EasyCo/Features/Onboarding/
+   - OnboardingCoordinator.swift
+   - OnboardingView.swift
+   - RoleSelectionView.swift
+
+📁 EasyCo/Features/Onboarding/Steps/
+   - OnboardingBasicInfoView.swift
+   - OnboardingDailyHabitsView.swift
+   - OnboardingHomeLifestyleView.swift
+   - OnboardingIdealColivingView.swift
+   - OnboardingLifestyleView.swift
+   - OnboardingLivingSituationView.swift
+   - OnboardingOwnerAboutView.swift
+   - OnboardingPaymentInfoView.swift
+   - OnboardingPersonalityView.swift
+   - OnboardingPreferencesView.swift
+   - OnboardingPropertyBasicsView.swift
+   - OnboardingReviewView.swift
+   - OnboardingSocialVibeView.swift
+   - OnboardingVerificationView.swift
+
+📁 EasyCo/Features/Owner/
+   - ApplicationDetailView.swift
+   - ApplicationsView.swift
+   - ContractorsView.swift
+   - CreateMaintenanceTaskView.swift
+   - CreatePropertyView.swift
+   - CreatePropertyViewModel.swift
+   - MaintenanceView.swift
+   - OwnerFinanceView.swift
+   - OwnerFormComponents.swift
+   - OwnerMessagesListView.swift
+   - OwnerPropertiesView.swift
+   - PropertyFormStep1View.swift
+   - PropertyFormStep2View.swift
+   - PropertyFormStep3View.swift
+   - PropertyFormStep4View.swift
+   - PropertyFormStep5View.swift
+   - PropertyStatsView.swift
+   - PropertyStatsViewModel.swift
+   - VisitCalendarView.swift
+   - VisitScheduleView.swift
+
+📁 EasyCo/Features/Payments/
+   - PaymentsView.swift
+
+📁 EasyCo/Features/Profile/
+   - EnhancedProfileStepViews.swift
+   - HelpView.swift
+   - MyAnnouncementsView.swift
+   - MyInformationsView.swift
+   - ProfileCompletionView.swift
+   - ProfileView.swift
+   - SearcherProfileViews.swift
+   - SettingsView.swift
+
+📁 EasyCo/Features/Profile/Enhancement/
+   - ProfileEnhancementCoordinator.swift
+
+📁 EasyCo/Features/Properties/
+   - PropertiesListView+Integration.swift
+   - PropertiesViewModel.swift
+   - PropertyComparisonView.swift
+   - RoomCardView.swift
+   - RoomsListView.swift
+   - RoomsViewModel.swift
+   - SavedSearchesWrapper.swift
+   - VirtualTourViewer.swift
+
+📁 EasyCo/Features/Properties/Detail/
+   - PropertyDetailView.swift
+
+📁 EasyCo/Features/Properties/Filters/
+   - FiltersView.swift
+
+📁 EasyCo/Features/Properties/List/
+   - PropertiesListView.swift
+   - PropertyCardView.swift
+
+📁 EasyCo/Features/Properties/Search/
+   - SearchBarView.swift
+
+📁 EasyCo/Features/Resident/
+   - AddExpenseView.swift
+   - AnnouncementsView.swift
+   - BalanceView.swift
+   - CalendarView.swift
+   - CalendarViewModel.swift
+   - CreateEventView.swift
+   - CreateTaskView.swift
+   - EventDetailView.swift
+   - ExpenseStatsView.swift
+   - ExpensesView.swift
+   - ExpensesViewModel.swift
+   - GroupChatView.swift
+   - HubInviteView.swift
+   - HubMembersView.swift
+   - ResidentHubView.swift
+   - ResidentHubViewModel.swift
+   - ResidentMatchingView.swift
+   - RoommatesView.swift
+   - TaskStatsView.swift
+   - TasksView.swift
+   - TasksViewModel.swift
+
+📁 EasyCo/Features/Reviews/
+   - ReviewsSystem.swift
+
+📁 EasyCo/Features/SavedSearches/
+   - SavedSearchesView.swift
+
+📁 EasyCo/Features/Searcher/
+   - SearcherDashboardView.swift
+
+📁 EasyCo/Features/Settings/
+   - DevicesSettingsView.swift
+   - LanguageSettingsView.swift
+   - PreferencesView.swift
+   - PrivacyActionsViews.swift
+   - PrivacySettingsView.swift
+   - PrivateCodesView.swift
+   - SecuritySettingsView.swift
+
+📁 EasyCo/Features/Swipe/
+   - SwipeViewModel.swift
+
+📁 EasyCo/Features/Visits/
+   - MyVisitsView.swift
+   - VisitSchedulerView.swift
+
+📁 EasyCo/Features/Welcome/
+   - WelcomeView.swift
+
+📁 EasyCo/Models/
+   - Alert.swift
+   - Analytics.swift
+   - Application.swift
+   - Contractor.swift
+   - Conversation.swift
+   - DashboardData.swift
+   - EnhancedProfile.swift
+   - Event.swift
+   - Expense.swift
+   - Group.swift
+   - Household.swift
+   - Lease.swift
+   - Location.swift
+   - MaintenanceTask.swift
+   - Match.swift
+   - MatchFilters.swift
+   - MessageTemplate.swift
+   - MessagingModels.swift
+   - Notification.swift
+   - OwnerStats.swift
+   - Privacy.swift
+   - Property.swift
+   - PropertyFilters.swift
+   - ResidentTask.swift
+   - Room.swift
+   - SavedSearch.swift
+   - User.swift
+   - Visit.swift
+
+📁 EasyCo/Utilities/
+   - LucideIcon.swift
+
+======================================================================
+TO ADD THESE FILES TO XCODE:
+======================================================================
+
+Option 1 - Manual (Recommended for first time):
+  1. Open EasyCo.xcodeproj in Xcode
+  2. For each directory above, right-click the matching group
+  3. Select 'Add Files to EasyCo...'
+  4. Navigate to the directory and select the files
+  5. ⚠️  IMPORTANT: UNCHECK 'Copy items if needed'
+  6. ✅ IMPORTANT: CHECK 'Add to targets: EasyCo'
+

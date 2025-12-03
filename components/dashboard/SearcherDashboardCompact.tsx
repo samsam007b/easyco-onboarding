@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import Image from 'next/image';
+import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 
 interface SearcherDashboardCompactProps {
   userId: string;
@@ -99,33 +100,18 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
         logger.error('Unread count failed', err);
       }
 
-      // Calculate profile completion & load preferences
+      // Load profile and calculate completion
       const { data: profile } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      let profileCompletion = 0;
-      if (profile) {
-        const fields = [
-          profile.first_name,
-          profile.last_name,
-          profile.date_of_birth,
-          profile.occupation,
-          profile.bio,
-          profile.profile_photo_url,
-          profile.min_budget,
-          profile.max_budget,
-          profile.preferred_cities,
-          profile.cleanliness_level,
-          profile.noise_tolerance,
-          profile.smoking !== undefined,
-          profile.pets !== undefined
-        ];
-        const completedFields = fields.filter(field => field !== null && field !== undefined && field !== '').length;
-        profileCompletion = Math.round((completedFields / fields.length) * 100);
+      // Use the new profile completion calculator
+      const completionResult = calculateProfileCompletion(profile as UserProfile);
+      const profileCompletion = completionResult.percentage;
 
+      if (profile) {
         // Set preferences from profile
         setPreferences({
           cities: profile.preferred_cities || [],
@@ -229,7 +215,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               { label: 'Groupes', value: stats.likedProfiles.toString(), icon: Users, route: '/dashboard/searcher/groups' },
               { label: 'Favoris', value: stats.favoritesCount.toString(), icon: Bookmark, route: '/dashboard/searcher/favorites' },
               { label: 'Messages', value: stats.unreadMessages.toString(), icon: MessageCircle, route: '/dashboard/searcher/messages', badge: stats.unreadMessages },
-              { label: 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/my-profile' }
+              { label: 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/profile-completion' }
             ].map((stat) => {
               const Icon = stat.icon;
               return (
