@@ -85,34 +85,34 @@ export default function VerificationPage() {
     const badges = {
       starter: {
         name: 'Starter',
-        icon: '⚪',
-        color: 'text-gray-500',
-        bg: 'bg-gray-100',
-        border: 'border-gray-300',
+        color: 'text-gray-600',
+        bg: 'bg-gray-50',
+        border: 'border-gray-200',
+        badgeColor: 'bg-gray-400',
         description: 'Basic verification'
       },
       verified: {
         name: 'Verified',
-        icon: '🥉',
-        color: 'text-amber-600',
+        color: 'text-amber-700',
         bg: 'bg-amber-50',
-        border: 'border-amber-300',
+        border: 'border-amber-200',
+        badgeColor: 'bg-amber-400',
         description: 'Trusted profile'
       },
       trusted: {
         name: 'Trusted',
-        icon: '🥈',
-        color: 'text-blue-600',
+        color: 'text-blue-700',
         bg: 'bg-blue-50',
-        border: 'border-blue-300',
+        border: 'border-blue-200',
+        badgeColor: 'bg-blue-400',
         description: 'Highly trusted'
       },
       premium: {
         name: 'Premium',
-        icon: '🥇',
-        color: 'text-orange-600',
+        color: 'text-orange-700',
         bg: 'bg-orange-50',
-        border: 'border-orange-300',
+        border: 'border-orange-200',
+        badgeColor: 'bg-orange-400',
         description: 'Fully verified'
       }
     };
@@ -185,12 +185,12 @@ export default function VerificationPage() {
 
       <div className="space-y-6">
         {/* Badge Status Card */}
-        <div className={`p-6 rounded-2xl border-2 ${badgeInfo.bg} ${badgeInfo.border}`}>
+        <div className={`p-6 rounded-2xl border ${badgeInfo.bg} ${badgeInfo.border}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="text-4xl">{badgeInfo.icon}</div>
+              <div className={`w-3 h-3 rounded-full ${badgeInfo.badgeColor}`} />
               <div>
-                <h2 className={`text-2xl font-bold ${badgeInfo.color}`}>{badgeInfo.name} Badge</h2>
+                <h2 className={`text-2xl font-bold ${badgeInfo.color}`}>{badgeInfo.name}</h2>
                 <p className="text-sm text-gray-600">{badgeInfo.description}</p>
               </div>
             </div>
@@ -201,7 +201,7 @@ export default function VerificationPage() {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-500 rounded-full"
               style={{ width: `${progress}%` }}
@@ -210,11 +210,11 @@ export default function VerificationPage() {
 
           {/* Next Badge Info */}
           {badgeLevel !== 'premium' && (
-            <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200">
+            <div className="mt-4 p-3 bg-white/50 rounded-lg border border-gray-200">
               <p className="text-xs font-medium text-gray-700">
-                {badgeLevel === 'starter' && '🎯 Complete 2 verifications to unlock Verified badge'}
-                {badgeLevel === 'verified' && '🎯 Complete 3 verifications to unlock Trusted badge'}
-                {badgeLevel === 'trusted' && '🎯 Complete KYC to unlock Premium badge'}
+                {badgeLevel === 'starter' && 'Complete 2 verifications to unlock Verified badge'}
+                {badgeLevel === 'verified' && 'Complete 3 verifications to unlock Trusted badge'}
+                {badgeLevel === 'trusted' && 'Complete KYC to unlock Premium badge'}
               </p>
             </div>
           )}
@@ -522,26 +522,26 @@ export default function VerificationPage() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">Unlock Benefits with Each Badge</h3>
               <div className="space-y-2 text-sm text-gray-600">
-                <div className="flex items-start gap-2">
-                  <span className="text-lg">⚪</span>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-gray-400 mt-1.5" />
                   <div>
                     <span className="font-medium">Starter:</span> Create profile & browse
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-lg">🥉</span>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-amber-400 mt-1.5" />
                   <div>
                     <span className="font-medium">Verified:</span> Appear in searches + verified badge
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-lg">🥈</span>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mt-1.5" />
                   <div>
                     <span className="font-medium">Trusted:</span> Priority in results + faster responses
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-lg">🥇</span>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-orange-400 mt-1.5" />
                   <div>
                     <span className="font-medium">Premium:</span> Best offers + instant applications
                   </div>
