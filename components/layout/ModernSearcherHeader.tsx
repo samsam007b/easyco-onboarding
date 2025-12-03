@@ -32,6 +32,7 @@ import NotificationBell from '@/components/notifications/NotificationBell';
 import { createClient } from '@/lib/auth/supabase-client';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 
 interface ModernSearcherHeaderProps {
   profile: {
@@ -60,27 +61,39 @@ export default function ModernSearcherHeader({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(stats.favoritesCount || 0);
+  const [profileCompletion, setProfileCompletion] = useState(0);
 
   const {
     matchesCount = 0,
     unreadMessages = 0
   } = stats;
 
-  // Load and subscribe to favorites count
+  // Load favorites count and profile completion
   useEffect(() => {
-    const loadFavoritesCount = async () => {
+    const loadData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Load favorites count
       const { count } = await supabase
         .from('favorites')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id);
 
       setFavoritesCount(count || 0);
+
+      // Load profile completion
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      const completion = calculateProfileCompletion(profile as UserProfile);
+      setProfileCompletion(completion.percentage);
     };
 
-    loadFavoritesCount();
+    loadData();
 
     // Real-time subscription
     const channel = supabase
@@ -90,7 +103,7 @@ export default function ModernSearcherHeader({
         schema: 'public',
         table: 'favorites'
       }, () => {
-        loadFavoritesCount();
+        loadData();
       })
       .subscribe();
 
@@ -368,7 +381,7 @@ export default function ModernSearcherHeader({
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeDasharray={`${2 * Math.PI * 32}`}
-                                strokeDashoffset={`${2 * Math.PI * 32 * (1 - 0.75)}`}
+                                strokeDashoffset={`${2 * Math.PI * 32 * (1 - profileCompletion / 100)}`}
                                 transform="rotate(-90 34 34)"
                                 className="transition-all duration-1000"
                               />
@@ -394,9 +407,9 @@ export default function ModernSearcherHeader({
                             <p className="text-white/90 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
                               <div className="h-1.5 flex-1 bg-white/30 rounded-full overflow-hidden">
-                                <div className="h-full bg-white rounded-full" style={{ width: '75%' }} />
+                                <div className="h-full bg-white rounded-full transition-all duration-500" style={{ width: `${profileCompletion}%` }} />
                               </div>
-                              <span className="text-xs text-white/90 font-medium">75%</span>
+                              <span className="text-xs text-white/90 font-medium">{profileCompletion}%</span>
                             </div>
                           </div>
                         </div>
