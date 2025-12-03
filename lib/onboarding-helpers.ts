@@ -181,7 +181,10 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
 
     // Social Preferences (Searcher/Resident)
     if (data.socialLevel !== undefined) profileData.social_level = data.socialLevel
-    if (data.sharedMealsFrequency) profileData.shared_meals_frequency = data.sharedMealsFrequency
+    // Map sharedMealsFrequency (TEXT) to shared_meals_interest (BOOLEAN)
+    if (data.sharedMealsFrequency) {
+      profileData.shared_meals_interest = data.sharedMealsFrequency === 'often' || data.sharedMealsFrequency === 'sometimes'
+    }
     if (data.sharedActivitiesInterest) profileData.shared_activities_interest = data.sharedActivitiesInterest
     if (data.eventInterest) profileData.event_interest = data.eventInterest
     if (data.enjoySharedMeals !== undefined) profileData.shared_meals_interest = data.enjoySharedMeals
