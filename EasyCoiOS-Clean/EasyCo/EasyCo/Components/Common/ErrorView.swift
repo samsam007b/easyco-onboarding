@@ -24,7 +24,7 @@ struct ErrorView: View {
                     .padding(.horizontal)
             }
 
-            if let retryAction = retryAction, error.isRecoverable {
+            if let retryAction = retryAction {
                 Button(action: retryAction) {
                     HStack {
                         Image(systemName: "arrow.clockwise")
@@ -46,7 +46,7 @@ struct ErrorView: View {
 
     private var errorIcon: String {
         switch error {
-        case .networkUnavailable:
+        case .noInternetConnection:
             return "wifi.slash"
         case .unauthorized:
             return "lock.shield"
@@ -59,7 +59,7 @@ struct ErrorView: View {
 
     private var errorTitle: String {
         switch error {
-        case .networkUnavailable:
+        case .noInternetConnection:
             return "Pas de connexion"
         case .unauthorized:
             return "Session expirée"

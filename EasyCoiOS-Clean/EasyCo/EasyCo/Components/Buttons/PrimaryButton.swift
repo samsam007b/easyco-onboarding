@@ -96,7 +96,7 @@ struct PrimaryButton_Previews: PreviewProvider {
                 title: "Match",
                 icon: "heart",
                 action: {},
-                gradient: Theme.Colors.pinkGradient
+                gradient: Theme.Gradients.pinkGradient
             )
 
             PrimaryButton(

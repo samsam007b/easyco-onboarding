@@ -113,6 +113,19 @@ export default function QuickBasicInfoPage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
+        // 🔍 DETAILED LOGGING FOR DEBUGGING
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.log('🔍 UPSERT ATTEMPT - Quick Onboarding Basic Info');
+        console.log('🆔 User ID:', user.id);
+        console.log('📝 Data:', {
+          user_id: user.id,
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          date_of_birth: dateOfBirth,
+          nationality: nationality.trim(),
+        });
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
         const { error } = await supabase
           .from('user_profiles')
           .upsert(
@@ -126,7 +139,19 @@ export default function QuickBasicInfoPage() {
             },
             { onConflict: 'user_id' }
           );
-        if (error) throw error;
+
+        if (error) {
+          console.error('❌ UPSERT ERROR:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code,
+          });
+          throw error;
+        }
+
+        console.log('✅ UPSERT SUCCESS');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       }
 
       trackStepCompleted('basic_info', 1);

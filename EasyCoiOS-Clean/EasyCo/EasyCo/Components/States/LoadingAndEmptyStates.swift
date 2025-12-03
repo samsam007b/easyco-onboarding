@@ -428,42 +428,43 @@ struct PullToRefreshView: View {
 
 struct LoadingStateView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            LoadingStateView()
+        ScrollView {
+            VStack(spacing: 20) {
+                LoadingStateView()
 
-            LoadingStateView(message: "Chargement des propriétés...")
+                LoadingStateView(message: "Chargement des propriétés...")
 
-            EmptyStateView(
-                icon: "home",
-                title: "Aucun logement",
-                message: "Commencez à chercher votre logement idéal",
-                actionTitle: "Explorer",
-                action: {}
-            )
+                EmptyStateView(
+                    icon: "home",
+                    title: "Aucun logement",
+                    message: "Commencez à chercher votre logement idéal",
+                    actionTitle: "Explorer",
+                    action: {}
+                )
 
-            ErrorStateView(
-                error: .networkError,
-                retryAction: {}
-            )
+                ErrorStateView(
+                    error: .networkError,
+                    retryAction: {}
+                )
 
-            VStack(spacing: 16) {
-                ToastView(type: .success, message: "Candidature envoyée avec succès")
-                ToastView(type: .error, message: "Une erreur est survenue")
-                ToastView(type: .info, message: "Nouvelle mise à jour disponible")
-                ToastView(type: .warning, message: "Votre session expire bientôt")
-            }
-            .padding()
-            .background(Theme.Colors.backgroundSecondary)
+                VStack(spacing: 16) {
+                    ToastView(type: .success, message: "Candidature envoyée avec succès")
+                    ToastView(type: .error, message: "Une erreur est survenue")
+                    ToastView(type: .info, message: "Nouvelle mise à jour disponible")
+                    ToastView(type: .warning, message: "Votre session expire bientôt")
+                }
+                .padding()
+                .background(Theme.Colors.backgroundSecondary)
 
-            ScrollView {
                 VStack(spacing: 16) {
                     PropertyCardSkeleton()
                     PropertyCardSkeleton()
                     PropertyCardSkeleton()
                 }
                 .padding()
+                .background(Theme.Colors.backgroundSecondary)
             }
-            .background(Theme.Colors.backgroundSecondary)
+            .padding()
         }
     }
 }

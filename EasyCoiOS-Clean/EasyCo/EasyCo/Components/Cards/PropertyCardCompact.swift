@@ -93,7 +93,7 @@ struct PropertyCardCompact: View {
                             .frame(width: 12, height: 12)
                             .foregroundColor(Theme.Colors.textTertiary)
 
-                        Text(property.location)
+                        Text(property.locationString)
                             .font(.system(size: 12))
                             .foregroundColor(Theme.Colors.textSecondary)
                             .lineLimit(1)
@@ -170,41 +170,9 @@ struct PropertyCardCompact_Previews: PreviewProvider {
             GridItem(.flexible(), spacing: 16),
             GridItem(.flexible(), spacing: 16)
         ], spacing: 16) {
-            PropertyCardCompact(property: .mock)
-
-            PropertyCardCompact(property: Property(
-                id: "2",
-                title: "Studio cosy",
-                location: "Louise",
-                price: 650,
-                bedrooms: 1,
-                bathrooms: 1,
-                area: 35,
-                images: ["https://via.placeholder.com/300"],
-                isNew: true,
-                isVerified: false,
-                matchScore: 78,
-                distance: nil,
-                availableFrom: nil
-            ))
-
-            PropertyCardCompact(property: Property(
-                id: "3",
-                title: "Grande maison",
-                location: "Uccle",
-                price: 1200,
-                bedrooms: 3,
-                bathrooms: 2,
-                area: 120,
-                images: ["https://via.placeholder.com/300/FFB6C1"],
-                isNew: false,
-                isVerified: true,
-                matchScore: 95,
-                distance: nil,
-                availableFrom: nil
-            ))
-
-            PropertyCardCompact(property: .mock)
+            ForEach(Property.mockProperties.prefix(4)) { property in
+                PropertyCardCompact(property: property)
+            }
         }
         .padding()
         .background(Theme.Colors.gray50)

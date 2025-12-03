@@ -437,7 +437,7 @@ class NotificationCenterViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        await notificationService.fetchNotifications()
+        _ = try? await notificationService.fetchNotifications()
 
         notifications = notificationService.notifications
         applyFilter(currentFilter)
@@ -473,7 +473,7 @@ class NotificationCenterViewModel: ObservableObject {
     func handleNotificationTap(_ notification: AppNotification) async {
         // Mark as read if unread
         if !notification.isRead {
-            await notificationService.markAsRead(notification)
+            try? await notificationService.markAsRead(notification.id.uuidString)
             await fetchNotifications()
         }
 
@@ -513,7 +513,7 @@ class NotificationCenterViewModel: ObservableObject {
             // TODO: Implement mark as unread
             print("📧 Marking as unread")
         } else {
-            await notificationService.markAsRead(notification)
+            try? await notificationService.markAsRead(notification.id.uuidString)
         }
         await fetchNotifications()
     }
@@ -525,7 +525,7 @@ class NotificationCenterViewModel: ObservableObject {
     }
 
     func markAllAsRead() async {
-        await notificationService.markAllAsRead()
+        try? await notificationService.markAllAsRead()
         await fetchNotifications()
     }
 

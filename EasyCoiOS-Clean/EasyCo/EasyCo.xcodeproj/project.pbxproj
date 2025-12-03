@@ -525,6 +525,8 @@
 		F44281592EDFCDA500F004E7 /* PropertyCardCompact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyCardCompact.swift; sourceTree = "<group>"; };
 		F442815A2EDFCDBE00F004E7 /* SwipeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCard.swift; sourceTree = "<group>"; };
 		F442815B2EDFCDED00F004E7 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		F442815C2EE06D5800F004E7 /* SwipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardView.swift; sourceTree = "<group>"; };
+		F442815D2EE06D9300F004E7 /* SwipeCardStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardStack.swift; sourceTree = "<group>"; };
 		F465F4E42EDFB8F500A64D6A /* EasyCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E52EDFB8F500A64D6A /* EasyCoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E62EDFB8F500A64D6A /* EasyCoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -630,6 +632,7 @@
 		F465F5092EDFB97100A64D6A /* Swipe */ = {
 			isa = PBXGroup;
 			children = (
+				F442815D2EE06D9300F004E7 /* SwipeCardStack.swift */,
 				F442815A2EDFCDBE00F004E7 /* SwipeCard.swift */,
 			);
 			path = Swipe;
@@ -838,6 +841,7 @@
 		F465F5732EDFB97100A64D6A /* Matches */ = {
 			isa = PBXGroup;
 			children = (
+				F442815C2EE06D5800F004E7 /* SwipeCardView.swift */,
 			);
 			path = Matches;
 			sourceTree = "<group>";

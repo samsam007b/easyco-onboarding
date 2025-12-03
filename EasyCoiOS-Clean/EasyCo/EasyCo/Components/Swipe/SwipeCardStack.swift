@@ -130,39 +130,7 @@ struct SwipeCardStack_Previews: PreviewProvider {
                 .ignoresSafeArea()
 
             SwipeCardStack(
-                properties: .constant([
-                    .mock,
-                    Property(
-                        id: "2",
-                        title: "Studio lumineux avec balcon",
-                        location: "Bruxelles, Louise",
-                        price: 680,
-                        bedrooms: 1,
-                        bathrooms: 1,
-                        area: 35,
-                        images: ["https://via.placeholder.com/400x300/90EE90"],
-                        isNew: false,
-                        isVerified: true,
-                        matchScore: 92,
-                        distance: 0.8,
-                        availableFrom: "1er avril"
-                    ),
-                    Property(
-                        id: "3",
-                        title: "Grande maison de maître",
-                        location: "Bruxelles, Uccle",
-                        price: 1450,
-                        bedrooms: 4,
-                        bathrooms: 2,
-                        area: 150,
-                        images: ["https://via.placeholder.com/400x300/FFB6C1"],
-                        isNew: true,
-                        isVerified: true,
-                        matchScore: 78,
-                        distance: 5.2,
-                        availableFrom: "Immédiatement"
-                    )
-                ]),
+                properties: .constant(Property.mockProperties),
                 onSwipe: { property, direction in
                     print("Swiped \(property.title): \(direction)")
                 },

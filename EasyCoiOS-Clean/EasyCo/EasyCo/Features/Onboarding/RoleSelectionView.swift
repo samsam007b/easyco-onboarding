@@ -223,9 +223,9 @@ struct OnboardingRoleCard: View {
 
     var roleIconColor: Color {
         switch role {
-        case .searcher: return Theme.SearcherColors._500
-        case .owner: return Theme.OwnerColors._500
-        case .resident: return Theme.ResidentColors._500
+        case .searcher: return Theme.SearcherColors.primary
+        case .owner: return Theme.OwnerColors.primary
+        case .resident: return Theme.ResidentColors.primary
         }
     }
 

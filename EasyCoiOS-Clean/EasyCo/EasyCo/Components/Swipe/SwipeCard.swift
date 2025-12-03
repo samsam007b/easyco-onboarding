@@ -129,7 +129,7 @@ struct SwipeCard: View {
                     .frame(width: 16, height: 16)
                     .foregroundColor(.white.opacity(0.9))
 
-                Text(property.location)
+                Text(property.locationString)
                     .font(Theme.Typography.body())
                     .foregroundColor(.white.opacity(0.9))
 
@@ -165,7 +165,7 @@ struct SwipeCard: View {
                     SwipeCardBadge(text: "Vérifié", color: Theme.Colors.success, icon: "check")
                 }
 
-                if let availableFrom = property.availableFrom {
+                if let availableFrom = property.availableFromFormatted {
                     SwipeCardBadge(text: availableFrom, color: Theme.Colors.info, icon: "calendar")
                 }
             }

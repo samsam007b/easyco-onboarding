@@ -61,7 +61,7 @@ struct PropertyCard: View {
                             .frame(width: 14, height: 14)
                             .foregroundColor(Theme.Colors.textTertiary)
 
-                        Text(property.location)
+                        Text(property.locationString)
                             .font(Theme.Typography.bodySmall())
                             .foregroundColor(Theme.Colors.textSecondary)
                             .lineLimit(1)
@@ -233,22 +233,7 @@ struct PropertyCard_Previews: PreviewProvider {
         ScrollView {
             VStack(spacing: 20) {
                 PropertyCard(property: .mock)
-
-                PropertyCard(property: Property(
-                    id: "2",
-                    title: "Studio cosy centre-ville avec balcon",
-                    location: "Bruxelles, Louise",
-                    price: 650,
-                    bedrooms: 1,
-                    bathrooms: 1,
-                    area: 35,
-                    images: ["https://via.placeholder.com/400x300/90EE90"],
-                    isNew: false,
-                    isVerified: true,
-                    matchScore: 92,
-                    distance: 0.8,
-                    availableFrom: "1er avril"
-                ))
+                PropertyCard(property: Property.mockProperties[1])
             }
             .padding()
         }

@@ -35,6 +35,54 @@ enum AppError: LocalizedError {
     var userMessage: String {
         errorDescription ?? "Une erreur est survenue"
     }
+
+    var icon: String {
+        switch self {
+        case .network(let networkError):
+            switch networkError {
+            case .noInternetConnection: return "wifi-off"
+            case .timeout: return "clock"
+            case .unauthorized, .forbidden: return "lock"
+            default: return "alert-circle"
+            }
+        case .authentication: return "lock"
+        case .validation: return "alert-triangle"
+        case .notFound: return "search"
+        case .serverError: return "server"
+        case .unknown: return "alert-circle"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .network(let networkError):
+            switch networkError {
+            case .noInternetConnection: return "Pas de connexion"
+            case .timeout: return "Délai dépassé"
+            case .unauthorized: return "Non autorisé"
+            case .forbidden: return "Accès refusé"
+            default: return "Erreur réseau"
+            }
+        case .authentication: return "Erreur d'authentification"
+        case .validation: return "Données invalides"
+        case .notFound: return "Introuvable"
+        case .serverError: return "Erreur serveur"
+        case .unknown: return "Erreur"
+        }
+    }
+
+    var message: String {
+        errorDescription ?? "Une erreur est survenue"
+    }
+
+    var hasSupport: Bool {
+        switch self {
+        case .serverError, .unknown:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 enum NetworkError: LocalizedError {

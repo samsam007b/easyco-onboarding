@@ -346,7 +346,7 @@ struct CustomIcons_Previews: PreviewProvider {
                         .font(.headline)
 
                     HStack(spacing: 16) {
-                        IconContainer(.user, style: .muted, color: .iconColors.user)
+                        IconContainer(.user, style: .muted, color: Color.iconColors.orange)
                         IconContainer(.settings, style: .muted, color: .iconColors.info)
                         IconContainer(.bell, style: .muted, color: .iconColors.warning)
                         IconContainer(.shield, style: .muted, color: .iconColors.error)

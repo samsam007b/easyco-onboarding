@@ -138,6 +138,7 @@ struct Theme {
         static let gray200 = Color(hex: "E5E7EB")
         static let gray300 = Color(hex: "D1D5DB")
         static let gray400 = Color(hex: "9CA3AF")
+        static let gray600 = Gray._600  // Alias to Gray._600
         static let gray700 = Gray._700  // Alias to Gray._700
         static let heartRed = Color(hex: "EF4444")
         static let messageBlue = Color(hex: "0EA5E9")
@@ -237,6 +238,13 @@ struct Theme {
             startPoint: .leading,
             endPoint: .trailing
         )
+
+        /// Pink gradient for match-related features
+        static let pinkGradient = LinearGradient(
+            colors: [Color(hex: "EC4899"), Color(hex: "F472B6")],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
     }
 
     // MARK: - Typography
@@ -280,6 +288,15 @@ struct Theme {
         static func captionSmall(_ weight: Font.Weight = .regular) -> Font {
             .system(size: 11, weight: weight, design: .default)
         }
+
+        // Special purpose
+        static func price(_ weight: Font.Weight = .bold) -> Font {
+            .system(size: 20, weight: weight, design: .default)
+        }
+
+        static func badge(_ weight: Font.Weight = .semibold) -> Font {
+            .system(size: 12, weight: weight, design: .default)
+        }
     }
 
     // MARK: - Spacing (Base 8px)
@@ -319,6 +336,8 @@ struct Theme {
         // Additional aliases for new components
         static let card: CGFloat = 12
         static let button: CGFloat = 8
+        static let modal: CGFloat = 24
+        static let input: CGFloat = 8
     }
 
     // MARK: - Shadows
@@ -351,6 +370,8 @@ struct Theme {
         static let iconMedium: CGFloat = 20
         static let iconLarge: CGFloat = 24
         static let touchTarget: CGFloat = 44  // Minimum touch target size
+        static let inputHeight: CGFloat = 48
+        static let searchBarHeight: CGFloat = 44
     }
 
     // MARK: - Animations

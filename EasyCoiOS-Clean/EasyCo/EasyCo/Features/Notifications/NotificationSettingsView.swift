@@ -117,7 +117,7 @@ struct NotificationSettingsView: View {
                 )
 
                 Divider()
-                    .padding(.leading, Theme.Spacing._16)
+                    .padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "app.badge.fill",
@@ -152,7 +152,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "3B82F6")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "house.fill",
@@ -162,7 +162,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "10B981")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "person.badge.plus",
@@ -172,7 +172,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "8B5CF6")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "list.bullet.circle.fill",
@@ -182,7 +182,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "EC4899")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "cart.fill",
@@ -192,7 +192,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "06B6D4")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "bell.badge.fill",
@@ -202,7 +202,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "EF4444")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "person.2.fill",
@@ -212,7 +212,7 @@ struct NotificationSettingsView: View {
                     color: Color(hex: "14B8A6")
                 )
 
-                Divider().padding(.leading, Theme.Spacing._16)
+                Divider().padding(.leading, Theme.Spacing._4)
 
                 NotificationToggleRow(
                     icon: "megaphone.fill",
@@ -248,7 +248,7 @@ struct NotificationSettingsView: View {
                 )
 
                 if viewModel.quietHoursEnabled {
-                    Divider().padding(.leading, Theme.Spacing._16)
+                    Divider().padding(.leading, Theme.Spacing._4)
 
                     HStack(spacing: Theme.Spacing._4) {
                         Image(systemName: "sunset.fill")
@@ -401,7 +401,9 @@ class NotificationSettingsViewModel: ObservableObject {
         quietHoursStart = prefs.quietHoursStart
         quietHoursEnd = prefs.quietHoursEnd
 
-        hasPermission = pushService.hasPermission
+        Task {
+            hasPermission = await pushService.hasPermission()
+        }
 
         // Observe changes and save
         observeChanges()
@@ -417,8 +419,8 @@ class NotificationSettingsViewModel: ObservableObject {
     }
 
     func requestPermission() async {
-        let granted = await pushService.requestPermission()
-        hasPermission = granted
+        let granted = try? await pushService.requestPermission()
+        hasPermission = granted ?? false
     }
 
     private func savePreferences() async {
@@ -439,7 +441,7 @@ class NotificationSettingsViewModel: ObservableObject {
             quietHoursEnd: quietHoursEnd
         )
 
-        await notificationService.savePreferences(newPreferences)
+        try? await notificationService.savePreferences(newPreferences)
     }
 }
 

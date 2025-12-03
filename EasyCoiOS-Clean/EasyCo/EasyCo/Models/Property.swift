@@ -80,10 +80,49 @@ struct Property: Identifiable, Codable {
     var compatibilityScore: Int?
     var matchInsights: [String]?
     var isFavorited: Bool?
+    var distance: Double?  // Distance from user in km
 
-    // Computed property for compatibility
+    // Computed properties
     var mainImageURL: String? {
         mainImage ?? images.first
+    }
+
+    var price: Double {
+        monthlyRent + charges
+    }
+
+    var isNew: Bool {
+        guard let publishedAt = publishedAt else { return false }
+        let daysSincePublished = Calendar.current.dateComponents([.day], from: publishedAt, to: Date()).day ?? 0
+        return daysSincePublished <= 7
+    }
+
+    var isVerified: Bool {
+        // TODO: Implement property verification logic
+        return status == .published
+    }
+
+    var matchScore: Int? {
+        compatibilityScore
+    }
+
+    var locationString: String {
+        if let neighborhood = neighborhood {
+            return "\(city), \(neighborhood)"
+        }
+        return city
+    }
+
+    var area: Double? {
+        surfaceArea
+    }
+
+    var availableFromFormatted: String? {
+        guard let date = availableFrom else { return nil }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "fr_FR")
+        return formatter.string(from: date)
     }
 
     // Residents (for property cards)
@@ -122,7 +161,7 @@ struct Property: Identifiable, Codable {
         case updatedAt = "updated_at"
         case publishedAt = "published_at"
         case archivedAt = "archived_at"
-        case compatibilityScore, matchInsights, isFavorited, residents
+        case compatibilityScore, matchInsights, isFavorited, residents, distance
     }
 }
 

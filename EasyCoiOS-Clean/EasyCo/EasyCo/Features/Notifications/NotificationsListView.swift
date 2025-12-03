@@ -339,17 +339,17 @@ class NotificationsViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
 
-        await notificationService.fetchNotifications()
+        _ = try? await notificationService.fetchNotifications()
         notifications = notificationService.notifications
     }
 
     func refresh() async {
-        await notificationService.refresh()
+        try? await notificationService.refresh()
         notifications = notificationService.notifications
     }
 
     func markAllAsRead() async {
-        await notificationService.markAllAsRead()
+        try? await notificationService.markAllAsRead()
         notifications = notificationService.notifications
 
         // Clear badge
@@ -358,12 +358,11 @@ class NotificationsViewModel: ObservableObject {
 
     func handleNotificationTap(_ notification: AppNotification) async {
         // Mark as read
-        await notificationService.markAsRead(notification)
+        try? await notificationService.markAsRead(notification.id.uuidString)
         notifications = notificationService.notifications
 
         // Handle navigation
-        let userInfo = buildUserInfo(for: notification)
-        pushService.handleNotificationTap(userInfo: userInfo)
+        await pushService.handleNotificationTap(notification)
     }
 
     private func buildUserInfo(for notification: AppNotification) -> [String: String] {
@@ -399,12 +398,12 @@ class NotificationsViewModel: ObservableObject {
     }
 
     func deleteNotification(_ notification: AppNotification) async {
-        await notificationService.deleteNotification(notification)
+        try? await notificationService.deleteNotification(notification.id.uuidString)
         notifications = notificationService.notifications
     }
 
     func clearAll() async {
-        await notificationService.clearAll()
+        try? await notificationService.clearAll()
         notifications = notificationService.notifications
 
         // Clear badge

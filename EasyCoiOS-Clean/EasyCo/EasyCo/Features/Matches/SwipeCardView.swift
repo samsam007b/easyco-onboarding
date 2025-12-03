@@ -377,6 +377,7 @@ struct SwipeCardView: View {
 enum SwipeDirection {
     case left  // Dislike
     case right // Like
+    case up    // Super Like
 }
 
 // MARK: - Preview
