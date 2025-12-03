@@ -22,11 +22,15 @@ export async function GET() {
       .eq('user_id', user.id)
       .single();
 
-    // Get RLS policies info
-    const { data: policies, error: policiesError } = await supabase
-      .rpc('get_rls_policies', { table_name: 'user_profiles' })
-      .then(res => ({ data: null, error: res.error }))
-      .catch(() => ({ data: null, error: null }));
+    // Get RLS policies info (optional - may not exist)
+    let policiesError = null;
+    try {
+      const policiesResult = await supabase.rpc('get_rls_policies', { table_name: 'user_profiles' });
+      policiesError = policiesResult.error;
+    } catch (e) {
+      // Function may not exist, ignore
+      policiesError = null;
+    }
 
     return NextResponse.json({
       user: {
