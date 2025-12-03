@@ -95,8 +95,8 @@ export default function ModernSearcherHeader({
 
     loadData();
 
-    // Real-time subscription
-    const channel = supabase
+    // Real-time subscription for favorites
+    const favoritesChannel = supabase
       .channel('favorites-changes')
       .on('postgres_changes', {
         event: '*',
@@ -107,10 +107,23 @@ export default function ModernSearcherHeader({
       })
       .subscribe();
 
+    // Real-time subscription for profile updates
+    const profileChannel = supabase
+      .channel('profile-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_profiles'
+      }, () => {
+        loadData();
+      })
+      .subscribe();
+
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(favoritesChannel);
+      supabase.removeChannel(profileChannel);
     };
-  }, []);
+  }, [supabase]);
 
   const navItems = [
     {
