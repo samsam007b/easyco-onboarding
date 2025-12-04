@@ -17,4 +17,8 @@ struct PendingPayment: Identifiable, Codable {
         case overdue = "overdue"
         case paid = "paid"
     }
+
+    var isOverdue: Bool {
+        return status == .overdue
+    }
 }

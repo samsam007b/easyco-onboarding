@@ -124,7 +124,39 @@ class APIClient {
     func addFavorite(_ propertyId: UUID) async throws {
         // TODO: Implement API call to add favorite
     }
+
+    // MARK: - Swipe/Match Endpoints
+
+    func undoSwipe() async throws {
+        let _: EmptyResponse = try await request("/swipes/undo", method: .post)
+    }
+
+    func likeProperty(id: UUID) async throws {
+        let _: EmptyResponse = try await request("/swipes/like", method: .post, body: ["property_id": id.uuidString])
+    }
+
+    func dislikeProperty(id: UUID) async throws {
+        let _: EmptyResponse = try await request("/swipes/dislike", method: .post, body: ["property_id": id.uuidString])
+    }
+
+    func getMatchScore(propertyId: UUID) async throws -> MatchScoreResponse {
+        return try await request("/matches/score/\(propertyId.uuidString)", method: .get)
+    }
+
+    func getMatches(filters: PropertyFilters) async throws -> [Property] {
+        // TODO: Send filters as query parameters
+        return try await request("/matches", method: .get)
+    }
+
+    func getRooms(propertyId: String) async throws -> [Room] {
+        // TODO: Implement API call to fetch rooms
+        return []
+    }
 }
+
+// MARK: - Helper Structures
+
+struct EmptyResponse: Codable {}
 
 enum HTTPMethod: String {
     case get = "GET"

@@ -434,25 +434,18 @@ struct CreateAlertView: View {
     private func createAlert() async {
         isCreating = true
 
-        // Build criteria
-        let criteria = AlertCriteria(
-            cities: selectedCities.isEmpty ? nil : Array(selectedCities),
-            neighborhoods: nil,
-            radius: nil,
-            propertyTypes: selectedPropertyTypes.isEmpty ? nil : Array(selectedPropertyTypes),
-            minPrice: Double(minPrice),
-            maxPrice: Double(maxPrice),
-            minBedrooms: Int(minBedrooms),
-            maxBedrooms: Int(maxBedrooms),
-            minSurfaceArea: Double(minSurfaceArea),
-            requiredAmenities: selectedAmenities.isEmpty ? nil : Array(selectedAmenities),
-            availableFrom: nil,
-            minimumStay: nil,
-            maximumStay: nil,
-            furnished: furnished,
-            petsAllowed: petsAllowed,
-            smokingAllowed: smokingAllowed
-        )
+        // Build criteria as PropertyFilters
+        var criteria = PropertyFilters()
+        criteria.city = selectedCities.first
+        criteria.propertyTypes = selectedPropertyTypes.isEmpty ? nil : Array(selectedPropertyTypes)
+        criteria.minPrice = Int(minPrice)
+        criteria.maxPrice = Int(maxPrice)
+        criteria.minBedrooms = Int(minBedrooms)
+        criteria.maxBedrooms = Int(maxBedrooms)
+        criteria.minSurface = Int(minSurfaceArea)
+        criteria.furnished = furnished
+        criteria.petsAllowed = petsAllowed
+        criteria.smokingAllowed = smokingAllowed
 
         let success = await alertsManager.createAlert(
             type: selectedType,

@@ -34,4 +34,55 @@ struct MatchFilters: Codable, Equatable {
         filters.petsAllowed = petsAllowed
         return filters
     }
+
+    func matches(property: Property) -> Bool {
+        // Price check
+        if let minPrice = minPrice, property.monthlyRent < minPrice {
+            return false
+        }
+        if let maxPrice = maxPrice, property.monthlyRent > maxPrice {
+            return false
+        }
+
+        // City check
+        if !cities.isEmpty && !cities.contains(property.city) {
+            return false
+        }
+
+        // Property type check
+        if !propertyTypes.isEmpty && !propertyTypes.contains(property.propertyType) {
+            return false
+        }
+
+        // Bedrooms check
+        if let minBedrooms = minBedrooms, property.bedrooms < minBedrooms {
+            return false
+        }
+
+        // Surface check
+        if let minSurface = minSurface, let surface = property.surfaceArea, surface < minSurface {
+            return false
+        }
+
+        // Furnished check
+        if let furnished = furnished, property.furnished != furnished {
+            return false
+        }
+
+        // Pets check
+        if let petsAllowed = petsAllowed, petsAllowed && !property.petsAllowed {
+            return false
+        }
+
+        // Required amenities check
+        if !requiredAmenities.isEmpty {
+            let propertyAmenityStrings = property.amenities.map { $0.rawValue }
+            let hasAll = requiredAmenities.allSatisfy { propertyAmenityStrings.contains($0) }
+            if !hasAll {
+                return false
+            }
+        }
+
+        return true
+    }
 }

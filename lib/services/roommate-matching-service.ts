@@ -69,6 +69,13 @@ export interface RoommateMatchResult {
   dealbreakers: string[]; // Critical incompatibilities
 }
 
+export interface PropertyRoommateCompatibility {
+  averageScore: number;
+  individualScores: RoommateMatchResult[];
+  bestMatch?: RoommateProfile;
+  worstMatch?: RoommateProfile;
+}
+
 /**
  * Calculate compatibility between a searcher and a current resident
  */
@@ -113,12 +120,7 @@ export function calculateRoommateCompatibility(
 export function calculatePropertyRoommateCompatibility(
   searcher: RoommateProfile,
   residents: RoommateProfile[]
-): {
-  averageScore: number;
-  individualScores: RoommateMatchResult[];
-  bestMatch?: RoommateProfile;
-  worstMatch?: RoommateProfile;
-} {
+): PropertyRoommateCompatibility {
   if (residents.length === 0) {
     return {
       averageScore: 50, // Neutral score when no residents

@@ -124,7 +124,7 @@ class OwnerDashboardViewModel: ObservableObject {
             error = apiError.toAppError
             isLoading = false
         } catch {
-            self.error = .server
+            self.error = AppError.unknown(error)
             isLoading = false
         }
     }
@@ -234,7 +234,7 @@ class ResidentDashboardViewModel: ObservableObject {
             error = apiError.toAppError
             isLoading = false
         } catch {
-            self.error = .server
+            self.error = AppError.unknown(error)
             isLoading = false
         }
     }

@@ -699,7 +699,8 @@ class SearcherDashboardViewModel: ObservableObject {
             stats = try await analyticsService.getSearcherStats()
 
             // Load recently viewed
-            recentlyViewed = try await analyticsService.getRecentlyViewedProperties(limit: 10)
+            let allRecent = try await analyticsService.getRecentlyViewedProperties()
+            recentlyViewed = Array(allRecent.prefix(10))
 
             // Load top matches (demo mode)
             if AppConfig.FeatureFlags.demoMode {

@@ -171,7 +171,7 @@ struct MyInformationsView: View {
         firstName = user.firstName ?? ""
         lastName = user.lastName ?? ""
         email = user.email
-        phone = user.phone ?? ""
+        phone = "" // TODO: Add phone to User model
         // dateOfBirth, address, city, postalCode would come from user model
     }
 
@@ -191,7 +191,7 @@ struct SectionCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.md) {
             Text(title)
-                .font(Theme.Typography.headline(.semibold))
+                .font(Theme.Typography.title3(.semibold))
                 .foregroundColor(Theme.Colors.textPrimary)
 
             VStack(spacing: Theme.Spacing.md) {

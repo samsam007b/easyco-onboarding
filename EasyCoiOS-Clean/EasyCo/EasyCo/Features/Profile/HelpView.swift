@@ -33,7 +33,7 @@ struct HelpView: View {
                 // Quick Actions
                 VStack(alignment: .leading, spacing: Theme.Spacing.md) {
                     Text("Actions rapides")
-                        .font(Theme.Typography.headline(.semibold))
+                        .font(Theme.Typography.bodyLarge(.semibold))
                         .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.horizontal)
 
@@ -78,7 +78,7 @@ struct HelpView: View {
                 // Help Categories
                 VStack(alignment: .leading, spacing: Theme.Spacing.md) {
                     Text("Catégories d'aide")
-                        .font(Theme.Typography.headline(.semibold))
+                        .font(Theme.Typography.title3(.semibold))
                         .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.horizontal)
 
@@ -134,7 +134,7 @@ struct HelpView: View {
                 // Contact Information
                 VStack(alignment: .leading, spacing: Theme.Spacing.md) {
                     Text("Nous contacter")
-                        .font(Theme.Typography.headline(.semibold))
+                        .font(Theme.Typography.title3(.semibold))
                         .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.horizontal)
 

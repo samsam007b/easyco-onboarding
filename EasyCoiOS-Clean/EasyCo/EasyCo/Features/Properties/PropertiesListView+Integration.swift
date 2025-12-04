@@ -172,10 +172,10 @@ struct PropertiesListViewIntegrated: View {
                 }
                 .padding(.trailing, 8)
 
-                FilterChip(title: "Studio", isSelected: .constant(false)) {}
-                FilterChip(title: "T2", isSelected: .constant(false)) {}
-                FilterChip(title: "T3+", isSelected: .constant(false)) {}
-                FilterChip(title: "Meublé", isSelected: .constant(false)) {}
+                FilterChip(title: "Studio", isSelected: false) {}
+                FilterChip(title: "T2", isSelected: false) {}
+                FilterChip(title: "T3+", isSelected: false) {}
+                FilterChip(title: "Meublé", isSelected: false) {}
             }
         }
     }

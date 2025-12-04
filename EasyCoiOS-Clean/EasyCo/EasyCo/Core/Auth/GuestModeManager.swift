@@ -173,7 +173,7 @@ struct LockedFeatureView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(hex: "F9FAFB"))
             .sheet(isPresented: $showLoginSheet) {
-                SignupView()
+                AuthNavigationView()
             }
     }
 

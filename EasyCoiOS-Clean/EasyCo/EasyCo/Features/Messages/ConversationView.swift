@@ -181,19 +181,8 @@ struct ConversationView: View {
                             .foregroundColor(Theme.Colors.textSecondary)
                     }
 
-                    HStack(spacing: 12) {
-                        if conversation.match.property.bedrooms > 0 {
-                            PropertyCardFeature(icon: "bed", value: "\(conversation.match.property.bedrooms)")
-                        }
-
-                        if conversation.match.property.bathrooms > 0 {
-                            PropertyCardFeature(icon: "bath", value: "\(conversation.match.property.bathrooms)")
-                        }
-
-                        if let area = conversation.match.property.area {
-                            PropertyCardFeature(icon: "ruler", value: "\(area)m²")
-                        }
-                    }
+                    // Property details would be loaded from propertyId
+                    // TODO: Fetch property details using conversation.propertyId
                 }
 
                 Spacer()
@@ -243,8 +232,8 @@ struct ConversationView: View {
                 senderId: conversation.otherUserId,
                 senderName: conversation.otherUserName,
                 content: "Merci pour votre message ! Je vous réponds au plus vite.",
-                isSentByCurrentUser: false,
-                isRead: false
+                isRead: false,
+                isSentByCurrentUser: false
             )
             messages.append(response)
         }
@@ -297,7 +286,7 @@ struct MessageBubble: View {
                 .padding(.horizontal, 4)
             }
 
-            if !message.isFromCurrentUser {
+            if !message.isSentByCurrentUser {
                 Spacer(minLength: 60)
             }
         }

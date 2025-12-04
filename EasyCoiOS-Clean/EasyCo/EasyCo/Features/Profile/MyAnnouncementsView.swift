@@ -18,7 +18,7 @@ struct MyAnnouncementsView: View {
                     emptyStateView
                 } else {
                     ForEach(viewModel.announcements) { announcement in
-                        AnnouncementCard(
+                        MyAnnouncementCard(
                             announcement: announcement,
                             onEdit: {
                                 viewModel.selectedAnnouncement = announcement
@@ -50,7 +50,7 @@ struct MyAnnouncementsView: View {
             }
         }
         .sheet(isPresented: $showCreateAnnouncement) {
-            CreateAnnouncementView(
+            MyCreateAnnouncementView(
                 announcement: viewModel.selectedAnnouncement,
                 onSave: { title, description in
                     if let existing = viewModel.selectedAnnouncement {
@@ -111,139 +111,139 @@ struct MyAnnouncementsView: View {
     }
 }
 
-// MARK: - Announcement Card
+// MARK: - My Announcement Card
 
-// struct AnnouncementCard: View {
-//     let announcement: Announcement
-//     let onEdit: () -> Void
-//     let onDelete: () -> Void
-//     @State private var showDeleteAlert = false
-// 
-//     var body: some View {
-//         VStack(alignment: .leading, spacing: Theme.Spacing.md) {
-//             HStack {
-//                 VStack(alignment: .leading, spacing: 4) {
-//                     Text(announcement.title)
-//                         .font(Theme.Typography.headline(.semibold))
-//                         .foregroundColor(Theme.Colors.textPrimary)
-// 
-//                     Text(announcement.createdAt.formatted(date: .abbreviated, time: .shortened))
-//                         .font(Theme.Typography.caption())
-//                         .foregroundColor(Theme.Colors.textSecondary)
-//                 }
-// 
-//                 Spacer()
-// 
-//                 Menu {
-//                     Button {
-//                         onEdit()
-//                     } label: {
-//                         Label("Modifier", systemImage: "pencil")
-//                     }
-// 
-//                     Button(role: .destructive) {
-//                         showDeleteAlert = true
-//                     } label: {
-//                         Label("Supprimer", systemImage: "trash")
-//                     }
-//                 } label: {
-//                     Image(systemName: "ellipsis")
-//                         .font(.title3)
-//                         .foregroundColor(Theme.Colors.textSecondary)
-//                         .frame(width: 32, height: 32)
-//                 }
-//             }
-// 
-//             Text(announcement.description)
-//                 .font(Theme.Typography.body())
-//                 .foregroundColor(Theme.Colors.textSecondary)
-//                 .lineLimit(3)
-// 
-//             HStack(spacing: Theme.Spacing.sm) {
-//                 Label("\(announcement.views)", systemImage: "eye")
-//                     .font(Theme.Typography.caption())
-//                     .foregroundColor(Theme.Colors.textTertiary)
-//             }
-//         }
-//         .padding()
-//         .background(Theme.Colors.backgroundSecondary)
-//         .cornerRadius(Theme.CornerRadius.md)
-//         .alert("Supprimer l'annonce", isPresented: $showDeleteAlert) {
-//             Button("Annuler", role: .cancel) {}
-//             Button("Supprimer", role: .destructive) {
-//                 onDelete()
-//             }
-//         } message: {
-//             Text("Êtes-vous sûr de vouloir supprimer cette annonce ?")
-//         }
-//     }
-// }
+struct MyAnnouncementCard: View {
+    let announcement: MyAnnouncement
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+    @State private var showDeleteAlert = false
 
-// MARK: - Create Announcement View
+    var body: some View {
+        VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(announcement.title)
+                        .font(Theme.Typography.title3(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
 
-// struct CreateAnnouncementView: View {
-//     let announcement: Announcement?
-//     let onSave: (String, String) -> Void
-//     @Environment(\.dismiss) private var dismiss
-// 
-//     @State private var title = ""
-//     @State private var description = ""
-// 
-//     var body: some View {
-//         NavigationStack {
-//             Form {
-//                 Section("Titre") {
-//                     TextField("Titre de l'annonce", text: $title)
-//                 }
-// 
-//                 Section("Description") {
-//                     TextEditor(text: $description)
-//                         .frame(minHeight: 150)
-//                 }
-//             }
-//             .navigationTitle(announcement == nil ? "Nouvelle annonce" : "Modifier l'annonce")
-//             .navigationBarTitleDisplayMode(.inline)
-//             .toolbar {
-//                 ToolbarItem(placement: .navigationBarLeading) {
-//                     Button("Annuler") {
-//                         dismiss()
-//                     }
-//                 }
-// 
-//                 ToolbarItem(placement: .navigationBarTrailing) {
-//                     Button("Publier") {
-//                         onSave(title, description)
-//                     }
-//                     .disabled(title.isEmpty || description.isEmpty)
-//                 }
-//             }
-//             .onAppear {
-//                 if let announcement = announcement {
-//                     title = announcement.title
-//                     description = announcement.description
-//                 }
-//             }
-//         }
-//     }
-// }
+                    Text(announcement.createdAt.formatted(date: .abbreviated, time: .shortened))
+                        .font(Theme.Typography.caption())
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
+
+                Spacer()
+
+                Menu {
+                    Button {
+                        onEdit()
+                    } label: {
+                        Label("Modifier", systemImage: "pencil")
+                    }
+
+                    Button(role: .destructive) {
+                        showDeleteAlert = true
+                    } label: {
+                        Label("Supprimer", systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.title3)
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .frame(width: 32, height: 32)
+                }
+            }
+
+            Text(announcement.description)
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textSecondary)
+                .lineLimit(3)
+
+            HStack(spacing: Theme.Spacing.sm) {
+                Label("\(announcement.views)", systemImage: "eye")
+                    .font(Theme.Typography.caption())
+                    .foregroundColor(Theme.Colors.textTertiary)
+            }
+        }
+        .padding()
+        .background(Theme.Colors.backgroundSecondary)
+        .cornerRadius(Theme.CornerRadius.md)
+        .alert("Supprimer l'annonce", isPresented: $showDeleteAlert) {
+            Button("Annuler", role: .cancel) {}
+            Button("Supprimer", role: .destructive) {
+                onDelete()
+            }
+        } message: {
+            Text("Êtes-vous sûr de vouloir supprimer cette annonce ?")
+        }
+    }
+}
+
+// MARK: - My Create Announcement View
+
+struct MyCreateAnnouncementView: View {
+    let announcement: MyAnnouncement?
+    let onSave: (String, String) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var title = ""
+    @State private var description = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Titre") {
+                    TextField("Titre de l'annonce", text: $title)
+                }
+
+                Section("Description") {
+                    TextEditor(text: $description)
+                        .frame(minHeight: 150)
+                }
+            }
+            .navigationTitle(announcement == nil ? "Nouvelle annonce" : "Modifier l'annonce")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler") {
+                        dismiss()
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Publier") {
+                        onSave(title, description)
+                    }
+                    .disabled(title.isEmpty || description.isEmpty)
+                }
+            }
+            .onAppear {
+                if let announcement = announcement {
+                    title = announcement.title
+                    description = announcement.description
+                }
+            }
+        }
+    }
+}
 
 // MARK: - Model
 
-// struct Announcement: Identifiable {
-//     let id: String
-//     var title: String
-//     var description: String
-//     let createdAt: Date
-//     var views: Int
-// }
+struct MyAnnouncement: Identifiable {
+    let id: String
+    var title: String
+    var description: String
+    let createdAt: Date
+    var views: Int
+}
 
 // MARK: - View Model
 
 @MainActor
 class MyAnnouncementsViewModel: ObservableObject {
-    @Published var announcements: [Announcement] = []
+    @Published var announcements: [MyAnnouncement] = []
     @Published var isLoading = false
-    @Published var selectedAnnouncement: Announcement?
+    @Published var selectedAnnouncement: MyAnnouncement?
 
     func loadAnnouncements() async {
         isLoading = true
@@ -253,14 +253,14 @@ class MyAnnouncementsViewModel: ObservableObject {
 
         // Mock data
         announcements = [
-            Announcement(
+            MyAnnouncement(
                 id: "1",
                 title: "Recherche colocataire",
                 description: "Je recherche un colocataire pour partager un appartement T3 dans le centre-ville. Loyer 600€/mois.",
                 createdAt: Date().addingTimeInterval(-86400 * 3),
                 views: 24
             ),
-            Announcement(
+            MyAnnouncement(
                 id: "2",
                 title: "Vide grenier dimanche",
                 description: "Organisation d'un vide grenier dans la résidence ce dimanche de 10h à 18h. Tout le monde est le bienvenu!",
@@ -273,7 +273,7 @@ class MyAnnouncementsViewModel: ObservableObject {
     }
 
     func createAnnouncement(title: String, description: String) {
-        let newAnnouncement = Announcement(
+        let newAnnouncement = MyAnnouncement(
             id: UUID().uuidString,
             title: title,
             description: description,
@@ -283,14 +283,14 @@ class MyAnnouncementsViewModel: ObservableObject {
         announcements.insert(newAnnouncement, at: 0)
     }
 
-    func updateAnnouncement(_ announcement: Announcement, title: String, description: String) {
+    func updateAnnouncement(_ announcement: MyAnnouncement, title: String, description: String) {
         if let index = announcements.firstIndex(where: { $0.id == announcement.id }) {
             announcements[index].title = title
             announcements[index].description = description
         }
     }
 
-    func deleteAnnouncement(_ announcement: Announcement) {
+    func deleteAnnouncement(_ announcement: MyAnnouncement) {
         announcements.removeAll { $0.id == announcement.id }
     }
 }

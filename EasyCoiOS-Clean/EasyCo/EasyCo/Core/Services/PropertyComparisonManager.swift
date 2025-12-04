@@ -14,7 +14,25 @@ class PropertyComparisonManager: ObservableObject {
 
     private init() {}
 
-    // TODO: Implement property comparison methods
+    var count: Int {
+        selectedProperties.count
+    }
+
+    func isInComparison(_ property: Property) -> Bool {
+        selectedProperties.contains { $0.id == property.id }
+    }
+
+    func toggleProperty(_ property: Property) {
+        if isInComparison(property) {
+            selectedProperties.removeAll { $0.id == property.id }
+        } else {
+            selectedProperties.append(property)
+        }
+    }
+
+    func clear() {
+        selectedProperties.removeAll()
+    }
 }
 
 struct ComparisonFeature: Identifiable, Hashable {

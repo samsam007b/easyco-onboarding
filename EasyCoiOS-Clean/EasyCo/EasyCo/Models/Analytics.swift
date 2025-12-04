@@ -133,7 +133,7 @@ struct SearcherStats {
     let favoritesCount: Int
     let topMatches: Int
     let applicationsCount: Int
-    let preferences: SearcherPreferences
+    let preferences: SearcherPreferencesSummary
 
     static var mock: SearcherStats {
         SearcherStats(
@@ -141,27 +141,27 @@ struct SearcherStats {
             favoritesCount: 12,
             topMatches: 8,
             applicationsCount: 5,
-            preferences: SearcherPreferences.mock
+            preferences: SearcherPreferencesSummary.mock
         )
     }
 }
 
-struct SearcherPreferences: Codable {
+struct SearcherPreferencesSummary: Codable {
     var favoriteCity: String?
     var priceRange: String?
     var preferredPropertyTypes: [String]
 
-    static var mock: SearcherPreferences {
-        SearcherPreferences(
+    static var mock: SearcherPreferencesSummary {
+        SearcherPreferencesSummary(
             favoriteCity: "Bruxelles",
             priceRange: "600€ - 900€",
             preferredPropertyTypes: ["Colocation", "Studio"]
         )
     }
 
-    static func load() -> SearcherPreferences {
-        guard let data = UserDefaults.standard.data(forKey: "searcher_preferences"),
-              let preferences = try? JSONDecoder().decode(SearcherPreferences.self, from: data) else {
+    static func load() -> SearcherPreferencesSummary {
+        guard let data = UserDefaults.standard.data(forKey: "searcher_preferences_summary"),
+              let preferences = try? JSONDecoder().decode(SearcherPreferencesSummary.self, from: data) else {
             return mock
         }
         return preferences
@@ -169,7 +169,7 @@ struct SearcherPreferences: Codable {
 
     func save() {
         if let encoded = try? JSONEncoder().encode(self) {
-            UserDefaults.standard.set(encoded, forKey: "searcher_preferences")
+            UserDefaults.standard.set(encoded, forKey: "searcher_preferences_summary")
         }
     }
 }

@@ -434,22 +434,22 @@ struct ResidentHubView: View {
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 NavigationLink(destination: AddExpenseView(viewModel: ExpensesViewModel())) {
-                    QuickActionCard(icon: "eurosign.circle.fill", title: "Ajouter une dépense", color: Color(hex: "10B981"))
+                    QuickActionCard(icon: "eurosign.circle.fill", title: "Ajouter une dépense", color: Color(hex: "10B981"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: CreateTaskView(viewModel: TasksViewModel())) {
-                    QuickActionCard(icon: "checkmark.circle.fill", title: "Créer une tâche", color: Color(hex: "E8865D"))
+                    QuickActionCard(icon: "checkmark.circle.fill", title: "Créer une tâche", color: Color(hex: "E8865D"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: CreateEventView(viewModel: CalendarViewModel())) {
-                    QuickActionCard(icon: "calendar.badge.plus", title: "Nouvel événement", color: Color(hex: "6E56CF"))
+                    QuickActionCard(icon: "calendar.badge.plus", title: "Nouvel événement", color: Color(hex: "6E56CF"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: GroupChatView()) {
-                    QuickActionCard(icon: "message.fill", title: "Messages", color: Color(hex: "3B82F6"))
+                    QuickActionCard(icon: "message.fill", title: "Messages", color: Color(hex: "3B82F6"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
             }
@@ -457,22 +457,22 @@ struct ResidentHubView: View {
             // Second row with new actions
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 NavigationLink(destination: HubMembersView()) {
-                    QuickActionCard(icon: "person.3.fill", title: "Membres", color: Color(hex: "8B5CF6"))
+                    QuickActionCard(icon: "person.3.fill", title: "Membres", color: Color(hex: "8B5CF6"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: HubInviteView()) {
-                    QuickActionCard(icon: "person.badge.plus", title: "Inviter", color: Color(hex: "EC4899"))
+                    QuickActionCard(icon: "person.badge.plus", title: "Inviter", color: Color(hex: "EC4899"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: CalendarView()) {
-                    QuickActionCard(icon: "calendar", title: "Calendrier", color: Color(hex: "F59E0B"))
+                    QuickActionCard(icon: "calendar", title: "Calendrier", color: Color(hex: "F59E0B"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: ProfileEnhancementView(userRole: .resident)) {
-                    QuickActionCard(icon: "sparkles", title: "Mon Profil", color: Color(hex: "10B981"))
+                    QuickActionCard(icon: "sparkles", title: "Mon Profil", color: Color(hex: "10B981"), action: {})
                 }
                 .buttonStyle(PlainButtonStyle())
             }

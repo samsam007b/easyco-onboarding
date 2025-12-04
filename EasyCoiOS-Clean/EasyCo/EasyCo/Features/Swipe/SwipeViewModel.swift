@@ -27,14 +27,13 @@ class SwipeViewModel: ObservableObject {
         error = nil
 
         do {
-            let response = try await propertyService.getProperties(page: 1, limit: 50)
-            properties = response.properties
+            properties = try await propertyService.getProperties(filters: nil)
             isLoading = false
-        } catch let apiError as APIError {
-            error = apiError.toAppError
+        } catch let networkError as NetworkError {
+            error = .network(networkError)
             isLoading = false
         } catch {
-            self.error = .server
+            self.error = .unknown(error)
             isLoading = false
         }
     }
@@ -43,25 +42,22 @@ class SwipeViewModel: ObservableObject {
 
     func swipe(property: Property, direction: SwipeDirection) async {
         do {
-            let response = try await propertyService.swipeProperty(id: property.id, direction: direction)
+            // Convert SwipeDirection to SwipeAction
+            let action: SwipeAction = {
+                switch direction {
+                case .left: return .dislike
+                case .right: return .like
+                case .up: return .superLike
+                }
+            }()
 
-            // Check if it's a match
-            if response.isMatch, let match = response.match {
-                currentMatch = match
-                showMatchCelebration = true
+            try await propertyService.swipeProperty(propertyId: property.id, direction: action)
 
-                // Post notification
-                NotificationCenter.default.post(name: .didCreateMatch, object: match)
-
-                // Play haptic
+            // Play haptic
+            if direction == .right || direction == .up {
                 Haptic.notification(.success)
             } else {
-                // Play regular haptic
-                if direction == .right {
-                    Haptic.notification(.success)
-                } else {
-                    Haptic.impact(.medium)
-                }
+                Haptic.impact(.medium)
             }
 
             // Move to next property
@@ -102,9 +98,8 @@ class SwipeViewModel: ObservableObject {
 
     private func loadMoreProperties() async {
         do {
-            let nextPage = (properties.count / 50) + 1
-            let response = try await propertyService.getProperties(page: nextPage, limit: 50)
-            properties.append(contentsOf: response.properties)
+            let moreProperties = try await propertyService.getProperties(filters: nil)
+            properties.append(contentsOf: moreProperties)
         } catch {
             print("Load more error: \(error)")
         }

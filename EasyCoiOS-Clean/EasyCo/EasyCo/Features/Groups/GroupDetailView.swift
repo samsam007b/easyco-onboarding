@@ -147,7 +147,7 @@ struct GroupDetailView: View {
         ScrollView {
             LazyVStack(spacing: 12) {
                 ForEach(viewModel.members) { member in
-                    MemberRow(
+                    GroupMemberRow(
                         member: member,
                         isAdmin: member.id == group.adminID
                     )
@@ -419,6 +419,52 @@ struct GroupMember: Identifiable {
     var initials: String {
         let components = name.components(separatedBy: " ")
         return components.compactMap { $0.first }.prefix(2).map { String($0) }.joined()
+    }
+}
+
+struct GroupMemberRow: View {
+    let member: GroupMember
+    let isAdmin: Bool
+
+    var body: some View {
+        HStack(spacing: 14) {
+            // Avatar
+            Circle()
+                .fill(Color(hex: "6E56CF").opacity(0.1))
+                .frame(width: 50, height: 50)
+                .overlay(
+                    Text(member.initials)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "6E56CF"))
+                )
+
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 8) {
+                    Text(member.name)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(Color(hex: "111827"))
+
+                    if isAdmin {
+                        Text("Admin")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color(hex: "6366F1"))
+                            .cornerRadius(4)
+                    }
+                }
+
+                Text(member.email)
+                    .font(.system(size: 14))
+                    .foregroundColor(Color(hex: "6B7280"))
+            }
+
+            Spacer()
+        }
+        .padding(14)
+        .background(Color.white)
+        .cornerRadius(12)
     }
 }
 

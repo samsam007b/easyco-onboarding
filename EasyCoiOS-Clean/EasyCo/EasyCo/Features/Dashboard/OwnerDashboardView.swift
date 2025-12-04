@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OwnerDashboardView: View {
-    @State private var properties: [OwnerProperty] = []
+    @State private var properties: [Property] = []
     @State private var revenueData: [BarChartData] = []
     @State private var occupancyData: [DonutChartData] = []
     @State private var viewsData: [LineChartData] = []
@@ -364,38 +364,7 @@ struct OwnerDashboardView: View {
         ]
 
         // Mock properties
-        properties = [
-            OwnerProperty(
-                id: "1",
-                title: "Appartement 2 chambres - Ixelles",
-                location: "Bruxelles, Ixelles",
-                price: 950,
-                status: .occupied,
-                views: 245,
-                applications: 3,
-                imageURL: "https://via.placeholder.com/400x300/FFB6C1"
-            ),
-            OwnerProperty(
-                id: "2",
-                title: "Studio meublé - Centre",
-                location: "Bruxelles, Centre",
-                price: 720,
-                status: .vacant,
-                views: 189,
-                applications: 8,
-                imageURL: "https://via.placeholder.com/400x300/87CEEB"
-            ),
-            OwnerProperty(
-                id: "3",
-                title: "Loft moderne - Flagey",
-                location: "Bruxelles, Flagey",
-                price: 1200,
-                status: .occupied,
-                views: 312,
-                applications: 0,
-                imageURL: "https://via.placeholder.com/400x300/90EE90"
-            )
-        ]
+        properties = Array(Property.mockProperties.prefix(3))
 
         // Mock pending applications
         pendingApplications = [
@@ -502,103 +471,6 @@ struct PropertyApplication: Identifiable {
 }
 
 // MARK: - Supporting Cards
-
-// struct OwnerPropertyCard: View {
-//     let property: OwnerProperty
-// 
-//     var body: some View {
-//         HStack(spacing: 12) {
-            // Property image
-//             AsyncImage(url: URL(string: property.imageURL)) { image in
-//                 image
-//                     .resizable()
-//                     .aspectRatio(contentMode: .fill)
-//             } placeholder: {
-//                 Rectangle()
-//                     .fill(Theme.Colors.gray200)
-//             }
-//             .frame(width: 100, height: 100)
-//             .cornerRadius(12)
-// 
-//             VStack(alignment: .leading, spacing: 8) {
-                // Status
-//                 HStack(spacing: 6) {
-//                     Image.lucide(property.status.icon)
-//                         .resizable()
-//                         .scaledToFit()
-//                         .frame(width: 12, height: 12)
-//                         .foregroundColor(property.status.color)
-// 
-//                     Text(property.status.label)
-//                         .font(.system(size: 11, weight: .semibold))
-//                         .foregroundColor(property.status.color)
-//                 }
-//                 .padding(.horizontal, 10)
-//                 .padding(.vertical: 5)
-//                 .background(property.status.color.opacity(0.1))
-//                 .cornerRadius(8)
-// 
-                // Title
-//                 Text(property.title)
-//                     .font(Theme.Typography.body(.semibold))
-//                     .foregroundColor(Theme.Colors.textPrimary)
-//                     .lineLimit(2)
-// 
-                // Price
-//                 HStack(alignment: .firstTextBaseline, spacing: 4) {
-//                     Text("\(property.price)€")
-//                         .font(.system(size: 18, weight: .bold))
-//                         .foregroundColor(Theme.Colors.primary)
-// 
-//                     Text("/mois")
-//                         .font(Theme.Typography.caption())
-//                         .foregroundColor(Theme.Colors.textSecondary)
-//                 }
-// 
-                // Stats
-//                 HStack(spacing: 16) {
-//                     HStack(spacing: 4) {
-//                         Image.lucide("eye")
-//                             .resizable()
-//                             .scaledToFit()
-//                             .frame(width: 12, height: 12)
-//                             .foregroundColor(Theme.Colors.textTertiary)
-// 
-//                         Text("\(property.views)")
-//                             .font(Theme.Typography.bodySmall())
-//                             .foregroundColor(Theme.Colors.textSecondary)
-//                     }
-// 
-//                     if property.applications > 0 {
-//                         HStack(spacing: 4) {
-//                             Image.lucide("file-text")
-//                                 .resizable()
-//                                 .scaledToFit()
-//                                 .frame(width: 12, height: 12)
-//                                 .foregroundColor(Theme.Colors.textTertiary)
-// 
-//                             Text("\(property.applications)")
-//                                 .font(Theme.Typography.bodySmall())
-//                                 .foregroundColor(Theme.Colors.textSecondary)
-//                         }
-//                     }
-//                 }
-//             }
-// 
-//             Spacer()
-// 
-//             Image.lucide("chevron-right")
-//                 .resizable()
-//                 .scaledToFit()
-//                 .frame(width: 20, height: 20)
-//                 .foregroundColor(Theme.Colors.textTertiary)
-//         }
-//         .padding(12)
-//         .background(Theme.Colors.backgroundPrimary)
-//         .cornerRadius(Theme.CornerRadius.card)
-//         .cardShadow()
-//     }
-// }
 
 struct PropertyApplicationCard: View {
     let application: PropertyApplication

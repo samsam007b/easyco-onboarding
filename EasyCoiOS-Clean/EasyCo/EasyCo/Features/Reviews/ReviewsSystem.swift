@@ -128,7 +128,7 @@ struct ReviewFormView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                     .lineLimit(2)
 
-                Text(property.location)
+                Text(property.city)
                     .font(Theme.Typography.bodySmall())
                     .foregroundColor(Theme.Colors.textSecondary)
             }

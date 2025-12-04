@@ -36,18 +36,18 @@ struct RoomCardView: View {
 
                     // Room Details
                     HStack(spacing: 16) {
-                        DetailItem(
+                        RoomDetailItem(
                             icon: room.roomType.icon,
                             text: room.roomType.displayName
                         )
 
-                        DetailItem(
+                        RoomDetailItem(
                             icon: "square",
                             text: "\(Int(room.surfaceArea))m²"
                         )
 
                         if room.hasPrivateBathroom {
-                            DetailItem(
+                            RoomDetailItem(
                                 icon: "shower",
                                 text: "SDB privée"
                             )
@@ -175,17 +175,17 @@ struct RoomCardView: View {
 
 // MARK: - Detail Item
 
-// private struct DetailItem: View {
-//     let icon: String
-//     let text: String
-// 
-//     var body: some View {
-//         HStack(spacing: 4) {
-//             Image(systemName: icon)
-//             Text(text)
-//         }
-//     }
-// }
+private struct RoomDetailItem: View {
+    let icon: String
+    let text: String
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: icon)
+            Text(text)
+        }
+    }
+}
 
 // MARK: - Feature Tag
 

@@ -46,17 +46,25 @@ struct ExpenseStatsView: View {
 
     private var periodSelectorSection: some View {
         HStack(spacing: 12) {
-            ForEach(TimePeriod.allCases, id: \.self) { period in
-                Button(action: { viewModel.selectedPeriod = period }) {
-                    Text(period.displayName)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(viewModel.selectedPeriod == period ? .white : Color(hex: "6B7280"))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(viewModel.selectedPeriod == period ? Color(hex: "E8865D") : Color.white)
-                        .cornerRadius(20)
-                }
+            ForEach(ExpenseTimePeriod.allCases, id: \.self) { period in
+                periodButton(for: period)
             }
+        }
+    }
+
+    private func periodButton(for period: ExpenseTimePeriod) -> some View {
+        let isSelected = viewModel.selectedPeriod == period
+        let textColor = isSelected ? Color.white : Color(hex: "6B7280")
+        let backgroundColor = isSelected ? Color(hex: "E8865D") : Color.white
+
+        return Button(action: { viewModel.selectedPeriod = period }) {
+            Text(period.displayName)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(textColor)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(backgroundColor)
+                .cornerRadius(20)
         }
     }
 

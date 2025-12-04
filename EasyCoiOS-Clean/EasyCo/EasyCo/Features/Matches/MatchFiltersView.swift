@@ -93,8 +93,8 @@ struct MatchFiltersView: View {
 
                     Slider(
                         value: Binding(
-                            get: { Double(tempFilters.minPrice ?? 0) },
-                            set: { tempFilters.minPrice = Int($0) }
+                            get: { tempFilters.minPrice ?? 0 },
+                            set: { tempFilters.minPrice = $0 }
                         ),
                         in: 0...2000,
                         step: 50
@@ -110,8 +110,8 @@ struct MatchFiltersView: View {
 
                     Slider(
                         value: Binding(
-                            get: { Double(tempFilters.maxPrice ?? 3000) },
-                            set: { tempFilters.maxPrice = Int($0) }
+                            get: { tempFilters.maxPrice ?? 3000 },
+                            set: { tempFilters.maxPrice = $0 }
                         ),
                         in: 200...5000,
                         step: 50
@@ -238,12 +238,12 @@ struct MatchFiltersView: View {
                 ForEach(popularAmenities, id: \.self) { amenity in
                     AmenityChip(
                         amenity: amenity,
-                        isSelected: tempFilters.requiredAmenities.contains(amenity)
+                        isSelected: tempFilters.requiredAmenities.contains(amenity.rawValue)
                     ) {
-                        if tempFilters.requiredAmenities.contains(amenity) {
-                            tempFilters.requiredAmenities.removeAll { $0 == amenity }
+                        if tempFilters.requiredAmenities.contains(amenity.rawValue) {
+                            tempFilters.requiredAmenities.removeAll { $0 == amenity.rawValue }
                         } else {
-                            tempFilters.requiredAmenities.append(amenity)
+                            tempFilters.requiredAmenities.append(amenity.rawValue)
                         }
                     }
                 }
@@ -276,24 +276,24 @@ struct MatchFiltersView: View {
 
                 Divider()
 
-                // Available from date
-                HStack {
-                    Text("Disponible à partir du")
-                        .font(Theme.Typography.body())
-                        .foregroundColor(Theme.Colors.textPrimary)
-
-                    Spacer()
-
-                    DatePicker(
-                        "",
-                        selection: Binding(
-                            get: { tempFilters.availableFrom ?? Date() },
-                            set: { tempFilters.availableFrom = $0 }
-                        ),
-                        displayedComponents: .date
-                    )
-                    .labelsHidden()
-                }
+                // Available from date (commented out - not in MatchFilters model)
+                // HStack {
+                //     Text("Disponible à partir du")
+                //         .font(Theme.Typography.body())
+                //         .foregroundColor(Theme.Colors.textPrimary)
+                //
+                //     Spacer()
+                //
+                //     DatePicker(
+                //         "",
+                //         selection: Binding(
+                //             get: { tempFilters.availableFrom ?? Date() },
+                //             set: { tempFilters.availableFrom = $0 }
+                //         ),
+                //         displayedComponents: .date
+                //     )
+                //     .labelsHidden()
+                // }
             }
         }
     }

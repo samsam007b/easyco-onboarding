@@ -113,7 +113,7 @@ struct MatchCelebrationView: View {
                             .frame(width: 12, height: 12)
                             .foregroundColor(Theme.Colors.textSecondary)
 
-                        Text(property.location)
+                        Text(property.city)
                             .font(Theme.Typography.bodySmall())
                             .foregroundColor(Theme.Colors.textSecondary)
                             .lineLimit(1)

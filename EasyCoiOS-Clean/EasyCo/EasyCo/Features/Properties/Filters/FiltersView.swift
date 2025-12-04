@@ -6,37 +6,40 @@ struct FiltersView: View {
     @ObservedObject var viewModel: PropertiesViewModel
     @Environment(\.dismiss) private var dismiss
 
+    @State private var tempFilters: PropertyFilters
+
+    init(viewModel: PropertiesViewModel) {
+        self.viewModel = viewModel
+        _tempFilters = State(initialValue: viewModel.filters ?? PropertyFilters())
+    }
+
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Localisation")) {
                     TextField("Ville", text: Binding(
-                        get: { viewModel.filters.city ?? "" },
-                        set: { viewModel.filters.city = $0.isEmpty ? nil : $0 }
+                        get: { tempFilters.city ?? "" },
+                        set: { tempFilters.city = $0.isEmpty ? nil : $0 }
                     ))
                 }
 
                 Section(header: Text("Prix")) {
                     TextField("Prix minimum", value: Binding(
-                        get: { viewModel.filters.minPrice },
-                        set: { viewModel.filters.minPrice = $0 }
+                        get: { tempFilters.minPrice },
+                        set: { tempFilters.minPrice = $0 }
                     ), format: .number)
 
                     TextField("Prix maximum", value: Binding(
-                        get: { viewModel.filters.maxPrice },
-                        set: { viewModel.filters.maxPrice = $0 }
+                        get: { tempFilters.maxPrice },
+                        set: { tempFilters.maxPrice = $0 }
                     ), format: .number)
                 }
 
                 Section(header: Text("Type de bien")) {
-                    Picker("Type", selection: Binding(
-                        get: { viewModel.filters.propertyType ?? .apartment },
-                        set: { viewModel.filters.propertyType = $0 }
-                    )) {
-                        ForEach(PropertyType.allCases, id: \.self) { type in
-                            Text(type.rawValue).tag(type)
-                        }
-                    }
+                    // Property types is an array, we'll show multi-select later
+                    // For now, just showing a simple note
+                    Text("Tous types")
+                        .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("Filtres")
@@ -48,9 +51,7 @@ struct FiltersView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Appliquer") {
-                        Task {
-                            await viewModel.loadProperties()
-                        }
+                        viewModel.filters = tempFilters
                         dismiss()
                     }
                 }

@@ -123,34 +123,34 @@ struct SavedSearchCard: View {
 
                 // Search criteria
                 VStack(alignment: .leading, spacing: 8) {
-                    if let location = search.location {
+                    if let city = search.filters.city {
                         HStack(spacing: 8) {
                             Image(systemName: "mappin.circle.fill")
                                 .font(.system(size: 12))
                                 .foregroundColor(Color(hex: "9CA3AF"))
-                            Text(location)
+                            Text(city)
                                 .font(.system(size: 13))
                                 .foregroundColor(Color(hex: "6B7280"))
                         }
                     }
 
-                    if let priceRange = search.priceRange {
+                    if let minPrice = search.filters.minPrice, let maxPrice = search.filters.maxPrice {
                         HStack(spacing: 8) {
                             Image(systemName: "eurosign.circle.fill")
                                 .font(.system(size: 12))
                                 .foregroundColor(Color(hex: "9CA3AF"))
-                            Text(priceRange)
+                            Text("\(minPrice)€ - \(maxPrice)€")
                                 .font(.system(size: 13))
                                 .foregroundColor(Color(hex: "6B7280"))
                         }
                     }
 
-                    if let propertyType = search.propertyType {
+                    if let propertyTypes = search.filters.propertyTypes, !propertyTypes.isEmpty {
                         HStack(spacing: 8) {
                             Image(systemName: "building.2.fill")
                                 .font(.system(size: 12))
                                 .foregroundColor(Color(hex: "9CA3AF"))
-                            Text(propertyType)
+                            Text(propertyTypes.first!.rawValue)
                                 .font(.system(size: 13))
                                 .foregroundColor(Color(hex: "6B7280"))
                         }
@@ -169,7 +169,7 @@ struct SavedSearchCard: View {
 
                     Spacer()
 
-                    Text(search.formattedDate)
+                    Text(search.createdAt.formatted(date: .abbreviated, time: .omitted))
                         .font(.system(size: 11))
                         .foregroundColor(Color(hex: "9CA3AF"))
                 }
@@ -247,14 +247,14 @@ struct CreateSavedSearchView: View {
     }
 
     private func saveSearch() {
-        let priceRange = !minPrice.isEmpty || !maxPrice.isEmpty ?
-            "\(minPrice.isEmpty ? "0" : minPrice)€ - \(maxPrice.isEmpty ? "∞" : maxPrice + "€")" : nil
+        var filters = PropertyFilters()
+        filters.city = location.isEmpty ? nil : location
+        filters.minPrice = Int(minPrice)
+        filters.maxPrice = Int(maxPrice)
 
         viewModel.createSearch(
             name: name,
-            location: location.isEmpty ? nil : location,
-            priceRange: priceRange,
-            propertyType: propertyType == "Tous types" ? nil : propertyType,
+            filters: filters,
             notificationsEnabled: notificationsEnabled
         )
         dismiss()
@@ -293,39 +293,39 @@ class SavedSearchesViewModel: ObservableObject {
         try? await Task.sleep(nanoseconds: 500_000_000)
 
         // Mock data
+        var filters1 = PropertyFilters()
+        filters1.city = "Lyon 3ème"
+        filters1.minPrice = 500
+        filters1.maxPrice = 800
+
+        var filters2 = PropertyFilters()
+        filters2.city = "Lyon Centre"
+        filters2.minPrice = 400
+        filters2.maxPrice = 600
+
         savedSearches = [
             SavedSearch(
-                id: "1",
                 name: "Appartements Lyon 3",
-                location: "Lyon 3ème",
-                priceRange: "500€ - 800€",
-                propertyType: "Appartement",
-                notificationsEnabled: true,
-                createdAt: Date().addingTimeInterval(-86400 * 3)
+                filters: filters1,
+                createdAt: Date().addingTimeInterval(-86400 * 3),
+                notificationsEnabled: true
             ),
             SavedSearch(
-                id: "2",
                 name: "Studios centre-ville",
-                location: "Lyon Centre",
-                priceRange: "400€ - 600€",
-                propertyType: "Studio",
-                notificationsEnabled: false,
-                createdAt: Date().addingTimeInterval(-86400 * 7)
+                filters: filters2,
+                createdAt: Date().addingTimeInterval(-86400 * 7),
+                notificationsEnabled: false
             )
         ]
 
         isLoading = false
     }
 
-    func createSearch(name: String, location: String?, priceRange: String?, propertyType: String?, notificationsEnabled: Bool) {
+    func createSearch(name: String, filters: PropertyFilters, notificationsEnabled: Bool) {
         let newSearch = SavedSearch(
-            id: UUID().uuidString,
             name: name,
-            location: location,
-            priceRange: priceRange,
-            propertyType: propertyType,
-            notificationsEnabled: notificationsEnabled,
-            createdAt: Date()
+            filters: filters,
+            notificationsEnabled: notificationsEnabled
         )
         savedSearches.insert(newSearch, at: 0)
     }

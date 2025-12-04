@@ -411,7 +411,7 @@ class FavoritesViewModel: ObservableObject {
 
         if !AppConfig.FeatureFlags.demoMode {
             do {
-                try await APIClient.shared.removeFavorite(propertyId: property.id.uuidString)
+                try await APIClient.shared.removeFavorite(property.id)
             } catch {
                 // Revert on error
                 favorites.append(property)

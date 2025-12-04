@@ -8,6 +8,19 @@
 import Foundation
 import Combine
 
+enum PropertySortOption {
+    case bestMatch, newest, priceLow, priceHigh
+
+    var displayName: String {
+        switch self {
+        case .bestMatch: return "🎯 Meilleur match"
+        case .newest: return "Plus récent"
+        case .priceLow: return "Prix: Croissant"
+        case .priceHigh: return "Prix: Décroissant"
+        }
+    }
+}
+
 @MainActor
 class PropertiesViewModel: ObservableObject {
     @Published var properties: [Property] = []
@@ -15,6 +28,8 @@ class PropertiesViewModel: ObservableObject {
     @Published var error: AppError?
     @Published var currentPage = 1
     @Published var hasMorePages = true
+    @Published var showFilters = false
+    @Published var sortBy: PropertySortOption = .bestMatch
 
     @Published var filters: PropertyFilters? {
         didSet {
@@ -33,38 +48,60 @@ class PropertiesViewModel: ObservableObject {
 
     private let itemsPerPage = 20
 
+    // MARK: - Computed Properties
+
+    var activeFiltersCount: Int {
+        guard let filters = filters else { return 0 }
+        var count = 0
+        if filters.city != nil { count += 1 }
+        if filters.minPrice != nil { count += 1 }
+        if filters.maxPrice != nil { count += 1 }
+        if filters.propertyTypes != nil && !filters.propertyTypes!.isEmpty { count += 1 }
+        if filters.minBedrooms != nil { count += 1 }
+        return count
+    }
+
+    var filteredProperties: [Property] {
+        // For now, just return all properties
+        // The filtering is done server-side via filters parameter
+        return properties
+    }
+
     // MARK: - Load Properties
 
-    func loadProperties() async {
+    func loadProperties(refresh: Bool = false) async {
         guard !isLoading else { return }
+
+        if refresh {
+            currentPage = 1
+            properties = []
+            hasMorePages = true
+        }
 
         isLoading = true
         error = nil
 
         do {
-            let response = try await propertyService.getProperties(
-                page: currentPage,
-                limit: itemsPerPage,
-                filters: filters
-            )
+            let fetchedProperties = try await propertyService.getProperties(filters: filters)
 
-            // Append new properties
+            // For now, we load all properties at once
+            // TODO: Implement proper pagination when backend supports it
             if currentPage == 1 {
-                properties = response.properties
+                properties = fetchedProperties
             } else {
-                properties.append(contentsOf: response.properties)
+                properties.append(contentsOf: fetchedProperties)
             }
 
-            // Check if more pages available
-            hasMorePages = currentPage < response.totalPages
+            // No pagination for now
+            hasMorePages = false
 
             isLoading = false
 
-        } catch let apiError as APIError {
-            error = apiError.toAppError
+        } catch let appError as AppError {
+            error = appError
             isLoading = false
         } catch {
-            self.error = .server
+            self.error = .unknown(error)
             isLoading = false
         }
     }
@@ -95,12 +132,9 @@ class PropertiesViewModel: ObservableObject {
     // MARK: - Get Property Detail
 
     func getPropertyDetail(id: String) async -> Property? {
-        do {
-            return try await propertyService.getProperty(id: id)
-        } catch {
-            print("Error fetching property detail: \(error)")
-            return nil
-        }
+        // For now, search in loaded properties
+        // TODO: Add API call when backend supports single property fetch
+        return properties.first { $0.id.uuidString == id }
     }
 
     // MARK: - Apply Filters
@@ -108,22 +142,27 @@ class PropertiesViewModel: ObservableObject {
     func applyFilters(
         minPrice: Int? = nil,
         maxPrice: Int? = nil,
-        propertyType: PropertyType? = nil,
+        propertyTypes: [PropertyType]? = nil,
         bedrooms: Int? = nil,
-        bathrooms: Int? = nil,
-        amenities: [String]? = nil
+        bathrooms: Int? = nil
     ) {
-        filters = PropertyFilters(
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            propertyType: propertyType,
-            bedrooms: bedrooms,
-            bathrooms: bathrooms,
-            amenities: amenities
-        )
+        var newFilters = PropertyFilters()
+        newFilters.minPrice = minPrice
+        newFilters.maxPrice = maxPrice
+        newFilters.propertyTypes = propertyTypes
+        newFilters.minBedrooms = bedrooms
+        newFilters.minBathrooms = bathrooms
+        filters = newFilters
     }
 
     func clearFilters() {
         filters = nil
+    }
+
+    // MARK: - Favorites
+
+    func toggleFavorite(_ property: Property) async {
+        // TODO: Implement favorite toggle with API
+        print("Toggle favorite for property: \(property.id)")
     }
 }
