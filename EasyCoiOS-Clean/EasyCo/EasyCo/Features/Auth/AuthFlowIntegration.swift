@@ -29,23 +29,24 @@ struct AuthRootView: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: authService.isAuthenticated)
-        .onAppear {
-            setupWebSocket()
-        }
-        .onChange(of: authService.isAuthenticated) { isAuth in
-            if isAuth {
-                webSocketManager.connect()
-            } else {
-                webSocketManager.disconnect()
-            }
-        }
+        // TODO: Implement WebSocket integration
+        // .onAppear {
+        //     setupWebSocket()
+        // }
+        // .onChange(of: authService.isAuthenticated) { isAuth in
+        //     if isAuth {
+        //         webSocketManager.connect()
+        //     } else {
+        //         webSocketManager.disconnect()
+        //     }
+        // }
     }
 
-    private func setupWebSocket() {
-        if authService.isAuthenticated {
-            webSocketManager.connect()
-        }
-    }
+    // private func setupWebSocket() {
+    //     if authService.isAuthenticated {
+    //         webSocketManager.connect()
+    //     }
+    // }
 }
 
 // MARK: - Auth Navigation View
@@ -89,8 +90,8 @@ struct LoginViewIntegrated: View {
                     VStack(spacing: 20) {
                         // Email field
                         ModernTextField(
-                            text: $viewModel.email,
                             placeholder: "Email",
+                            text: $viewModel.email,
                             icon: "mail"
                         )
                         .textContentType(.emailAddress)
@@ -205,19 +206,22 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            try await authService.login(email: email, password: password)
+        // TODO: Implement login integration
+        // do {
+        //     try await authService.login(email: email, password: password)
+        //
+        //     // Success - AuthService will update isAuthenticated
+        //     // Navigation happens automatically via RootView
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            // Success - AuthService will update isAuthenticated
-            // Navigation happens automatically via RootView
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = .server
-            isLoading = false
-        }
+        isLoading = false
     }
 }
 
@@ -250,8 +254,8 @@ struct RegisterViewIntegrated: View {
                     // Form
                     VStack(spacing: 16) {
                         ModernTextField(
-                            text: $viewModel.firstName,
                             placeholder: "Prénom",
+                            text: $viewModel.firstName,
                             icon: "user"
                         )
                         .textContentType(.givenName)
@@ -369,24 +373,27 @@ class RegisterViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            try await authService.register(
-                email: email,
-                password: password,
-                firstName: firstName,
-                lastName: lastName,
-                role: selectedRole
-            )
+        // TODO: Implement register integration
+        // do {
+        //     try await authService.register(
+        //         email: email,
+        //         password: password,
+        //         firstName: firstName,
+        //         lastName: lastName,
+        //         role: selectedRole
+        //     )
+        //
+        //     // Success - AuthService will update isAuthenticated
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            // Success - AuthService will update isAuthenticated
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = .server
-            isLoading = false
-        }
+        isLoading = false
     }
 }
 

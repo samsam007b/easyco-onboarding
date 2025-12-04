@@ -334,7 +334,7 @@ struct TransactionRow: View {
                     .font(Theme.Typography.bodySmall(.semibold))
                     .foregroundColor(Theme.Colors.textPrimary)
 
-                Text(transaction.createdAt.formatted(date: .abbreviated, time: .shortened))
+                Text(transaction.date.formatted(date: .abbreviated, time: .shortened))
                     .font(Theme.Typography.caption())
                     .foregroundColor(Theme.Colors.textTertiary)
             }
@@ -470,7 +470,7 @@ struct PaymentMethodCard: View {
             // Info
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 8) {
-                    Text(method.displayName)
+                    Text(method.type.displayName)
                         .font(Theme.Typography.body(.semibold))
                         .foregroundColor(Theme.Colors.textPrimary)
 
@@ -746,7 +746,7 @@ struct PayNowSheet: View {
     let payment: PendingPayment
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var paymentService = PaymentService.shared
-    @State private var selectedMethodId: UUID?
+    @State private var selectedMethodId: String?
     @State private var isProcessing = false
     @State private var showSuccess = false
     @State private var showError = false
@@ -797,7 +797,7 @@ struct PayNowSheet: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(Theme.Colors.Owner.primary)
 
-                                Text(method.displayName)
+                                Text(method.type.displayName)
                                     .font(Theme.Typography.body())
                                     .foregroundColor(Theme.Colors.textPrimary)
 

@@ -278,18 +278,18 @@ struct SearcherApplicationDetailView: View {
 
                 // Personal Info
                 InfoSection(title: "Informations personnelles") {
-                    DetailRow(label: "Nom", value: "\(application.personalInfo.firstName) \(application.personalInfo.lastName)")
-                    DetailRow(label: "Email", value: application.personalInfo.email)
-                    DetailRow(label: "Téléphone", value: application.personalInfo.phone)
-                    DetailRow(label: "Nationalité", value: application.personalInfo.nationality)
+                    DetailRow(icon: "person.fill", label: "Nom", value: "\(application.personalInfo.firstName) \(application.personalInfo.lastName)")
+                    DetailRow(icon: "envelope.fill", label: "Email", value: application.personalInfo.email)
+                    DetailRow(icon: "phone.fill", label: "Téléphone", value: application.personalInfo.phone)
+                    DetailRow(icon: "flag.fill", label: "Nationalité", value: application.personalInfo.nationality)
                 }
 
                 // Professional Info
                 InfoSection(title: "Situation professionnelle") {
-                    DetailRow(label: "Statut", value: application.professionalInfo.employmentStatus.displayName)
-                    DetailRow(label: "Entreprise", value: application.professionalInfo.companyName)
-                    DetailRow(label: "Poste", value: application.professionalInfo.position)
-                    DetailRow(label: "Revenus", value: "€\(Int(application.professionalInfo.monthlyIncome))/mois")
+                    DetailRow(icon: "briefcase.fill", label: "Statut", value: application.professionalInfo.employmentStatus.displayName)
+                    DetailRow(icon: "building.2.fill", label: "Entreprise", value: application.professionalInfo.companyName)
+                    DetailRow(icon: "person.text.rectangle.fill", label: "Poste", value: application.professionalInfo.position)
+                    DetailRow(icon: "eurosign.circle.fill", label: "Revenus", value: "€\(Int(application.professionalInfo.monthlyIncome))/mois")
                 }
 
                 // Documents

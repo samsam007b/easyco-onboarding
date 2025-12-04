@@ -25,20 +25,23 @@ class ApplicationsViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            let request = GetApplicationsRequest()
-            let response = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = GetApplicationsRequest()
+        //     let response = try await networkManager.execute(request)
+        //
+        //     applications = response.applications
+        //     isLoading = false
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            applications = response.applications
-            isLoading = false
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = .server
-            isLoading = false
-        }
+        isLoading = false
     }
 
     func refresh() async {
@@ -97,10 +100,10 @@ class ApplicationFormViewModel: ObservableObject {
 
         // Pre-fill user info if available
         if let user = AuthService.shared.currentUser {
-            firstName = user.firstName
-            lastName = user.lastName
+            firstName = user.firstName ?? ""
+            lastName = user.lastName ?? ""
             email = user.email
-            phone = user.phone ?? ""
+            phone = user.phoneNumber ?? ""
         }
     }
 
@@ -123,7 +126,7 @@ class ApplicationFormViewModel: ObservableObject {
         case 3:
             return !motivation.isEmpty
         case 4:
-            let requiredDocs: [DocumentType] = [.identity, .addressProof, .payslips]
+            let requiredDocs: [DocumentType] = [.idCard, .payslip]
             return requiredDocs.allSatisfy { type in
                 uploadedDocuments.contains(where: { $0.type == type })
             }
@@ -158,65 +161,77 @@ class ApplicationFormViewModel: ObservableObject {
         isSubmitting = true
         error = nil
 
-        do {
-            // Build application data
-            let applicationData = ApplicationFormData(
-                personalInfo: ApplicationFormData.PersonalInfo(
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    phone: phone,
-                    birthDate: birthDate,
-                    nationality: nationality,
-                    currentAddress: currentAddress
-                ),
-                employment: ApplicationFormData.Employment(
-                    status: employmentStatus,
-                    employer: employer.isEmpty ? nil : employer,
-                    position: position.isEmpty ? nil : position,
-                    contractType: employmentStatus == .employee ? contractType : nil,
-                    monthlyIncome: Int(monthlyIncome) ?? 0
-                ),
-                guarantor: hasGuarantor ? ApplicationFormData.Guarantor(
-                    name: guarantorName,
-                    email: guarantorEmail,
-                    phone: guarantorPhone,
-                    relationship: guarantorRelationship
-                ) : nil,
-                preferences: ApplicationFormData.Preferences(
-                    moveInDate: moveInDate,
-                    leaseDuration: leaseDuration,
-                    motivation: motivation
-                )
-            )
+        // TODO: Implement API integration
+        // do {
+        //     // Build application data
+        //     let applicationData = ApplicationFormData(
+        //         personalInfo: ApplicationFormData.PersonalInfo(
+        //             firstName: firstName,
+        //             lastName: lastName,
+        //             email: email,
+        //             phone: phone,
+        //             birthDate: birthDate,
+        //             nationality: nationality,
+        //             currentAddress: currentAddress
+        //         ),
+        //         employment: ApplicationFormData.Employment(
+        //             status: employmentStatus,
+        //             employer: employer.isEmpty ? nil : employer,
+        //             position: position.isEmpty ? nil : position,
+        //             contractType: employmentStatus == .employee ? contractType : nil,
+        //             monthlyIncome: Int(monthlyIncome) ?? 0
+        //         ),
+        //         guarantor: hasGuarantor ? ApplicationFormData.Guarantor(
+        //             name: guarantorName,
+        //             email: guarantorEmail,
+        //             phone: guarantorPhone,
+        //             relationship: guarantorRelationship
+        //         ) : nil,
+        //         preferences: ApplicationFormData.Preferences(
+        //             moveInDate: moveInDate,
+        //             leaseDuration: leaseDuration,
+        //             motivation: motivation
+        //         )
+        //     )
+        //
+        //     // Submit application
+        //     let request = CreateApplicationRequest(
+        //         propertyId: propertyId,
+        //         applicationData: applicationData
+        //     )
+        //     _ = try await networkManager.execute(request)
+        //
+        //     isSubmitting = false
+        //     isSubmitted = true
+        //
+        //     // Play success haptic
+        //     Haptic.notification(.success)
+        //
+        //     // Post notification
+        //     NotificationCenter.default.post(name: .applicationSubmitted, object: nil)
+        //
+        //     return true
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isSubmitting = false
+        //     return false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isSubmitting = false
+        //     return false
+        // }
 
-            // Submit application
-            let request = CreateApplicationRequest(
-                propertyId: propertyId,
-                applicationData: applicationData
-            )
-            _ = try await networkManager.execute(request)
+        isSubmitting = false
+        isSubmitted = true
 
-            isSubmitting = false
-            isSubmitted = true
+        // Play success haptic
+        Haptic.notification(.success)
 
-            // Play success haptic
-            Haptic.notification(.success)
+        // Post notification
+        NotificationCenter.default.post(name: .applicationSubmitted, object: nil)
 
-            // Post notification
-            NotificationCenter.default.post(name: .applicationSubmitted, object: nil)
-
-            return true
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isSubmitting = false
-            return false
-        } catch {
-            self.error = .server
-            isSubmitting = false
-            return false
-        }
+        return true
     }
 
     // MARK: - Document Upload
@@ -271,20 +286,23 @@ class ApplicationStatusViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            let request = GetApplicationRequest(id: applicationId)
-            let app = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = GetApplicationRequest(id: applicationId)
+        //     let app = try await networkManager.execute(request)
+        //
+        //     application = app
+        //     isLoading = false
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            application = app
-            isLoading = false
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = .server
-            isLoading = false
-        }
+        isLoading = false
     }
 
     func refresh() async {

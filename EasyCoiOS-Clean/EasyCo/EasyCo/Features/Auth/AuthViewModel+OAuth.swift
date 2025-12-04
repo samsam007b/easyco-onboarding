@@ -65,7 +65,7 @@ extension AuthViewModel {
             }
         } catch {
             print("❌ Apple Sign-In error: \(error.localizedDescription)")
-            self.error = error as? NetworkError ?? .unknown(error)
+            self.error = error as? AppError ?? .unknown(error)
             self.showError = true
         }
 
@@ -99,7 +99,7 @@ extension AuthViewModel {
 
         } catch {
             print("❌ Google Sign-In error: \(error.localizedDescription)")
-            self.error = error as? NetworkError ?? .unknown(error)
+            self.error = error as? AppError ?? .unknown(error)
             self.showError = true
         }
 

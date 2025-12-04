@@ -5,11 +5,6 @@ import AuthenticationServices
 
 struct OAuthButtonsView: View {
     @ObservedObject var viewModel: AuthViewModel
-    @EnvironmentObject var languageManager: LanguageManager
-
-    private var auth: AuthTranslations {
-        languageManager.getSection(\.auth)
-    }
 
     var body: some View {
         VStack(spacing: Theme.Spacing._3) {
@@ -33,14 +28,15 @@ struct OAuthButtonsView: View {
 
             // Google OAuth Button
             SecondaryButton(
-                auth.continueWithGoogle,
-                color: Theme.GrayColors._800,
-                icon: "g.circle.fill"
-            ) {
-                Task {
-                    await viewModel.signInWithGoogle()
-                }
-            }
+                title: "Continuer avec Google",
+                icon: "g.circle.fill",
+                action: {
+                    Task {
+                        await viewModel.signInWithGoogle()
+                    }
+                },
+                color: Theme.GrayColors._800
+            )
         }
     }
 }

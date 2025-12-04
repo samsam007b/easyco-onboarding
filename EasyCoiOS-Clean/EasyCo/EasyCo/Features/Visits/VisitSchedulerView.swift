@@ -206,7 +206,9 @@ struct VisitSchedulerView: View {
     // MARK: - Time Slots Section
 
     private var timeSlotsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        let gridColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+
+        return VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("Créneaux disponibles")
                     .font(Theme.Typography.title3())
@@ -219,7 +221,7 @@ struct VisitSchedulerView: View {
                     .foregroundColor(Theme.Colors.textSecondary)
             }
 
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+            LazyVGrid(columns: gridColumns, spacing: 12) {
                 ForEach(availableSlots) { slot in
                     Button(action: {
                         selectedTimeSlot = slot
@@ -327,15 +329,18 @@ struct VisitSchedulerView: View {
 
     private func loadAvailableSlots() {
         // Mock available time slots
+        let calendar = Calendar.current
+        let baseDate = selectedDate
+
         availableSlots = [
-            TimeSlot(time: "09:00", isFeatured: false),
-            TimeSlot(time: "10:00", isFeatured: true),
-            TimeSlot(time: "11:00", isFeatured: false),
-            TimeSlot(time: "14:00", isFeatured: true),
-            TimeSlot(time: "15:00", isFeatured: false),
-            TimeSlot(time: "16:00", isFeatured: false),
-            TimeSlot(time: "17:00", isFeatured: true),
-            TimeSlot(time: "18:00", isFeatured: false)
+            TimeSlot(date: calendar.date(bySettingHour: 9, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: false),
+            TimeSlot(date: calendar.date(bySettingHour: 10, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: true),
+            TimeSlot(date: calendar.date(bySettingHour: 11, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: false),
+            TimeSlot(date: calendar.date(bySettingHour: 14, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: true),
+            TimeSlot(date: calendar.date(bySettingHour: 15, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: false),
+            TimeSlot(date: calendar.date(bySettingHour: 16, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: false),
+            TimeSlot(date: calendar.date(bySettingHour: 17, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: true),
+            TimeSlot(date: calendar.date(bySettingHour: 18, minute: 0, second: 0, of: baseDate)!, isAvailable: true, isSelected: false, isFeatured: false)
         ]
     }
 }

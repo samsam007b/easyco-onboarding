@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 // MARK: - Searcher Dashboard ViewModel
 
@@ -88,45 +89,48 @@ class OwnerDashboardViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            let request = GetOwnerDashboardRequest(period: selectedPeriod)
-            let data = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = GetOwnerDashboardRequest(period: selectedPeriod)
+        //     let data = try await networkManager.execute(request)
+        //
+        //     // Update stats
+        //     stats = data.stats
+        //
+        //     // Convert revenue data to chart format
+        //     revenueData = data.revenueData.map { point in
+        //         BarChartData(label: point.label, value: point.value)
+        //     }
+        //
+        //     // Convert occupancy data to chart format
+        //     occupancyData = data.occupancyData.map { point in
+        //         DonutChartData(
+        //             label: point.label,
+        //             value: point.value,
+        //             color: Color(hex: point.color)
+        //         )
+        //     }
+        //
+        //     // Convert views data to chart format
+        //     viewsData = data.viewsData.map { point in
+        //         LineChartData(label: point.label, value: point.value)
+        //     }
+        //
+        //     // Update lists
+        //     properties = data.properties
+        //     pendingApplications = data.pendingApplications
+        //
+        //     isLoading = false
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            // Update stats
-            stats = data.stats
-
-            // Convert revenue data to chart format
-            revenueData = data.revenueData.map { point in
-                BarChartData(label: point.label, value: point.value)
-            }
-
-            // Convert occupancy data to chart format
-            occupancyData = data.occupancyData.map { point in
-                DonutChartData(
-                    label: point.label,
-                    value: point.value,
-                    color: Color(hex: point.color)
-                )
-            }
-
-            // Convert views data to chart format
-            viewsData = data.viewsData.map { point in
-                LineChartData(label: point.label, value: point.value)
-            }
-
-            // Update lists
-            properties = data.properties
-            pendingApplications = data.pendingApplications
-
-            isLoading = false
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = AppError.unknown(error)
-            isLoading = false
-        }
+        isLoading = false
     }
 
     func changePeriod(_ period: TimePeriod) async {
@@ -141,45 +145,63 @@ class OwnerDashboardViewModel: ObservableObject {
     // MARK: - Application Actions
 
     func acceptApplication(_ applicationId: String) async -> Bool {
-        do {
-            let request = UpdateApplicationStatusRequest(
-                id: applicationId,
-                status: .accepted
-            )
-            _ = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = UpdateApplicationStatusRequest(
+        //         id: applicationId,
+        //         status: .accepted
+        //     )
+        //     _ = try await networkManager.execute(request)
+        //
+        //     // Remove from pending list
+        //     pendingApplications.removeAll { $0.id == applicationId }
+        //
+        //     // Play success haptic
+        //     Haptic.notification(.success)
+        //
+        //     return true
+        // } catch {
+        //     print("Accept application error: \(error)")
+        //     return false
+        // }
 
-            // Remove from pending list
-            pendingApplications.removeAll { $0.id == applicationId }
+        // Remove from pending list
+        pendingApplications.removeAll { $0.id == applicationId }
 
-            // Play success haptic
-            Haptic.notification(.success)
+        // Play success haptic
+        Haptic.notification(.success)
 
-            return true
-        } catch {
-            print("Accept application error: \(error)")
-            return false
-        }
+        return true
     }
 
     func rejectApplication(_ applicationId: String) async -> Bool {
-        do {
-            let request = UpdateApplicationStatusRequest(
-                id: applicationId,
-                status: .rejected
-            )
-            _ = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = UpdateApplicationStatusRequest(
+        //         id: applicationId,
+        //         status: .rejected
+        //     )
+        //     _ = try await networkManager.execute(request)
+        //
+        //     // Remove from pending list
+        //     pendingApplications.removeAll { $0.id == applicationId }
+        //
+        //     // Play haptic
+        //     Haptic.impact(.medium)
+        //
+        //     return true
+        // } catch {
+        //     print("Reject application error: \(error)")
+        //     return false
+        // }
 
-            // Remove from pending list
-            pendingApplications.removeAll { $0.id == applicationId }
+        // Remove from pending list
+        pendingApplications.removeAll { $0.id == applicationId }
 
-            // Play haptic
-            Haptic.impact(.medium)
+        // Play haptic
+        Haptic.impact(.medium)
 
-            return true
-        } catch {
-            print("Reject application error: \(error)")
-            return false
-        }
+        return true
     }
 }
 
@@ -206,37 +228,40 @@ class ResidentDashboardViewModel: ObservableObject {
         isLoading = true
         error = nil
 
-        do {
-            let request = GetResidentDashboardRequest()
-            let data = try await networkManager.execute(request)
+        // TODO: Implement API integration
+        // do {
+        //     let request = GetResidentDashboardRequest()
+        //     let data = try await networkManager.execute(request)
+        //
+        //     // Update property info
+        //     currentProperty = data.currentProperty
+        //     nextPayment = data.nextPayment
+        //
+        //     // Convert expenses data to chart format
+        //     expensesData = data.expenses.map { point in
+        //         DonutChartData(
+        //             label: point.label,
+        //             value: point.value,
+        //             color: Color(hex: point.color)
+        //         )
+        //     }
+        //
+        //     // Update lists
+        //     paymentHistory = data.paymentHistory
+        //     maintenanceRequests = data.maintenanceRequests
+        //     documents = data.documents
+        //
+        //     isLoading = false
+        //
+        // } catch let apiError as APIError {
+        //     error = apiError.toAppError
+        //     isLoading = false
+        // } catch {
+        //     self.error = AppError.unknown(error)
+        //     isLoading = false
+        // }
 
-            // Update property info
-            currentProperty = data.currentProperty
-            nextPayment = data.nextPayment
-
-            // Convert expenses data to chart format
-            expensesData = data.expenses.map { point in
-                DonutChartData(
-                    label: point.label,
-                    value: point.value,
-                    color: Color(hex: point.color)
-                )
-            }
-
-            // Update lists
-            paymentHistory = data.paymentHistory
-            maintenanceRequests = data.maintenanceRequests
-            documents = data.documents
-
-            isLoading = false
-
-        } catch let apiError as APIError {
-            error = apiError.toAppError
-            isLoading = false
-        } catch {
-            self.error = AppError.unknown(error)
-            isLoading = false
-        }
+        isLoading = false
     }
 
     func refresh() async {
@@ -251,22 +276,13 @@ class ResidentDashboardViewModel: ObservableObject {
         // TODO: Integrate payment gateway
         // For now, just simulate payment
 
-        do {
-            // API call would go here
-            // let request = PayRentRequest(paymentId: payment.id)
-            // _ = try await networkManager.execute(request)
+        // Play success haptic
+        Haptic.notification(.success)
 
-            // Play success haptic
-            Haptic.notification(.success)
+        // Refresh dashboard
+        await loadDashboard()
 
-            // Refresh dashboard
-            await loadDashboard()
-
-            return true
-        } catch {
-            print("Payment error: \(error)")
-            return false
-        }
+        return true
     }
 }
 

@@ -21,7 +21,25 @@ class PaymentService: ObservableObject {
         // TODO: Implement payment logic
     }
 
-    // TODO: Implement payment service methods
+    func fetchPaymentMethods() async {
+        // TODO: Implement fetching payment methods
+    }
+
+    func fetchPendingPayments() async {
+        // TODO: Implement fetching pending payments
+    }
+
+    func fetchTransactions() async {
+        // TODO: Implement fetching transactions
+    }
+
+    func setDefaultPaymentMethod(id: String) async throws {
+        // TODO: Implement setting default payment method
+    }
+
+    func removePaymentMethod(id: String) async throws {
+        // TODO: Implement removing payment method
+    }
 }
 
 // MARK: - Transaction Model
@@ -29,9 +47,18 @@ struct Transaction: Identifiable {
     let id: String
     let amount: Double
     let date: Date
-    let description: String
+    let description: String?
     let type: TransactionType
     let status: TransactionStatus
+
+    var formattedAmount: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "EUR"
+        let prefix = type == .payment ? "-" : "+"
+        let value = formatter.string(from: NSNumber(value: amount)) ?? "€\(amount)"
+        return "\(prefix)\(value)"
+    }
 
     enum TransactionType {
         case payment

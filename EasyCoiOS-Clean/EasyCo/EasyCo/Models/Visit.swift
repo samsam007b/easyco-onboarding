@@ -172,10 +172,15 @@ struct TimeSlot: Identifiable {
     let date: Date
     let isAvailable: Bool
     let isSelected: Bool
+    var isFeatured: Bool = false
 
     var displayTime: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: date)
+    }
+
+    var time: String {
+        return displayTime
     }
 }
