@@ -422,7 +422,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
       }
 
       // Convert residents to RoommateProfile format
-      const residentProfiles = residents.map(r => mapUserProfileToRoommateProfile(r as any));
+      const residentProfiles = residents.map((r: any) => mapUserProfileToRoommateProfile(r as any));
 
       // Calculate compatibility with all residents
       const matchResult = calculatePropertyRoommateCompatibility(
