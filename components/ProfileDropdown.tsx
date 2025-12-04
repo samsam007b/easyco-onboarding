@@ -72,10 +72,25 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      // Close dropdown first
+      setIsOpen(false);
+
+      // Sign out from Supabase
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('Logout error:', error);
+        toast.error(common.logoutError || 'Erreur lors de la déconnexion');
+        return;
+      }
+
+      // Show success message
       toast.success(common.logoutSuccess || 'Déconnexion réussie');
-      router.push('/');
+
+      // Redirect to home page and force reload to clear all state
+      window.location.href = '/';
     } catch (error) {
+      console.error('Logout error:', error);
       toast.error(common.logoutError || 'Erreur lors de la déconnexion');
     }
   };
