@@ -165,9 +165,53 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   }, [userId, supabase]);
 
   // Fetch searcher profile for property matching
+  // FIXED: Now reads from user_matching_profiles (onboarding QUICK data)
+  // with fallback to user_profiles for backward compatibility
   const { data: searcherProfile } = useQuery<PropertySearcherProfile | null>({
     queryKey: ['searcherProfile', userId],
     queryFn: async () => {
+      // Try user_matching_profiles first (QUICK onboarding)
+      const { data: matchingData, error: matchingError } = await supabase
+        .from('user_matching_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (matchingData) {
+        console.log('✅ Found user_matching_profiles data:', matchingData);
+
+        // Convert user_matching_profiles to PropertySearcherProfile format
+        const profile = {
+          user_id: matchingData.user_id,
+          first_name: matchingData.first_name || '',
+          last_name: matchingData.last_name || '',
+          date_of_birth: matchingData.date_of_birth,
+          gender: matchingData.gender,
+          min_budget: matchingData.min_budget,
+          max_budget: matchingData.max_budget,
+          preferred_neighborhoods: matchingData.preferred_city ? [matchingData.preferred_city] : [],
+          preferred_property_type: matchingData.preferred_room_type ? [matchingData.preferred_room_type] : [],
+          min_bedrooms: matchingData.min_bedrooms,
+          furnished_required: matchingData.furnished_required,
+          required_amenities: matchingData.required_amenities || [],
+          preferred_amenities: matchingData.preferred_amenities || [],
+          cleanliness_level: matchingData.cleanliness_level,
+          social_energy: matchingData.social_energy,
+          smoking: matchingData.is_smoker,
+          pets: matchingData.has_pets,
+          smoking_tolerance: matchingData.smoking_tolerance,
+          pets_tolerance: matchingData.pets_tolerance,
+          core_values: matchingData.core_values || [],
+          wake_up_time: matchingData.wake_up_time,
+          sleep_time: matchingData.sleep_time,
+        };
+
+        console.log('🔄 Converted searcher profile from user_matching_profiles:', profile);
+        return profile;
+      }
+
+      // Fallback to user_profiles for backward compatibility
+      console.log('⚠️ No user_matching_profiles found, trying user_profiles...');
       const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
@@ -175,11 +219,11 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         .single();
 
       if (error || !data) {
-        console.log('❌ No user profile found:', error);
+        console.log('❌ No user profile found in either table:', error);
         return null;
       }
 
-      console.log('✅ User profile data:', data);
+      console.log('✅ User profile data from user_profiles (fallback):', data);
 
       // Convert user_profiles to PropertySearcherProfile format
       // Try both possible column names (min_budget vs budget_min)
@@ -199,8 +243,8 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         preferred_amenities: data.preferred_amenities || [],
         cleanliness_level: data.cleanliness_level,
         social_energy: data.social_energy,
-        smoking: data.smoking,
-        pets: data.pets,
+        smoking: data.smoking || data.is_smoker,
+        pets: data.pets || data.has_pets,
         smoking_tolerance: data.smoking_tolerance,
         pets_tolerance: data.pets_tolerance,
         core_values: data.core_values || [],
@@ -208,7 +252,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         sleep_time: data.sleep_time,
       };
 
-      console.log('🔄 Converted searcher profile:', profile);
+      console.log('🔄 Converted searcher profile from user_profiles:', profile);
       return profile;
     },
     enabled: !!userId,

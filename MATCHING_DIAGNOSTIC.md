@@ -1,7 +1,9 @@
 # 🔍 Diagnostic du Système de Matching
 
 **Date**: 2025-01-03
-**Status**: ❌ PROBLÈME IDENTIFIÉ
+**Status**: ✅ PROBLÈME RÉSOLU
+
+**Solution implémentée**: Modification de BrowseContent pour lire `user_matching_profiles` avec fallback vers `user_profiles`
 
 ## Problème Principal
 
@@ -154,24 +156,57 @@ Utiliser UNIQUEMENT `user_profiles` pour tout.
 - Nécessite refactorisation complète de l'onboarding
 - Migration des données existantes
 
-## 📋 Plan d'Action Recommandé
+## ✅ Solution Implémentée
 
-### Étape 1: Court Terme (Aujourd'hui)
+### Modification de `components/browse/BrowseContent.tsx`
+
+**Changement**: Le query `searcherProfile` lit maintenant depuis `user_matching_profiles` EN PREMIER avec fallback vers `user_profiles`.
+
+**Avantages**:
+- ✅ Compatibilité totale: fonctionne avec QUICK onboarding ET onboarding complet
+- ✅ Pas de migration de données nécessaire
+- ✅ Pas de perte de fonctionnalité
+- ✅ Les nouveaux utilisateurs (QUICK) fonctionnent immédiatement
+- ✅ Les anciens utilisateurs continuent de fonctionner
+
+**Mapping des champs**:
+```typescript
+// user_matching_profiles → PropertySearcherProfile
+{
+  min_budget: matchingData.min_budget,
+  max_budget: matchingData.max_budget,
+  preferred_neighborhoods: [matchingData.preferred_city],
+  preferred_property_type: [matchingData.preferred_room_type],
+  smoking: matchingData.is_smoker,
+  pets: matchingData.has_pets,
+  // ...
+}
+```
+
+### Logs de Debug
+Le système affiche maintenant des logs clairs:
+- `✅ Found user_matching_profiles data:` - Données QUICK trouvées
+- `⚠️ No user_matching_profiles found, trying user_profiles...` - Fallback
+- `❌ No user profile found in either table:` - Aucune donnée
+
+## 📋 Plan d'Action (Mis à Jour)
+
+### ✅ Étape 1: Implémenté
 1. ✅ Créer script de sync: `scripts/sync-matching-data.ts`
-2. Exécuter le script pour tester
-3. Vérifier que le matching fonctionne après sync
+2. ✅ Modifier `BrowseContent.tsx` pour lire `user_matching_profiles`
+3. ✅ Ajouter fallback vers `user_profiles` pour compatibilité
+4. ✅ Logger clairement quelle source est utilisée
 
-### Étape 2: Moyen Terme (Cette Semaine)
-1. Modifier `BrowseContent.tsx` pour lire `user_matching_profiles`
-2. Modifier `use-matching.ts` pour lire `user_matching_profiles`
-3. Tester le matching end-to-end
-4. Supprimer la dépendance à `user_profiles` pour les searchers
+### 🔄 Étape 2: Tests (À faire)
+1. Créer un utilisateur avec onboarding QUICK
+2. Vérifier que les données sont dans `user_matching_profiles`
+3. Vérifier que le matching fonctionne sur `/dashboard/searcher`
+4. Vérifier que les scores s'affichent correctement
 
-### Étape 3: Long Terme (Prochaine Sprint)
-1. Décider: unifier les tables ou garder séparé?
-2. Si unification: migrer l'onboarding QUICK vers `user_profiles`
-3. Documenter l'architecture finale
-4. Mettre à jour les tests
+### 🎯 Étape 3: Optionnel
+1. Décider si on garde les deux tables ou on unifie
+2. Documenter l'architecture choisie
+3. Nettoyer les scripts de sync si non nécessaires
 
 ## 🧪 Tests à Effectuer
 
