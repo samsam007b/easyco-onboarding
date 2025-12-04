@@ -36,16 +36,20 @@ export default function QuickLifestylePage() {
 
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data: matchingProfile } = await supabase
-          .from('user_matching_profiles')
+        const { data: profile } = await supabase
+          .from('user_profiles')
           .select('*')
           .eq('user_id', user.id)
           .single();
 
-        if (matchingProfile) {
-          if (matchingProfile.is_smoker !== null) setIsSmoker(matchingProfile.is_smoker);
-          if (matchingProfile.has_pets !== null) setHasPets(matchingProfile.has_pets);
-          if (matchingProfile.cleanliness_level) setCleanlinessLevel(matchingProfile.cleanliness_level);
+        if (profile) {
+          // Support both old and new field names
+          const isSmokerValue = profile.smoking ?? profile.is_smoker;
+          const hasPetsValue = profile.pets ?? profile.has_pets;
+
+          if (isSmokerValue !== null && isSmokerValue !== undefined) setIsSmoker(isSmokerValue);
+          if (hasPetsValue !== null && hasPetsValue !== undefined) setHasPets(hasPetsValue);
+          if (profile.cleanliness_level) setCleanlinessLevel(profile.cleanliness_level);
         }
       }
     } catch (error) {
@@ -72,12 +76,14 @@ export default function QuickLifestylePage() {
 
       if (user) {
         const { error } = await supabase
-          .from('user_matching_profiles')
+          .from('user_profiles')
           .upsert(
             {
               user_id: user.id,
-              is_smoker: isSmoker,
-              has_pets: hasPets,
+              smoking: isSmoker,
+              is_smoker: isSmoker, // Alias for compatibility
+              pets: hasPets,
+              has_pets: hasPets, // Alias for compatibility
               cleanliness_level: cleanlinessLevel,
               updated_at: new Date().toISOString(),
             },

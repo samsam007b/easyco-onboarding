@@ -41,18 +41,23 @@ export default function QuickBudgetLocationPage() {
 
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data: matchingProfile } = await supabase
-          .from('user_matching_profiles')
+        const { data: profile } = await supabase
+          .from('user_profiles')
           .select('*')
           .eq('user_id', user.id)
           .single();
 
-        if (matchingProfile) {
-          if (matchingProfile.min_budget) setMinBudget(matchingProfile.min_budget);
-          if (matchingProfile.max_budget) setMaxBudget(matchingProfile.max_budget);
-          if (matchingProfile.preferred_city) {
-            setPreferredCity(matchingProfile.preferred_city);
-            setTempCityInput(matchingProfile.preferred_city);
+        if (profile) {
+          // Support both old and new field names
+          const minBudgetValue = profile.min_budget || profile.budget_min;
+          const maxBudgetValue = profile.max_budget || profile.budget_max;
+          const cityValue = profile.preferred_cities?.[0] || profile.current_city;
+
+          if (minBudgetValue) setMinBudget(minBudgetValue);
+          if (maxBudgetValue) setMaxBudget(maxBudgetValue);
+          if (cityValue) {
+            setPreferredCity(cityValue);
+            setTempCityInput(cityValue);
           }
         }
       }
@@ -105,13 +110,16 @@ export default function QuickBudgetLocationPage() {
 
       if (user) {
         const { error } = await supabase
-          .from('user_matching_profiles')
+          .from('user_profiles')
           .upsert(
             {
               user_id: user.id,
               min_budget: minBudget,
               max_budget: maxBudget,
-              preferred_city: preferredCity.trim(),
+              budget_min: minBudget, // Alias for compatibility
+              budget_max: maxBudget, // Alias for compatibility
+              preferred_cities: [preferredCity.trim()],
+              current_city: preferredCity.trim(), // Alias for compatibility
               updated_at: new Date().toISOString(),
             },
             { onConflict: 'user_id' }

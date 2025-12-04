@@ -3,7 +3,7 @@
 **Date**: 2025-01-03
 **Status**: ✅ PROBLÈME RÉSOLU
 
-**Solution implémentée**: Modification de BrowseContent pour lire `user_matching_profiles` avec fallback vers `user_profiles`
+**Solution finale**: Onboarding QUICK modifié pour utiliser `user_profiles` avec aliases de champs
 
 ## Problème Principal
 
@@ -156,57 +156,106 @@ Utiliser UNIQUEMENT `user_profiles` pour tout.
 - Nécessite refactorisation complète de l'onboarding
 - Migration des données existantes
 
-## ✅ Solution Implémentée
+## ✅ Solution Finale Implémentée
 
-### Modification de `components/browse/BrowseContent.tsx`
+### Approche: Table Unifiée `user_profiles`
 
-**Changement**: Le query `searcherProfile` lit maintenant depuis `user_matching_profiles` EN PREMIER avec fallback vers `user_profiles`.
+**Décision**: Utiliser **UNIQUEMENT** `user_profiles` pour toutes les données d'onboarding (QUICK et CORE).
 
-**Avantages**:
-- ✅ Compatibilité totale: fonctionne avec QUICK onboarding ET onboarding complet
-- ✅ Pas de migration de données nécessaire
-- ✅ Pas de perte de fonctionnalité
-- ✅ Les nouveaux utilisateurs (QUICK) fonctionnent immédiatement
-- ✅ Les anciens utilisateurs continuent de fonctionner
+**Raison**: La table `user_matching_profiles` n'existe pas dans la base de données. Plutôt que de la créer, nous unifions tout dans `user_profiles`.
 
-**Mapping des champs**:
+### Modifications Effectuées
+
+#### 1. Onboarding QUICK - Budget & Location
+**Fichier**: `app/onboarding/searcher/quick/budget-location/page.tsx`
+
+**Changements**:
+- ❌ Avant: Sauvegarde dans `user_matching_profiles`
+- ✅ Après: Sauvegarde dans `user_profiles`
+- ✅ Support des aliases de champs (min_budget/budget_min, etc.)
+- ✅ Conversion `preferred_city` (string) → `preferred_cities` (array)
+
 ```typescript
-// user_matching_profiles → PropertySearcherProfile
-{
-  min_budget: matchingData.min_budget,
-  max_budget: matchingData.max_budget,
-  preferred_neighborhoods: [matchingData.preferred_city],
-  preferred_property_type: [matchingData.preferred_room_type],
-  smoking: matchingData.is_smoker,
-  pets: matchingData.has_pets,
-  // ...
-}
+// Lecture avec support d'aliases
+const minBudgetValue = profile.min_budget || profile.budget_min;
+const maxBudgetValue = profile.max_budget || profile.budget_max;
+const cityValue = profile.preferred_cities?.[0] || profile.current_city;
+
+// Sauvegarde avec doubles champs pour compatibilité
+await supabase.from('user_profiles').upsert({
+  min_budget: minBudget,
+  max_budget: maxBudget,
+  budget_min: minBudget, // Alias
+  budget_max: maxBudget, // Alias
+  preferred_cities: [preferredCity.trim()],
+  current_city: preferredCity.trim(), // Alias
+});
 ```
 
-### Logs de Debug
-Le système affiche maintenant des logs clairs:
-- `✅ Found user_matching_profiles data:` - Données QUICK trouvées
-- `⚠️ No user_matching_profiles found, trying user_profiles...` - Fallback
-- `❌ No user profile found in either table:` - Aucune donnée
+#### 2. Onboarding QUICK - Lifestyle
+**Fichier**: `app/onboarding/searcher/quick/lifestyle/page.tsx`
+
+**Changements**:
+- ❌ Avant: Sauvegarde dans `user_matching_profiles`
+- ✅ Après: Sauvegarde dans `user_profiles`
+- ✅ Support des aliases (smoking/is_smoker, pets/has_pets)
+
+```typescript
+// Lecture avec support d'aliases
+const isSmokerValue = profile.smoking ?? profile.is_smoker;
+const hasPetsValue = profile.pets ?? profile.has_pets;
+
+// Sauvegarde avec doubles champs
+await supabase.from('user_profiles').upsert({
+  smoking: isSmoker,
+  is_smoker: isSmoker, // Alias
+  pets: hasPets,
+  has_pets: hasPets, // Alias
+  cleanliness_level: cleanlinessLevel,
+});
+```
+
+### Avantages de cette Solution
+
+✅ **Architecture simplifiée**: Une seule table pour tout
+✅ **Compatibilité rétroactive**: Support des anciens noms de champs
+✅ **Matching fonctionnel**: BrowseContent lit déjà depuis `user_profiles`
+✅ **Pas de migration**: Utilise une table existante
+✅ **Profile completion**: Fonctionne avec les nouveaux champs
+
+### Migration SQL Créée (Optionnelle)
+
+**Fichier**: `supabase/migrations/20250103_create_user_matching_profiles.sql`
+
+Cette migration créerait la table `user_matching_profiles` si on voulait l'approche deux-tables.
+
+**Status**: ❌ Non appliquée (on utilise l'approche table unique à la place)
 
 ## 📋 Plan d'Action (Mis à Jour)
 
-### ✅ Étape 1: Implémenté
-1. ✅ Créer script de sync: `scripts/sync-matching-data.ts`
-2. ✅ Modifier `BrowseContent.tsx` pour lire `user_matching_profiles`
-3. ✅ Ajouter fallback vers `user_profiles` pour compatibilité
-4. ✅ Logger clairement quelle source est utilisée
+### ✅ Étape 1: Implémenté (Table Unifiée)
+1. ✅ Modifier `budget-location/page.tsx` pour utiliser `user_profiles`
+2. ✅ Modifier `lifestyle/page.tsx` pour utiliser `user_profiles`
+3. ✅ Ajouter support des aliases de champs (compatibilité)
+4. ✅ Créer migration SQL (optionnelle, non utilisée)
+5. ✅ Créer scripts de diagnostic
 
-### 🔄 Étape 2: Tests (À faire)
-1. Créer un utilisateur avec onboarding QUICK
-2. Vérifier que les données sont dans `user_matching_profiles`
+### 🔄 Étape 2: À Compléter
+1. ⏳ Modifier `availability/page.tsx` pour utiliser `user_profiles`
+2. ⏳ Modifier `basic-info/page.tsx` pour utiliser `user_profiles`
+3. ⏳ Vérifier tous les autres fichiers QUICK pour cohérence
+
+### 🧪 Étape 3: Tests
+1. Compléter onboarding QUICK avec un nouveau compte
+2. Vérifier que les données sont dans `user_profiles`
 3. Vérifier que le matching fonctionne sur `/dashboard/searcher`
 4. Vérifier que les scores s'affichent correctement
+5. Vérifier que le profile completion fonctionne
 
-### 🎯 Étape 3: Optionnel
-1. Décider si on garde les deux tables ou on unifie
-2. Documenter l'architecture choisie
-3. Nettoyer les scripts de sync si non nécessaires
+### 🎯 Étape 4: Nettoyage
+1. Décider si on garde ou supprime la migration `user_matching_profiles`
+2. Nettoyer les scripts de diagnostic si non nécessaires
+3. Mettre à jour la documentation finale
 
 ## 🧪 Tests à Effectuer
 
