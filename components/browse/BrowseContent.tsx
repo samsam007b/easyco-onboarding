@@ -10,6 +10,8 @@ import { toast } from 'sonner';
 import PropertyCard from '@/components/PropertyCard';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
+import { calculatePropertyRoommateCompatibility } from '@/lib/services/roommate-matching-service';
+import { mapUserProfileToRoommateProfile } from '@/lib/services/roommate-profile-mapper';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
 import type { PropertySearcherProfile } from '@/lib/services/property-matching-service';
 import { AdvancedFilters, type AdvancedFiltersState } from '@/components/filters/AdvancedFilters';
@@ -402,6 +404,39 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
     staleTime: 5 * 60 * 1000,
   });
 
+  // Calculate roommate compatibility scores
+  const propertiesWithRoommateScores = useMemo(() => {
+    if (!propertiesData?.properties || !residentsData || !searcherProfile) {
+      return propertiesData?.properties || [];
+    }
+
+    // Convert searcher profile to RoommateProfile format
+    const searcherRoommateProfile = mapUserProfileToRoommateProfile(searcherProfile as any);
+
+    return propertiesData.properties.map(property => {
+      const residents = residentsData.get(property.id) || [];
+
+      if (residents.length === 0) {
+        // No residents data, skip matching
+        return { ...property, roommateMatch: null };
+      }
+
+      // Convert residents to RoommateProfile format
+      const residentProfiles = residents.map(r => mapUserProfileToRoommateProfile(r as any));
+
+      // Calculate compatibility with all residents
+      const matchResult = calculatePropertyRoommateCompatibility(
+        searcherRoommateProfile,
+        residentProfiles
+      );
+
+      return {
+        ...property,
+        roommateMatch: matchResult,
+      };
+    });
+  }, [propertiesData?.properties, residentsData, searcherProfile]);
+
   const handleSortChange = useCallback((newSort: typeof sortBy) => {
     setSortBy(newSort);
     setCurrentPage(1);
@@ -514,13 +549,13 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
       )}
 
       {/* Content */}
-      {viewMode === 'list' && propertiesData?.properties && (
+      {viewMode === 'list' && propertiesWithRoommateScores && propertiesWithRoommateScores.length > 0 && (
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-6">
             {/* Property Cards */}
             <div className={cn("w-full lg:w-[60%]", showMobileMap && "hidden lg:block")}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {propertiesData.properties.map((property) => {
+                {propertiesWithRoommateScores.map((property) => {
                   const residents = residentsData?.get(property.id) || [];
                   return (
                     <PropertyCard
@@ -528,6 +563,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       property={property}
                       residents={residents}
                       searcherProfile={searcherProfile || undefined}
+                      roommateMatch={property.roommateMatch || undefined}
                       showCompatibilityScore
                       variant="default"
                       onFavoriteClick={handleFavoriteClick}

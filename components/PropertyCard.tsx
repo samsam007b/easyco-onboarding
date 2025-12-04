@@ -6,6 +6,8 @@ import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
 import { useState, memo, useCallback, useMemo } from 'react';
 import { calculatePropertySearcherMatch, getPropertyMatchQuality } from '@/lib/services/property-matching-service';
 import type { PropertyWithResidents, PropertySearcherProfile } from '@/lib/services/property-matching-service';
+import type { RoommateMatchResult } from '@/lib/services/roommate-matching-service';
+import { getCompatibilityDescription } from '@/lib/services/roommate-matching-service';
 
 interface ResidentProfile {
   id: string;
@@ -35,7 +37,8 @@ interface PropertyCardProps {
   residents?: ResidentProfile[];
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
-  searcherProfile?: PropertySearcherProfile; // NEW: For property matching
+  searcherProfile?: PropertySearcherProfile; // OLD: For property matching
+  roommateMatch?: RoommateMatchResult; // NEW: For roommate compatibility
   onFavoriteClick?: (id: string) => void;
   isFavorite?: boolean;
   variant?: 'default' | 'compact';
@@ -49,6 +52,7 @@ function PropertyCard({
   showCompatibilityScore = false,
   compatibilityScore,
   searcherProfile,
+  roommateMatch,
   onFavoriteClick,
   isFavorite = false,
   variant = 'default',
