@@ -583,7 +583,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
             )}>
               <div className={cn(showMobileMap ? "h-full" : "sticky top-24 h-[calc(100vh-7rem)]")}>
                 <SafePropertyMap
-                  properties={propertiesData.properties}
+                  properties={propertiesWithRoommateScores || []}
                   selectedPropertyId={selectedPropertyId || null}
                   onPropertySelect={(id) => setSelectedPropertyId(id || undefined)}
                   className="w-full h-full rounded-2xl overflow-hidden shadow-lg"
