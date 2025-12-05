@@ -290,11 +290,11 @@ export default function AdminDesignSystemPage() {
    ============================================ */
 function GradientSignatureEditor() {
   // Gradient EXACT du bouton "S'inscrire" - 3 couleurs seulement (pas de rose!)
-  // Source: globals.css --gradient-brand: linear-gradient(135deg, #6E56CF 0%, #FF5722 50%, #FFC107 100%)
+  // Source: globals.css --gradient-brand: linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)
   const gradientColors = [
-    { pos: 0, hex: '#6E56CF' },    // Mauve (owner-primary)
+    { pos: 0, hex: '#9256A4' },    // Mauve (owner-primary)
     { pos: 50, hex: '#FF5722' },   // Orange/Coral (resident-primary) - au CENTRE
-    { pos: 100, hex: '#FFC107' },  // Amber (searcher-primary)
+    { pos: 100, hex: '#FFB10B' },  // Amber (searcher-primary)
   ];
 
   const hexToRgb = (hex: string) => {
@@ -409,7 +409,7 @@ function GradientSignatureEditor() {
   }, []);
 
   // Gradient EXACT comme dans globals.css (angle 135deg = oblique)
-  const signatureGradient = 'linear-gradient(135deg, #6E56CF 0%, #FF5722 50%, #FFC107 100%)';
+  const signatureGradient = 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)';
 
   const getRoleGradient = (pos: number, width: number) => {
     if (width <= 2) return getColorAtPosition(pos);
@@ -903,7 +903,7 @@ function ColorsSection() {
           <p className="text-xs text-slate-500 mb-4">Ces couleurs forment le coeur de l'identite visuelle.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <ColorAuditCard
-              hex="#6E56CF"
+              hex="#9256A4"
               name="Owner Primary (Mauve)"
               usage="Couleur principale interface proprietaire"
               justification="Couleur signature du gradient - debut. Evoque la royaute, la possession."
@@ -919,7 +919,7 @@ function ColorsSection() {
               location="globals.css, tailwind.config"
             />
             <ColorAuditCard
-              hex="#FFC107"
+              hex="#FFB10B"
               name="Searcher Primary (Amber)"
               usage="Couleur principale interface chercheur"
               justification="Couleur signature du gradient - fin. Evoque l'energie, la recherche."
@@ -1167,7 +1167,7 @@ function ColorsSection() {
             </div>
             <div className="p-4 rounded-xl border border-green-500/50 bg-green-500/10">
               <div className="flex items-center gap-4 mb-2">
-                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }} />
+                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }} />
                 <div>
                   <h5 className="text-white font-medium">Mauve → Orange → Jaune</h5>
                   <p className="text-xs text-slate-400">Gradient signature officiel</p>
@@ -1984,7 +1984,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl"
-              style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #B76386 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #9256A4 0%, #B76386 100%)' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2014,7 +2014,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
-              style={{ backgroundColor: '#6E56CF' }}
+              style={{ backgroundColor: '#9256A4' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2025,7 +2025,7 @@ function ButtonsSection() {
             </button>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
-              style={{ backgroundColor: '#FF6F3C' }}
+              style={{ backgroundColor: '#FF5722' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2074,10 +2074,10 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 bg-white/90 backdrop-blur-sm hover:bg-white"
-              style={{ borderColor: '#6E56CF', color: '#6E56CF' }}
+              style={{ borderColor: '#9256A4', color: '#9256A4' }}
             >
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF20' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A420' }}>
                   <Building2 className="w-4 h-4" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
@@ -2085,10 +2085,10 @@ function ButtonsSection() {
             </button>
             <button
               className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 bg-white/90 backdrop-blur-sm hover:bg-white"
-              style={{ borderColor: '#FF6F3C', color: '#FF6F3C' }}
+              style={{ borderColor: '#FF5722', color: '#FF5722' }}
             >
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C20' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF572220' }}>
                   <Home className="w-4 h-4" />
                 </div>
                 <span className="text-base">Je suis résident</span>
@@ -2132,17 +2132,17 @@ function ButtonsSection() {
           <p className="text-sm font-semibold text-yellow-400 mb-2">✨ Proposition E - Blanc + accent coloré</p>
           <p className="text-xs text-slate-400 mb-4">Bouton blanc avec icône/bordure gauche colorée - style épuré Apple</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
-            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#6E56CF' }}>
+            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#9256A4' }}>
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A4' }}>
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
               </div>
             </button>
-            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#FF6F3C' }}>
+            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#FF5722' }}>
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF5722' }}>
                   <Home className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je suis résident</span>
@@ -2158,7 +2158,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full hover:scale-105 transition-all"
-              style={{ backgroundColor: '#6E56CF', boxShadow: '0 10px 40px -10px rgba(110, 86, 207, 0.7)' }}
+              style={{ backgroundColor: '#9256A4', boxShadow: '0 10px 40px -10px rgba(110, 86, 207, 0.7)' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2169,7 +2169,7 @@ function ButtonsSection() {
             </button>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full hover:scale-105 transition-all"
-              style={{ backgroundColor: '#FF6F3C', boxShadow: '0 10px 40px -10px rgba(255, 111, 60, 0.7)' }}
+              style={{ backgroundColor: '#FF5722', boxShadow: '0 10px 40px -10px rgba(255, 111, 60, 0.7)' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2188,7 +2188,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-gray-900">
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6E56CF' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A4' }}>
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
@@ -2196,7 +2196,7 @@ function ButtonsSection() {
             </button>
             <button className="group text-gray-900 font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white">
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6F3C' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF5722' }}>
                   <Home className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je suis résident</span>
@@ -2211,7 +2211,7 @@ function ButtonsSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div>
               <p className="text-green-400 font-semibold">A - Solide</p>
-              <code className="text-slate-400">background: #6E56CF</code>
+              <code className="text-slate-400">background: #9256A4</code>
             </div>
             <div>
               <p className="text-blue-400 font-semibold">B - Dégradé subtil</p>
@@ -3672,17 +3672,17 @@ function DropdownsSection() {
                   )}>
                     <span className={cn(
                       "font-medium transition-colors",
-                      lang.active ? "text-[#FF6F3C] font-semibold" : "text-gray-700 hover:text-[#FF6F3C]"
+                      lang.active ? "text-[#FF5722] font-semibold" : "text-gray-700 hover:text-[#FF5722]"
                     )}>
                       {lang.label}
                     </span>
-                    {lang.active && <Check className="w-3.5 h-3.5 text-[#FF6F3C]" />}
+                    {lang.active && <Check className="w-3.5 h-3.5 text-[#FF5722]" />}
                   </button>
                   {index < 3 && <div className="h-px bg-gray-100 mx-3" />}
                 </div>
               ))}
             </div>
-            <p className="text-xs text-slate-500 font-mono">text-[#FF6F3C]</p>
+            <p className="text-xs text-slate-500 font-mono">text-[#FF5722]</p>
           </div>
 
           {/* SEARCHER - Yellow/Orange */}
@@ -3765,9 +3765,9 @@ function DropdownsSection() {
               {/* Stats */}
               <div className="px-3 py-2 bg-gradient-to-br from-purple-100 to-purple-50 border-b border-purple-200">
                 <div className="grid grid-cols-3 gap-1 text-center">
-                  <div><div className="text-sm font-bold text-[#6E56CF]">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
-                  <div className="border-x border-purple-200"><div className="text-sm font-bold text-[#6E56CF]">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
-                  <div><div className="text-sm font-bold text-[#6E56CF]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
+                  <div><div className="text-sm font-bold text-[#9256A4]">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
+                  <div className="border-x border-purple-200"><div className="text-sm font-bold text-[#9256A4]">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
+                  <div><div className="text-sm font-bold text-[#9256A4]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
                 </div>
               </div>
               {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
@@ -3833,9 +3833,9 @@ function DropdownsSection() {
               {/* Stats */}
               <div className="px-3 py-2 bg-gradient-to-br from-orange-100 to-orange-50 border-b border-orange-200">
                 <div className="grid grid-cols-3 gap-1 text-center">
-                  <div><div className="text-sm font-bold text-[#FF6F3C]">2</div><div className="text-[10px] text-gray-600">Tâches</div></div>
-                  <div className="border-x border-orange-200"><div className="text-sm font-bold text-[#FF6F3C]">4</div><div className="text-[10px] text-gray-600">Membres</div></div>
-                  <div><div className="text-sm font-bold text-[#FF6F3C]">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
+                  <div><div className="text-sm font-bold text-[#FF5722]">2</div><div className="text-[10px] text-gray-600">Tâches</div></div>
+                  <div className="border-x border-orange-200"><div className="text-sm font-bold text-[#FF5722]">4</div><div className="text-[10px] text-gray-600">Membres</div></div>
+                  <div><div className="text-sm font-bold text-[#FF5722]">3</div><div className="text-[10px] text-gray-600">Messages</div></div>
                 </div>
               </div>
               {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
@@ -3948,7 +3948,7 @@ function DropdownsSection() {
           <div className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2">
             <div className="px-4 py-3 border-b border-purple-200/50">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-[#6E56CF]" />
+                <Zap className="w-4 h-4 text-[#9256A4]" />
                 Actions Rapides
               </h3>
             </div>
@@ -4062,7 +4062,7 @@ function GradientUsageSection() {
     <div className="space-y-8">
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Utilisation du Gradient Signature</h3>
-        <p className="text-sm text-slate-400 mb-6">Le gradient <code className="text-purple-400">#6E56CF → #FF6F3C → #FFD249</code> doit être utilisé avec parcimonie.</p>
+        <p className="text-sm text-slate-400 mb-6">Le gradient <code className="text-purple-400">#9256A4 → #FF5722 → #FFB10B</code> doit être utilisé avec parcimonie.</p>
 
         {/* Règle d'or */}
         <div className="mb-8 p-4 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 rounded-xl">
@@ -4079,7 +4079,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">Actuel</span>
                 <span className="text-sm font-medium text-white">Landing Page</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>S'inscrire</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>S'inscrire</button>
               <p className="text-xs text-slate-500 mt-2">CTA principal unique</p>
             </div>
 
@@ -4088,7 +4088,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Onboarding - Fin d'étape</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Continuer →</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Continuer →</button>
               <p className="text-xs text-slate-500 mt-2">Marque la progression</p>
             </div>
 
@@ -4097,7 +4097,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Matching - Super Like</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><Star className="w-5 h-5" /> Super Like</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><Star className="w-5 h-5" /> Super Like</button>
               <p className="text-xs text-slate-500 mt-2">Action premium</p>
             </div>
 
@@ -4106,7 +4106,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Badge Vérifié</span>
               </div>
-              <span className="px-3 py-1.5 text-white text-sm rounded-full font-medium inline-flex items-center gap-1" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
+              <span className="px-3 py-1.5 text-white text-sm rounded-full font-medium inline-flex items-center gap-1" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
               <p className="text-xs text-slate-500 mt-2">Statut premium</p>
             </div>
 
@@ -4116,7 +4116,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Empty State</span>
               </div>
               <div className="flex justify-center py-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><Search className="w-8 h-8 text-white" /></div>
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><Search className="w-8 h-8 text-white" /></div>
               </div>
               <p className="text-xs text-slate-500 mt-2 text-center">Attire l'attention</p>
             </div>
@@ -4127,7 +4127,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Logo Mobile</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
                 <span className="text-white font-semibold">EasyCo</span>
               </div>
               <p className="text-xs text-slate-500 mt-2">Rappel de marque</p>
@@ -4145,8 +4145,8 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Navigation</span>
               </div>
               <div className="flex gap-2">
-                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Accueil</button>
-                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)' }}>Recherche</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Accueil</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Recherche</button>
               </div>
               <p className="text-xs text-red-400 mt-2">Perd son impact</p>
             </div>
@@ -4157,8 +4157,8 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Éléments répétitifs</span>
               </div>
               <div className="space-y-1">
-                <div className="p-2 bg-gradient-to-r from-[#6E56CF]/20 to-[#FFD249]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 1</div>
-                <div className="p-2 bg-gradient-to-r from-[#6E56CF]/20 to-[#FFD249]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 2</div>
+                <div className="p-2 bg-gradient-to-r from-[#9256A4]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 1</div>
+                <div className="p-2 bg-gradient-to-r from-[#9256A4]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 2</div>
               </div>
               <p className="text-xs text-red-400 mt-2">Effet arc-en-ciel</p>
             </div>
@@ -5510,19 +5510,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'v1' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v1' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('v1')}
         >
           {selectedVariant === 'v1' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V1</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">V1</span>
               <span className="text-sm font-medium text-white">High Contrast - Bordures marquées</span>
             </div>
 
@@ -5536,12 +5536,12 @@ function SearcherDashboardSection() {
 
               <div className="relative p-5">
                 {/* Floating White Card with Strong Borders */}
-                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/80 border-2 border-[#FFC107]/40 shadow-2xl p-4 overflow-hidden">
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/80 border-2 border-[#FFB10B]/40 shadow-2xl p-4 overflow-hidden">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/70 rounded-full blur-2xl" />
 
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-[#FFC107]/60 shadow-lg flex items-center justify-center grain-medium">
+                      <div className="w-10 h-10 rounded-xl bg-[#FFF9E6] border-2 border-[#FFB10B]/60 shadow-lg flex items-center justify-center grain-medium">
                         <span className="text-sm font-bold text-[#F9A825]">S</span>
                       </div>
                       <div>
@@ -5559,7 +5559,7 @@ function SearcherDashboardSection() {
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border-2 border-[#FFC107]/40 bg-[#FFF9E6]">
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border-2 border-[#FFB10B]/40 bg-[#FFF9E6]">
                             <div className="absolute inset-0 grain-subtle opacity-40" />
                             <div className="relative">
                               <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
@@ -5588,19 +5588,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'v2' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v2' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('v2')}
         >
           {selectedVariant === 'v2' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné ⭐
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V2</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">V2</span>
               <span className="text-sm font-medium text-white">Original - Votre favori</span>
               <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs font-medium">✓ Préféré</span>
             </div>
@@ -5642,7 +5642,7 @@ function SearcherDashboardSection() {
                         const Icon = stat.icon;
                         return (
                           <div key={stat.label} className={cn(
-                            "relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFC107]/30",
+                            "relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFB10B]/30",
                             "bg-[#FFF9E6]"
                           )}>
                             <div className="absolute inset-0 grain-subtle opacity-40" />
@@ -5674,19 +5674,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'v3' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v3' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('v3')}
         >
           {selectedVariant === 'v3' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V3</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">V3</span>
               <span className="text-sm font-medium text-white">Soft Shadow - Ombres douces</span>
             </div>
 
@@ -5724,7 +5724,7 @@ function SearcherDashboardSection() {
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden border border-[#FFC107]/20 bg-[#FFF9E6]" style={{
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden border border-[#FFB10B]/20 bg-[#FFF9E6]" style={{
                             boxShadow: '0 2px 8px rgba(255, 193, 7, 0.08)'
                           }}>
                             <div className="absolute inset-0 grain-subtle opacity-30" />
@@ -5755,19 +5755,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'v4' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'v4' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('v4')}
         >
           {selectedVariant === 'v4' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">V4</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">V4</span>
               <span className="text-sm font-medium text-white">Compact - Optimisé espace</span>
             </div>
 
@@ -5803,7 +5803,7 @@ function SearcherDashboardSection() {
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={stat.label} className="relative rounded-xl p-2 text-center overflow-hidden shadow-sm border border-[#FFC107]/25 bg-[#FFF9E6]">
+                          <div key={stat.label} className="relative rounded-xl p-2 text-center overflow-hidden shadow-sm border border-[#FFB10B]/25 bg-[#FFF9E6]">
                             <div className="absolute inset-0 grain-subtle opacity-35" />
                             <div className="relative">
                               <Icon className="w-3.5 h-3.5 mx-auto mb-0.5 text-[#F9A825]" />
@@ -5832,7 +5832,7 @@ function SearcherDashboardSection() {
       <div className="space-y-6 pt-8 border-t border-slate-700">
         <div className="flex items-center gap-3">
           <h3 className="text-2xl font-bold text-white">Variantes Créatives - Animations & Couleurs</h3>
-          <span className="px-3 py-1 bg-gradient-to-r from-[#FFC107] to-[#F9A825] text-gray-900 rounded-full text-sm font-bold">Expérimental</span>
+          <span className="px-3 py-1 bg-gradient-to-r from-[#FFB10B] to-[#F9A825] text-gray-900 rounded-full text-sm font-bold">Expérimental</span>
         </div>
         <p className="text-slate-400">Explorations créatives avec animations fluides, couleurs inversées, et glassmorphism avancé</p>
 
@@ -5840,19 +5840,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c1' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c1' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c1')}
         >
           {selectedVariant === 'c1' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C1</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C1</span>
               <span className="text-sm font-medium text-white">Amber Glow Pulse - Boutons animés</span>
             </div>
 
@@ -5865,14 +5865,14 @@ function SearcherDashboardSection() {
               }} />
 
               <div className="relative p-5">
-                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/85 border-2 border-[#FFC107]/50 shadow-2xl p-4 overflow-hidden" style={{
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-white/85 border-2 border-[#FFB10B]/50 shadow-2xl p-4 overflow-hidden" style={{
                   boxShadow: '0 0 40px rgba(255, 193, 7, 0.3), 0 8px 32px rgba(0, 0, 0, 0.1)'
                 }}>
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFC107]/30 rounded-full blur-3xl animate-pulse" />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFB10B]/30 rounded-full blur-3xl animate-pulse" />
 
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFC107] to-[#F9A825] border-2 border-white shadow-lg flex items-center justify-center animate-pulse">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFB10B] to-[#F9A825] border-2 border-white shadow-lg flex items-center justify-center animate-pulse">
                         <span className="text-sm font-bold text-white">S</span>
                       </div>
                       <div>
@@ -5891,10 +5891,10 @@ function SearcherDashboardSection() {
                         const Icon = stat.icon;
                         return (
                           <div key={stat.label} className="relative group">
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#FFC107] to-[#F9A825] rounded-2xl blur-sm opacity-0 group-hover:opacity-60 transition-opacity duration-300" style={{
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#FFB10B] to-[#F9A825] rounded-2xl blur-sm opacity-0 group-hover:opacity-60 transition-opacity duration-300" style={{
                               animation: `pulse 2s ease-in-out infinite ${idx * 0.2}s`
                             }} />
-                            <div className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-white border-2 border-[#FFC107]/40 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-[#FFC107]">
+                            <div className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-white border-2 border-[#FFB10B]/40 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-[#FFB10B]">
                               <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825] transition-transform duration-300 group-hover:scale-110" />
                               <p className="text-base font-bold text-gray-900">{stat.value}</p>
                               <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
@@ -5921,19 +5921,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c2' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c2' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c2')}
         >
           {selectedVariant === 'c2' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C2</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C2</span>
               <span className="text-sm font-medium text-white">Dark Amber Inverse - Couleurs inversées</span>
             </div>
 
@@ -5946,20 +5946,20 @@ function SearcherDashboardSection() {
               }} />
 
               <div className="relative p-5">
-                <div className="relative rounded-3xl backdrop-blur-2xl bg-gradient-to-br from-[#2D2416]/80 to-[#1A1410]/80 border-2 border-[#FFC107]/60 shadow-2xl p-4 overflow-hidden" style={{
+                <div className="relative rounded-3xl backdrop-blur-2xl bg-gradient-to-br from-[#2D2416]/80 to-[#1A1410]/80 border-2 border-[#FFB10B]/60 shadow-2xl p-4 overflow-hidden" style={{
                   boxShadow: '0 0 40px rgba(255, 193, 7, 0.4), inset 0 1px 0 rgba(255, 193, 7, 0.2)'
                 }}>
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-[#FFC107]/20 rounded-full blur-3xl" />
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-[#FFB10B]/20 rounded-full blur-3xl" />
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#F9A825]/10 rounded-full blur-3xl" />
 
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFC107] to-[#F9A825] border-2 border-[#FFC107]/30 shadow-xl flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFB10B] to-[#F9A825] border-2 border-[#FFB10B]/30 shadow-xl flex items-center justify-center">
                         <span className="text-sm font-bold text-gray-900">S</span>
                       </div>
                       <div>
                         <h1 className="text-sm font-bold text-[#FFF9E6]">Salut, Sophie !</h1>
-                        <p className="text-[10px] text-[#FFC107] font-medium">Paris • 600-900€</p>
+                        <p className="text-[10px] text-[#FFB10B] font-medium">Paris • 600-900€</p>
                       </div>
                     </div>
 
@@ -5972,7 +5972,7 @@ function SearcherDashboardSection() {
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gradient-to-br from-[#FFC107] to-[#F9A825] border border-[#FFD249] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gradient-to-br from-[#FFB10B] to-[#F9A825] border border-[#FFB10B] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                             <div className="relative">
                               <Icon className="w-4 h-4 mx-auto mb-1 text-gray-900" />
@@ -6001,19 +6001,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c3' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c3' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c3')}
         >
           {selectedVariant === 'c3' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C3</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C3</span>
               <span className="text-sm font-medium text-white">Liquid Glass - Glassmorphism extrême</span>
             </div>
 
@@ -6022,7 +6022,7 @@ function SearcherDashboardSection() {
               background: 'linear-gradient(135deg, rgba(255, 249, 230, 0.8) 0%, rgba(255, 215, 100, 0.6) 50%, rgba(255, 193, 7, 0.4) 100%)',
             }}>
               {/* Animated blobs */}
-              <div className="absolute top-0 left-1/4 w-40 h-40 bg-[#FFC107]/40 rounded-full blur-3xl" style={{
+              <div className="absolute top-0 left-1/4 w-40 h-40 bg-[#FFB10B]/40 rounded-full blur-3xl" style={{
                 animation: 'float 8s ease-in-out infinite'
               }} />
               <div className="absolute bottom-0 right-1/4 w-36 h-36 bg-[#F9A825]/30 rounded-full blur-3xl" style={{
@@ -6042,7 +6042,7 @@ function SearcherDashboardSection() {
                       <div className="w-11 h-11 rounded-2xl backdrop-blur-xl bg-white/70 border-2 border-white/90 shadow-xl flex items-center justify-center" style={{
                         boxShadow: '0 4px 16px rgba(255, 193, 7, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.9)'
                       }}>
-                        <span className="text-sm font-bold bg-gradient-to-br from-[#FFC107] to-[#F9A825] bg-clip-text text-transparent">S</span>
+                        <span className="text-sm font-bold bg-gradient-to-br from-[#FFB10B] to-[#F9A825] bg-clip-text text-transparent">S</span>
                       </div>
                       <div>
                         <h1 className="text-sm font-bold text-gray-900">Salut, Sophie !</h1>
@@ -6060,12 +6060,12 @@ function SearcherDashboardSection() {
                         const Icon = stat.icon;
                         return (
                           <div key={stat.label} className="relative group">
-                            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFC107] to-[#F9A825] rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity duration-500" />
+                            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFB10B] to-[#F9A825] rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity duration-500" />
                             <div className="relative rounded-2xl p-2.5 text-center overflow-hidden backdrop-blur-2xl bg-white/60 border border-white/90 shadow-lg transition-all duration-500 group-hover:bg-white/80 group-hover:scale-110" style={{
                               boxShadow: '0 2px 12px rgba(255, 193, 7, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
                               animation: `float 3s ease-in-out infinite ${idx * 0.3}s`
                             }}>
-                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825] transition-all duration-500 group-hover:text-[#FFC107] group-hover:scale-125" />
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825] transition-all duration-500 group-hover:text-[#FFB10B] group-hover:scale-125" />
                               <p className="text-base font-bold text-gray-900">{stat.value}</p>
                               <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
                             </div>
@@ -6091,19 +6091,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c4' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c4' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c4')}
         >
           {selectedVariant === 'c4' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C4</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C4</span>
               <span className="text-sm font-medium text-white">Neon Amber - Effets néon modernes</span>
             </div>
 
@@ -6114,26 +6114,26 @@ function SearcherDashboardSection() {
               }} />
 
               <div className="relative p-5">
-                <div className="relative rounded-3xl backdrop-blur-xl bg-gray-900/60 border-2 border-[#FFC107] p-4 overflow-hidden" style={{
+                <div className="relative rounded-3xl backdrop-blur-xl bg-gray-900/60 border-2 border-[#FFB10B] p-4 overflow-hidden" style={{
                   boxShadow: '0 0 60px rgba(255, 193, 7, 0.6), 0 0 30px rgba(255, 193, 7, 0.4), inset 0 0 20px rgba(255, 193, 7, 0.1)'
                 }}>
                   {/* Neon glow lines */}
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#FFC107] to-transparent" style={{
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#FFB10B] to-transparent" style={{
                     boxShadow: '0 0 8px rgba(255, 193, 7, 0.8)'
                   }} />
 
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-gray-900 border-2 border-[#FFC107] flex items-center justify-center" style={{
+                      <div className="w-11 h-11 rounded-xl bg-gray-900 border-2 border-[#FFB10B] flex items-center justify-center" style={{
                         boxShadow: '0 0 20px rgba(255, 193, 7, 0.8), inset 0 0 10px rgba(255, 193, 7, 0.2)'
                       }}>
-                        <span className="text-sm font-bold text-[#FFC107]" style={{
+                        <span className="text-sm font-bold text-[#FFB10B]" style={{
                           textShadow: '0 0 10px rgba(255, 193, 7, 0.8)'
                         }}>S</span>
                       </div>
                       <div>
                         <h1 className="text-sm font-bold text-white">Salut, Sophie !</h1>
-                        <p className="text-[10px] text-[#FFC107] font-medium" style={{
+                        <p className="text-[10px] text-[#FFB10B] font-medium" style={{
                           textShadow: '0 0 8px rgba(255, 193, 7, 0.5)'
                         }}>Paris • 600-900€</p>
                       </div>
@@ -6148,18 +6148,18 @@ function SearcherDashboardSection() {
                       ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gray-900/80 border-2 border-[#FFC107]/60 transition-all duration-300 hover:border-[#FFC107] hover:scale-105" style={{
+                          <div key={stat.label} className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-gray-900/80 border-2 border-[#FFB10B]/60 transition-all duration-300 hover:border-[#FFB10B] hover:scale-105" style={{
                             boxShadow: '0 0 20px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.1)'
                           }}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#FFC107]/10 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#FFB10B]/10 to-transparent" />
                             <div className="relative">
-                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#FFC107]" style={{
+                              <Icon className="w-4 h-4 mx-auto mb-1 text-[#FFB10B]" style={{
                                 filter: 'drop-shadow(0 0 4px rgba(255, 193, 7, 0.6))'
                               }} />
                               <p className="text-base font-bold text-white" style={{
                                 textShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
                               }}>{stat.value}</p>
-                              <p className="text-[9px] text-[#FFC107]/80 font-medium">{stat.label}</p>
+                              <p className="text-[9px] text-[#FFB10B]/80 font-medium">{stat.label}</p>
                             </div>
                           </div>
                         );
@@ -6183,25 +6183,25 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c5' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c5' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c5')}
         >
           {selectedVariant === 'c5' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C5</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C5</span>
               <span className="text-sm font-medium text-white">Gradient Paradise - Dégradés animés</span>
             </div>
 
             {/* Dashboard Preview */}
             <div className="relative overflow-hidden rounded-2xl" style={{
-              background: 'linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 25%, #FFD89B 50%, #FFC966 75%, #FFC107 100%)',
+              background: 'linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 25%, #FFD89B 50%, #FFC966 75%, #FFB10B 100%)',
             }}>
               <div className="absolute inset-0" style={{
                 background: 'radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(249, 168, 37, 0.3) 0%, transparent 50%)',
@@ -6219,7 +6219,7 @@ function SearcherDashboardSection() {
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-11 h-11 rounded-2xl border-2 border-white shadow-2xl flex items-center justify-center" style={{
-                        background: 'linear-gradient(135deg, #FFC107 0%, #F9A825 100%)',
+                        background: 'linear-gradient(135deg, #FFB10B 0%, #F9A825 100%)',
                       }}>
                         <span className="text-sm font-bold text-white">S</span>
                       </div>
@@ -6231,9 +6231,9 @@ function SearcherDashboardSection() {
 
                     <div className="grid grid-cols-4 gap-2">
                       {[
-                        { label: 'Groupes', value: '5', icon: Users, gradient: 'from-[#FFC107] to-[#FFD54F]' },
+                        { label: 'Groupes', value: '5', icon: Users, gradient: 'from-[#FFB10B] to-[#FFD54F]' },
                         { label: 'Favoris', value: '12', icon: Home, gradient: 'from-[#FFD54F] to-[#FFECB3]' },
-                        { label: 'Messages', value: '3', icon: MessageCircle, gradient: 'from-[#FFCA28] to-[#FFC107]' },
+                        { label: 'Messages', value: '3', icon: MessageCircle, gradient: 'from-[#FFCA28] to-[#FFB10B]' },
                         { label: 'Profil', value: '85%', icon: Target, gradient: 'from-[#F9A825] to-[#FFB300]' }
                       ].map((stat, idx) => {
                         const Icon = stat.icon;
@@ -6278,19 +6278,19 @@ function SearcherDashboardSection() {
         <div
           className={cn(
             "relative overflow-hidden rounded-3xl border-2 transition-all cursor-pointer",
-            selectedVariant === 'c6' ? 'border-[#FFC107] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
+            selectedVariant === 'c6' ? 'border-[#FFB10B] shadow-2xl' : 'border-slate-700 hover:border-slate-600'
           )}
           onClick={() => setSelectedVariant('c6')}
         >
           {selectedVariant === 'c6' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFC107] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
               Sélectionné
             </div>
           )}
 
           <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
             <div className="mb-3 flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#FFC107]/20 text-[#FFC107] rounded text-xs font-semibold">C6</span>
+              <span className="px-2 py-1 bg-[#FFB10B]/20 text-[#FFB10B] rounded text-xs font-semibold">C6</span>
               <span className="text-sm font-medium text-white">Minimal Zen - Micro-interactions subtiles</span>
             </div>
 
@@ -6300,7 +6300,7 @@ function SearcherDashboardSection() {
                 <div className="relative rounded-3xl bg-[#FFFEF8] border border-gray-200 shadow-sm p-4 overflow-hidden transition-all duration-500 hover:shadow-xl">
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#FFC107] to-[#F9A825] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-6">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#FFB10B] to-[#F9A825] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-6">
                         <span className="text-sm font-bold text-white">S</span>
                       </div>
                       <div>
@@ -6319,10 +6319,10 @@ function SearcherDashboardSection() {
                         const Icon = stat.icon;
                         return (
                           <div key={stat.label} className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#FFC107] to-[#F9A825] rounded-xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500" />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#FFB10B] to-[#F9A825] rounded-xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500" />
                             <div className="relative rounded-xl p-3 text-center bg-white border border-gray-200 transition-all duration-300 group-hover:border-transparent group-hover:-translate-y-1">
-                              <Icon className="w-5 h-5 mx-auto mb-1.5 text-gray-400 transition-all duration-300 group-hover:text-[#FFC107] group-hover:scale-125" />
-                              <p className="text-lg font-bold text-gray-900 transition-all duration-300 group-hover:text-[#FFC107]">{stat.value}</p>
+                              <Icon className="w-5 h-5 mx-auto mb-1.5 text-gray-400 transition-all duration-300 group-hover:text-[#FFB10B] group-hover:scale-125" />
+                              <p className="text-lg font-bold text-gray-900 transition-all duration-300 group-hover:text-[#FFB10B]">{stat.value}</p>
                               <p className="text-[9px] text-gray-500 font-medium uppercase tracking-wide">{stat.label}</p>
                             </div>
                           </div>
@@ -6396,12 +6396,12 @@ function SearcherDashboardSection() {
                   {['Groupes', 'Favoris', 'Messages', 'Profil'].map((label, i) => (
                     <div
                       key={label}
-                      className="relative overflow-hidden rounded-2xl bg-[#FFF9E6] border border-[#FFC107]/40 py-2.5 px-2 hover:bg-[#FFF9E6]/80 transition-colors"
+                      className="relative overflow-hidden rounded-2xl bg-[#FFF9E6] border border-[#FFB10B]/40 py-2.5 px-2 hover:bg-[#FFF9E6]/80 transition-colors"
                     >
                       <div className="absolute inset-0 grain-subtle opacity-50" />
                       <div className="relative text-center">
                         <div className={cn(
-                          "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border border-[#FFC107]/40",
+                          "w-7 h-7 rounded-xl mx-auto mb-1 flex items-center justify-center border border-[#FFB10B]/40",
                           "bg-[#FFF9E6] grain-medium"
                         )}>
                           <Users className="w-4 h-4 text-[#F9A825]" />
@@ -6414,11 +6414,11 @@ function SearcherDashboardSection() {
                 </div>
 
                 {/* Collapsible Section */}
-                <div className="bg-[#FFF9E6] rounded-2xl overflow-hidden border border-[#FFC107]/40 relative">
+                <div className="bg-[#FFF9E6] rounded-2xl overflow-hidden border border-[#FFB10B]/40 relative">
                   <div className="absolute inset-0 grain-subtle opacity-40" />
                   <div className="relative px-3 py-2.5 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-xl bg-[#FFF9E6] border border-[#FFC107]/40 flex items-center justify-center grain-medium">
+                      <div className="w-7 h-7 rounded-xl bg-[#FFF9E6] border border-[#FFB10B]/40 flex items-center justify-center grain-medium">
                         <Target className="w-4 h-4 text-[#F9A825]" />
                       </div>
                       <div>
@@ -6465,7 +6465,7 @@ function SearcherDashboardSection() {
             <div className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl relative overflow-hidden">
               {/* Background gradient blobs */}
               <div className="absolute top-0 left-1/4 w-32 h-32 bg-[#FFF9E6]/60 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#FFC107]/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#FFB10B]/20 rounded-full blur-3xl" />
 
               {/* Main Card */}
               <div className="relative bg-white rounded-3xl p-4 border-2 border-gray-200">
