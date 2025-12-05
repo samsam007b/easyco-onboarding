@@ -365,18 +365,38 @@ function GradientSignatureEditor() {
     };
   };
 
-  // Curseurs INDEPENDANTS - Position + Largeur (valeurs par defaut basees sur le screenshot)
-  const [ownerPos, setOwnerPos] = useState(21);
-  const [ownerWidth, setOwnerWidth] = useState(34);
-  const [residentPos, setResidentPos] = useState(57);
-  const [residentWidth, setResidentWidth] = useState(28);
-  const [searcherPos, setSearcherPos] = useState(95);
-  const [searcherWidth, setSearcherWidth] = useState(50);
+  // Valeurs par défaut
+  const DEFAULT_VALUES = {
+    owner: { pos: 21, width: 34, dominant: 3 },
+    resident: { pos: 57, width: 28, dominant: 3 },
+    searcher: { pos: 95, width: 50, dominant: 3 }
+  };
 
-  // Couleurs dominantes selectionnees (index 1-5, 3 = centre par defaut)
-  const [ownerDominant, setOwnerDominant] = useState<number>(3);
-  const [residentDominant, setResidentDominant] = useState<number>(3);
-  const [searcherDominant, setSearcherDominant] = useState<number>(3);
+  // PREVIEW MODE - Curseurs INDEPENDANTS pour expérimentation (ne modifie PAS les valeurs officielles)
+  const [previewOwnerPos, setPreviewOwnerPos] = useState(21);
+  const [previewOwnerWidth, setPreviewOwnerWidth] = useState(34);
+  const [previewResidentPos, setPreviewResidentPos] = useState(57);
+  const [previewResidentWidth, setPreviewResidentWidth] = useState(28);
+  const [previewSearcherPos, setPreviewSearcherPos] = useState(95);
+  const [previewSearcherWidth, setPreviewSearcherWidth] = useState(50);
+
+  // Couleurs dominantes preview (index 1-5, 3 = centre par defaut)
+  const [previewOwnerDominant, setPreviewOwnerDominant] = useState<number>(3);
+  const [previewResidentDominant, setPreviewResidentDominant] = useState<number>(3);
+  const [previewSearcherDominant, setPreviewSearcherDominant] = useState<number>(3);
+
+  // SAVED MODE - Valeurs officielles sauvegardées (celles qui sont appliquées)
+  const [savedOwnerPos, setSavedOwnerPos] = useState(21);
+  const [savedOwnerWidth, setSavedOwnerWidth] = useState(34);
+  const [savedResidentPos, setSavedResidentPos] = useState(57);
+  const [savedResidentWidth, setSavedResidentWidth] = useState(28);
+  const [savedSearcherPos, setSavedSearcherPos] = useState(95);
+  const [savedSearcherWidth, setSavedSearcherWidth] = useState(50);
+
+  // Couleurs dominantes saved
+  const [savedOwnerDominant, setSavedOwnerDominant] = useState<number>(3);
+  const [savedResidentDominant, setSavedResidentDominant] = useState<number>(3);
+  const [savedSearcherDominant, setSavedSearcherDominant] = useState<number>(3);
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
@@ -387,20 +407,34 @@ function GradientSignatureEditor() {
     if (savedConfig) {
       try {
         const config = JSON.parse(savedConfig);
+
+        // Charger les valeurs SAVED (officielles)
         if (config.owner) {
-          setOwnerPos(config.owner.pos);
-          setOwnerWidth(config.owner.width);
-          setOwnerDominant(config.owner.dominantIndex);
+          setSavedOwnerPos(config.owner.pos);
+          setSavedOwnerWidth(config.owner.width);
+          setSavedOwnerDominant(config.owner.dominantIndex);
+          // Initialiser preview avec les valeurs saved
+          setPreviewOwnerPos(config.owner.pos);
+          setPreviewOwnerWidth(config.owner.width);
+          setPreviewOwnerDominant(config.owner.dominantIndex);
         }
         if (config.resident) {
-          setResidentPos(config.resident.pos);
-          setResidentWidth(config.resident.width);
-          setResidentDominant(config.resident.dominantIndex);
+          setSavedResidentPos(config.resident.pos);
+          setSavedResidentWidth(config.resident.width);
+          setSavedResidentDominant(config.resident.dominantIndex);
+          // Initialiser preview avec les valeurs saved
+          setPreviewResidentPos(config.resident.pos);
+          setPreviewResidentWidth(config.resident.width);
+          setPreviewResidentDominant(config.resident.dominantIndex);
         }
         if (config.searcher) {
-          setSearcherPos(config.searcher.pos);
-          setSearcherWidth(config.searcher.width);
-          setSearcherDominant(config.searcher.dominantIndex);
+          setSavedSearcherPos(config.searcher.pos);
+          setSavedSearcherWidth(config.searcher.width);
+          setSavedSearcherDominant(config.searcher.dominantIndex);
+          // Initialiser preview avec les valeurs saved
+          setPreviewSearcherPos(config.searcher.pos);
+          setPreviewSearcherWidth(config.searcher.width);
+          setPreviewSearcherDominant(config.searcher.dominantIndex);
         }
       } catch (e) {
         console.error('Error loading gradient config:', e);
@@ -418,10 +452,15 @@ function GradientSignatureEditor() {
     return `linear-gradient(to right, ${getColorAtPosition(start)}, ${getColorAtPosition(end)})`;
   };
 
-  // Palettes generees pour chaque role
-  const ownerPalette = generateColorPalette(ownerPos, ownerWidth);
-  const residentPalette = generateColorPalette(residentPos, residentWidth);
-  const searcherPalette = generateColorPalette(searcherPos, searcherWidth);
+  // Palettes PREVIEW (pour test/expérimentation)
+  const previewOwnerPalette = generateColorPalette(previewOwnerPos, previewOwnerWidth);
+  const previewResidentPalette = generateColorPalette(previewResidentPos, previewResidentWidth);
+  const previewSearcherPalette = generateColorPalette(previewSearcherPos, previewSearcherWidth);
+
+  // Palettes SAVED (valeurs officielles)
+  const savedOwnerPalette = generateColorPalette(savedOwnerPos, savedOwnerWidth);
+  const savedResidentPalette = generateColorPalette(savedResidentPos, savedResidentWidth);
+  const savedSearcherPalette = generateColorPalette(savedSearcherPos, savedSearcherWidth);
 
   // Helper pour obtenir la couleur dominante d'une palette
   const getDominantColor = (palette: ReturnType<typeof generateColorPalette>, index: number): string => {
@@ -429,25 +468,58 @@ function GradientSignatureEditor() {
     return colors[index - 1] || palette.color3;
   };
 
-  // Couleurs dominantes actuelles
-  const ownerDominantColor = getDominantColor(ownerPalette, ownerDominant);
-  const residentDominantColor = getDominantColor(residentPalette, residentDominant);
-  const searcherDominantColor = getDominantColor(searcherPalette, searcherDominant);
+  // Couleurs dominantes PREVIEW
+  const previewOwnerDominantColor = getDominantColor(previewOwnerPalette, previewOwnerDominant);
+  const previewResidentDominantColor = getDominantColor(previewResidentPalette, previewResidentDominant);
+  const previewSearcherDominantColor = getDominantColor(previewSearcherPalette, previewSearcherDominant);
 
-  // Fonction de réinitialisation
-  const handleReset = () => {
-    // Valeurs par défaut initiales
-    setOwnerPos(21);
-    setOwnerWidth(34);
-    setOwnerDominant(3);
+  // Couleurs dominantes SAVED
+  const savedOwnerDominantColor = getDominantColor(savedOwnerPalette, savedOwnerDominant);
+  const savedResidentDominantColor = getDominantColor(savedResidentPalette, savedResidentDominant);
+  const savedSearcherDominantColor = getDominantColor(savedSearcherPalette, savedSearcherDominant);
 
-    setResidentPos(57);
-    setResidentWidth(28);
-    setResidentDominant(3);
+  // Fonction de réinitialisation PREVIEW (revenir aux valeurs saved)
+  const handleResetPreview = () => {
+    // Réinitialiser preview avec les valeurs saved actuelles
+    setPreviewOwnerPos(savedOwnerPos);
+    setPreviewOwnerWidth(savedOwnerWidth);
+    setPreviewOwnerDominant(savedOwnerDominant);
 
-    setSearcherPos(95);
-    setSearcherWidth(50);
-    setSearcherDominant(3);
+    setPreviewResidentPos(savedResidentPos);
+    setPreviewResidentWidth(savedResidentWidth);
+    setPreviewResidentDominant(savedResidentDominant);
+
+    setPreviewSearcherPos(savedSearcherPos);
+    setPreviewSearcherWidth(savedSearcherWidth);
+    setPreviewSearcherDominant(savedSearcherDominant);
+
+    setSaveMessage('Preview réinitialisé aux valeurs sauvegardées');
+    setTimeout(() => setSaveMessage(null), 3000);
+  };
+
+  // Fonction de réinitialisation COMPLETE (tout remettre aux valeurs par défaut)
+  const handleResetAll = () => {
+    // Réinitialiser TOUT aux valeurs par défaut
+    setPreviewOwnerPos(DEFAULT_VALUES.owner.pos);
+    setPreviewOwnerWidth(DEFAULT_VALUES.owner.width);
+    setPreviewOwnerDominant(DEFAULT_VALUES.owner.dominant);
+    setSavedOwnerPos(DEFAULT_VALUES.owner.pos);
+    setSavedOwnerWidth(DEFAULT_VALUES.owner.width);
+    setSavedOwnerDominant(DEFAULT_VALUES.owner.dominant);
+
+    setPreviewResidentPos(DEFAULT_VALUES.resident.pos);
+    setPreviewResidentWidth(DEFAULT_VALUES.resident.width);
+    setPreviewResidentDominant(DEFAULT_VALUES.resident.dominant);
+    setSavedResidentPos(DEFAULT_VALUES.resident.pos);
+    setSavedResidentWidth(DEFAULT_VALUES.resident.width);
+    setSavedResidentDominant(DEFAULT_VALUES.resident.dominant);
+
+    setPreviewSearcherPos(DEFAULT_VALUES.searcher.pos);
+    setPreviewSearcherWidth(DEFAULT_VALUES.searcher.width);
+    setPreviewSearcherDominant(DEFAULT_VALUES.searcher.dominant);
+    setSavedSearcherPos(DEFAULT_VALUES.searcher.pos);
+    setSavedSearcherWidth(DEFAULT_VALUES.searcher.width);
+    setSavedSearcherDominant(DEFAULT_VALUES.searcher.dominant);
 
     // Supprimer la config sauvegardée
     localStorage.removeItem('easyco-gradient-config');
@@ -456,42 +528,55 @@ function GradientSignatureEditor() {
     setTimeout(() => setSaveMessage(null), 3000);
   };
 
-  // Fonction de sauvegarde
+  // Fonction de sauvegarde (copie preview → saved)
   const handleSave = async () => {
     setIsSaving(true);
     setSaveMessage(null);
 
+    // Copier les valeurs preview dans saved
+    setSavedOwnerPos(previewOwnerPos);
+    setSavedOwnerWidth(previewOwnerWidth);
+    setSavedOwnerDominant(previewOwnerDominant);
+
+    setSavedResidentPos(previewResidentPos);
+    setSavedResidentWidth(previewResidentWidth);
+    setSavedResidentDominant(previewResidentDominant);
+
+    setSavedSearcherPos(previewSearcherPos);
+    setSavedSearcherWidth(previewSearcherWidth);
+    setSavedSearcherDominant(previewSearcherDominant);
+
     const config = {
       owner: {
-        pos: ownerPos,
-        width: ownerWidth,
-        palette: ownerPalette,
-        dominantIndex: ownerDominant,
-        dominantColor: ownerDominantColor
+        pos: previewOwnerPos,
+        width: previewOwnerWidth,
+        palette: previewOwnerPalette,
+        dominantIndex: previewOwnerDominant,
+        dominantColor: previewOwnerDominantColor
       },
       resident: {
-        pos: residentPos,
-        width: residentWidth,
-        palette: residentPalette,
-        dominantIndex: residentDominant,
-        dominantColor: residentDominantColor
+        pos: previewResidentPos,
+        width: previewResidentWidth,
+        palette: previewResidentPalette,
+        dominantIndex: previewResidentDominant,
+        dominantColor: previewResidentDominantColor
       },
       searcher: {
-        pos: searcherPos,
-        width: searcherWidth,
-        palette: searcherPalette,
-        dominantIndex: searcherDominant,
-        dominantColor: searcherDominantColor
+        pos: previewSearcherPos,
+        width: previewSearcherWidth,
+        palette: previewSearcherPalette,
+        dominantIndex: previewSearcherDominant,
+        dominantColor: previewSearcherDominantColor
       },
     };
 
-    // Sauvegarder dans localStorage pour l'instant
+    // Sauvegarder dans localStorage
     localStorage.setItem('easyco-gradient-config', JSON.stringify(config));
 
     // Simuler un delai pour le feedback
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    setSaveMessage('Configuration sauvegardee!');
+    setSaveMessage('Preview sauvegardé comme gradient officiel !');
     setIsSaving(false);
 
     // Effacer le message apres 3 secondes
@@ -549,10 +634,17 @@ function GradientSignatureEditor() {
 
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-      <h3 className="text-lg font-bold text-white mb-2">Gradient Signature EasyCo</h3>
-      <p className="text-sm text-slate-400 mb-6">
-        Curseurs independants. Met la largeur a 0 pour une couleur unie.
-      </p>
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-lg font-bold text-white mb-1">Gradient Signature EasyCo</h3>
+          <p className="text-sm text-slate-400">
+            Mode Preview : Testez les gradients sans modifier les valeurs officielles
+          </p>
+        </div>
+        <div className="px-3 py-1.5 bg-blue-500/20 border border-blue-500/40 rounded-lg">
+          <span className="text-xs text-blue-300 font-medium">🎨 Mode Expérimentation</span>
+        </div>
+      </div>
 
       {/* GRADIENT ORIGINAL */}
       <div className="mb-8">
@@ -563,97 +655,122 @@ function GradientSignatureEditor() {
         </div>
       </div>
 
-      {/* CURSEURS INDEPENDANTS */}
-      <div className="space-y-6 mb-8">
-        {/* Owner */}
-        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-purple-400 font-bold text-lg">Owner</span>
-            <span className="text-slate-400 text-sm font-mono">
-              {ownerWidth <= 2 ? `Unie @ ${ownerPos}%` : `${Math.max(0, ownerPos - ownerWidth/2).toFixed(0)}% - ${Math.min(100, ownerPos + ownerWidth/2).toFixed(0)}%`}
-            </span>
+      {/* MODE PREVIEW - CURSEURS INDEPENDANTS */}
+      <div className="mb-8 p-5 bg-blue-500/10 border-2 border-blue-500/30 rounded-xl">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+            <Eye className="w-4 h-4 text-white" />
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Position</span>
-            <input type="range" min="0" max="100" value={ownerPos}
-              onChange={(e) => setOwnerPos(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{ownerPos}%</span>
+          <div>
+            <h4 className="font-bold text-white text-sm">Preview / Test</h4>
+            <p className="text-xs text-slate-400">Ajustez les curseurs pour expérimenter (non sauvegardé automatiquement)</p>
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Largeur</span>
-            <input type="range" min="0" max="50" value={ownerWidth}
-              onChange={(e) => setOwnerWidth(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{ownerWidth}%</span>
-          </div>
-          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(ownerPos, ownerWidth) }} />
         </div>
 
-        {/* Resident */}
-        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-orange-400 font-bold text-lg">Resident</span>
-            <span className="text-slate-400 text-sm font-mono">
-              {residentWidth <= 2 ? `Unie @ ${residentPos}%` : `${Math.max(0, residentPos - residentWidth/2).toFixed(0)}% - ${Math.min(100, residentPos + residentWidth/2).toFixed(0)}%`}
-            </span>
+        <div className="space-y-6">
+          {/* Owner Preview */}
+          <div className="p-4 bg-slate-800 rounded-xl space-y-3 border border-slate-600">
+            <div className="flex items-center justify-between">
+              <span className="text-purple-400 font-bold text-lg">Owner</span>
+              <span className="text-slate-400 text-sm font-mono">
+                {previewOwnerWidth <= 2 ? `Unie @ ${previewOwnerPos}%` : `${Math.max(0, previewOwnerPos - previewOwnerWidth/2).toFixed(0)}% - ${Math.min(100, previewOwnerPos + previewOwnerWidth/2).toFixed(0)}%`}
+              </span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Position</span>
+              <input type="range" min="0" max="100" value={previewOwnerPos}
+                onChange={(e) => setPreviewOwnerPos(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewOwnerPos}%</span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Largeur</span>
+              <input type="range" min="0" max="50" value={previewOwnerWidth}
+                onChange={(e) => setPreviewOwnerWidth(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-purple-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewOwnerWidth}%</span>
+            </div>
+            <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(previewOwnerPos, previewOwnerWidth) }} />
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Position</span>
-            <input type="range" min="0" max="100" value={residentPos}
-              onChange={(e) => setResidentPos(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{residentPos}%</span>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Largeur</span>
-            <input type="range" min="0" max="50" value={residentWidth}
-              onChange={(e) => setResidentWidth(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{residentWidth}%</span>
-          </div>
-          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(residentPos, residentWidth) }} />
-        </div>
 
-        {/* Searcher */}
-        <div className="p-4 bg-slate-700/30 rounded-xl space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-yellow-400 font-bold text-lg">Searcher</span>
-            <span className="text-slate-400 text-sm font-mono">
-              {searcherWidth <= 2 ? `Unie @ ${searcherPos}%` : `${Math.max(0, searcherPos - searcherWidth/2).toFixed(0)}% - ${Math.min(100, searcherPos + searcherWidth/2).toFixed(0)}%`}
-            </span>
+          {/* Resident Preview */}
+          <div className="p-4 bg-slate-800 rounded-xl space-y-3 border border-slate-600">
+            <div className="flex items-center justify-between">
+              <span className="text-orange-400 font-bold text-lg">Resident</span>
+              <span className="text-slate-400 text-sm font-mono">
+                {previewResidentWidth <= 2 ? `Unie @ ${previewResidentPos}%` : `${Math.max(0, previewResidentPos - previewResidentWidth/2).toFixed(0)}% - ${Math.min(100, previewResidentPos + previewResidentWidth/2).toFixed(0)}%`}
+              </span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Position</span>
+              <input type="range" min="0" max="100" value={previewResidentPos}
+                onChange={(e) => setPreviewResidentPos(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewResidentPos}%</span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Largeur</span>
+              <input type="range" min="0" max="50" value={previewResidentWidth}
+                onChange={(e) => setPreviewResidentWidth(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-orange-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewResidentWidth}%</span>
+            </div>
+            <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(previewResidentPos, previewResidentWidth) }} />
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Position</span>
-            <input type="range" min="0" max="100" value={searcherPos}
-              onChange={(e) => setSearcherPos(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{searcherPos}%</span>
+
+          {/* Searcher Preview */}
+          <div className="p-4 bg-slate-800 rounded-xl space-y-3 border border-slate-600">
+            <div className="flex items-center justify-between">
+              <span className="text-yellow-400 font-bold text-lg">Searcher</span>
+              <span className="text-slate-400 text-sm font-mono">
+                {previewSearcherWidth <= 2 ? `Unie @ ${previewSearcherPos}%` : `${Math.max(0, previewSearcherPos - previewSearcherWidth/2).toFixed(0)}% - ${Math.min(100, previewSearcherPos + previewSearcherWidth/2).toFixed(0)}%`}
+              </span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Position</span>
+              <input type="range" min="0" max="100" value={previewSearcherPos}
+                onChange={(e) => setPreviewSearcherPos(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewSearcherPos}%</span>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-xs text-slate-400 w-16">Largeur</span>
+              <input type="range" min="0" max="50" value={previewSearcherWidth}
+                onChange={(e) => setPreviewSearcherWidth(Number(e.target.value))}
+                className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
+              <span className="text-xs text-slate-300 w-10 text-right">{previewSearcherWidth}%</span>
+            </div>
+            <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(previewSearcherPos, previewSearcherWidth) }} />
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-xs text-slate-400 w-16">Largeur</span>
-            <input type="range" min="0" max="50" value={searcherWidth}
-              onChange={(e) => setSearcherWidth(Number(e.target.value))}
-              className="flex-1 h-2 bg-slate-700 rounded-lg cursor-pointer accent-yellow-500" />
-            <span className="text-xs text-slate-300 w-10 text-right">{searcherWidth}%</span>
-          </div>
-          <div className="h-14 rounded-xl shadow-lg" style={{ background: getRoleGradient(searcherPos, searcherWidth) }} />
         </div>
       </div>
 
-      {/* APERCU DES BOUTONS AVEC PALETTES */}
-      <div className="mb-8 p-6 bg-slate-700/30 rounded-xl">
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="font-medium text-white">Apercu des boutons</h4>
+      {/* BUTTONS DE CONTROLE ET APERCU */}
+      <div className="mb-8 space-y-6">
+        {/* Boutons de contrôle */}
+        <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl">
+          <div className="flex items-center gap-2">
+            <Info className="w-5 h-5 text-blue-400" />
+            <p className="text-sm text-slate-300">Testez différentes combinaisons puis sauvegardez si vous êtes satisfait</p>
+          </div>
           <div className="flex gap-2">
             <button
-              onClick={handleReset}
+              onClick={handleResetPreview}
               className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Réinitialiser
+              Annuler modifications
+            </button>
+            <button
+              onClick={handleResetAll}
+              className="px-4 py-2 bg-red-600/80 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Tout réinitialiser
             </button>
             <button
               onClick={handleSave}
@@ -670,10 +787,8 @@ function GradientSignatureEditor() {
                 </>
               ) : (
                 <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Sauvegarder
+                  <Save className="w-4 h-4" />
+                  Sauvegarder comme officiel
                 </>
               )}
             </button>
@@ -681,131 +796,189 @@ function GradientSignatureEditor() {
         </div>
 
         {saveMessage && (
-          <div className="mb-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm">
+          <div className="p-3 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm flex items-center gap-2">
+            <CheckCircle className="w-4 h-4" />
             {saveMessage}
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {/* Owner */}
-          <div className="text-center">
-            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
-              style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Interface Owner</button>
-            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
-            <div className="flex justify-center">
-              <ColorSwatches
-                palette={ownerPalette}
-                selectedIndex={ownerDominant}
-                onSelect={setOwnerDominant}
-                role="owner"
-              />
+        {/* APERCU PREVIEW vs SAVED */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Colonne PREVIEW */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded bg-blue-500 flex items-center justify-center">
+                <Eye className="w-4 h-4 text-white" />
+              </div>
+              <h4 className="font-semibold text-white text-sm">Aperçu Preview (Test)</h4>
             </div>
-            {/* Couleur dominante selectionnee */}
-            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
-              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Owner :</p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: ownerDominantColor }} />
-                <code className="text-sm text-purple-400 font-mono">{ownerDominantColor}</code>
+
+            <div className="grid grid-cols-1 gap-4">
+              {/* Owner Preview */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-blue-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+                  style={{ background: getRoleGradient(previewOwnerPos, previewOwnerWidth) }}>Owner</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={previewOwnerPalette}
+                    selectedIndex={previewOwnerDominant}
+                    onSelect={setPreviewOwnerDominant}
+                    role="owner"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-purple-400 font-mono">{previewOwnerDominantColor}</code>
+                </div>
+              </div>
+
+              {/* Resident Preview */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-blue-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+                  style={{ background: getRoleGradient(previewResidentPos, previewResidentWidth) }}>Resident</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={previewResidentPalette}
+                    selectedIndex={previewResidentDominant}
+                    onSelect={setPreviewResidentDominant}
+                    role="resident"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-orange-400 font-mono">{previewResidentDominantColor}</code>
+                </div>
+              </div>
+
+              {/* Searcher Preview */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-blue-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
+                  style={{ background: getRoleGradient(previewSearcherPos, previewSearcherWidth) }}>Searcher</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={previewSearcherPalette}
+                    selectedIndex={previewSearcherDominant}
+                    onSelect={setPreviewSearcherDominant}
+                    role="searcher"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-yellow-400 font-mono">{previewSearcherDominantColor}</code>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Resident */}
-          <div className="text-center">
-            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
-              style={{ background: getRoleGradient(residentPos, residentWidth) }}>Interface Resident</button>
-            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
-            <div className="flex justify-center">
-              <ColorSwatches
-                palette={residentPalette}
-                selectedIndex={residentDominant}
-                onSelect={setResidentDominant}
-                role="resident"
-              />
+          {/* Colonne SAVED (Officiel) */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center">
+                <CheckCircle className="w-4 h-4 text-white" />
+              </div>
+              <h4 className="font-semibold text-white text-sm">Gradients Officiels (Sauvegardés)</h4>
             </div>
-            {/* Couleur dominante selectionnee */}
-            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
-              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Resident :</p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: residentDominantColor }} />
-                <code className="text-sm text-orange-400 font-mono">{residentDominantColor}</code>
+
+            <div className="grid grid-cols-1 gap-4">
+              {/* Owner Saved */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-green-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl mb-3"
+                  style={{ background: getRoleGradient(savedOwnerPos, savedOwnerWidth) }}>Owner</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={savedOwnerPalette}
+                    selectedIndex={savedOwnerDominant}
+                    onSelect={() => {}} // Read-only
+                    role="owner"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-purple-400 font-mono">{savedOwnerDominantColor}</code>
+                </div>
+              </div>
+
+              {/* Resident Saved */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-green-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl mb-3"
+                  style={{ background: getRoleGradient(savedResidentPos, savedResidentWidth) }}>Resident</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={savedResidentPalette}
+                    selectedIndex={savedResidentDominant}
+                    onSelect={() => {}} // Read-only
+                    role="resident"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-orange-400 font-mono">{savedResidentDominantColor}</code>
+                </div>
+              </div>
+
+              {/* Searcher Saved */}
+              <div className="text-center p-4 bg-slate-800 rounded-xl border-2 border-green-500/30">
+                <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl mb-3"
+                  style={{ background: getRoleGradient(savedSearcherPos, savedSearcherWidth) }}>Searcher</button>
+                <div className="flex justify-center mb-2">
+                  <ColorSwatches
+                    palette={savedSearcherPalette}
+                    selectedIndex={savedSearcherDominant}
+                    onSelect={() => {}} // Read-only
+                    role="searcher"
+                  />
+                </div>
+                <div className="mt-4 p-2 bg-slate-700/50 rounded-lg">
+                  <p className="text-[10px] text-slate-400 mb-1">Couleur dominante :</p>
+                  <code className="text-xs text-yellow-400 font-mono">{savedSearcherDominantColor}</code>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Searcher */}
-          <div className="text-center">
-            <button className="w-full px-8 py-3 text-white rounded-full font-semibold shadow-xl hover:scale-105 transition-transform mb-3"
-              style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Interface Searcher</button>
-            <p className="text-xs text-slate-400 mb-2">Clique pour choisir la couleur dominante :</p>
-            <div className="flex justify-center">
-              <ColorSwatches
-                palette={searcherPalette}
-                selectedIndex={searcherDominant}
-                onSelect={setSearcherDominant}
-                role="searcher"
-              />
-            </div>
-            {/* Couleur dominante selectionnee */}
-            <div className="mt-6 p-3 bg-slate-700/50 rounded-lg">
-              <p className="text-[10px] text-slate-400 mb-2">Couleur dominante Searcher :</p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-lg shadow-lg border-2 border-white/20" style={{ background: searcherDominantColor }} />
-                <code className="text-sm text-yellow-400 font-mono">{searcherDominantColor}</code>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p className="text-sm text-slate-400 mb-3">Boutons alignes :</p>
-        <div className="flex gap-0">
-          <button className="flex-1 px-6 py-4 text-white rounded-l-full font-semibold shadow-lg"
-            style={{ background: getRoleGradient(ownerPos, ownerWidth) }}>Owner</button>
-          <button className="flex-1 px-6 py-4 text-white font-semibold shadow-lg"
-            style={{ background: getRoleGradient(residentPos, residentWidth) }}>Resident</button>
-          <button className="flex-1 px-6 py-4 text-white rounded-r-full font-semibold shadow-lg"
-            style={{ background: getRoleGradient(searcherPos, searcherWidth) }}>Searcher</button>
         </div>
       </div>
 
-      {/* CSS GENERE - COMPLET */}
+      {/* CSS GENERE - SAVED (Valeurs officielles) */}
       <div className="p-4 bg-slate-900 rounded-xl">
-        <p className="text-xs text-slate-400 mb-3">Couleurs du gradient (a copier dans globals.css) :</p>
+        <div className="flex items-center gap-2 mb-3">
+          <CheckCircle className="w-4 h-4 text-green-400" />
+          <p className="text-xs text-slate-300 font-medium">Couleurs OFFICIELLES du gradient (à copier dans globals.css) :</p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
           {/* Owner */}
           <div className="space-y-1">
             <div className="text-purple-400 font-bold mb-2">/* OWNER */</div>
-            <div className="bg-purple-500/20 rounded px-1 py-0.5"><span className="text-white">--owner-primary:</span> <code className="text-green-400">{ownerDominantColor};</code> <span className="text-purple-300">/* DOMINANTE */</span></div>
-            <div><span className="text-slate-400">--owner-100:</span> <code className="text-green-400">{ownerPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
-            <div><span className="text-slate-400">--owner-300:</span> <code className="text-green-400">{ownerPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
-            <div><span className="text-slate-400">--owner-500:</span> <code className="text-green-400">{ownerPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
-            <div><span className="text-slate-400">--owner-700:</span> <code className="text-green-400">{ownerPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
-            <div><span className="text-slate-400">--owner-900:</span> <code className="text-green-400">{ownerPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
-            <div className="pt-1"><span className="text-slate-400">--owner-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(ownerPos, ownerWidth)};</code></div>
+            <div className="bg-purple-500/20 rounded px-1 py-0.5"><span className="text-white">--owner-primary:</span> <code className="text-green-400">{savedOwnerDominantColor};</code> <span className="text-purple-300">/* DOMINANTE */</span></div>
+            <div><span className="text-slate-400">--owner-100:</span> <code className="text-green-400">{savedOwnerPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--owner-300:</span> <code className="text-green-400">{savedOwnerPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--owner-500:</span> <code className="text-green-400">{savedOwnerPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--owner-700:</span> <code className="text-green-400">{savedOwnerPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--owner-900:</span> <code className="text-green-400">{savedOwnerPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--owner-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(savedOwnerPos, savedOwnerWidth)};</code></div>
           </div>
 
           {/* Resident */}
           <div className="space-y-1">
             <div className="text-orange-400 font-bold mb-2">/* RESIDENT */</div>
-            <div className="bg-orange-500/20 rounded px-1 py-0.5"><span className="text-white">--resident-primary:</span> <code className="text-green-400">{residentDominantColor};</code> <span className="text-orange-300">/* DOMINANTE */</span></div>
-            <div><span className="text-slate-400">--resident-100:</span> <code className="text-green-400">{residentPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
-            <div><span className="text-slate-400">--resident-300:</span> <code className="text-green-400">{residentPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
-            <div><span className="text-slate-400">--resident-500:</span> <code className="text-green-400">{residentPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
-            <div><span className="text-slate-400">--resident-700:</span> <code className="text-green-400">{residentPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
-            <div><span className="text-slate-400">--resident-900:</span> <code className="text-green-400">{residentPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
-            <div className="pt-1"><span className="text-slate-400">--resident-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(residentPos, residentWidth)};</code></div>
+            <div className="bg-orange-500/20 rounded px-1 py-0.5"><span className="text-white">--resident-primary:</span> <code className="text-green-400">{savedResidentDominantColor};</code> <span className="text-orange-300">/* DOMINANTE */</span></div>
+            <div><span className="text-slate-400">--resident-100:</span> <code className="text-green-400">{savedResidentPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--resident-300:</span> <code className="text-green-400">{savedResidentPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--resident-500:</span> <code className="text-green-400">{savedResidentPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--resident-700:</span> <code className="text-green-400">{savedResidentPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--resident-900:</span> <code className="text-green-400">{savedResidentPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--resident-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(savedResidentPos, savedResidentWidth)};</code></div>
           </div>
 
           {/* Searcher */}
           <div className="space-y-1">
             <div className="text-yellow-400 font-bold mb-2">/* SEARCHER */</div>
-            <div className="bg-yellow-500/20 rounded px-1 py-0.5"><span className="text-white">--searcher-primary:</span> <code className="text-green-400">{searcherDominantColor};</code> <span className="text-yellow-300">/* DOMINANTE */</span></div>
-            <div><span className="text-slate-400">--searcher-100:</span> <code className="text-green-400">{searcherPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
-            <div><span className="text-slate-400">--searcher-300:</span> <code className="text-green-400">{searcherPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
-            <div><span className="text-slate-400">--searcher-500:</span> <code className="text-green-400">{searcherPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
-            <div><span className="text-slate-400">--searcher-700:</span> <code className="text-green-400">{searcherPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
-            <div><span className="text-slate-400">--searcher-900:</span> <code className="text-green-400">{searcherPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
-            <div className="pt-1"><span className="text-slate-400">--searcher-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(searcherPos, searcherWidth)};</code></div>
+            <div className="bg-yellow-500/20 rounded px-1 py-0.5"><span className="text-white">--searcher-primary:</span> <code className="text-green-400">{savedSearcherDominantColor};</code> <span className="text-yellow-300">/* DOMINANTE */</span></div>
+            <div><span className="text-slate-400">--searcher-100:</span> <code className="text-green-400">{savedSearcherPalette.color1};</code> <span className="text-slate-600">/* debut */</span></div>
+            <div><span className="text-slate-400">--searcher-300:</span> <code className="text-green-400">{savedSearcherPalette.color2};</code> <span className="text-slate-600">/* 25% */</span></div>
+            <div><span className="text-slate-400">--searcher-500:</span> <code className="text-green-400">{savedSearcherPalette.color3};</code> <span className="text-slate-600">/* centre */</span></div>
+            <div><span className="text-slate-400">--searcher-700:</span> <code className="text-green-400">{savedSearcherPalette.color4};</code> <span className="text-slate-600">/* 75% */</span></div>
+            <div><span className="text-slate-400">--searcher-900:</span> <code className="text-green-400">{savedSearcherPalette.color5};</code> <span className="text-slate-600">/* fin */</span></div>
+            <div className="pt-1"><span className="text-slate-400">--searcher-gradient:</span> <code className="text-green-400 text-[10px] break-all">{getRoleGradient(savedSearcherPos, savedSearcherWidth)};</code></div>
           </div>
         </div>
       </div>
@@ -4088,209 +4261,11 @@ function DropdownsSection() {
 }
 
 /* ============================================
-   INTERACTIVE GRADIENT EDITOR
-   ============================================ */
-function InteractiveGradientEditor() {
-  // State for each role gradient
-  const [ownerGradient, setOwnerGradient] = useState({
-    start: '#7B5FB8',
-    middle: '#A67BB8',
-    end: '#C98B9E'
-  });
-
-  const [residentGradient, setResidentGradient] = useState({
-    start: '#D97B6F',
-    middle: '#E8865D',
-    end: '#FF8C4B'
-  });
-
-  const [searcherGradient, setSearcherGradient] = useState({
-    start: '#FFA040',
-    middle: '#FFB85C',
-    end: '#FFD080'
-  });
-
-  const [saveStatus, setSaveStatus] = useState<{[key: string]: 'idle' | 'saving' | 'saved'}>({
-    owner: 'idle',
-    resident: 'idle',
-    searcher: 'idle'
-  });
-
-  const handleSaveGradient = async (role: 'owner' | 'resident' | 'searcher') => {
-    setSaveStatus(prev => ({ ...prev, [role]: 'saving' }));
-
-    const gradient = role === 'owner' ? ownerGradient :
-                     role === 'resident' ? residentGradient :
-                     searcherGradient;
-
-    // Simulate save to localStorage (you can extend this to save to database)
-    localStorage.setItem(`gradient_${role}`, JSON.stringify(gradient));
-
-    setTimeout(() => {
-      setSaveStatus(prev => ({ ...prev, [role]: 'saved' }));
-      setTimeout(() => {
-        setSaveStatus(prev => ({ ...prev, [role]: 'idle' }));
-      }, 2000);
-    }, 500);
-  };
-
-  const renderGradientEditor = (
-    role: 'owner' | 'resident' | 'searcher',
-    title: string,
-    gradient: {start: string, middle: string, end: string},
-    setGradient: React.Dispatch<React.SetStateAction<{start: string, middle: string, end: string}>>,
-    primaryColor: string
-  ) => {
-    const gradientCSS = `linear-gradient(135deg, ${gradient.start} 0%, ${gradient.middle} 50%, ${gradient.end} 100%)`;
-    const status = saveStatus[role];
-
-    return (
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="text-lg font-semibold text-white">{title}</h4>
-          <div className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: primaryColor + '20', color: primaryColor }}>
-            {role.toUpperCase()}
-          </div>
-        </div>
-
-        {/* Preview */}
-        <div className="mb-6">
-          <p className="text-xs text-slate-400 mb-2">Prévisualisation:</p>
-          <div className="w-full h-24 rounded-2xl shadow-2xl transition-all duration-300" style={{ background: gradientCSS }} />
-        </div>
-
-        {/* Color Controls */}
-        <div className="space-y-4 mb-6">
-          {/* Start Color */}
-          <div>
-            <label className="block text-xs text-slate-400 mb-2">Couleur de départ</label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={gradient.start}
-                onChange={(e) => setGradient(prev => ({ ...prev, start: e.target.value }))}
-                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
-              />
-              <input
-                type="text"
-                value={gradient.start}
-                onChange={(e) => setGradient(prev => ({ ...prev, start: e.target.value }))}
-                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
-              />
-            </div>
-          </div>
-
-          {/* Middle Color */}
-          <div>
-            <label className="block text-xs text-slate-400 mb-2">Couleur centrale (dominante)</label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={gradient.middle}
-                onChange={(e) => setGradient(prev => ({ ...prev, middle: e.target.value }))}
-                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
-              />
-              <input
-                type="text"
-                value={gradient.middle}
-                onChange={(e) => setGradient(prev => ({ ...prev, middle: e.target.value }))}
-                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
-              />
-            </div>
-          </div>
-
-          {/* End Color */}
-          <div>
-            <label className="block text-xs text-slate-400 mb-2">Couleur de fin</label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={gradient.end}
-                onChange={(e) => setGradient(prev => ({ ...prev, end: e.target.value }))}
-                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
-              />
-              <input
-                type="text"
-                value={gradient.end}
-                onChange={(e) => setGradient(prev => ({ ...prev, end: e.target.value }))}
-                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* CSS Output */}
-        <div className="mb-6 p-4 bg-slate-900 rounded-lg border border-slate-700">
-          <p className="text-xs text-slate-400 mb-2">Code CSS:</p>
-          <code className="text-xs text-green-400 font-mono break-all">
-            background: {gradientCSS};
-          </code>
-        </div>
-
-        {/* Save Button */}
-        <button
-          onClick={() => handleSaveGradient(role)}
-          disabled={status === 'saving'}
-          className="w-full px-4 py-3 rounded-lg font-medium text-white transition-all duration-200 flex items-center justify-center gap-2"
-          style={{
-            background: status === 'saved' ? '#10b981' : gradientCSS,
-            opacity: status === 'saving' ? 0.7 : 1
-          }}
-        >
-          {status === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
-          {status === 'saved' && <CheckCircle className="w-4 h-4" />}
-          {status === 'idle' && <Save className="w-4 h-4" />}
-          {status === 'saving' ? 'Sauvegarde...' : status === 'saved' ? 'Sauvegardé !' : 'Sauvegarder'}
-        </button>
-      </div>
-    );
-  };
-
-  return (
-    <div className="space-y-8">
-      <div className="bg-slate-900 rounded-xl border-2 border-purple-500/30 p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-            <Palette className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-white">Éditeur de Gradients Interactif</h3>
-            <p className="text-sm text-slate-400">Expérimentez avec les gradients de chaque rôle en temps réel</p>
-          </div>
-        </div>
-
-        <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg mb-6">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm text-blue-300 font-medium mb-1">Mode Expérimentation</p>
-              <p className="text-xs text-slate-400">
-                Les changements sont sauvegardés localement et ne modifient pas les couleurs officielles du design system.
-                Utilisez cet outil pour tester différentes combinaisons avant de valider.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {renderGradientEditor('owner', 'Gradient Owner', ownerGradient, setOwnerGradient, '#9c5698')}
-          {renderGradientEditor('resident', 'Gradient Resident', residentGradient, setResidentGradient, '#FF5722')}
-          {renderGradientEditor('searcher', 'Gradient Searcher', searcherGradient, setSearcherGradient, '#FFB10B')}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ============================================
    GRADIENT USAGE SECTION
    ============================================ */
 function GradientUsageSection() {
   return (
     <div className="space-y-8">
-      {/* Interactive Editor */}
-      <InteractiveGradientEditor />
-
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Utilisation du Gradient Signature</h3>
         <p className="text-sm text-slate-400 mb-6">Le gradient <code className="text-purple-400">#9c5698 → #FF5722 → #FFB10B</code> doit être utilisé avec parcimonie.</p>
