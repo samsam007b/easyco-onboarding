@@ -24,6 +24,9 @@ struct ResidentDashboardView: View {
                     // Header
                     headerSection
 
+                    // KPI Cards
+                    kpiCardsSection
+
                     // Current property card
                     if let property = viewModel.currentProperty {
                         currentPropertySection(property)
@@ -33,6 +36,9 @@ struct ResidentDashboardView: View {
                     if let payment = viewModel.nextPayment {
                         nextPaymentSection(payment)
                     }
+
+                    // Hub de colocation
+                    hubSection
 
                     // Expenses breakdown
                     if !viewModel.expensesData.isEmpty {
@@ -107,6 +113,130 @@ struct ResidentDashboardView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             withAnimation {
                 quickActionsAppear = true
+            }
+        }
+    }
+
+    // MARK: - KPI Cards Section
+
+    private var kpiCardsSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                NavigationLink(destination: ResidentHubView()) {
+                    KPICardCompact(
+                        icon: "users",
+                        title: "Colocataires",
+                        value: "\(viewModel.roommatesCount)",
+                        color: Theme.Colors.Resident.primary
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: MessagesListView()) {
+                    KPICardCompact(
+                        icon: "message-circle",
+                        title: "Messages",
+                        value: "\(viewModel.unreadMessages)",
+                        color: Color(hex: "F59E0B"),
+                        hasNotification: viewModel.unreadMessages > 0
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: TasksView()) {
+                    KPICardCompact(
+                        icon: "check-square",
+                        title: "Tâches",
+                        value: "\(viewModel.pendingTasks)",
+                        color: Color(hex: "10B981")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: ExpensesView()) {
+                    KPICardCompact(
+                        icon: "euro",
+                        title: "Charges",
+                        value: "\(viewModel.sharedExpenses)€",
+                        color: Theme.Colors.Resident._400
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.horizontal)
+        }
+    }
+
+    // MARK: - Hub Section
+
+    private var hubSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                HStack(spacing: 8) {
+                    Image.lucide("home")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(Theme.Colors.Resident.primary)
+
+                    Text("Hub de colocation")
+                        .font(Theme.Typography.title3())
+                        .foregroundColor(Theme.Colors.textPrimary)
+                }
+
+                Spacer()
+
+                NavigationLink(destination: ResidentHubView()) {
+                    Text("Voir tout")
+                        .font(Theme.Typography.bodySmall(.semibold))
+                        .foregroundColor(Theme.Colors.Resident.primary)
+                }
+            }
+            .padding(.horizontal)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    NavigationLink(destination: TasksView()) {
+                        HubQuickCard(
+                            icon: "check-square",
+                            title: "Tâches",
+                            subtitle: "\(viewModel.pendingTasks) en cours",
+                            color: Color(hex: "10B981")
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    NavigationLink(destination: ExpensesView()) {
+                        HubQuickCard(
+                            icon: "receipt",
+                            title: "Dépenses",
+                            subtitle: "\(viewModel.sharedExpenses)€ ce mois",
+                            color: Theme.Colors.Resident._400
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    NavigationLink(destination: CalendarView()) {
+                        HubQuickCard(
+                            icon: "calendar",
+                            title: "Calendrier",
+                            subtitle: "\(viewModel.upcomingEvents) événements",
+                            color: Color(hex: "6366F1")
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    NavigationLink(destination: RoommatesView()) {
+                        HubQuickCard(
+                            icon: "users",
+                            title: "Colocataires",
+                            subtitle: "\(viewModel.roommatesCount) personnes",
+                            color: Theme.Colors.Resident.primary
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                .padding(.horizontal)
             }
         }
     }
@@ -230,9 +360,7 @@ struct ResidentDashboardView: View {
                 }
             }
 
-            Button(action: {
-                Haptic.impact(.medium)
-            }) {
+            NavigationLink(destination: PaymentsView()) {
                 HStack {
                     Image.lucide("credit-card")
                         .resizable()
@@ -248,7 +376,6 @@ struct ResidentDashboardView: View {
                 .background(Theme.Gradients.residentCTA)
                 .cornerRadius(Theme.CornerRadius.button)
             }
-            .buttonStyle(ScaleButtonStyle())
         }
         .padding(20)
         .background(Theme.Colors.backgroundPrimary)
@@ -349,7 +476,7 @@ struct ResidentDashboardView: View {
 
                 Spacer()
 
-                NavigationLink(destination: Text("Tous les paiements")) {
+                NavigationLink(destination: PaymentsFullHistoryView()) {
                     Text("Voir tout")
                         .font(Theme.Typography.bodySmall(.semibold))
                         .foregroundColor(Theme.Colors.Resident.primary)
@@ -377,9 +504,7 @@ struct ResidentDashboardView: View {
 
                 Spacer()
 
-                Button(action: {
-                    Haptic.impact(.light)
-                }) {
+                NavigationLink(destination: CreateMaintenanceRequestView()) {
                     HStack(spacing: 6) {
                         Image.lucide("plus")
                             .resizable()
@@ -418,7 +543,7 @@ struct ResidentDashboardView: View {
 
                 Spacer()
 
-                NavigationLink(destination: Text("Tous les documents")) {
+                NavigationLink(destination: DocumentsFullListView()) {
                     Text("Voir tout")
                         .font(Theme.Typography.bodySmall(.semibold))
                         .foregroundColor(Theme.Colors.Resident.primary)
@@ -435,6 +560,94 @@ struct ResidentDashboardView: View {
         }
     }
 
+}
+
+// MARK: - KPI Card Compact
+
+private struct KPICardCompact: View {
+    let icon: String
+    let title: String
+    let value: String
+    let color: Color
+    var hasNotification: Bool = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image.lucide(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 22, height: 22)
+                    .foregroundColor(color)
+
+                Spacer()
+
+                if hasNotification {
+                    Circle()
+                        .fill(color)
+                        .frame(width: 8, height: 8)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(value)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text(title)
+                    .font(Theme.Typography.bodySmall())
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+        }
+        .frame(width: 140)
+        .padding(16)
+        .background(Theme.Colors.backgroundPrimary)
+        .cornerRadius(Theme.CornerRadius.card)
+        .cardShadow()
+    }
+}
+
+// MARK: - Hub Quick Card
+
+private struct HubQuickCard: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Image.lucide(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundColor(.white)
+                .frame(width: 56, height: 56)
+                .background(
+                    LinearGradient(
+                        colors: [color, color.opacity(0.8)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .cornerRadius(14)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(Theme.Typography.body(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text(subtitle)
+                    .font(Theme.Typography.bodySmall())
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+        }
+        .frame(width: 160)
+        .padding(16)
+        .background(Theme.Colors.backgroundPrimary)
+        .cornerRadius(Theme.CornerRadius.card)
+        .cardShadow()
+    }
 }
 
 // MARK: - Supporting Models

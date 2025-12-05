@@ -216,6 +216,13 @@ class ResidentDashboardViewModel: ObservableObject {
     @Published var maintenanceRequests: [MaintenanceRequest] = []
     @Published var documents: [Document] = []
 
+    // Hub data
+    @Published var roommatesCount: Int = 3
+    @Published var unreadMessages: Int = 5
+    @Published var pendingTasks: Int = 4
+    @Published var sharedExpenses: Int = 280
+    @Published var upcomingEvents: Int = 2
+
     @Published var isLoading = false
     @Published var error: AppError?
 

@@ -17,8 +17,8 @@
   --searcher-light: #FFF9E6;
   --searcher-dark: #F9A825;
 
-  /* OWNER - Mauve/Purple (#9256A4 - couleur dominante) */
-  --owner-primary: #9256A4;
+  /* OWNER - Mauve/Purple (#9c5698 - couleur dominante) */
+  --owner-primary: #9c5698;
   --owner-hover: #7B5FB8;
   --owner-light: #F3F1FF;
   --owner-dark: #4A148C;
@@ -30,7 +30,7 @@
   --resident-dark: #D84315;
 
   /* Legacy Brand Colors (backward compatibility) */
-  --easy-purple-900: #9256A4;   /* Primary Owner - UPDATED */
+  --easy-purple-900: #9c5698;   /* Primary Owner - UPDATED */
   --easy-purple-700: #7B5FB8;   /* Hover states */
   --easy-purple-500: #8E7AD6;   /* Lighter purple */
   --easy-purple-300: #BAB2E3;   /* Very light purple */
@@ -58,7 +58,7 @@
      EasyCo Signature Gradient (Brand Identity)
      Uses the 3 role colors: Owner → Resident → Searcher
      ============================================ */
-  --gradient-brand-start: var(--owner-primary);      /* Mauve #9256A4 */
+  --gradient-brand-start: var(--owner-primary);      /* Mauve #9c5698 */
   --gradient-brand-middle: var(--resident-primary);  /* Orange #FF5722 */
   --gradient-brand-end: var(--searcher-primary);     /* Yellow/Gold #FFB10B */
 
@@ -164,7 +164,7 @@
   --owner-200: #E0D9FF;        /* Hover backgrounds */
   --owner-300: #BAB2E3;        /* Borders, dividers */
   --owner-400: #8E7AD6;        /* Icons secondaires */
-  --owner-500: #9256A4;        /* PRINCIPALE - Boutons, highlights */
+  --owner-500: #9c5698;        /* PRINCIPALE - Boutons, highlights */
   --owner-600: #7B5FB8;        /* Hover states actifs */
   --owner-700: #4A148C;        /* Textes importants */
   --owner-800: #38006B;        /* Headers, emphase */
@@ -610,7 +610,7 @@ body.theme-searcher ::selection {
   color: var(--gray-900);
 }
 
-/* OWNER Theme (Mauve/Purple #9256A4) - Default */
+/* OWNER Theme (Mauve/Purple #9c5698) - Default */
 body.theme-owner {
   --role-primary: var(--owner-primary);
   --role-hover: var(--owner-hover);
@@ -835,7 +835,7 @@ body.theme-resident ::selection {
 }
 
 .text-hover-gradient:hover {
-  background: linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%);
+  background: linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

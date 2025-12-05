@@ -17,7 +17,7 @@ Usage: Interface candidat, recherche de logement
 
 ### 🟣 OWNER (Propriétaire)
 ```
-Couleur Dominante: #9256A4
+Couleur Dominante: #9c5698
 Nom: Purple Mauve / Mauve Profond
 Usage: Interface propriétaire, gestion immobilière
 ```
@@ -36,7 +36,7 @@ Usage: Interface locataire, vie quotidienne
 | Rôle | Hex Code | RGB | HSL | Utilisation |
 |------|----------|-----|-----|-------------|
 | **Searcher** | `#FFB10B` | `rgb(255, 177, 11)` | `hsl(41, 100%, 52%)` | Boutons CTA, badges, highlights |
-| **Owner** | `#9256A4` | `rgb(146, 86, 164)` | `hsl(286, 31%, 49%)` | Boutons CTA, badges, highlights |
+| **Owner** | `#9c5698` | `rgb(156, 86, 152)` | `hsl(303, 29%, 47%)` | Boutons CTA, badges, highlights |
 | **Resident** | `#FF5722` | `rgb(255, 87, 34)` | `hsl(14, 100%, 57%)` | Boutons CTA, badges, highlights |
 
 ---
@@ -48,11 +48,11 @@ Usage: Interface locataire, vie quotidienne
 ```css
 /* Couleurs principales des rôles */
 --searcher-primary: #FFB10B;
---owner-primary: #9256A4;
+--owner-primary: #9c5698;
 --resident-primary: #FF5722;
 
 /* Gradient de marque tricolore */
---gradient-brand-start: #9256A4;   /* Owner */
+--gradient-brand-start: #9c5698;   /* Owner */
 --gradient-brand-middle: #FF5722;  /* Resident */
 --gradient-brand-end: #FFB10B;     /* Searcher */
 ```
@@ -65,7 +65,7 @@ Usage: Interface locataire, vie quotidienne
 --searcher-600: #FFA040;  /* Hover */
 
 /* Owner */
---owner-500: #9256A4;     /* Principale */
+--owner-500: #9c5698;     /* Principale */
 --owner-600: #7B5FB8;     /* Hover */
 
 /* Resident */
@@ -81,7 +81,7 @@ Le gradient tricolore EasyCo utilise maintenant les couleurs dominantes validée
 
 ```css
 background: linear-gradient(135deg,
-  #9256A4 0%,    /* Owner - Mauve */
+  #9c5698 0%,    /* Owner - Mauve */
   #FF5722 50%,   /* Resident - Orange */
   #FFB10B 100%   /* Searcher - Jaune doré */
 );
@@ -89,7 +89,7 @@ background: linear-gradient(135deg,
 
 **Visualisation:**
 ```
-████ Owner (#9256A4) → ████ Resident (#FF5722) → ████ Searcher (#FFB10B)
+████ Owner (#9c5698) → ████ Resident (#FF5722) → ████ Searcher (#FFB10B)
 ```
 
 ---
@@ -179,7 +179,7 @@ background: linear-gradient(135deg,
 200: #E0D9FF  ████  Hover backgrounds
 300: #BAB2E3  ████  Borders, dividers
 400: #8E7AD6  ████  Icons secondaires
-500: #9256A4  ████  PRIMARY - Boutons, highlights ★
+500: #9c5698  ████  PRIMARY - Boutons, highlights ★
 600: #7B5FB8  ████  Hover states actifs
 700: #4A148C  ████  Textes importants
 800: #38006B  ████  Headers, emphase
@@ -252,7 +252,7 @@ background: linear-gradient(135deg,
 
 ```
 Searcher: #FFB10B
-Owner:    #9256A4
+Owner:    #9c5698
 Resident: #FF5722
 ```
 

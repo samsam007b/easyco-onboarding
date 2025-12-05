@@ -290,9 +290,9 @@ export default function AdminDesignSystemPage() {
    ============================================ */
 function GradientSignatureEditor() {
   // Gradient EXACT du bouton "S'inscrire" - 3 couleurs seulement (pas de rose!)
-  // Source: globals.css --gradient-brand: linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)
+  // Source: globals.css --gradient-brand: linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)
   const gradientColors = [
-    { pos: 0, hex: '#9256A4' },    // Mauve (owner-primary)
+    { pos: 0, hex: '#9c5698' },    // Mauve (owner-primary)
     { pos: 50, hex: '#FF5722' },   // Orange/Coral (resident-primary) - au CENTRE
     { pos: 100, hex: '#FFB10B' },  // Amber (searcher-primary)
   ];
@@ -409,7 +409,7 @@ function GradientSignatureEditor() {
   }, []);
 
   // Gradient EXACT comme dans globals.css (angle 135deg = oblique)
-  const signatureGradient = 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)';
+  const signatureGradient = 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)';
 
   const getRoleGradient = (pos: number, width: number) => {
     if (width <= 2) return getColorAtPosition(pos);
@@ -903,7 +903,7 @@ function ColorsSection() {
           <p className="text-xs text-slate-500 mb-4">Ces couleurs forment le coeur de l'identite visuelle.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <ColorAuditCard
-              hex="#9256A4"
+              hex="#9c5698"
               name="Owner Primary (Mauve)"
               usage="Couleur principale interface proprietaire"
               justification="Couleur signature du gradient - debut. Evoque la royaute, la possession."
@@ -1167,7 +1167,7 @@ function ColorsSection() {
             </div>
             <div className="p-4 rounded-xl border border-green-500/50 bg-green-500/10">
               <div className="flex items-center gap-4 mb-2">
-                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }} />
+                <div className="w-24 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }} />
                 <div>
                   <h5 className="text-white font-medium">Mauve → Orange → Jaune</h5>
                   <p className="text-xs text-slate-400">Gradient signature officiel</p>
@@ -1984,7 +1984,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl"
-              style={{ background: 'linear-gradient(135deg, #9256A4 0%, #B76386 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #9c5698 0%, #B76386 100%)' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2014,7 +2014,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
-              style={{ backgroundColor: '#9256A4' }}
+              style={{ backgroundColor: '#9c5698' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2074,10 +2074,10 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all border-2 bg-white/90 backdrop-blur-sm hover:bg-white"
-              style={{ borderColor: '#9256A4', color: '#9256A4' }}
+              style={{ borderColor: '#9c5698', color: '#9c5698' }}
             >
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A420' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9c569820' }}>
                   <Building2 className="w-4 h-4" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
@@ -2132,9 +2132,9 @@ function ButtonsSection() {
           <p className="text-sm font-semibold text-yellow-400 mb-2">✨ Proposition E - Blanc + accent coloré</p>
           <p className="text-xs text-slate-400 mb-4">Bouton blanc avec icône/bordure gauche colorée - style épuré Apple</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
-            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#9256A4' }}>
+            <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#9c5698' }}>
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A4' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9c5698' }}>
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
@@ -2158,7 +2158,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group text-white font-bold px-8 py-5 rounded-full hover:scale-105 transition-all"
-              style={{ backgroundColor: '#9256A4', boxShadow: '0 10px 40px -10px rgba(110, 86, 207, 0.7)' }}
+              style={{ backgroundColor: '#9c5698', boxShadow: '0 10px 40px -10px rgba(110, 86, 207, 0.7)' }}
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -2188,7 +2188,7 @@ function ButtonsSection() {
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-gray-900">
               <div className="flex items-center justify-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9256A4' }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#9c5698' }}>
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-base">Je loue mon bien</span>
@@ -2211,7 +2211,7 @@ function ButtonsSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div>
               <p className="text-green-400 font-semibold">A - Solide</p>
-              <code className="text-slate-400">background: #9256A4</code>
+              <code className="text-slate-400">background: #9c5698</code>
             </div>
             <div>
               <p className="text-blue-400 font-semibold">B - Dégradé subtil</p>
@@ -3765,9 +3765,9 @@ function DropdownsSection() {
               {/* Stats */}
               <div className="px-3 py-2 bg-gradient-to-br from-purple-100 to-purple-50 border-b border-purple-200">
                 <div className="grid grid-cols-3 gap-1 text-center">
-                  <div><div className="text-sm font-bold text-[#9256A4]">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
-                  <div className="border-x border-purple-200"><div className="text-sm font-bold text-[#9256A4]">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
-                  <div><div className="text-sm font-bold text-[#9256A4]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
+                  <div><div className="text-sm font-bold text-[#9c5698]">€0</div><div className="text-[10px] text-gray-600">Revenus</div></div>
+                  <div className="border-x border-purple-200"><div className="text-sm font-bold text-[#9c5698]">0%</div><div className="text-[10px] text-gray-600">ROI</div></div>
+                  <div><div className="text-sm font-bold text-[#9c5698]">0%</div><div className="text-[10px] text-gray-600">Occupation</div></div>
                 </div>
               </div>
               {/* Menu - Style V1 Flat: fond pastel + icône colorée */}
@@ -3948,7 +3948,7 @@ function DropdownsSection() {
           <div className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2">
             <div className="px-4 py-3 border-b border-purple-200/50">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-[#9256A4]" />
+                <Zap className="w-4 h-4 text-[#9c5698]" />
                 Actions Rapides
               </h3>
             </div>
@@ -4055,14 +4055,212 @@ function DropdownsSection() {
 }
 
 /* ============================================
+   INTERACTIVE GRADIENT EDITOR
+   ============================================ */
+function InteractiveGradientEditor() {
+  // State for each role gradient
+  const [ownerGradient, setOwnerGradient] = useState({
+    start: '#7B5FB8',
+    middle: '#A67BB8',
+    end: '#C98B9E'
+  });
+
+  const [residentGradient, setResidentGradient] = useState({
+    start: '#D97B6F',
+    middle: '#E8865D',
+    end: '#FF8C4B'
+  });
+
+  const [searcherGradient, setSearcherGradient] = useState({
+    start: '#FFA040',
+    middle: '#FFB85C',
+    end: '#FFD080'
+  });
+
+  const [saveStatus, setSaveStatus] = useState<{[key: string]: 'idle' | 'saving' | 'saved'}>({
+    owner: 'idle',
+    resident: 'idle',
+    searcher: 'idle'
+  });
+
+  const handleSaveGradient = async (role: 'owner' | 'resident' | 'searcher') => {
+    setSaveStatus(prev => ({ ...prev, [role]: 'saving' }));
+
+    const gradient = role === 'owner' ? ownerGradient :
+                     role === 'resident' ? residentGradient :
+                     searcherGradient;
+
+    // Simulate save to localStorage (you can extend this to save to database)
+    localStorage.setItem(`gradient_${role}`, JSON.stringify(gradient));
+
+    setTimeout(() => {
+      setSaveStatus(prev => ({ ...prev, [role]: 'saved' }));
+      setTimeout(() => {
+        setSaveStatus(prev => ({ ...prev, [role]: 'idle' }));
+      }, 2000);
+    }, 500);
+  };
+
+  const renderGradientEditor = (
+    role: 'owner' | 'resident' | 'searcher',
+    title: string,
+    gradient: {start: string, middle: string, end: string},
+    setGradient: React.Dispatch<React.SetStateAction<{start: string, middle: string, end: string}>>,
+    primaryColor: string
+  ) => {
+    const gradientCSS = `linear-gradient(135deg, ${gradient.start} 0%, ${gradient.middle} 50%, ${gradient.end} 100%)`;
+    const status = saveStatus[role];
+
+    return (
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-lg font-semibold text-white">{title}</h4>
+          <div className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: primaryColor + '20', color: primaryColor }}>
+            {role.toUpperCase()}
+          </div>
+        </div>
+
+        {/* Preview */}
+        <div className="mb-6">
+          <p className="text-xs text-slate-400 mb-2">Prévisualisation:</p>
+          <div className="w-full h-24 rounded-2xl shadow-2xl transition-all duration-300" style={{ background: gradientCSS }} />
+        </div>
+
+        {/* Color Controls */}
+        <div className="space-y-4 mb-6">
+          {/* Start Color */}
+          <div>
+            <label className="block text-xs text-slate-400 mb-2">Couleur de départ</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={gradient.start}
+                onChange={(e) => setGradient(prev => ({ ...prev, start: e.target.value }))}
+                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
+              />
+              <input
+                type="text"
+                value={gradient.start}
+                onChange={(e) => setGradient(prev => ({ ...prev, start: e.target.value }))}
+                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
+              />
+            </div>
+          </div>
+
+          {/* Middle Color */}
+          <div>
+            <label className="block text-xs text-slate-400 mb-2">Couleur centrale (dominante)</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={gradient.middle}
+                onChange={(e) => setGradient(prev => ({ ...prev, middle: e.target.value }))}
+                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
+              />
+              <input
+                type="text"
+                value={gradient.middle}
+                onChange={(e) => setGradient(prev => ({ ...prev, middle: e.target.value }))}
+                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
+              />
+            </div>
+          </div>
+
+          {/* End Color */}
+          <div>
+            <label className="block text-xs text-slate-400 mb-2">Couleur de fin</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={gradient.end}
+                onChange={(e) => setGradient(prev => ({ ...prev, end: e.target.value }))}
+                className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-600"
+              />
+              <input
+                type="text"
+                value={gradient.end}
+                onChange={(e) => setGradient(prev => ({ ...prev, end: e.target.value }))}
+                className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* CSS Output */}
+        <div className="mb-6 p-4 bg-slate-900 rounded-lg border border-slate-700">
+          <p className="text-xs text-slate-400 mb-2">Code CSS:</p>
+          <code className="text-xs text-green-400 font-mono break-all">
+            background: {gradientCSS};
+          </code>
+        </div>
+
+        {/* Save Button */}
+        <button
+          onClick={() => handleSaveGradient(role)}
+          disabled={status === 'saving'}
+          className="w-full px-4 py-3 rounded-lg font-medium text-white transition-all duration-200 flex items-center justify-center gap-2"
+          style={{
+            background: status === 'saved' ? '#10b981' : gradientCSS,
+            opacity: status === 'saving' ? 0.7 : 1
+          }}
+        >
+          {status === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
+          {status === 'saved' && <CheckCircle className="w-4 h-4" />}
+          {status === 'idle' && <Save className="w-4 h-4" />}
+          {status === 'saving' ? 'Sauvegarde...' : status === 'saved' ? 'Sauvegardé !' : 'Sauvegarder'}
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="bg-slate-900 rounded-xl border-2 border-purple-500/30 p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <Palette className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-white">Éditeur de Gradients Interactif</h3>
+            <p className="text-sm text-slate-400">Expérimentez avec les gradients de chaque rôle en temps réel</p>
+          </div>
+        </div>
+
+        <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg mb-6">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm text-blue-300 font-medium mb-1">Mode Expérimentation</p>
+              <p className="text-xs text-slate-400">
+                Les changements sont sauvegardés localement et ne modifient pas les couleurs officielles du design system.
+                Utilisez cet outil pour tester différentes combinaisons avant de valider.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {renderGradientEditor('owner', 'Gradient Owner', ownerGradient, setOwnerGradient, '#9c5698')}
+          {renderGradientEditor('resident', 'Gradient Resident', residentGradient, setResidentGradient, '#FF5722')}
+          {renderGradientEditor('searcher', 'Gradient Searcher', searcherGradient, setSearcherGradient, '#FFB10B')}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
    GRADIENT USAGE SECTION
    ============================================ */
 function GradientUsageSection() {
   return (
     <div className="space-y-8">
+      {/* Interactive Editor */}
+      <InteractiveGradientEditor />
+
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h3 className="text-lg font-bold text-white mb-2">Utilisation du Gradient Signature</h3>
-        <p className="text-sm text-slate-400 mb-6">Le gradient <code className="text-purple-400">#9256A4 → #FF5722 → #FFB10B</code> doit être utilisé avec parcimonie.</p>
+        <p className="text-sm text-slate-400 mb-6">Le gradient <code className="text-purple-400">#9c5698 → #FF5722 → #FFB10B</code> doit être utilisé avec parcimonie.</p>
 
         {/* Règle d'or */}
         <div className="mb-8 p-4 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 rounded-xl">
@@ -4079,7 +4277,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">Actuel</span>
                 <span className="text-sm font-medium text-white">Landing Page</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>S'inscrire</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}>S'inscrire</button>
               <p className="text-xs text-slate-500 mt-2">CTA principal unique</p>
             </div>
 
@@ -4088,7 +4286,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Onboarding - Fin d'étape</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Continuer →</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}>Continuer →</button>
               <p className="text-xs text-slate-500 mt-2">Marque la progression</p>
             </div>
 
@@ -4097,7 +4295,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Matching - Super Like</span>
               </div>
-              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><Star className="w-5 h-5" /> Super Like</button>
+              <button className="w-full px-6 py-3 text-white rounded-full font-semibold shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}><Star className="w-5 h-5" /> Super Like</button>
               <p className="text-xs text-slate-500 mt-2">Action premium</p>
             </div>
 
@@ -4106,7 +4304,7 @@ function GradientUsageSection() {
                 <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Proposition</span>
                 <span className="text-sm font-medium text-white">Badge Vérifié</span>
               </div>
-              <span className="px-3 py-1.5 text-white text-sm rounded-full font-medium inline-flex items-center gap-1" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
+              <span className="px-3 py-1.5 text-white text-sm rounded-full font-medium inline-flex items-center gap-1" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}><ShieldCheck className="w-4 h-4" /> Profil Vérifié</span>
               <p className="text-xs text-slate-500 mt-2">Statut premium</p>
             </div>
 
@@ -4116,7 +4314,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Empty State</span>
               </div>
               <div className="flex justify-center py-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><Search className="w-8 h-8 text-white" /></div>
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}><Search className="w-8 h-8 text-white" /></div>
               </div>
               <p className="text-xs text-slate-500 mt-2 text-center">Attire l'attention</p>
             </div>
@@ -4127,7 +4325,7 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Logo Mobile</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
                 <span className="text-white font-semibold">EasyCo</span>
               </div>
               <p className="text-xs text-slate-500 mt-2">Rappel de marque</p>
@@ -4145,8 +4343,8 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Navigation</span>
               </div>
               <div className="flex gap-2">
-                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Accueil</button>
-                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%)' }}>Recherche</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}>Accueil</button>
+                <button className="px-3 py-1.5 text-white rounded-lg text-xs" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}>Recherche</button>
               </div>
               <p className="text-xs text-red-400 mt-2">Perd son impact</p>
             </div>
@@ -4157,8 +4355,8 @@ function GradientUsageSection() {
                 <span className="text-sm font-medium text-white">Éléments répétitifs</span>
               </div>
               <div className="space-y-1">
-                <div className="p-2 bg-gradient-to-r from-[#9256A4]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 1</div>
-                <div className="p-2 bg-gradient-to-r from-[#9256A4]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 2</div>
+                <div className="p-2 bg-gradient-to-r from-[#9c5698]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 1</div>
+                <div className="p-2 bg-gradient-to-r from-[#9c5698]/20 to-[#FFB10B]/20 rounded border border-purple-500/30 text-xs text-slate-300">Item 2</div>
               </div>
               <p className="text-xs text-red-400 mt-2">Effet arc-en-ciel</p>
             </div>
