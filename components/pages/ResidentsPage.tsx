@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 // Couleurs Resident extraites du logo gradient
 const RESIDENT_COLORS = {
-  primary: '#FF6F3C',
+  primary: '#FF5722',
   gradient: {
     start: '#D97B6F',
     middle: '#E8865D',

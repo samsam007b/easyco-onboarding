@@ -164,7 +164,7 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#E88B7F40' : '#FF6F3C30',
+                  borderColor: resolvedTheme === 'dark' ? '#E88B7F40' : '#FF572230',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >

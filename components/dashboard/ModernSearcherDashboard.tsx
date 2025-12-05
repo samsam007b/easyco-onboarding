@@ -317,7 +317,7 @@ export default function ModernSearcherDashboard() {
       value: stats.unreadMessages,
       subtitle: stats.unreadMessages > 0 ? 'Non lus' : 'Tous lus',
       icon: MessageCircle,
-      gradient: 'from-[#6E56CF] to-[#9D7EE5]',
+      gradient: 'from-[#9c5698] to-[#9D7EE5]',
       bg: 'from-purple-50 to-purple-100/50',
       action: () => router.push('/dashboard/searcher/messages'),
     },
@@ -335,7 +335,7 @@ export default function ModernSearcherDashboard() {
       value: stats.topMatchesCount,
       subtitle: 'Compatibilité > 70%',
       icon: Heart,
-      gradient: 'from-[#FF6F3C] to-[#FF8C5C]',
+      gradient: 'from-[#FF5722] to-[#FF8C5C]',
       bg: 'from-orange-50 to-orange-100/50',
       action: () => router.push('/dashboard/searcher/groups'),
     },
@@ -344,7 +344,7 @@ export default function ModernSearcherDashboard() {
       value: stats.applicationsCount,
       subtitle: 'En attente',
       icon: FileText,
-      gradient: 'from-[#FFD249] to-[#FFE082]',
+      gradient: 'from-[#FFB10B] to-[#FFE082]',
       bg: 'from-yellow-50 to-yellow-100/50',
       action: () => router.push('/dashboard/searcher/my-applications'),
     },
@@ -377,7 +377,7 @@ export default function ModernSearcherDashboard() {
                 <svg className="w-12 h-12 transform -rotate-90">
                   <defs>
                     <linearGradient id="searcherCompletionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#6E56CF" />
+                      <stop offset="0%" stopColor="#9c5698" />
                       <stop offset="50%" stopColor="#9D7EE5" />
                       <stop offset="100%" stopColor="#FFA040" />
                     </linearGradient>
@@ -397,7 +397,7 @@ export default function ModernSearcherDashboard() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold bg-gradient-to-r from-[#6E56CF] via-[#9D7EE5] to-[#FFA040] bg-clip-text text-transparent">
+                  <span className="text-xs font-bold bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040] bg-clip-text text-transparent">
                     {stats.profileCompletion}%
                   </span>
                 </div>
@@ -434,7 +434,7 @@ export default function ModernSearcherDashboard() {
               <Progress value={stats.profileCompletion} className="h-2 mb-4" />
               <Button
                 onClick={() => router.push('/dashboard/my-profile')}
-                className="w-full rounded-full bg-gradient-to-r from-[#6E56CF] via-[#9D7EE5] to-[#FFA040]"
+                className="w-full rounded-full bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040]"
                 size="sm"
               >
                 Compléter mon profil
@@ -693,7 +693,7 @@ export default function ModernSearcherDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-r from-[#6E56CF] via-[#9D7EE5] to-[#FFA040] rounded-3xl shadow-lg p-8 text-white"
+          className="bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040] rounded-3xl shadow-lg p-8 text-white"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-1">

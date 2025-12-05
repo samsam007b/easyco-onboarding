@@ -44,7 +44,7 @@ export default function ProfileCompletionPage() {
   if (isLoading || !completion) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-[#FFC107] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-[#FFB10B] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function ProfileCompletionPage() {
           <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-gray-700">Progression globale</span>
-              <span className="text-2xl font-bold text-[#FFC107]">{completion.percentage}%</span>
+              <span className="text-2xl font-bold text-[#FFB10B]">{completion.percentage}%</span>
             </div>
 
             {/* Progress Bar */}
@@ -89,7 +89,7 @@ export default function ProfileCompletionPage() {
                 initial={{ width: 0 }}
                 animate={{ width: `${completion.percentage}%` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
-                className="h-full bg-gradient-to-r from-[#FFC107] to-[#F9A825] rounded-full"
+                className="h-full bg-gradient-to-r from-[#FFB10B] to-[#F9A825] rounded-full"
               />
             </div>
 
@@ -115,7 +115,7 @@ export default function ProfileCompletionPage() {
               onClick={() => router.push(section.route)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full bg-white rounded-2xl p-4 border border-gray-100 hover:border-[#FFC107]/50 transition-all hover:shadow-md text-left"
+              className="w-full bg-white rounded-2xl p-4 border border-gray-100 hover:border-[#FFB10B]/50 transition-all hover:shadow-md text-left"
             >
               <div className="flex items-center gap-4">
                 {/* Icon */}
@@ -139,7 +139,7 @@ export default function ProfileCompletionPage() {
                     <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full ${
-                          isComplete ? 'bg-green-500' : 'bg-[#FFC107]'
+                          isComplete ? 'bg-green-500' : 'bg-[#FFB10B]'
                         }`}
                         style={{ width: `${sectionData.percentage}%` }}
                       />
@@ -188,7 +188,7 @@ export default function ProfileCompletionPage() {
       <div className="max-w-2xl mx-auto px-4 pb-8">
         <button
           onClick={() => router.push('/dashboard/my-profile')}
-          className="w-full bg-[#FFC107] hover:bg-[#F9A825] text-white font-semibold py-4 rounded-2xl transition-colors"
+          className="w-full bg-[#FFB10B] hover:bg-[#F9A825] text-white font-semibold py-4 rounded-2xl transition-colors"
         >
           Compléter mon profil
         </button>

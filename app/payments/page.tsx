@@ -154,7 +154,7 @@ export default function PaymentsPage() {
                 <div
                   className="w-12 h-12 rounded-2xl flex items-center justify-center"
                   style={{
-                    background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)',
+                    background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                   }}
                 >
                   <CreditCard className="w-6 h-6 text-white" />
@@ -183,7 +183,7 @@ export default function PaymentsPage() {
               <div className="flex items-center justify-between mb-4">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, #FF6F3C 0%, #FF5722 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #FF5722 0%, #FF5722 100%)' }}
                 >
                   <ArrowUpRight className="w-6 h-6 text-white" />
                 </div>
@@ -248,7 +248,7 @@ export default function PaymentsPage() {
               <div className="flex items-center justify-between mb-4">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #5B45B8 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #9c5698 0%, #5B45B8 100%)' }}
                 >
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
@@ -345,7 +345,7 @@ export default function PaymentsPage() {
                     <div
                       className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
-                        background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)',
+                        background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
                     >
                       <CreditCard className="w-10 h-10 text-white" />
@@ -404,7 +404,7 @@ export default function PaymentsPage() {
                     <div
                       className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
-                        background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)',
+                        background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
                     >
                       <Calendar className="w-10 h-10 text-white" />
@@ -460,7 +460,7 @@ export default function PaymentsPage() {
                     <div
                       className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
-                        background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)',
+                        background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
                     >
                       <CreditCard className="w-10 h-10 text-white" />
@@ -484,7 +484,7 @@ export default function PaymentsPage() {
                           <div
                             className="w-12 h-12 rounded-xl flex items-center justify-center"
                             style={{
-                              background: 'linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%)',
+                              background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                             }}
                           >
                             <CreditCard className="w-6 h-6 text-white" />

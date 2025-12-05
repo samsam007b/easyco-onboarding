@@ -532,7 +532,7 @@ export default function ModernResidentHeader({
                             <p className="text-gray-700 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
                               <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                                <div className="h-full bg-[#FF6F3C] rounded-full" style={{ width: '75%' }} />
+                                <div className="h-full bg-[#FF5722] rounded-full" style={{ width: '75%' }} />
                               </div>
                               <span className="text-xs text-gray-700 font-medium">75%</span>
                             </div>

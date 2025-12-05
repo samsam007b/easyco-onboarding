@@ -180,7 +180,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 className="relative group cursor-pointer flex-shrink-0"
               >
                 {/* Avatar container */}
-                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFF9E6] to-[#FFE082] flex items-center justify-center overflow-hidden shadow-md transition-all group-hover:shadow-lg group-hover:from-[#FFE082] group-hover:to-[#FFC107]">
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFF9E6] to-[#FFE082] flex items-center justify-center overflow-hidden shadow-md transition-all group-hover:shadow-lg group-hover:from-[#FFE082] group-hover:to-[#FFB10B]">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
@@ -205,7 +205,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 {stats.profileCompletion < 100 && (
                   <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-[#FFC107] transition-all duration-500 group-hover:bg-[#F9A825]"
+                      className="h-full bg-[#FFB10B] transition-all duration-500 group-hover:bg-[#F9A825]"
                       style={{ width: `${stats.profileCompletion}%` }}
                     />
                   </div>
@@ -239,7 +239,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                 <button
                   key={stat.label}
                   onClick={() => router.push(stat.route)}
-                  className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFC107]/30 bg-[#FFF9E6] transition-transform hover:scale-105"
+                  className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFB10B]/30 bg-[#FFF9E6] transition-transform hover:scale-105"
                 >
                   <div className="absolute inset-0 grain-subtle opacity-40" />
                   {stat.badge && stat.badge > 0 && (

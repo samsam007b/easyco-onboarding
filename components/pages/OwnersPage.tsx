@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 // Couleurs Owner extraites du logo gradient
 const OWNER_COLORS = {
-  primary: '#6E56CF',
+  primary: '#9c5698',
   gradient: {
     start: '#7B5FB8',
     middle: '#A67BB8',

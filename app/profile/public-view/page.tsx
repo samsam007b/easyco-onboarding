@@ -109,7 +109,7 @@ export default function PublicViewPage() {
           gradient: 'from-[#FFA040] to-[#FFD080]',
           bg: 'bg-[#FFF9E6]',
           text: 'text-[#F9A825]',
-          border: 'border-[#FFC107]',
+          border: 'border-[#FFB10B]',
         }
       case 'owner':
         return {
