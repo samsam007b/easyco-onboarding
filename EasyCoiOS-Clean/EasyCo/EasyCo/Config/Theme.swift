@@ -52,7 +52,7 @@ struct Theme {
             static let _200 = Color(hex: "FFF59D")
             static let _300 = Color(hex: "FFEB3B")
             static let _400 = Color(hex: "FFD249")
-            static let primary = Color(hex: "FFC107")  // _500
+            static let primary = Color(hex: "FFB10B")  // _500 - Updated to #FFB10B
             static let _600 = Color(hex: "F9A825")
             static let _700 = Color(hex: "F57F17")
             static let _800 = Color(hex: "E65100")
@@ -66,7 +66,7 @@ struct Theme {
             static let _200 = Color(hex: "E0D9FF")
             static let _300 = Color(hex: "BAB2E3")
             static let _400 = Color(hex: "8E7AD6")
-            static let primary = Color(hex: "6E56CF")  // _500
+            static let primary = Color(hex: "9256A4")  // _500 - Updated to #9256A4
             static let _600 = Color(hex: "5B45B8")
             static let _700 = Color(hex: "4A148C")
             static let _800 = Color(hex: "38006B")
@@ -175,9 +175,9 @@ struct Theme {
         /// Gradient tricolore signature de la marque
         static let brand = LinearGradient(
             colors: [
-                Color(hex: "6E56CF"),  // Owner - Mauve
+                Color(hex: "9256A4"),  // Owner - Mauve (Updated to #9256A4)
                 Color(hex: "FF6F3C"),  // Resident - Orange
-                Color(hex: "FFD249")   // Searcher - Yellow
+                Color(hex: "FFB10B")   // Searcher - Yellow (Updated to #FFB10B)
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -185,9 +185,9 @@ struct Theme {
 
         static let brandHorizontal = LinearGradient(
             colors: [
-                Color(hex: "6E56CF"),
-                Color(hex: "FF6F3C"),
-                Color(hex: "FFD249")
+                Color(hex: "9256A4"),  // Owner - Updated to #9256A4
+                Color(hex: "FF6F3C"),  // Resident - Orange
+                Color(hex: "FFB10B")   // Searcher - Updated to #FFB10B
             ],
             startPoint: .leading,
             endPoint: .trailing

@@ -11,40 +11,40 @@
      Role-Specific Colors (Updated to match PRD)
      ============================================ */
 
-  /* SEARCHER - Yellow (#FFD249) */
-  --searcher-primary: #FFD249;
-  --searcher-hover: #FFC107;
+  /* SEARCHER - Yellow/Gold (#FFB10B - couleur dominante) */
+  --searcher-primary: #FFB10B;
+  --searcher-hover: #FFA040;
   --searcher-light: #FFF9E6;
   --searcher-dark: #F9A825;
 
-  /* OWNER - Mauve (#6E56CF) */
-  --owner-primary: #6E56CF;
-  --owner-hover: #5B45B8;
+  /* OWNER - Mauve/Purple (#9256A4 - couleur dominante) */
+  --owner-primary: #9256A4;
+  --owner-hover: #7B5FB8;
   --owner-light: #F3F1FF;
   --owner-dark: #4A148C;
 
-  /* RESIDENT - Orange (#FF6F3C) */
-  --resident-primary: #FF6F3C;
-  --resident-hover: #FF5722;
+  /* RESIDENT - Orange (#FF5722 - couleur dominante) */
+  --resident-primary: #FF5722;
+  --resident-hover: #E64A19;
   --resident-light: #FFF3EF;
-  --resident-dark: #E64A19;
+  --resident-dark: #D84315;
 
   /* Legacy Brand Colors (backward compatibility) */
-  --easy-purple-900: #6E56CF;   /* Primary Owner */
-  --easy-purple-700: #5B45B8;   /* Hover states */
+  --easy-purple-900: #9256A4;   /* Primary Owner - UPDATED */
+  --easy-purple-700: #7B5FB8;   /* Hover states */
   --easy-purple-500: #8E7AD6;   /* Lighter purple */
   --easy-purple-300: #BAB2E3;   /* Very light purple */
   --easy-purple-100: #F3F1FF;   /* Backgrounds */
   --easy-purple-50: #F9F8FF;    /* Lightest purple */
 
-  --easy-yellow-600: #FFC107;   /* Hover states */
-  --easy-yellow-500: #FFD249;   /* Primary Searcher */
+  --easy-yellow-600: #FFA040;   /* Hover states */
+  --easy-yellow-500: #FFB10B;   /* Primary Searcher - UPDATED */
   --easy-yellow-400: #FFEB3B;   /* Lighter yellow */
   --easy-yellow-100: #FFF9E6;   /* Backgrounds */
   --easy-yellow-50: #FFFEF0;    /* Lightest yellow */
 
-  --easy-orange-600: #FF5722;   /* Hover */
-  --easy-orange-500: #FF6F3C;   /* Primary Resident */
+  --easy-orange-600: #E64A19;   /* Hover - UPDATED */
+  --easy-orange-500: #FF5722;   /* Primary Resident - UPDATED */
   --easy-orange-400: #FF8C5C;   /* Lighter */
   --easy-orange-100: #FFF3EF;   /* Backgrounds */
   --easy-orange-50: #FFFAF8;    /* Lightest */
@@ -58,9 +58,9 @@
      EasyCo Signature Gradient (Brand Identity)
      Uses the 3 role colors: Owner → Resident → Searcher
      ============================================ */
-  --gradient-brand-start: var(--owner-primary);      /* Mauve #6E56CF */
-  --gradient-brand-middle: var(--resident-primary);  /* Orange #FF6F3C */
-  --gradient-brand-end: var(--searcher-primary);     /* Yellow #FFD249 */
+  --gradient-brand-start: var(--owner-primary);      /* Mauve #9256A4 */
+  --gradient-brand-middle: var(--resident-primary);  /* Orange #FF5722 */
+  --gradient-brand-end: var(--searcher-primary);     /* Yellow/Gold #FFB10B */
 
   /* Pre-built gradient utilities */
   --gradient-brand: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
@@ -128,8 +128,8 @@
   --searcher-200: #FFF59D;     /* Hover backgrounds */
   --searcher-300: #FFEB3B;     /* Borders, dividers */
   --searcher-400: #FFD249;     /* Icons secondaires */
-  --searcher-500: #FFC107;     /* PRINCIPALE - Boutons, highlights */
-  --searcher-600: #F9A825;     /* Hover states actifs */
+  --searcher-500: #FFB10B;     /* PRINCIPALE - Boutons, highlights */
+  --searcher-600: #FFA040;     /* Hover states actifs */
   --searcher-700: #F57F17;     /* Textes importants */
   --searcher-800: #E65100;     /* Headers, emphase */
   --searcher-900: #BF360C;     /* Textes ultra-importants */
@@ -164,8 +164,8 @@
   --owner-200: #E0D9FF;        /* Hover backgrounds */
   --owner-300: #BAB2E3;        /* Borders, dividers */
   --owner-400: #8E7AD6;        /* Icons secondaires */
-  --owner-500: #6E56CF;        /* PRINCIPALE - Boutons, highlights */
-  --owner-600: #5B45B8;        /* Hover states actifs */
+  --owner-500: #9256A4;        /* PRINCIPALE - Boutons, highlights */
+  --owner-600: #7B5FB8;        /* Hover states actifs */
   --owner-700: #4A148C;        /* Textes importants */
   --owner-800: #38006B;        /* Headers, emphase */
   --owner-900: #1A0033;        /* Textes ultra-importants */
@@ -306,7 +306,7 @@ html::before {
     #E8865D 45%,    /* Resident - Orange/Coral */
     #FF8C4B 60%,
     #FFD080 85%,    /* Searcher - Jaune doré */
-    #FFD249 100%
+    #FFB10B 100%    /* Searcher primary */
   );
   background-size: 200% 200%;
   background-clip: text;
@@ -597,7 +597,7 @@ html {
    Role-Based Theming
    ============================================ */
 
-/* SEARCHER Theme (Yellow #FFD249) */
+/* SEARCHER Theme (Yellow/Gold #FFB10B) */
 body.theme-searcher {
   --role-primary: var(--searcher-primary);
   --role-hover: var(--searcher-hover);
@@ -610,7 +610,7 @@ body.theme-searcher ::selection {
   color: var(--gray-900);
 }
 
-/* OWNER Theme (Mauve #6E56CF) - Default */
+/* OWNER Theme (Mauve/Purple #9256A4) - Default */
 body.theme-owner {
   --role-primary: var(--owner-primary);
   --role-hover: var(--owner-hover);
@@ -623,7 +623,7 @@ body.theme-owner ::selection {
   color: var(--owner-dark);
 }
 
-/* RESIDENT Theme (Orange #FF6F3C) */
+/* RESIDENT Theme (Orange #FF5722) */
 body.theme-resident {
   --role-primary: var(--resident-primary);
   --role-hover: var(--resident-hover);
@@ -835,7 +835,7 @@ body.theme-resident ::selection {
 }
 
 .text-hover-gradient:hover {
-  background: linear-gradient(135deg, #6E56CF 0%, #FF6F3C 50%, #FFD249 100%);
+  background: linear-gradient(135deg, #9256A4 0%, #FF5722 50%, #FFB10B 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

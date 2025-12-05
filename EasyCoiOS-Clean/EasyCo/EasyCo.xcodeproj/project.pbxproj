@@ -26,6 +26,21 @@
 		F451DB7F2EE116F300317831 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F451DB7D2EE116F300317831 /* AppConfig.swift */; };
 		F451DB802EE116F300317831 /* Theme+DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F451DB7E2EE116F300317831 /* Theme+DarkMode.swift */; };
 		F451DB822EE1170200317831 /* AccessibilityHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F451DB812EE1170200317831 /* AccessibilityHelpers.swift */; };
+		F4658E1F2EE231110060E4FD /* PropertiesListView_Comparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E1D2EE231110060E4FD /* PropertiesListView_Comparison.swift */; };
+		F4658E202EE231110060E4FD /* PropertiesListView_Styled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E1E2EE231110060E4FD /* PropertiesListView_Styled.swift */; };
+		F4658E222EE231350060E4FD /* GuestTabView_Styled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E212EE231350060E4FD /* GuestTabView_Styled.swift */; };
+		F4658E242EE234920060E4FD /* GuestExperienceView_Figma.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E232EE234920060E4FD /* GuestExperienceView_Figma.swift */; };
+		F4658E262EE33D2F0060E4FD /* PropertiesListView_AllVersions_Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E252EE33D2F0060E4FD /* PropertiesListView_AllVersions_Preview.swift */; };
+		F4658E2C2EE33D640060E4FD /* PropertiesListView_V1_Modern.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E272EE33D640060E4FD /* PropertiesListView_V1_Modern.swift */; };
+		F4658E2D2EE33D640060E4FD /* PropertiesListView_V2_Glassmorphism.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E282EE33D640060E4FD /* PropertiesListView_V2_Glassmorphism.swift */; };
+		F4658E2E2EE33D640060E4FD /* PropertiesListView_V4_SoftElegant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E2A2EE33D640060E4FD /* PropertiesListView_V4_SoftElegant.swift */; };
+		F4658E2F2EE33D640060E4FD /* PropertiesListView_V5_PremiumDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E2B2EE33D640060E4FD /* PropertiesListView_V5_PremiumDark.swift */; };
+		F4658E302EE33D640060E4FD /* PropertiesListView_V3_BoldVibrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E292EE33D640060E4FD /* PropertiesListView_V3_BoldVibrant.swift */; };
+		F4658E322EE358EC0060E4FD /* ModernWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E312EE358EC0060E4FD /* ModernWelcomeView.swift */; };
+		F4658E342EE361280060E4FD /* WelcomeView_Comparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E332EE361280060E4FD /* WelcomeView_Comparison.swift */; };
+		F49484D32EE1C16A009ABA6D /* DocumentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D12EE1C16A009ABA6D /* DocumentsListView.swift */; };
+		F49484D52EE1C188009ABA6D /* PaymentHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D42EE1C188009ABA6D /* PaymentHistoryView.swift */; };
+		F49484D72EE1CEE3009ABA6D /* ResidentDashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D62EE1CEE3009ABA6D /* ResidentDashboardService.swift */; };
 		F4C089592EE117200089915C /* GuestModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089572EE117200089915C /* GuestModeManager.swift */; };
 		F4C0895A2EE117200089915C /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089542EE117200089915C /* AppleSignInManager.swift */; };
 		F4C0895B2EE117200089915C /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089552EE117200089915C /* AuthManager.swift */; };
@@ -119,7 +134,6 @@
 		F4C08A7F2EE11F070089915C /* MagicLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089942EE1179A0089915C /* MagicLinkView.swift */; };
 		F4C08A802EE11F070089915C /* OAuthButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089952EE1179A0089915C /* OAuthButtonsView.swift */; };
 		F4C08A812EE11F070089915C /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089962EE1179A0089915C /* SignupView.swift */; };
-		F4C08A822EE11F070089915C /* WelcomeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089972EE1179A0089915C /* WelcomeSheet.swift */; };
 		F4C08A832EE11F070089915C /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089982EE117AC0089915C /* CommunityView.swift */; };
 		F4C08A842EE11F070089915C /* DashboardViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C089992EE117B60089915C /* DashboardViewModels.swift */; };
 		F4C08A852EE11F070089915C /* OwnerDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C0899A2EE117B60089915C /* OwnerDashboardView.swift */; };
@@ -240,6 +254,7 @@
 		F4C08AF82EE11F070089915C /* SavedSearchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A112EE118670089915C /* SavedSearchesView.swift */; };
 		F4C08AF92EE11F070089915C /* SearcherDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A122EE1186E0089915C /* SearcherDashboardView.swift */; };
 		F4C08AFA2EE11F070089915C /* DevicesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A132EE118750089915C /* DevicesSettingsView.swift */; };
+		DA9ADB40FC9D435A89041B7D /* GuestInfoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E9C599AA30438CA513DE15 /* GuestInfoViews.swift */; };
 		F4C08AFB2EE11F070089915C /* LanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A142EE118750089915C /* LanguageSettingsView.swift */; };
 		F4C08AFC2EE11F070089915C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A152EE118750089915C /* PreferencesView.swift */; };
 		F4C08AFD2EE11F070089915C /* PrivacyActionsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C08A162EE118750089915C /* PrivacyActionsViews.swift */; };
@@ -282,6 +297,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B4D9D9B26F234993B8572A11 /* ResidentDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentDashboardViewModel.swift; sourceTree = "<group>"; };
 		F442814B2EDFC98D00F004E7 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		F442814C2EDFC98D00F004E7 /* PendingPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingPayment.swift; sourceTree = "<group>"; };
 		F442814D2EDFC98D00F004E7 /* TimePeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriod.swift; sourceTree = "<group>"; };
@@ -330,6 +346,18 @@
 		F451DB7D2EE116F300317831 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		F451DB7E2EE116F300317831 /* Theme+DarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+DarkMode.swift"; sourceTree = "<group>"; };
 		F451DB812EE1170200317831 /* AccessibilityHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelpers.swift; sourceTree = "<group>"; };
+		F4658E1D2EE231110060E4FD /* PropertiesListView_Comparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_Comparison.swift; sourceTree = "<group>"; };
+		F4658E1E2EE231110060E4FD /* PropertiesListView_Styled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_Styled.swift; sourceTree = "<group>"; };
+		F4658E212EE231350060E4FD /* GuestTabView_Styled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestTabView_Styled.swift; sourceTree = "<group>"; };
+		F4658E232EE234920060E4FD /* GuestExperienceView_Figma.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestExperienceView_Figma.swift; sourceTree = "<group>"; };
+		F4658E252EE33D2F0060E4FD /* PropertiesListView_AllVersions_Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_AllVersions_Preview.swift; sourceTree = "<group>"; };
+		F4658E272EE33D640060E4FD /* PropertiesListView_V1_Modern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_V1_Modern.swift; sourceTree = "<group>"; };
+		F4658E282EE33D640060E4FD /* PropertiesListView_V2_Glassmorphism.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_V2_Glassmorphism.swift; sourceTree = "<group>"; };
+		F4658E292EE33D640060E4FD /* PropertiesListView_V3_BoldVibrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_V3_BoldVibrant.swift; sourceTree = "<group>"; };
+		F4658E2A2EE33D640060E4FD /* PropertiesListView_V4_SoftElegant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_V4_SoftElegant.swift; sourceTree = "<group>"; };
+		F4658E2B2EE33D640060E4FD /* PropertiesListView_V5_PremiumDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesListView_V5_PremiumDark.swift; sourceTree = "<group>"; };
+		F4658E312EE358EC0060E4FD /* ModernWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWelcomeView.swift; sourceTree = "<group>"; };
+		F4658E332EE361280060E4FD /* WelcomeView_Comparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView_Comparison.swift; sourceTree = "<group>"; };
 		F465F4E42EDFB8F500A64D6A /* EasyCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E52EDFB8F500A64D6A /* EasyCoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E62EDFB8F500A64D6A /* EasyCoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -337,6 +365,9 @@
 		F465F4FC2EDFB97100A64D6A /* IconsUsageGuide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IconsUsageGuide.md; sourceTree = "<group>"; };
 		F465F5B42EDFB97100A64D6A /* ProfileView.swift.bak */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProfileView.swift.bak; sourceTree = "<group>"; };
 		F465F6132EDFB97100A64D6A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F49484D12EE1C16A009ABA6D /* DocumentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsListView.swift; sourceTree = "<group>"; };
+		F49484D42EE1C188009ABA6D /* PaymentHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryView.swift; sourceTree = "<group>"; };
+		F49484D62EE1CEE3009ABA6D /* ResidentDashboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentDashboardService.swift; sourceTree = "<group>"; };
 		F4C089542EE117200089915C /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
 		F4C089552EE117200089915C /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F4C089562EE117200089915C /* AuthManager+OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthManager+OAuth.swift"; sourceTree = "<group>"; };
@@ -378,7 +409,6 @@
 		F4C089942EE1179A0089915C /* MagicLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkView.swift; sourceTree = "<group>"; };
 		F4C089952EE1179A0089915C /* OAuthButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthButtonsView.swift; sourceTree = "<group>"; };
 		F4C089962EE1179A0089915C /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
-		F4C089972EE1179A0089915C /* WelcomeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSheet.swift; sourceTree = "<group>"; };
 		F4C089982EE117AC0089915C /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		F4C089992EE117B60089915C /* DashboardViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModels.swift; sourceTree = "<group>"; };
 		F4C0899A2EE117B60089915C /* OwnerDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerDashboardView.swift; sourceTree = "<group>"; };
@@ -496,6 +526,7 @@
 		F4C08A102EE118610089915C /* ReviewsSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsSystem.swift; sourceTree = "<group>"; };
 		F4C08A112EE118670089915C /* SavedSearchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedSearchesView.swift; sourceTree = "<group>"; };
 		F4C08A122EE1186E0089915C /* SearcherDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearcherDashboardView.swift; sourceTree = "<group>"; };
+		16E9C599AA30438CA513DE15 /* GuestInfoViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestInfoViews.swift; sourceTree = "<group>"; };
 		F4C08A132EE118750089915C /* DevicesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesSettingsView.swift; sourceTree = "<group>"; };
 		F4C08A142EE118750089915C /* LanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingsView.swift; sourceTree = "<group>"; };
 		F4C08A152EE118750089915C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -860,7 +891,6 @@
 				F4C089942EE1179A0089915C /* MagicLinkView.swift */,
 				F4C089952EE1179A0089915C /* OAuthButtonsView.swift */,
 				F4C089962EE1179A0089915C /* SignupView.swift */,
-				F4C089972EE1179A0089915C /* WelcomeSheet.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -876,9 +906,11 @@
 		F465F55A2EDFB97100A64D6A /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				F49484D62EE1CEE3009ABA6D /* ResidentDashboardService.swift */,
 				F4C089992EE117B60089915C /* DashboardViewModels.swift */,
 				F4C0899A2EE117B60089915C /* OwnerDashboardView.swift */,
 				F4C0899B2EE117B60089915C /* ResidentDashboardView.swift */,
+				B4D9D9B26F234993B8572A11 /* ResidentDashboardViewModel.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -906,6 +938,8 @@
 		F465F5662EDFB97100A64D6A /* Guest */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E232EE234920060E4FD /* GuestExperienceView_Figma.swift */,
+				F4658E212EE231350060E4FD /* GuestTabView_Styled.swift */,
 				F4C089A22EE117CD0089915C /* GuestTabView.swift */,
 				F4C089A32EE117CD0089915C /* OwnerFeatureView.swift */,
 				F4C089A42EE117CD0089915C /* ResidentFeatureView.swift */,
@@ -1011,6 +1045,7 @@
 		F465F5AB2EDFB97100A64D6A /* Payments */ = {
 			isa = PBXGroup;
 			children = (
+				F49484D42EE1C188009ABA6D /* PaymentHistoryView.swift */,
 				F4C089DF2EE118230089915C /* PaymentsView.swift */,
 			);
 			path = Payments;
@@ -1108,6 +1143,7 @@
 			isa = PBXGroup;
 			children = (
 				F4C08A132EE118750089915C /* DevicesSettingsView.swift */,
+				16E9C599AA30438CA513DE15 /* GuestInfoViews.swift */,
 				F4C08A142EE118750089915C /* LanguageSettingsView.swift */,
 				F4C08A152EE118750089915C /* PreferencesView.swift */,
 				F4C08A162EE118750089915C /* PrivacyActionsViews.swift */,
@@ -1138,6 +1174,8 @@
 		F465F5F42EDFB97100A64D6A /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E332EE361280060E4FD /* WelcomeView_Comparison.swift */,
+				F4658E312EE358EC0060E4FD /* ModernWelcomeView.swift */,
 				F4C08A1D2EE1188A0089915C /* WelcomeView.swift */,
 			);
 			path = Welcome;
@@ -1146,6 +1184,7 @@
 		F465F5F52EDFB97100A64D6A /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				F49484D22EE1C16A009ABA6D /* Documents */,
 				F465F5442EDFB97100A64D6A /* Alerts */,
 				F465F54A2EDFB97100A64D6A /* Applications */,
 				F465F5542EDFB97100A64D6A /* Auth */,
@@ -1231,6 +1270,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		F49484D22EE1C16A009ABA6D /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				F49484D12EE1C16A009ABA6D /* DocumentsListView.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
 		F4C089CA2EE117FD0089915C /* Steps */ = {
 			isa = PBXGroup;
 			children = (
@@ -1279,6 +1326,14 @@
 		F4C089F02EE1183C0089915C /* List */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E272EE33D640060E4FD /* PropertiesListView_V1_Modern.swift */,
+				F4658E282EE33D640060E4FD /* PropertiesListView_V2_Glassmorphism.swift */,
+				F4658E292EE33D640060E4FD /* PropertiesListView_V3_BoldVibrant.swift */,
+				F4658E2A2EE33D640060E4FD /* PropertiesListView_V4_SoftElegant.swift */,
+				F4658E2B2EE33D640060E4FD /* PropertiesListView_V5_PremiumDark.swift */,
+				F4658E252EE33D2F0060E4FD /* PropertiesListView_AllVersions_Preview.swift */,
+				F4658E1D2EE231110060E4FD /* PropertiesListView_Comparison.swift */,
+				F4658E1E2EE231110060E4FD /* PropertiesListView_Styled.swift */,
 				F4C089EE2EE1183C0089915C /* PropertiesListView.swift */,
 				F4C089EF2EE1183C0089915C /* PropertyCardView.swift */,
 			);
@@ -1463,6 +1518,7 @@
 				F4C08A662EE11F070089915C /* EmptyStateView.swift in Sources */,
 				F4C08A672EE11F070089915C /* ErrorView.swift in Sources */,
 				F4C08A682EE11F070089915C /* FilterChip.swift in Sources */,
+				F4658E342EE361280060E4FD /* WelcomeView_Comparison.swift in Sources */,
 				F4C08A692EE11F070089915C /* FormComponents.swift in Sources */,
 				F4C08A6A2EE11F070089915C /* LoadingView.swift in Sources */,
 				F4C08A6B2EE11F070089915C /* TabBarIcon.swift in Sources */,
@@ -1478,6 +1534,8 @@
 				F4C08A742EE11F070089915C /* CreateAlertView.swift in Sources */,
 				F4C08A752EE11F070089915C /* ApplicationFormView.swift in Sources */,
 				F4C08A762EE11F070089915C /* ApplicationStatusView.swift in Sources */,
+				F49484D52EE1C188009ABA6D /* PaymentHistoryView.swift in Sources */,
+				F4658E242EE234920060E4FD /* GuestExperienceView_Figma.swift in Sources */,
 				F4C08A772EE11F070089915C /* ApplicationViewModel.swift in Sources */,
 				F4C08A782EE11F070089915C /* ApplyView.swift in Sources */,
 				F4C08A792EE11F070089915C /* MyApplicationsView.swift in Sources */,
@@ -1489,8 +1547,8 @@
 				F4C08A7F2EE11F070089915C /* MagicLinkView.swift in Sources */,
 				F4C08A802EE11F070089915C /* OAuthButtonsView.swift in Sources */,
 				F4C08A812EE11F070089915C /* SignupView.swift in Sources */,
-				F4C08A822EE11F070089915C /* WelcomeSheet.swift in Sources */,
 				F4C08A832EE11F070089915C /* CommunityView.swift in Sources */,
+				F4658E222EE231350060E4FD /* GuestTabView_Styled.swift in Sources */,
 				F4C08A842EE11F070089915C /* DashboardViewModels.swift in Sources */,
 				F4C08A852EE11F070089915C /* OwnerDashboardView.swift in Sources */,
 				F4C08A862EE11F070089915C /* ResidentDashboardView.swift in Sources */,
@@ -1537,9 +1595,12 @@
 				F4C08AAF2EE11F070089915C /* OnboardingPaymentInfoView.swift in Sources */,
 				F4C08AB02EE11F070089915C /* OnboardingPersonalityView.swift in Sources */,
 				F4C08AB12EE11F070089915C /* OnboardingPreferencesView.swift in Sources */,
+				F4658E1F2EE231110060E4FD /* PropertiesListView_Comparison.swift in Sources */,
+				F4658E202EE231110060E4FD /* PropertiesListView_Styled.swift in Sources */,
 				F4C08AB22EE11F070089915C /* OnboardingPropertyBasicsView.swift in Sources */,
 				F4C08AB32EE11F070089915C /* OnboardingReviewView.swift in Sources */,
 				F4C08AB42EE11F070089915C /* OnboardingSocialVibeView.swift in Sources */,
+				F49484D32EE1C16A009ABA6D /* DocumentsListView.swift in Sources */,
 				F4C08AB52EE11F070089915C /* OnboardingVerificationView.swift in Sources */,
 				F4C08AB62EE11F070089915C /* ApplicationDetailView.swift in Sources */,
 				F4C08AB72EE11F070089915C /* ApplicationsView.swift in Sources */,
@@ -1610,6 +1671,7 @@
 				F4C08AF82EE11F070089915C /* SavedSearchesView.swift in Sources */,
 				F4C08AF92EE11F070089915C /* SearcherDashboardView.swift in Sources */,
 				F4C08AFA2EE11F070089915C /* DevicesSettingsView.swift in Sources */,
+				DA9ADB40FC9D435A89041B7D /* GuestInfoViews.swift in Sources */,
 				F4C08AFB2EE11F070089915C /* LanguageSettingsView.swift in Sources */,
 				F4C08AFC2EE11F070089915C /* PreferencesView.swift in Sources */,
 				F4C08AFD2EE11F070089915C /* PrivacyActionsViews.swift in Sources */,
@@ -1631,6 +1693,11 @@
 				F4C089652EE117330089915C /* AnimationPresets.swift in Sources */,
 				F4C089662EE117330089915C /* GlassmorphismModifiers.swift in Sources */,
 				F4C0896C2EE117410089915C /* SwiftUI+UIKit.swift in Sources */,
+				F4658E2C2EE33D640060E4FD /* PropertiesListView_V1_Modern.swift in Sources */,
+				F4658E2D2EE33D640060E4FD /* PropertiesListView_V2_Glassmorphism.swift in Sources */,
+				F4658E2E2EE33D640060E4FD /* PropertiesListView_V4_SoftElegant.swift in Sources */,
+				F4658E2F2EE33D640060E4FD /* PropertiesListView_V5_PremiumDark.swift in Sources */,
+				F4658E302EE33D640060E4FD /* PropertiesListView_V3_BoldVibrant.swift in Sources */,
 				F4C089772EE117590089915C /* NotificationManager.swift in Sources */,
 				F4C0896D2EE117410089915C /* HapticFeedback.swift in Sources */,
 				F4C089712EE1174A0089915C /* Language.swift in Sources */,
@@ -1659,11 +1726,13 @@
 				F4C08A432EE118920089915C /* PropertyFilters.swift in Sources */,
 				F44B86902EE1233500BC9AFC /* BarChart.swift in Sources */,
 				F4C08A442EE118920089915C /* Visit.swift in Sources */,
+				F49484D72EE1CEE3009ABA6D /* ResidentDashboardService.swift in Sources */,
 				F4C08A452EE118920089915C /* Alert.swift in Sources */,
 				F4C08A462EE118920089915C /* Match.swift in Sources */,
 				F44B86922EE1234F00BC9AFC /* SwipeMatchesViewModel.swift in Sources */,
 				F44B86992EE123DB00BC9AFC /* SecondaryButton.swift in Sources */,
 				F44B869A2EE123DB00BC9AFC /* IconButton.swift in Sources */,
+				F4658E322EE358EC0060E4FD /* ModernWelcomeView.swift in Sources */,
 				F4C08A472EE118920089915C /* Lease.swift in Sources */,
 				F4C08A482EE118920089915C /* User.swift in Sources */,
 				F4C08A492EE118920089915C /* SavedSearch.swift in Sources */,
@@ -1687,6 +1756,7 @@
 				F4C089862EE117720089915C /* UIImage+Resize.swift in Sources */,
 				F4C089872EE117720089915C /* View+Extensions.swift in Sources */,
 				F451DB5F2EE1164500317831 /* SupabaseClient.swift in Sources */,
+				F4658E262EE33D2F0060E4FD /* PropertiesListView_AllVersions_Preview.swift in Sources */,
 				F4C089592EE117200089915C /* GuestModeManager.swift in Sources */,
 				F4C089752EE117510089915C /* APIClient.swift in Sources */,
 				F4C089692EE1173A0089915C /* AppError.swift in Sources */,
@@ -1856,10 +1926,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"EasyCo/Preview Content\"";
-				DEVELOPMENT_TEAM = 6B7P7X366P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

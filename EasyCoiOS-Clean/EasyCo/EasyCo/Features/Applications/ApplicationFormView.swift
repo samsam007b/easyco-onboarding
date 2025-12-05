@@ -144,10 +144,20 @@ struct ApplicationFormView: View {
             }
 
             VStack(spacing: 20) {
-                FormField(label: "Prénom", text: $firstName, placeholder: "Votre prénom")
-                FormField(label: "Nom", text: $lastName, placeholder: "Votre nom")
-                FormField(label: "Email", text: $email, placeholder: "votre@email.com", keyboardType: .emailAddress)
-                FormField(label: "Téléphone", text: $phone, placeholder: "+33 6 12 34 56 78", keyboardType: .phonePad)
+                FormField(label: "Prénom") {
+                    TextField("Votre prénom", text: $firstName)
+                }
+                FormField(label: "Nom") {
+                    TextField("Votre nom", text: $lastName)
+                }
+                FormField(label: "Email") {
+                    TextField("votre@email.com", text: $email)
+                        .keyboardType(.emailAddress)
+                }
+                FormField(label: "Téléphone") {
+                    TextField("+33 6 12 34 56 78", text: $phone)
+                        .keyboardType(.phonePad)
+                }
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Date de naissance")
@@ -166,8 +176,12 @@ struct ApplicationFormView: View {
                         )
                 }
 
-                FormField(label: "Nationalité", text: $nationality, placeholder: "Française")
-                FormField(label: "Adresse actuelle", text: $currentAddress, placeholder: "12 rue de la Paix, Paris")
+                FormField(label: "Nationalité") {
+                    TextField("Française", text: $nationality)
+                }
+                FormField(label: "Adresse actuelle") {
+                    TextField("12 rue de la Paix, Paris", text: $currentAddress)
+                }
             }
         }
     }
@@ -176,58 +190,49 @@ struct ApplicationFormView: View {
 
     private var employmentStep: some View {
         VStack(alignment: .leading, spacing: 24) {
+            employmentStepHeader
+            employmentStepContent
+        }
+    }
+
+    private var employmentStepHeader: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Situation professionnelle")
+                .font(Theme.Typography.title2())
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Text("Parlez-nous de votre activité professionnelle")
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textSecondary)
+        }
+    }
+
+    private var employmentStepContent: some View {
+        VStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Situation professionnelle")
-                    .font(Theme.Typography.title2())
+                Text("Statut professionnel")
+                    .font(Theme.Typography.bodySmall(.semibold))
                     .foregroundColor(Theme.Colors.textPrimary)
 
-                Text("Parlez-nous de votre activité professionnelle")
-                    .font(Theme.Typography.body())
-                    .foregroundColor(Theme.Colors.textSecondary)
-            }
-
-            VStack(spacing: 20) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Statut professionnel")
-                        .font(Theme.Typography.bodySmall(.semibold))
-                        .foregroundColor(Theme.Colors.textPrimary)
-
-                    VStack(spacing: 8) {
-                        ForEach(EmploymentStatus.allCases, id: \.self) { status in
-                            Button(action: {
-                                employmentStatus = status
-                                Haptic.impact(.light)
-                            }) {
-                                HStack {
-                                    Text(status.label)
-                                        .font(Theme.Typography.body())
-                                        .foregroundColor(Theme.Colors.textPrimary)
-
-                                    Spacer()
-
-                                    if employmentStatus == status {
-                                        Image.lucide("check")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 20, height: 20)
-                                            .foregroundColor(Theme.Colors.primary)
-                                    }
-                                }
-                                .padding(16)
-                                .background(employmentStatus == status ? Theme.Colors.primary.opacity(0.1) : Theme.Colors.backgroundPrimary)
-                                .cornerRadius(Theme.CornerRadius.md)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: Theme.CornerRadius.md)
-                                        .stroke(employmentStatus == status ? Theme.Colors.primary : Theme.Colors.gray200, lineWidth: 1.5)
-                                )
-                            }
+                VStack(spacing: 8) {
+                    ForEach(EmploymentStatus.allCases, id: \.self) { status in
+                        Button(action: {
+                            employmentStatus = status
+                            Haptic.impact(.light)
+                        }) {
+                            employmentStatusButton(for: status)
                         }
                     }
                 }
+            }
 
                 if employmentStatus == .employee || employmentStatus == .selfEmployed {
-                    FormField(label: "Employeur / Entreprise", text: $employer, placeholder: "Nom de l'entreprise")
-                    FormField(label: "Poste", text: $position, placeholder: "Votre fonction")
+                    FormField(label: "Employeur / Entreprise") {
+                        TextField("Nom de l'entreprise", text: $employer)
+                    }
+                    FormField(label: "Poste") {
+                        TextField("Votre fonction", text: $position)
+                    }
 
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Type de contrat")
@@ -257,10 +262,17 @@ struct ApplicationFormView: View {
                     }
                 }
 
-                FormField(label: "Revenus mensuels nets", text: $monthlyIncome, placeholder: "2500", keyboardType: .numberPad, suffix: "€")
+                FormField(label: "Revenus mensuels nets") {
+                    HStack {
+                        TextField("2500", text: $monthlyIncome)
+                            .keyboardType(.numberPad)
+                        Text("€")
+                            .font(Theme.Typography.body())
+                            .foregroundColor(Theme.Colors.textSecondary)
+                    }
+                }
             }
         }
-    }
 
     // MARK: - Step 3: Guarantor
 
@@ -295,9 +307,17 @@ struct ApplicationFormView: View {
 
                 if hasGuarantor {
                     VStack(spacing: 16) {
-                        FormField(label: "Nom complet du garant", text: $guarantorName, placeholder: "Prénom Nom")
-                        FormField(label: "Email du garant", text: $guarantorEmail, placeholder: "garant@email.com", keyboardType: .emailAddress)
-                        FormField(label: "Téléphone du garant", text: $guarantorPhone, placeholder: "+33 6 12 34 56 78", keyboardType: .phonePad)
+                        FormField(label: "Nom complet du garant") {
+                            TextField("Prénom Nom", text: $guarantorName)
+                        }
+                        FormField(label: "Email du garant") {
+                            TextField("garant@email.com", text: $guarantorEmail)
+                                .keyboardType(.emailAddress)
+                        }
+                        FormField(label: "Téléphone du garant") {
+                            TextField("+33 6 12 34 56 78", text: $guarantorPhone)
+                                .keyboardType(.phonePad)
+                        }
 
                         HStack(spacing: 12) {
                             Image.lucide("info")
@@ -445,7 +465,7 @@ struct ApplicationFormView: View {
                         title: "Pièce d'identité",
                         description: "Carte d'identité ou passeport",
                         isRequired: true,
-                        isUploaded: uploadedDocuments.contains(where: { $0.type == .identity })
+                        isUploaded: uploadedDocuments.contains(where: { $0.type == .idCard })
                     ) {
                         showDocumentPicker = true
                     }
@@ -454,7 +474,7 @@ struct ApplicationFormView: View {
                         title: "Justificatif de domicile",
                         description: "Facture de moins de 3 mois",
                         isRequired: true,
-                        isUploaded: uploadedDocuments.contains(where: { $0.type == .addressProof })
+                        isUploaded: uploadedDocuments.contains(where: { $0.type == .idCard })
                     ) {
                         showDocumentPicker = true
                     }
@@ -463,7 +483,7 @@ struct ApplicationFormView: View {
                         title: "Fiches de paie",
                         description: "3 derniers mois",
                         isRequired: true,
-                        isUploaded: uploadedDocuments.contains(where: { $0.type == .payslips })
+                        isUploaded: uploadedDocuments.contains(where: { $0.type == .payslip })
                     ) {
                         showDocumentPicker = true
                     }
@@ -479,7 +499,7 @@ struct ApplicationFormView: View {
                         title: "Contrat de travail",
                         description: "Renforce votre dossier",
                         isRequired: false,
-                        isUploaded: uploadedDocuments.contains(where: { $0.type == .workContract })
+                        isUploaded: uploadedDocuments.contains(where: { $0.type == .employmentContract })
                     ) {
                         showDocumentPicker = true
                     }
@@ -574,7 +594,7 @@ struct ApplicationFormView: View {
         case 0:
             return !firstName.isEmpty && !lastName.isEmpty && !email.isEmpty && !phone.isEmpty
         case 1:
-            if employmentStatus == .employed || employmentStatus == .selfEmployed {
+            if employmentStatus == .employee || employmentStatus == .selfEmployed {
                 return !employer.isEmpty && !position.isEmpty && !monthlyIncome.isEmpty
             }
             return !monthlyIncome.isEmpty
@@ -586,7 +606,7 @@ struct ApplicationFormView: View {
         case 3:
             return true
         case 4:
-            let requiredDocs: [DocumentType] = [.identity, .addressProof, .payslips]
+            let requiredDocs: [DocumentType] = [.idCard, .payslip]
             return requiredDocs.allSatisfy { type in
                 uploadedDocuments.contains(where: { $0.type == type })
             }
@@ -599,6 +619,32 @@ struct ApplicationFormView: View {
         Haptic.notification(.success)
         // TODO: Submit to backend
         dismiss()
+    }
+
+    @ViewBuilder
+    private func employmentStatusButton(for status: EmploymentStatus) -> some View {
+        HStack {
+            Text(status.displayName)
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Spacer()
+
+            if employmentStatus == status {
+                Image.lucide("check")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(Theme.Colors.primary)
+            }
+        }
+        .padding(16)
+        .background(employmentStatus == status ? Theme.Colors.primary.opacity(0.1) : Theme.Colors.backgroundPrimary)
+        .cornerRadius(Theme.CornerRadius.md)
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.CornerRadius.md)
+                .stroke(employmentStatus == status ? Theme.Colors.primary : Theme.Colors.gray200, lineWidth: 1.5)
+        )
     }
 }
 
@@ -677,42 +723,6 @@ enum LeaseDuration: String, CaseIterable {
 // }
 
 // MARK: - Supporting Views
-
-// struct FormField: View {
-//     let label: String
-//     @Binding var text: String
-//     let placeholder: String
-//     var keyboardType: UIKeyboardType = .default
-//     var suffix: String? = nil
-// 
-//     var body: some View {
-//         VStack(alignment: .leading, spacing: 8) {
-//             Text(label)
-//                 .font(Theme.Typography.bodySmall(.semibold))
-//                 .foregroundColor(Theme.Colors.textPrimary)
-// 
-//             HStack {
-//                 TextField(placeholder, text: $text)
-//                     .font(Theme.Typography.body())
-//                     .foregroundColor(Theme.Colors.textPrimary)
-//                     .keyboardType(keyboardType)
-// 
-//                 if let suffix = suffix {
-//                     Text(suffix)
-//                         .font(Theme.Typography.body())
-//                         .foregroundColor(Theme.Colors.textSecondary)
-//                 }
-//             }
-//             .padding(16)
-//             .background(Theme.Colors.backgroundPrimary)
-//             .cornerRadius(Theme.CornerRadius.md)
-//             .overlay(
-//                 RoundedRectangle(cornerRadius: Theme.CornerRadius.md)
-//                     .stroke(Theme.Colors.gray200, lineWidth: 1)
-//             )
-//         }
-//     }
-// }
 
 struct DocumentUploadCard: View {
     let title: String

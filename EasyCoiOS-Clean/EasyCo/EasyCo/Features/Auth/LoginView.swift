@@ -10,11 +10,17 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Gradient background matching web app
+                // Signature gradient background (8 colors diagonal: Mauve → Jaune)
                 LinearGradient(
                     colors: [
-                        Color(hex: "F3E5F5"), // purple-50
-                        Color(hex: "FFF9E6")  // yellow-50
+                        Color(hex: "A394E6"),  // Mauve
+                        Color(hex: "C99FD8"),
+                        Color(hex: "E8A8C8"),
+                        Color(hex: "FFB1B8"),
+                        Color(hex: "FFBAA0"),
+                        Color(hex: "FFC388"),
+                        Color(hex: "FFCC70"),
+                        Color(hex: "FFD558")   // Jaune
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -32,7 +38,7 @@ struct LoginView: View {
                                     Text("Retour à l'accueil")
                                         .font(.system(size: 15, weight: .medium))
                                 }
-                                .foregroundColor(Color(hex: "4A148C"))
+                                .foregroundColor(Color(hex: "6E56CF"))  // Signature purple
                             }
                             Spacer()
                         }
@@ -46,14 +52,14 @@ struct LoginView: View {
                         VStack(spacing: 0) {
                             // Logo and title
                             VStack(spacing: 16) {
-                                Image("HouseIcon")
+                                Image("EasyCoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
 
                                 Text("EasyCo")
                                     .font(.system(size: 32, weight: .bold))
-                                    .foregroundColor(Color(hex: "4A148C"))
+                                    .foregroundColor(Color(hex: "6E56CF"))  // Signature purple
 
                                 Text(isLoginMode ? "Connectez-vous à votre compte" : "Créez votre compte")
                                     .font(.system(size: 16))
@@ -76,7 +82,7 @@ struct LoginView: View {
                                         .padding(.vertical, 12)
                                         .background(
                                             isLoginMode ?
-                                            Color(hex: "4A148C") :
+                                            Color(hex: "6E56CF") :  // Signature purple
                                             Color.gray.opacity(0.1)
                                         )
                                         .cornerRadius(12)
@@ -94,7 +100,7 @@ struct LoginView: View {
                                         .padding(.vertical, 12)
                                         .background(
                                             !isLoginMode ?
-                                            Color(hex: "4A148C") :
+                                            Color(hex: "6E56CF") :  // Signature purple
                                             Color.gray.opacity(0.1)
                                         )
                                         .cornerRadius(12)
@@ -191,7 +197,7 @@ struct LoginView: View {
                                     showForgotPassword = true
                                 }
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(Color(hex: "4A148C"))
+                                .foregroundColor(Color(hex: "6E56CF"))  // Signature purple
                                 .frame(maxWidth: .infinity, alignment: .trailing)
                                 .padding(.bottom, 24)
                             } else {
@@ -223,7 +229,10 @@ struct LoginView: View {
                                 .padding(.vertical, 14)
                                 .background(
                                     LinearGradient(
-                                        colors: [Color(hex: "4A148C"), Color(hex: "6A1B9A")],
+                                        colors: [
+                                            Color(hex: "6E56CF"),  // Signature purple
+                                            Color(hex: "8E7AD6")   // Lighter purple
+                                        ],
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     )

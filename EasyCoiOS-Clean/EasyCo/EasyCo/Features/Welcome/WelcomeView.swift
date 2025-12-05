@@ -127,8 +127,6 @@ struct AuthSheetView: View {
     let onSignup: () -> Void
     let onExploreGuest: () -> Void
 
-    @State private var animateGradient = false
-
     var body: some View {
         VStack(spacing: 0) {
             // Drag indicator
@@ -142,33 +140,29 @@ struct AuthSheetView: View {
             VStack(spacing: 24) {
                 // Logo and title
                 VStack(spacing: 16) {
-                    // Animated gradient logo
+                    // Logo avec glow subtil statique
                     ZStack {
+                        // Glow statique orange
                         Circle()
                             .fill(
-                                LinearGradient(
+                                RadialGradient(
                                     colors: [
-                                        Color(hex: "6E56CF").opacity(0.3),
-                                        Color(hex: "FF6F3C").opacity(0.3),
-                                        Color(hex: "FFD249").opacity(0.3)
+                                        Color(hex: "FFA040").opacity(0.3),
+                                        Color.clear
                                     ],
-                                    startPoint: animateGradient ? .topLeading : .bottomTrailing,
-                                    endPoint: animateGradient ? .bottomTrailing : .topLeading
+                                    center: .center,
+                                    startRadius: 0,
+                                    endRadius: 60
                                 )
                             )
-                            .frame(width: 100, height: 100)
-                            .blur(radius: 20)
+                            .frame(width: 120, height: 120)
+                            .blur(radius: 15)
 
                         // Logo officiel EasyCo
-                        Image("HouseIcon")
+                        Image("EasyCoHouseIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
-                    }
-                    .onAppear {
-                        withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
-                            animateGradient = true
-                        }
                     }
 
                     VStack(spacing: 8) {
@@ -278,53 +272,32 @@ struct AuthSheetView: View {
         .frame(maxWidth: .infinity)
         .background(
             ZStack {
-                // Gradient background
+                // Dégradé signature EasyCo - Diagonale (comme Hero web app)
+                // Mauve (top-left) → Rose → Orange → Jaune (bottom-right)
                 LinearGradient(
                     colors: [
-                        Color(hex: "6E56CF").opacity(0.95),
-                        Color(hex: "4A148C").opacity(0.98)
+                        Color(hex: "A394E6"),  // Mauve clair (top-left)
+                        Color(hex: "C99FD8"),  // Mauve-rose
+                        Color(hex: "E8A8C8"),  // Rose-saumon
+                        Color(hex: "FFB1B8"),  // Rose-orange
+                        Color(hex: "FFBAA0"),  // Saumon
+                        Color(hex: "FFC388"),  // Orange clair
+                        Color(hex: "FFCC70"),  // Orange-jaune
+                        Color(hex: "FFD558")   // Jaune doré (bottom-right)
                     ],
-                    startPoint: .top,
-                    endPoint: .bottom
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 )
+                .opacity(0.75)  // Plus de transparence pour voir derrière
 
-                // Glassmorphism overlay
+                // Glassmorphism - verre givré très léger
                 Rectangle()
                     .fill(.ultraThinMaterial)
-                    .opacity(0.3)
+                    .opacity(0.35)  // Un peu plus opaque pour l'effet verre
 
-                // Decorative gradient blobs
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [
-                                Color(hex: "FF6F3C").opacity(0.3),
-                                Color.clear
-                            ],
-                            center: .center,
-                            startRadius: 0,
-                            endRadius: 150
-                        )
-                    )
-                    .frame(width: 300, height: 300)
-                    .offset(x: 100, y: -50)
-                    .blur(radius: 40)
-
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [
-                                Color(hex: "FFD249").opacity(0.25),
-                                Color.clear
-                            ],
-                            center: .center,
-                            startRadius: 0,
-                            endRadius: 120
-                        )
-                    )
-                    .frame(width: 240, height: 240)
-                    .offset(x: -120, y: 100)
-                    .blur(radius: 30)
+                // Border subtile blanche
+                RoundedCorner(radius: 32, corners: [.topLeft, .topRight])
+                    .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
             }
         )
         .clipShape(
@@ -388,14 +361,20 @@ struct LoginSheetView: View {
             ZStack {
                 // Glassmorphism Background
                 ZStack {
-                    // Base gradient
+                    // Signature gradient background (8 colors diagonal: Mauve → Jaune)
                     LinearGradient(
                         colors: [
-                            Color(hex: "6E56CF").opacity(0.95),
-                            Color(hex: "4A148C").opacity(0.98)
+                            Color(hex: "A394E6"),  // Mauve
+                            Color(hex: "C99FD8"),
+                            Color(hex: "E8A8C8"),
+                            Color(hex: "FFB1B8"),
+                            Color(hex: "FFBAA0"),
+                            Color(hex: "FFC388"),
+                            Color(hex: "FFCC70"),
+                            Color(hex: "FFD558")   // Jaune
                         ],
-                        startPoint: .top,
-                        endPoint: .bottom
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
                     )
 
                     // Glassmorphism overlay
@@ -474,7 +453,7 @@ struct LoginSheetView: View {
                                     .frame(width: 100, height: 100)
                                     .blur(radius: 20)
 
-                                Image("HouseIcon")
+                                Image("EasyCoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
@@ -708,7 +687,7 @@ struct SignupSheetView: View {
                                     .frame(width: 100, height: 100)
                                     .blur(radius: 20)
 
-                                Image("HouseIcon")
+                                Image("EasyCoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)

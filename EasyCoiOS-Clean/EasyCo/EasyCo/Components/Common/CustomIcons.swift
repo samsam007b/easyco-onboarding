@@ -119,7 +119,9 @@ enum AppIcon {
 
     // Users
     case user
+    case userPlus
     case users
+    case userGroup
     case crown
     case baby
     case accessibility
@@ -192,6 +194,9 @@ enum AppIcon {
     case video
     case megaphone
     case layers
+    case info
+    case questionmark
+    case globe
 
     var sfSymbol: String {
         switch self {
@@ -206,7 +211,9 @@ enum AppIcon {
 
         // Users
         case .user: return "person.fill"
+        case .userPlus: return "person.crop.circle.badge.plus"
         case .users: return "person.3.fill"
+        case .userGroup: return "person.2.fill"
         case .crown: return "crown.fill"
         case .baby: return "figure.child"
         case .accessibility: return "accessibility.fill"
@@ -279,6 +286,9 @@ enum AppIcon {
         case .video: return "video.fill"
         case .megaphone: return "megaphone.fill"
         case .layers: return "square.stack.3d.up.fill"
+        case .info: return "info.circle"
+        case .questionmark: return "questionmark.circle"
+        case .globe: return "globe"
         }
     }
 }

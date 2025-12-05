@@ -1,0 +1,602 @@
+{
+  "$schema": "https://schemas.tokens.studio/1.0.0/design-tokens.json",
+  "colors": {
+    "primary": {
+      "value": "#4A148C",
+      "type": "color",
+      "description": "Violet principal - Identité EasyCo"
+    },
+    "primaryLight": {
+      "value": "#6A1B9A",
+      "type": "color"
+    },
+    "primaryDark": {
+      "value": "#38006B",
+      "type": "color"
+    },
+    "accent": {
+      "yellow": {
+        "value": "#FFC107",
+        "type": "color"
+      },
+      "orange": {
+        "value": "#FF9800",
+        "type": "color"
+      },
+      "pink": {
+        "value": "#E91E63",
+        "type": "color"
+      }
+    },
+    "status": {
+      "success": {
+        "value": "#4CAF50",
+        "type": "color"
+      },
+      "error": {
+        "value": "#F44336",
+        "type": "color"
+      },
+      "warning": {
+        "value": "#FF9800",
+        "type": "color"
+      },
+      "info": {
+        "value": "#2196F3",
+        "type": "color"
+      },
+      "pending": {
+        "value": "#FFC107",
+        "type": "color"
+      }
+    },
+    "background": {
+      "primary": {
+        "value": "#FAFAFA",
+        "type": "color"
+      },
+      "secondary": {
+        "value": "#F5F5F5",
+        "type": "color"
+      },
+      "card": {
+        "value": "#FFFFFF",
+        "type": "color"
+      },
+      "overlay": {
+        "dark": {
+          "value": "rgba(0, 0, 0, 0.4)",
+          "type": "color"
+        },
+        "light": {
+          "value": "rgba(0, 0, 0, 0.1)",
+          "type": "color"
+        }
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "#1A1A1A",
+        "type": "color"
+      },
+      "secondary": {
+        "value": "#666666",
+        "type": "color"
+      },
+      "tertiary": {
+        "value": "#999999",
+        "type": "color"
+      },
+      "onPrimary": {
+        "value": "#FFFFFF",
+        "type": "color"
+      },
+      "disabled": {
+        "value": "#CCCCCC",
+        "type": "color"
+      }
+    },
+    "border": {
+      "light": {
+        "value": "#E0E0E0",
+        "type": "color"
+      },
+      "medium": {
+        "value": "#BDBDBD",
+        "type": "color"
+      },
+      "dark": {
+        "value": "#9E9E9E",
+        "type": "color"
+      },
+      "divider": {
+        "value": "#EEEEEE",
+        "type": "color"
+      }
+    }
+  },
+  "spacing": {
+    "xxxs": {
+      "value": "2",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "xxs": {
+      "value": "4",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "xs": {
+      "value": "8",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "sm": {
+      "value": "12",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "md": {
+      "value": "16",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "lg": {
+      "value": "24",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "xl": {
+      "value": "32",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "xxl": {
+      "value": "48",
+      "type": "spacing",
+      "unit": "pt"
+    },
+    "xxxl": {
+      "value": "64",
+      "type": "spacing",
+      "unit": "pt"
+    }
+  },
+  "borderRadius": {
+    "sm": {
+      "value": "8",
+      "type": "borderRadius",
+      "unit": "pt"
+    },
+    "md": {
+      "value": "12",
+      "type": "borderRadius",
+      "unit": "pt"
+    },
+    "lg": {
+      "value": "16",
+      "type": "borderRadius",
+      "unit": "pt"
+    },
+    "xl": {
+      "value": "20",
+      "type": "borderRadius",
+      "unit": "pt"
+    },
+    "xxl": {
+      "value": "24",
+      "type": "borderRadius",
+      "unit": "pt"
+    },
+    "pill": {
+      "value": "999",
+      "type": "borderRadius",
+      "unit": "pt"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "display": {
+        "value": "SF Pro Display",
+        "type": "fontFamilies"
+      },
+      "text": {
+        "value": "SF Pro Text",
+        "type": "fontFamilies"
+      },
+      "mono": {
+        "value": "SF Mono",
+        "type": "fontFamilies"
+      }
+    },
+    "fontSize": {
+      "displayLarge": {
+        "value": "40",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "displayMedium": {
+        "value": "32",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "title1": {
+        "value": "28",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "title2": {
+        "value": "24",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "title3": {
+        "value": "20",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "bodyLarge": {
+        "value": "18",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "body": {
+        "value": "16",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "bodySmall": {
+        "value": "14",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "label": {
+        "value": "14",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "caption": {
+        "value": "12",
+        "type": "fontSizes",
+        "unit": "pt"
+      },
+      "overline": {
+        "value": "11",
+        "type": "fontSizes",
+        "unit": "pt"
+      }
+    },
+    "fontWeight": {
+      "regular": {
+        "value": "400",
+        "type": "fontWeights"
+      },
+      "medium": {
+        "value": "500",
+        "type": "fontWeights"
+      },
+      "semibold": {
+        "value": "600",
+        "type": "fontWeights"
+      },
+      "bold": {
+        "value": "700",
+        "type": "fontWeights"
+      }
+    },
+    "lineHeight": {
+      "displayLarge": {
+        "value": "48",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "displayMedium": {
+        "value": "40",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "title1": {
+        "value": "34",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "title2": {
+        "value": "30",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "title3": {
+        "value": "26",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "bodyLarge": {
+        "value": "24",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "body": {
+        "value": "22",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "bodySmall": {
+        "value": "20",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "label": {
+        "value": "18",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "caption": {
+        "value": "16",
+        "type": "lineHeights",
+        "unit": "pt"
+      },
+      "overline": {
+        "value": "14",
+        "type": "lineHeights",
+        "unit": "pt"
+      }
+    }
+  },
+  "shadows": {
+    "sm": {
+      "value": {
+        "x": "0",
+        "y": "2",
+        "blur": "8",
+        "spread": "0",
+        "color": "rgba(0, 0, 0, 0.08)"
+      },
+      "type": "boxShadow"
+    },
+    "md": {
+      "value": {
+        "x": "0",
+        "y": "4",
+        "blur": "12",
+        "spread": "0",
+        "color": "rgba(0, 0, 0, 0.1)"
+      },
+      "type": "boxShadow"
+    },
+    "lg": {
+      "value": {
+        "x": "0",
+        "y": "8",
+        "blur": "24",
+        "spread": "0",
+        "color": "rgba(0, 0, 0, 0.12)"
+      },
+      "type": "boxShadow"
+    },
+    "primary": {
+      "value": {
+        "x": "0",
+        "y": "4",
+        "blur": "12",
+        "spread": "0",
+        "color": "rgba(74, 20, 140, 0.3)"
+      },
+      "type": "boxShadow"
+    }
+  },
+  "gradients": {
+    "cta": {
+      "value": {
+        "type": "linear",
+        "angle": "135",
+        "stops": [
+          {
+            "color": "#6A1B9A",
+            "position": "0"
+          },
+          {
+            "color": "#4A148C",
+            "position": "100"
+          }
+        ]
+      },
+      "type": "gradient"
+    },
+    "hero": {
+      "value": {
+        "type": "linear",
+        "angle": "135",
+        "stops": [
+          {
+            "color": "#7B1FA2",
+            "position": "0"
+          },
+          {
+            "color": "#4A148C",
+            "position": "50"
+          },
+          {
+            "color": "#38006B",
+            "position": "100"
+          }
+        ]
+      },
+      "type": "gradient"
+    },
+    "heroBackground": {
+      "value": {
+        "type": "linear",
+        "angle": "135",
+        "stops": [
+          {
+            "color": "#F3E5F5",
+            "position": "0"
+          },
+          {
+            "color": "#FFF9E6",
+            "position": "100"
+          }
+        ]
+      },
+      "type": "gradient"
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "height": {
+          "value": "50",
+          "type": "sizing",
+          "unit": "pt"
+        },
+        "borderRadius": {
+          "value": "{borderRadius.md}",
+          "type": "borderRadius"
+        },
+        "paddingHorizontal": {
+          "value": "{spacing.lg}",
+          "type": "spacing"
+        }
+      },
+      "secondary": {
+        "height": {
+          "value": "50",
+          "type": "sizing",
+          "unit": "pt"
+        },
+        "borderWidth": {
+          "value": "2",
+          "type": "borderWidth",
+          "unit": "pt"
+        }
+      },
+      "icon": {
+        "size": {
+          "value": "44",
+          "type": "sizing",
+          "unit": "pt"
+        }
+      }
+    },
+    "input": {
+      "height": {
+        "value": "50",
+        "type": "sizing",
+        "unit": "pt"
+      },
+      "borderRadius": {
+        "value": "{borderRadius.md}",
+        "type": "borderRadius"
+      },
+      "padding": {
+        "value": "{spacing.sm}",
+        "type": "spacing"
+      }
+    },
+    "card": {
+      "borderRadius": {
+        "value": "{borderRadius.lg}",
+        "type": "borderRadius"
+      },
+      "padding": {
+        "value": "{spacing.md}",
+        "type": "spacing"
+      },
+      "shadow": {
+        "value": "{shadows.sm}",
+        "type": "boxShadow"
+      }
+    },
+    "badge": {
+      "height": {
+        "value": "24",
+        "type": "sizing",
+        "unit": "pt"
+      },
+      "borderRadius": {
+        "value": "{borderRadius.pill}",
+        "type": "borderRadius"
+      },
+      "paddingHorizontal": {
+        "value": "{spacing.xs}",
+        "type": "spacing"
+      }
+    }
+  },
+  "animation": {
+    "duration": {
+      "instant": {
+        "value": "100",
+        "type": "duration",
+        "unit": "ms"
+      },
+      "quick": {
+        "value": "200",
+        "type": "duration",
+        "unit": "ms"
+      },
+      "normal": {
+        "value": "300",
+        "type": "duration",
+        "unit": "ms"
+      },
+      "slow": {
+        "value": "500",
+        "type": "duration",
+        "unit": "ms"
+      },
+      "verySlow": {
+        "value": "800",
+        "type": "duration",
+        "unit": "ms"
+      }
+    },
+    "easing": {
+      "standard": {
+        "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+        "type": "cubicBezier"
+      },
+      "deceleration": {
+        "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+        "type": "cubicBezier"
+      },
+      "acceleration": {
+        "value": "cubic-bezier(0.4, 0.0, 1, 1)",
+        "type": "cubicBezier"
+      },
+      "sharp": {
+        "value": "cubic-bezier(0.4, 0.0, 0.6, 1)",
+        "type": "cubicBezier"
+      }
+    }
+  },
+  "icons": {
+    "size": {
+      "small": {
+        "value": "16",
+        "type": "sizing",
+        "unit": "pt"
+      },
+      "medium": {
+        "value": "24",
+        "type": "sizing",
+        "unit": "pt"
+      },
+      "large": {
+        "value": "32",
+        "type": "sizing",
+        "unit": "pt"
+      },
+      "xlarge": {
+        "value": "48",
+        "type": "sizing",
+        "unit": "pt"
+      }
+    },
+    "strokeWidth": {
+      "value": "2",
+      "type": "borderWidth",
+      "unit": "pt"
+    }
+  }
+}

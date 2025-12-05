@@ -48,7 +48,7 @@ struct SearcherDashboardView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color(hex: "FFA040"))
+                            .foregroundColor(Theme.Colors.Searcher.primary)
                         Text("Explorer")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(Color(hex: "111827"))
@@ -61,7 +61,7 @@ struct SearcherDashboardView: View {
                     }) {
                         Image(systemName: "arrow.clockwise")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color(hex: "FFA040"))
+                            .foregroundColor(Theme.Colors.Searcher.primary)
                     }
                 }
             }
@@ -106,26 +106,16 @@ struct SearcherDashboardView: View {
                 }
                 .foregroundColor(.white)
                 .padding(16)
-                .background(
-                    LinearGradient(
-                        colors: [
-                            Color(hex: "FFA040"),
-                            Color(hex: "FFB85C"),
-                            Color(hex: "FFD080")
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .background(Theme.Gradients.searcherCTA)
                 .cornerRadius(16)
-                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
+                .shadow(color: Theme.Colors.Searcher.primary.opacity(0.3), radius: 8, x: 0, y: 4)
             }
         }
         .padding(20)
         .background(
             LinearGradient(
                 colors: [
-                    Color(hex: "FFFBEB"),
+                    Theme.Colors.Searcher._100,
                     Color.white
                 ],
                 startPoint: .topLeading,
@@ -150,7 +140,7 @@ struct SearcherDashboardView: View {
                 QuickActionButton(
                     icon: "hand.draw.fill",
                     title: "Mode Swipe",
-                    color: Color(hex: "FFA040")
+                    color: Theme.Colors.Searcher.primary
                 ) {
                     showSwipeMode = true
                 }
@@ -271,7 +261,7 @@ struct SearcherDashboardView: View {
                     value: "\(stats.topMatches)",
                     subtitle: "compatibles",
                     icon: "star.fill",
-                    color: Color(hex: "FFA040"),
+                    color: Theme.Colors.Searcher.primary,
                     hasNotification: stats.topMatches > 0
                 )
             }
@@ -296,7 +286,7 @@ struct SearcherDashboardView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "sparkles")
                         .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "FFA040"))
+                        .foregroundColor(Theme.Colors.Searcher.primary)
                     Text("Top Matchs pour vous")
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(Color(hex: "111827"))
@@ -307,7 +297,7 @@ struct SearcherDashboardView: View {
                 NavigationLink(destination: MatchesView()) {
                     Text("Voir tout")
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color(hex: "FFA040"))
+                        .foregroundColor(Theme.Colors.Searcher.primary)
                 }
             }
 
@@ -337,7 +327,7 @@ struct SearcherDashboardView: View {
                     // Navigate to full history
                 }
                 .font(.system(size: 14, weight: .medium))
-                .foregroundColor(Color(hex: "FFA040"))
+                .foregroundColor(Theme.Colors.Searcher.primary)
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -360,7 +350,7 @@ struct SearcherDashboardView: View {
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "FFA040"))
+                    .foregroundColor(Theme.Colors.Searcher.primary)
                 Text("Vos préférences")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(Color(hex: "111827"))
@@ -371,7 +361,7 @@ struct SearcherDashboardView: View {
                     icon: "mappin.circle.fill",
                     title: "Ville favorite",
                     value: stats.preferences.favoriteCity ?? "Non défini",
-                    color: Color(hex: "FFA040")
+                    color: Theme.Colors.Searcher.primary
                 )
 
                 InsightRow(
@@ -399,10 +389,10 @@ struct SearcherDashboardView: View {
                     Text("Modifier mes préférences")
                         .font(.system(size: 14, weight: .semibold))
                 }
-                .foregroundColor(Color(hex: "FFA040"))
+                .foregroundColor(Theme.Colors.Searcher.primary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
-                .background(Color(hex: "FFA040").opacity(0.1))
+                .background(Theme.Colors.Searcher.primary.opacity(0.1))
                 .cornerRadius(12)
             }
         }
@@ -500,7 +490,7 @@ private struct TopMatchCard: View {
             VStack(spacing: 4) {
                 Text("\(property.compatibilityScore ?? 85)%")
                     .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(Color(hex: "FFA040"))
+                    .foregroundColor(Theme.Colors.Searcher.primary)
 
                 Text("Match")
                     .font(.system(size: 11, weight: .medium))
@@ -510,7 +500,7 @@ private struct TopMatchCard: View {
             .padding(.vertical, 14)
             .background(
                 LinearGradient(
-                    colors: [Color(hex: "FFFBEB"), Color(hex: "FEF3C7")],
+                    colors: [Theme.Colors.Searcher._100, Theme.Colors.Searcher._200],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -534,7 +524,7 @@ private struct TopMatchCard: View {
 
                 Text("\(property.monthlyRent)€/mois")
                     .font(.system(size: 15, weight: .bold))
-                    .foregroundColor(Color(hex: "FFA040"))
+                    .foregroundColor(Theme.Colors.Searcher.primary)
             }
 
             Spacer()
@@ -569,7 +559,7 @@ private struct PropertyCompactCard: View {
                         Rectangle()
                             .fill(
                                 LinearGradient(
-                                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                    colors: [Theme.Colors.Searcher.primary, Theme.Colors.Searcher._400],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
@@ -587,7 +577,7 @@ private struct PropertyCompactCard: View {
                     Rectangle()
                         .fill(
                             LinearGradient(
-                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                colors: [Theme.Colors.Searcher.primary, Theme.Colors.Searcher._400],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
@@ -608,7 +598,7 @@ private struct PropertyCompactCard: View {
                         .foregroundColor(.white)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 3)
-                        .background(Color(hex: "FFA040"))
+                        .background(Theme.Colors.Searcher.primary)
                         .cornerRadius(6)
                         .padding(8)
                 }
@@ -627,7 +617,7 @@ private struct PropertyCompactCard: View {
 
                 Text("\(property.monthlyRent)€/mois")
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(hex: "FFA040"))
+                    .foregroundColor(Theme.Colors.Searcher.primary)
             }
         }
         .frame(width: 160)

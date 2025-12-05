@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ApplicationStatusView: View {
-    let application: ApplicationDetail
+    let application: DetailedApplication
 
     var body: some View {
         ScrollView {
@@ -69,7 +69,7 @@ struct ApplicationStatusView: View {
                         .frame(width: 12, height: 12)
                         .foregroundColor(Theme.Colors.textTertiary)
 
-                    Text(application.property.location)
+                    Text(application.property.locationString)
                         .font(Theme.Typography.bodySmall())
                         .foregroundColor(Theme.Colors.textSecondary)
                         .lineLimit(1)
@@ -250,14 +250,14 @@ struct ApplicationStatusView: View {
 
 // MARK: - Supporting Models
 
-// struct ApplicationDetail {
-//     let id: String
-//     let property: Property
-//     let status: DetailedApplicationStatus
-//     let submittedAt: Date
-//     let timeline: [TimelineEvent]
-//     let documents: [ApplicationDocument]
-// }
+struct DetailedApplication: Identifiable {
+    let id: String
+    let property: Property
+    let status: DetailedApplicationStatus
+    let submittedAt: Date
+    let timeline: [TimelineEvent]
+    let documents: [ApplicationDocument]
+}
 
 enum DetailedApplicationStatus {
     case pending
@@ -478,7 +478,7 @@ struct ApplicationStatusView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ApplicationStatusView(
-                application: ApplicationDetail(
+                application: DetailedApplication(
                     id: "1",
                     property: .mock,
                     status: .underReview,
@@ -505,21 +505,21 @@ struct ApplicationStatusView_Previews: PreviewProvider {
                     ],
                     documents: [
                         ApplicationDocument(
-                            name: "Carte d'identité",
-                            type: "PDF",
-                            size: "2.4 MB",
+                            type: .idCard,
+                            fileName: "carte_identite.pdf",
+                            fileURL: "https://example.com/documents/carte_identite.pdf",
                             uploadedAt: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
                         ),
                         ApplicationDocument(
-                            name: "Fiches de paie (3 mois)",
-                            type: "PDF",
-                            size: "1.8 MB",
+                            type: .payslip,
+                            fileName: "fiches_paie_3mois.pdf",
+                            fileURL: "https://example.com/documents/fiches_paie.pdf",
                             uploadedAt: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
                         ),
                         ApplicationDocument(
-                            name: "Justificatif de domicile",
-                            type: "PDF",
-                            size: "845 KB",
+                            type: .idCard,
+                            fileName: "justificatif_domicile.pdf",
+                            fileURL: "https://example.com/documents/justificatif_domicile.pdf",
                             uploadedAt: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
                         )
                     ]

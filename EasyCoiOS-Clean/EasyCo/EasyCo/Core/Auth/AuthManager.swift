@@ -39,7 +39,7 @@ class AuthManager: ObservableObject {
 
             // Try to fetch user profile, but don't fail if profile doesn't exist
             do {
-                let user = try await fetchUserProfileFromSupabase(userId: session.user.id, email: session.user.email)
+                let user = try await fetchUserProfileFromSupabase(userId: session.user.id, email: session.user.email, token: session.accessToken)
                 self.currentUser = user
                 print("✅ User profile loaded: \(user.firstName ?? "No name")")
             } catch {
@@ -327,8 +327,10 @@ class AuthManager: ObservableObject {
 
     /// Fetch user profile directly from Supabase
     /// Queries both 'users' table (for onboarding_completed, user_type) and 'profiles' table (for name, phone)
-    private func fetchUserProfileFromSupabase(userId: String, email: String) async throws -> User {
-        guard let token = EasyCoKeychainManager.shared.getAuthToken() else {
+    private func fetchUserProfileFromSupabase(userId: String, email: String, token: String? = nil) async throws -> User {
+        // Try to use provided token, fallback to keychain
+        guard let authToken = token ?? EasyCoKeychainManager.shared.getAuthToken() else {
+            print("❌ No auth token available (neither passed nor in keychain)")
             throw NetworkError.unauthorized
         }
 
@@ -346,7 +348,7 @@ class AuthManager: ObservableObject {
         usersRequest.httpMethod = "GET"
         usersRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         usersRequest.setValue(supabaseKey, forHTTPHeaderField: "apikey")
-        usersRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        usersRequest.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
 
         print("👤 Fetching user from: \(usersComponents.url!.absoluteString)")
 
@@ -379,7 +381,7 @@ class AuthManager: ObservableObject {
         profilesRequest.httpMethod = "GET"
         profilesRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         profilesRequest.setValue(supabaseKey, forHTTPHeaderField: "apikey")
-        profilesRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        profilesRequest.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
 
         print("👤 Fetching profile from: \(profilesComponents.url!.absoluteString)")
 

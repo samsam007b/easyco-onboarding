@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct ResidentDashboardView: View {
-    @State private var currentProperty: ResidentProperty?
-    @State private var nextPayment: RentPayment?
-    @State private var paymentHistory: [RentPayment] = []
-    @State private var maintenanceRequests: [MaintenanceRequest] = []
-    @State private var documents: [Document] = []
-    @State private var expenses: [ExpenseData] = []
+    @StateObject private var viewModel = ResidentDashboardViewModel()
+
+    // Animation states
+    @State private var headerAppear = false
+    @State private var propertyAppear = false
+    @State private var paymentAppear = false
+    @State private var expensesAppear = false
+    @State private var quickActionsAppear = false
 
     var body: some View {
         NavigationStack {
@@ -23,17 +25,17 @@ struct ResidentDashboardView: View {
                     headerSection
 
                     // Current property card
-                    if let property = currentProperty {
+                    if let property = viewModel.currentProperty {
                         currentPropertySection(property)
                     }
 
                     // Next payment
-                    if let payment = nextPayment {
+                    if let payment = viewModel.nextPayment {
                         nextPaymentSection(payment)
                     }
 
                     // Expenses breakdown
-                    if !expenses.isEmpty {
+                    if !viewModel.expensesData.isEmpty {
                         expensesSection
                     }
 
@@ -41,17 +43,17 @@ struct ResidentDashboardView: View {
                     quickActionsSection
 
                     // Payment history
-                    if !paymentHistory.isEmpty {
+                    if !viewModel.paymentHistory.isEmpty {
                         paymentHistorySection
                     }
 
                     // Maintenance requests
-                    if !maintenanceRequests.isEmpty {
+                    if !viewModel.maintenanceRequests.isEmpty {
                         maintenanceSection
                     }
 
                     // Documents
-                    if !documents.isEmpty {
+                    if !viewModel.documents.isEmpty {
                         documentsSection
                     }
                 }
@@ -67,9 +69,7 @@ struct ResidentDashboardView: View {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        // Settings
-                    }) {
+                    NavigationLink(destination: SettingsView()) {
                         Image.lucide("settings")
                             .resizable()
                             .scaledToFit()
@@ -79,8 +79,35 @@ struct ResidentDashboardView: View {
                 }
             }
         }
-        .onAppear {
-            loadDashboardData()
+        .task {
+            await viewModel.loadDashboard()
+            triggerAnimations()
+        }
+    }
+
+    private func triggerAnimations() {
+        withAnimation {
+            headerAppear = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation {
+                propertyAppear = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            withAnimation {
+                paymentAppear = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation {
+                expensesAppear = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation {
+                quickActionsAppear = true
+            }
         }
     }
 
@@ -98,6 +125,9 @@ struct ResidentDashboardView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
+        .opacity(headerAppear ? 1 : 0)
+        .offset(y: headerAppear ? 0 : -20)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: headerAppear)
     }
 
     // MARK: - Current Property Section
@@ -157,6 +187,9 @@ struct ResidentDashboardView: View {
         .cornerRadius(Theme.CornerRadius.card)
         .cardShadow()
         .padding(.horizontal)
+        .opacity(propertyAppear ? 1 : 0)
+        .scaleEffect(propertyAppear ? 1 : 0.95)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: propertyAppear)
     }
 
     // MARK: - Next Payment Section
@@ -180,7 +213,7 @@ struct ResidentDashboardView: View {
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("\(payment.amount)€")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Theme.Colors.primary)
+                        .foregroundColor(Theme.Colors.Resident.primary)
 
                     if payment.daysUntilDue <= 7 {
                         HStack(spacing: 4) {
@@ -212,15 +245,19 @@ struct ResidentDashboardView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: Theme.Size.buttonHeight)
-                .background(Theme.Colors.primaryGradient)
+                .background(Theme.Gradients.residentCTA)
                 .cornerRadius(Theme.CornerRadius.button)
             }
+            .buttonStyle(ScaleButtonStyle())
         }
         .padding(20)
         .background(Theme.Colors.backgroundPrimary)
         .cornerRadius(Theme.CornerRadius.card)
         .cardShadow()
         .padding(.horizontal)
+        .opacity(paymentAppear ? 1 : 0)
+        .scaleEffect(paymentAppear ? 1 : 0.95)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: paymentAppear)
     }
 
     // MARK: - Expenses Section
@@ -232,7 +269,7 @@ struct ResidentDashboardView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
 
             DonutChart(
-                data: expenses,
+                data: viewModel.expensesData,
                 size: 140,
                 lineWidth: 20,
                 showLegend: true
@@ -243,6 +280,9 @@ struct ResidentDashboardView: View {
         .cornerRadius(Theme.CornerRadius.card)
         .cardShadow()
         .padding(.horizontal)
+        .opacity(expensesAppear ? 1 : 0)
+        .scaleEffect(expensesAppear ? 1 : 0.95)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: expensesAppear)
     }
 
     // MARK: - Quick Actions Section
@@ -255,40 +295,47 @@ struct ResidentDashboardView: View {
                 .padding(.horizontal)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                QuickActionCard(
-                    icon: "tool",
-                    title: "Maintenance",
-                    color: Color(hex: "F59E0B")
-                ) {
-                    // Navigate to maintenance
+                NavigationLink(destination: MaintenanceView()) {
+                    QuickActionCard(
+                        icon: "tool",
+                        title: "Maintenance",
+                        color: Theme.Colors.Resident._400
+                    ) {}
                 }
+                .buttonStyle(PlainButtonStyle())
 
-                QuickActionCard(
-                    icon: "file-text",
-                    title: "Documents",
-                    color: Color(hex: "60A5FA")
-                ) {
-                    // Navigate to documents
+                NavigationLink(destination: DocumentsListView()) {
+                    QuickActionCard(
+                        icon: "file-text",
+                        title: "Documents",
+                        color: Theme.Colors.Resident._300
+                    ) {}
                 }
+                .buttonStyle(PlainButtonStyle())
 
-                QuickActionCard(
-                    icon: "message-circle",
-                    title: "Contacter",
-                    color: Color(hex: "10B981")
-                ) {
-                    // Navigate to messages
+                NavigationLink(destination: MessagesListView()) {
+                    QuickActionCard(
+                        icon: "message-circle",
+                        title: "Contacter",
+                        color: Theme.Colors.Resident._600
+                    ) {}
                 }
+                .buttonStyle(PlainButtonStyle())
 
-                QuickActionCard(
-                    icon: "calendar",
-                    title: "Historique",
-                    color: Color(hex: "8B5CF6")
-                ) {
-                    // Navigate to payment history
+                NavigationLink(destination: PaymentHistoryView()) {
+                    QuickActionCard(
+                        icon: "calendar",
+                        title: "Historique",
+                        color: Theme.Colors.Resident._700
+                    ) {}
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .padding(.horizontal)
         }
+        .opacity(quickActionsAppear ? 1 : 0)
+        .offset(y: quickActionsAppear ? 0 : 20)
+        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: quickActionsAppear)
     }
 
     // MARK: - Payment History Section
@@ -305,13 +352,13 @@ struct ResidentDashboardView: View {
                 NavigationLink(destination: Text("Tous les paiements")) {
                     Text("Voir tout")
                         .font(Theme.Typography.bodySmall(.semibold))
-                        .foregroundColor(Theme.Colors.primary)
+                        .foregroundColor(Theme.Colors.Resident.primary)
                 }
             }
             .padding(.horizontal)
 
             VStack(spacing: 12) {
-                ForEach(paymentHistory.prefix(4)) { payment in
+                ForEach(viewModel.paymentHistory.prefix(4)) { payment in
                     PaymentHistoryCard(payment: payment)
                 }
             }
@@ -342,17 +389,17 @@ struct ResidentDashboardView: View {
                         Text("Nouvelle")
                             .font(Theme.Typography.bodySmall(.semibold))
                     }
-                    .foregroundColor(Theme.Colors.primary)
+                    .foregroundColor(Theme.Colors.Resident.primary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Theme.Colors.primary.opacity(0.1))
+                    .background(Theme.Colors.Resident.primary.opacity(0.1))
                     .cornerRadius(8)
                 }
             }
             .padding(.horizontal)
 
             VStack(spacing: 12) {
-                ForEach(maintenanceRequests) { request in
+                ForEach(viewModel.maintenanceRequests) { request in
                     MaintenanceCard(request: request)
                 }
             }
@@ -374,13 +421,13 @@ struct ResidentDashboardView: View {
                 NavigationLink(destination: Text("Tous les documents")) {
                     Text("Voir tout")
                         .font(Theme.Typography.bodySmall(.semibold))
-                        .foregroundColor(Theme.Colors.primary)
+                        .foregroundColor(Theme.Colors.Resident.primary)
                 }
             }
             .padding(.horizontal)
 
             VStack(spacing: 12) {
-                ForEach(documents.prefix(3)) { document in
+                ForEach(viewModel.documents.prefix(3)) { document in
                     DocumentCard(document: document)
                 }
             }
@@ -388,119 +435,6 @@ struct ResidentDashboardView: View {
         }
     }
 
-    // MARK: - Data Loading
-
-    private func loadDashboardData() {
-        let calendar = Calendar.current
-        let now = Date()
-
-        // Current property
-        currentProperty = ResidentProperty(
-            id: "1",
-            title: "Appartement 2 chambres - Ixelles",
-            location: "Rue de la Paix 42, 1050 Ixelles",
-            bedrooms: 2,
-            bathrooms: 1,
-            area: 75,
-            monthlyRent: 950,
-            leaseStart: calendar.date(byAdding: .year, value: -1, to: now)!,
-            leaseEnd: calendar.date(byAdding: .year, value: 2, to: now)!,
-            imageURL: "https://via.placeholder.com/600x400/FFB6C1"
-        )
-
-        // Next payment
-        nextPayment = RentPayment(
-            id: "next",
-            amount: 950,
-            dueDate: calendar.date(byAdding: .day, value: 5, to: now)!,
-            status: .pending
-        )
-
-        // Payment history
-        paymentHistory = [
-            RentPayment(
-                id: "1",
-                amount: 950,
-                dueDate: calendar.date(byAdding: .month, value: -1, to: now)!,
-                status: .paid,
-                paidDate: calendar.date(byAdding: .month, value: -1, to: now)!
-            ),
-            RentPayment(
-                id: "2",
-                amount: 950,
-                dueDate: calendar.date(byAdding: .month, value: -2, to: now)!,
-                status: .paid,
-                paidDate: calendar.date(byAdding: .month, value: -2, to: now)!
-            ),
-            RentPayment(
-                id: "3",
-                amount: 950,
-                dueDate: calendar.date(byAdding: .month, value: -3, to: now)!,
-                status: .paid,
-                paidDate: calendar.date(byAdding: .month, value: -3, to: now)!
-            ),
-            RentPayment(
-                id: "4",
-                amount: 950,
-                dueDate: calendar.date(byAdding: .month, value: -4, to: now)!,
-                status: .paid,
-                paidDate: calendar.date(byAdding: .month, value: -4, to: now)!
-            )
-        ]
-
-        // Expenses breakdown
-        expenses = [
-            DonutChartData(label: "Loyer", value: 950, color: Theme.Colors.primary),
-            DonutChartData(label: "Charges", value: 150, color: Color(hex: "60A5FA")),
-            DonutChartData(label: "Internet", value: 40, color: Color(hex: "10B981")),
-            DonutChartData(label: "Électricité", value: 80, color: Color(hex: "F59E0B"))
-        ]
-
-        // Maintenance requests
-        maintenanceRequests = [
-            MaintenanceRequest(
-                id: "1",
-                title: "Fuite d'eau dans la cuisine",
-                description: "Le robinet goutte depuis 2 jours",
-                status: .inProgress,
-                createdAt: calendar.date(byAdding: .day, value: -3, to: now)!,
-                priority: .high
-            ),
-            MaintenanceRequest(
-                id: "2",
-                title: "Ampoule grillée dans le salon",
-                description: "L'ampoule du plafonnier ne fonctionne plus",
-                status: .pending,
-                createdAt: calendar.date(byAdding: .day, value: -1, to: now)!,
-                priority: .low
-            )
-        ]
-
-        // Documents
-        documents = [
-            Document(
-                id: "1",
-                title: "Contrat de location",
-                type: .contract,
-                uploadedAt: calendar.date(byAdding: .year, value: -1, to: now)!,
-                size: "2.4 MB"
-            ),
-            Document(
-                id: "2",
-                title: "État des lieux d'entrée",
-                type: .inventory,
-                uploadedAt: calendar.date(byAdding: .year, value: -1, to: now)!,
-                size: "5.1 MB"
-            ),
-            Document(
-                id: "3",
-                title: "Quittance Novembre 2025",
-                type: .receipt,
-                uploadedAt: calendar.date(byAdding: .month, value: -1, to: now)!,
-                size: "245 KB"
-            )
-        ]
-    }
 }
 
 // MARK: - Supporting Models
@@ -637,9 +571,9 @@ enum ResidentDocumentType {
 
     var color: Color {
         switch self {
-        case .contract: return Theme.Colors.primary
-        case .inventory: return Color(hex: "60A5FA")
-        case .receipt: return Color(hex: "10B981")
+        case .contract: return Theme.Colors.Resident.primary
+        case .inventory: return Theme.Colors.Resident._300
+        case .receipt: return Theme.Colors.Resident._400
         case .other: return Theme.Colors.gray400
         }
     }
@@ -871,13 +805,49 @@ struct DocumentCard: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Theme.Colors.primary)
+                    .foregroundColor(Theme.Colors.Resident.primary)
             }
         }
         .padding(16)
         .background(Theme.Colors.backgroundPrimary)
         .cornerRadius(Theme.CornerRadius.card)
         .cardShadow()
+    }
+}
+
+// MARK: - Placeholder View
+
+private struct PlaceholderView: View {
+    let title: String
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "hourglass")
+                .font(.system(size: 60))
+                .foregroundColor(Theme.Colors.textTertiary)
+
+            Text(title)
+                .font(Theme.Typography.title2())
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Text("Cette fonctionnalité sera bientôt disponible")
+                .font(Theme.Typography.body())
+                .foregroundColor(Theme.Colors.textSecondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Button Styles
+
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 

@@ -117,8 +117,79 @@ class APIClient {
     }
 
     func getProperties(filters: PropertyFilters?) async throws -> [Property] {
-        // TODO: Implement API call to fetch properties
-        return []
+        // Fetch properties from Supabase
+        let supabaseURL = AppConfig.supabaseURL
+        let supabaseKey = AppConfig.supabaseAnonKey
+
+        let url = URL(string: "\(supabaseURL)/rest/v1/properties")!
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+
+        // Build query parameters
+        var queryItems: [URLQueryItem] = []
+
+        // Only fetch published properties
+        queryItems.append(URLQueryItem(name: "status", value: "eq.published"))
+
+        // Apply filters if provided
+        if let filters = filters {
+            if let city = filters.city {
+                queryItems.append(URLQueryItem(name: "city", value: "ilike.*\(city)*"))
+            }
+            if let minPrice = filters.minPrice {
+                queryItems.append(URLQueryItem(name: "monthly_rent", value: "gte.\(minPrice)"))
+            }
+            if let maxPrice = filters.maxPrice {
+                queryItems.append(URLQueryItem(name: "monthly_rent", value: "lte.\(maxPrice)"))
+            }
+            if let minBedrooms = filters.minBedrooms {
+                queryItems.append(URLQueryItem(name: "bedrooms", value: "gte.\(minBedrooms)"))
+            }
+            if let minBathrooms = filters.minBathrooms {
+                queryItems.append(URLQueryItem(name: "bathrooms", value: "gte.\(minBathrooms)"))
+            }
+        }
+
+        // Select all fields needed
+        queryItems.append(URLQueryItem(name: "select", value: "*"))
+
+        // Order by created_at descending (newest first)
+        queryItems.append(URLQueryItem(name: "order", value: "created_at.desc"))
+
+        components.queryItems = queryItems
+
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(supabaseKey, forHTTPHeaderField: "apikey")
+
+        // Add auth token if available
+        if let accessToken = EasyCoKeychainManager.shared.getAuthToken() {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        }
+
+        print("🏠 Fetching properties from Supabase...")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.unknown(NSError(domain: "Invalid response", code: -1))
+        }
+
+        if httpResponse.statusCode != 200 {
+            print("❌ Properties fetch failed: \(httpResponse.statusCode)")
+            if let responseStr = String(data: data, encoding: .utf8) {
+                print("Response: \(responseStr.prefix(500))")
+            }
+            throw NetworkError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        let properties = try decoder.decode([Property].self, from: data)
+        print("✅ Loaded \(properties.count) properties from Supabase")
+
+        return properties
     }
 
     func addFavorite(_ propertyId: UUID) async throws {

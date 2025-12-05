@@ -102,8 +102,8 @@ struct LoginViewIntegrated: View {
 
                         // Password field
                         ModernTextField(
-                            text: $viewModel.password,
                             placeholder: "Mot de passe",
+                            text: $viewModel.password,
                             icon: "lock",
                             isSecure: true
                         )
@@ -130,12 +130,13 @@ struct LoginViewIntegrated: View {
                     // Login button
                     PrimaryButton(
                         title: viewModel.isLoading ? "Connexion..." : "Se connecter",
-                        isLoading: viewModel.isLoading,
+                        icon: "arrow.right",
                         action: {
                             Task {
                                 await viewModel.login()
                             }
-                        }
+                        },
+                        isLoading: viewModel.isLoading
                     )
                     .disabled(viewModel.isLoading || !viewModel.canLogin)
 
@@ -261,15 +262,15 @@ struct RegisterViewIntegrated: View {
                         .textContentType(.givenName)
 
                         ModernTextField(
-                            text: $viewModel.lastName,
                             placeholder: "Nom",
+                            text: $viewModel.lastName,
                             icon: "user"
                         )
                         .textContentType(.familyName)
 
                         ModernTextField(
-                            text: $viewModel.email,
                             placeholder: "Email",
+                            text: $viewModel.email,
                             icon: "mail"
                         )
                         .textContentType(.emailAddress)
@@ -277,8 +278,8 @@ struct RegisterViewIntegrated: View {
                         .autocapitalization(.none)
 
                         ModernTextField(
-                            text: $viewModel.password,
                             placeholder: "Mot de passe",
+                            text: $viewModel.password,
                             icon: "lock",
                             isSecure: true
                         )
@@ -309,12 +310,13 @@ struct RegisterViewIntegrated: View {
                     // Register button
                     PrimaryButton(
                         title: viewModel.isLoading ? "Inscription..." : "S'inscrire",
-                        isLoading: viewModel.isLoading,
+                        icon: "arrow.right",
                         action: {
                             Task {
                                 await viewModel.register()
                             }
-                        }
+                        },
+                        isLoading: viewModel.isLoading
                     )
                     .disabled(viewModel.isLoading || !viewModel.canRegister)
 
@@ -481,6 +483,7 @@ extension UserRole {
         case .searcher: return "Locataire"
         case .owner: return "Propriétaire"
         case .resident: return "Résident"
+        case .admin: return "Administrateur"
         }
     }
 
@@ -489,6 +492,7 @@ extension UserRole {
         case .searcher: return "Je cherche un logement"
         case .owner: return "Je loue mon bien"
         case .resident: return "Je suis déjà locataire"
+        case .admin: return "Administrateur système"
         }
     }
 }

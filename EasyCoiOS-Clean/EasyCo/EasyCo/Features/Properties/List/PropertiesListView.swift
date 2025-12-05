@@ -1,6 +1,7 @@
 import SwiftUI
 
-// MARK: - Properties List View (Complete Web App Replica)
+// MARK: - Properties List View (Glassmorphism Pro Style)
+// Style: Effets de verre, blur, transparence, profondeur
 
 struct PropertiesListView: View {
     @StateObject private var viewModel = PropertiesViewModel()
@@ -10,342 +11,290 @@ struct PropertiesListView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    // Hero Search Section (Glassmorphism)
-                    heroSearchSection
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        .padding(.bottom, 24)
-
-                    // Filters & Sort Bar
-                    filtersAndSortBar
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 16)
-
-                    // Properties Grid
-                    if viewModel.isLoading && viewModel.properties.isEmpty {
-                        LoadingView(message: "Chargement des propriétés...")
-                            .frame(height: 400)
-                    } else if viewModel.properties.isEmpty {
-                        emptyStateView
-                            .frame(height: 400)
-                    } else {
-                        propertiesGrid
-                    }
-                }
-            }
-            .background(Color(hex: "F9FAFB"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Explorer")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
-                }
-            }
-            .sheet(isPresented: $viewModel.showFilters) {
-                FiltersView(viewModel: viewModel)
-            }
-        }
-        .task {
-            if viewModel.properties.isEmpty {
-                await viewModel.loadProperties(refresh: false)
-            }
-        }
-    }
-
-    // MARK: - Hero Search Section
-
-    private var heroSearchSection: some View {
-        VStack(spacing: 16) {
-            // Title
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Trouve ta colocation idéale")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-
-                Text("Découvre des centaines de propriétés vérifiées")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // Glassmorphism Search Card
-            glassmorphismSearchCard
-        }
-    }
-
-    private var glassmorphismSearchCard: some View {
-        VStack(spacing: 12) {
-            // Location search
-            HStack(spacing: 12) {
-                Image(systemName: "mappin")
-                    .font(.system(size: 18))
-                    .foregroundColor(Color(hex: "FFA040"))
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Où ?")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(Color(hex: "6B7280"))
-
-                    TextField("Ville, quartier...", text: $searchLocation)
-                        .font(.system(size: 15))
-                        .foregroundColor(Color(hex: "111827"))
-                }
-            }
-            .padding(16)
-            .background(Color.white.opacity(0.7))
-            .cornerRadius(16)
-
-            // Budget & Date Row
-            HStack(spacing: 12) {
-                // Budget
-                HStack(spacing: 12) {
-                    Image(systemName: "eurosign")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "FFA040"))
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Budget")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(Color(hex: "6B7280"))
-
-                        Text(searchBudget)
-                            .font(.system(size: 15))
-                            .foregroundColor(Color(hex: "111827"))
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
-                .background(Color.white.opacity(0.7))
-                .cornerRadius(16)
-
-                // Date
-                HStack(spacing: 12) {
-                    Image(systemName: "calendar")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "FFA040"))
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Quand ?")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(Color(hex: "6B7280"))
-
-                        Text(searchDate)
-                            .font(.system(size: 15))
-                            .foregroundColor(Color(hex: "111827"))
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
-                .background(Color.white.opacity(0.7))
-                .cornerRadius(16)
-            }
-
-            // Search Button
-            Button(action: {
-                Task {
-                    await viewModel.loadProperties(refresh: true)
-                }
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Rechercher")
-                        .font(.system(size: 16, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(
-                    LinearGradient(
-                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C"), Color(hex: "FFD080")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .cornerRadius(999)
-                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
-            }
-        }
-        .padding(20)
-        .background(
             ZStack {
-                // Animated gradient background
+                // Background gradient
                 LinearGradient(
                     colors: [
-                        Color(hex: "FFA040").opacity(0.25),
-                        Color(hex: "FFB85C").opacity(0.22),
-                        Color(hex: "FFD080").opacity(0.25)
+                        Color(hex: "FFA040").opacity(0.15),
+                        Color(hex: "8B5CF6").opacity(0.15),
+                        Color(hex: "F9FAFB")
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
+                .ignoresSafeArea()
 
-                // Glassmorphism overlay
-                Color.white.opacity(0.3)
-            }
-        )
-        .cornerRadius(32)
-        .shadow(color: .black.opacity(0.05), radius: 20, x: 0, y: 10)
-    }
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Hero Section - Glass effect
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Trouve ta colocation")
+                                .font(.system(size: 30, weight: .heavy))
+                                .foregroundColor(Color(hex: "111827"))
 
-    // MARK: - Filters & Sort Bar
+                            Text("Transparence et modernité")
+                                .font(.system(size: 16))
+                                .foregroundColor(Color(hex: "6B7280"))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 16)
+                        .background(
+                            Color.white.opacity(0.7)
+                                .background(.ultraThinMaterial)
+                        )
+                        .cornerRadius(20)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
 
-    private var filtersAndSortBar: some View {
-        HStack(spacing: 12) {
-            // Filters button
-            Button(action: {
-                viewModel.showFilters = true
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.system(size: 16))
+                        // Search Card - Glass morphism
+                        VStack(spacing: 16) {
+                            // Location - Glass
+                            HStack(spacing: 14) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(hex: "FFA040").opacity(0.2))
+                                        .background(.ultraThinMaterial)
+                                        .frame(width: 50, height: 50)
 
-                    Text("Filtres")
-                        .font(.system(size: 15, weight: .medium))
+                                    Image(systemName: AppIcon.mapPin.sfSymbol)
+                                        .font(.system(size: 22, weight: .semibold))
+                                        .foregroundColor(Color(hex: "FFA040"))
+                                }
 
-                    if viewModel.activeFiltersCount > 0 {
-                        Text("\(viewModel.activeFiltersCount)")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(width: 20, height: 20)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text("LOCALISATION")
+                                        .font(.system(size: 11, weight: .bold))
+                                        .foregroundColor(Color(hex: "6B7280"))
+                                        .tracking(1)
+
+                                    TextField("Paris, Lyon...", text: $searchLocation)
+                                        .font(.system(size: 17, weight: .semibold))
+                                        .foregroundColor(Color(hex: "111827"))
+                                }
+                            }
+                            .padding(18)
                             .background(
-                                Circle()
-                                    .fill(Color(hex: "FFA040"))
+                                Color.white.opacity(0.6)
+                                    .background(.thinMaterial)
                             )
+                            .cornerRadius(18)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 18)
+                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                            )
+
+                            // Budget & Date - Glass cards
+                            HStack(spacing: 14) {
+                                // Budget
+                                GlassCard(
+                                    icon: AppIcon.euro.sfSymbol,
+                                    color: Color(hex: "10B981"),
+                                    label: "BUDGET",
+                                    value: searchBudget
+                                )
+
+                                // Date
+                                GlassCard(
+                                    icon: AppIcon.calendar.sfSymbol,
+                                    color: Color(hex: "8B5CF6"),
+                                    label: "DISPONIBILITÉ",
+                                    value: searchDate
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 16)
+
+                        // Search Button - Frosted glass
+                        Button(action: {
+                            Task { await viewModel.loadProperties(refresh: true) }
+                        }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: AppIcon.search.sfSymbol)
+                                    .font(.system(size: 20, weight: .bold))
+
+                                Text("Rechercher")
+                                    .font(.system(size: 19, weight: .bold))
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 58)
+                            .background(
+                                ZStack {
+                                    // Gradient background
+                                    LinearGradient(
+                                        colors: [
+                                            Color(hex: "FFA040"),
+                                            Color(hex: "FF8A3D")
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+
+                                    // Frosted overlay
+                                    Color.white.opacity(0.15)
+                                        .background(.ultraThinMaterial)
+                                }
+                            )
+                            .cornerRadius(18)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 18)
+                                    .stroke(Color.white.opacity(0.4), lineWidth: 1.5)
+                            )
+                            .shadow(color: Color(hex: "FFA040").opacity(0.35), radius: 18, x: 0, y: 8)
+                        }
+                        .padding(.horizontal, 16)
+
+                        // Filters Bar - Glass
+                        HStack(spacing: 12) {
+                            Button(action: { viewModel.showFilters = true }) {
+                                HStack(spacing: 10) {
+                                    Image(systemName: AppIcon.sliders.sfSymbol)
+                                        .font(.system(size: 18, weight: .semibold))
+                                    Text("Filtres")
+                                        .font(.system(size: 16, weight: .semibold))
+                                }
+                                .foregroundColor(Color(hex: "111827"))
+                                .padding(.horizontal, 20)
+                                .frame(height: 48)
+                                .background(
+                                    Color.white.opacity(0.6)
+                                        .background(.thinMaterial)
+                                )
+                                .cornerRadius(14)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .stroke(Color.white.opacity(0.5), lineWidth: 1)
+                                )
+                            }
+
+                            Spacer()
+
+                            Menu {
+                                Button("🎯 Meilleur match") { viewModel.sortBy = .bestMatch }
+                                Button("🆕 Plus récent") { viewModel.sortBy = .newest }
+                                Button("💰 Prix croissant") { viewModel.sortBy = .priceLow }
+                                Button("💎 Prix décroissant") { viewModel.sortBy = .priceHigh }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Text(viewModel.sortBy.displayName)
+                                        .font(.system(size: 15, weight: .medium))
+                                        .foregroundColor(Color(hex: "111827"))
+
+                                    Image(systemName: AppIcon.chevronRight.sfSymbol)
+                                        .font(.system(size: 11))
+                                        .foregroundColor(Color(hex: "6B7280"))
+                                        .rotationEffect(.degrees(90))
+                                }
+                                .padding(.horizontal, 18)
+                                .frame(height: 48)
+                                .background(
+                                    Color.white.opacity(0.6)
+                                        .background(.thinMaterial)
+                                )
+                                .cornerRadius(14)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .stroke(Color.white.opacity(0.5), lineWidth: 1)
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 16)
+
+                        // Properties or Empty State
+                        if viewModel.properties.isEmpty {
+                            emptyStateGlass
+                        }
                     }
                 }
-                .foregroundColor(Color(hex: "374151"))
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
             }
-
-            Spacer()
-
-            // Sort dropdown
-            Menu {
-                Button(action: { viewModel.sortBy = .bestMatch }) {
-                    Label("🎯 Meilleur match", systemImage: viewModel.sortBy == .bestMatch ? "checkmark" : "")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Explorer")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(Color(hex: "111827"))
                 }
-                Button(action: { viewModel.sortBy = .newest }) {
-                    Label("Plus récent", systemImage: viewModel.sortBy == .newest ? "checkmark" : "")
-                }
-                Button(action: { viewModel.sortBy = .priceLow }) {
-                    Label("Prix: Croissant", systemImage: viewModel.sortBy == .priceLow ? "checkmark" : "")
-                }
-                Button(action: { viewModel.sortBy = .priceHigh }) {
-                    Label("Prix: Décroissant", systemImage: viewModel.sortBy == .priceHigh ? "checkmark" : "")
-                }
-            } label: {
-                HStack(spacing: 8) {
-                    Text(viewModel.sortBy.displayName)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(Color(hex: "374151"))
-
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 12))
-                        .foregroundColor(Color(hex: "6B7280"))
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
             }
         }
     }
 
-    // MARK: - Properties Grid
+    private var emptyStateGlass: some View {
+        VStack(spacing: 18) {
+            ZStack {
+                Circle()
+                    .fill(Color.white.opacity(0.6))
+                    .background(.ultraThinMaterial)
+                    .frame(width: 90, height: 90)
 
-    private var propertiesGrid: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: 16),
-                GridItem(.flexible(), spacing: 16)
-            ],
-            spacing: 24
-        ) {
-            ForEach(viewModel.filteredProperties) { property in
-                NavigationLink(destination: PropertyDetailView(property: property)) {
-                    PropertyCardView(
-                        property: property,
-                        onFavorite: {
-                            Task {
-                                await viewModel.toggleFavorite(property)
-                            }
-                        },
-                        onTap: {
-                            // Navigate to detail
-                        }
-                    )
-                }
-                .buttonStyle(PlainButtonStyle())
-                .task {
-                    await viewModel.loadMoreIfNeeded(currentProperty: property)
-                }
+                Image(systemName: "house.slash")
+                    .font(.system(size: 38, weight: .medium))
+                    .foregroundColor(Color(hex: "9CA3AF"))
             }
-
-            // Loading indicator at bottom
-            if viewModel.isLoading && !viewModel.properties.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .gridCellColumns(2)
-                    .padding(.vertical, 20)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 24)
-    }
-
-    // MARK: - Empty State
-
-    private var emptyStateView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "house.slash")
-                .font(.system(size: 64))
-                .foregroundColor(Color(hex: "D1D5DB"))
 
             Text("Aucune propriété trouvée")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(Color(hex: "374151"))
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(Color(hex: "111827"))
 
-            Text("Essayez d'ajuster vos filtres ou votre recherche")
-                .font(.system(size: 14))
+            Text("Ajuste tes filtres pour découvrir plus")
+                .font(.system(size: 15))
                 .foregroundColor(Color(hex: "6B7280"))
                 .multilineTextAlignment(.center)
-
-            Button(action: {
-                viewModel.clearFilters()
-            }) {
-                Text("Réinitialiser les filtres")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(
-                        LinearGradient(
-                            colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(999)
-            }
-            .padding(.top, 8)
         }
-        .padding(32)
+        .padding(.vertical, 50)
+        .padding(.horizontal, 20)
+        .background(
+            Color.white.opacity(0.5)
+                .background(.ultraThinMaterial)
+        )
+        .cornerRadius(20)
+        .padding(.horizontal, 16)
     }
 }
 
-// MARK: - Preview
+// MARK: - Glass Card Component
 
-struct PropertiesListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PropertiesListView()
+struct GlassCard: View {
+    let icon: String
+    let color: Color
+    let label: String
+    let value: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.2))
+                    .background(.ultraThinMaterial)
+                    .frame(width: 42, height: 42)
+
+                Image(systemName: icon)
+                    .font(.system(size: 19, weight: .semibold))
+                    .foregroundColor(color)
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(Color(hex: "6B7280"))
+                    .tracking(0.8)
+
+                Text(value)
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(Color(hex: "111827"))
+                    .lineLimit(1)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(
+            Color.white.opacity(0.6)
+                .background(.thinMaterial)
+        )
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+        )
     }
 }
