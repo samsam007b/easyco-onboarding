@@ -323,11 +323,11 @@ struct SearcherDashboardView: View {
 
                 Spacer()
 
-                Button("Historique") {
-                    // Navigate to full history
+                NavigationLink(destination: RecentlyViewedHistoryView()) {
+                    Text("Historique")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Theme.Colors.Searcher.primary)
                 }
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(Theme.Colors.Searcher.primary)
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -382,7 +382,7 @@ struct SearcherDashboardView: View {
             }
 
             // Edit Preferences Button
-            NavigationLink(destination: Text("Préférences de recherche")) {
+            NavigationLink(destination: SearchPreferencesView()) {
                 HStack {
                     Image(systemName: "slider.horizontal.3")
                         .font(.system(size: 14, weight: .semibold))
