@@ -185,7 +185,7 @@ struct ProfileViewPinterest: View {
 
             HStack(spacing: 12) {
                 NavigationLink(destination: FavoritesView()) {
-                    QuickActionCard(
+                    PinterestQuickActionCard(
                         icon: "heart.fill",
                         title: "Favoris",
                         color: Color(hex: "EF4444"),
@@ -195,7 +195,7 @@ struct ProfileViewPinterest: View {
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: AnnouncementsView()) {
-                    QuickActionCard(
+                    PinterestQuickActionCard(
                         icon: "doc.text.fill",
                         title: "Annonces",
                         color: Color(hex: "8B5CF6"),
@@ -218,7 +218,7 @@ struct ProfileViewPinterest: View {
 
             VStack(spacing: 8) {
                 NavigationLink(destination: PersonalInfoView()) {
-                    ProfileMenuItem(
+                    PinterestProfileMenuItem(
                         icon: "person.fill",
                         title: "Informations personnelles",
                         subtitle: "Nom, email, téléphone",
@@ -229,7 +229,7 @@ struct ProfileViewPinterest: View {
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: NotificationSettingsView()) {
-                    ProfileMenuItem(
+                    PinterestProfileMenuItem(
                         icon: "bell.fill",
                         title: "Notifications",
                         subtitle: "Gérer vos préférences",
@@ -240,7 +240,7 @@ struct ProfileViewPinterest: View {
                 .buttonStyle(PlainButtonStyle())
 
                 NavigationLink(destination: PrivacySettingsView()) {
-                    ProfileMenuItem(
+                    PinterestProfileMenuItem(
                         icon: "shield.fill",
                         title: "Confidentialité",
                         subtitle: "Données et sécurité",
@@ -263,8 +263,8 @@ struct ProfileViewPinterest: View {
                 .padding(.horizontal, Theme.PinterestSpacing.md)
 
             VStack(spacing: 8) {
-                NavigationLink(destination: HelpFAQView()) {
-                    ProfileMenuItem(
+                NavigationLink(destination: Text("Aide et FAQ")) {
+                    PinterestProfileMenuItem(
                         icon: "questionmark.circle.fill",
                         title: "Aide et FAQ",
                         subtitle: "Besoin d'assistance ?",
@@ -274,8 +274,8 @@ struct ProfileViewPinterest: View {
                 }
                 .buttonStyle(PlainButtonStyle())
 
-                NavigationLink(destination: ContactSupportView()) {
-                    ProfileMenuItem(
+                NavigationLink(destination: Text("Nous contacter")) {
+                    PinterestProfileMenuItem(
                         icon: "bubble.left.and.bubble.right.fill",
                         title: "Nous contacter",
                         subtitle: "support@easyco.fr",
@@ -324,7 +324,7 @@ struct ProfileViewPinterest: View {
 
     private var displayName: String {
         if let user = authManager.currentUser {
-            return user.displayName ?? "sam jones"
+            return user.displayName
         }
         return "sam jones"
     }
@@ -332,7 +332,7 @@ struct ProfileViewPinterest: View {
 
 // MARK: - Quick Action Card
 
-struct QuickActionCard: View {
+private struct PinterestQuickActionCard: View {
     let icon: String
     let title: String
     let color: Color
@@ -376,7 +376,7 @@ struct QuickActionCard: View {
 
 // MARK: - Profile Menu Item
 
-struct ProfileMenuItem: View {
+private struct PinterestProfileMenuItem: View {
     let icon: String
     let title: String
     let subtitle: String

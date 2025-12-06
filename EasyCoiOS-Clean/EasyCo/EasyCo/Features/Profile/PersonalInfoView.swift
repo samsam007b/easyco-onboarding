@@ -33,10 +33,29 @@ struct PersonalInfoView: View {
 
                     // Form Fields
                     VStack(spacing: 16) {
-                        FormField(label: "Prénom", text: $firstName)
-                        FormField(label: "Nom", text: $lastName)
-                        FormField(label: "Email", text: $email)
-                        FormField(label: "Téléphone", text: $phone)
+                        FormField(label: "Prénom") {
+                            TextField("Prénom", text: $firstName)
+                                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
+
+                        FormField(label: "Nom") {
+                            TextField("Nom", text: $lastName)
+                                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
+
+                        FormField(label: "Email") {
+                            TextField("Email", text: $email)
+                                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
+
+                        FormField(label: "Téléphone") {
+                            TextField("Téléphone", text: $phone)
+                                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
                     }
 
                     // Save Button
@@ -51,32 +70,5 @@ struct PersonalInfoView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct FormField: View {
-    let label: String
-    @Binding var text: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(label)
-                .font(Theme.PinterestTypography.bodySmall(.semibold))
-                .foregroundColor(Theme.Colors.textSecondary)
-
-            TextField(label, text: $text)
-                .font(Theme.PinterestTypography.bodyRegular(.medium))
-                .foregroundColor(Theme.Colors.textPrimary)
-                .padding(Theme.PinterestSpacing.md)
-                .background(
-                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
-                        .fill(Color.white.opacity(0.75))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
-                                .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
-                        )
-                )
-                .pinterestShadow(Theme.PinterestShadows.subtle)
-        }
     }
 }

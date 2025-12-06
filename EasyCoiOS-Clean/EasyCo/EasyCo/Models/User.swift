@@ -39,6 +39,22 @@ struct User: Identifiable, Codable {
     }
 }
 
+// MARK: - User Display Name Extension
+
+extension User {
+    var displayName: String {
+        if let firstName = firstName, let lastName = lastName {
+            return "\(firstName) \(lastName)"
+        } else if let firstName = firstName {
+            return firstName
+        } else if let lastName = lastName {
+            return lastName
+        } else {
+            return email.components(separatedBy: "@").first ?? email
+        }
+    }
+}
+
 // MARK: - UserType Display Name Extension
 
 extension User.UserType {

@@ -28,6 +28,10 @@ extension Theme {
             .system(size: 34, weight: weight, design: .rounded)
         }
 
+        static func heroSmall(_ weight: Font.Weight = .bold) -> Font {
+            .system(size: 28, weight: weight, design: .rounded)
+        }
+
         // Titles
         static func titleXL(_ weight: Font.Weight = .bold) -> Font {
             .system(size: 28, weight: weight, design: .rounded)
@@ -39,6 +43,10 @@ extension Theme {
 
         static func titleMedium(_ weight: Font.Weight = .semibold) -> Font {
             .system(size: 20, weight: weight, design: .rounded)
+        }
+
+        static func titleSmall(_ weight: Font.Weight = .semibold) -> Font {
+            .system(size: 18, weight: weight, design: .rounded)
         }
 
         // Body
