@@ -4,8 +4,27 @@ import SwiftUI
 
 struct MessagesListView: View {
     @StateObject private var viewModel = MessagesListViewModel()
+    @EnvironmentObject var authManager: AuthManager
     @State private var searchText = ""
     @State private var selectedFilter: MessageFilter = .all
+
+    // Role-based colors
+    private var userRole: Theme.UserRole {
+        guard let userType = authManager.currentUser?.userType else { return .searcher }
+        switch userType {
+        case .searcher: return .searcher
+        case .owner: return .owner
+        case .resident: return .resident
+        }
+    }
+
+    private var primaryColor: Color {
+        userRole.primaryColor
+    }
+
+    private var ctaGradient: LinearGradient {
+        userRole.gradient
+    }
 
     var body: some View {
         NavigationStack {
@@ -96,7 +115,9 @@ struct MessagesListView: View {
                     FilterChipButton(
                         title: filter.title,
                         count: filter.count(from: viewModel.conversations),
-                        isSelected: selectedFilter == filter
+                        isSelected: selectedFilter == filter,
+                        primaryColor: primaryColor,
+                        gradient: ctaGradient
                     ) {
                         withAnimation(.spring(response: 0.3)) {
                             selectedFilter = filter
@@ -128,7 +149,7 @@ struct MessagesListView: View {
 
                 // Organic shapes
                 Circle()
-                    .fill(Color(hex: "FFA040").opacity(0.08))
+                    .fill(primaryColor.opacity(0.08))
                     .frame(width: 400, height: 400)
                     .blur(radius: 100)
                     .offset(x: -100, y: -200)
@@ -147,12 +168,12 @@ struct MessagesListView: View {
                 VStack(spacing: 20) {
                     ZStack {
                         Circle()
-                            .fill(Color(hex: "06B6D4").opacity(0.12))
+                            .fill(primaryColor.opacity(0.12))
                             .frame(width: 100, height: 100)
 
                         Image(systemName: "message")
                             .font(.system(size: 44, weight: .medium))
-                            .foregroundColor(Color(hex: "06B6D4"))
+                            .foregroundColor(primaryColor)
                     }
 
                     VStack(spacing: 8) {
@@ -179,13 +200,9 @@ struct MessagesListView: View {
                         .padding(.vertical, 14)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(LinearGradient(
-                                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ))
+                                .fill(ctaGradient)
                         )
-                        .richShadow(color: Color(hex: "FFA040"))
+                        .richShadow(color: primaryColor)
                     }
                 }
                 .padding(.vertical, 60)
@@ -213,10 +230,12 @@ struct MessagesListView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(filteredConversations) { conversation in
-                    NavigationLink(destination: ChatView(conversation: conversation)) {
+                    NavigationLink(destination: ChatView(conversation: conversation, primaryColor: primaryColor, gradient: ctaGradient)) {
                         EnhancedConversationRow(
                             conversation: conversation,
-                            searchText: searchText
+                            searchText: searchText,
+                            primaryColor: primaryColor,
+                            gradient: ctaGradient
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -309,6 +328,8 @@ struct FilterChipButton: View {
     let title: String
     let count: Int?
     let isSelected: Bool
+    let primaryColor: Color
+    let gradient: LinearGradient
     let action: () -> Void
 
     var body: some View {
@@ -323,7 +344,7 @@ struct FilterChipButton: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(
-                            isSelected ? Color.white.opacity(0.3) : Color(hex: "FFA040").opacity(0.2)
+                            isSelected ? Color.white.opacity(0.3) : primaryColor.opacity(0.2)
                         )
                         .cornerRadius(8)
                 }
@@ -333,7 +354,7 @@ struct FilterChipButton: View {
             .padding(.vertical, 8)
             .background(
                 isSelected ?
-                LinearGradient(colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")], startPoint: .leading, endPoint: .trailing) :
+                gradient :
                 LinearGradient(colors: [Color.white, Color.white], startPoint: .leading, endPoint: .trailing)
             )
             .cornerRadius(999)
@@ -350,6 +371,8 @@ struct FilterChipButton: View {
 struct EnhancedConversationRow: View {
     let conversation: Conversation
     let searchText: String
+    let primaryColor: Color
+    let gradient: LinearGradient
 
     var body: some View {
         HStack(spacing: 12) {
@@ -394,10 +417,10 @@ struct EnhancedConversationRow: View {
                     if let propertyTitle = conversation.propertyTitle {
                         Text(propertyTitle)
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(Color(hex: "FFA040"))
+                            .foregroundColor(primaryColor)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color(hex: "FFA040").opacity(0.1))
+                            .background(primaryColor.opacity(0.1))
                             .cornerRadius(4)
                             .lineLimit(1)
                     }
@@ -408,7 +431,7 @@ struct EnhancedConversationRow: View {
                     if let lastMessage = conversation.lastMessage {
                         Text(formatMessageDate(lastMessage.timestamp))
                             .font(.system(size: 12))
-                            .foregroundColor(conversation.unreadCount > 0 ? Color(hex: "FFA040") : Color(hex: "9CA3AF"))
+                            .foregroundColor(conversation.unreadCount > 0 ? primaryColor : Color(hex: "9CA3AF"))
                     }
                 }
 
@@ -416,10 +439,10 @@ struct EnhancedConversationRow: View {
                     // Last message preview with typing indicator
                     if conversation.isOtherUserTyping {
                         HStack(spacing: 4) {
-                            TypingIndicatorDots()
+                            TypingIndicatorDots(primaryColor: primaryColor)
                             Text("En train d'écrire...")
                                 .font(.system(size: 14))
-                                .foregroundColor(Color(hex: "FFA040"))
+                                .foregroundColor(primaryColor)
                         }
                     } else if let lastMessage = conversation.lastMessage {
                         // Read status for sent messages
@@ -443,9 +466,7 @@ struct EnhancedConversationRow: View {
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.white)
                             .frame(minWidth: 22, minHeight: 22)
-                            .background(
-                                LinearGradient(colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
+                            .background(gradient)
                             .clipShape(Circle())
                     }
                 }
@@ -453,18 +474,12 @@ struct EnhancedConversationRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(conversation.unreadCount > 0 ? Color(hex: "FFF4ED").opacity(0.5) : Color.clear)
+        .background(conversation.unreadCount > 0 ? primaryColor.opacity(0.05) : Color.clear)
     }
 
     private var avatarPlaceholder: some View {
         Circle()
-            .fill(
-                LinearGradient(
-                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
+            .fill(gradient)
             .frame(width: 52, height: 52)
             .overlay(
                 Text(conversation.otherUserName.prefix(1).uppercased())
@@ -498,13 +513,14 @@ struct EnhancedConversationRow: View {
 // MARK: - Typing Indicator Dots
 
 struct TypingIndicatorDots: View {
+    let primaryColor: Color
     @State private var animationPhase = 0
 
     var body: some View {
         HStack(spacing: 3) {
             ForEach(0..<3, id: \.self) { index in
                 Circle()
-                    .fill(Color(hex: "FFA040"))
+                    .fill(primaryColor)
                     .frame(width: 6, height: 6)
                     .scaleEffect(animationPhase == index ? 1.3 : 1.0)
                     .opacity(animationPhase == index ? 1.0 : 0.5)
@@ -560,6 +576,8 @@ class MessagesListViewModel: ObservableObject {
 
 struct ChatView: View {
     let conversation: Conversation
+    let primaryColor: Color
+    let gradient: LinearGradient
     @State private var messageText = ""
     @State private var messages: [Message] = []
     @FocusState private var isInputFocused: Bool
@@ -571,7 +589,7 @@ struct ChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(messages) { message in
-                            ChatMessageBubble(message: message)
+                            ChatMessageBubble(message: message, primaryColor: primaryColor, gradient: gradient)
                                 .id(message.id)
                         }
                     }
@@ -604,13 +622,7 @@ struct ChatView: View {
     private var chatHeader: some View {
         HStack(spacing: 12) {
             Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(gradient)
                 .frame(width: 36, height: 36)
                 .overlay(
                     Text(conversation.otherUserName.prefix(1).uppercased())
@@ -658,7 +670,7 @@ struct ChatView: View {
                 Button(action: sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.system(size: 32))
-                        .foregroundColor(messageText.isEmpty ? Color(hex: "D1D5DB") : Color(hex: "FFA040"))
+                        .foregroundColor(messageText.isEmpty ? Color(hex: "D1D5DB") : primaryColor)
                 }
                 .disabled(messageText.isEmpty)
             }
@@ -699,6 +711,8 @@ struct ChatView: View {
 
 struct ChatMessageBubble: View {
     let message: Message
+    let primaryColor: Color
+    let gradient: LinearGradient
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
@@ -714,13 +728,7 @@ struct ChatMessageBubble: View {
                     .padding(.vertical, 10)
                     .background(
                         message.isSentByCurrentUser ?
-                        AnyShapeStyle(
-                            LinearGradient(
-                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        ) :
+                        AnyShapeStyle(gradient) :
                         AnyShapeStyle(Color(hex: "F3F4F6"))
                     )
                     .clipShape(
