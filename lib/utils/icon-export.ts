@@ -1,5 +1,6 @@
 import * as JSZipModule from 'jszip';
 import type { LucideIcon } from 'lucide-react';
+import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 
 const JSZip = (JSZipModule as any).default || JSZipModule;
@@ -50,14 +51,14 @@ async function generateIconPNG(
 
   return new Promise((resolve, reject) => {
     try {
-      // Rendre l'icône
-      root.render(
-        Icon({
-          size: iconSize,
-          color: iconColor,
-          strokeWidth: 2,
-        }) as any
-      );
+      // Créer l'élément React - utiliser createElement pour gérer les deux cas
+      const iconElement = createElement(Icon as any, {
+        size: iconSize,
+        color: iconColor,
+        strokeWidth: 2,
+      });
+
+      root.render(iconElement);
 
       // Attendre que le rendu soit terminé
       setTimeout(async () => {
@@ -83,8 +84,14 @@ async function generateIconPNG(
           ctx.fillStyle = backgroundColor;
           ctx.fillRect(0, 0, size, size);
 
+          // Cloner le SVG et s'assurer qu'il a les bons attributs
+          const clonedSvg = svgElement.cloneNode(true) as SVGElement;
+          clonedSvg.setAttribute('width', String(iconSize));
+          clonedSvg.setAttribute('height', String(iconSize));
+          clonedSvg.setAttribute('viewBox', '0 0 24 24');
+
           // Convertir le SVG en image
-          const svgData = new XMLSerializer().serializeToString(svgElement);
+          const svgData = new XMLSerializer().serializeToString(clonedSvg);
           const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
           const url = URL.createObjectURL(svgBlob);
 
@@ -126,7 +133,7 @@ async function generateIconPNG(
           document.body.removeChild(container);
           reject(error);
         }
-      }, 50); // Petit délai pour s'assurer que React a fini de rendre
+      }, 100); // Augmenté à 100ms pour plus de fiabilité
     } catch (error) {
       root.unmount();
       document.body.removeChild(container);
@@ -161,6 +168,7 @@ export async function exportAllIcons(
 
   let currentIcon = 0;
   const errors: string[] = [];
+  const successful: string[] = [];
 
   // Générer tous les icônes
   for (const [category, icons] of Object.entries(iconGroups)) {
@@ -190,7 +198,7 @@ export async function exportAllIcons(
         lightCategoryFolder.file(`${name}.png`, lightBlob);
 
         // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise(resolve => setTimeout(resolve, 30));
 
         // Version sur fond noir (icône blanc)
         const darkBlob = await generateIconPNG(
@@ -202,8 +210,10 @@ export async function exportAllIcons(
         );
         darkCategoryFolder.file(`${name}.png`, darkBlob);
 
+        successful.push(name);
+
         // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise(resolve => setTimeout(resolve, 30));
       } catch (error) {
         console.error(`Failed to generate icon ${name}:`, error);
         errors.push(`${name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -214,10 +224,14 @@ export async function exportAllIcons(
   // Ajouter un fichier README
   const readme = `# EasyCo Icons Export
 
-Generated on: ${new Date().toLocaleString()}
+Generated on: ${new Date().toLocaleString('fr-FR', {
+  dateStyle: 'full',
+  timeStyle: 'short'
+})}
+
 Total icons: ${totalIcons}
-Successfully generated: ${totalIcons - errors.length}
-Errors: ${errors.length}
+Successfully generated: ${successful.length} (${Math.round((successful.length / totalIcons) * 100)}%)
+Failed: ${errors.length}
 Size: ${options.size || 512}px × ${options.size || 512}px
 
 ## Structure
@@ -227,14 +241,18 @@ Size: ${options.size || 512}px × ${options.size || 512}px
 
 Chaque dossier contient des sous-dossiers par catégorie.
 
+## Successfully Generated Icons
+
+${successful.length > 0 ? successful.map(name => `- ${name}`).join('\n') : 'None'}
+
 ## Usage
 
 Ces icônes sont prêts à être utilisés dans vos présentations, brand kits,
 et autres documents marketing.
 
-Tous les icônes sont en PNG avec le fond spécifié.
+Tous les icônes sont en PNG haute qualité avec le fond spécifié.
 
-${errors.length > 0 ? `\n## Errors encountered:\n\n${errors.join('\n')}` : ''}
+${errors.length > 0 ? `\n## Errors Encountered\n\n${errors.map(err => `- ${err}`).join('\n')}` : ''}
 
 ---
 EasyCo Design System
