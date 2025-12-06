@@ -312,21 +312,23 @@ export async function exportAllIcons(
 ): Promise<Blob> {
   const zip = new JSZip();
 
-  // Créer les dossiers pour chaque variante (+ gradient)
+  // Créer les dossiers pour chaque variante (avec catégories ET dossier "all")
   const folders = [
     ...ICON_VARIANTS.map(variant => ({
       variant,
-      folder: zip.folder(`icons-${variant.name}`),
+      folderWithCategories: zip.folder(`icons-${variant.name}`),
+      folderAll: zip.folder(`all-icons-${variant.name}`),
     })),
     {
       variant: { name: 'gradient', color: 'gradient' },
-      folder: zip.folder('icons-gradient'),
+      folderWithCategories: zip.folder('icons-gradient'),
+      folderAll: zip.folder('all-icons-gradient'),
     },
   ];
 
   // Vérifier que tous les dossiers ont été créés
-  for (const { folder } of folders) {
-    if (!folder) {
+  for (const { folderWithCategories, folderAll } of folders) {
+    if (!folderWithCategories || !folderAll) {
       throw new Error('Failed to create folders');
     }
   }
@@ -346,8 +348,8 @@ export async function exportAllIcons(
   for (const [category, icons] of Object.entries(iconGroups)) {
     for (const { icon, name } of icons) {
       // Générer les 5 variantes de couleur standard
-      for (const { variant, folder } of folders.slice(0, 5)) {
-        if (!folder) continue;
+      for (const { variant, folderWithCategories, folderAll } of folders.slice(0, 5)) {
+        if (!folderWithCategories || !folderAll) continue;
 
         currentIcon++;
         const variantName = `${name} (${variant.name})`;
@@ -357,9 +359,6 @@ export async function exportAllIcons(
         }
 
         try {
-          const categoryFolder = folder.folder(category);
-          if (!categoryFolder) continue;
-
           const blob = await generateIconPNG(
             icon,
             name,
@@ -367,7 +366,15 @@ export async function exportAllIcons(
             options
           );
 
-          categoryFolder.file(`${name}.png`, blob);
+          // Ajouter dans le dossier avec catégories
+          const categoryFolder = folderWithCategories.folder(category);
+          if (categoryFolder) {
+            categoryFolder.file(`${name}.png`, blob);
+          }
+
+          // Ajouter aussi dans le dossier "all" (sans catégories)
+          folderAll.file(`${name}.png`, blob);
+
           successful.push(variantName);
 
           await new Promise(resolve => setTimeout(resolve, 15));
@@ -378,8 +385,8 @@ export async function exportAllIcons(
       }
 
       // Générer la variante gradient
-      const gradientFolder = folders[5].folder;
-      if (gradientFolder) {
+      const { folderWithCategories: gradientFolderCat, folderAll: gradientFolderAll } = folders[5];
+      if (gradientFolderCat && gradientFolderAll) {
         currentIcon++;
         const variantName = `${name} (gradient)`;
 
@@ -388,13 +395,19 @@ export async function exportAllIcons(
         }
 
         try {
-          const categoryFolder = gradientFolder.folder(category);
+          const blob = await generateGradientIconPNG(icon, name, options);
+
+          // Ajouter dans le dossier avec catégories
+          const categoryFolder = gradientFolderCat.folder(category);
           if (categoryFolder) {
-            const blob = await generateGradientIconPNG(icon, name, options);
             categoryFolder.file(`${name}.png`, blob);
-            successful.push(variantName);
-            await new Promise(resolve => setTimeout(resolve, 15));
           }
+
+          // Ajouter aussi dans le dossier "all" (sans catégories)
+          gradientFolderAll.file(`${name}.png`, blob);
+
+          successful.push(variantName);
+          await new Promise(resolve => setTimeout(resolve, 15));
         } catch (error) {
           console.error(`Failed to generate gradient icon ${variantName}:`, error);
           errors.push(`${variantName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -422,12 +435,33 @@ Size: ${options.size || 512}px × ${options.size || 512}px
 
 Chaque icône est disponible en 6 variantes, toutes sur fond TRANSPARENT :
 
-1. **icons-black/** - Icônes noirs (#000000)
-2. **icons-white/** - Icônes blancs (#FFFFFF)
-3. **icons-purple/** - Icônes violets (#9c5698)
-4. **icons-orange/** - Icônes oranges (#FF5722)
-5. **icons-yellow/** - Icônes jaunes (#FFB10B)
-6. **icons-gradient/** - Icônes avec dégradé EasyCo (violet → orange)
+1. **icons-black/** - Icônes noirs (#000000) organisés par catégorie
+2. **icons-white/** - Icônes blancs (#FFFFFF) organisés par catégorie
+3. **icons-purple/** - Icônes violets (#9c5698) organisés par catégorie
+4. **icons-orange/** - Icônes oranges (#FF5722) organisés par catégorie
+5. **icons-yellow/** - Icônes jaunes (#FFB10B) organisés par catégorie
+6. **icons-gradient/** - Icônes avec dégradé EasyCo (violet → orange) organisés par catégorie
+
+ET aussi :
+
+7. **all-icons-black/** - Tous les icônes noirs dans un seul dossier (pour Canva)
+8. **all-icons-white/** - Tous les icônes blancs dans un seul dossier (pour Canva)
+9. **all-icons-purple/** - Tous les icônes violets dans un seul dossier (pour Canva)
+10. **all-icons-orange/** - Tous les icônes oranges dans un seul dossier (pour Canva)
+11. **all-icons-yellow/** - Tous les icônes jaunes dans un seul dossier (pour Canva)
+12. **all-icons-gradient/** - Tous les icônes dégradés dans un seul dossier (pour Canva)
+
+## Organisation
+
+**Dossiers avec catégories** (icons-{color}/) :
+- Organisés par catégorie (Navigation, Utilisateurs, Communication, etc.)
+- Parfait pour les brand kits et l'organisation
+- Structure : icons-black/Navigation/Home.png
+
+**Dossiers sans catégories** (all-icons-{color}/) :
+- Tous les icônes au même niveau
+- Compatible avec Canva et outils qui n'acceptent pas les sous-dossiers
+- Structure : all-icons-black/Home.png
 
 ## Couleurs EasyCo
 
