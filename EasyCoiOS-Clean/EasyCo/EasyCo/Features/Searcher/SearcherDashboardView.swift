@@ -1,72 +1,107 @@
 import SwiftUI
 
 // MARK: - Searcher Dashboard View
+// Information Rich Design - Matching ProfileView aesthetic
 
 struct SearcherDashboardView: View {
     @StateObject private var viewModel = SearcherDashboardViewModel()
     @State private var showSwipeMode = false
+    @State private var showProfileSheet = false
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Hero Search Section
-                    heroSearchSection
+            ZStack(alignment: .top) {
+                // Background avec profondeur (warm gradient)
+                ZStack {
+                    LinearGradient(
+                        colors: [
+                            Color(hex: "FFF5F0"),
+                            Color(hex: "FFF0E6"),
+                            Color(hex: "FFE5D9")
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
 
-                    // Quick Actions
-                    quickActionsSection
+                    // Organic shapes
+                    Circle()
+                        .fill(Theme.Colors.Searcher.primary.opacity(0.08))
+                        .frame(width: 400, height: 400)
+                        .blur(radius: 100)
+                        .offset(x: -100, y: -200)
 
-                    // KPI Cards Grid
-                    if viewModel.isLoading {
-                        ProgressView("Chargement...")
-                            .frame(height: 200)
-                    } else if let stats = viewModel.stats {
-                        kpiCardsGrid(stats: stats)
-                    }
-
-                    // Top Matches
-                    if !viewModel.topMatches.isEmpty {
-                        topMatchesSection
-                    }
-
-                    // Recently Viewed Properties
-                    if !viewModel.recentlyViewed.isEmpty {
-                        recentlyViewedSection
-                    }
-
-                    // Analytics Insights
-                    if let stats = viewModel.stats {
-                        analyticsInsightsSection(stats: stats)
-                    }
+                    Circle()
+                        .fill(Color(hex: "FACC15").opacity(0.06))
+                        .frame(width: 300, height: 300)
+                        .blur(radius: 80)
+                        .offset(x: 150, y: 500)
                 }
-                .padding(16)
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        // Hero Title Card
+                        heroTitleCard
+                            .padding(.top, 40)
+
+                        // Search Preferences Card
+                        searchPreferencesCard
+
+                        // Large Search CTA Button
+                        searchCTAButton
+
+                        // Quick Filters
+                        quickFiltersRow
+
+                        // Stats Grid (if data available)
+                        if let stats = viewModel.stats {
+                            statsGrid(stats: stats)
+                        }
+
+                        // Top Matches Section
+                        if !viewModel.topMatches.isEmpty {
+                            topMatchesSection
+                        }
+
+                        // Recently Viewed
+                        if !viewModel.recentlyViewed.isEmpty {
+                            recentlyViewedSection
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 100)
+                }
             }
-            .background(Color(hex: "F9FAFB"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Theme.Colors.Searcher.primary)
-                        Text("Explorer")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(Color(hex: "111827"))
-                    }
+                    Text("Explorer")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "1F2937"))
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        Task { await viewModel.refresh() }
-                    }) {
-                        Image(systemName: "arrow.clockwise")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Theme.Colors.Searcher.primary)
+                    Button(action: { showProfileSheet = true }) {
+                        Circle()
+                            .fill(LinearGradient(
+                                colors: [Theme.Colors.Searcher.primary, Theme.Colors.Searcher._400],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ))
+                            .frame(width: 36, height: 36)
+                            .overlay(
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.white)
+                            )
                     }
                 }
             }
             .fullScreenCover(isPresented: $showSwipeMode) {
                 SwipeMatchesView()
+            }
+            .sheet(isPresented: $showProfileSheet) {
+                ProfileView()
             }
         }
         .task {
@@ -74,237 +109,212 @@ struct SearcherDashboardView: View {
         }
     }
 
-    // MARK: - Hero Search Section
+    // MARK: - Hero Title Card
 
-    private var heroSearchSection: some View {
-        VStack(spacing: 16) {
-            // Title with greeting
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Bonjour ! 👋")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
+    private var heroTitleCard: some View {
+        VStack(spacing: 12) {
+            Text("Trouve ta colocation")
+                .font(.system(size: 32, weight: .bold))
+                .foregroundColor(Color(hex: "1F2937"))
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Trouve ta colocation idéale parmi des centaines de propriétés vérifiées")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // Search Button
-            NavigationLink(destination: PropertiesListView()) {
-                HStack(spacing: 12) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 18, weight: .semibold))
-
-                    Text("Rechercher une colocation...")
-                        .font(.system(size: 16))
-
-                    Spacer()
-
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 14, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .padding(16)
-                .background(Theme.Gradients.searcherCTA)
-                .cornerRadius(16)
-                .shadow(color: Theme.Colors.Searcher.primary.opacity(0.3), radius: 8, x: 0, y: 4)
-            }
+            Text("Transparence et modernité")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(Color(hex: "6B7280"))
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
         .background(
-            LinearGradient(
-                colors: [
-                    Theme.Colors.Searcher._100,
-                    Color.white
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.white, lineWidth: 2)
+                )
         )
-        .cornerRadius(20)
-        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+        .richShadow()
     }
 
-    // MARK: - Quick Actions Section
+    // MARK: - Search Preferences Card
 
-    private var quickActionsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Actions rapides")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(Color(hex: "111827"))
-
-            // First row
-            HStack(spacing: 12) {
-                // Swipe Mode
-                QuickActionButton(
-                    icon: "hand.draw.fill",
-                    title: "Mode Swipe",
+    private var searchPreferencesCard: some View {
+        VStack(spacing: 16) {
+            // Location
+            NavigationLink(destination: SearchPreferencesView()) {
+                SearchPreferenceRow(
+                    icon: "mappin.circle.fill",
+                    label: "LOCALISATION",
+                    value: viewModel.stats?.preferences.favoriteCity ?? "Paris, Lyon...",
                     color: Theme.Colors.Searcher.primary
-                ) {
-                    showSwipeMode = true
-                }
-
-                // Favorites
-                NavigationLink(destination: FavoritesView()) {
-                    QuickActionButton(
-                        icon: "heart.fill",
-                        title: "Favoris",
-                        color: Color(hex: "EF4444")
-                    ) {}
-                }
-                .buttonStyle(PlainButtonStyle())
-
-                // Matches
-                NavigationLink(destination: MatchesView()) {
-                    QuickActionButton(
-                        icon: "sparkles",
-                        title: "Matchs",
-                        color: Color(hex: "F59E0B")
-                    ) {}
-                }
-                .buttonStyle(PlainButtonStyle())
-
-                // Alerts
-                NavigationLink(destination: AlertsView()) {
-                    QuickActionButton(
-                        icon: "bell.fill",
-                        title: "Alertes",
-                        color: Color(hex: "3B82F6")
-                    ) {}
-                }
-                .buttonStyle(PlainButtonStyle())
+                )
             }
+            .buttonStyle(PlainButtonStyle())
 
-            // Second row
+            // Budget & Availability
             HStack(spacing: 12) {
-                // My Visits
-                NavigationLink(destination: MyVisitsView()) {
-                    QuickActionButton(
-                        icon: "calendar.badge.clock",
-                        title: "Mes Visites",
+                NavigationLink(destination: SearchPreferencesView()) {
+                    SearchPreferenceCompact(
+                        icon: "eurosign.circle.fill",
+                        label: "BUDGET",
+                        value: "€800/mois",
                         color: Color(hex: "10B981")
-                    ) {}
+                    )
                 }
                 .buttonStyle(PlainButtonStyle())
 
-                // Profile Enhancement
-                NavigationLink(destination: ProfileEnhancementView(userRole: .searcher)) {
-                    QuickActionButton(
-                        icon: "person.crop.circle.badge.plus",
-                        title: "Mon Profil",
+                NavigationLink(destination: SearchPreferencesView()) {
+                    SearchPreferenceCompact(
+                        icon: "calendar.circle.fill",
+                        label: "DISPONIBILITÉ",
+                        value: "Flexible",
                         color: Color(hex: "8B5CF6")
-                    ) {}
-                }
-                .buttonStyle(PlainButtonStyle())
-
-                // Saved Searches
-                NavigationLink(destination: SavedSearchesView()) {
-                    QuickActionButton(
-                        icon: "bookmark.fill",
-                        title: "Recherches",
-                        color: Color(hex: "6366F1")
-                    ) {}
-                }
-                .buttonStyle(PlainButtonStyle())
-
-                // Groups
-                NavigationLink(destination: GroupsListView()) {
-                    QuickActionButton(
-                        icon: "person.3.fill",
-                        title: "Groupes",
-                        color: Color(hex: "EC4899")
-                    ) {}
+                    )
                 }
                 .buttonStyle(PlainButtonStyle())
             }
         }
     }
 
-    // MARK: - KPI Cards Grid
+    // MARK: - Search CTA Button
 
-    private func kpiCardsGrid(stats: SearcherStats) -> some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: 16),
-                GridItem(.flexible(), spacing: 16)
-            ],
-            spacing: 16
-        ) {
-            NavigationLink(destination: MessagesListView()) {
-                SearcherKPICard(
-                    title: "Messages",
-                    value: "\(stats.unreadMessages)",
-                    subtitle: stats.unreadMessages > 0 ? "non lus" : "tout lu",
-                    icon: "envelope.fill",
-                    color: Color(hex: "F59E0B"),
-                    hasNotification: stats.unreadMessages > 0
-                )
+    private var searchCTAButton: some View {
+        NavigationLink(destination: PropertiesListView()) {
+            HStack(spacing: 12) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 18, weight: .semibold))
+
+                Text("Rechercher")
+                    .font(.system(size: 18, weight: .bold))
+
+                Spacer()
+
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 16, weight: .bold))
             }
-            .buttonStyle(PlainButtonStyle())
-
-            NavigationLink(destination: FavoritesView()) {
-                SearcherKPICard(
-                    title: "Favoris",
-                    value: "\(stats.favoritesCount)",
-                    subtitle: "propriétés",
-                    icon: "heart.fill",
-                    color: Color(hex: "EF4444"),
-                    hasNotification: false
-                )
-            }
-            .buttonStyle(PlainButtonStyle())
-
-            NavigationLink(destination: MatchesView()) {
-                SearcherKPICard(
-                    title: "Top Matchs",
-                    value: "\(stats.topMatches)",
-                    subtitle: "compatibles",
-                    icon: "star.fill",
-                    color: Theme.Colors.Searcher.primary,
-                    hasNotification: stats.topMatches > 0
-                )
-            }
-            .buttonStyle(PlainButtonStyle())
-
-            SearcherKPICard(
-                title: "Candidatures",
-                value: "\(stats.applicationsCount)",
-                subtitle: "envoyées",
-                icon: "paperplane.fill",
-                color: Color(hex: "3B82F6"),
-                hasNotification: false
+            .foregroundColor(.white)
+            .padding(18)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(LinearGradient(
+                        colors: [Theme.Colors.Searcher.primary, Theme.Colors.Searcher._400],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ))
             )
+            .richShadow(color: Theme.Colors.Searcher.primary)
+        }
+    }
+
+    // MARK: - Quick Filters Row
+
+    private var quickFiltersRow: some View {
+        HStack(spacing: 12) {
+            NavigationLink(destination: PropertiesListView()) {
+                QuickFilterButton(
+                    icon: "line.3.horizontal.decrease.circle",
+                    title: "Filtres"
+                )
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            Spacer()
+
+            Button(action: {}) {
+                HStack(spacing: 8) {
+                    Image(systemName: "target")
+                        .font(.system(size: 14, weight: .semibold))
+                    Text("Meilleur match")
+                        .font(.system(size: 14, weight: .semibold))
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .foregroundColor(Color(hex: "1F2937"))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.white.opacity(0.85))
+                )
+                .richShadow()
+            }
+        }
+    }
+
+    // MARK: - Stats Grid
+
+    private func statsGrid(stats: SearcherStats) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Activité")
+                .font(.system(size: 15, weight: .bold))
+                .foregroundColor(Color(hex: "1F2937"))
+                .padding(.horizontal, 4)
+
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 12) {
+                NavigationLink(destination: FavoritesView()) {
+                    RichStatCardSearcher(
+                        icon: "heart.fill",
+                        value: "\(stats.favoritesCount)",
+                        label: "Favoris",
+                        color: Color(hex: "EF4444")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: MatchesView()) {
+                    RichStatCardSearcher(
+                        icon: "sparkles",
+                        value: "\(stats.topMatches)",
+                        label: "Matchs",
+                        color: Theme.Colors.Searcher.primary
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: MessagesListView()) {
+                    RichStatCardSearcher(
+                        icon: "message.fill",
+                        value: "\(stats.unreadMessages)",
+                        label: "Messages",
+                        color: Color(hex: "3B82F6")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
     }
 
     // MARK: - Top Matches Section
 
     private var topMatchesSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 HStack(spacing: 8) {
                     Image(systemName: "sparkles")
                         .font(.system(size: 16))
                         .foregroundColor(Theme.Colors.Searcher.primary)
-                    Text("Top Matchs pour vous")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
+                    Text("Top Matchs")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundColor(Color(hex: "1F2937"))
                 }
 
                 Spacer()
 
                 NavigationLink(destination: MatchesView()) {
                     Text("Voir tout")
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Theme.Colors.Searcher.primary)
                 }
             }
+            .padding(.horizontal, 4)
 
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 ForEach(viewModel.topMatches.prefix(3)) { property in
                     NavigationLink(destination: PropertyDetailView(property: property)) {
-                        TopMatchCard(property: property)
+                        TopMatchCardRich(property: property)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -315,26 +325,27 @@ struct SearcherDashboardView: View {
     // MARK: - Recently Viewed Section
 
     private var recentlyViewedSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Récemment consultées")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(Color(hex: "1F2937"))
 
                 Spacer()
 
                 NavigationLink(destination: RecentlyViewedHistoryView()) {
                     Text("Historique")
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Theme.Colors.Searcher.primary)
                 }
             }
+            .padding(.horizontal, 4)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
+                HStack(spacing: 12) {
                     ForEach(viewModel.recentlyViewed.prefix(5)) { property in
                         NavigationLink(destination: PropertyDetailView(property: property)) {
-                            PropertyCompactCard(property: property)
+                            PropertyCompactCardRich(property: property)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -342,183 +353,209 @@ struct SearcherDashboardView: View {
             }
         }
     }
-
-    // MARK: - Analytics Insights Section
-
-    private func analyticsInsightsSection(stats: SearcherStats) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 16))
-                    .foregroundColor(Theme.Colors.Searcher.primary)
-                Text("Vos préférences")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
-            }
-
-            VStack(spacing: 12) {
-                InsightRow(
-                    icon: "mappin.circle.fill",
-                    title: "Ville favorite",
-                    value: stats.preferences.favoriteCity ?? "Non défini",
-                    color: Theme.Colors.Searcher.primary
-                )
-
-                InsightRow(
-                    icon: "eurosign.circle.fill",
-                    title: "Budget préféré",
-                    value: stats.preferences.priceRange ?? "Non défini",
-                    color: Color(hex: "10B981")
-                )
-
-                if !stats.preferences.preferredPropertyTypes.isEmpty {
-                    InsightRow(
-                        icon: "house.circle.fill",
-                        title: "Type de logement",
-                        value: stats.preferences.preferredPropertyTypes.joined(separator: ", "),
-                        color: Color(hex: "3B82F6")
-                    )
-                }
-            }
-
-            // Edit Preferences Button
-            NavigationLink(destination: SearchPreferencesView()) {
-                HStack {
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.system(size: 14, weight: .semibold))
-                    Text("Modifier mes préférences")
-                        .font(.system(size: 14, weight: .semibold))
-                }
-                .foregroundColor(Theme.Colors.Searcher.primary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Theme.Colors.Searcher.primary.opacity(0.1))
-                .cornerRadius(12)
-            }
-        }
-    }
 }
 
-// MARK: - Quick Action Button
+// MARK: - Search Preference Row
 
-private struct QuickActionButton: View {
+private struct SearchPreferenceRow: View {
     let icon: String
-    let title: String
+    let label: String
+    let value: String
     let color: Color
-    let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.12))
+                    .frame(width: 44, height: 44)
+
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(color)
-                    .frame(width: 44, height: 44)
-                    .background(color.opacity(0.1))
-                    .cornerRadius(12)
-
-                Text(title)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .lineLimit(1)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(Color.white)
-            .cornerRadius(16)
-            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(label)
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(Color(hex: "6B7280"))
+                    .tracking(0.5)
+
+                Text(value)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(Color(hex: "1F2937"))
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(Color(hex: "9CA3AF"))
         }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white, lineWidth: 1.5)
+                )
+        )
+        .richShadow()
     }
 }
 
-// MARK: - Searcher KPI Card
+// MARK: - Search Preference Compact
 
-private struct SearcherKPICard: View {
-    let title: String
-    let value: String
-    let subtitle: String
+private struct SearchPreferenceCompact: View {
     let icon: String
+    let label: String
+    let value: String
     let color: Color
-    let hasNotification: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 22))
-                    .foregroundColor(color)
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.12))
+                        .frame(width: 36, height: 36)
+
+                    Image(systemName: icon)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(color)
+                }
 
                 Spacer()
-
-                if hasNotification {
-                    Circle()
-                        .fill(color)
-                        .frame(width: 8, height: 8)
-                }
             }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(value)
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-
-                Text(subtitle)
-                    .font(.system(size: 12))
+            VStack(alignment: .leading, spacing: 4) {
+                Text(label)
+                    .font(.system(size: 10, weight: .bold))
                     .foregroundColor(Color(hex: "6B7280"))
-            }
+                    .tracking(0.5)
 
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(Color(hex: "374151"))
+                Text(value)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(Color(hex: "1F2937"))
+                    .lineLimit(1)
+            }
         }
-        .padding(16)
+        .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.white, lineWidth: 1.5)
+                )
+        )
+        .richShadow()
     }
 }
 
-// MARK: - Top Match Card
+// MARK: - Quick Filter Button
 
-private struct TopMatchCard: View {
+private struct QuickFilterButton: View {
+    let icon: String
+    let title: String
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+            Text(title)
+                .font(.system(size: 14, weight: .semibold))
+        }
+        .foregroundColor(Color(hex: "1F2937"))
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white.opacity(0.85))
+        )
+        .richShadow()
+    }
+}
+
+// MARK: - Rich Stat Card Searcher
+
+private struct RichStatCardSearcher: View {
+    let icon: String
+    let value: String
+    let label: String
+    let color: Color
+
+    var body: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.12))
+                    .frame(width: 44, height: 44)
+
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(color)
+            }
+
+            Text(value)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(Color(hex: "1F2937"))
+
+            Text(label)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(Color(hex: "6B7280"))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.white, lineWidth: 1.5)
+                )
+        )
+        .richShadow()
+    }
+}
+
+// MARK: - Top Match Card Rich
+
+private struct TopMatchCardRich: View {
     let property: Property
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 14) {
             // Match score badge
             VStack(spacing: 4) {
                 Text("\(property.compatibilityScore ?? 85)%")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(Theme.Colors.Searcher.primary)
 
-                Text("Match")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
+                Image(systemName: "sparkles")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Theme.Colors.Searcher.primary)
             }
-            .frame(width: 64)
-            .padding(.vertical, 14)
+            .frame(width: 56, height: 56)
             .background(
-                LinearGradient(
-                    colors: [Theme.Colors.Searcher._100, Theme.Colors.Searcher._200],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Theme.Colors.Searcher.primary.opacity(0.12))
             )
-            .cornerRadius(12)
 
             // Property info
             VStack(alignment: .leading, spacing: 6) {
                 Text(property.title)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(Color(hex: "1F2937"))
                     .lineLimit(1)
 
                 HStack(spacing: 4) {
                     Image(systemName: "mappin")
                         .font(.system(size: 11))
                     Text(property.city)
-                        .font(.system(size: 13))
+                        .font(.system(size: 13, weight: .medium))
                 }
                 .foregroundColor(Color(hex: "6B7280"))
 
@@ -531,23 +568,29 @@ private struct TopMatchCard: View {
 
             // Arrow
             Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(Color(hex: "D1D5DB"))
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(Color(hex: "9CA3AF"))
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.white, lineWidth: 1.5)
+                )
+        )
+        .richShadow()
     }
 }
 
-// MARK: - Property Compact Card
+// MARK: - Property Compact Card Rich
 
-private struct PropertyCompactCard: View {
+private struct PropertyCompactCardRich: View {
     let property: Property
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             // Property image
             ZStack(alignment: .topTrailing) {
                 if let imageUrl = property.mainImageURL, let url = URL(string: imageUrl) {
@@ -566,11 +609,11 @@ private struct PropertyCompactCard: View {
                             )
                             .overlay(
                                 Image(systemName: "building.2.fill")
-                                    .font(.system(size: 28))
+                                    .font(.system(size: 24))
                                     .foregroundColor(.white.opacity(0.5))
                             )
                     }
-                    .frame(width: 160, height: 100)
+                    .frame(width: 150, height: 110)
                     .clipped()
                     .cornerRadius(12)
                 } else {
@@ -582,37 +625,41 @@ private struct PropertyCompactCard: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 160, height: 100)
+                        .frame(width: 150, height: 110)
                         .cornerRadius(12)
                         .overlay(
                             Image(systemName: "building.2.fill")
-                                .font(.system(size: 28))
+                                .font(.system(size: 24))
                                 .foregroundColor(.white.opacity(0.5))
                         )
                 }
 
                 // Match badge
                 if let score = property.compatibilityScore, score >= 80 {
-                    Text("\(score)%")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(Theme.Colors.Searcher.primary)
-                        .cornerRadius(6)
-                        .padding(8)
+                    HStack(spacing: 3) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 8, weight: .bold))
+                        Text("\(score)%")
+                            .font(.system(size: 10, weight: .bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 4)
+                    .background(Theme.Colors.Searcher.primary)
+                    .cornerRadius(6)
+                    .padding(8)
                 }
             }
 
             // Property info
             VStack(alignment: .leading, spacing: 4) {
                 Text(property.title)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(Color(hex: "1F2937"))
                     .lineLimit(1)
 
                 Text(property.city)
-                    .font(.system(size: 12))
+                    .font(.system(size: 12, weight: .medium))
                     .foregroundColor(Color(hex: "6B7280"))
 
                 Text("\(property.monthlyRent)€/mois")
@@ -620,51 +667,17 @@ private struct PropertyCompactCard: View {
                     .foregroundColor(Theme.Colors.Searcher.primary)
             }
         }
-        .frame(width: 160)
+        .frame(width: 150)
         .padding(12)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-    }
-}
-
-// MARK: - Insight Row
-
-private struct InsightRow: View {
-    let icon: String
-    let title: String
-    let value: String
-    let color: Color
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(color)
-                .frame(width: 40, height: 40)
-                .background(color.opacity(0.1))
-                .cornerRadius(10)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
-
-                Text(value)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
-            }
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12))
-                .foregroundColor(Color(hex: "D1D5DB"))
-        }
-        .padding(14)
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 2)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.white.opacity(0.85))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.white, lineWidth: 1.5)
+                )
+        )
+        .richShadow()
     }
 }
 
