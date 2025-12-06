@@ -1,5 +1,6 @@
 import * as JSZipModule from 'jszip';
 import type { LucideIcon } from 'lucide-react';
+import { createRoot } from 'react-dom/client';
 
 const JSZip = (JSZipModule as any).default || JSZipModule;
 
@@ -10,7 +11,7 @@ export interface IconExportOptions {
 }
 
 /**
- * Génère un PNG d'un icône sur un fond spécifique en utilisant le DOM
+ * Génère un PNG d'un icône sur un fond spécifique
  */
 async function generateIconPNG(
   Icon: LucideIcon,
@@ -22,132 +23,115 @@ async function generateIconPNG(
   const { size = 512, padding = 64 } = options;
   const iconSize = size - padding * 2;
 
-  // Créer un conteneur temporaire hors écran
+  // Créer un conteneur temporaire
   const container = document.createElement('div');
   container.style.position = 'fixed';
   container.style.left = '-10000px';
   container.style.top = '-10000px';
-  container.style.width = `${iconSize}px`;
-  container.style.height = `${iconSize}px`;
+  container.style.width = `${size}px`;
+  container.style.height = `${size}px`;
+  container.style.backgroundColor = backgroundColor;
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
   document.body.appendChild(container);
 
-  // Rendre l'icône dans le conteneur
-  const iconWrapper = document.createElement('div');
-  iconWrapper.style.width = '100%';
-  iconWrapper.style.height = '100%';
-  iconWrapper.style.display = 'flex';
-  iconWrapper.style.alignItems = 'center';
-  iconWrapper.style.justifyContent = 'center';
-  container.appendChild(iconWrapper);
+  // Créer un wrapper pour l'icône
+  const iconContainer = document.createElement('div');
+  iconContainer.style.width = `${iconSize}px`;
+  iconContainer.style.height = `${iconSize}px`;
+  iconContainer.style.display = 'flex';
+  iconContainer.style.alignItems = 'center';
+  iconContainer.style.justifyContent = 'center';
+  container.appendChild(iconContainer);
 
-  // Créer un SVG temporaire pour extraire le path
-  const tempSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  tempSvg.setAttribute('width', String(iconSize));
-  tempSvg.setAttribute('height', String(iconSize));
-  tempSvg.setAttribute('viewBox', '0 0 24 24');
-  tempSvg.setAttribute('fill', 'none');
-  tempSvg.setAttribute('stroke', iconColor);
-  tempSvg.setAttribute('stroke-width', '2');
-  tempSvg.setAttribute('stroke-linecap', 'round');
-  tempSvg.setAttribute('stroke-linejoin', 'round');
-
-  iconWrapper.appendChild(tempSvg);
-
-  // Créer un wrapper React pour extraire le SVG
-  const iconInstance = Icon({
-    size: 24,
-    color: iconColor,
-    strokeWidth: 2,
-  });
-
-  // Extraire le SVG inner content depuis l'instance
-  let svgContent = '';
-  if (iconInstance && typeof iconInstance === 'object' && 'props' in iconInstance) {
-    const props = iconInstance.props as any;
-    if (props.children) {
-      // Parcourir les children pour extraire les éléments SVG
-      const children = Array.isArray(props.children) ? props.children : [props.children];
-      children.forEach((child: any) => {
-        if (child && typeof child === 'object' && 'type' in child && 'props' in child) {
-          const elementType = child.type;
-          const elementProps = child.props || {};
-
-          // Créer l'élément SVG correspondant
-          const element = document.createElementNS('http://www.w3.org/2000/svg', elementType);
-          Object.entries(elementProps).forEach(([key, value]) => {
-            if (key !== 'children' && typeof value === 'string' || typeof value === 'number') {
-              element.setAttribute(key, String(value));
-            }
-          });
-          tempSvg.appendChild(element);
-        }
-      });
-    }
-  }
-
-  // Si l'extraction a échoué, utiliser une approche alternative
-  if (tempSvg.children.length === 0) {
-    console.warn(`Could not extract SVG content for ${iconName}, using fallback`);
-    // Créer un cercle comme fallback
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', '12');
-    circle.setAttribute('cy', '12');
-    circle.setAttribute('r', '10');
-    tempSvg.appendChild(circle);
-  }
-
-  // Créer le canvas final
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-
-  if (!ctx) {
-    document.body.removeChild(container);
-    throw new Error('Failed to get canvas context');
-  }
-
-  // Dessiner le fond
-  ctx.fillStyle = backgroundColor;
-  ctx.fillRect(0, 0, size, size);
-
-  // Convertir le SVG en image
-  const svgString = new XMLSerializer().serializeToString(tempSvg);
-  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(svgBlob);
+  // Rendre l'icône React dans le DOM
+  const root = createRoot(iconContainer);
 
   return new Promise((resolve, reject) => {
-    const img = new Image();
-
-    img.onload = () => {
-      // Dessiner l'icône centrée
-      ctx.drawImage(img, padding, padding, iconSize, iconSize);
-
-      // Nettoyer
-      URL.revokeObjectURL(url);
-      document.body.removeChild(container);
-
-      // Convertir en blob PNG
-      canvas.toBlob(
-        (pngBlob) => {
-          if (pngBlob) {
-            resolve(pngBlob);
-          } else {
-            reject(new Error('Failed to generate PNG blob'));
-          }
-        },
-        'image/png',
-        1.0
+    try {
+      // Rendre l'icône
+      root.render(
+        Icon({
+          size: iconSize,
+          color: iconColor,
+          strokeWidth: 2,
+        }) as any
       );
-    };
 
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
+      // Attendre que le rendu soit terminé
+      setTimeout(async () => {
+        try {
+          // Récupérer le SVG rendu
+          const svgElement = iconContainer.querySelector('svg');
+
+          if (!svgElement) {
+            throw new Error(`No SVG found for ${iconName}`);
+          }
+
+          // Créer un canvas
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            throw new Error('Failed to get canvas context');
+          }
+
+          // Dessiner le fond
+          ctx.fillStyle = backgroundColor;
+          ctx.fillRect(0, 0, size, size);
+
+          // Convertir le SVG en image
+          const svgData = new XMLSerializer().serializeToString(svgElement);
+          const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+          const url = URL.createObjectURL(svgBlob);
+
+          const img = new Image();
+
+          img.onload = () => {
+            // Dessiner l'icône centrée
+            ctx.drawImage(img, padding, padding, iconSize, iconSize);
+
+            // Nettoyer
+            URL.revokeObjectURL(url);
+            root.unmount();
+            document.body.removeChild(container);
+
+            // Convertir en blob PNG
+            canvas.toBlob(
+              (pngBlob) => {
+                if (pngBlob) {
+                  resolve(pngBlob);
+                } else {
+                  reject(new Error('Failed to generate PNG blob'));
+                }
+              },
+              'image/png',
+              1.0
+            );
+          };
+
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            root.unmount();
+            document.body.removeChild(container);
+            reject(new Error(`Failed to load SVG image for ${iconName}`));
+          };
+
+          img.src = url;
+        } catch (error) {
+          root.unmount();
+          document.body.removeChild(container);
+          reject(error);
+        }
+      }, 50); // Petit délai pour s'assurer que React a fini de rendre
+    } catch (error) {
+      root.unmount();
       document.body.removeChild(container);
-      reject(new Error(`Failed to load SVG image for ${iconName}`));
-    };
-
-    img.src = url;
+      reject(error);
+    }
   });
 }
 
@@ -176,6 +160,7 @@ export async function exportAllIcons(
   );
 
   let currentIcon = 0;
+  const errors: string[] = [];
 
   // Générer tous les icônes
   for (const [category, icons] of Object.entries(iconGroups)) {
@@ -205,7 +190,7 @@ export async function exportAllIcons(
         lightCategoryFolder.file(`${name}.png`, lightBlob);
 
         // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 20));
 
         // Version sur fond noir (icône blanc)
         const darkBlob = await generateIconPNG(
@@ -218,9 +203,10 @@ export async function exportAllIcons(
         darkCategoryFolder.file(`${name}.png`, darkBlob);
 
         // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 20));
       } catch (error) {
         console.error(`Failed to generate icon ${name}:`, error);
+        errors.push(`${name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
@@ -230,6 +216,8 @@ export async function exportAllIcons(
 
 Generated on: ${new Date().toLocaleString()}
 Total icons: ${totalIcons}
+Successfully generated: ${totalIcons - errors.length}
+Errors: ${errors.length}
 Size: ${options.size || 512}px × ${options.size || 512}px
 
 ## Structure
@@ -244,7 +232,9 @@ Chaque dossier contient des sous-dossiers par catégorie.
 Ces icônes sont prêts à être utilisés dans vos présentations, brand kits,
 et autres documents marketing.
 
-Tous les icônes sont en PNG transparent avec le fond spécifié.
+Tous les icônes sont en PNG avec le fond spécifié.
+
+${errors.length > 0 ? `\n## Errors encountered:\n\n${errors.join('\n')}` : ''}
 
 ---
 EasyCo Design System
