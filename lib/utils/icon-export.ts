@@ -14,8 +14,6 @@ export interface IconExportOptions {
 interface IconVariant {
   name: string;
   color: string;
-  isGradient?: boolean;
-  gradientId?: string;
 }
 
 const ICON_VARIANTS: IconVariant[] = [
@@ -24,7 +22,6 @@ const ICON_VARIANTS: IconVariant[] = [
   { name: 'purple', color: '#9c5698' },
   { name: 'orange', color: '#FF5722' },
   { name: 'yellow', color: '#FFB10B' },
-  { name: 'gradient', color: 'url(#easyco-gradient)', isGradient: true, gradientId: 'easyco-gradient' },
 ];
 
 /**
@@ -34,8 +31,6 @@ async function generateIconPNG(
   Icon: LucideIcon,
   iconName: string,
   iconColor: string,
-  isGradient: boolean = false,
-  gradientId?: string,
   options: IconExportOptions = {}
 ): Promise<Blob> {
   const { size = 512, padding = 64 } = options;
@@ -70,7 +65,7 @@ async function generateIconPNG(
       // Créer l'élément React
       const iconElement = createElement(Icon as any, {
         size: iconSize,
-        color: isGradient ? iconColor : iconColor,
+        color: iconColor,
         strokeWidth: 2,
       });
 
@@ -86,68 +81,6 @@ async function generateIconPNG(
             throw new Error(`No SVG found for ${iconName}`);
           }
 
-          // Cloner le SVG et s'assurer qu'il a les bons attributs
-          const clonedSvg = svgElement.cloneNode(true) as SVGElement;
-          clonedSvg.setAttribute('width', String(size));
-          clonedSvg.setAttribute('height', String(size));
-          clonedSvg.setAttribute('viewBox', `0 0 ${size} ${size}`);
-          clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-
-          // Si c'est un gradient, ajouter la définition du gradient
-          if (isGradient && gradientId) {
-            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-            const linearGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-            linearGradient.setAttribute('id', gradientId);
-            linearGradient.setAttribute('x1', '0%');
-            linearGradient.setAttribute('y1', '0%');
-            linearGradient.setAttribute('x2', '100%');
-            linearGradient.setAttribute('y2', '100%');
-
-            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop1.setAttribute('offset', '0%');
-            stop1.setAttribute('style', 'stop-color:#9c5698;stop-opacity:1');
-
-            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop2.setAttribute('offset', '100%');
-            stop2.setAttribute('style', 'stop-color:#FF5722;stop-opacity:1');
-
-            linearGradient.appendChild(stop1);
-            linearGradient.appendChild(stop2);
-            defs.appendChild(linearGradient);
-            clonedSvg.insertBefore(defs, clonedSvg.firstChild);
-          }
-
-          // Créer un groupe pour centrer l'icône avec le padding
-          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.setAttribute('transform', `translate(${padding}, ${padding})`);
-
-          // Déplacer tous les enfants du SVG dans le groupe
-          while (clonedSvg.firstChild) {
-            if (clonedSvg.firstChild.nodeName !== 'defs') {
-              g.appendChild(clonedSvg.firstChild);
-            } else {
-              const defsNode = clonedSvg.firstChild;
-              clonedSvg.removeChild(defsNode);
-              clonedSvg.appendChild(defsNode);
-            }
-          }
-
-          // Ajouter le groupe au SVG
-          clonedSvg.appendChild(g);
-
-          // Mettre à jour les attributs de taille dans le groupe
-          const innerSvg = g.querySelector('svg');
-          if (innerSvg) {
-            innerSvg.setAttribute('width', String(iconSize));
-            innerSvg.setAttribute('height', String(iconSize));
-          }
-
-          // Appliquer la couleur ou le gradient à tous les éléments stroke
-          const strokeElements = g.querySelectorAll('[stroke]');
-          strokeElements.forEach(el => {
-            el.setAttribute('stroke', iconColor);
-          });
-
           // Créer un canvas
           const canvas = document.createElement('canvas');
           canvas.width = size;
@@ -159,7 +92,14 @@ async function generateIconPNG(
           }
 
           // NE PAS dessiner de fond - laisser transparent
-          // ctx.fillStyle est ignoré pour garder la transparence
+          ctx.clearRect(0, 0, size, size);
+
+          // Cloner et préparer le SVG
+          const clonedSvg = svgElement.cloneNode(true) as SVGElement;
+          clonedSvg.setAttribute('width', String(size));
+          clonedSvg.setAttribute('height', String(size));
+          clonedSvg.setAttribute('viewBox', `${-padding} ${-padding} ${size} ${size}`);
+          clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
           // Convertir le SVG en image
           const svgData = new XMLSerializer().serializeToString(clonedSvg);
@@ -169,7 +109,7 @@ async function generateIconPNG(
           const img = new Image();
 
           img.onload = () => {
-            // Dessiner l'icône (le canvas reste transparent)
+            // Dessiner l'icône
             ctx.drawImage(img, 0, 0, size, size);
 
             // Nettoyer
@@ -214,6 +154,155 @@ async function generateIconPNG(
 }
 
 /**
+ * Génère un PNG avec gradient (version spéciale)
+ */
+async function generateGradientIconPNG(
+  Icon: LucideIcon,
+  iconName: string,
+  options: IconExportOptions = {}
+): Promise<Blob> {
+  const { size = 512, padding = 64 } = options;
+  const iconSize = size - padding * 2;
+
+  // Créer un canvas directement
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    throw new Error('Failed to get canvas context');
+  }
+
+  // Créer le SVG avec gradient programmatiquement
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', String(size));
+  svg.setAttribute('height', String(size));
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+  svg.setAttribute('xmlns', svgNS);
+
+  // Ajouter la définition du gradient
+  const defs = document.createElementNS(svgNS, 'defs');
+  const gradient = document.createElementNS(svgNS, 'linearGradient');
+  gradient.setAttribute('id', 'easyco-grad');
+  gradient.setAttribute('x1', '0%');
+  gradient.setAttribute('y1', '0%');
+  gradient.setAttribute('x2', '100%');
+  gradient.setAttribute('y2', '100%');
+
+  const stop1 = document.createElementNS(svgNS, 'stop');
+  stop1.setAttribute('offset', '0%');
+  stop1.setAttribute('stop-color', '#9c5698');
+
+  const stop2 = document.createElementNS(svgNS, 'stop');
+  stop2.setAttribute('offset', '100%');
+  stop2.setAttribute('stop-color', '#FF5722');
+
+  gradient.appendChild(stop1);
+  gradient.appendChild(stop2);
+  defs.appendChild(gradient);
+  svg.appendChild(defs);
+
+  // Créer un conteneur temporaire pour rendre l'icône
+  const tempContainer = document.createElement('div');
+  tempContainer.style.position = 'fixed';
+  tempContainer.style.left = '-10000px';
+  tempContainer.style.top = '-10000px';
+  document.body.appendChild(tempContainer);
+
+  const root = createRoot(tempContainer);
+
+  return new Promise((resolve, reject) => {
+    try {
+      // Rendre l'icône avec une couleur temporaire
+      const iconElement = createElement(Icon as any, {
+        size: iconSize,
+        color: '#000000',
+        strokeWidth: 2,
+      });
+
+      root.render(iconElement);
+
+      setTimeout(async () => {
+        try {
+          const renderedSvg = tempContainer.querySelector('svg');
+          if (!renderedSvg) {
+            throw new Error('No SVG rendered');
+          }
+
+          // Copier les paths dans notre SVG avec gradient
+          const g = document.createElementNS(svgNS, 'g');
+          g.setAttribute('transform', `translate(${padding}, ${padding})`);
+          g.setAttribute('stroke', 'url(#easyco-grad)');
+          g.setAttribute('fill', 'none');
+          g.setAttribute('stroke-width', '2');
+          g.setAttribute('stroke-linecap', 'round');
+          g.setAttribute('stroke-linejoin', 'round');
+
+          // Copier tous les éléments path, circle, etc.
+          const elements = renderedSvg.querySelectorAll('path, circle, line, rect, polyline, polygon, ellipse');
+          elements.forEach(el => {
+            const cloned = el.cloneNode(true) as SVGElement;
+            cloned.removeAttribute('stroke');
+            cloned.removeAttribute('color');
+            g.appendChild(cloned);
+          });
+
+          svg.appendChild(g);
+
+          // Nettoyer le conteneur temporaire
+          root.unmount();
+          document.body.removeChild(tempContainer);
+
+          // Convertir en image
+          const svgData = new XMLSerializer().serializeToString(svg);
+          const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+          const url = URL.createObjectURL(svgBlob);
+
+          const img = new Image();
+
+          img.onload = () => {
+            ctx.clearRect(0, 0, size, size);
+            ctx.drawImage(img, 0, 0, size, size);
+            URL.revokeObjectURL(url);
+
+            canvas.toBlob(
+              (pngBlob) => {
+                if (pngBlob) {
+                  resolve(pngBlob);
+                } else {
+                  reject(new Error('Failed to generate PNG blob'));
+                }
+              },
+              'image/png',
+              1.0
+            );
+          };
+
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error('Failed to load gradient SVG'));
+          };
+
+          img.src = url;
+        } catch (error) {
+          root.unmount();
+          document.body.removeChild(tempContainer);
+          reject(error);
+        }
+      }, 100);
+    } catch (error) {
+      if (tempContainer.parentNode) {
+        root.unmount();
+        document.body.removeChild(tempContainer);
+      }
+      reject(error);
+    }
+  });
+}
+
+/**
  * Exporte tous les icônes dans un fichier ZIP
  */
 export async function exportAllIcons(
@@ -223,11 +312,17 @@ export async function exportAllIcons(
 ): Promise<Blob> {
   const zip = new JSZip();
 
-  // Créer les dossiers pour chaque variante
-  const folders = ICON_VARIANTS.map(variant => ({
-    variant,
-    folder: zip.folder(`icons-${variant.name}`),
-  }));
+  // Créer les dossiers pour chaque variante (+ gradient)
+  const folders = [
+    ...ICON_VARIANTS.map(variant => ({
+      variant,
+      folder: zip.folder(`icons-${variant.name}`),
+    })),
+    {
+      variant: { name: 'gradient', color: 'gradient' },
+      folder: zip.folder('icons-gradient'),
+    },
+  ];
 
   // Vérifier que tous les dossiers ont été créés
   for (const { folder } of folders) {
@@ -236,26 +331,25 @@ export async function exportAllIcons(
     }
   }
 
-  // Compter le total d'icônes (nombre d'icônes × nombre de variantes)
+  // Compter le total d'icônes
   const iconCount = Object.values(iconGroups).reduce(
     (sum, icons) => sum + icons.length,
     0
   );
-  const totalIcons = iconCount * ICON_VARIANTS.length;
+  const totalIcons = iconCount * 6; // 5 couleurs + 1 gradient
 
   let currentIcon = 0;
   const errors: string[] = [];
   const successful: string[] = [];
 
-  // Générer tous les icônes pour chaque variante
+  // Générer tous les icônes
   for (const [category, icons] of Object.entries(iconGroups)) {
     for (const { icon, name } of icons) {
-      // Générer chaque variante de couleur
-      for (const { variant, folder } of folders) {
+      // Générer les 5 variantes de couleur standard
+      for (const { variant, folder } of folders.slice(0, 5)) {
         if (!folder) continue;
 
         currentIcon++;
-
         const variantName = `${name} (${variant.name})`;
 
         if (onProgress) {
@@ -270,25 +364,46 @@ export async function exportAllIcons(
             icon,
             name,
             variant.color,
-            variant.isGradient || false,
-            variant.gradientId,
             options
           );
 
           categoryFolder.file(`${name}.png`, blob);
           successful.push(variantName);
 
-          // Petit délai pour éviter de surcharger le navigateur
-          await new Promise(resolve => setTimeout(resolve, 20));
+          await new Promise(resolve => setTimeout(resolve, 15));
         } catch (error) {
           console.error(`Failed to generate icon ${variantName}:`, error);
+          errors.push(`${variantName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }
+
+      // Générer la variante gradient
+      const gradientFolder = folders[5].folder;
+      if (gradientFolder) {
+        currentIcon++;
+        const variantName = `${name} (gradient)`;
+
+        if (onProgress) {
+          onProgress(currentIcon, totalIcons, variantName);
+        }
+
+        try {
+          const categoryFolder = gradientFolder.folder(category);
+          if (categoryFolder) {
+            const blob = await generateGradientIconPNG(icon, name, options);
+            categoryFolder.file(`${name}.png`, blob);
+            successful.push(variantName);
+            await new Promise(resolve => setTimeout(resolve, 15));
+          }
+        } catch (error) {
+          console.error(`Failed to generate gradient icon ${variantName}:`, error);
           errors.push(`${variantName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }
     }
   }
 
-  // Ajouter un fichier README
+  // README
   const readme = `# EasyCo Icons Export
 
 Generated on: ${new Date().toLocaleString('fr-FR', {
@@ -297,111 +412,42 @@ Generated on: ${new Date().toLocaleString('fr-FR', {
 })}
 
 Total icons: ${iconCount}
-Total variants: ${ICON_VARIANTS.length}
-Total files: ${totalIcons} (${iconCount} icons × ${ICON_VARIANTS.length} variants)
+Total variants: 6
+Total files: ${totalIcons} (${iconCount} icons × 6 variants)
 Successfully generated: ${successful.length} (${Math.round((successful.length / totalIcons) * 100)}%)
 Failed: ${errors.length}
 Size: ${options.size || 512}px × ${options.size || 512}px
 
 ## Structure
 
-Chaque icône est disponible en 6 variantes de couleur, toutes sur fond TRANSPARENT :
+Chaque icône est disponible en 6 variantes, toutes sur fond TRANSPARENT :
 
 1. **icons-black/** - Icônes noirs (#000000)
 2. **icons-white/** - Icônes blancs (#FFFFFF)
 3. **icons-purple/** - Icônes violets (#9c5698)
 4. **icons-orange/** - Icônes oranges (#FF5722)
 5. **icons-yellow/** - Icônes jaunes (#FFB10B)
-6. **icons-gradient/** - Icônes avec dégradé signature EasyCo (violet → orange)
-
-Chaque dossier contient des sous-dossiers par catégorie.
+6. **icons-gradient/** - Icônes avec dégradé EasyCo (violet → orange)
 
 ## Couleurs EasyCo
 
-- **Violet** : #9c5698 (couleur signature)
-- **Orange** : #FF5722 (accent énergique)
-- **Jaune** : #FFB10B (chaleur et optimisme)
-- **Dégradé** : De violet (#9c5698) à orange (#FF5722)
+- Violet : #9c5698
+- Orange : #FF5722
+- Jaune : #FFB10B
+- Dégradé : #9c5698 → #FF5722
 
 ## Usage
 
-Ces icônes sont prêts à être utilisés dans :
-- Présentations (PowerPoint, Keynote, Google Slides)
-- Brand kits (Figma, Sketch, Adobe XD)
-- Documents marketing
-- Sites web et applications
-- Supports imprimés
+Tous les PNG ont un fond transparent et peuvent être utilisés sur n'importe quel fond.
 
-Tous les icônes sont en PNG haute qualité avec fond transparent.
-
-## Exemples d'utilisation
-
-**Présentation sur fond blanc** : Utilisez icons-black/ ou icons-purple/
-**Présentation sur fond sombre** : Utilisez icons-white/ ou icons-yellow/
-**Design moderne** : Utilisez icons-gradient/ pour l'effet signature
-**Print couleur** : Utilisez icons-orange/ ou icons-purple/ selon votre charte
-
-${errors.length > 0 ? `\n## Errors Encountered\n\n${errors.slice(0, 20).map(err => `- ${err}`).join('\n')}${errors.length > 20 ? `\n... et ${errors.length - 20} autres erreurs` : ''}` : ''}
+${errors.length > 0 ? `\n## Errors (${errors.length})\n\n${errors.slice(0, 10).map(err => `- ${err}`).join('\n')}${errors.length > 10 ? `\n... et ${errors.length - 10} autres` : ''}` : ''}
 
 ---
-EasyCo Design System
-${new Date().getFullYear()}
-
-Nombre total d'icônes générés avec succès : ${successful.length}
-Catégories : ${Object.keys(iconGroups).length}
+EasyCo Design System ${new Date().getFullYear()}
 `;
 
   zip.file('README.txt', readme);
 
-  // Ajouter un fichier de référence des couleurs
-  const colorReference = `# EasyCo Color Reference
-
-## Palette de couleurs
-
-### Couleurs principales
-- Noir : #000000
-- Blanc : #FFFFFF
-
-### Couleurs de marque
-- Violet EasyCo : #9c5698
-- Orange EasyCo : #FF5722
-- Jaune EasyCo : #FFB10B
-
-### Dégradé signature
-- Début : #9c5698 (Violet)
-- Fin : #FF5722 (Orange)
-- Direction : Diagonale (top-left to bottom-right)
-
-## Utilisation recommandée
-
-**Violet (#9c5698)**
-- Professionnel et élégant
-- Idéal pour : Titres, éléments importants, boutons principaux
-
-**Orange (#FF5722)**
-- Énergique et dynamique
-- Idéal pour : Appels à l'action, éléments interactifs, accents
-
-**Jaune (#FFB10B)**
-- Chaleureux et optimiste
-- Idéal pour : Highlights, badges, notifications positives
-
-**Dégradé**
-- Premium et moderne
-- Idéal pour : Logos, headers, éléments de marque forts
-
-**Noir (#000000)**
-- Classique et universel
-- Idéal pour : Documents professionnels, présentations formelles
-
-**Blanc (#FFFFFF)**
-- Propre et minimaliste
-- Idéal pour : Fonds sombres, designs modernes
-`;
-
-  zip.file('COLOR_REFERENCE.txt', colorReference);
-
-  // Générer le ZIP
   return await zip.generateAsync({
     type: 'blob',
     compression: 'DEFLATE',
