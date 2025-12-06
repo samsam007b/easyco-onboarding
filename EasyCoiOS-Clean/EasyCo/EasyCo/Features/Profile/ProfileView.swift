@@ -14,10 +14,16 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var languageManager: LanguageManager
     private let role: Theme.UserRole = .resident
 
     @State private var showEditProfile = false
     @State private var showLogoutAlert = false
+    @State private var showRoleSwitcher = false
+    @State private var showLanguageSettings = false
+    @State private var showPrivacySettings = false
+    @State private var showNotificationSettings = false
+    @State private var showHelpSupport = false
 
     var body: some View {
         NavigationStack {
@@ -79,6 +85,23 @@ struct ProfileView: View {
             } message: {
                 Text("Êtes-vous sûr de vouloir vous déconnecter ?")
             }
+            .sheet(isPresented: $showRoleSwitcher) {
+                RoleSwitcherView()
+                    .environmentObject(authManager)
+            }
+            .sheet(isPresented: $showLanguageSettings) {
+                LanguageSettingsView()
+                    .environmentObject(languageManager)
+            }
+            .sheet(isPresented: $showPrivacySettings) {
+                PrivacySettingsView()
+            }
+            .sheet(isPresented: $showNotificationSettings) {
+                NotificationSettingsView()
+            }
+            .sheet(isPresented: $showHelpSupport) {
+                HelpView()
+            }
         }
     }
 
@@ -116,6 +139,30 @@ struct ProfileView: View {
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(Color(hex: "6B7280"))
                     }
+
+                    // Current Role - Tappable
+                    Button(action: { showRoleSwitcher = true }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "person.crop.circle")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(Color(hex: "FF6B35"))
+
+                            Text(authManager.currentUser?.userType.displayName ?? "Chercheur")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(Color(hex: "FF6B35"))
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 9, weight: .bold))
+                                .foregroundColor(Color(hex: "FF6B35"))
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color(hex: "FF6B35").opacity(0.1))
+                        )
+                    }
+                    .padding(.top, 4)
                 }
 
                 Spacer()
@@ -267,9 +314,18 @@ struct ProfileView: View {
                 SettingsRowRich(icon: "person.fill", title: "Informations personnelles", color: Color(hex: "8B5CF6")) {
                     showEditProfile = true
                 }
-                SettingsRowRich(icon: "shield.fill", title: "Confidentialité", color: Color(hex: "10B981")) {}
-                SettingsRowRich(icon: "bell.fill", title: "Notifications", color: Color(hex: "3B82F6")) {}
-                SettingsRowRich(icon: "questionmark.circle.fill", title: "Aide & Support", color: Color(hex: "F59E0B")) {}
+                SettingsRowRich(icon: "globe", title: "Langue", color: Color(hex: "10B981")) {
+                    showLanguageSettings = true
+                }
+                SettingsRowRich(icon: "shield.fill", title: "Confidentialité", color: Color(hex: "6B7280")) {
+                    showPrivacySettings = true
+                }
+                SettingsRowRich(icon: "bell.fill", title: "Notifications", color: Color(hex: "3B82F6")) {
+                    showNotificationSettings = true
+                }
+                SettingsRowRich(icon: "questionmark.circle.fill", title: "Aide & Support", color: Color(hex: "F59E0B")) {
+                    showHelpSupport = true
+                }
             }
             .background(
                 RoundedRectangle(cornerRadius: 16)
