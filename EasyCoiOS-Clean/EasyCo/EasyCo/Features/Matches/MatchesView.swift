@@ -273,93 +273,124 @@ struct MatchesView: View {
     // MARK: - Empty State
 
     private var emptyStateView: some View {
-        VStack(spacing: 24) {
-            Spacer()
-
-            // Icon with gradient
+        ZStack {
+            // Background avec profondeur
             ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(hex: "FFF5F0"),
+                        Color(hex: "FFF0E6"),
+                        Color(hex: "FFE5D9")
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+
+                // Organic shapes
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "FFA040").opacity(0.2), Color(hex: "FFB85C").opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 120, height: 120)
+                    .fill(Color(hex: "FFA040").opacity(0.08))
+                    .frame(width: 400, height: 400)
+                    .blur(radius: 100)
+                    .offset(x: -100, y: -200)
 
-                Image(systemName: "sparkles")
-                    .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "FFA040"))
+                Circle()
+                    .fill(Color(hex: "FACC15").opacity(0.06))
+                    .frame(width: 300, height: 300)
+                    .blur(radius: 80)
+                    .offset(x: 150, y: 500)
             }
 
-            // Text
-            VStack(spacing: 12) {
-                Text(viewModel.hasActiveFilters(filters) ? "Aucun match trouvé" : "Aucun match pour l'instant")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
+            VStack(spacing: 20) {
+                Spacer()
 
-                Text(viewModel.hasActiveFilters(filters)
-                    ? "Essayez d'ajuster vos filtres pour voir plus de résultats"
-                    : "Complétez votre profil et explorez les propriétés pour trouver vos matchs parfaits")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
+                // Glassmorphism card with content
+                VStack(spacing: 20) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "FFA040").opacity(0.12))
+                            .frame(width: 100, height: 100)
 
-            // CTA Buttons
-            VStack(spacing: 12) {
-                if viewModel.hasActiveFilters(filters) {
-                    Button(action: { filters = MatchFilters() }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text("Réinitialiser les filtres")
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .frame(maxWidth: 280)
-                        .padding(.vertical, 16)
-                        .background(
-                            LinearGradient(
-                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                        .cornerRadius(999)
-                        .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 44, weight: .medium))
+                            .foregroundColor(Color(hex: "FFA040"))
                     }
-                } else {
-                    NavigationLink(destination: PropertiesListView()) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text("Explorer les propriétés")
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .frame(maxWidth: 280)
-                        .padding(.vertical, 16)
-                        .background(
-                            LinearGradient(
-                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                                startPoint: .leading,
-                                endPoint: .trailing
+
+                    VStack(spacing: 8) {
+                        Text(viewModel.hasActiveFilters(filters) ? "Aucun match trouvé" : "Aucun match pour l'instant")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(Color(hex: "1F2937"))
+
+                        Text(viewModel.hasActiveFilters(filters)
+                            ? "Ajuste tes filtres pour découvrir plus"
+                            : "Explore les propriétés pour trouver tes matchs parfaits")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "6B7280"))
+                            .multilineTextAlignment(.center)
+                    }
+
+                    // CTA Button
+                    if viewModel.hasActiveFilters(filters) {
+                        Button(action: { filters = MatchFilters() }) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text("Réinitialiser les filtres")
+                                    .font(.system(size: 16, weight: .bold))
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(LinearGradient(
+                                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ))
                             )
-                        )
-                        .cornerRadius(999)
-                        .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
+                            .richShadow(color: Color(hex: "FFA040"))
+                        }
+                    } else {
+                        NavigationLink(destination: PropertiesListView()) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "magnifyingglass")
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text("Explorer les propriétés")
+                                    .font(.system(size: 16, weight: .bold))
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(LinearGradient(
+                                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ))
+                            )
+                            .richShadow(color: Color(hex: "FFA040"))
+                        }
                     }
                 }
-            }
-            .padding(.top, 8)
+                .padding(.vertical, 60)
+                .padding(.horizontal, 30)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white.opacity(0.85))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 2)
+                        )
+                )
+                .richShadow()
+                .padding(.horizontal, 20)
 
-            Spacer()
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(hex: "F9FAFB"))
     }
 }
 

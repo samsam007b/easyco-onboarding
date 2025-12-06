@@ -81,66 +81,99 @@ struct FavoritesView: View {
     // MARK: - Empty State
 
     private var emptyStateView: some View {
-        VStack(spacing: 24) {
-            Spacer()
-
-            // Icon with gradient
+        ZStack {
+            // Background avec profondeur
             ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "FFA040").opacity(0.2), Color(hex: "FFB85C").opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 120, height: 120)
-
-                Image(systemName: "heart")
-                    .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "FFA040"))
-            }
-
-            // Text
-            VStack(spacing: 12) {
-                Text("Aucun favori")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-
-                Text("Explorez les propriétés et ajoutez celles qui vous plaisent à vos favoris")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
-
-            // CTA Button
-            NavigationLink(destination: PropertiesListView()) {
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Explorer les propriétés")
-                        .font(.system(size: 16, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: 280)
-                .padding(.vertical, 16)
-                .background(
-                    LinearGradient(
-                        colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
+                LinearGradient(
+                    colors: [
+                        Color(hex: "FFF5F0"),
+                        Color(hex: "FFF0E6"),
+                        Color(hex: "FFE5D9")
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 )
-                .cornerRadius(999)
-                .shadow(color: Color(hex: "FFA040").opacity(0.3), radius: 8, x: 0, y: 4)
-            }
-            .padding(.top, 8)
+                .ignoresSafeArea()
 
-            Spacer()
+                // Organic shapes
+                Circle()
+                    .fill(Color(hex: "FFA040").opacity(0.08))
+                    .frame(width: 400, height: 400)
+                    .blur(radius: 100)
+                    .offset(x: -100, y: -200)
+
+                Circle()
+                    .fill(Color(hex: "FACC15").opacity(0.06))
+                    .frame(width: 300, height: 300)
+                    .blur(radius: 80)
+                    .offset(x: 150, y: 500)
+            }
+
+            VStack(spacing: 20) {
+                Spacer()
+
+                // Glassmorphism card with content
+                VStack(spacing: 20) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "EF4444").opacity(0.12))
+                            .frame(width: 100, height: 100)
+
+                        Image(systemName: "heart")
+                            .font(.system(size: 44, weight: .medium))
+                            .foregroundColor(Color(hex: "EF4444"))
+                    }
+
+                    VStack(spacing: 8) {
+                        Text("Aucun favori")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(Color(hex: "1F2937"))
+
+                        Text("Explore les propriétés et ajoute celles qui te plaisent")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "6B7280"))
+                            .multilineTextAlignment(.center)
+                    }
+
+                    // CTA Button
+                    NavigationLink(destination: PropertiesListView()) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text("Explorer les propriétés")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(LinearGradient(
+                                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ))
+                        )
+                        .richShadow(color: Color(hex: "FFA040"))
+                    }
+                }
+                .padding(.vertical, 60)
+                .padding(.horizontal, 30)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white.opacity(0.85))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 2)
+                        )
+                )
+                .richShadow()
+                .padding(.horizontal, 20)
+
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(hex: "F9FAFB"))
     }
 
     // MARK: - Favorites List

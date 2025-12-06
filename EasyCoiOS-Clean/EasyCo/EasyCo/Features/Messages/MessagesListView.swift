@@ -24,7 +24,7 @@ struct MessagesListView: View {
                     if viewModel.isLoading && viewModel.conversations.isEmpty {
                         loadingView
                     } else if filteredConversations.isEmpty {
-                        EmptyStateView.noMessages()
+                        emptyStateView
                     } else {
                         conversationsList
                     }
@@ -107,6 +107,104 @@ struct MessagesListView: View {
             .padding(.horizontal, 16)
         }
         .padding(.bottom, 12)
+    }
+
+    // MARK: - Empty State
+
+    private var emptyStateView: some View {
+        ZStack {
+            // Background avec profondeur
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(hex: "FFF5F0"),
+                        Color(hex: "FFF0E6"),
+                        Color(hex: "FFE5D9")
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+
+                // Organic shapes
+                Circle()
+                    .fill(Color(hex: "FFA040").opacity(0.08))
+                    .frame(width: 400, height: 400)
+                    .blur(radius: 100)
+                    .offset(x: -100, y: -200)
+
+                Circle()
+                    .fill(Color(hex: "FACC15").opacity(0.06))
+                    .frame(width: 300, height: 300)
+                    .blur(radius: 80)
+                    .offset(x: 150, y: 500)
+            }
+
+            VStack(spacing: 20) {
+                Spacer()
+
+                // Glassmorphism card with content
+                VStack(spacing: 20) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "06B6D4").opacity(0.12))
+                            .frame(width: 100, height: 100)
+
+                        Image(systemName: "message")
+                            .font(.system(size: 44, weight: .medium))
+                            .foregroundColor(Color(hex: "06B6D4"))
+                    }
+
+                    VStack(spacing: 8) {
+                        Text("Aucun message")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(Color(hex: "1F2937"))
+
+                        Text("Contacte un propriétaire pour commencer une conversation")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "6B7280"))
+                            .multilineTextAlignment(.center)
+                    }
+
+                    // CTA Button
+                    NavigationLink(destination: PropertiesListView()) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text("Explorer les propriétés")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(LinearGradient(
+                                    colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ))
+                        )
+                        .richShadow(color: Color(hex: "FFA040"))
+                    }
+                }
+                .padding(.vertical, 60)
+                .padding(.horizontal, 30)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white.opacity(0.85))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 2)
+                        )
+                )
+                .richShadow()
+                .padding(.horizontal, 20)
+
+                Spacer()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Conversations List
