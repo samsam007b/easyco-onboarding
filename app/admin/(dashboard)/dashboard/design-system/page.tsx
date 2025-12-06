@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
+import { exportAllIcons, downloadBlob } from '@/lib/utils/icon-export';
 import {
   Palette,
   Type,
@@ -1643,6 +1644,8 @@ const iconGroups = {
 
 function IconsSection() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState({ current: 0, total: 0, name: '' });
 
   const filteredGroups = Object.entries(iconGroups).reduce((acc, [category, icons]) => {
     const filtered = icons.filter(icon =>
@@ -1653,6 +1656,30 @@ function IconsSection() {
     }
     return acc;
   }, {} as Record<string, typeof iconGroups[keyof typeof iconGroups]>);
+
+  const handleExportIcons = async () => {
+    setIsExporting(true);
+    setExportProgress({ current: 0, total: 0, name: '' });
+
+    try {
+      const blob = await exportAllIcons(
+        iconGroups,
+        { size: 512, padding: 64, quality: 1 },
+        (current, total, iconName) => {
+          setExportProgress({ current, total, name: iconName });
+        }
+      );
+
+      const date = new Date().toISOString().split('T')[0];
+      downloadBlob(blob, `easyco-icons-${date}.zip`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Erreur lors de l\'export des icônes. Consultez la console pour plus de détails.');
+    } finally {
+      setIsExporting(false);
+      setExportProgress({ current: 0, total: 0, name: '' });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -1826,7 +1853,49 @@ function IconsSection() {
               className="w-full pl-9 pr-4 py-2 rounded-lg bg-slate-700 border border-slate-600 text-white placeholder:text-slate-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none text-sm"
             />
           </div>
+          <button
+            onClick={handleExportIcons}
+            disabled={isExporting}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-orange-500 text-white font-medium hover:from-purple-700 hover:to-orange-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm">
+                  {exportProgress.total > 0
+                    ? `${exportProgress.current}/${exportProgress.total}`
+                    : 'Préparation...'
+                  }
+                </span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                <span className="text-sm">Télécharger tous les icônes</span>
+              </>
+            )}
+          </button>
         </div>
+
+        {isExporting && exportProgress.total > 0 && (
+          <div className="mb-6 p-4 bg-slate-700/50 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-slate-300">Export en cours...</span>
+              <span className="text-sm text-purple-400 font-mono">
+                {Math.round((exportProgress.current / exportProgress.total) * 100)}%
+              </span>
+            </div>
+            <div className="w-full h-2 bg-slate-600 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-purple-500 to-orange-500 transition-all duration-300"
+                style={{ width: `${(exportProgress.current / exportProgress.total) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-slate-400 mt-2">
+              Génération de <span className="text-white font-mono">{exportProgress.name}</span>
+            </p>
+          </div>
+        )}
 
         {Object.entries(filteredGroups).map(([category, icons]) => (
           <div key={category} className="mb-6">
