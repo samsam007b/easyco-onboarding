@@ -11,14 +11,31 @@ export interface IconExportOptions {
   quality?: number;
 }
 
+interface IconVariant {
+  name: string;
+  color: string;
+  isGradient?: boolean;
+  gradientId?: string;
+}
+
+const ICON_VARIANTS: IconVariant[] = [
+  { name: 'black', color: '#000000' },
+  { name: 'white', color: '#FFFFFF' },
+  { name: 'purple', color: '#9c5698' },
+  { name: 'orange', color: '#FF5722' },
+  { name: 'yellow', color: '#FFB10B' },
+  { name: 'gradient', color: 'url(#easyco-gradient)', isGradient: true, gradientId: 'easyco-gradient' },
+];
+
 /**
- * Génère un PNG d'un icône sur un fond spécifique
+ * Génère un PNG d'un icône sur fond transparent
  */
 async function generateIconPNG(
   Icon: LucideIcon,
   iconName: string,
-  backgroundColor: string,
   iconColor: string,
+  isGradient: boolean = false,
+  gradientId?: string,
   options: IconExportOptions = {}
 ): Promise<Blob> {
   const { size = 512, padding = 64 } = options;
@@ -31,7 +48,6 @@ async function generateIconPNG(
   container.style.top = '-10000px';
   container.style.width = `${size}px`;
   container.style.height = `${size}px`;
-  container.style.backgroundColor = backgroundColor;
   container.style.display = 'flex';
   container.style.alignItems = 'center';
   container.style.justifyContent = 'center';
@@ -51,10 +67,10 @@ async function generateIconPNG(
 
   return new Promise((resolve, reject) => {
     try {
-      // Créer l'élément React - utiliser createElement pour gérer les deux cas
+      // Créer l'élément React
       const iconElement = createElement(Icon as any, {
         size: iconSize,
-        color: iconColor,
+        color: isGradient ? iconColor : iconColor,
         strokeWidth: 2,
       });
 
@@ -70,6 +86,68 @@ async function generateIconPNG(
             throw new Error(`No SVG found for ${iconName}`);
           }
 
+          // Cloner le SVG et s'assurer qu'il a les bons attributs
+          const clonedSvg = svgElement.cloneNode(true) as SVGElement;
+          clonedSvg.setAttribute('width', String(size));
+          clonedSvg.setAttribute('height', String(size));
+          clonedSvg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+          clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+          // Si c'est un gradient, ajouter la définition du gradient
+          if (isGradient && gradientId) {
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const linearGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+            linearGradient.setAttribute('id', gradientId);
+            linearGradient.setAttribute('x1', '0%');
+            linearGradient.setAttribute('y1', '0%');
+            linearGradient.setAttribute('x2', '100%');
+            linearGradient.setAttribute('y2', '100%');
+
+            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop1.setAttribute('offset', '0%');
+            stop1.setAttribute('style', 'stop-color:#9c5698;stop-opacity:1');
+
+            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop2.setAttribute('offset', '100%');
+            stop2.setAttribute('style', 'stop-color:#FF5722;stop-opacity:1');
+
+            linearGradient.appendChild(stop1);
+            linearGradient.appendChild(stop2);
+            defs.appendChild(linearGradient);
+            clonedSvg.insertBefore(defs, clonedSvg.firstChild);
+          }
+
+          // Créer un groupe pour centrer l'icône avec le padding
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.setAttribute('transform', `translate(${padding}, ${padding})`);
+
+          // Déplacer tous les enfants du SVG dans le groupe
+          while (clonedSvg.firstChild) {
+            if (clonedSvg.firstChild.nodeName !== 'defs') {
+              g.appendChild(clonedSvg.firstChild);
+            } else {
+              const defsNode = clonedSvg.firstChild;
+              clonedSvg.removeChild(defsNode);
+              clonedSvg.appendChild(defsNode);
+            }
+          }
+
+          // Ajouter le groupe au SVG
+          clonedSvg.appendChild(g);
+
+          // Mettre à jour les attributs de taille dans le groupe
+          const innerSvg = g.querySelector('svg');
+          if (innerSvg) {
+            innerSvg.setAttribute('width', String(iconSize));
+            innerSvg.setAttribute('height', String(iconSize));
+          }
+
+          // Appliquer la couleur ou le gradient à tous les éléments stroke
+          const strokeElements = g.querySelectorAll('[stroke]');
+          strokeElements.forEach(el => {
+            el.setAttribute('stroke', iconColor);
+          });
+
           // Créer un canvas
           const canvas = document.createElement('canvas');
           canvas.width = size;
@@ -80,15 +158,8 @@ async function generateIconPNG(
             throw new Error('Failed to get canvas context');
           }
 
-          // Dessiner le fond
-          ctx.fillStyle = backgroundColor;
-          ctx.fillRect(0, 0, size, size);
-
-          // Cloner le SVG et s'assurer qu'il a les bons attributs
-          const clonedSvg = svgElement.cloneNode(true) as SVGElement;
-          clonedSvg.setAttribute('width', String(iconSize));
-          clonedSvg.setAttribute('height', String(iconSize));
-          clonedSvg.setAttribute('viewBox', '0 0 24 24');
+          // NE PAS dessiner de fond - laisser transparent
+          // ctx.fillStyle est ignoré pour garder la transparence
 
           // Convertir le SVG en image
           const svgData = new XMLSerializer().serializeToString(clonedSvg);
@@ -98,15 +169,15 @@ async function generateIconPNG(
           const img = new Image();
 
           img.onload = () => {
-            // Dessiner l'icône centrée
-            ctx.drawImage(img, padding, padding, iconSize, iconSize);
+            // Dessiner l'icône (le canvas reste transparent)
+            ctx.drawImage(img, 0, 0, size, size);
 
             // Nettoyer
             URL.revokeObjectURL(url);
             root.unmount();
             document.body.removeChild(container);
 
-            // Convertir en blob PNG
+            // Convertir en blob PNG avec transparence
             canvas.toBlob(
               (pngBlob) => {
                 if (pngBlob) {
@@ -133,7 +204,7 @@ async function generateIconPNG(
           document.body.removeChild(container);
           reject(error);
         }
-      }, 100); // Augmenté à 100ms pour plus de fiabilité
+      }, 100);
     } catch (error) {
       root.unmount();
       document.body.removeChild(container);
@@ -152,71 +223,67 @@ export async function exportAllIcons(
 ): Promise<Blob> {
   const zip = new JSZip();
 
-  // Créer les dossiers
-  const lightFolder = zip.folder('icons-light-background');
-  const darkFolder = zip.folder('icons-dark-background');
+  // Créer les dossiers pour chaque variante
+  const folders = ICON_VARIANTS.map(variant => ({
+    variant,
+    folder: zip.folder(`icons-${variant.name}`),
+  }));
 
-  if (!lightFolder || !darkFolder) {
-    throw new Error('Failed to create folders');
+  // Vérifier que tous les dossiers ont été créés
+  for (const { folder } of folders) {
+    if (!folder) {
+      throw new Error('Failed to create folders');
+    }
   }
 
-  // Compter le total d'icônes
-  const totalIcons = Object.values(iconGroups).reduce(
+  // Compter le total d'icônes (nombre d'icônes × nombre de variantes)
+  const iconCount = Object.values(iconGroups).reduce(
     (sum, icons) => sum + icons.length,
     0
   );
+  const totalIcons = iconCount * ICON_VARIANTS.length;
 
   let currentIcon = 0;
   const errors: string[] = [];
   const successful: string[] = [];
 
-  // Générer tous les icônes
+  // Générer tous les icônes pour chaque variante
   for (const [category, icons] of Object.entries(iconGroups)) {
-    const lightCategoryFolder = lightFolder.folder(category);
-    const darkCategoryFolder = darkFolder.folder(category);
-
-    if (!lightCategoryFolder || !darkCategoryFolder) {
-      continue;
-    }
-
     for (const { icon, name } of icons) {
-      currentIcon++;
+      // Générer chaque variante de couleur
+      for (const { variant, folder } of folders) {
+        if (!folder) continue;
 
-      if (onProgress) {
-        onProgress(currentIcon, totalIcons, name);
-      }
+        currentIcon++;
 
-      try {
-        // Version sur fond clair (icône noir)
-        const lightBlob = await generateIconPNG(
-          icon,
-          name,
-          '#FFFFFF',
-          '#000000',
-          options
-        );
-        lightCategoryFolder.file(`${name}.png`, lightBlob);
+        const variantName = `${name} (${variant.name})`;
 
-        // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 30));
+        if (onProgress) {
+          onProgress(currentIcon, totalIcons, variantName);
+        }
 
-        // Version sur fond noir (icône blanc)
-        const darkBlob = await generateIconPNG(
-          icon,
-          name,
-          '#000000',
-          '#FFFFFF',
-          options
-        );
-        darkCategoryFolder.file(`${name}.png`, darkBlob);
+        try {
+          const categoryFolder = folder.folder(category);
+          if (!categoryFolder) continue;
 
-        successful.push(name);
+          const blob = await generateIconPNG(
+            icon,
+            name,
+            variant.color,
+            variant.isGradient || false,
+            variant.gradientId,
+            options
+          );
 
-        // Petit délai pour éviter de surcharger le navigateur
-        await new Promise(resolve => setTimeout(resolve, 30));
-      } catch (error) {
-        console.error(`Failed to generate icon ${name}:`, error);
-        errors.push(`${name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          categoryFolder.file(`${name}.png`, blob);
+          successful.push(variantName);
+
+          // Petit délai pour éviter de surcharger le navigateur
+          await new Promise(resolve => setTimeout(resolve, 20));
+        } catch (error) {
+          console.error(`Failed to generate icon ${variantName}:`, error);
+          errors.push(`${variantName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
       }
     }
   }
@@ -229,37 +296,110 @@ Generated on: ${new Date().toLocaleString('fr-FR', {
   timeStyle: 'short'
 })}
 
-Total icons: ${totalIcons}
+Total icons: ${iconCount}
+Total variants: ${ICON_VARIANTS.length}
+Total files: ${totalIcons} (${iconCount} icons × ${ICON_VARIANTS.length} variants)
 Successfully generated: ${successful.length} (${Math.round((successful.length / totalIcons) * 100)}%)
 Failed: ${errors.length}
 Size: ${options.size || 512}px × ${options.size || 512}px
 
 ## Structure
 
-- icons-light-background/ - Icônes noirs sur fond blanc (#FFFFFF)
-- icons-dark-background/ - Icônes blancs sur fond noir (#000000)
+Chaque icône est disponible en 6 variantes de couleur, toutes sur fond TRANSPARENT :
+
+1. **icons-black/** - Icônes noirs (#000000)
+2. **icons-white/** - Icônes blancs (#FFFFFF)
+3. **icons-purple/** - Icônes violets (#9c5698)
+4. **icons-orange/** - Icônes oranges (#FF5722)
+5. **icons-yellow/** - Icônes jaunes (#FFB10B)
+6. **icons-gradient/** - Icônes avec dégradé signature EasyCo (violet → orange)
 
 Chaque dossier contient des sous-dossiers par catégorie.
 
-## Successfully Generated Icons
+## Couleurs EasyCo
 
-${successful.length > 0 ? successful.map(name => `- ${name}`).join('\n') : 'None'}
+- **Violet** : #9c5698 (couleur signature)
+- **Orange** : #FF5722 (accent énergique)
+- **Jaune** : #FFB10B (chaleur et optimisme)
+- **Dégradé** : De violet (#9c5698) à orange (#FF5722)
 
 ## Usage
 
-Ces icônes sont prêts à être utilisés dans vos présentations, brand kits,
-et autres documents marketing.
+Ces icônes sont prêts à être utilisés dans :
+- Présentations (PowerPoint, Keynote, Google Slides)
+- Brand kits (Figma, Sketch, Adobe XD)
+- Documents marketing
+- Sites web et applications
+- Supports imprimés
 
-Tous les icônes sont en PNG haute qualité avec le fond spécifié.
+Tous les icônes sont en PNG haute qualité avec fond transparent.
 
-${errors.length > 0 ? `\n## Errors Encountered\n\n${errors.map(err => `- ${err}`).join('\n')}` : ''}
+## Exemples d'utilisation
+
+**Présentation sur fond blanc** : Utilisez icons-black/ ou icons-purple/
+**Présentation sur fond sombre** : Utilisez icons-white/ ou icons-yellow/
+**Design moderne** : Utilisez icons-gradient/ pour l'effet signature
+**Print couleur** : Utilisez icons-orange/ ou icons-purple/ selon votre charte
+
+${errors.length > 0 ? `\n## Errors Encountered\n\n${errors.slice(0, 20).map(err => `- ${err}`).join('\n')}${errors.length > 20 ? `\n... et ${errors.length - 20} autres erreurs` : ''}` : ''}
 
 ---
 EasyCo Design System
 ${new Date().getFullYear()}
+
+Nombre total d'icônes générés avec succès : ${successful.length}
+Catégories : ${Object.keys(iconGroups).length}
 `;
 
   zip.file('README.txt', readme);
+
+  // Ajouter un fichier de référence des couleurs
+  const colorReference = `# EasyCo Color Reference
+
+## Palette de couleurs
+
+### Couleurs principales
+- Noir : #000000
+- Blanc : #FFFFFF
+
+### Couleurs de marque
+- Violet EasyCo : #9c5698
+- Orange EasyCo : #FF5722
+- Jaune EasyCo : #FFB10B
+
+### Dégradé signature
+- Début : #9c5698 (Violet)
+- Fin : #FF5722 (Orange)
+- Direction : Diagonale (top-left to bottom-right)
+
+## Utilisation recommandée
+
+**Violet (#9c5698)**
+- Professionnel et élégant
+- Idéal pour : Titres, éléments importants, boutons principaux
+
+**Orange (#FF5722)**
+- Énergique et dynamique
+- Idéal pour : Appels à l'action, éléments interactifs, accents
+
+**Jaune (#FFB10B)**
+- Chaleureux et optimiste
+- Idéal pour : Highlights, badges, notifications positives
+
+**Dégradé**
+- Premium et moderne
+- Idéal pour : Logos, headers, éléments de marque forts
+
+**Noir (#000000)**
+- Classique et universel
+- Idéal pour : Documents professionnels, présentations formelles
+
+**Blanc (#FFFFFF)**
+- Propre et minimaliste
+- Idéal pour : Fonds sombres, designs modernes
+`;
+
+  zip.file('COLOR_REFERENCE.txt', colorReference);
 
   // Générer le ZIP
   return await zip.generateAsync({
