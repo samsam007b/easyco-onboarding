@@ -1,6 +1,12 @@
-import SwiftUI
+//
+//  GroupChatView.swift
+//  EasyCo
+//
+//  Vue chat de groupe - REDESIGN Pinterest Style
+//  Glassmorphism, profondeur, bulles modernes
+//
 
-// MARK: - Group Chat View (Resident Hub)
+import SwiftUI
 
 struct GroupChatView: View {
     @StateObject private var viewModel = GroupChatViewModel()
@@ -10,81 +16,98 @@ struct GroupChatView: View {
     @State private var selectedMessage: GroupMessage?
     @FocusState private var isInputFocused: Bool
 
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
-        VStack(spacing: 0) {
-            // Messages list
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        // Date header
-                        if !viewModel.messages.isEmpty {
-                            dateSeparator("Aujourd'hui")
-                        }
+        ZStack {
+            // Background Pinterest avec blobs organiques
+            PinterestBackground(role: role, intensity: 0.12)
+                .ignoresSafeArea()
 
-                        ForEach(viewModel.messages) { message in
-                            GroupChatMessageBubble(
-                                message: message,
-                                isCurrentUser: message.senderId == viewModel.currentUserId,
-                                onLongPress: {
-                                    selectedMessage = message
-                                    showMessageActions = true
-                                },
-                                onReact: { emoji in
-                                    viewModel.addReaction(to: message, emoji: emoji)
-                                }
-                            )
-                            .id(message.id)
-                        }
+            VStack(spacing: 0) {
+                // Messages list
+                ScrollViewReader { proxy in
+                    ScrollView(showsIndicators: false) {
+                        LazyVStack(spacing: Theme.PinterestSpacing.md) {
+                            // Date header
+                            if !viewModel.messages.isEmpty {
+                                dateSeparator("Aujourd'hui")
+                            }
 
-                        // Typing indicator
-                        if viewModel.isOtherUserTyping {
-                            TypingIndicator(userName: viewModel.typingUserName)
+                            ForEach(viewModel.messages) { message in
+                                PinterestChatBubble(
+                                    message: message,
+                                    isCurrentUser: message.senderId == viewModel.currentUserId,
+                                    role: role,
+                                    onLongPress: {
+                                        selectedMessage = message
+                                        showMessageActions = true
+                                        Haptic.medium()
+                                    },
+                                    onReact: { emoji in
+                                        viewModel.addReaction(to: message, emoji: emoji)
+                                    }
+                                )
+                                .id(message.id)
+                            }
+
+                            // Typing indicator
+                            if viewModel.isOtherUserTyping {
+                                PinterestTypingIndicator(userName: viewModel.typingUserName)
+                            }
+                        }
+                        .padding(Theme.PinterestSpacing.lg)
+                    }
+                    .onChange(of: viewModel.messages.count) { _ in
+                        if let lastMessage = viewModel.messages.last {
+                            withAnimation(Theme.PinterestAnimations.smoothSpring) {
+                                proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                            }
                         }
                     }
-                    .padding(16)
                 }
-                .onChange(of: viewModel.messages.count) { _ in
-                    if let lastMessage = viewModel.messages.last {
-                        withAnimation {
-                            proxy.scrollTo(lastMessage.id, anchor: .bottom)
-                        }
-                    }
-                }
+
+                // Input area
+                messageInputArea
             }
-
-            // Input area
-            messageInputArea
         }
-        .background(Color(hex: "F9FAFB"))
         .navigationTitle("Chat coloc")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing:
-            Menu {
-                Button(action: {}) {
-                    Label("Rechercher", systemImage: "magnifyingglass")
-                }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {}) {
+                        Label("Rechercher", systemImage: "magnifyingglass")
+                    }
 
-                Button(action: {}) {
-                    Label("Médias partagés", systemImage: "photo.on.rectangle.angled")
-                }
+                    Button(action: {}) {
+                        Label("Médias partagés", systemImage: "photo.on.rectangle.angled")
+                    }
 
-                Button(action: {}) {
-                    Label("Notifications", systemImage: "bell")
-                }
+                    Button(action: {}) {
+                        Label("Notifications", systemImage: "bell")
+                    }
 
-                Divider()
+                    Divider()
 
-                Button(action: {}) {
-                    Label("Membres", systemImage: "person.3")
+                    Button(action: {}) {
+                        Label("Membres", systemImage: "person.3")
+                    }
+                } label: {
+                    Circle()
+                        .fill(Color.white.opacity(0.75))
+                        .frame(width: 36, height: 36)
+                        .overlay(
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(role.primaryColor)
+                        )
+                        .pinterestShadow(Theme.PinterestShadows.soft)
                 }
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.system(size: 20))
-                    .foregroundColor(Color(hex: "6B7280"))
             }
-        )
+        }
         .sheet(isPresented: $showAttachmentPicker) {
-            AttachmentPickerSheet { attachment in
+            PinterestAttachmentPicker(role: role) { attachment in
                 viewModel.sendAttachment(attachment)
             }
         }
@@ -119,19 +142,29 @@ struct GroupChatView: View {
     private func dateSeparator(_ text: String) -> some View {
         HStack {
             Rectangle()
-                .fill(Color(hex: "E5E7EB"))
-                .frame(height: 1)
+                .fill(Color.white.opacity(0.5))
+                .frame(height: 1.5)
 
             Text(text)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(Color(hex: "9CA3AF"))
+                .font(Theme.PinterestTypography.caption(.semibold))
+                .foregroundColor(Theme.Colors.textSecondary)
                 .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    Capsule()
+                        .fill(Color.white.opacity(0.75))
+                        .overlay(
+                            Capsule()
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                        )
+                )
+                .pinterestShadow(Theme.PinterestShadows.subtle)
 
             Rectangle()
-                .fill(Color(hex: "E5E7EB"))
-                .frame(height: 1)
+                .fill(Color.white.opacity(0.5))
+                .frame(height: 1.5)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, Theme.PinterestSpacing.md)
     }
 
     // MARK: - Message Input Area
@@ -140,48 +173,66 @@ struct GroupChatView: View {
         VStack(spacing: 0) {
             // Reply preview if replying
             if let replyingTo = viewModel.replyingTo {
-                HStack(spacing: 10) {
+                HStack(spacing: 12) {
                     Rectangle()
-                        .fill(Color(hex: "10B981"))
+                        .fill(role.gradient)
                         .frame(width: 3)
+                        .cornerRadius(1.5)
 
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: 4) {
                         Text("Réponse à \(replyingTo.senderName)")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(Color(hex: "10B981"))
+                            .font(Theme.PinterestTypography.caption(.semibold))
+                            .foregroundColor(role.primaryColor)
 
                         Text(replyingTo.content)
-                            .font(.system(size: 13))
-                            .foregroundColor(Color(hex: "6B7280"))
+                            .font(Theme.PinterestTypography.bodySmall(.regular))
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .lineLimit(1)
                     }
 
                     Spacer()
 
-                    Button(action: { viewModel.cancelReply() }) {
+                    Button(action: {
+                        withAnimation(Theme.PinterestAnimations.quickSpring) {
+                            viewModel.cancelReply()
+                        }
+                    }) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 20))
-                            .foregroundColor(Color(hex: "D1D5DB"))
+                            .foregroundColor(Theme.Colors.textTertiary)
                     }
                 }
-                .padding(12)
-                .background(Color(hex: "F3F4F6"))
+                .padding(Theme.PinterestSpacing.md)
+                .background(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                        .fill(Color.white.opacity(0.6))
+                )
+                .padding(.horizontal, Theme.PinterestSpacing.lg)
+                .padding(.top, Theme.PinterestSpacing.sm)
             }
-
-            Divider()
 
             HStack(spacing: 12) {
                 // Attachment button
-                Button(action: { showAttachmentPicker = true }) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(Color(hex: "10B981"))
+                Button(action: {
+                    showAttachmentPicker = true
+                    Haptic.light()
+                }) {
+                    Circle()
+                        .fill(role.gradient)
+                        .frame(width: 40, height: 40)
+                        .overlay(
+                            Image(systemName: "plus")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        )
+                        .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3))
                 }
 
-                // Text input
+                // Text input avec glassmorphism
                 HStack(spacing: 8) {
                     TextField("Message...", text: $messageText, axis: .vertical)
-                        .font(.system(size: 16))
+                        .font(Theme.PinterestTypography.bodyRegular(.regular))
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .lineLimit(1...4)
                         .focused($isInputFocused)
                         .onChange(of: messageText) { _ in
@@ -192,24 +243,52 @@ struct GroupChatView: View {
                     Button(action: {}) {
                         Image(systemName: "face.smiling")
                             .font(.system(size: 20))
-                            .foregroundColor(Color(hex: "9CA3AF"))
+                            .foregroundColor(Theme.Colors.textTertiary)
                     }
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
-                .background(Color(hex: "F3F4F6"))
-                .cornerRadius(20)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .fill(Color.white.opacity(0.75))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                        )
+                )
+                .pinterestShadow(Theme.PinterestShadows.subtle)
 
                 // Send button
-                Button(action: sendMessage) {
-                    Image(systemName: messageText.isEmpty ? "mic.fill" : "arrow.up.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(messageText.isEmpty ? Color(hex: "6B7280") : Color(hex: "10B981"))
+                Button(action: {
+                    sendMessage()
+                    Haptic.light()
+                }) {
+                    ZStack {
+                        if messageText.isEmpty {
+                            Circle()
+                                .fill(Color.white.opacity(0.75))
+                                .frame(width: 40, height: 40)
+                                .pinterestShadow(Theme.PinterestShadows.subtle)
+                        } else {
+                            Circle()
+                                .fill(role.gradient)
+                                .frame(width: 40, height: 40)
+                                .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3))
+                        }
+
+                        Image(systemName: messageText.isEmpty ? "mic.fill" : "arrow.up")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(messageText.isEmpty ? Theme.Colors.textTertiary : .white)
+                    }
                 }
-                .disabled(messageText.isEmpty)
+                .disabled(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
-            .padding(12)
-            .background(Color.white)
+            .padding(Theme.PinterestSpacing.lg)
+            .background(
+                Rectangle()
+                    .fill(Color.white.opacity(0.5))
+                    .ignoresSafeArea()
+            )
         }
     }
 
@@ -220,127 +299,146 @@ struct GroupChatView: View {
     }
 }
 
-// MARK: - Chat Message Bubble
+// MARK: - Pinterest Chat Bubble
 
-private struct GroupChatMessageBubble: View {
+private struct PinterestChatBubble: View {
     let message: GroupMessage
     let isCurrentUser: Bool
+    let role: Theme.UserRole
     let onLongPress: () -> Void
     let onReact: (String) -> Void
 
     @State private var showReactionPicker = false
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 8) {
+        HStack(alignment: .bottom, spacing: Theme.PinterestSpacing.sm) {
             if isCurrentUser {
                 Spacer(minLength: 60)
             } else {
-                // Avatar
+                // Avatar avec gradient
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "10B981"), Color(hex: "34D399")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 32, height: 32)
+                    .fill(role.gradient)
+                    .frame(width: 36, height: 36)
                     .overlay(
                         Text(message.senderInitials)
-                            .font(.system(size: 12, weight: .semibold))
+                            .font(Theme.PinterestTypography.caption(.bold))
                             .foregroundColor(.white)
                     )
+                    .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.25))
             }
 
-            VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 4) {
+            VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 6) {
                 // Sender name (only for others)
                 if !isCurrentUser {
                     Text(message.senderName)
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(Color(hex: "6B7280"))
+                        .font(Theme.PinterestTypography.caption(.semibold))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .padding(.leading, 4)
                 }
 
                 // Reply reference
                 if let replyTo = message.replyTo {
-                    HStack(spacing: 6) {
+                    HStack(spacing: 8) {
                         Rectangle()
-                            .fill(Color(hex: "10B981").opacity(0.5))
-                            .frame(width: 2)
+                            .fill(role.primaryColor.opacity(0.6))
+                            .frame(width: 3)
+                            .cornerRadius(1.5)
 
                         VStack(alignment: .leading, spacing: 2) {
                             Text(replyTo.senderName)
-                                .font(.system(size: 11, weight: .semibold))
-                                .foregroundColor(Color(hex: "10B981"))
+                                .font(Theme.PinterestTypography.captionSmall(.bold))
+                                .foregroundColor(role.primaryColor)
 
                             Text(replyTo.content)
-                                .font(.system(size: 12))
-                                .foregroundColor(Color(hex: "9CA3AF"))
+                                .font(Theme.PinterestTypography.caption(.regular))
+                                .foregroundColor(Theme.Colors.textSecondary)
                                 .lineLimit(1)
                         }
                     }
-                    .padding(8)
-                    .background(Color(hex: "F3F4F6"))
-                    .cornerRadius(8)
+                    .padding(10)
+                    .background(
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                            .fill(Color.white.opacity(0.5))
+                    )
                 }
 
                 // Message content
-                VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 4) {
+                VStack(alignment: isCurrentUser ? .trailing : .leading, spacing: 6) {
                     // Attachment if any
                     if let attachment = message.attachment {
-                        AttachmentView(attachment: attachment)
+                        PinterestAttachmentView(attachment: attachment)
                     }
 
                     // Text content
                     if !message.content.isEmpty {
                         Text(message.content)
-                            .font(.system(size: 15))
-                            .foregroundColor(isCurrentUser ? .white : Color(hex: "111827"))
+                            .font(Theme.PinterestTypography.bodyRegular(.regular))
+                            .foregroundColor(isCurrentUser ? .white : Theme.Colors.textPrimary)
                     }
 
                     // Time and status
-                    HStack(spacing: 4) {
+                    HStack(spacing: 6) {
                         Text(message.timeString)
-                            .font(.system(size: 11))
-                            .foregroundColor(isCurrentUser ? .white.opacity(0.7) : Color(hex: "9CA3AF"))
+                            .font(Theme.PinterestTypography.captionSmall(.medium))
+                            .foregroundColor(isCurrentUser ? .white.opacity(0.8) : Theme.Colors.textTertiary)
 
                         if isCurrentUser {
                             Image(systemName: message.isRead ? "checkmark.circle.fill" : "checkmark.circle")
-                                .font(.system(size: 10))
-                                .foregroundColor(.white.opacity(0.7))
+                                .font(.system(size: 11))
+                                .foregroundColor(.white.opacity(0.8))
                         }
                     }
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
                 .background(
-                    isCurrentUser
-                        ? Color(hex: "10B981")
-                        : Color.white
+                    ZStack {
+                        if isCurrentUser {
+                            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                .fill(role.gradient)
+                        } else {
+                            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                .fill(Color.white.opacity(0.8))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                                )
+                        }
+                    }
                 )
-                .cornerRadius(16)
-                .shadow(color: .black.opacity(0.04), radius: 3, x: 0, y: 1)
+                .pinterestShadow(
+                    isCurrentUser
+                        ? Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3)
+                        : Theme.PinterestShadows.medium
+                )
                 .onLongPressGesture {
                     onLongPress()
                 }
 
                 // Reactions
                 if !message.reactions.isEmpty {
-                    HStack(spacing: 4) {
+                    HStack(spacing: 6) {
                         ForEach(message.reactions, id: \.emoji) { reaction in
-                            HStack(spacing: 2) {
+                            HStack(spacing: 4) {
                                 Text(reaction.emoji)
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 13))
                                 if reaction.count > 1 {
                                     Text("\(reaction.count)")
-                                        .font(.system(size: 11))
-                                        .foregroundColor(Color(hex: "6B7280"))
+                                        .font(Theme.PinterestTypography.captionSmall(.bold))
+                                        .foregroundColor(Theme.Colors.textSecondary)
                                 }
                             }
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .shadow(color: .black.opacity(0.05), radius: 2)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(Color.white.opacity(0.9))
+                                    .overlay(
+                                        Capsule()
+                                            .stroke(Color.white.opacity(0.6), lineWidth: 1)
+                                    )
+                            )
+                            .pinterestShadow(Theme.PinterestShadows.soft)
                         }
                     }
                     .offset(y: -4)
@@ -354,9 +452,9 @@ private struct GroupChatMessageBubble: View {
     }
 }
 
-// MARK: - Attachment View
+// MARK: - Pinterest Attachment View
 
-struct AttachmentView: View {
+struct PinterestAttachmentView: View {
     let attachment: ChatAttachment
 
     var body: some View {
@@ -368,17 +466,19 @@ struct AttachmentView: View {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 200, maxHeight: 200)
+                        .frame(maxWidth: 220, maxHeight: 220)
                         .clipped()
-                        .cornerRadius(12)
+                        .cornerRadius(Theme.PinterestRadius.medium)
+                        .pinterestShadow(Theme.PinterestShadows.medium)
                 case .failure(_), .empty:
                     Rectangle()
-                        .fill(Color(hex: "E5E7EB"))
-                        .frame(width: 200, height: 150)
-                        .cornerRadius(12)
+                        .fill(Color.white.opacity(0.5))
+                        .frame(width: 220, height: 160)
+                        .cornerRadius(Theme.PinterestRadius.medium)
                         .overlay(
                             Image(systemName: "photo")
-                                .foregroundColor(Color(hex: "9CA3AF"))
+                                .font(.system(size: 40))
+                                .foregroundColor(Theme.Colors.textTertiary)
                         )
                 @unknown default:
                     EmptyView()
@@ -386,67 +486,110 @@ struct AttachmentView: View {
             }
 
         case .file:
-            HStack(spacing: 10) {
-                Image(systemName: "doc.fill")
-                    .font(.system(size: 24))
-                    .foregroundColor(Color(hex: "6366F1"))
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "6366F1").opacity(0.15))
+                        .frame(width: 44, height: 44)
 
-                VStack(alignment: .leading, spacing: 2) {
+                    Image(systemName: "doc.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(Color(hex: "6366F1"))
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
                     Text(attachment.name)
-                        .font(.system(size: 14, weight: .medium))
+                        .font(Theme.PinterestTypography.bodySmall(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .lineLimit(1)
 
                     Text(attachment.sizeString)
-                        .font(.system(size: 12))
-                        .foregroundColor(Color(hex: "9CA3AF"))
+                        .font(Theme.PinterestTypography.caption(.regular))
+                        .foregroundColor(Theme.Colors.textSecondary)
                 }
+
+                Spacer()
             }
-            .padding(10)
-            .background(Color(hex: "F3F4F6"))
-            .cornerRadius(10)
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                    .fill(Color.white.opacity(0.7))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+            )
+            .pinterestShadow(Theme.PinterestShadows.soft)
 
         case .location:
-            HStack(spacing: 10) {
-                Image(systemName: "location.fill")
-                    .font(.system(size: 20))
-                    .foregroundColor(Color(hex: "EF4444"))
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "EF4444").opacity(0.15))
+                        .frame(width: 44, height: 44)
+
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(Color(hex: "EF4444"))
+                }
 
                 Text(attachment.name)
-                    .font(.system(size: 14))
+                    .font(Theme.PinterestTypography.bodySmall(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
             }
-            .padding(10)
-            .background(Color(hex: "F3F4F6"))
-            .cornerRadius(10)
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                    .fill(Color.white.opacity(0.7))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+            )
+            .pinterestShadow(Theme.PinterestShadows.soft)
         }
     }
 }
 
-// MARK: - Typing Indicator
+// MARK: - Pinterest Typing Indicator
 
-struct TypingIndicator: View {
+struct PinterestTypingIndicator: View {
     let userName: String
     @State private var animationOffset = 0
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 8) {
+        HStack(alignment: .bottom, spacing: Theme.PinterestSpacing.sm) {
             Circle()
-                .fill(Color(hex: "E5E7EB"))
-                .frame(width: 32, height: 32)
+                .fill(
+                    LinearGradient(
+                        colors: [Color(hex: "E5E7EB"), Color(hex: "D1D5DB")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 36, height: 36)
 
-            HStack(spacing: 4) {
+            HStack(spacing: 6) {
                 ForEach(0..<3, id: \.self) { index in
                     Circle()
-                        .fill(Color(hex: "9CA3AF"))
+                        .fill(Theme.Colors.textTertiary)
                         .frame(width: 8, height: 8)
-                        .offset(y: animationOffset == index ? -4 : 0)
+                        .offset(y: animationOffset == index ? -6 : 0)
                 }
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(Color.white)
-            .cornerRadius(16)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                    .fill(Color.white.opacity(0.8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+            )
+            .pinterestShadow(Theme.PinterestShadows.medium)
             .onAppear {
-                withAnimation(.easeInOut(duration: 0.4).repeatForever()) {
+                withAnimation(Theme.PinterestAnimations.smoothSpring.repeatForever()) {
                     animationOffset = (animationOffset + 1) % 3
                 }
             }
@@ -456,90 +599,108 @@ struct TypingIndicator: View {
     }
 }
 
-// MARK: - Attachment Picker Sheet
+// MARK: - Pinterest Attachment Picker
 
-struct AttachmentPickerSheet: View {
+struct PinterestAttachmentPicker: View {
+    let role: Theme.UserRole
     let onSelect: (ChatAttachment) -> Void
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    Button(action: {
-                        // Photo library
-                        dismiss()
-                    }) {
-                        HStack(spacing: 14) {
-                            Image(systemName: "photo.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(Color(hex: "10B981"))
-                                .frame(width: 32)
+            ZStack {
+                PinterestBackground(role: role, intensity: 0.1)
+                    .ignoresSafeArea()
 
-                            Text("Galerie photo")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: "111827"))
-                        }
+                ScrollView {
+                    VStack(spacing: Theme.PinterestSpacing.md) {
+                        attachmentOption(
+                            title: "Galerie photo",
+                            icon: "photo.fill",
+                            color: Color(hex: "10B981"),
+                            action: {
+                                // Photo library
+                                dismiss()
+                            }
+                        )
+
+                        attachmentOption(
+                            title: "Prendre une photo",
+                            icon: "camera.fill",
+                            color: Color(hex: "6366F1"),
+                            action: {
+                                // Camera
+                                dismiss()
+                            }
+                        )
+
+                        attachmentOption(
+                            title: "Document",
+                            icon: "doc.fill",
+                            color: Color(hex: "F59E0B"),
+                            action: {
+                                // Document
+                                dismiss()
+                            }
+                        )
+
+                        attachmentOption(
+                            title: "Position",
+                            icon: "location.fill",
+                            color: Color(hex: "EF4444"),
+                            action: {
+                                // Location
+                                dismiss()
+                            }
+                        )
                     }
-
-                    Button(action: {
-                        // Camera
-                        dismiss()
-                    }) {
-                        HStack(spacing: 14) {
-                            Image(systemName: "camera.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(Color(hex: "6366F1"))
-                                .frame(width: 32)
-
-                            Text("Prendre une photo")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: "111827"))
-                        }
-                    }
-
-                    Button(action: {
-                        // Document
-                        dismiss()
-                    }) {
-                        HStack(spacing: 14) {
-                            Image(systemName: "doc.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(Color(hex: "F59E0B"))
-                                .frame(width: 32)
-
-                            Text("Document")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: "111827"))
-                        }
-                    }
-
-                    Button(action: {
-                        // Location
-                        dismiss()
-                    }) {
-                        HStack(spacing: 14) {
-                            Image(systemName: "location.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(Color(hex: "EF4444"))
-                                .frame(width: 32)
-
-                            Text("Position")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: "111827"))
-                        }
-                    }
+                    .padding(Theme.PinterestSpacing.lg)
                 }
             }
             .navigationTitle("Ajouter")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Annuler") { dismiss() }
+                    Button("Annuler") {
+                        dismiss()
+                    }
+                    .foregroundColor(role.primaryColor)
                 }
             }
         }
         .presentationDetents([.medium])
+    }
+
+    private func attachmentOption(title: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
+        Button(action: {
+            Haptic.light()
+            action()
+        }) {
+            HStack(spacing: Theme.PinterestSpacing.md) {
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.15))
+                        .frame(width: 56, height: 56)
+
+                    Image(systemName: icon)
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundColor(color)
+                }
+
+                Text(title)
+                    .font(Theme.PinterestTypography.bodyLarge(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Theme.Colors.textTertiary)
+            }
+            .padding(Theme.PinterestSpacing.md)
+            .pinterestGlassCard(padding: 0, radius: Theme.PinterestRadius.large)
+        }
+        .buttonStyle(ScaleButtonStyle())
     }
 }
 

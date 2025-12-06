@@ -54,14 +54,14 @@ struct PaymentsFullHistoryView: View {
 
     private var statsSection: some View {
         HStack(spacing: 12) {
-            StatCard(
+            StatCardPayments(
                 title: "Total payé",
                 value: "\(viewModel.totalPaid)€",
                 icon: "check-circle",
                 color: Theme.Colors.success
             )
 
-            StatCard(
+            StatCardPayments(
                 title: "En attente",
                 value: "\(viewModel.totalPending)€",
                 icon: "clock",
@@ -107,7 +107,7 @@ enum PaymentFilterType: CaseIterable {
 
 // MARK: - Stat Card
 
-private struct StatCard: View {
+private struct StatCardPayments: View {
     let title: String
     let value: String
     let icon: String

@@ -2,490 +2,691 @@
 //  ExpensesView.swift
 //  EasyCo
 //
-//  Vue principale pour la gestion des dépenses partagées
-//  Affiche la liste des dépenses avec filtres, recherche et statistiques
+//  Vue complète des dépenses - REDESIGN Pinterest Style Clean
+//  Architecture simplifiée pour éviter les bugs d'affichage
 //
 
 import SwiftUI
 
 struct ExpensesView: View {
     @StateObject private var viewModel = ExpensesViewModel()
+    private let role: Theme.UserRole = .resident
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                // Stats Summary
-                statsSummarySection
+        ZStack(alignment: .top) {
+            // Background
+            PinterestBackground(role: role, intensity: 0.15)
+                .ignoresSafeArea()
 
-                // Filters and Search
-                filtersSection
+            // Content
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: Theme.PinterestSpacing.lg) {
+                    // Spacer for floating header
+                    Color.clear.frame(height: 70)
 
-                // Expenses List
-                if viewModel.isLoading {
-                    loadingView
-                } else if viewModel.filteredExpenses.isEmpty {
-                    emptyStateView
-                } else {
-                    expensesListSection
-                }
-            }
-            .background(Color(hex: "F9FAFB"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Dépenses")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { viewModel.showAddExpense = true }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(Color(hex: "E8865D"))
+                    heroSection
+                    quickFiltersSection
+
+                    if viewModel.isLoading {
+                        loadingSection
+                    } else if viewModel.filteredExpenses.isEmpty {
+                        emptySection
+                    } else {
+                        expensesSection
                     }
                 }
+                .padding(.horizontal, Theme.PinterestSpacing.lg)
+                .padding(.bottom, 100)
             }
-            .refreshable {
-                await viewModel.refresh()
-            }
-            .sheet(isPresented: $viewModel.showAddExpense) {
-                AddExpenseView(viewModel: viewModel)
-            }
-            .alert("Erreur", isPresented: $viewModel.showError) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(viewModel.errorMessage ?? "Une erreur est survenue")
-            }
+
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: true,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: { viewModel.showAddExpense = true }
+            )
         }
-        .onChange(of: viewModel.selectedFilter) { _ in
-            viewModel.applyFiltersAndSort()
+        .pinterestFormPresentation(isPresented: $viewModel.showAddExpense) {
+            AddExpenseView(viewModel: viewModel)
         }
-        .onChange(of: viewModel.selectedSort) { _ in
-            viewModel.applyFiltersAndSort()
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
         }
-        .onChange(of: viewModel.searchText) { _ in
-            viewModel.applyFiltersAndSort()
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
         }
-        .onChange(of: viewModel.selectedCategory) { _ in
-            viewModel.applyFiltersAndSort()
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
         }
     }
 
-    // MARK: - Stats Summary Section
+    // MARK: - Hero Section
 
-    private var statsSummarySection: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 12) {
-                // Total dépenses
-                ExpenseStatCard(
-                    title: "Total",
-                    value: String(format: "%.2f€", viewModel.totalExpenses),
-                    icon: "creditcard.fill",
-                    color: Color(hex: "E8865D")
-                )
-
-                // Ce que je dois
-                ExpenseStatCard(
-                    title: "Je dois",
-                    value: String(format: "%.2f€", viewModel.iOwe),
-                    icon: "arrow.up.circle.fill",
-                    color: Color(hex: "EF4444")
-                )
-            }
-
-            HStack(spacing: 12) {
-                // On me doit
-                ExpenseStatCard(
-                    title: "On me doit",
-                    value: String(format: "%.2f€", viewModel.oweMe),
-                    icon: "arrow.down.circle.fill",
-                    color: Color(hex: "10B981")
-                )
-
-                // Ma part
-                ExpenseStatCard(
-                    title: "Ma part",
-                    value: String(format: "%.2f€", viewModel.myShare),
-                    icon: "person.fill",
-                    color: Color(hex: "3B82F6")
-                )
-            }
+    private var heroSection: some View {
+        VStack(spacing: Theme.PinterestSpacing.md) {
+            balanceCard
+            statsGrid
         }
-        .padding(16)
+    }
+
+    private var balanceCard: some View {
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.sm) {
+            Text("Balance totale")
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                .foregroundColor(.white.opacity(0.9))
+
+            Text(String(format: "%.0f€", viewModel.totalExpenses))
+                .font(Theme.PinterestTypography.heroLarge(.heavy))
+                .foregroundColor(.white)
+
+            Text("Ce mois-ci")
+                .font(Theme.PinterestTypography.caption(.medium))
+                .foregroundColor(.white.opacity(0.75))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Theme.PinterestSpacing.xl)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.xxLarge)
+                .fill(role.gradient)
+        )
+        .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.4))
+    }
+
+    private var statsGrid: some View {
+        HStack(spacing: Theme.PinterestSpacing.sm) {
+            statCard(
+                title: "Je dois",
+                value: String(format: "%.0f€", viewModel.iOwe),
+                icon: "arrow.up.circle.fill",
+                color: Color(hex: "EF4444")
+            )
+
+            statCard(
+                title: "On me doit",
+                value: String(format: "%.0f€", viewModel.oweMe),
+                icon: "arrow.down.circle.fill",
+                color: Color(hex: "10B981")
+            )
+
+            statCard(
+                title: "Ma part",
+                value: String(format: "%.0f€", viewModel.myShare),
+                icon: "person.fill",
+                color: role.primaryColor
+            )
+        }
+    }
+
+    private func statCard(title: String, value: String, icon: String, color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 32, height: 32)
+
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(color)
+            }
+
+            Spacer()
+
+            Text(value)
+                .font(Theme.PinterestTypography.bodyLarge(.bold))
+                .foregroundColor(Theme.Colors.textPrimary)
+                .minimumScaleFactor(0.8)
+                .lineLimit(1)
+
+            Text(title)
+                .font(Theme.PinterestTypography.captionSmall(.medium))
+                .foregroundColor(Theme.Colors.textSecondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 110)
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.medium)
     }
 
     // MARK: - Filters Section
 
-    private var filtersSection: some View {
-        VStack(spacing: 12) {
-            // Search Bar
-            HStack(spacing: 12) {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(Color(hex: "9CA3AF"))
-                    TextField("Rechercher une dépense...", text: $viewModel.searchText)
-                        .font(.system(size: 16))
-                    if !viewModel.searchText.isEmpty {
-                        Button(action: { viewModel.searchText = "" }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(Color(hex: "9CA3AF"))
-                        }
-                    }
-                }
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
-            }
-
-            // Filter Chips
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(ExpenseFilter.allCases, id: \.self) { filter in
-                        ExpenseFilterChip(
-                            title: filter.displayName,
-                            icon: filter.icon,
-                            isSelected: viewModel.selectedFilter == filter,
-                            count: viewModel.getCount(for: filter)
-                        ) {
-                            viewModel.selectedFilter = filter
-                        }
-                    }
-                }
-            }
-
-            // Category Filter + Sort
-            HStack(spacing: 12) {
-                // Category Filter
-                Menu {
-                    Button("Toutes les catégories") {
-                        viewModel.selectedCategory = nil
-                    }
-                    ForEach(ExpenseCategory.allCases, id: \.self) { category in
-                        Button(action: {
-                            viewModel.selectedCategory = category
-                        }) {
-                            Label(category.displayName, systemImage: category.icon)
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "folder")
-                            .font(.system(size: 14))
-                        Text(viewModel.selectedCategory?.displayName ?? "Catégorie")
-                            .font(.system(size: 14, weight: .medium))
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 12))
-                    }
-                    .foregroundColor(viewModel.selectedCategory != nil ? Color(hex: "E8865D") : Color(hex: "6B7280"))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(viewModel.selectedCategory != nil ? Color(hex: "E8865D").opacity(0.1) : Color.white)
-                    .cornerRadius(8)
-                }
-
-                Spacer()
-
-                // Sort Menu
-                Menu {
-                    ForEach(ExpenseSort.allCases, id: \.self) { sort in
-                        Button(action: {
-                            viewModel.selectedSort = sort
-                        }) {
-                            Label(sort.displayName, systemImage: sort.icon)
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "arrow.up.arrow.down")
-                            .font(.system(size: 14))
-                        Text(viewModel.selectedSort.displayName)
-                            .font(.system(size: 14, weight: .medium))
-                    }
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color.white)
-                    .cornerRadius(8)
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 12)
-    }
-
-    // MARK: - Expenses List
-
-    private var expensesListSection: some View {
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(viewModel.filteredExpenses) { expense in
-                    ExpenseCard(expense: expense, viewModel: viewModel)
-                }
-            }
-            .padding(16)
+    private var quickFiltersSection: some View {
+        VStack(spacing: Theme.PinterestSpacing.md) {
+            searchBar
+            filterChips
         }
     }
 
-    // MARK: - Loading View
+    private var searchBar: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(Theme.Colors.textTertiary)
 
-    private var loadingView: some View {
-        VStack(spacing: 16) {
+            TextField("Rechercher...", text: $viewModel.searchText)
+                .font(Theme.PinterestTypography.bodyRegular(.regular))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            if !viewModel.searchText.isEmpty {
+                Button(action: {
+                    withAnimation(Theme.PinterestAnimations.quickSpring) {
+                        viewModel.searchText = ""
+                    }
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(Theme.Colors.textTertiary)
+                }
+            }
+        }
+        .padding(Theme.PinterestSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                .fill(Color.white.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.medium)
+    }
+
+    private var filterChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(ExpenseFilter.allCases, id: \.self) { filter in
+                    filterChip(filter)
+                }
+            }
+        }
+    }
+
+    private func filterChip(_ filter: ExpenseFilter) -> some View {
+        let isSelected = viewModel.selectedFilter == filter
+        let count = viewModel.getCount(for: filter)
+
+        return Button(action: {
+            withAnimation(Theme.PinterestAnimations.smoothSpring) {
+                viewModel.selectedFilter = filter
+                Haptic.selection()
+            }
+        }) {
+            HStack(spacing: 8) {
+                Image(systemName: filter.icon)
+                    .font(.system(size: 13, weight: .semibold))
+
+                Text(filter.displayName)
+                    .font(Theme.PinterestTypography.bodySmall(isSelected ? .semibold : .medium))
+
+                if count > 0 {
+                    Text("\(count)")
+                        .font(Theme.PinterestTypography.captionSmall(.bold))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(
+                            Capsule()
+                                .fill(isSelected ? Color.white.opacity(0.25) : role.primaryColor.opacity(0.12))
+                        )
+                }
+            }
+            .foregroundColor(isSelected ? .white : role.primaryColor)
+            .padding(.horizontal, Theme.PinterestSpacing.md)
+            .padding(.vertical, 12)
+            .background(
+                Group {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                            .fill(role.gradient)
+                            .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.35))
+                    } else {
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                            .fill(Color.white.opacity(0.75))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                    .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                            )
+                            .pinterestShadow(Theme.PinterestShadows.subtle)
+                    }
+                }
+            )
+        }
+        .buttonStyle(ScaleButtonStyle())
+    }
+
+    // MARK: - Content Sections
+
+    private var loadingSection: some View {
+        VStack(spacing: Theme.PinterestSpacing.lg) {
             ProgressView()
                 .scaleEffect(1.5)
-            Text("Chargement des dépenses...")
-                .font(.system(size: 16))
-                .foregroundColor(Color(hex: "6B7280"))
+                .tint(role.primaryColor)
+
+            Text("Chargement...")
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                .foregroundColor(Theme.Colors.textSecondary)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .frame(height: 300)
     }
 
-    // MARK: - Empty State
+    private var emptySection: some View {
+        VStack(spacing: Theme.PinterestSpacing.xl) {
+            ZStack {
+                Circle()
+                    .fill(role.primaryColor.opacity(0.15))
+                    .frame(width: 120, height: 120)
+                    .blur(radius: 30)
 
-    private var emptyStateView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "creditcard")
-                .font(.system(size: 60))
-                .foregroundColor(Color(hex: "E8865D").opacity(0.5))
+                Circle()
+                    .fill(Color.white.opacity(0.75))
+                    .frame(width: 100, height: 100)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+                    .pinterestShadow(Theme.PinterestShadows.medium)
 
-            Text("Aucune dépense")
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(Color(hex: "111827"))
+                Image(systemName: "creditcard")
+                    .font(.system(size: 44, weight: .light))
+                    .foregroundColor(role.primaryColor)
+            }
 
-            Text("Ajoutez votre première dépense\npour commencer à partager les frais")
-                .font(.system(size: 15))
-                .foregroundColor(Color(hex: "6B7280"))
-                .multilineTextAlignment(.center)
+            VStack(spacing: Theme.PinterestSpacing.sm) {
+                Text("Aucune dépense")
+                    .font(Theme.PinterestTypography.heroMedium(.heavy))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
-            Button(action: { viewModel.showAddExpense = true }) {
-                HStack {
+                Text("Ajoutez votre première dépense\npour commencer")
+                    .font(Theme.PinterestTypography.bodyRegular(.regular))
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            Button(action: {
+                viewModel.showAddExpense = true
+            }) {
+                HStack(spacing: 8) {
                     Image(systemName: "plus.circle.fill")
                     Text("Ajouter une dépense")
                 }
-                .font(.system(size: 16, weight: .semibold))
+                .font(Theme.PinterestTypography.bodyRegular(.semibold))
                 .foregroundColor(.white)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 12)
-                .background(Color(hex: "E8865D"))
-                .cornerRadius(12)
+                .padding(.horizontal, Theme.PinterestSpacing.xl)
+                .padding(.vertical, Theme.PinterestSpacing.md)
+                .background(
+                    Capsule()
+                        .fill(role.gradient)
+                )
+                .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3))
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(32)
+        .frame(maxWidth: .infinity)
+        .frame(height: 400)
     }
-}
 
-// MARK: - Expense Stat Card Component
-
-struct ExpenseStatCard: View {
-    let title: String
-    let value: String
-    let icon: String
-    let color: Color
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 16))
-                    .foregroundColor(color)
-                Spacer()
+    private var expensesSection: some View {
+        VStack(spacing: Theme.PinterestSpacing.md) {
+            ForEach(viewModel.filteredExpenses) { expense in
+                ExpenseCard(expense: expense, viewModel: viewModel, role: role)
             }
-
-            Text(value)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(Color(hex: "111827"))
-
-            Text(title)
-                .font(.system(size: 12))
-                .foregroundColor(Color(hex: "6B7280"))
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-    }
-}
-
-// MARK: - Filter Chip Component
-
-struct ExpenseFilterChip: View {
-    let title: String
-    let icon: String
-    let isSelected: Bool
-    let count: Int
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
-                Image(systemName: icon)
-                    .font(.system(size: 12))
-                Text(title)
-                    .font(.system(size: 13, weight: .medium))
-                if count > 0 {
-                    Text("\(count)")
-                        .font(.system(size: 11, weight: .semibold))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(isSelected ? Color.white.opacity(0.3) : Color(hex: "E5E7EB"))
-                        .cornerRadius(10)
-                }
-            }
-            .foregroundColor(isSelected ? .white : Color(hex: "6B7280"))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(isSelected ? Color(hex: "E8865D") : Color.white)
-            .cornerRadius(20)
         }
     }
 }
 
-// MARK: - Expense Card Component
+// MARK: - Expense Card
 
 struct ExpenseCard: View {
     let expense: Expense
     @ObservedObject var viewModel: ExpensesViewModel
+    let role: Theme.UserRole
     @State private var showDetails = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                // Category Icon
-                Circle()
-                    .fill(Color(hex: expense.category.color).opacity(0.2))
-                    .frame(width: 40, height: 40)
-                    .overlay(
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
+            headerSection
+            paidBySection
+            progressSection
+            actionsSection
+
+            if showDetails {
+                detailsSection
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .padding(Theme.PinterestSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.medium)
+    }
+
+    private var headerSection: some View {
+        HStack(spacing: Theme.PinterestSpacing.md) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(hex: expense.category.color).opacity(0.15))
+                    .frame(width: 52, height: 52)
+
+                Image(systemName: expense.category.icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(Color(hex: expense.category.color))
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(expense.title)
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                HStack(spacing: 6) {
+                    HStack(spacing: 4) {
                         Image(systemName: expense.category.icon)
-                            .font(.system(size: 16))
-                            .foregroundColor(Color(hex: expense.category.color))
+                            .font(.system(size: 10, weight: .semibold))
+                        Text(expense.category.displayName)
+                            .font(Theme.PinterestTypography.captionSmall(.semibold))
+                    }
+                    .foregroundColor(Color(hex: expense.category.color))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(Color(hex: expense.category.color).opacity(0.15))
                     )
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(expense.title)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
+                    Circle()
+                        .fill(Theme.Colors.textTertiary)
+                        .frame(width: 3, height: 3)
 
-                    HStack(spacing: 8) {
-                        Text(expense.category.displayName)
-                            .font(.system(size: 13))
-                            .foregroundColor(Color(hex: "6B7280"))
-
-                        Circle()
-                            .fill(Color(hex: "9CA3AF"))
-                            .frame(width: 3, height: 3)
-
-                        Text(expense.date, style: .date)
-                            .font(.system(size: 13))
-                            .foregroundColor(Color(hex: "6B7280"))
-                    }
+                    Text(expense.date, style: .date)
+                        .font(Theme.PinterestTypography.caption(.regular))
+                        .foregroundColor(Theme.Colors.textSecondary)
                 }
+            }
+
+            Spacer()
+
+            Text(String(format: "%.2f€", expense.amount))
+                .font(Theme.PinterestTypography.titleMedium(.heavy))
+                .foregroundColor(role.primaryColor)
+        }
+    }
+
+    private var paidBySection: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "person.fill")
+                .font(.system(size: 11))
+                .foregroundColor(Theme.Colors.textTertiary)
+            Text("Payé par \(expense.paidByName ?? "Inconnu")")
+                .font(Theme.PinterestTypography.caption(.medium))
+                .foregroundColor(Theme.Colors.textSecondary)
+        }
+    }
+
+    private var progressSection: some View {
+        let paidCount = expense.splits.filter { $0.isPaid }.count
+        let totalCount = expense.splits.count
+        let progressPercent = Double(paidCount) / Double(totalCount)
+
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("\(paidCount)/\(totalCount) remboursés")
+                    .font(Theme.PinterestTypography.caption(.semibold))
+                    .foregroundColor(Theme.Colors.textSecondary)
 
                 Spacer()
 
-                // Amount
-                Text(String(format: "%.2f€", expense.amount))
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(Color(hex: "E8865D"))
+                Text(String(format: "%.0f%%", progressPercent * 100))
+                    .font(Theme.PinterestTypography.caption(.bold))
+                    .foregroundColor(paidCount == totalCount ? Color(hex: "10B981") : Color(hex: "F59E0B"))
             }
 
-            // Paid By
-            HStack(spacing: 6) {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 11))
-                    .foregroundColor(Color(hex: "9CA3AF"))
-                Text("Payé par \(expense.paidByName ?? "Inconnu")")
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                        .fill(Color.white.opacity(0.5))
+                        .frame(height: 8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1)
+                        )
+
+                    if progressPercent > 0 {
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                            .fill(
+                                paidCount == totalCount
+                                    ? LinearGradient(
+                                        colors: [Color(hex: "10B981"), Color(hex: "059669")],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                    : role.gradient
+                            )
+                            .frame(width: geometry.size.width * progressPercent, height: 8)
+                            .pinterestShadow(
+                                Theme.PinterestShadows.colored(
+                                    paidCount == totalCount ? Color(hex: "10B981") : role.primaryColor,
+                                    intensity: 0.25
+                                )
+                            )
+                    }
+                }
+            }
+            .frame(height: 8)
+        }
+    }
+
+    private var actionsSection: some View {
+        HStack(spacing: 12) {
+            Button(action: {
+                withAnimation(Theme.PinterestAnimations.smoothSpring) {
+                    showDetails.toggle()
+                    Haptic.light()
+                }
+            }) {
+                HStack(spacing: 4) {
+                    Image(systemName: showDetails ? "chevron.up" : "chevron.down")
+                    Text(showDetails ? "Masquer" : "Détails")
+                }
+                .font(Theme.PinterestTypography.caption(.semibold))
+                .foregroundColor(role.primaryColor)
             }
 
-            // Splits Progress
-            let paidCount = expense.splits.filter { $0.isPaid }.count
-            let totalCount = expense.splits.count
+            Spacer()
 
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text("\(paidCount)/\(totalCount) remboursés")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(Color(hex: "6B7280"))
+            if expense.hasReceipt {
+                HStack(spacing: 4) {
+                    Image(systemName: "paperclip")
+                        .font(.system(size: 12))
+                    Text("Reçu")
+                        .font(Theme.PinterestTypography.captionSmall(.medium))
+                }
+                .foregroundColor(Theme.Colors.textSecondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var detailsSection: some View {
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.sm) {
+            Rectangle()
+                .fill(Color.white.opacity(0.5))
+                .frame(height: 1)
+                .padding(.vertical, 4)
+
+            Text("Répartition")
+                .font(Theme.PinterestTypography.bodySmall(.semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            ForEach(expense.splits) { split in
+                HStack(spacing: 12) {
+                    ZStack {
+                        if split.isPaid {
+                            Circle()
+                                .fill(Color(hex: "10B981"))
+                                .frame(width: 24, height: 24)
+                                .pinterestShadow(Theme.PinterestShadows.colored(Color(hex: "10B981"), intensity: 0.3))
+
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(.white)
+                        } else {
+                            Circle()
+                                .stroke(Theme.Colors.textTertiary, lineWidth: 2)
+                                .frame(width: 24, height: 24)
+                        }
+                    }
+
+                    Text(split.userName ?? "Inconnu")
+                        .font(Theme.PinterestTypography.bodySmall(.regular))
+                        .foregroundColor(Theme.Colors.textPrimary)
 
                     Spacer()
 
-                    Text(String(format: "%.0f%%", Double(paidCount) / Double(totalCount) * 100))
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(paidCount == totalCount ? Color(hex: "10B981") : Color(hex: "F59E0B"))
+                    Text(String(format: "%.2f€", split.amount))
+                        .font(Theme.PinterestTypography.bodySmall(.bold))
+                        .foregroundColor(split.isPaid ? Theme.Colors.textSecondary : role.primaryColor)
                 }
+                .padding(.vertical, 6)
+            }
+        }
+    }
+}
 
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(Color(hex: "E5E7EB"))
-                            .frame(height: 6)
-                            .cornerRadius(3)
+// MARK: - Floating Header
 
-                        Rectangle()
-                            .fill(paidCount == totalCount ? Color(hex: "10B981") : Color(hex: "E8865D"))
-                            .frame(width: geometry.size.width * CGFloat(paidCount) / CGFloat(totalCount), height: 6)
-                            .cornerRadius(3)
-                    }
-                }
-                .frame(height: 6)
+struct FloatingHeaderView: View {
+    let role: Theme.UserRole
+    let showAddButton: Bool
+    let onProfileTap: () -> Void
+    let onAlertTap: () -> Void
+    let onMenuTap: () -> Void
+    let onAddTap: (() -> Void)?
+
+    @State private var hasNotifications = false
+
+    var body: some View {
+        HStack(spacing: 16) {
+            // Profile
+            Button(action: {
+                Haptic.light()
+                onProfileTap()
+            }) {
+                Circle()
+                    .fill(role.gradient)
+                    .frame(width: 40, height: 40)
+                    .overlay(
+                        Image(systemName: "person.fill")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
+                    )
+                    .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3))
             }
 
-            // Actions
-            HStack(spacing: 12) {
-                Button(action: { showDetails.toggle() }) {
-                    HStack(spacing: 4) {
-                        Image(systemName: showDetails ? "chevron.up" : "chevron.down")
-                        Text(showDetails ? "Masquer" : "Détails")
+            Spacer()
+
+            // Alert
+            Button(action: {
+                Haptic.light()
+                onAlertTap()
+            }) {
+                ZStack(alignment: .topTrailing) {
+                    Circle()
+                        .fill(Color.white.opacity(0.5))
+                        .frame(width: 40, height: 40)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                        )
+                        .overlay(
+                            Image(systemName: "bell.fill")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(hasNotifications ? role.primaryColor : Theme.Colors.textSecondary)
+                        )
+                        .pinterestShadow(Theme.PinterestShadows.subtle)
+
+                    if hasNotifications {
+                        Circle()
+                            .fill(Color(hex: "EF4444"))
+                            .frame(width: 12, height: 12)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .offset(x: 2, y: -2)
                     }
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color(hex: "E8865D"))
-                }
-
-                Spacer()
-
-                if expense.hasReceipt {
-                    Image(systemName: "paperclip")
-                        .font(.system(size: 13))
-                        .foregroundColor(Color(hex: "6B7280"))
                 }
             }
 
-            // Details (expandable)
-            if showDetails {
-                Divider()
+            // Menu
+            Button(action: {
+                Haptic.light()
+                onMenuTap()
+            }) {
+                Circle()
+                    .fill(Color.white.opacity(0.5))
+                    .frame(width: 40, height: 40)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+                    .overlay(
+                        Image(systemName: "line.3.horizontal")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    )
+                    .pinterestShadow(Theme.PinterestShadows.subtle)
+            }
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Répartition")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
-
-                    ForEach(expense.splits) { split in
-                        HStack {
-                            Image(systemName: split.isPaid ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: 14))
-                                .foregroundColor(split.isPaid ? Color(hex: "10B981") : Color(hex: "9CA3AF"))
-
-                            Text(split.userName ?? "Inconnu")
-                                .font(.system(size: 14))
-                                .foregroundColor(Color(hex: "111827"))
-
-                            Spacer()
-
-                            Text(String(format: "%.2f€", split.amount))
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(split.isPaid ? Color(hex: "6B7280") : Color(hex: "111827"))
-                        }
-                    }
+            // Add button
+            if showAddButton, let addAction = onAddTap {
+                Button(action: {
+                    Haptic.light()
+                    addAction()
+                }) {
+                    Circle()
+                        .fill(role.gradient)
+                        .frame(width: 44, height: 44)
+                        .overlay(
+                            Image(systemName: "plus")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                        )
+                        .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.35))
                 }
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        .padding(.horizontal, Theme.PinterestSpacing.lg)
+        .padding(.vertical, 12)
+        .background(
+            Rectangle()
+                .fill(Color.white.opacity(0.5))
+                .background(.ultraThinMaterial)
+                .ignoresSafeArea()
+        )
+        .overlay(
+            Rectangle()
+                .fill(Color.white.opacity(0.3))
+                .frame(height: 0.5),
+            alignment: .bottom
+        )
     }
 }
 

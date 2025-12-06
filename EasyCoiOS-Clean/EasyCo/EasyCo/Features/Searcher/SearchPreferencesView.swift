@@ -116,7 +116,7 @@ struct SearchPreferencesView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                ForEach(PropertyType.allCases, id: \.self) { type in
+                ForEach(PropertyTypePrefs.allCases, id: \.self) { type in
                     PropertyTypeButton(
                         type: type,
                         isSelected: viewModel.selectedTypes.contains(type),
@@ -193,7 +193,7 @@ private struct PreferenceTextField: View {
 }
 
 private struct PropertyTypeButton: View {
-    let type: PropertyType
+    let type: PropertyTypePrefs
     let isSelected: Bool
     let action: () -> Void
 
@@ -208,11 +208,11 @@ private struct PropertyTypeButton: View {
             .foregroundColor(isSelected ? .white : Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
-            .background(isSelected ? Theme.Gradients.searcherCTA : AnyShapeStyle(Theme.Colors.backgroundPrimary))
+            .background(isSelected ? AnyShapeStyle(Theme.Gradients.searcherCTA) : AnyShapeStyle(Theme.Colors.backgroundPrimary))
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(isSelected ? Color.clear : Theme.Colors.borderColor, lineWidth: 1)
+                    .strokeBorder(isSelected ? Color.clear : Theme.Colors.border, lineWidth: 1)
             )
         }
     }
@@ -248,7 +248,7 @@ private struct AmenityToggle: View {
 
 // MARK: - Enums
 
-private enum PropertyType: CaseIterable {
+fileprivate enum PropertyTypePrefs: String, CaseIterable, Hashable {
     case studio, apartment, house, coliving
 
     var label: String {
@@ -270,7 +270,7 @@ private enum PropertyType: CaseIterable {
     }
 }
 
-private enum Amenity: CaseIterable {
+fileprivate enum Amenity: String, CaseIterable, Hashable {
     case furnished, parking, terrace, garden, elevator
 
     var label: String {
@@ -302,8 +302,8 @@ class SearchPreferencesViewModel: ObservableObject {
     @Published var neighborhood = ""
     @Published var minBudget: Int = 0
     @Published var maxBudget: Int = 2000
-    @Published var selectedTypes: Set<PropertyType> = []
-    @Published var selectedAmenities: Set<Amenity> = []
+    @Published fileprivate var selectedTypes: Set<PropertyTypePrefs> = []
+    @Published fileprivate var selectedAmenities: Set<Amenity> = []
 
     func loadPreferences() async {
         // TODO: Load from UserDefaults or API
@@ -313,7 +313,7 @@ class SearchPreferencesViewModel: ObservableObject {
         // TODO: Save to UserDefaults or API
     }
 
-    func toggleType(_ type: PropertyType) {
+    fileprivate func toggleType(_ type: PropertyTypePrefs) {
         if selectedTypes.contains(type) {
             selectedTypes.remove(type)
         } else {
@@ -321,7 +321,7 @@ class SearchPreferencesViewModel: ObservableObject {
         }
     }
 
-    func toggleAmenity(_ amenity: Amenity) {
+    fileprivate func toggleAmenity(_ amenity: Amenity) {
         if selectedAmenities.contains(amenity) {
             selectedAmenities.remove(amenity)
         } else {

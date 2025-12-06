@@ -41,7 +41,7 @@ struct DocumentsFullListView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 ForEach(DocumentCategory.allCases, id: \.self) { category in
-                    CategoryChip(
+                    CategoryChipDocs(
                         title: category.label,
                         icon: category.icon,
                         count: viewModel.documents.filter { $0.category == category || category == .all }.count,
@@ -94,7 +94,7 @@ struct DocumentsFullListView: View {
         }
     }
 
-    private var filteredDocuments: [ResidentDocument] {
+    private var filteredDocuments: [ResidentDocumentFull] {
         viewModel.documents.filter { doc in
             selectedCategory == .all || doc.category == selectedCategory
         }
@@ -142,7 +142,7 @@ enum DocumentCategory: CaseIterable {
 
 // MARK: - Resident Document
 
-struct ResidentDocument: Identifiable {
+struct ResidentDocumentFull: Identifiable {
     let id: String
     let title: String
     let category: DocumentCategory
@@ -160,7 +160,7 @@ struct ResidentDocument: Identifiable {
 
 // MARK: - Category Chip
 
-private struct CategoryChip: View {
+private struct CategoryChipDocs: View {
     let title: String
     let icon: String
     let count: Int
@@ -191,7 +191,7 @@ private struct CategoryChip: View {
             .foregroundColor(isSelected ? .white : Theme.Colors.textPrimary)
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
-            .background(isSelected ? Theme.Gradients.residentCTA : AnyShapeStyle(Theme.Colors.backgroundPrimary))
+            .background(isSelected ? AnyShapeStyle(Theme.Gradients.residentCTA) : AnyShapeStyle(Theme.Colors.backgroundPrimary))
             .cornerRadius(Theme.CornerRadius.button)
             .shadow(color: .black.opacity(isSelected ? 0.1 : 0.05), radius: 4, y: 2)
         }
@@ -201,7 +201,7 @@ private struct CategoryChip: View {
 // MARK: - Document Full Card
 
 private struct DocumentFullCard: View {
-    let document: ResidentDocument
+    let document: ResidentDocumentFull
 
     var body: some View {
         HStack(spacing: 16) {
@@ -349,7 +349,7 @@ private struct DocumentUploadSheet: View {
 
 @MainActor
 class DocumentsListViewModel: ObservableObject {
-    @Published var documents: [ResidentDocument] = []
+    @Published var documents: [ResidentDocumentFull] = []
     @Published var isLoading = false
 
     func loadDocuments() async {
@@ -358,7 +358,7 @@ class DocumentsListViewModel: ObservableObject {
 
         // Demo mode - generate mock data
         documents = [
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "1",
                 title: "Contrat de location",
                 category: .contract,
@@ -366,7 +366,7 @@ class DocumentsListViewModel: ObservableObject {
                 size: "2.4 MB",
                 url: nil
             ),
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "2",
                 title: "État des lieux d'entrée",
                 category: .inventory,
@@ -374,7 +374,7 @@ class DocumentsListViewModel: ObservableObject {
                 size: "1.8 MB",
                 url: nil
             ),
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "3",
                 title: "Quittance Janvier 2025",
                 category: .receipts,
@@ -382,7 +382,7 @@ class DocumentsListViewModel: ObservableObject {
                 size: "156 KB",
                 url: nil
             ),
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "4",
                 title: "Quittance Décembre 2024",
                 category: .receipts,
@@ -390,7 +390,7 @@ class DocumentsListViewModel: ObservableObject {
                 size: "152 KB",
                 url: nil
             ),
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "5",
                 title: "Attestation d'assurance habitation",
                 category: .insurance,
@@ -398,7 +398,7 @@ class DocumentsListViewModel: ObservableObject {
                 size: "890 KB",
                 url: nil
             ),
-            ResidentDocument(
+            ResidentDocumentFull(
                 id: "6",
                 title: "Règlement intérieur",
                 category: .other,

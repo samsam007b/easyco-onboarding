@@ -45,6 +45,12 @@
 		F4658E3E2EE387DD0060E4FD /* DocumentsFullListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E3C2EE387DD0060E4FD /* DocumentsFullListView.swift */; };
 		F4658E3F2EE387DD0060E4FD /* PaymentsFullHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E3D2EE387DD0060E4FD /* PaymentsFullHistoryView.swift */; };
 		F4658E402EE387DD0060E4FD /* CreateMaintenanceRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E3B2EE387DD0060E4FD /* CreateMaintenanceRequestView.swift */; };
+		F4658E472EE3AADF0060E4FD /* ModernDesignShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E452EE3AADF0060E4FD /* ModernDesignShowcaseView.swift */; };
+		F4658E492EE3AAF00060E4FD /* ModernResidentHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E482EE3AAF00060E4FD /* ModernResidentHubView.swift */; };
+		F4658E4D2EE3ABE80060E4FD /* ModernUIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E4B2EE3ABE80060E4FD /* ModernUIComponents.swift */; };
+		F4658E4E2EE3ABE80060E4FD /* ModernDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E4A2EE3ABE80060E4FD /* ModernDesignSystem.swift */; };
+		F4658E512EE3B5430060E4FD /* PinterestComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E4F2EE3B5430060E4FD /* PinterestComponents.swift */; };
+		F4658E522EE3B5430060E4FD /* PinterestStyleDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E502EE3B5430060E4FD /* PinterestStyleDesignSystem.swift */; };
 		F49484D32EE1C16A009ABA6D /* DocumentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D12EE1C16A009ABA6D /* DocumentsListView.swift */; };
 		F49484D52EE1C188009ABA6D /* PaymentHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D42EE1C188009ABA6D /* PaymentHistoryView.swift */; };
 		F49484D72EE1CEE3009ABA6D /* ResidentDashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D62EE1CEE3009ABA6D /* ResidentDashboardService.swift */; };
@@ -371,6 +377,12 @@
 		F4658E3B2EE387DD0060E4FD /* CreateMaintenanceRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMaintenanceRequestView.swift; sourceTree = "<group>"; };
 		F4658E3C2EE387DD0060E4FD /* DocumentsFullListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsFullListView.swift; sourceTree = "<group>"; };
 		F4658E3D2EE387DD0060E4FD /* PaymentsFullHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsFullHistoryView.swift; sourceTree = "<group>"; };
+		F4658E452EE3AADF0060E4FD /* ModernDesignShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernDesignShowcaseView.swift; sourceTree = "<group>"; };
+		F4658E482EE3AAF00060E4FD /* ModernResidentHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernResidentHubView.swift; sourceTree = "<group>"; };
+		F4658E4A2EE3ABE80060E4FD /* ModernDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernDesignSystem.swift; sourceTree = "<group>"; };
+		F4658E4B2EE3ABE80060E4FD /* ModernUIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernUIComponents.swift; sourceTree = "<group>"; };
+		F4658E4F2EE3B5430060E4FD /* PinterestComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestComponents.swift; sourceTree = "<group>"; };
+		F4658E502EE3B5430060E4FD /* PinterestStyleDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestStyleDesignSystem.swift; sourceTree = "<group>"; };
 		F465F4E42EDFB8F500A64D6A /* EasyCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E52EDFB8F500A64D6A /* EasyCoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E62EDFB8F500A64D6A /* EasyCoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -615,6 +627,23 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
+		F4658E462EE3AADF0060E4FD /* DesignShowcase */ = {
+			isa = PBXGroup;
+			children = (
+				F4658E452EE3AADF0060E4FD /* ModernDesignShowcaseView.swift */,
+			);
+			path = DesignShowcase;
+			sourceTree = "<group>";
+		};
+		F4658E4C2EE3ABE80060E4FD /* Modern */ = {
+			isa = PBXGroup;
+			children = (
+				F4658E4A2EE3ABE80060E4FD /* ModernDesignSystem.swift */,
+				F4658E4B2EE3ABE80060E4FD /* ModernUIComponents.swift */,
+			);
+			path = Modern;
+			sourceTree = "<group>";
+		};
 		F465F4EB2EDFB97100A64D6A /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -700,6 +729,7 @@
 		F465F50A2EDFB97100A64D6A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E4C2EE3ABE80060E4FD /* Modern */,
 				F465F4EB2EDFB97100A64D6A /* Buttons */,
 				F465F4EE2EDFB97100A64D6A /* Cards */,
 				F465F4F32EDFB97100A64D6A /* Charts */,
@@ -753,6 +783,8 @@
 		F465F51E2EDFB97100A64D6A /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E4F2EE3B5430060E4FD /* PinterestComponents.swift */,
+				F4658E502EE3B5430060E4FD /* PinterestStyleDesignSystem.swift */,
 				F4C089602EE117330089915C /* AnimationPresets.swift */,
 				F4C089612EE117330089915C /* DesignTokens.swift */,
 				F4C089622EE117330089915C /* GlassmorphismModifiers.swift */,
@@ -1103,6 +1135,7 @@
 		F465F5DF2EDFB97100A64D6A /* Resident */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E482EE3AAF00060E4FD /* ModernResidentHubView.swift */,
 				F4658E3B2EE387DD0060E4FD /* CreateMaintenanceRequestView.swift */,
 				F4658E3C2EE387DD0060E4FD /* DocumentsFullListView.swift */,
 				F4658E3D2EE387DD0060E4FD /* PaymentsFullHistoryView.swift */,
@@ -1202,6 +1235,7 @@
 		F465F5F52EDFB97100A64D6A /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				F4658E462EE3AADF0060E4FD /* DesignShowcase */,
 				F49484D22EE1C16A009ABA6D /* Documents */,
 				F465F5442EDFB97100A64D6A /* Alerts */,
 				F465F54A2EDFB97100A64D6A /* Applications */,
@@ -1605,6 +1639,7 @@
 				F4C08AA72EE11F070089915C /* RoleSelectionView.swift in Sources */,
 				F4C08AA82EE11F070089915C /* OnboardingBasicInfoView.swift in Sources */,
 				F4C08AA92EE11F070089915C /* OnboardingDailyHabitsView.swift in Sources */,
+				F4658E492EE3AAF00060E4FD /* ModernResidentHubView.swift in Sources */,
 				F4C08AAA2EE11F070089915C /* OnboardingHomeLifestyleView.swift in Sources */,
 				F4C08AAB2EE11F070089915C /* OnboardingIdealColivingView.swift in Sources */,
 				F4C08AAC2EE11F070089915C /* OnboardingLifestyleView.swift in Sources */,
@@ -1657,6 +1692,7 @@
 				F4C08AD82EE11F070089915C /* PropertyCardView.swift in Sources */,
 				F4C08AD92EE11F070089915C /* PropertiesListView+Integration.swift in Sources */,
 				F4C08ADA2EE11F070089915C /* PropertiesViewModel.swift in Sources */,
+				F4658E472EE3AADF0060E4FD /* ModernDesignShowcaseView.swift in Sources */,
 				F4C08ADB2EE11F070089915C /* PropertyComparisonView.swift in Sources */,
 				F4C08ADC2EE11F070089915C /* RoomCardView.swift in Sources */,
 				F4C08ADD2EE11F070089915C /* RoomsListView.swift in Sources */,
@@ -1728,6 +1764,8 @@
 				FA67F6C9D80E4CC3AF04058B /* NetworkManager.swift in Sources */,
 				FB3057FAEE3140469B8E093E /* PaymentService.swift in Sources */,
 				FE7EE790B2CC477A9447B847 /* AuthTranslations.swift in Sources */,
+				F4658E4D2EE3ABE80060E4FD /* ModernUIComponents.swift in Sources */,
+				F4658E4E2EE3ABE80060E4FD /* ModernDesignSystem.swift in Sources */,
 				F6159858EAF14899A65D494F /* AnalyticsService.swift in Sources */,
 				F77E2EEED99E48229C05F1D0 /* UserRole.swift in Sources */,
 				F4C0897D2EE117680089915C /* SupabaseRealtime.swift in Sources */,
@@ -1742,6 +1780,8 @@
 				F4C08A3C2EE118920089915C /* Location.swift in Sources */,
 				F4C08A3D2EE118920089915C /* ResidentTask.swift in Sources */,
 				F4C08A3E2EE118920089915C /* Conversation.swift in Sources */,
+				F4658E512EE3B5430060E4FD /* PinterestComponents.swift in Sources */,
+				F4658E522EE3B5430060E4FD /* PinterestStyleDesignSystem.swift in Sources */,
 				F4C08A3F2EE118920089915C /* Expense.swift in Sources */,
 				F4C08A402EE118920089915C /* Event.swift in Sources */,
 				F4C08A412EE118920089915C /* Group.swift in Sources */,

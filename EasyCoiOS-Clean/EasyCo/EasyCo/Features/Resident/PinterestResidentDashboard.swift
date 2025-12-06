@@ -1,16 +1,14 @@
 //
-//  ResidentHubView.swift
+//  PinterestResidentDashboard.swift
 //  EasyCo
 //
-//  Dashboard Resident REDESIGNED - Style Pinterest avec glassmorphism
-//  Background organic orange/corail, animations smooth, identité forte
+//  Dashboard Resident complètement repensé - Style Pinterest
+//  Carte blanche totale, préservation gradients signature uniquement
 //
 
 import SwiftUI
 
-// MARK: - Resident Hub View (Dashboard Principal)
-
-struct ResidentHubView: View {
+struct PinterestResidentDashboard: View {
     @StateObject private var viewModel = ResidentHubViewModel()
     @State private var showSettings = false
     @State private var selectedSegment = 0
@@ -19,30 +17,57 @@ struct ResidentHubView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    ZStack {
-                        PinterestBackground(role: role, intensity: 0.18)
-                            .ignoresSafeArea()
+            ZStack {
+                // Background Pinterest avec blobs organiques
+                PinterestBackground(role: role, intensity: 0.18)
+                    .ignoresSafeArea()
 
-                        LoadingView(message: "Chargement du dashboard...")
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: Theme.PinterestSpacing.lg) {
+                        // Hero Welcome Section
+                        heroWelcomeSection
+
+                        // Hero Balance Card (Finance app style)
+                        if !viewModel.balance.isEmpty {
+                            heroBalanceCard
+                        }
+
+                        // Stats Grid (Home app style)
+                        statsGrid
+
+                        // Segment Control
+                        segmentControl
+
+                        // Content selon segment sélectionné
+                        if selectedSegment == 0 {
+                            // Vue Today
+                            todayContent
+                        } else if selectedSegment == 1 {
+                            // Vue Tasks
+                            tasksContent
+                        } else {
+                            // Vue Activity
+                            activityContent
+                        }
+
+                        // Quick Actions Grid
+                        quickActionsSection
                     }
-                } else if let error = viewModel.error {
-                    errorView(error)
-                } else {
-                    contentView
+                    .padding(.horizontal, Theme.PinterestSpacing.lg)
+                    .padding(.top, Theme.PinterestSpacing.md)
+                    .padding(.bottom, Theme.PinterestSpacing.xxxl)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    // Profile picture avec gradient
+                    // Profile picture
                     Button(action: { showSettings = true }) {
                         Circle()
                             .fill(role.gradient)
                             .frame(width: 40, height: 40)
                             .overlay(
-                                Text("ME")
+                                Text("SB")
                                     .font(Theme.PinterestTypography.caption(.bold))
                                     .foregroundColor(.white)
                             )
@@ -52,7 +77,7 @@ struct ResidentHubView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 12) {
-                        // Notifications avec badge animé
+                        // Notifications
                         ZStack(alignment: .topTrailing) {
                             PinterestIconButton("bell.fill", role: role, size: 44, action: {})
 
@@ -66,7 +91,6 @@ struct ResidentHubView: View {
                                             .foregroundColor(.white)
                                     )
                                     .offset(x: 6, y: -6)
-                                    .shadow(color: role.primaryColor.opacity(0.4), radius: 4, x: 0, y: 2)
                             }
                         }
                     }
@@ -78,89 +102,6 @@ struct ResidentHubView: View {
         }
         .refreshable {
             await viewModel.refresh()
-        }
-    }
-
-    // MARK: - Error View
-
-    private func errorView(_ error: String) -> some View {
-        ZStack {
-            PinterestBackground(role: role, intensity: 0.18)
-                .ignoresSafeArea()
-
-            VStack(spacing: 24) {
-                Spacer()
-
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.system(size: 60, weight: .semibold))
-                    .foregroundColor(Color(hex: "EF4444"))
-
-                VStack(spacing: 12) {
-                    Text("Oups !")
-                        .font(Theme.PinterestTypography.heroMedium(.heavy))
-                        .foregroundColor(Theme.Colors.textPrimary)
-
-                    Text(error)
-                        .font(Theme.PinterestTypography.bodyRegular(.regular))
-                        .foregroundColor(Theme.Colors.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                }
-
-                PinterestPrimaryButton("Réessayer", role: role, icon: "arrow.clockwise") {
-                    Task {
-                        await viewModel.refresh()
-                    }
-                }
-                .padding(.horizontal, 40)
-
-                Spacer()
-            }
-        }
-    }
-
-    // MARK: - Content View
-
-    private var contentView: some View {
-        ZStack {
-            // Background Pinterest avec blobs organiques orange/corail
-            PinterestBackground(role: role, intensity: 0.18)
-                .ignoresSafeArea()
-
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: Theme.PinterestSpacing.lg) {
-                    // Hero Welcome Section
-                    heroWelcomeSection
-
-                    // Hero Balance Card (Finance app style)
-                    if !viewModel.balance.isEmpty {
-                        heroBalanceCard
-                    }
-
-                    // Stats Grid (Home app style)
-                    if viewModel.household != nil && viewModel.lease != nil {
-                        statsGrid
-                    }
-
-                    // Segment Control
-                    segmentControl
-
-                    // Content selon segment sélectionné
-                    if selectedSegment == 0 {
-                        todayContent
-                    } else if selectedSegment == 1 {
-                        tasksContent
-                    } else {
-                        activityContent
-                    }
-
-                    // Quick Actions Grid
-                    quickActionsSection
-                }
-                .padding(.horizontal, Theme.PinterestSpacing.lg)
-                .padding(.top, Theme.PinterestSpacing.md)
-                .padding(.bottom, Theme.PinterestSpacing.xxxl)
-            }
         }
     }
 
@@ -244,11 +185,12 @@ struct ResidentHubView: View {
 
     private var todayContent: some View {
         VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
+            // Section title
             Text("Aujourd'hui")
                 .font(Theme.PinterestTypography.titleLarge(.bold))
                 .foregroundColor(Theme.Colors.textPrimary)
 
-            // Today's tasks
+            // Today's tasks (si disponibles)
             if !viewModel.todaysTasks.isEmpty {
                 ForEach(viewModel.todaysTasks.prefix(3)) { task in
                     PinterestListCard(
@@ -283,7 +225,7 @@ struct ResidentHubView: View {
                 emptyStateCard("Aucune tâche aujourd'hui")
             }
 
-            // Upcoming events
+            // Upcoming events (si disponibles)
             if !viewModel.upcomingEvents.isEmpty {
                 Text("Événements à venir")
                     .font(Theme.PinterestTypography.titleMedium(.semibold))
@@ -324,6 +266,7 @@ struct ResidentHubView: View {
                     .font(Theme.PinterestTypography.bodyRegular(.medium))
                     .foregroundColor(Theme.Colors.textSecondary)
 
+                // Liste des tâches
                 ForEach(viewModel.todaysTasks) { task in
                     PinterestListCard(
                         icon: task.isCompleted ? "checkmark.circle.fill" : "circle",
@@ -478,9 +421,9 @@ struct ResidentHubView: View {
 // MARK: - Preview
 
 #if DEBUG
-struct ResidentHubView_Previews: PreviewProvider {
+struct PinterestResidentDashboard_Previews: PreviewProvider {
     static var previews: some View {
-        ResidentHubView()
+        PinterestResidentDashboard()
     }
 }
 #endif

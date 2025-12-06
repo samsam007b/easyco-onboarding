@@ -1,52 +1,47 @@
 import SwiftUI
 
-// MARK: - Alerts View
+// MARK: - Alerts View Pinterest Style
 
 struct AlertsView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var alertsManager = AlertsManager.shared
     @State private var showingCreateAlert = false
     @State private var selectedFilter: AlertFilter = .all
+    private let role: Theme.UserRole = .resident
 
     var body: some View {
-        NavigationStack {
-            ZStack {
+        ZStack(alignment: .top) {
+            // Background
+            PinterestBackground(role: role, intensity: 0.15)
+                .ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
                 if alertsManager.isLoading {
                     ProgressView()
+                        .padding(.top, 100)
                 } else if filteredAlerts.isEmpty {
                     emptyState
+                        .padding(.horizontal, Theme.PinterestSpacing.lg)
+                        .padding(.top, 60)
                 } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            // Filter Tabs
-                            filterTabs
+                    VStack(spacing: Theme.PinterestSpacing.lg) {
+                        // Filter Tabs
+                        filterTabs
 
-                            // Stats Cards
-                            statsSection
+                        // Stats Cards
+                        statsSection
 
-                            // Alerts List
-                            alertsList
-                        }
-                        .padding()
+                        // Alerts List
+                        alertsList
                     }
+                    .padding(.horizontal, Theme.PinterestSpacing.lg)
+                    .padding(.top, Theme.PinterestSpacing.lg)
+                    .padding(.bottom, 100)
                 }
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("Alertes")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingCreateAlert = true }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
-                            .foregroundColor(Theme.Colors.primary)
-                    }
-                }
-            }
-            .sheet(isPresented: $showingCreateAlert) {
-                CreateAlertView()
-            }
-            .refreshable {
-                await alertsManager.loadAlerts()
-            }
+        }
+        .pinterestFormPresentation(isPresented: $showingCreateAlert) {
+            CreateAlertView()
         }
     }
 
@@ -131,32 +126,52 @@ struct AlertsView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "bell.slash.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.secondary)
+        VStack(spacing: 24) {
+            ZStack {
+                Circle()
+                    .fill(role.primaryColor.opacity(0.12))
+                    .frame(width: 100, height: 100)
 
-            Text("Aucune alerte")
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text("Créez des alertes pour être notifié des nouvelles opportunités")
-                .font(.body)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-
-            Button(action: { showingCreateAlert = true }) {
-                Label("Créer une alerte", systemImage: "plus.circle.fill")
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Theme.Colors.primary)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                Image(systemName: "bell.slash.fill")
+                    .font(.system(size: 48))
+                    .foregroundColor(role.primaryColor.opacity(0.6))
             }
+
+            VStack(spacing: 8) {
+                Text("Aucune alerte")
+                    .font(Theme.PinterestTypography.titleLarge(.bold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text("Créez des alertes pour être notifié des nouvelles opportunités")
+                    .font(Theme.PinterestTypography.bodyRegular(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+            }
+
+            Button(action: {
+                Haptic.light()
+                showingCreateAlert = true
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 18, weight: .semibold))
+
+                    Text("Créer une alerte")
+                        .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                }
+                .foregroundColor(.white)
+                .frame(height: 50)
+                .padding(.horizontal, Theme.PinterestSpacing.xl)
+                .background(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .fill(role.gradient)
+                )
+                .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.35))
+            }
+            .buttonStyle(ScaleButtonStyle())
         }
-        .padding(.top, 60)
+        .frame(maxWidth: .infinity)
     }
 
     // MARK: - Computed Properties
@@ -309,7 +324,7 @@ struct AlertCard: View {
     }
 }
 
-// MARK: - Stat Card
+// MARK: - Stat Card Pinterest
 
 struct StatCard: View {
     let title: String
@@ -318,24 +333,32 @@ struct StatCard: View {
     let color: Color
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 12) {
             Image(systemName: icon)
-                .font(.title2)
+                .font(.system(size: 24, weight: .semibold))
                 .foregroundColor(color)
 
             Text(value)
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(Theme.PinterestTypography.titleMedium(.bold))
+                .foregroundColor(Theme.Colors.textPrimary)
 
             Text(title)
-                .font(.caption)
-                .foregroundColor(.secondary)
+                .font(Theme.PinterestTypography.caption(.medium))
+                .foregroundColor(Theme.Colors.textSecondary)
+                .minimumScaleFactor(0.8)
+                .lineLimit(1)
         }
         .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 1)
+        .padding(.vertical, Theme.PinterestSpacing.lg)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.75))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.subtle)
     }
 }
 
@@ -353,4 +376,277 @@ extension Date {
 
 #Preview {
     AlertsView()
+}
+
+// MARK: - Menu View
+
+struct MenuView: View {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authManager: AuthManager
+    private let role: Theme.UserRole = .resident
+
+    // Navigation states
+    @State private var navigateToHub = false
+    @State private var navigateToTasks = false
+    @State private var navigateToCalendar = false
+    @State private var navigateToExpenses = false
+    @State private var navigateToStats = false
+    @State private var navigateToBalances = false
+    @State private var navigateToRoommates = false
+    @State private var showLogoutAlert = false
+
+    // Mock user data
+    @State private var userName = "sam jones"
+    @State private var userEmail = "sam7777jones@gmail.com"
+
+    var body: some View {
+        NavigationStack {
+            ZStack(alignment: .top) {
+                // Background
+                PinterestBackground(role: role, intensity: 0.15)
+                    .ignoresSafeArea()
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 0) {
+                        // User Profile Section
+                        userProfileSection
+                            .padding(.top, Theme.PinterestSpacing.lg)
+                            .padding(.horizontal, Theme.PinterestSpacing.lg)
+                            .padding(.bottom, Theme.PinterestSpacing.xl)
+
+                        // Menu Sections
+                        VStack(spacing: Theme.PinterestSpacing.lg) {
+                            mySpaceSection
+                            financesSection
+                            colocationSection
+                            logoutSection
+                        }
+                        .padding(.horizontal, Theme.PinterestSpacing.lg)
+                        .padding(.bottom, 100)
+                    }
+                }
+            }
+            .alert("Déconnexion", isPresented: $showLogoutAlert) {
+                Button("Annuler", role: .cancel) {}
+                Button("Déconnexion", role: .destructive) {
+                    Task {
+                        await authManager.logout()
+                    }
+                }
+            } message: {
+                Text("Êtes-vous sûr de vouloir vous déconnecter ?")
+            }
+        }
+    }
+
+    // MARK: - User Profile Section
+
+    private var userProfileSection: some View {
+        HStack(spacing: 16) {
+            // Avatar
+            Circle()
+                .fill(role.gradient)
+                .frame(width: 64, height: 64)
+                .overlay(
+                    Text(userName.prefix(2).uppercased())
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
+                )
+                .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.3))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(userName)
+                    .font(Theme.PinterestTypography.titleLarge(.bold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Text(userEmail)
+                    .font(Theme.PinterestTypography.bodySmall(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
+
+                // Role badge
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(role.primaryColor)
+                        .frame(width: 6, height: 6)
+
+                    Text("Résident")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(role.primaryColor)
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    Capsule()
+                        .fill(role.primaryColor.opacity(0.12))
+                )
+            }
+
+            Spacer()
+        }
+    }
+
+    // MARK: - Menu Sections
+
+    private var mySpaceSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("MON ESPACE")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(Theme.Colors.textTertiary)
+                .padding(.horizontal, Theme.PinterestSpacing.md)
+
+            VStack(spacing: 8) {
+                NavigationLink(destination: ResidentHubView()) {
+                    MenuItemRow(
+                        icon: "house.fill",
+                        title: "Hub",
+                        iconColor: Color(hex: "10B981")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: TasksView()) {
+                    MenuItemRow(
+                        icon: "checkmark.square.fill",
+                        title: "Tâches",
+                        iconColor: Color(hex: "F59E0B")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: CalendarView()) {
+                    MenuItemRow(
+                        icon: "calendar.badge.clock",
+                        title: "Calendrier",
+                        iconColor: Color(hex: "F59E0B")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+
+    private var financesSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("FINANCES")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(Theme.Colors.textTertiary)
+                .padding(.horizontal, Theme.PinterestSpacing.md)
+
+            VStack(spacing: 8) {
+                NavigationLink(destination: ExpensesView()) {
+                    MenuItemRow(
+                        icon: "creditcard.fill",
+                        title: "Dépenses",
+                        iconColor: Color(hex: "10B981")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: ExpenseStatsView(viewModel: ExpensesViewModel())) {
+                    MenuItemRow(
+                        icon: "chart.bar.fill",
+                        title: "Statistiques",
+                        iconColor: Color(hex: "8B5CF6")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                NavigationLink(destination: ExpensesView()) {
+                    MenuItemRow(
+                        icon: "eurosign.circle.fill",
+                        title: "Soldes",
+                        iconColor: Color(hex: "F59E0B")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+
+    private var colocationSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("COLOCATION")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(Theme.Colors.textTertiary)
+                .padding(.horizontal, Theme.PinterestSpacing.md)
+
+            VStack(spacing: 8) {
+                NavigationLink(destination: RoommatesView()) {
+                    MenuItemRow(
+                        icon: "person.2.fill",
+                        title: "Colocataires",
+                        iconColor: Color(hex: "6366F1")
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+
+    private var logoutSection: some View {
+        VStack(spacing: 8) {
+            Button(action: {
+                Haptic.warning()
+                showLogoutAlert = true
+            }) {
+                MenuItemRow(
+                    icon: "rectangle.portrait.and.arrow.right",
+                    title: "Se déconnecter",
+                    iconColor: Color(hex: "EF4444"),
+                    showChevron: false
+                )
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+        .padding(.top, Theme.PinterestSpacing.lg)
+    }
+}
+
+// MARK: - Menu Item Row
+
+struct MenuItemRow: View {
+    let icon: String
+    let title: String
+    let iconColor: Color
+    var showChevron: Bool = true
+
+    var body: some View {
+        HStack(spacing: 16) {
+            // Icon background
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(iconColor.opacity(0.12))
+                    .frame(width: 44, height: 44)
+
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(iconColor)
+            }
+
+            // Title
+            Text(title)
+                .font(Theme.PinterestTypography.bodyLarge(.semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Spacer()
+
+            // Chevron
+            if showChevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Theme.Colors.textTertiary)
+            }
+        }
+        .padding(.horizontal, Theme.PinterestSpacing.md)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.75))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.subtle)
+    }
 }

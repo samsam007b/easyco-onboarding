@@ -89,8 +89,8 @@ struct CreateMaintenanceRequestView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                ForEach(MaintenanceCategory.allCases, id: \.self) { category in
-                    CategoryButton(
+                ForEach(MaintenanceRequestCategory.allCases, id: \.self) { category in
+                    CategoryButtonResident(
                         category: category,
                         isSelected: viewModel.selectedCategory == category,
                         action: {
@@ -111,7 +111,7 @@ struct CreateMaintenanceRequestView: View {
 
             HStack(spacing: 12) {
                 ForEach(MaintenancePriority.allCases, id: \.self) { priority in
-                    PriorityButton(
+                    PriorityButtonResident(
                         priority: priority,
                         isSelected: viewModel.selectedPriority == priority,
                         action: {
@@ -137,7 +137,7 @@ struct CreateMaintenanceRequestView: View {
                 .cornerRadius(Theme.CornerRadius.input)
                 .overlay(
                     RoundedRectangle(cornerRadius: Theme.CornerRadius.input)
-                        .strokeBorder(Theme.Colors.borderColor, lineWidth: 1)
+                        .strokeBorder(Theme.Colors.border, lineWidth: 1)
                 )
         }
     }
@@ -173,7 +173,7 @@ struct CreateMaintenanceRequestView: View {
                 .cornerRadius(Theme.CornerRadius.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: Theme.CornerRadius.card)
-                        .strokeBorder(Theme.Colors.borderColor, lineWidth: 1)
+                        .strokeBorder(Theme.Colors.border, lineWidth: 1)
                 )
             }
         }
@@ -198,7 +198,7 @@ struct CreateMaintenanceRequestView: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(viewModel.isValid ? Theme.Gradients.residentCTA : AnyShapeStyle(Theme.Colors.gray300))
+            .background(viewModel.isValid ? AnyShapeStyle(Theme.Gradients.residentCTA) : AnyShapeStyle(Theme.Colors.gray300))
             .cornerRadius(Theme.CornerRadius.button)
             .shadow(color: viewModel.isValid ? Theme.Colors.Resident.primary.opacity(0.3) : .clear, radius: 8, y: 4)
         }
@@ -206,9 +206,9 @@ struct CreateMaintenanceRequestView: View {
     }
 }
 
-// MARK: - Maintenance Category
+// MARK: - Maintenance Request Category
 
-enum MaintenanceCategory: String, CaseIterable {
+enum MaintenanceRequestCategory: String, CaseIterable {
     case plumbing, electrical, heating, appliances, structure, other
 
     var label: String {
@@ -236,8 +236,8 @@ enum MaintenanceCategory: String, CaseIterable {
 
 // MARK: - Category Button
 
-private struct CategoryButton: View {
-    let category: MaintenanceCategory
+private struct CategoryButtonResident: View {
+    let category: MaintenanceRequestCategory
     let isSelected: Bool
     let action: () -> Void
 
@@ -255,11 +255,11 @@ private struct CategoryButton: View {
             .foregroundColor(isSelected ? .white : Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(isSelected ? Theme.Gradients.residentCTA : AnyShapeStyle(Theme.Colors.backgroundPrimary))
+            .background(isSelected ? AnyShapeStyle(Theme.Gradients.residentCTA) : AnyShapeStyle(Theme.Colors.backgroundPrimary))
             .cornerRadius(Theme.CornerRadius.card)
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.CornerRadius.card)
-                    .strokeBorder(isSelected ? Color.clear : Theme.Colors.borderColor, lineWidth: 1)
+                    .strokeBorder(isSelected ? Color.clear : Theme.Colors.border, lineWidth: 1)
             )
         }
     }
@@ -267,7 +267,7 @@ private struct CategoryButton: View {
 
 // MARK: - Priority Button
 
-private struct PriorityButton: View {
+private struct PriorityButtonResident: View {
     let priority: MaintenancePriority
     let isSelected: Bool
     let action: () -> Void
@@ -301,7 +301,7 @@ private struct CustomTextFieldStyle: TextFieldStyle {
             .cornerRadius(Theme.CornerRadius.input)
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.CornerRadius.input)
-                    .strokeBorder(Theme.Colors.borderColor, lineWidth: 1)
+                    .strokeBorder(Theme.Colors.border, lineWidth: 1)
             )
     }
 }
@@ -312,8 +312,8 @@ private struct CustomTextFieldStyle: TextFieldStyle {
 class CreateMaintenanceViewModel: ObservableObject {
     @Published var title = ""
     @Published var description = ""
-    @Published var selectedCategory: MaintenanceCategory = .other
-    @Published var selectedPriority: MaintenancePriority = .medium
+    @Published var selectedCategory: MaintenanceRequestCategory = .other
+    @Published var selectedPriority: MaintenancePriority = .normal
 
     var isValid: Bool {
         !title.isEmpty && !description.isEmpty
