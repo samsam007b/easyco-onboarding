@@ -100,7 +100,7 @@ struct ProfileView_VersionC_InformationRich: View {
                             .font(.system(size: 28, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                     )
-                    .richShadow(color: Color(hex: "FF6B35"))
+                    .richShadowVersionC(color: Color(hex: "FF6B35"))
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(displayName)
@@ -173,7 +173,7 @@ struct ProfileView_VersionC_InformationRich: View {
                         .stroke(Color.white, lineWidth: 2)
                 )
         )
-        .richShadow()
+        .richShadowVersionC()
     }
 
     // MARK: - Activity Grid
@@ -184,21 +184,21 @@ struct ProfileView_VersionC_InformationRich: View {
             GridItem(.flexible()),
             GridItem(.flexible())
         ], spacing: 12) {
-            RichStatCard(
+            RichStatCardVersionC(
                 icon: "heart.fill",
                 value: "12",
                 label: "Favoris",
                 color: Color(hex: "EF4444")
             )
 
-            RichStatCard(
+            RichStatCardVersionC(
                 icon: "person.2.fill",
                 value: "5",
                 label: "Matchs",
                 color: Color(hex: "10B981")
             )
 
-            RichStatCard(
+            RichStatCardVersionC(
                 icon: "eye.fill",
                 value: "24",
                 label: "Vues",
@@ -220,28 +220,28 @@ struct ProfileView_VersionC_InformationRich: View {
                 GridItem(.flexible()),
                 GridItem(.flexible())
             ], spacing: 12) {
-                QuickActionCardRich(
+                QuickActionCardRichVersionC(
                     icon: "doc.text.fill",
                     title: "Mes annonces",
                     count: "3",
                     color: Color(hex: "8B5CF6")
                 ) {}
 
-                QuickActionCardRich(
+                QuickActionCardRichVersionC(
                     icon: "bell.fill",
                     title: "Alertes",
                     count: "7",
                     color: Color(hex: "F59E0B")
                 ) {}
 
-                QuickActionCardRich(
+                QuickActionCardRichVersionC(
                     icon: "message.fill",
                     title: "Messages",
                     count: "12",
                     color: Color(hex: "06B6D4")
                 ) {}
 
-                QuickActionCardRich(
+                QuickActionCardRichVersionC(
                     icon: "calendar.badge.clock",
                     title: "Visites",
                     count: "2",
@@ -261,16 +261,16 @@ struct ProfileView_VersionC_InformationRich: View {
                 .padding(.horizontal, 4)
 
             VStack(spacing: 1) {
-                SettingsRowRich(icon: "person.fill", title: "Informations personnelles", color: Color(hex: "8B5CF6")) {}
-                SettingsRowRich(icon: "shield.fill", title: "Confidentialité", color: Color(hex: "10B981")) {}
-                SettingsRowRich(icon: "bell.fill", title: "Notifications", color: Color(hex: "3B82F6")) {}
-                SettingsRowRich(icon: "questionmark.circle.fill", title: "Aide & Support", color: Color(hex: "F59E0B")) {}
+                SettingsRowRichVersionC(icon: "person.fill", title: "Informations personnelles", color: Color(hex: "8B5CF6")) {}
+                SettingsRowRichVersionC(icon: "shield.fill", title: "Confidentialité", color: Color(hex: "10B981")) {}
+                SettingsRowRichVersionC(icon: "bell.fill", title: "Notifications", color: Color(hex: "3B82F6")) {}
+                SettingsRowRichVersionC(icon: "questionmark.circle.fill", title: "Aide & Support", color: Color(hex: "F59E0B")) {}
             }
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.white.opacity(0.85))
             )
-            .richShadow()
+            .richShadowVersionC()
         }
     }
 
@@ -300,7 +300,7 @@ struct ProfileView_VersionC_InformationRich: View {
                             .stroke(Color(hex: "EF4444").opacity(0.2), lineWidth: 1.5)
                     )
             )
-            .richShadow()
+            .richShadowVersionC()
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -314,7 +314,7 @@ struct ProfileView_VersionC_InformationRich: View {
 
 // MARK: - Rich Stat Card
 
-struct RichStatCard: View {
+private struct RichStatCardVersionC: View {
     let icon: String
     let value: String
     let label: String
@@ -350,13 +350,13 @@ struct RichStatCard: View {
                         .stroke(Color.white, lineWidth: 1.5)
                 )
         )
-        .richShadow()
+        .richShadowVersionC()
     }
 }
 
 // MARK: - Quick Action Card Rich
 
-struct QuickActionCardRich: View {
+private struct QuickActionCardRichVersionC: View {
     let icon: String
     let title: String
     let count: String
@@ -403,7 +403,7 @@ struct QuickActionCardRich: View {
                             .stroke(Color.white, lineWidth: 1.5)
                     )
             )
-            .richShadow()
+            .richShadowVersionC()
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -411,7 +411,7 @@ struct QuickActionCardRich: View {
 
 // MARK: - Settings Row Rich
 
-struct SettingsRowRich: View {
+private struct SettingsRowRichVersionC: View {
     let icon: String
     let title: String
     let color: Color
@@ -451,10 +451,10 @@ struct SettingsRowRich: View {
     }
 }
 
-// MARK: - Rich Shadow Modifier
+// MARK: - Rich Shadow Modifier (Version C)
 
 extension View {
-    func richShadow(color: Color = .black) -> some View {
+    func richShadowVersionC(color: Color = .black) -> some View {
         self
             .shadow(color: color.opacity(0.08), radius: 12, x: 0, y: 6)
             .shadow(color: color.opacity(0.05), radius: 30, x: 0, y: 15)
