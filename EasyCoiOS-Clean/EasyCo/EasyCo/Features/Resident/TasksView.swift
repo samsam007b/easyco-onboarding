@@ -2,7 +2,8 @@
 //  TasksView.swift
 //  EasyCo
 //
-//  Vue complète des tâches avec filtres, tri et actions
+//  Vue complète des tâches - REDESIGN Pinterest Style
+//  Glassmorphism, profondeur, contraste élevé
 //
 
 import SwiftUI
@@ -11,101 +12,120 @@ struct TasksView: View {
     @StateObject private var viewModel = TasksViewModel()
     @State private var showFilterMenu = false
     @State private var showSortMenu = false
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
+
+    private let role: Theme.UserRole = .resident
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                // Filters & Search Bar
-                filtersSection
+        ZStack(alignment: .top) {
+            // Background Pinterest avec blobs organiques
+            PinterestBackground(role: role, intensity: 0.15)
+                .ignoresSafeArea()
 
-                // Content
-                Group {
-                    if viewModel.isLoading {
-                        LoadingView(message: "Chargement des tâches...")
-                    } else if viewModel.filteredTasks.isEmpty {
-                        emptyStateView
-                    } else {
-                        tasksList
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    // Spacer for floating header
+                    Color.clear.frame(height: 70)
+
+                    // Filters & Search Bar
+                    filtersSection
+                        .padding(.bottom, Theme.PinterestSpacing.md)
+
+                    // Content
+                    Group {
+                        if viewModel.isLoading {
+                            LoadingView(message: "Chargement des tâches...")
+                        } else if viewModel.filteredTasks.isEmpty {
+                            emptyStateView
+                        } else {
+                            tasksList
+                        }
                     }
                 }
-            }
-            .background(Color(hex: "F9FAFB"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Tâches")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        viewModel.showCreateTask = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(Color(hex: "E8865D"))
-                    }
-                }
+                .padding(.bottom, 100)
             }
             .refreshable {
                 await viewModel.refresh()
             }
-            .sheet(isPresented: $viewModel.showCreateTask) {
-                CreateTaskView(viewModel: viewModel)
-            }
+
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: true,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: { viewModel.showCreateTask = true }
+            )
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
+        }
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
+        }
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
+        }
+        .pinterestFormPresentation(isPresented: $viewModel.showCreateTask) {
+            CreateTaskView(viewModel: viewModel)
         }
     }
 
     // MARK: - Filters Section
 
     private var filtersSection: some View {
-        VStack(spacing: 12) {
-            // Search Bar
+        VStack(spacing: Theme.PinterestSpacing.md) {
+            // Search Bar - Glassmorphism
             HStack(spacing: 12) {
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 14))
-                        .foregroundColor(Color(hex: "9CA3AF"))
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(Theme.Colors.textTertiary)
 
-                    TextField("Rechercher une tâche...", text: $viewModel.searchText)
-                        .font(.system(size: 15))
+                TextField("Rechercher une tâche...", text: $viewModel.searchText)
+                    .font(Theme.PinterestTypography.bodyRegular(.regular))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
-                    if !viewModel.searchText.isEmpty {
-                        Button(action: {
+                if !viewModel.searchText.isEmpty {
+                    Button(action: {
+                        withAnimation(Theme.PinterestAnimations.quickSpring) {
                             viewModel.searchText = ""
-                        }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color(hex: "9CA3AF"))
                         }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 18))
+                            .foregroundColor(Theme.Colors.textTertiary)
                     }
                 }
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
             }
-            .padding(.horizontal, 16)
+            .padding(Theme.PinterestSpacing.md)
+            .pinterestGlassCard(radius: Theme.PinterestRadius.medium)
+            .padding(.horizontal, Theme.PinterestSpacing.lg)
 
-            // Filter Chips
+            // Filter Chips - Glassmorphism
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     ForEach(TaskFilter.allCases, id: \.self) { filter in
                         TaskFilterChip(
                             title: filter.rawValue,
                             icon: filter.icon,
                             isSelected: viewModel.selectedFilter == filter,
-                            count: getCount(for: filter)
+                            count: getCount(for: filter),
+                            role: role
                         ) {
-                            viewModel.selectedFilter = filter
+                            withAnimation(Theme.PinterestAnimations.smoothSpring) {
+                                viewModel.selectedFilter = filter
+                                Haptic.selection()
+                            }
                         }
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, Theme.PinterestSpacing.lg)
             }
 
-            // Sort Button
+            // Sort & Count Row
             HStack {
                 Menu {
                     ForEach(TaskSort.allCases, id: \.self) { sort in
@@ -116,40 +136,63 @@ struct TasksView: View {
                         }
                     }
                 } label: {
-                    HStack(spacing: 6) {
+                    HStack(spacing: 8) {
                         Image(systemName: "arrow.up.arrow.down")
-                            .font(.system(size: 12))
+                            .font(.system(size: 13, weight: .semibold))
                         Text("Tri: \(viewModel.selectedSort.rawValue)")
-                            .font(.system(size: 14, weight: .medium))
+                            .font(Theme.PinterestTypography.caption(.semibold))
                     }
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color.white)
-                    .cornerRadius(8)
+                    .foregroundColor(role.primaryColor)
+                    .padding(.horizontal, Theme.PinterestSpacing.sm)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                            .fill(Color.white.opacity(0.75))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: Theme.PinterestRadius.small)
+                                    .stroke(role.primaryColor.opacity(0.3), lineWidth: 1.5)
+                            )
+                    )
+                    .pinterestShadow(Theme.PinterestShadows.subtle)
                 }
 
                 Spacer()
 
-                // Task count
-                Text("\(viewModel.filteredTasks.count) tâche\(viewModel.filteredTasks.count > 1 ? "s" : "")")
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
+                // Task count - Glassmorphism badge
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 12))
+                        .foregroundColor(role.primaryColor)
+                    Text("\(viewModel.filteredTasks.count)")
+                        .font(Theme.PinterestTypography.caption(.bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule()
+                        .fill(Color.white.opacity(0.75))
+                        .overlay(
+                            Capsule()
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                        )
+                )
+                .pinterestShadow(Theme.PinterestShadows.soft)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, Theme.PinterestSpacing.lg)
         }
-        .padding(.vertical, 12)
-        .background(Color(hex: "F9FAFB"))
+        .padding(.vertical, Theme.PinterestSpacing.md)
     }
 
     // MARK: - Tasks List
 
     private var tasksList: some View {
-        ScrollView {
-            LazyVStack(spacing: 12) {
+        ScrollView(showsIndicators: false) {
+            LazyVStack(spacing: Theme.PinterestSpacing.md) {
                 ForEach(viewModel.filteredTasks) { task in
-                    TaskCard(
+                    PinterestTaskCard(
                         task: task,
+                        role: role,
                         onToggleComplete: {
                             _Concurrency.Task {
                                 await viewModel.toggleComplete(task.id)
@@ -163,53 +206,55 @@ struct TasksView: View {
                     )
                 }
             }
-            .padding(16)
+            .padding(Theme.PinterestSpacing.lg)
+            .padding(.bottom, Theme.PinterestSpacing.xxxl)
         }
     }
 
     // MARK: - Empty State
 
     private var emptyStateView: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: Theme.PinterestSpacing.xl) {
             Spacer()
 
+            // Icon avec gradient circle
             ZStack {
                 Circle()
-                    .fill(Color(hex: "FFF4ED"))
+                    .fill(role.gradient.opacity(0.15))
+                    .frame(width: 140, height: 140)
+                    .blur(radius: 30)
+
+                Circle()
+                    .fill(Color.white.opacity(0.75))
                     .frame(width: 120, height: 120)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                    )
+                    .pinterestShadow(Theme.PinterestShadows.medium)
 
                 Image(systemName: viewModel.selectedFilter == .all ? "checklist" : "magnifyingglass")
-                    .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "E8865D"))
+                    .font(.system(size: 52, weight: .light))
+                    .foregroundColor(role.primaryColor)
             }
 
-            VStack(spacing: 12) {
+            VStack(spacing: Theme.PinterestSpacing.sm) {
                 Text(emptyStateTitle)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(Theme.PinterestTypography.heroMedium(.heavy))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
                 Text(emptyStateMessage)
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .font(Theme.PinterestTypography.bodyRegular(.regular))
+                    .foregroundColor(Theme.Colors.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
 
             if viewModel.selectedFilter == .all && !viewModel.isLoading {
-                Button(action: {
+                PinterestPrimaryButton("Créer une tâche", role: role, icon: "plus.circle.fill") {
                     viewModel.showCreateTask = true
-                }) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "plus.circle.fill")
-                        Text("Créer une tâche")
-                    }
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Color(hex: "E8865D"))
-                    .cornerRadius(12)
                 }
+                .padding(.horizontal, 40)
             }
 
             Spacer()
@@ -256,119 +301,160 @@ struct TasksView: View {
     }
 }
 
-// MARK: - Task Filter Chip Component
+// MARK: - Pinterest Task Filter Chip
 
 struct TaskFilterChip: View {
     let title: String
     let icon: String
     let isSelected: Bool
     let count: Int
+    let role: Theme.UserRole
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 6) {
+            HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .font(.system(size: 12))
+                    .font(.system(size: 13, weight: .semibold))
 
                 Text(title)
-                    .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                    .font(Theme.PinterestTypography.bodySmall(isSelected ? .semibold : .medium))
 
                 if count > 0 {
                     Text("\(count)")
-                        .font(.system(size: 12, weight: .semibold))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(isSelected ? Color.white.opacity(0.3) : Color(hex: "E5E7EB"))
-                        .cornerRadius(10)
+                        .font(Theme.PinterestTypography.captionSmall(.bold))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(
+                            Capsule()
+                                .fill(isSelected ? Color.white.opacity(0.25) : role.primaryColor.opacity(0.12))
+                        )
                 }
             }
-            .foregroundColor(isSelected ? .white : Color(hex: "6B7280"))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(isSelected ? Color(hex: "E8865D") : Color.white)
-            .cornerRadius(20)
-            .shadow(color: .black.opacity(isSelected ? 0.1 : 0.05), radius: isSelected ? 4 : 2, x: 0, y: isSelected ? 2 : 1)
+            .foregroundColor(isSelected ? .white : role.primaryColor)
+            .padding(.horizontal, Theme.PinterestSpacing.md)
+            .padding(.vertical, 12)
+            .background(
+                ZStack {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                            .fill(role.gradient)
+                            .pinterestShadow(Theme.PinterestShadows.colored(role.primaryColor, intensity: 0.35))
+                    } else {
+                        RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                            .fill(Color.white.opacity(0.75))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                                    .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                            )
+                            .pinterestShadow(Theme.PinterestShadows.subtle)
+                    }
+                }
+            )
         }
+        .buttonStyle(ScaleButtonStyle())
     }
 }
 
-// MARK: - Task Card Component
+// MARK: - Pinterest Task Card
 
-struct TaskCard: View {
+struct PinterestTaskCard: View {
     let task: ResidentTask
+    let role: Theme.UserRole
     let onToggleComplete: () -> Void
     let onDelete: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            // Checkbox
-            Button(action: onToggleComplete) {
-                Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 24))
-                    .foregroundColor(task.isCompleted ? Color(hex: "10B981") : Color(hex: "D1D5DB"))
+        HStack(spacing: Theme.PinterestSpacing.md) {
+            // Checkbox avec gradient si complété
+            Button(action: {
+                Haptic.light()
+                onToggleComplete()
+            }) {
+                ZStack {
+                    if task.isCompleted {
+                        Circle()
+                            .fill(Color(hex: "10B981"))
+                            .frame(width: 32, height: 32)
+                            .pinterestShadow(Theme.PinterestShadows.colored(Color(hex: "10B981"), intensity: 0.3))
+
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                    } else {
+                        Circle()
+                            .stroke(role.primaryColor.opacity(0.4), lineWidth: 2.5)
+                            .frame(width: 32, height: 32)
+                    }
+                }
             }
 
             // Task Info
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 8) {
                 // Title
                 Text(task.title)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "111827"))
-                    .strikethrough(task.isCompleted)
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .strikethrough(task.isCompleted, color: Theme.Colors.textTertiary)
 
-                // Assignee
-                if let assigneeName = task.assigneeName {
-                    HStack(spacing: 4) {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 10))
-                        Text(assigneeName)
-                            .font(.system(size: 13))
+                // Metadata
+                HStack(spacing: 10) {
+                    // Assignee
+                    if let assigneeName = task.assigneeName {
+                        HStack(spacing: 5) {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 11))
+                            Text(assigneeName)
+                                .font(Theme.PinterestTypography.caption(.medium))
+                        }
+                        .foregroundColor(Theme.Colors.textSecondary)
                     }
-                    .foregroundColor(Color(hex: "6B7280"))
-                }
 
-                // Category & Status
-                HStack(spacing: 8) {
                     // Category Badge
                     HStack(spacing: 4) {
                         Image(systemName: task.category.icon)
-                            .font(.system(size: 10))
+                            .font(.system(size: 10, weight: .semibold))
                         Text(task.category.displayName)
-                            .font(.system(size: 12))
+                            .font(Theme.PinterestTypography.captionSmall(.semibold))
                     }
                     .foregroundColor(Color(hex: task.category.color))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color(hex: task.category.color).opacity(0.1))
-                    .cornerRadius(6)
+                    .background(
+                        Capsule()
+                            .fill(Color(hex: task.category.color).opacity(0.15))
+                    )
 
                     // Due Date
                     if task.dueDate != nil {
                         HStack(spacing: 4) {
-                            Image(systemName: "clock")
+                            Image(systemName: "clock.fill")
                                 .font(.system(size: 10))
                             Text(task.statusText)
-                                .font(.system(size: 12))
+                                .font(Theme.PinterestTypography.captionSmall(.medium))
                         }
-                        .foregroundColor(task.isOverdue ? Color(hex: "EF4444") : Color(hex: "6B7280"))
+                        .foregroundColor(task.isOverdue ? Color(hex: "EF4444") : Theme.Colors.textSecondary)
                     }
                 }
             }
 
             Spacer()
 
-            // Priority Indicator
+            // Priority Indicator avec gradient
             if task.priority == .urgent || task.priority == .high {
-                Image(systemName: "exclamationmark.circle.fill")
-                    .font(.system(size: 20))
-                    .foregroundColor(Color(hex: task.priority.color))
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: task.priority.color).opacity(0.15))
+                        .frame(width: 36, height: 36)
+
+                    Image(systemName: "exclamationmark")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color(hex: task.priority.color))
+                }
             }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(Theme.PinterestSpacing.md)
+        .pinterestGlassCard(radius: Theme.PinterestRadius.medium)
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             // Delete Action
             Button(role: .destructive, action: onDelete) {
@@ -392,3 +478,5 @@ struct TaskCard: View {
         }
     }
 }
+
+// MARK: - Shared Views

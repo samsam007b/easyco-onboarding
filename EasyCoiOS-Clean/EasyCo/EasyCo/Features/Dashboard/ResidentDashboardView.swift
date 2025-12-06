@@ -17,10 +17,24 @@ struct ResidentDashboardView: View {
     @State private var expensesAppear = false
     @State private var quickActionsAppear = false
 
+    // Sheet states
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
+
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
-        NavigationStack {
-            ScrollView {
+        ZStack(alignment: .top) {
+            // Background
+            PinterestBackground(role: role, intensity: 0.15)
+                .ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
+                    // Spacer for floating header
+                    Color.clear.frame(height: 70)
+
                     // Header
                     headerSection
 
@@ -64,26 +78,27 @@ struct ResidentDashboardView: View {
                     }
                 }
                 .padding(.vertical, 20)
+                .padding(.bottom, 100)
             }
-            .background(Theme.Colors.backgroundSecondary)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Mon Logement")
-                        .font(Theme.Typography.title3())
-                        .foregroundColor(Theme.Colors.textPrimary)
-                }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: SettingsView()) {
-                        Image.lucide("settings")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                    }
-                }
-            }
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: false,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: nil
+            )
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
+        }
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
+        }
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
         }
         .task {
             await viewModel.loadDashboard()
@@ -601,9 +616,15 @@ private struct KPICardCompact: View {
         }
         .frame(width: 140)
         .padding(16)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.75))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.subtle)
     }
 }
 
@@ -644,9 +665,15 @@ private struct HubQuickCard: View {
         }
         .frame(width: 160)
         .padding(16)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                .fill(Color.white.opacity(0.75))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.large)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.subtle)
     }
 }
 
@@ -1051,16 +1078,6 @@ private struct PlaceholderView: View {
         .padding()
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.large)
-    }
-}
-
-// MARK: - Button Styles
-
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
-            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 

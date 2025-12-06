@@ -476,27 +476,7 @@ struct ResidentTabView: View {
                     .tag(0)
 
                 // Tasks - Full featured task management
-                NavigationStack {
-                    TasksView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "E8865D"))
-                                }
-                            }
-                        }
-                }
+                TasksView()
                 .tabItem {
                     Label {
                         Text("Tâches")
@@ -508,27 +488,7 @@ struct ResidentTabView: View {
                 .tag(1)
 
                 // Finances - Full featured expense management
-                NavigationStack {
-                    ExpensesView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "E8865D"))
-                                }
-                            }
-                        }
-                }
+                ExpensesView()
                 .tabItem {
                     Label {
                         Text("Finances")
@@ -540,27 +500,7 @@ struct ResidentTabView: View {
                 .tag(2)
 
                 // Calendar - Full featured event calendar
-                NavigationStack {
-                    CalendarView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "E8865D"))
-                                }
-                            }
-                        }
-                }
+                CalendarView()
                 .tabItem {
                     Label {
                         Text("Calendrier")
