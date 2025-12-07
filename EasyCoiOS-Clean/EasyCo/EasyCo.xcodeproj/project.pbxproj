@@ -51,11 +51,7 @@
 		F4658E4E2EE3ABE80060E4FD /* ModernDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E4A2EE3ABE80060E4FD /* ModernDesignSystem.swift */; };
 		F4658E512EE3B5430060E4FD /* PinterestComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E4F2EE3B5430060E4FD /* PinterestComponents.swift */; };
 		F4658E522EE3B5430060E4FD /* PinterestStyleDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E502EE3B5430060E4FD /* PinterestStyleDesignSystem.swift */; };
-		F4658E582EE3DB430060E4FD /* ProfileView_VersionB_PremiumSubtle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E552EE3DB430060E4FD /* ProfileView_VersionB_PremiumSubtle.swift */; };
-		F4658E592EE3DB430060E4FD /* ProfileView_VersionC_InformationRich.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E562EE3DB430060E4FD /* ProfileView_VersionC_InformationRich.swift */; };
 		F4658E5A2EE3DB430060E4FD /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E532EE3DB430060E4FD /* PersonalInfoView.swift */; };
-		F4658E5B2EE3DB430060E4FD /* ProfileView_VersionA_UltraMinimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E542EE3DB430060E4FD /* ProfileView_VersionA_UltraMinimal.swift */; };
-		F4658E5C2EE3DB430060E4FD /* ProfileViewPinterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4658E572EE3DB430060E4FD /* ProfileViewPinterest.swift */; };
 		F49484D32EE1C16A009ABA6D /* DocumentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D12EE1C16A009ABA6D /* DocumentsListView.swift */; };
 		F49484D52EE1C188009ABA6D /* PaymentHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D42EE1C188009ABA6D /* PaymentHistoryView.swift */; };
 		F49484D72EE1CEE3009ABA6D /* ResidentDashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49484D62EE1CEE3009ABA6D /* ResidentDashboardService.swift */; };
@@ -389,10 +385,6 @@
 		F4658E4F2EE3B5430060E4FD /* PinterestComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestComponents.swift; sourceTree = "<group>"; };
 		F4658E502EE3B5430060E4FD /* PinterestStyleDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestStyleDesignSystem.swift; sourceTree = "<group>"; };
 		F4658E532EE3DB430060E4FD /* PersonalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoView.swift; sourceTree = "<group>"; };
-		F4658E542EE3DB430060E4FD /* ProfileView_VersionA_UltraMinimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView_VersionA_UltraMinimal.swift; sourceTree = "<group>"; };
-		F4658E552EE3DB430060E4FD /* ProfileView_VersionB_PremiumSubtle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView_VersionB_PremiumSubtle.swift; sourceTree = "<group>"; };
-		F4658E562EE3DB430060E4FD /* ProfileView_VersionC_InformationRich.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView_VersionC_InformationRich.swift; sourceTree = "<group>"; };
-		F4658E572EE3DB430060E4FD /* ProfileViewPinterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPinterest.swift; sourceTree = "<group>"; };
 		F465F4E42EDFB8F500A64D6A /* EasyCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E52EDFB8F500A64D6A /* EasyCoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465F4E62EDFB8F500A64D6A /* EasyCoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyCoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1109,10 +1101,6 @@
 			isa = PBXGroup;
 			children = (
 				F4658E532EE3DB430060E4FD /* PersonalInfoView.swift */,
-				F4658E542EE3DB430060E4FD /* ProfileView_VersionA_UltraMinimal.swift */,
-				F4658E552EE3DB430060E4FD /* ProfileView_VersionB_PremiumSubtle.swift */,
-				F4658E562EE3DB430060E4FD /* ProfileView_VersionC_InformationRich.swift */,
-				F4658E572EE3DB430060E4FD /* ProfileViewPinterest.swift */,
 				F4658E352EE387A50060E4FD /* ProfileEnhancementView.swift */,
 				F4C089E02EE1182D0089915C /* EnhancedProfileStepViews.swift */,
 				F4C089E22EE1182D0089915C /* Enhancement */,
@@ -1597,11 +1585,7 @@
 				F4C08A702EE11F070089915C /* LoadingAndEmptyStates.swift in Sources */,
 				F4C08A712EE11F070089915C /* SwipeCardStack.swift in Sources */,
 				F4C08A722EE11F070089915C /* SwipeCard.swift in Sources */,
-				F4658E582EE3DB430060E4FD /* ProfileView_VersionB_PremiumSubtle.swift in Sources */,
-				F4658E592EE3DB430060E4FD /* ProfileView_VersionC_InformationRich.swift in Sources */,
 				F4658E5A2EE3DB430060E4FD /* PersonalInfoView.swift in Sources */,
-				F4658E5B2EE3DB430060E4FD /* ProfileView_VersionA_UltraMinimal.swift in Sources */,
-				F4658E5C2EE3DB430060E4FD /* ProfileViewPinterest.swift in Sources */,
 				F4C08A732EE11F070089915C /* AlertsView.swift in Sources */,
 				F4C08A742EE11F070089915C /* CreateAlertView.swift in Sources */,
 				F4C08A752EE11F070089915C /* ApplicationFormView.swift in Sources */,

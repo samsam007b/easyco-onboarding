@@ -69,191 +69,60 @@ struct SearcherTabView: View {
     @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
-    @State private var showSideMenu = false
 
     var body: some View {
         ZStack {
-            TabView(selection: $selectedTab) {
-                // Dashboard - Main home screen
-                NavigationStack {
-                    SearcherDashboardView()
-                        .navigationTitle("Dashboard")
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "FFA040"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Accueil")
-                    } icon: {
-                        Image("EasyCoHouseIcon")
-                            .renderingMode(.template)
+            // Main content based on selected tab
+            Group {
+                switch selectedTab {
+                case 0:
+                    NavigationStack {
+                        SearcherDashboardView()
+                            .navigationTitle("Dashboard")
+                            .navigationBarTitleDisplayMode(.large)
+                    }
+                case 1:
+                    NavigationStack {
+                        PropertiesListView()
+                    }
+                case 2:
+                    NavigationStack {
+                        MatchesView()
+                    }
+                case 3:
+                    NavigationStack {
+                        FavoritesView()
+                    }
+                case 4:
+                    NavigationStack {
+                        MessagesListView()
+                    }
+                default:
+                    NavigationStack {
+                        SearcherDashboardView()
                     }
                 }
-                .tag(0)
-
-                // Browse - Property search and exploration
-                NavigationStack {
-                    PropertiesListView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "FFA040"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Explorer")
-                    } icon: {
-                        Image.lucide("magnifyingglass")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(1)
-
-                // Matches - AI-powered property matches
-                NavigationStack {
-                    MatchesView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "FFA040"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Matchs")
-                    } icon: {
-                        Image.lucide("sparkles")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(2)
-
-                // Favorites
-                NavigationStack {
-                    FavoritesView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "FFA040"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Favoris")
-                    } icon: {
-                        Image.lucide("heart.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(3)
-
-                // Messages
-                NavigationStack {
-                    MessagesListView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "FFA040"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Messages")
-                    } icon: {
-                        Image.lucide("message.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(4)
-            }
-            .tint(Theme.Colors.searcherPrimary)
-            .onAppear {
-                let appearance = UITabBarAppearance()
-
-                // Glassomorphism effect using blur material
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-                appearance.backgroundColor = .clear
-
-                UITabBar.appearance().standardAppearance = appearance
-                UITabBar.appearance().scrollEdgeAppearance = appearance
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
             }
 
-            // Side menu - let it handle its own overlay and animations
-            SideMenuView(isShowing: $showSideMenu)
-                .zIndex(100)
+            // Floating Tab Bar
+            VStack {
+                Spacer()
+                FloatingTabBar(
+                    selectedTab: $selectedTab,
+                    primaryColor: Theme.Colors.searcherPrimary,
+                    tabs: [
+                        FloatingTabItem(id: 0, title: "Accueil", icon: "house.fill"),
+                        FloatingTabItem(id: 1, title: "Explorer", icon: "magnifyingglass"),
+                        FloatingTabItem(id: 2, title: "Matchs", icon: "sparkles"),
+                        FloatingTabItem(id: 3, title: "Favoris", icon: "heart.fill"),
+                        FloatingTabItem(id: 4, title: "Messages", icon: "message.fill")
+                    ]
+                )
+            }
+            .ignoresSafeArea(.keyboard)
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
     }
 }
@@ -264,190 +133,60 @@ struct OwnerTabView: View {
     @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
-    @State private var showSideMenu = false
 
     var body: some View {
         ZStack {
-            TabView(selection: $selectedTab) {
-                // Dashboard - Overview with KPIs and analytics
-                NavigationStack {
-                    OwnerDashboardView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "6E56CF"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Accueil")
-                    } icon: {
-                        Image("EasyCoHouseIcon")
-                            .renderingMode(.template)
+            // Main content based on selected tab
+            Group {
+                switch selectedTab {
+                case 0:
+                    NavigationStack {
+                        OwnerDashboardView()
+                            .navigationTitle("Dashboard")
+                            .navigationBarTitleDisplayMode(.large)
+                    }
+                case 1:
+                    NavigationStack {
+                        OwnerPropertiesView()
+                    }
+                case 2:
+                    NavigationStack {
+                        ApplicationsView()
+                    }
+                case 3:
+                    NavigationStack {
+                        OwnerFinanceView()
+                    }
+                case 4:
+                    NavigationStack {
+                        MessagesListView()
+                    }
+                default:
+                    NavigationStack {
+                        OwnerDashboardView()
                     }
                 }
-                .tag(0)
-
-                // Properties - Full featured property management
-                NavigationStack {
-                    OwnerPropertiesView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "6E56CF"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Propriétés")
-                    } icon: {
-                        Image.lucide("building.2.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(1)
-
-                // Applications - Full featured applications management
-                NavigationStack {
-                    ApplicationsView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "6E56CF"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Candidatures")
-                    } icon: {
-                        Image.lucide("doc.text.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(2)
-
-                // Finances - Revenue tracking and financial management
-                NavigationStack {
-                    OwnerFinanceView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "6E56CF"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Finances")
-                    } icon: {
-                        Image.lucide("eurosign.circle.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(3)
-
-                // Messages
-                NavigationStack {
-                    MessagesListView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "6E56CF"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Messages")
-                    } icon: {
-                        Image.lucide("message.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(4)
-            }
-            .tint(Theme.Colors.ownerPrimary)
-            .onAppear {
-                let appearance = UITabBarAppearance()
-
-                // Glassomorphism effect using blur material
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-                appearance.backgroundColor = .clear
-
-                UITabBar.appearance().standardAppearance = appearance
-                UITabBar.appearance().scrollEdgeAppearance = appearance
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
             }
 
-            // Side menu - let it handle its own overlay and animations
-            SideMenuView(isShowing: $showSideMenu)
-                .zIndex(100)
+            // Floating Tab Bar
+            VStack {
+                Spacer()
+                FloatingTabBar(
+                    selectedTab: $selectedTab,
+                    primaryColor: Theme.Colors.ownerPrimary,
+                    tabs: [
+                        FloatingTabItem(id: 0, title: "Accueil", icon: "house.fill"),
+                        FloatingTabItem(id: 1, title: "Propriétés", icon: "building.2.fill"),
+                        FloatingTabItem(id: 2, title: "Candidatures", icon: "doc.text.fill"),
+                        FloatingTabItem(id: 3, title: "Finances", icon: "eurosign.circle.fill"),
+                        FloatingTabItem(id: 4, title: "Messages", icon: "message.fill")
+                    ]
+                )
+            }
+            .ignoresSafeArea(.keyboard)
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
     }
 }
@@ -458,110 +197,48 @@ struct ResidentTabView: View {
     @EnvironmentObject var authManager: AuthManager
     @State private var selectedTab = 0
     @State private var showSettings = false
-    @State private var showSideMenu = false
 
     var body: some View {
         ZStack {
-            TabView(selection: $selectedTab) {
-                // Hub - Full featured dashboard (already has toolbar built-in)
-                ResidentHubView()
-                    .tabItem {
-                        Label {
-                        Text("Accueil")
-                    } icon: {
-                        Image("EasyCoHouseIcon")
-                            .renderingMode(.template)
+            // Main content based on selected tab
+            Group {
+                switch selectedTab {
+                case 0:
+                    ResidentHubView()
+                case 1:
+                    TasksView()
+                case 2:
+                    ExpensesView()
+                case 3:
+                    CalendarView()
+                case 4:
+                    NavigationStack {
+                        MessagesListView()
                     }
-                    }
-                    .tag(0)
-
-                // Tasks - Full featured task management
-                TasksView()
-                .tabItem {
-                    Label {
-                        Text("Tâches")
-                    } icon: {
-                        Image.lucide("checklist")
-                            .renderingMode(.template)
-                    }
+                default:
+                    ResidentHubView()
                 }
-                .tag(1)
-
-                // Finances - Full featured expense management
-                ExpensesView()
-                .tabItem {
-                    Label {
-                        Text("Finances")
-                    } icon: {
-                        Image.lucide("creditcard.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(2)
-
-                // Calendar - Full featured event calendar
-                CalendarView()
-                .tabItem {
-                    Label {
-                        Text("Calendrier")
-                    } icon: {
-                        Image.lucide("calendar")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(3)
-
-                // Messages
-                NavigationStack {
-                    MessagesListView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ProfileButton { showSettings = true }
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        showSideMenu = true
-                                    }
-                                    Haptic.impact(.light)
-                                }) {
-                                    Image(systemName: "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .medium))
-                                        .foregroundColor(Color(hex: "E8865D"))
-                                }
-                            }
-                        }
-                }
-                .tabItem {
-                    Label {
-                        Text("Messages")
-                    } icon: {
-                        Image.lucide("message.fill")
-                            .renderingMode(.template)
-                    }
-                }
-                .tag(4)
-            }
-            .tint(Theme.Colors.residentPrimary)
-            .onAppear {
-                let appearance = UITabBarAppearance()
-
-                // Glassomorphism effect using blur material
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-                appearance.backgroundColor = .clear
-
-                UITabBar.appearance().standardAppearance = appearance
-                UITabBar.appearance().scrollEdgeAppearance = appearance
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
             }
 
-            // Side menu - let it handle its own overlay and animations
-            SideMenuView(isShowing: $showSideMenu)
-                .zIndex(100)
+            // Floating Tab Bar
+            VStack {
+                Spacer()
+                FloatingTabBar(
+                    selectedTab: $selectedTab,
+                    primaryColor: Theme.Colors.residentPrimary,
+                    tabs: [
+                        FloatingTabItem(id: 0, title: "Accueil", icon: "house.fill"),
+                        FloatingTabItem(id: 1, title: "Tâches", icon: "checklist"),
+                        FloatingTabItem(id: 2, title: "Finances", icon: "creditcard.fill"),
+                        FloatingTabItem(id: 3, title: "Calendrier", icon: "calendar"),
+                        FloatingTabItem(id: 4, title: "Messages", icon: "message.fill")
+                    ]
+                )
+            }
+            .ignoresSafeArea(.keyboard)
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
     }
 }
@@ -781,6 +458,81 @@ private struct FeatureRowView: View {
                 .cornerRadius(6)
         }
     }
+}
+
+// MARK: - Floating Tab Bar
+
+struct FloatingTabBar: View {
+    @Binding var selectedTab: Int
+    let primaryColor: Color
+    let tabs: [FloatingTabItem]
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(tabs) { tab in
+                FloatingTabButton(
+                    tab: tab,
+                    isSelected: selectedTab == tab.id,
+                    primaryColor: primaryColor
+                ) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedTab = tab.id
+                    }
+                    Haptic.selection()
+                }
+            }
+        }
+        .frame(height: 80)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: -4)
+        )
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
+    }
+}
+
+// MARK: - Floating Tab Button
+
+struct FloatingTabButton: View {
+    let tab: FloatingTabItem
+    let isSelected: Bool
+    let primaryColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                ZStack {
+                    if isSelected {
+                        Circle()
+                            .fill(primaryColor.opacity(0.15))
+                            .frame(width: 48, height: 48)
+                    }
+
+                    Image(systemName: tab.icon)
+                        .font(.system(size: 22, weight: isSelected ? .semibold : .medium))
+                        .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
+                }
+                .frame(height: 48)
+
+                Text(tab.title)
+                    .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
+                    .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Floating Tab Item Model
+
+struct FloatingTabItem: Identifiable {
+    let id: Int
+    let title: String
+    let icon: String
 }
 
 // MARK: - Previews
