@@ -1,72 +1,55 @@
-<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Logo IzzIco - Version finale avec gradient diagonal signature CODE -->
+<svg width="1400" height="400" viewBox="0 0 1400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Logo IzzIco - Basé sur le design PNG fourni -->
   <defs>
-    <!-- Gradient signature officiel CODE (diagonal 135deg) -->
-    <linearGradient id="izzico-gradient-diagonal" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#9c5698;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#FF5722;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#FFB10B;stop-opacity:1" />
+    <!-- Gradient signature diagonal (mauve → orange → jaune) -->
+    <linearGradient id="izzico-gradient-main" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5A9C;stop-opacity:1" />
+      <stop offset="35%" style="stop-color:#C75E7D;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#FF6B47;stop-opacity:1" />
+      <stop offset="85%" style="stop-color:#FF9A3D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFC02E;stop-opacity:1" />
     </linearGradient>
   </defs>
 
-  <!-- Groupe principal avec le texte -->
-  <g transform="translate(300, 100)">
-    <!-- I -->
-    <text x="-200" y="0"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif"
-          font-weight="900"
-          font-size="150"
-          fill="url(#izzico-gradient-diagonal)">I</text>
+  <!-- Groupe centré -->
+  <g transform="translate(700, 200)">
 
-    <!-- Premier Z en miroir -->
-    <g transform="translate(-90, 0) scale(-1, 1)">
-      <text x="0" y="0"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            font-family="Arial, Helvetica, sans-serif"
-            font-weight="900"
-            font-size="150"
-            fill="url(#izzico-gradient-diagonal)">Z</text>
+    <!-- I (première lettre) -->
+    <path d="M -580 -120 L -480 -120 L -480 120 L -580 120 Z"
+          fill="url(#izzico-gradient-main)"/>
+
+    <!-- Z inversé (premier z) -->
+    <g transform="translate(-360, 0)">
+      <!-- Barre supérieure du Z -->
+      <path d="M -50 -120 L 90 -120 L 90 -60 L 50 -60 L 50 60 L 90 60 L 90 120 L -50 120 L -50 60 L -10 60 L -10 -60 L -50 -60 Z"
+            fill="url(#izzico-gradient-main)"/>
     </g>
 
-    <!-- Deuxième Z en miroir -->
-    <g transform="translate(20, 0) scale(-1, 1)">
-      <text x="0" y="0"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            font-family="Arial, Helvetica, sans-serif"
-            font-weight="900"
-            font-size="150"
-            fill="url(#izzico-gradient-diagonal)">Z</text>
+    <!-- Z inversé (deuxième z) -->
+    <g transform="translate(-130, 0)">
+      <!-- Barre supérieure du Z -->
+      <path d="M -50 -120 L 90 -120 L 90 -60 L 50 -60 L 50 60 L 90 60 L 90 120 L -50 120 L -50 60 L -10 60 L -10 -60 L -50 -60 Z"
+            fill="url(#izzico-gradient-main)"/>
     </g>
 
-    <!-- I -->
-    <text x="130" y="0"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif"
-          font-weight="900"
-          font-size="150"
-          fill="url(#izzico-gradient-diagonal)">I</text>
+    <!-- I (deuxième I) -->
+    <path d="M 80 -120 L 180 -120 L 180 120 L 80 120 Z"
+          fill="url(#izzico-gradient-main)"/>
 
-    <!-- c -->
-    <text x="200" y="0"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif"
-          font-weight="900"
-          font-size="150"
-          fill="url(#izzico-gradient-diagonal)">c</text>
+    <!-- c (minuscule) -->
+    <g transform="translate(300, 0)">
+      <path d="M 80 -80 Q 120 -80 140 -50 L 100 -20 Q 90 -30 70 -30 Q 30 -30 30 10 Q 30 50 70 50 Q 90 50 100 40 L 140 70 Q 120 100 80 100 Q 0 100 0 10 Q 0 -80 80 -80 Z"
+            fill="url(#izzico-gradient-main)"
+            transform="scale(2.2)"/>
+    </g>
 
-    <!-- o -->
-    <text x="280" y="0"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif"
-          font-weight="900"
-          font-size="150"
-          fill="url(#izzico-gradient-diagonal)">o</text>
+    <!-- o (minuscule) -->
+    <g transform="translate(520, 0)">
+      <ellipse cx="0" cy="10" rx="90" ry="110"
+               fill="url(#izzico-gradient-main)"/>
+      <ellipse cx="0" cy="10" rx="45" ry="55"
+               fill="white"/>
+    </g>
+
   </g>
 </svg>
