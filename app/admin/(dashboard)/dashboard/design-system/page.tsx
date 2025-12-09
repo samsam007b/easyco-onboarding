@@ -1868,7 +1868,7 @@ function IconsSection() {
           {/* V1 - 50% */}
           <div className="bg-slate-700/30 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Badge variant="outline" className="text-slate-400 border-slate-600">V1</Badge>
+              <Badge variant="default" className="text-slate-400 border-slate-600">V1</Badge>
               <span className="text-sm text-slate-400">Stop orange à 50%</span>
             </div>
             <div className="bg-white rounded-lg p-6 flex items-center justify-center">
@@ -1886,7 +1886,7 @@ function IconsSection() {
           {/* V2 - 55% */}
           <div className="bg-slate-700/30 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Badge variant="outline" className="text-slate-400 border-slate-600">V2</Badge>
+              <Badge variant="default" className="text-slate-400 border-slate-600">V2</Badge>
               <span className="text-sm text-slate-400">Stop orange à 55%</span>
             </div>
             <div className="bg-white rounded-lg p-6 flex items-center justify-center">
