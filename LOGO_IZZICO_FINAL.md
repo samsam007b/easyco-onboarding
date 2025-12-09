@@ -26,34 +26,35 @@ Logo textuel "IzzIco" avec gradient horizontal signature et effets visuels moder
 
 ## ✨ Caractéristiques techniques
 
-### Gradient signature (horizontal)
+### Gradient signature (diagonal CODE)
 ```css
-linear-gradient(90deg,
+linear-gradient(135deg,
   #9c5698 0%,    /* Mauve (Owner) */
-  #FF5722 55%,   /* Orange (Resident) */
+  #FF5722 50%,   /* Orange (Resident) */
   #FFB10B 100%   /* Jaune (Searcher) */
 )
 ```
 
 ### Effets visuels
-- **Soft glow:** Ombre portée douce (offset 2px, blur 2px)
-- **Letter-spacing:** -2px (texte resserré, look moderne)
+- **Z en miroir:** Les deux "Z" sont inversés horizontalement (effet symétrique)
+- **Pas d'ombre:** Design épuré sans soft glow
+- **Gradient diagonal:** 135deg comme le gradient signature CODE officiel
 - **Font:** Arial Black (900), 150px
-- **Filtres SVG:** Préservés en vectoriel à toutes les tailles
+- **Technique SVG:** Lettres positionnées individuellement avec transform scale(-1,1) pour les Z
 
 ### Version compacte (ajustements)
 - **Font size:** 90px (au lieu de 150px)
-- **Glow réduit:** offset 1.5px, blur 1.5px
-- **Letter-spacing:** -1.5px
+- **Même technique:** Z en miroir avec transform scale(-1,1)
+- **Gradient identique:** Diagonal 135deg
 
 ## 🎯 Différences avec les versions précédentes
 
 | Caractéristique | V1 (50%) | V2 (55%) | **FINALE** |
 |----------------|----------|----------|------------|
-| Stop orange | 50% | 55% | **55%** ✅ |
-| Soft glow | ❌ | ❌ | **✅** |
-| Letter-spacing | Normal | Normal | **-2px** ✅ |
-| Z inversés | Non mentionné | Non mentionné | **✅** |
+| Gradient | Horizontal | Horizontal | **Diagonal 135deg** ✅ |
+| Stop orange | 50% | 55% | **50%** (CODE) ✅ |
+| Z en miroir | ❌ | ❌ | **✅** |
+| Ombre | ❌ | ❌ | **❌** (épuré) |
 
 ## 📊 Choix du stop à 55%
 
@@ -67,8 +68,9 @@ linear-gradient(90deg,
 | Aspect | Icône maison | Logo textuel |
 |--------|--------------|--------------|
 | Format | Carré 200×200 | Bannière 600×200 |
-| Gradient | Diagonal (135deg) | Horizontal (90deg) |
+| Gradient | Diagonal (135deg) | **Diagonal (135deg)** ✅ |
 | Nom de marque | ❌ (symbole uniquement) | ✅ "IzzIco" visible |
+| Z miroir | ❌ N/A | **✅ Effet symétrique** |
 | Favicon | ✅ Parfait | ❌ Trop grand |
 | Header desktop | ⚠️ Pas de texte | ✅ Identité complète |
 | App mobile | ✅ Iconique | ⚠️ Trop de détails |
@@ -93,18 +95,15 @@ linear-gradient(90deg,
 
 ## 🎨 Intégration dans le design system
 
-Le gradient horizontal du logo textuel diffère du gradient diagonal (135deg) utilisé dans le design system actuel pour les boutons et composants.
+✅ **Harmonisation parfaite !** Le logo textuel utilise maintenant le **même gradient diagonal 135deg** que tout le design system.
 
-### Options d'harmonisation:
+### Cohérence visuelle totale:
+- Logo textuel: gradient **diagonal 135deg** ✅
+- Icône maison: gradient **diagonal 135deg** ✅
+- Design system: gradient **diagonal 135deg** ✅
+- Boutons et composants: gradient **diagonal 135deg** ✅
 
-**Option A - Logos séparés** (recommandé pour l'instant)
-- Logo textuel: gradient **horizontal** (meilleure lisibilité du texte)
-- Design system: gradient **diagonal** (dynamisme visuel des interfaces)
-
-**Option B - Unification complète**
-- Passer tout le design system en gradient horizontal
-- Nécessite mise à jour de `lib/design-system/gradients.ts`
-- Impact sur tous les boutons, badges, composants
+Tous les éléments visuels de la marque IzzIco partagent le même gradient signature CODE, créant une identité cohérente et reconnaissable.
 
 ## 📄 Page de comparaison
 

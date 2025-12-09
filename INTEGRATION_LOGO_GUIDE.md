@@ -194,27 +194,18 @@ Si vous ne pouvez pas utiliser le composant React, utilisez les SVG directement 
 
 ## 🎨 Gradient signature
 
-Tous les logos utilisent le **gradient signature IzzIco** :
+✅ **Tous les logos utilisent le même gradient signature CODE (diagonal 135deg)** :
 
-### Version finale (horizontale)
+### Gradient officiel unifié
 ```css
-linear-gradient(90deg,
+linear-gradient(135deg,
   #9c5698 0%,    /* Mauve (Owner) */
-  #FF5722 55%,   /* Orange (Resident) - position ajustée */
+  #FF5722 50%,   /* Orange (Resident) */
   #FFB10B 100%   /* Jaune (Searcher) */
 )
 ```
 
-### Version icône (diagonale)
-```css
-linear-gradient(135deg,
-  #9c5698 0%,
-  #FF5722 50%,
-  #FFB10B 100%
-)
-```
-
-**Note :** L'icône maison utilise un gradient **diagonal** (135deg) pour un effet plus dynamique, tandis que les logos textuels utilisent un gradient **horizontal** (90deg) qui suit la direction de lecture.
+**Cohérence totale :** Logo textuel, logo compact, icône maison, et tous les composants du design system partagent le même gradient diagonal pour une identité de marque unifiée.
 
 ---
 
@@ -289,12 +280,15 @@ Tailles requises pour les plateformes mobiles :
 - Préserver l'aspect ratio des logos (ne pas étirer)
 - Ajouter `alt="IzzIco"` pour l'accessibilité
 - Utiliser `loading="eager"` pour les logos above the fold
+- Respecter l'effet miroir des Z (ne pas les modifier)
 
 ### ❌ À éviter
 
-- Ne pas modifier les couleurs du gradient
+- Ne **JAMAIS** modifier les couleurs du gradient (#9c5698, #FF5722, #FFB10B)
+- Ne **JAMAIS** changer l'angle du gradient (135deg diagonal)
 - Ne pas étirer ou déformer les logos
-- Ne pas ajouter de fond coloré qui clash avec le gradient
+- Ne pas inverser les Z (ils sont déjà en miroir)
+- Ne pas ajouter d'ombres ou d'effets (design épuré)
 - Ne pas utiliser le logo textuel en très petit (< 32px de hauteur)
 - Ne pas remplacer le texte "IzzIco" par un autre
 
