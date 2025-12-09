@@ -466,19 +466,37 @@ struct FloatingTabBar: View {
     @Binding var selectedTab: Int
     let primaryColor: Color
     let tabs: [FloatingTabItem]
+    @Namespace private var tabAnimation
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(tabs) { tab in
-                FloatingTabButton(
-                    tab: tab,
-                    isSelected: selectedTab == tab.id,
-                    primaryColor: primaryColor
-                ) {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                        selectedTab = tab.id
+        GeometryReader { geometry in
+            let tabWidth = geometry.size.width / CGFloat(tabs.count)
+            let indicatorWidth = tabWidth - 16
+            let indicatorOffset = CGFloat(selectedTab) * tabWidth + (tabWidth - indicatorWidth) / 2
+
+            ZStack(alignment: .leading) {
+                // Sliding indicator background
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(primaryColor.opacity(0.15))
+                    .frame(width: indicatorWidth, height: 56)
+                    .offset(x: indicatorOffset, y: 12)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.75), value: selectedTab)
+
+                // Tab buttons
+                HStack(spacing: 0) {
+                    ForEach(tabs) { tab in
+                        FloatingTabButton(
+                            tab: tab,
+                            isSelected: selectedTab == tab.id,
+                            primaryColor: primaryColor
+                        ) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                selectedTab = tab.id
+                            }
+                            Haptic.selection()
+                        }
+                        .frame(width: tabWidth)
                     }
-                    Haptic.selection()
                 }
             }
         }
@@ -504,18 +522,10 @@ struct FloatingTabButton: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 6) {
-                ZStack {
-                    if isSelected {
-                        Circle()
-                            .fill(primaryColor.opacity(0.15))
-                            .frame(width: 48, height: 48)
-                    }
-
-                    Image(systemName: tab.icon)
-                        .font(.system(size: 22, weight: isSelected ? .semibold : .medium))
-                        .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
-                }
-                .frame(height: 48)
+                Image(systemName: tab.icon)
+                    .font(.system(size: 22, weight: isSelected ? .semibold : .medium))
+                    .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
+                    .frame(height: 28)
 
                 Text(tab.title)
                     .font(.system(size: 11, weight: isSelected ? .semibold : .medium))

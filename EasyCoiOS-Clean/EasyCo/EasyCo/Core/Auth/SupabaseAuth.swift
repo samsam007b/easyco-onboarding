@@ -90,18 +90,32 @@ class SupabaseAuth {
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
+        print("🔐 Attempting signup to: \(url.absoluteString)")
+        print("🔐 Email: \(email)")
+
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.unknown(NSError(domain: "Invalid response", code: -1))
         }
 
+        // Debug: Log response
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("🔐 Signup response (\(httpResponse.statusCode)): \(responseString.prefix(500))")
+        }
+
         guard httpResponse.statusCode == 200 else {
+            if let errorJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let errorMessage = errorJson["error_description"] as? String ?? errorJson["msg"] as? String {
+                print("❌ Signup error: \(errorMessage)")
+            }
             throw NetworkError.httpError(statusCode: httpResponse.statusCode, data: data)
         }
 
         let decoder = JSONDecoder()
         let session = try decoder.decode(AuthSession.self, from: data)
+
+        print("✅ Signup successful for user: \(session.user.email)")
 
         // Notify listeners
         notifyAuthStateChange(.signedIn, session: session)

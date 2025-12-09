@@ -370,8 +370,8 @@ class AuthManager: ObservableObject {
             }
         }
 
-        // Also query 'profiles' table for name/phone data
-        var profilesComponents = URLComponents(string: "\(supabaseURL)/rest/v1/profiles")!
+        // Also query 'user_profiles' table for name/phone data
+        var profilesComponents = URLComponents(string: "\(supabaseURL)/rest/v1/user_profiles")!
         profilesComponents.queryItems = [
             URLQueryItem(name: "user_id", value: "eq.\(userId)"),
             URLQueryItem(name: "select", value: "*")

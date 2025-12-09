@@ -385,3 +385,20 @@ struct PinterestBackground: View {
         }
     }
 }
+
+// MARK: - Pinterest Card Component
+
+struct PinterestCard<Content: View>: View {
+    let role: Theme.UserRole
+    let content: Content
+
+    init(role: Theme.UserRole, @ViewBuilder content: () -> Content) {
+        self.role = role
+        self.content = content()
+    }
+
+    var body: some View {
+        content
+            .pinterestGlassCard()
+    }
+}

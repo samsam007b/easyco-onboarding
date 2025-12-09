@@ -47,6 +47,67 @@ struct WelcomeView: View {
                     .allowsHitTesting(false)
                 }
 
+                // Connexion button above tab bar (rectangle style)
+                if showGuestMode {
+                    VStack {
+                        Spacer()
+
+                        Button(action: {
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                                showGuestMode = false
+                            }
+                            HapticFeedback.light()
+                        }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "person.circle.fill")
+                                    .font(.system(size: 18, weight: .semibold))
+
+                                Text("Connexion")
+                                    .font(.system(size: 16, weight: .semibold))
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                ZStack {
+                                    // Gradient signature EasyCo - Diagonal
+                                    LinearGradient(
+                                        colors: [
+                                            Color(hex: "A394E6"),  // Mauve
+                                            Color(hex: "C99FD8"),
+                                            Color(hex: "E8A8C8"),
+                                            Color(hex: "FFB1B8"),
+                                            Color(hex: "FFBAA0"),
+                                            Color(hex: "FFC388"),
+                                            Color(hex: "FFCC70"),
+                                            Color(hex: "FFD558")   // Jaune
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+
+                                    // Frosted overlay subtil
+                                    Color.white.opacity(0.08)
+                                        .background(.ultraThinMaterial.opacity(0.25))
+                                }
+                            )
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                            )
+                            .shadow(
+                                color: Color(hex: "A394E6").opacity(0.35),
+                                radius: 16,
+                                x: 0,
+                                y: 8
+                            )
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 96) // Position just above tab bar
+                    }
+                }
+
                 // Glassmorphism Auth Sheet
                 VStack(spacing: 0) {
                     Spacer()
@@ -91,20 +152,6 @@ struct WelcomeView: View {
                 }
                 .ignoresSafeArea(.container, edges: .bottom)
 
-                // Pull-up indicator when in guest mode
-                if showGuestMode {
-                    VStack {
-                        Spacer()
-
-                        PullUpIndicator {
-                            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                                showGuestMode = false
-                            }
-                            HapticFeedback.light()
-                        }
-                        .padding(.bottom, 8)
-                    }
-                }
             }
         }
         .sheet(isPresented: $showLoginSheet) {

@@ -9,100 +9,73 @@ struct SearcherDashboardView: View {
     @State private var showProfileSheet = false
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                // Background avec profondeur (warm gradient)
-                ZStack {
-                    LinearGradient(
-                        colors: [
-                            Color(hex: "FFF5F0"),
-                            Color(hex: "FFF0E6"),
-                            Color(hex: "FFE5D9")
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .ignoresSafeArea()
+        ZStack(alignment: .top) {
+            // Background avec profondeur (warm gradient)
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(hex: "FFF5F0"),
+                        Color(hex: "FFF0E6"),
+                        Color(hex: "FFE5D9")
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
 
-                    // Organic shapes
-                    Circle()
-                        .fill(Theme.Colors.Searcher.primary.opacity(0.08))
-                        .frame(width: 400, height: 400)
-                        .blur(radius: 100)
-                        .offset(x: -100, y: -200)
+                // Organic shapes
+                Circle()
+                    .fill(Theme.Colors.Searcher.primary.opacity(0.08))
+                    .frame(width: 400, height: 400)
+                    .blur(radius: 100)
+                    .offset(x: -100, y: -200)
 
-                    Circle()
-                        .fill(Color(hex: "FACC15").opacity(0.06))
-                        .frame(width: 300, height: 300)
-                        .blur(radius: 80)
-                        .offset(x: 150, y: 500)
-                }
-
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        // Hero Title Card
-                        heroTitleCard
-                            .padding(.top, 40)
-
-                        // Search Preferences Card
-                        searchPreferencesCard
-
-                        // Large Search CTA Button
-                        searchCTAButton
-
-                        // Quick Filters
-                        quickFiltersRow
-
-                        // Stats Grid (if data available)
-                        if let stats = viewModel.stats {
-                            statsGrid(stats: stats)
-                        }
-
-                        // Top Matches Section
-                        if !viewModel.topMatches.isEmpty {
-                            topMatchesSection
-                        }
-
-                        // Recently Viewed
-                        if !viewModel.recentlyViewed.isEmpty {
-                            recentlyViewedSection
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 100)
-                }
+                Circle()
+                    .fill(Color(hex: "FACC15").opacity(0.06))
+                    .frame(width: 300, height: 300)
+                    .blur(radius: 80)
+                    .offset(x: 150, y: 500)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Explorer")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "1F2937"))
-                }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showProfileSheet = true }) {
-                        Circle()
-                            .fill(LinearGradient(
-                                colors: [Theme.Colors.Searcher.primary, Theme.Colors.Searcher._400],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
-                            .frame(width: 36, height: 36)
-                            .overlay(
-                                Image(systemName: "person.fill")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.white)
-                            )
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 20) {
+                    // Hero Title Card
+                    heroTitleCard
+                        .padding(.top, 40)
+
+                    // Search Preferences Card
+                    searchPreferencesCard
+
+                    // Large Search CTA Button
+                    searchCTAButton
+
+                    // Quick Filters
+                    quickFiltersRow
+
+                    // Stats Grid (if data available)
+                    if let stats = viewModel.stats {
+                        statsGrid(stats: stats)
+                    }
+
+                    // Top Matches Section
+                    if !viewModel.topMatches.isEmpty {
+                        topMatchesSection
+                    }
+
+                    // Recently Viewed
+                    if !viewModel.recentlyViewed.isEmpty {
+                        recentlyViewedSection
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 100)
             }
-            .fullScreenCover(isPresented: $showSwipeMode) {
-                SwipeMatchesView()
-            }
-            .sheet(isPresented: $showProfileSheet) {
-                ProfileView()
-            }
+        }
+        .fullScreenCover(isPresented: $showSwipeMode) {
+            SwipeMatchesView()
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
         }
         .task {
             await viewModel.loadData()

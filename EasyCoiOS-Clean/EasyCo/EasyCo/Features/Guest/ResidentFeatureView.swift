@@ -42,20 +42,28 @@ struct ResidentFeatureView: View {
     // MARK: - Hero Section (Glassmorphism)
 
     private var heroSection: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 32) {
             // Icon with glow (Resident colors)
             ZStack {
                 // Glow effect
                 Circle()
-                    .fill(Theme.Colors.Resident.primary.opacity(0.25))  // #FF5722
-                    .frame(width: 130, height: 130)
-                    .blur(radius: 20)
+                    .fill(Theme.Colors.Resident.primary.opacity(0.3))  // #FF5722
+                    .frame(width: 140, height: 140)
+                    .blur(radius: 24)
 
                 // Main circle with glass effect
                 Circle()
-                    .fill(Theme.Colors.Resident.primary.opacity(0.2))  // #FF5722
-                    .background(.ultraThinMaterial)
-                    .frame(width: 100, height: 100)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Theme.Colors.Resident.primary.opacity(0.15),
+                                Theme.Colors.Resident._400.opacity(0.1)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 120, height: 120)
                     .overlay(
                         Circle()
                             .stroke(
@@ -67,9 +75,10 @@ struct ResidentFeatureView: View {
                                 lineWidth: 3
                             )
                     )
+                    .shadow(color: Theme.Colors.Resident.primary.opacity(0.2), radius: 16, x: 0, y: 8)
 
                 Image(systemName: AppIcon.home.sfSymbol)
-                    .font(.system(size: 48, weight: .semibold))
+                    .font(.system(size: 56, weight: .semibold))
                     .foregroundStyle(
                         LinearGradient(
                             colors: [Theme.Colors.Resident.primary, Theme.Colors.Resident._400],  // #FF5722 → #FF6F3C
@@ -78,45 +87,58 @@ struct ResidentFeatureView: View {
                         )
                     )
             }
+            .padding(.top, 40)
 
             // Title Card with glass effect
-            VStack(spacing: 12) {
+            VStack(spacing: 16) {
                 Text("Gérez votre colocation")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: 34, weight: .heavy))
                     .foregroundColor(Color(hex: "111827"))
                     .multilineTextAlignment(.center)
 
                 Text("Simplifiez la vie quotidienne avec vos colocataires")
-                    .font(.system(size: 18))
+                    .font(.system(size: 17))
                     .foregroundColor(Color(hex: "6B7280"))
                     .multilineTextAlignment(.center)
+                    .lineSpacing(4)
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 32)
             .background(
-                Color.white.opacity(0.6)
+                Color.white.opacity(0.65)
                     .background(.thinMaterial)
             )
             .cornerRadius(24)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+                    .stroke(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.7),
+                                Theme.Colors.Resident.primary.opacity(0.2)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.5
+                    )
             )
+            .shadow(color: .black.opacity(0.06), radius: 16, x: 0, y: 8)
             .padding(.horizontal, 20)
         }
-        .padding(.vertical, 60)
+        .padding(.bottom, 20)
     }
 
     // MARK: - Features Section
 
     private var featuresSection: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 28) {
             Text("Pourquoi utiliser EasyCo ?")
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 28, weight: .heavy))
                 .foregroundColor(Color(hex: "111827"))
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
 
-            VStack(spacing: 16) {
+            VStack(spacing: 14) {
                 FeatureCard(
                     icon: AppIcon.checkList.sfSymbol,
                     iconColor: Color(hex: "F59E0B"),
@@ -145,26 +167,26 @@ struct ResidentFeatureView: View {
                     description: "Discutez avec vos colocataires et contactez votre propriétaire"
                 )
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
         }
     }
 
     // MARK: - CTA Section (Glassmorphism)
 
     private var ctaSection: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 18) {
             Button(action: {
                 showSignup = true
             }) {
-                HStack(spacing: 12) {
+                HStack(spacing: 14) {
                     Image(systemName: AppIcon.user.sfSymbol)
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.system(size: 20, weight: .semibold))
                     Text("Rejoindre une résidence")
-                        .font(.system(size: 18, weight: .bold))
+                        .font(.system(size: 19, weight: .bold))
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 56)
+                .padding(.vertical, 20)
                 .background(
                     ZStack {
                         // Dégradé signature EasyCo - Diagonal
@@ -184,42 +206,53 @@ struct ResidentFeatureView: View {
                         )
 
                         // Frosted overlay subtil
-                        Color.white.opacity(0.1)
-                            .background(.ultraThinMaterial.opacity(0.3))
+                        Color.white.opacity(0.08)
+                            .background(.ultraThinMaterial.opacity(0.25))
                     }
                 )
-                .cornerRadius(18)
+                .cornerRadius(20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 18)
-                        .stroke(Color.white.opacity(0.4), lineWidth: 1.5)
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.white.opacity(0.5), lineWidth: 2)
                 )
-                .shadow(color: Theme.Colors.Resident.primary.opacity(0.35), radius: 18, x: 0, y: 8)  // #FF5722
+                .shadow(color: Theme.Colors.Resident.primary.opacity(0.4), radius: 20, x: 0, y: 10)  // #FF5722
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
 
             Button(action: {
                 showSignup = true
             }) {
-                HStack(spacing: 12) {
+                HStack(spacing: 14) {
                     Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.system(size: 20, weight: .semibold))
                     Text("Inscrire ma résidence")
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.system(size: 19, weight: .semibold))
                 }
                 .foregroundColor(Theme.Colors.Resident.primary)  // #FF5722
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 18)
+                .padding(.vertical, 20)
                 .background(
-                    Color.white.opacity(0.7)
+                    Color.white.opacity(0.75)
                         .background(.thinMaterial)
                 )
-                .cornerRadius(18)
+                .cornerRadius(20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 18)
-                        .stroke(Theme.Colors.Resident.primary.opacity(0.3), lineWidth: 2)  // #FF5722
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.6),
+                                    Theme.Colors.Resident.primary.opacity(0.2)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 2
+                        )
                 )
+                .shadow(color: .black.opacity(0.06), radius: 14, x: 0, y: 7)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
         }
     }
 }
@@ -233,45 +266,65 @@ struct FeatureCard: View {
     let description: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: 18) {
             // Icon with glass style
             ZStack {
+                // Subtle glow
+                Circle()
+                    .fill(iconColor.opacity(0.15))
+                    .frame(width: 64, height: 64)
+                    .blur(radius: 8)
+
                 Circle()
                     .fill(iconColor.opacity(0.2))
                     .background(.ultraThinMaterial)
-                    .frame(width: 56, height: 56)
+                    .frame(width: 60, height: 60)
+                    .overlay(
+                        Circle()
+                            .stroke(iconColor.opacity(0.3), lineWidth: 2)
+                    )
 
                 Image(systemName: icon)
-                    .font(.system(size: 24, weight: .semibold))
+                    .font(.system(size: 26, weight: .semibold))
                     .foregroundColor(iconColor)
             }
 
             // Content
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(title)
-                    .font(.system(size: 17, weight: .bold))
+                    .font(.system(size: 19, weight: .bold))
                     .foregroundColor(Color(hex: "111827"))
 
                 Text(description)
-                    .font(.system(size: 15))
+                    .font(.system(size: 15, weight: .regular))
                     .foregroundColor(Color(hex: "6B7280"))
-                    .lineSpacing(4)
+                    .lineSpacing(5)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer()
         }
-        .padding(20)
+        .padding(22)
         .background(
-            Color.white.opacity(0.7)
+            Color.white.opacity(0.75)
                 .background(.thinMaterial)
         )
-        .cornerRadius(18)
+        .cornerRadius(20)
         .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(Color.white.opacity(0.5), lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(
+                    LinearGradient(
+                        colors: [
+                            Color.white.opacity(0.6),
+                            iconColor.opacity(0.15)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1.5
+                )
         )
-        .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 6)
+        .shadow(color: .black.opacity(0.06), radius: 14, x: 0, y: 7)
     }
 }
 

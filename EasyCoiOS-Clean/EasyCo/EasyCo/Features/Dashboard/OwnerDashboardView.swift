@@ -2,7 +2,7 @@
 //  OwnerDashboardView.swift
 //  EasyCo
 //
-//  Dashboard for property owners with analytics, revenue, occupancy
+//  Modern Pinterest-style dashboard for property owners
 //
 
 import SwiftUI
@@ -14,359 +14,396 @@ struct OwnerDashboardView: View {
     @State private var viewsData: [LineChartData] = []
     @State private var pendingApplications: [PropertyApplication] = []
     @State private var selectedPeriod: TimePeriod = .month
+    @State private var isLoading = false
+
+    // Sheet states
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
+
+    private let role: Theme.UserRole = .owner
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Header
-                    headerSection
-
-                    // Period selector
-                    periodSelector
-
-                    // KPI Cards
-                    kpiSection
-
-                    // Revenue chart
-                    revenueSection
-
-                    // Occupancy donut
-                    occupancySection
-
-                    // Views trend
-                    viewsTrendSection
-
-                    // Properties overview
-                    propertiesSection
-
-                    // Pending applications
-                    if !pendingApplications.isEmpty {
-                        pendingApplicationsSection
-                    }
-                }
-                .padding(.vertical, 20)
+        Group {
+            if isLoading {
+                loadingView
+            } else {
+                contentView
             }
-            .background(Theme.Colors.backgroundSecondary)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Dashboard Propriétaire")
-                        .font(Theme.Typography.title3())
-                        .foregroundColor(Theme.Colors.textPrimary)
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        // Add property
-                    }) {
-                        Image.lucide("plus-circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Theme.Colors.primary)
-                    }
-                }
-            }
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
+        }
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
+        }
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
         }
         .onAppear {
             loadDashboardData()
         }
     }
 
-    // MARK: - Header Section
+    // MARK: - Loading View
 
-    private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Bienvenue ! 👋")
-                .font(Theme.Typography.title2())
+    private var loadingView: some View {
+        ZStack {
+            PinterestBackground(role: role, intensity: 0.18)
+                .ignoresSafeArea()
+
+            LoadingView(message: "Chargement du dashboard...")
+        }
+    }
+
+    // MARK: - Content View
+
+    private var contentView: some View {
+        ZStack(alignment: .top) {
+            // Background Pinterest avec blobs organiques mauve
+            PinterestBackground(role: role, intensity: 0.18)
+                .ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: Theme.PinterestSpacing.lg) {
+                    // Spacer for floating header
+                    Color.clear.frame(height: 70)
+
+                    // Hero Welcome Section
+                    heroWelcomeSection
+
+                    // Period Selector
+                    periodSelectorSection
+
+                    // Stats Grid (KPIs)
+                    statsGrid
+
+                    // Revenue Chart
+                    revenueChartSection
+
+                    // Occupancy & Views Grid
+                    analyticsGrid
+
+                    // Properties Overview
+                    propertiesSection
+
+                    // Pending Applications
+                    if !pendingApplications.isEmpty {
+                        pendingApplicationsSection
+                    }
+                }
+                .padding(.horizontal, Theme.PinterestSpacing.lg)
+                .padding(.bottom, Theme.PinterestSpacing.xxl)
+            }
+
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: false,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: nil
+            )
+        }
+    }
+
+    // MARK: - Hero Welcome Section
+
+    private var heroWelcomeSection: some View {
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.xs) {
+            Text("Bienvenue 👋")
+                .font(Theme.PinterestTypography.heroLarge(.heavy))
                 .foregroundColor(Theme.Colors.textPrimary)
 
             Text("Gérez vos propriétés et analysez vos performances")
-                .font(Theme.Typography.body())
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
                 .foregroundColor(Theme.Colors.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal)
     }
 
-    // MARK: - Period Selector
+    // MARK: - Period Selector Section
 
-    private var periodSelector: some View {
-        HStack(spacing: 8) {
+    private var periodSelectorSection: some View {
+        HStack(spacing: Theme.PinterestSpacing.xs) {
             ForEach(TimePeriod.allCases, id: \.self) { period in
                 Button(action: {
-                    withAnimation(.spring(response: 0.3)) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         selectedPeriod = period
                     }
-                    Haptic.impact(.light)
+                    Haptic.selection()
                 }) {
                     Text(period.label)
-                        .font(Theme.Typography.bodySmall(.semibold))
+                        .font(Theme.PinterestTypography.bodySmall(.semibold))
                         .foregroundColor(selectedPeriod == period ? .white : Theme.Colors.textSecondary)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
+                        .padding(.horizontal, Theme.PinterestSpacing.md)
+                        .padding(.vertical, Theme.PinterestSpacing.sm)
                         .background(
                             selectedPeriod == period ?
-                            AnyView(Theme.Colors.primaryGradient) :
-                            AnyView(LinearGradient(colors: [Theme.Colors.gray100], startPoint: .leading, endPoint: .trailing))
+                            LinearGradient(
+                                colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ) :
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.7), Color.white.opacity(0.5)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
                         .cornerRadius(8)
+                        .shadow(
+                            color: selectedPeriod == period ? Theme.Colors.Owner.primary.opacity(0.25) : .clear,
+                            radius: 8,
+                            x: 0,
+                            y: 4
+                        )
                 }
             }
         }
-        .padding(.horizontal)
     }
 
-    // MARK: - KPI Section
+    // MARK: - Stats Grid
 
-    private var kpiSection: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 12) {
-                KPICard(
-                    title: "Revenus",
-                    value: "12,450€",
-                    subtitle: "Ce mois",
-                    icon: "euro",
-                    iconColor: Theme.Colors.success,
-                    trend: Trend(value: 8.3, isPositive: true)
-                )
+    private var statsGrid: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: Theme.PinterestSpacing.md),
+                GridItem(.flexible(), spacing: Theme.PinterestSpacing.md)
+            ],
+            spacing: Theme.PinterestSpacing.md
+        ) {
+            PinterestStatCard(
+                icon: "eurosign.circle.fill",
+                value: "12,450€",
+                label: "Revenus",
+                subtitle: "Ce mois",
+                role: role
+            )
 
-                KPICard(
-                    title: "Propriétés",
-                    value: "8",
-                    subtitle: "Actives",
-                    icon: "home",
-                    iconColor: Theme.Colors.primary
-                )
-            }
+            PinterestStatCard(
+                icon: "building.2.fill",
+                value: "8",
+                label: "Propriétés",
+                subtitle: "Actives",
+                role: role
+            )
 
-            HStack(spacing: 12) {
-                KPICard(
-                    title: "Taux d'occupation",
-                    value: "94%",
-                    subtitle: "Moyenne",
-                    icon: "pie-chart",
-                    iconColor: Color(hex: "10B981"),
-                    trend: Trend(value: 3.2, isPositive: true)
-                )
+            PinterestStatCard(
+                icon: "chart.pie.fill",
+                value: "94%",
+                label: "Occupation",
+                subtitle: "Moyenne",
+                role: role
+            )
 
-                KPICard(
-                    title: "Candidatures",
-                    value: "12",
-                    subtitle: "En attente",
-                    icon: "file-text",
-                    iconColor: Color(hex: "F59E0B")
-                )
-            }
+            PinterestStatCard(
+                icon: "doc.text.fill",
+                value: "12",
+                label: "Candidatures",
+                subtitle: "En attente",
+                role: role
+            )
         }
-        .padding(.horizontal)
     }
 
-    // MARK: - Revenue Section
+    // MARK: - Revenue Chart Section
 
-    private var revenueSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Revenus")
-                        .font(Theme.Typography.title3())
-                        .foregroundColor(Theme.Colors.textPrimary)
+    private var revenueChartSection: some View {
+        PinterestCard(role: role) {
+            VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
+                // Header
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Revenus")
+                            .font(Theme.PinterestTypography.titleMedium(.bold))
+                            .foregroundColor(Theme.Colors.textPrimary)
 
-                    Text("Évolution sur 6 mois")
-                        .font(Theme.Typography.bodySmall())
-                        .foregroundColor(Theme.Colors.textSecondary)
-                }
+                        Text("Évolution sur 6 mois")
+                            .font(Theme.PinterestTypography.bodySmall(.medium))
+                            .foregroundColor(Theme.Colors.textSecondary)
+                    }
 
-                Spacer()
+                    Spacer()
 
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("68,500€")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(Theme.Colors.success)
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("68,500€")
+                            .font(Theme.PinterestTypography.heroSmall(.bold))
+                            .foregroundColor(Color(hex: "10B981"))
 
-                    HStack(spacing: 4) {
-                        Image.lucide("trending-up")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 12, height: 12)
-                            .foregroundColor(Theme.Colors.success)
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.up.right")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(Color(hex: "10B981"))
 
-                        Text("+15.2%")
-                            .font(Theme.Typography.bodySmall(.semibold))
-                            .foregroundColor(Theme.Colors.success)
+                            Text("+15.2%")
+                                .font(Theme.PinterestTypography.bodySmall(.semibold))
+                                .foregroundColor(Color(hex: "10B981"))
+                        }
                     }
                 }
+
+                // Chart Placeholder
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(hex: "F3F4F6"))
+                    .frame(height: 180)
+                    .overlay(
+                        VStack {
+                            Image(systemName: "chart.bar.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(Color(hex: "9CA3AF"))
+                            Text("Graphique des revenus")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(Color(hex: "6B7280"))
+                        }
+                    )
             }
-
-            BarChart(
-                data: revenueData,
-                barColor: Theme.Colors.success,
-                showValues: true
-            )
         }
-        .padding(20)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
-        .padding(.horizontal)
     }
 
-    // MARK: - Occupancy Section
+    // MARK: - Analytics Grid
 
-    private var occupancySection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Taux d'occupation")
-                .font(Theme.Typography.title3())
-                .foregroundColor(Theme.Colors.textPrimary)
-
-            DonutChart(
-                data: occupancyData,
-                size: 140,
-                lineWidth: 20,
-                showLegend: true
-            )
-        }
-        .padding(20)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
-        .padding(.horizontal)
-    }
-
-    // MARK: - Views Trend Section
-
-    private var viewsTrendSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Vues des annonces")
-                        .font(Theme.Typography.title3())
+    private var analyticsGrid: some View {
+        HStack(spacing: Theme.PinterestSpacing.md) {
+            // Occupancy Chart
+            PinterestCard(role: role) {
+                VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
+                    Text("Taux d'occupation")
+                        .font(Theme.PinterestTypography.titleSmall(.bold))
                         .foregroundColor(Theme.Colors.textPrimary)
 
-                    Text("Derniers 30 jours")
-                        .font(Theme.Typography.bodySmall())
-                        .foregroundColor(Theme.Colors.textSecondary)
+                    // Donut Chart Placeholder
+                    ZStack {
+                        Circle()
+                            .stroke(Color(hex: "F3F4F6"), lineWidth: 20)
+                            .frame(width: 100, height: 100)
+
+                        Circle()
+                            .trim(from: 0, to: 0.94)
+                            .stroke(
+                                LinearGradient(
+                                    colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                style: StrokeStyle(lineWidth: 20, lineCap: .round)
+                            )
+                            .frame(width: 100, height: 100)
+                            .rotationEffect(.degrees(-90))
+
+                        VStack(spacing: 2) {
+                            Text("94%")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(Theme.Colors.textPrimary)
+
+                            Text("Occupé")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(Theme.Colors.textSecondary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
-
-                Spacer()
-
-                Text("2,345")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Theme.Colors.primary)
             }
 
-            LineChart(
-                data: viewsData,
-                lineColor: Theme.Colors.primary,
-                showGradient: true,
-                showPoints: false
-            )
+            // Views Trend
+            PinterestCard(role: role) {
+                VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
+                    Text("Vues")
+                        .font(Theme.PinterestTypography.titleSmall(.bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Text("2,345")
+                        .font(Theme.PinterestTypography.heroSmall(.bold))
+                        .foregroundColor(Theme.Colors.Owner.primary)
+
+                    Text("30 derniers jours")
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+
+                    Spacer()
+
+                    // Mini trend chart
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Theme.Colors.Owner.primary.opacity(0.1))
+                        .frame(height: 40)
+                        .overlay(
+                            Image(systemName: "chart.xyaxis.line")
+                                .foregroundColor(Theme.Colors.Owner.primary.opacity(0.5))
+                        )
+                }
+            }
         }
-        .padding(20)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
-        .padding(.horizontal)
+        .frame(height: 200)
     }
 
     // MARK: - Properties Section
 
     private var propertiesSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
             HStack {
                 Text("Mes propriétés")
-                    .font(Theme.Typography.title3())
+                    .font(Theme.PinterestTypography.titleMedium(.bold))
                     .foregroundColor(Theme.Colors.textPrimary)
 
                 Spacer()
 
                 NavigationLink(destination: Text("Toutes les propriétés")) {
-                    Text("Voir tout")
-                        .font(Theme.Typography.bodySmall(.semibold))
-                        .foregroundColor(Theme.Colors.primary)
-                }
-            }
-            .padding(.horizontal)
+                    HStack(spacing: 4) {
+                        Text("Voir tout")
+                            .font(Theme.PinterestTypography.bodySmall(.semibold))
 
-            VStack(spacing: 12) {
-                ForEach(properties.prefix(3)) { property in
-                    OwnerPropertyCard(property: property)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(Theme.Colors.Owner.primary)
                 }
             }
-            .padding(.horizontal)
+
+            VStack(spacing: Theme.PinterestSpacing.sm) {
+                ForEach(properties.prefix(3)) { property in
+                    ModernPropertyCard(property: property, role: role)
+                }
+            }
         }
     }
 
     // MARK: - Pending Applications Section
 
     private var pendingApplicationsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Theme.PinterestSpacing.md) {
             HStack {
                 Text("Candidatures en attente")
-                    .font(Theme.Typography.title3())
+                    .font(Theme.PinterestTypography.titleMedium(.bold))
                     .foregroundColor(Theme.Colors.textPrimary)
 
                 Spacer()
 
-                Text("\(pendingApplications.count)")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Theme.Colors.warning)
-                    .cornerRadius(10)
-            }
-            .padding(.horizontal)
+                HStack(spacing: 6) {
+                    Circle()
+                        .fill(Color(hex: "F59E0B"))
+                        .frame(width: 8, height: 8)
 
-            VStack(spacing: 12) {
-                ForEach(pendingApplications.prefix(3)) { application in
-                    PropertyApplicationCard(application: application)
+                    Text("\(pendingApplications.count)")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color(hex: "F59E0B"))
                 }
             }
-            .padding(.horizontal)
+
+            VStack(spacing: Theme.PinterestSpacing.sm) {
+                ForEach(pendingApplications.prefix(3)) { application in
+                    DashboardApplicationCard(application: application, role: role)
+                }
+            }
         }
     }
 
     // MARK: - Data Loading
 
     private func loadDashboardData() {
-        // Revenue data (6 months)
-        revenueData = [
-            BarChartData(label: "Jul", value: 10200, formattedValue: "10.2k€"),
-            BarChartData(label: "Aoû", value: 9800, formattedValue: "9.8k€"),
-            BarChartData(label: "Sep", value: 11500, formattedValue: "11.5k€"),
-            BarChartData(label: "Oct", value: 10900, formattedValue: "10.9k€"),
-            BarChartData(label: "Nov", value: 13650, formattedValue: "13.7k€"),
-            BarChartData(label: "Déc", value: 12450, formattedValue: "12.5k€")
-        ]
-
-        // Occupancy data
-        occupancyData = [
-            DonutChartData(label: "Occupé", value: 94, color: Theme.Colors.success),
-            DonutChartData(label: "Vacant", value: 6, color: Theme.Colors.error)
-        ]
-
-        // Views data (30 days - simplified to 12 points)
-        viewsData = [
-            LineChartData(label: "1", value: 45),
-            LineChartData(label: "5", value: 67),
-            LineChartData(label: "8", value: 52),
-            LineChartData(label: "10", value: 89),
-            LineChartData(label: "13", value: 73),
-            LineChartData(label: "15", value: 95),
-            LineChartData(label: "18", value: 82),
-            LineChartData(label: "20", value: 105),
-            LineChartData(label: "23", value: 88),
-            LineChartData(label: "25", value: 112),
-            LineChartData(label: "28", value: 98),
-            LineChartData(label: "30", value: 120)
-        ]
-
-        // Mock properties
+        // Mock data
         properties = Array(Property.mockProperties.prefix(3))
 
-        // Mock pending applications
         pendingApplications = [
             PropertyApplication(
                 id: "1",
@@ -378,14 +415,14 @@ struct OwnerDashboardView: View {
             PropertyApplication(
                 id: "2",
                 applicantName: "Thomas Bernard",
-                propertyTitle: "Studio meublé - Centre",
+                propertyTitle: "Appartement 2 chambres",
                 appliedAt: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
                 score: 92
             ),
             PropertyApplication(
                 id: "3",
                 applicantName: "Sophie Martin",
-                propertyTitle: "Appartement 2 chambres - Ixelles",
+                propertyTitle: "Studio meublé - Centre",
                 appliedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 score: 78
             )
@@ -393,57 +430,170 @@ struct OwnerDashboardView: View {
     }
 }
 
+// MARK: - Modern Property Card
+
+struct ModernPropertyCard: View {
+    let property: Property
+    let role: Theme.UserRole
+
+    var body: some View {
+        PinterestCard(role: role) {
+            HStack(spacing: Theme.PinterestSpacing.md) {
+                // Property Image
+                if let imageURL = property.images.first {
+                    AsyncImage(url: URL(string: imageURL)) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        Rectangle()
+                            .fill(Color(hex: "F3F4F6"))
+                    }
+                    .frame(width: 80, height: 80)
+                    .cornerRadius(12)
+                }
+
+                // Property Info
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(property.title)
+                        .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(1)
+
+                    Text(property.address)
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .lineLimit(1)
+
+                    HStack(spacing: Theme.PinterestSpacing.xs) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "eye.fill")
+                                .font(.system(size: 10))
+                            Text("245")
+                                .font(.system(size: 12, weight: .medium))
+                        }
+                        .foregroundColor(Color(hex: "6B7280"))
+
+                        Circle()
+                            .fill(Color(hex: "D1D5DB"))
+                            .frame(width: 3, height: 3)
+
+                        HStack(spacing: 4) {
+                            Image(systemName: "doc.text.fill")
+                                .font(.system(size: 10))
+                            Text("8")
+                                .font(.system(size: 12, weight: .medium))
+                        }
+                        .foregroundColor(Color(hex: "6B7280"))
+                    }
+                }
+
+                Spacer()
+
+                // Price
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("€\(property.price)")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Text("/mois")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Dashboard Application Card
+
+struct DashboardApplicationCard: View {
+    let application: PropertyApplication
+    let role: Theme.UserRole
+
+    var body: some View {
+        PinterestCard(role: role) {
+            HStack(spacing: Theme.PinterestSpacing.md) {
+                // Avatar
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 50, height: 50)
+                    .overlay(
+                        Text(application.applicantName.prefix(1).uppercased())
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.white)
+                    )
+
+                // Info
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(application.applicantName)
+                        .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Text(application.propertyTitle)
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .lineLimit(1)
+
+                    HStack(spacing: Theme.PinterestSpacing.xs) {
+                        Text(application.timeAgo)
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(Color(hex: "9CA3AF"))
+
+                        Circle()
+                            .fill(Color(hex: "D1D5DB"))
+                            .frame(width: 3, height: 3)
+
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(application.scoreColor)
+                                .frame(width: 6, height: 6)
+
+                            Text("\(application.score)%")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(application.scoreColor)
+                        }
+                    }
+                }
+
+                Spacer()
+
+                // Actions
+                HStack(spacing: 8) {
+                    Button(action: {
+                        Haptic.selection()
+                    }) {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 36, height: 36)
+                            .background(Color(hex: "10B981"))
+                            .clipShape(Circle())
+                    }
+
+                    Button(action: {
+                        Haptic.selection()
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 36, height: 36)
+                            .background(Color(hex: "EF4444"))
+                            .clipShape(Circle())
+                    }
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Supporting Models
-
-enum DashboardTimePeriod: String, CaseIterable {
-    case week = "7j"
-    case month = "30j"
-    case quarter = "3m"
-    case year = "1an"
-
-    var label: String { rawValue }
-}
-
-struct OwnerProperty: Identifiable {
-    let id: String
-    let title: String
-    let location: String
-    let price: Int
-    let status: OwnerPropertyStatus
-    let views: Int
-    let applications: Int
-    let imageURL: String
-}
-
-enum OwnerPropertyStatus {
-    case occupied
-    case vacant
-    case maintenance
-
-    var color: Color {
-        switch self {
-        case .occupied: return Theme.Colors.success
-        case .vacant: return Theme.Colors.warning
-        case .maintenance: return Theme.Colors.error
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .occupied: return "Occupé"
-        case .vacant: return "Vacant"
-        case .maintenance: return "Maintenance"
-        }
-    }
-
-    var icon: String {
-        switch self {
-        case .occupied: return "check-circle"
-        case .vacant: return "circle"
-        case .maintenance: return "tool"
-        }
-    }
-}
 
 struct PropertyApplication: Identifiable {
     let id: String
@@ -458,96 +608,17 @@ struct PropertyApplication: Identifiable {
         let days = Int(interval / 86400)
         if days == 0 {
             return "Aujourd'hui"
+        } else if days == 1 {
+            return "Hier"
         } else {
             return "Il y a \(days)j"
         }
     }
 
     var scoreColor: Color {
-        if score >= 80 { return Theme.Colors.success }
-        if score >= 60 { return Theme.Colors.warning }
-        return Theme.Colors.error
-    }
-}
-
-// MARK: - Supporting Cards
-
-struct PropertyApplicationCard: View {
-    let application: PropertyApplication
-
-    var body: some View {
-        HStack(spacing: 16) {
-            // Applicant avatar
-            Circle()
-                .fill(Theme.Colors.primaryGradient)
-                .frame(width: 56, height: 56)
-                .overlay(
-                    Text(application.applicantName.prefix(1).uppercased())
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.white)
-                )
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text(application.applicantName)
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(Theme.Colors.textPrimary)
-
-                Text(application.propertyTitle)
-                    .font(Theme.Typography.bodySmall())
-                    .foregroundColor(Theme.Colors.textSecondary)
-                    .lineLimit(1)
-
-                HStack(spacing: 12) {
-                    Text(application.timeAgo)
-                        .font(Theme.Typography.caption())
-                        .foregroundColor(Theme.Colors.textTertiary)
-
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(application.scoreColor)
-                            .frame(width: 6, height: 6)
-
-                        Text("\(application.score)%")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(application.scoreColor)
-                    }
-                }
-            }
-
-            Spacer()
-
-            VStack(spacing: 8) {
-                Button(action: {
-                    Haptic.impact(.medium)
-                }) {
-                    Image.lucide("check")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(.white)
-                        .frame(width: 36, height: 36)
-                        .background(Theme.Colors.success)
-                        .clipShape(Circle())
-                }
-
-                Button(action: {
-                    Haptic.impact(.medium)
-                }) {
-                    Image.lucide("x")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(.white)
-                        .frame(width: 36, height: 36)
-                        .background(Theme.Colors.error)
-                        .clipShape(Circle())
-                }
-            }
-        }
-        .padding(16)
-        .background(Theme.Colors.backgroundPrimary)
-        .cornerRadius(Theme.CornerRadius.card)
-        .cardShadow()
+        if score >= 80 { return Color(hex: "10B981") }
+        if score >= 60 { return Color(hex: "F59E0B") }
+        return Color(hex: "EF4444")
     }
 }
 

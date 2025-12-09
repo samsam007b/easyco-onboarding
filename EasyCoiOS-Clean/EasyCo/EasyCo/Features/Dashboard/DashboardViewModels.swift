@@ -74,7 +74,7 @@ class OwnerDashboardViewModel: ObservableObject {
     @Published var revenueData: [BarChartData] = []
     @Published var occupancyData: [DonutChartData] = []
     @Published var viewsData: [LineChartData] = []
-    @Published var properties: [OwnerProperty] = []
+    @Published var properties: [Property] = []
     @Published var pendingApplications: [PropertyApplication] = []
 
     @Published var isLoading = false

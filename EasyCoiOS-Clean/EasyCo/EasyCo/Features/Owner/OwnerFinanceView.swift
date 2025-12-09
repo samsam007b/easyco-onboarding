@@ -1,12 +1,19 @@
 import SwiftUI
 
-// MARK: - Owner Finance View
+// MARK: - Owner Finance View (Pinterest Modern)
 
 struct OwnerFinanceView: View {
     @StateObject private var viewModel = OwnerFinanceViewModel()
     @State private var selectedPeriod: FinancePeriod = .thisMonth
     @State private var showAddExpense = false
     @State private var showAddIncome = false
+
+    // Sheet states
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
+
+    private let role: Theme.UserRole = .owner
 
     enum FinancePeriod: String, CaseIterable {
         case thisMonth = "Ce mois"
@@ -26,42 +33,54 @@ struct OwnerFinanceView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: true) {
-                VStack(spacing: 20) {
-                    // Period selector
-                    periodSelector
+            ZStack(alignment: .top) {
+                // Pinterest Background
+                PinterestBackground(role: role, intensity: 0.18)
+                    .ignoresSafeArea()
 
-                    // Summary cards
-                    summaryCardsSection
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        // Spacer for floating header
+                        Color.clear.frame(height: 70)
 
-                    // Revenue breakdown chart
-                    revenueBreakdownSection
+                        // Hero Section
+                        heroSection
 
-                    // Properties performance
-                    propertiesPerformanceSection
+                        // Period Selector
+                        periodSelectorSection
 
-                    // Recent transactions
-                    recentTransactionsSection
+                        // Main Balance Card
+                        mainBalanceCard
+
+                        // Quick Stats
+                        quickStatsGrid
+
+                        // Revenue Breakdown
+                        revenueBreakdownSection
+
+                        // Properties Performance
+                        propertiesPerformanceSection
+
+                        // Recent Transactions
+                        recentTransactionsSection
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                    .padding(.bottom, 100)
                 }
-                .padding(16)
+
+                // Floating Header with Add button that shows menu
+                FloatingHeaderView(
+                    role: role,
+                    showAddButton: true,
+                    onProfileTap: { showProfileSheet = true },
+                    onAlertTap: { showAlertsSheet = true },
+                    onMenuTap: { showMenuSheet = true },
+                    onAddTap: {
+                        showAddIncome = true
+                    }
+                )
             }
-            .background(Color(hex: "F9FAFB"))
-            .navigationTitle("Finances")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing:
-                Menu {
-                    Button(action: { showAddIncome = true }) {
-                        Label("Ajouter un revenu", systemImage: "plus.circle")
-                    }
-                    Button(action: { showAddExpense = true }) {
-                        Label("Ajouter une dépense", systemImage: "minus.circle")
-                    }
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 20))
-                        .foregroundColor(Color(hex: "6E56CF"))
-                }
-            )
             .sheet(isPresented: $showAddExpense) {
                 AddOwnerExpenseSheet(onAdd: { expense in
                     viewModel.addExpense(expense)
@@ -74,77 +93,132 @@ struct OwnerFinanceView: View {
                     showAddIncome = false
                 })
             }
+            .sheet(isPresented: $showProfileSheet) {
+                ProfileView()
+            }
+            .sheet(isPresented: $showAlertsSheet) {
+                AlertsView()
+            }
+            .sheet(isPresented: $showMenuSheet) {
+                MenuView()
+            }
         }
         .task {
             await viewModel.loadFinanceData()
         }
-        .onChange(of: selectedPeriod) { newValue in
+        .onChange(of: selectedPeriod) { _ in
             Task {
                 await viewModel.loadFinanceData()
             }
         }
     }
 
+    // MARK: - Hero Section
+
+    private var heroSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Vue d'ensemble")
+                .font(Theme.PinterestTypography.heroMedium(.bold))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Text("Gestion financière de vos propriétés")
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                .foregroundColor(Theme.Colors.textSecondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     // MARK: - Period Selector
 
-    private var periodSelector: some View {
+    private var periodSelectorSection: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: 4) {
                 ForEach(FinancePeriod.allCases, id: \.self) { period in
-                    Button(action: { selectedPeriod = period }) {
+                    Button(action: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            selectedPeriod = period
+                        }
+                        Haptic.selection()
+                    }) {
                         HStack(spacing: 6) {
                             Image(systemName: period.icon)
-                                .font(.system(size: 12))
+                                .font(.system(size: 12, weight: .medium))
                             Text(period.rawValue)
-                                .font(.system(size: 14, weight: .medium))
+                                .font(Theme.PinterestTypography.bodySmall(.semibold))
                         }
-                        .foregroundColor(selectedPeriod == period ? .white : Color(hex: "374151"))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
-                        .background(selectedPeriod == period ? Color(hex: "6E56CF") : Color.white)
-                        .cornerRadius(999)
-                        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                        .foregroundColor(selectedPeriod == period ? .white : Theme.Colors.textSecondary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            selectedPeriod == period ?
+                            LinearGradient(
+                                colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ) :
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.7), Color.white.opacity(0.5)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .cornerRadius(8)
+                        .shadow(
+                            color: selectedPeriod == period ? Theme.Colors.Owner.primary.opacity(0.25) : Color.black.opacity(0.03),
+                            radius: selectedPeriod == period ? 8 : 4,
+                            x: 0,
+                            y: selectedPeriod == period ? 4 : 2
+                        )
                     }
                 }
             }
         }
     }
 
-    // MARK: - Summary Cards Section
+    // MARK: - Main Balance Card
 
-    private var summaryCardsSection: some View {
-        VStack(spacing: 16) {
-            // Main balance card
-            VStack(spacing: 16) {
-                HStack {
+    private var mainBalanceCard: some View {
+        PinterestCard(role: role) {
+            VStack(spacing: 12) {
+                // Header with balance and trend
+                HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Solde net")
-                            .font(.system(size: 14))
-                            .foregroundColor(Color(hex: "6B7280"))
+                        Text("SOLDE NET")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(Theme.Colors.textSecondary)
+                            .tracking(0.5)
+
                         Text("€\(viewModel.netBalance, specifier: "%.2f")")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.system(size: 36, weight: .bold))
                             .foregroundColor(viewModel.netBalance >= 0 ? Color(hex: "10B981") : Color(hex: "EF4444"))
                     }
 
                     Spacer()
 
-                    // Trend indicator
-                    VStack(alignment: .trailing, spacing: 4) {
-                        HStack(spacing: 4) {
-                            Image(systemName: viewModel.trend >= 0 ? "arrow.up.right" : "arrow.down.right")
-                                .font(.system(size: 14, weight: .bold))
-                            Text("\(abs(viewModel.trend), specifier: "%.1f")%")
-                                .font(.system(size: 16, weight: .bold))
-                        }
-                        .foregroundColor(viewModel.trend >= 0 ? Color(hex: "10B981") : Color(hex: "EF4444"))
-
-                        Text("vs période précédente")
-                            .font(.system(size: 11))
-                            .foregroundColor(Color(hex: "9CA3AF"))
+                    // Trend Badge
+                    HStack(spacing: 4) {
+                        Image(systemName: viewModel.trend >= 0 ? "arrow.up.right" : "arrow.down.right")
+                            .font(.system(size: 13, weight: .bold))
+                        Text("\(abs(viewModel.trend), specifier: "%.1f")%")
+                            .font(.system(size: 15, weight: .bold))
                     }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule()
+                            .fill(viewModel.trend >= 0 ? Color(hex: "10B981") : Color(hex: "EF4444"))
+                    )
+                    .shadow(
+                        color: (viewModel.trend >= 0 ? Color(hex: "10B981") : Color(hex: "EF4444")).opacity(0.3),
+                        radius: 8,
+                        x: 0,
+                        y: 4
+                    )
                 }
 
                 Divider()
+                    .padding(.vertical, 4)
 
                 // Income vs Expenses
                 HStack(spacing: 20) {
@@ -153,99 +227,111 @@ struct OwnerFinanceView: View {
                             Circle()
                                 .fill(Color(hex: "10B981"))
                                 .frame(width: 10, height: 10)
-                            Text("Revenus")
-                                .font(.system(size: 13))
-                                .foregroundColor(Color(hex: "6B7280"))
+                            Text("REVENUS")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(Theme.Colors.textSecondary)
+                                .tracking(0.3)
                         }
+
                         Text("€\(viewModel.totalIncome, specifier: "%.2f")")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(Color(hex: "111827"))
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(Theme.Colors.textPrimary)
                     }
 
                     Spacer()
 
                     VStack(alignment: .trailing, spacing: 4) {
                         HStack(spacing: 6) {
-                            Text("Dépenses")
-                                .font(.system(size: 13))
-                                .foregroundColor(Color(hex: "6B7280"))
+                            Text("DÉPENSES")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(Theme.Colors.textSecondary)
+                                .tracking(0.3)
                             Circle()
                                 .fill(Color(hex: "EF4444"))
                                 .frame(width: 10, height: 10)
                         }
+
                         Text("€\(viewModel.totalExpenses, specifier: "%.2f")")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(Color(hex: "111827"))
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(Theme.Colors.textPrimary)
                     }
                 }
             }
-            .padding(20)
-            .background(Color.white)
-            .cornerRadius(20)
-            .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 4)
+        }
+    }
 
-            // Quick stats
-            HStack(spacing: 12) {
-                QuickStatCard(
-                    title: "Taux d'occupation",
-                    value: "\(viewModel.occupancyRate)%",
-                    icon: "house.fill",
-                    color: Color(hex: "6E56CF")
-                )
+    // MARK: - Quick Stats Grid
 
-                QuickStatCard(
-                    title: "Loyers perçus",
-                    value: "\(viewModel.collectedRentsCount)/\(viewModel.totalRentsCount)",
-                    icon: "checkmark.circle.fill",
-                    color: Color(hex: "10B981")
-                )
-            }
+    private var quickStatsGrid: some View {
+        HStack(spacing: 12) {
+            ModernQuickStatCard(
+                title: "Occupation",
+                value: "\(viewModel.occupancyRate)%",
+                icon: "house.fill",
+                color: Theme.Colors.Owner.primary,
+                role: role
+            )
+
+            ModernQuickStatCard(
+                title: "Loyers perçus",
+                value: "\(viewModel.collectedRentsCount)/\(viewModel.totalRentsCount)",
+                icon: "checkmark.circle.fill",
+                color: Color(hex: "10B981"),
+                role: role
+            )
         }
     }
 
     // MARK: - Revenue Breakdown Section
 
     private var revenueBreakdownSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("Répartition des revenus")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Répartition des revenus")
+                .font(Theme.PinterestTypography.titleMedium(.semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
 
-            VStack(spacing: 12) {
-                ForEach(viewModel.revenueBreakdown) { item in
-                    RevenueBreakdownRow(item: item, total: viewModel.totalIncome)
+            PinterestCard(role: role) {
+                VStack(spacing: 12) {
+                    ForEach(viewModel.revenueBreakdown) { item in
+                        ModernRevenueBreakdownRow(
+                            item: item,
+                            total: viewModel.totalIncome
+                        )
+
+                        if item.id != viewModel.revenueBreakdown.last?.id {
+                            Divider()
+                        }
+                    }
                 }
             }
-            .padding(16)
-            .background(Color.white)
-            .cornerRadius(16)
         }
     }
 
     // MARK: - Properties Performance Section
 
     private var propertiesPerformanceSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Performance par propriété")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(Theme.PinterestTypography.titleMedium(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
                 Spacer()
 
                 NavigationLink(destination: Text("Détails")) {
-                    Text("Voir tout")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color(hex: "6E56CF"))
+                    HStack(spacing: 4) {
+                        Text("Voir tout")
+                            .font(Theme.PinterestTypography.bodySmall(.semibold))
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(Theme.Colors.Owner.primary)
                 }
             }
 
-            VStack(spacing: 12) {
+            VStack(spacing: 8) {
                 ForEach(viewModel.propertiesPerformance) { property in
-                    PropertyPerformanceCard(property: property)
+                    ModernPropertyPerformanceCard(property: property, role: role)
                 }
             }
         }
@@ -254,75 +340,83 @@ struct OwnerFinanceView: View {
     // MARK: - Recent Transactions Section
 
     private var recentTransactionsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Transactions récentes")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(Theme.PinterestTypography.titleMedium(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
                 Spacer()
 
                 NavigationLink(destination: Text("Historique")) {
-                    Text("Historique")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color(hex: "6E56CF"))
+                    HStack(spacing: 4) {
+                        Text("Historique")
+                            .font(Theme.PinterestTypography.bodySmall(.semibold))
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(Theme.Colors.Owner.primary)
                 }
             }
 
-            VStack(spacing: 0) {
-                ForEach(viewModel.recentTransactions.prefix(5)) { transaction in
-                    FinanceTransactionRow(transaction: transaction)
+            PinterestCard(role: role) {
+                VStack(spacing: 0) {
+                    ForEach(viewModel.recentTransactions.prefix(5)) { transaction in
+                        ModernFinanceTransactionRow(transaction: transaction)
 
-                    if transaction.id != viewModel.recentTransactions.prefix(5).last?.id {
-                        Divider()
-                            .padding(.horizontal, 16)
+                        if transaction.id != viewModel.recentTransactions.prefix(5).last?.id {
+                            Divider()
+                                .padding(.horizontal, 12)
+                        }
                     }
                 }
             }
-            .background(Color.white)
-            .cornerRadius(16)
         }
     }
 }
 
-// MARK: - Quick Stat Card
+// MARK: - Modern Quick Stat Card
 
-struct QuickStatCard: View {
+struct ModernQuickStatCard: View {
     let title: String
     let value: String
     let icon: String
     let color: Color
+    let role: Theme.UserRole
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 18))
-                    .foregroundColor(color)
+        PinterestCard(role: role) {
+            VStack(alignment: .leading, spacing: 8) {
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.15))
+                        .frame(width: 44, height: 44)
+
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(color)
+                }
+
                 Spacer()
-            }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(value)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(value)
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
 
-                Text(title)
-                    .font(.system(size: 12))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    Text(title)
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
             }
+            .frame(height: 130)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
     }
 }
 
-// MARK: - Revenue Breakdown Row
+// MARK: - Modern Revenue Breakdown Row
 
-struct RevenueBreakdownRow: View {
+struct ModernRevenueBreakdownRow: View {
     let item: RevenueItem
     let total: Double
 
@@ -332,7 +426,7 @@ struct RevenueBreakdownRow: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 4) {
             HStack {
                 HStack(spacing: 8) {
                     Circle()
@@ -340,29 +434,33 @@ struct RevenueBreakdownRow: View {
                         .frame(width: 12, height: 12)
 
                     Text(item.category)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color(hex: "374151"))
+                        .font(Theme.PinterestTypography.bodyRegular(.medium))
+                        .foregroundColor(Theme.Colors.textPrimary)
                 }
 
                 Spacer()
 
-                Text("€\(item.amount, specifier: "%.0f")")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("€\(item.amount, specifier: "%.0f")")
+                        .font(Theme.PinterestTypography.bodyRegular(.bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Text("\(percentage, specifier: "%.0f")%")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
             }
 
             // Progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 3)
                         .fill(Color(hex: "F3F4F6"))
                         .frame(height: 6)
-                        .cornerRadius(3)
 
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 3)
                         .fill(item.color)
                         .frame(width: geometry.size.width * CGFloat(percentage / 100), height: 6)
-                        .cornerRadius(3)
                 }
             }
             .frame(height: 6)
@@ -370,108 +468,121 @@ struct RevenueBreakdownRow: View {
     }
 }
 
-// MARK: - Property Performance Card
+// MARK: - Modern Property Performance Card
 
-struct PropertyPerformanceCard: View {
+struct ModernPropertyPerformanceCard: View {
     let property: PropertyPerformance
+    let role: Theme.UserRole
 
     var body: some View {
-        HStack(spacing: 16) {
-            // Property image
-            AsyncImage(url: URL(string: property.imageUrl ?? "")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60, height: 60)
-                        .clipped()
-                        .cornerRadius(10)
-                case .failure(_), .empty:
-                    Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(hex: "6E56CF"), Color(hex: "9F7AEA")],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 60, height: 60)
-                        .cornerRadius(10)
-                        .overlay(
+        PinterestCard(role: role) {
+            HStack(spacing: 12) {
+                // Property image
+                AsyncImage(url: URL(string: property.imageUrl ?? "")) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 70, height: 70)
+                            .clipped()
+                            .cornerRadius(12)
+                    case .failure(_), .empty:
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 70, height: 70)
+
                             Image(systemName: "building.2")
+                                .font(.system(size: 28))
                                 .foregroundColor(.white.opacity(0.7))
-                        )
-                @unknown default:
-                    EmptyView()
+                        }
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(property.name)
+                        .font(Theme.PinterestTypography.bodyRegular(.bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(1)
+
+                    HStack(spacing: 6) {
+                        Image(systemName: "bed.double.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(Theme.Colors.textSecondary)
+
+                        Text("\(property.occupiedRooms)/\(property.totalRooms) chambres")
+                            .font(Theme.PinterestTypography.bodySmall(.medium))
+                            .foregroundColor(Theme.Colors.textSecondary)
+                    }
+                }
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("€\(property.monthlyRevenue, specifier: "%.0f")")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(Color(hex: "10B981"))
+
+                    Text("/mois")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
                 }
             }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(property.name)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(Color(hex: "111827"))
-                    .lineLimit(1)
-
-                Text("\(property.occupiedRooms)/\(property.totalRooms) chambres occupées")
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-
-            Spacer()
-
-            VStack(alignment: .trailing, spacing: 4) {
-                Text("€\(property.monthlyRevenue, specifier: "%.0f")")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color(hex: "10B981"))
-
-                Text("/mois")
-                    .font(.system(size: 11))
-                    .foregroundColor(Color(hex: "9CA3AF"))
-            }
         }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(14)
-        .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
     }
 }
 
-// MARK: - Transaction Row
+// MARK: - Modern Finance Transaction Row
 
-struct FinanceTransactionRow: View {
+struct ModernFinanceTransactionRow: View {
     let transaction: FinanceTransaction
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 12) {
             // Icon
-            Image(systemName: transaction.isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                .font(.system(size: 28))
-                .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
+            ZStack {
+                Circle()
+                    .fill((transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444")).opacity(0.15))
+                    .frame(width: 48, height: 48)
+
+                Image(systemName: transaction.isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
+                    .font(.system(size: 22))
+                    .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
+            }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(transaction.title)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .lineLimit(1)
 
                 Text(transaction.subtitle)
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .font(Theme.PinterestTypography.bodySmall(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
             }
 
             Spacer()
 
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(transaction.isIncome ? "+" : "-")€\(abs(transaction.amount), specifier: "%.2f")")
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(transaction.isIncome ? Color(hex: "10B981") : Color(hex: "EF4444"))
 
                 Text(transaction.formattedDate)
-                    .font(.system(size: 11))
-                    .foregroundColor(Color(hex: "9CA3AF"))
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
             }
         }
-        .padding(16)
+        .padding(12)
     }
 }
 
@@ -518,7 +629,10 @@ struct AddOwnerExpenseSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Annuler") { dismiss() }
+                    Button("Annuler") {
+                        dismiss()
+                        Haptic.selection()
+                    }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Ajouter") {
@@ -532,6 +646,7 @@ struct AddOwnerExpenseSheet: View {
                                 isIncome: false
                             )
                             onAdd(expense)
+                            Haptic.success()
                         }
                     }
                     .disabled(title.isEmpty || amount.isEmpty)
@@ -584,7 +699,10 @@ struct AddOwnerIncomeSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Annuler") { dismiss() }
+                    Button("Annuler") {
+                        dismiss()
+                        Haptic.selection()
+                    }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Ajouter") {
@@ -598,6 +716,7 @@ struct AddOwnerIncomeSheet: View {
                                 isIncome: true
                             )
                             onAdd(income)
+                            Haptic.success()
                         }
                     }
                     .disabled(title.isEmpty || amount.isEmpty)
@@ -673,7 +792,7 @@ class OwnerFinanceViewModel: ObservableObject {
             totalRentsCount = 8
 
             revenueBreakdown = [
-                RevenueItem(category: "Loyers", amount: 4200, color: Color(hex: "6E56CF")),
+                RevenueItem(category: "Loyers", amount: 4200, color: Theme.Colors.Owner.primary),
                 RevenueItem(category: "Charges", amount: 450, color: Color(hex: "10B981")),
                 RevenueItem(category: "Dépôts", amount: 200, color: Color(hex: "F59E0B"))
             ]

@@ -243,10 +243,11 @@ extension Color {
 
 // MARK: - Preview
 
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ChatView(conversation: Conversation.mockConversations[0])
-        }
-    }
-}
+// Preview moved to MessagesListView.swift where ChatView is now defined
+// struct ChatView_Previews: PreviewProvider {
+//     static var previews: some View {
+//         NavigationStack {
+//             ChatView(conversation: Conversation.mockConversations[0])
+//         }
+//     }
+// }

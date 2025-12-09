@@ -85,8 +85,12 @@ class AuthViewModel: ObservableObject {
     }
 
     func signUp() async {
-        guard isSignupValid else { return }
+        guard isSignupValid else {
+            print("❌ Signup validation failed")
+            return
+        }
 
+        print("📝 Starting signup for email: \(email.trimmed)")
         isLoading = true
         error = nil
 
@@ -101,8 +105,10 @@ class AuthViewModel: ObservableObject {
                 password: password,
                 userData: userData
             )
+            print("✅ Signup successful!")
             // Success - navigation handled by RootView
         } catch {
+            print("❌ Signup failed with error: \(error)")
             self.error = AppError.unknown(error)
             self.showError = true
         }

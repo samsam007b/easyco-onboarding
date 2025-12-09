@@ -366,92 +366,38 @@ struct CustomGuestTabBar: View {
             // Tab: Découvrir
             GuestTabButton(
                 icon: AppIcon.search.sfSymbol,
-                title: "Découvrir",
+                label: "Découvrir",
                 isSelected: selectedTab == 0,
+                primaryColor: Color(hex: "FFA040"),
                 action: { selectedTab = 0 }
             )
 
             // Tab: Fonctionnalités
             GuestTabButton(
                 icon: AppIcon.sparkles.sfSymbol,
-                title: "Fonctionnalités",
+                label: "Fonctionnalités",
                 isSelected: selectedTab == 1,
+                primaryColor: Color(hex: "FFA040"),
                 action: { selectedTab = 1 }
             )
-
-            // Center Button: Connexion
-            Button(action: onSignup) {
-                VStack(spacing: 4) {
-                    ZStack {
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        Color(hex: "8B5CF6"),
-                                        Color(hex: "6E56CF")
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 56, height: 56)
-                            .shadow(
-                                color: Color(hex: "8B5CF6").opacity(0.4),
-                                radius: 12,
-                                x: 0,
-                                y: 4
-                            )
-
-                        Image(systemName: AppIcon.user.sfSymbol)
-                            .font(.system(size: 24, weight: .semibold))
-                            .foregroundColor(.white)
-                    }
-                    .offset(y: -20)
-
-                    Text("Connexion")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color(hex: "8B5CF6"))
-                }
-            }
-            .frame(maxWidth: .infinity)
 
             // Tab: Communauté
             GuestTabButton(
                 icon: AppIcon.users.sfSymbol,
-                title: "Communauté",
+                label: "Communauté",
                 isSelected: selectedTab == 2,
+                primaryColor: Color(hex: "FFA040"),
                 action: { selectedTab = 2 }
             )
         }
-        .padding(.horizontal, 8)
-        .padding(.top, 12)
-        .padding(.bottom, 28)
-        .background(.ultraThinMaterial)
-    }
-}
-
-// MARK: - Guest Tab Button
-
-struct GuestTabButton: View {
-    let icon: String
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 6) {
-                Image(systemName: icon)
-                    .font(.system(size: 24, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? Color(hex: "FFA040") : Color(hex: "9CA3AF"))
-
-                Text(title)
-                    .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
-                    .foregroundColor(isSelected ? Color(hex: "FFA040") : Color(hex: "9CA3AF"))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-        }
+        .frame(height: 80)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: -4)
+        )
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
     }
 }
 

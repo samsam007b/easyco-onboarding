@@ -1,17 +1,28 @@
 import SwiftUI
 
-// MARK: - Owner Properties View (Web App Design)
+// MARK: - Owner Properties View (Modern Pinterest Style)
 
 struct OwnerPropertiesView: View {
     @State private var properties: [Property] = []
     @State private var isLoading = false
     @State private var showAddProperty = false
     @State private var searchText = ""
-    @State private var selectedStatus: PropertyStatus?  = nil
+    @State private var selectedStatus: PropertyStatus? = nil
     @State private var sortOption: OwnerPropertySortOption = .newest
 
+    // Sheet states
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
+
+    private let role: Theme.UserRole = .owner
+
     var body: some View {
-        NavigationStack {
+        ZStack(alignment: .top) {
+            // Pinterest Background
+            PinterestBackground(role: role, intensity: 0.18)
+                .ignoresSafeArea()
+
             Group {
                 if isLoading {
                     LoadingView(message: "Chargement de vos propriétés...")
@@ -21,25 +32,30 @@ struct OwnerPropertiesView: View {
                     propertiesList
                 }
             }
-            .background(Color(hex: "F9FAFB"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Mes Propriétés")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(hex: "111827"))
+
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: true,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: {
+                    showAddProperty = true
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showAddProperty = true }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(Color(hex: "6E56CF"))
-                    }
-                }
-            }
-            .sheet(isPresented: $showAddProperty) {
-                CreatePropertyView()
-            }
+            )
+        }
+        .sheet(isPresented: $showAddProperty) {
+            CreatePropertyView()
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
+        }
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
+        }
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
         }
         .task {
             await loadProperties()
@@ -49,117 +65,139 @@ struct OwnerPropertiesView: View {
     // MARK: - Properties List
 
     private var propertiesList: some View {
-        VStack(spacing: 0) {
-            // Search and Filters
-            filtersSection
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 12) {
+                // Spacer for floating header
+                Color.clear.frame(height: 70)
 
-            // Properties List
-            ScrollView {
-                LazyVStack(spacing: 16) {
+                // Search Bar
+                searchBar
+
+                // Filters Row
+                filtersRow
+
+                // Properties Grid
+                LazyVStack(spacing: 12) {
                     ForEach(filteredAndSortedProperties) { property in
                         NavigationLink(destination: OwnerPropertyDetailView(property: property)) {
-                            OwnerPropertyCard(property: property)
+                            ModernOwnerPropertyCard(property: property, role: role)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
-                .padding(16)
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 32)
         }
     }
 
-    // MARK: - Filters Section
+    // MARK: - Search Bar
 
-    private var filtersSection: some View {
-        VStack(spacing: 12) {
-            // Search Bar
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color(hex: "9CA3AF"))
-                TextField("Rechercher une propriété...", text: $searchText)
-                    .font(.system(size: 16))
+    private var searchBar: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(Color(hex: "9CA3AF"))
 
-                if !searchText.isEmpty {
-                    Button(action: { searchText = "" }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(Color(hex: "9CA3AF"))
-                    }
+            TextField("Rechercher une propriété...", text: $searchText)
+                .font(Theme.PinterestTypography.bodyRegular(.regular))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                    Haptic.selection()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color(hex: "9CA3AF"))
                 }
             }
-            .padding(12)
-            .background(Color.white)
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
-            )
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white.opacity(0.9))
+                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
+    }
 
-            // Status and Sort Filters
-            HStack(spacing: 12) {
-                // Status Filter
-                Menu {
-                    Button("Tous les statuts") {
-                        selectedStatus = nil
-                    }
-                    ForEach(PropertyStatus.allCases, id: \.self) { status in
-                        Button(status.displayName) {
-                            selectedStatus = status
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .font(.system(size: 14))
-                        Text(selectedStatus?.displayName ?? "Tous")
-                            .font(.system(size: 14, weight: .medium))
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 10))
-                    }
-                    .foregroundColor(Color(hex: "6E56CF"))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color(hex: "F3F0FF"))
-                    .cornerRadius(8)
+    // MARK: - Filters Row
+
+    private var filtersRow: some View {
+        HStack(spacing: 8) {
+            // Status Filter
+            Menu {
+                Button("Tous les statuts") {
+                    selectedStatus = nil
+                    Haptic.selection()
                 }
+                ForEach(PropertyStatus.allCases, id: \.self) { status in
+                    Button(status.displayName) {
+                        selectedStatus = status
+                        Haptic.selection()
+                    }
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 14, weight: .medium))
+                    Text(selectedStatus?.displayName ?? "Tous")
+                        .font(Theme.PinterestTypography.bodySmall(.semibold))
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                }
+                .foregroundColor(Theme.Colors.Owner.primary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Theme.Colors.Owner.primary.opacity(0.1))
+                )
+            }
 
-                // Sort Menu
-                Menu {
-                    ForEach(OwnerPropertySortOption.allCases, id: \.self) { option in
-                        Button(action: { sortOption = option }) {
-                            HStack {
-                                Text(option.displayName)
-                                if sortOption == option {
-                                    Image(systemName: "checkmark")
-                                }
+            // Sort Menu
+            Menu {
+                ForEach(OwnerPropertySortOption.allCases, id: \.self) { option in
+                    Button(action: {
+                        sortOption = option
+                        Haptic.selection()
+                    }) {
+                        HStack {
+                            Text(option.displayName)
+                            if sortOption == option {
+                                Image(systemName: "checkmark")
                             }
                         }
                     }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "arrow.up.arrow.down")
-                            .font(.system(size: 14))
-                        Text(sortOption.displayName)
-                            .font(.system(size: 14, weight: .medium))
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 10))
-                    }
-                    .foregroundColor(Color(hex: "6E56CF"))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color(hex: "F3F0FF"))
-                    .cornerRadius(8)
                 }
-
-                Spacer()
-
-                // Results count
-                Text("\(filteredAndSortedProperties.count) propriété(s)")
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .font(.system(size: 14, weight: .medium))
+                    Text(sortOption.displayName)
+                        .font(Theme.PinterestTypography.bodySmall(.semibold))
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                }
+                .foregroundColor(Theme.Colors.Owner.primary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Theme.Colors.Owner.primary.opacity(0.1))
+                )
             }
+
+            Spacer()
+
+            // Results count
+            Text("\(filteredAndSortedProperties.count)")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(Theme.Colors.textSecondary)
         }
-        .padding(16)
-        .background(Color(hex: "F9FAFB"))
     }
 
     // MARK: - Computed Properties
@@ -209,54 +247,46 @@ struct OwnerPropertiesView: View {
             // Icon
             ZStack {
                 Circle()
-                    .fill(Color(hex: "F3F0FF"))
+                    .fill(Theme.Colors.Owner.primary.opacity(0.1))
                     .frame(width: 120, height: 120)
 
-                Image(systemName: "building.2")
-                    .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "6E56CF"))
+                Image(systemName: "building.2.fill")
+                    .font(.system(size: 48, weight: .medium))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Theme.Colors.Owner.primary, Theme.Colors.Owner._400],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
             }
 
             // Text
-            VStack(spacing: 12) {
+            VStack(spacing: 8) {
                 Text("Aucune propriété")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
+                    .font(Theme.PinterestTypography.heroMedium(.bold))
+                    .foregroundColor(Theme.Colors.textPrimary)
 
                 Text("Commencez à ajouter vos propriétés pour recevoir des candidatures")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .font(Theme.PinterestTypography.bodyRegular(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 24)
             }
 
             // CTA Button
-            Button(action: { showAddProperty = true }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Ajouter une propriété")
-                        .font(.system(size: 16, weight: .semibold))
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: 280)
-                .padding(.vertical, 16)
-                .background(
-                    LinearGradient(
-                        colors: [Color(hex: "6E56CF"), Color(hex: "8B5CF6")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .cornerRadius(999)
-                .shadow(color: Color(hex: "6E56CF").opacity(0.3), radius: 8, x: 0, y: 4)
+            PinterestPrimaryButton(
+                "Ajouter une propriété",
+                role: role,
+                icon: "plus.circle.fill"
+            ) {
+                showAddProperty = true
             }
-            .padding(.top, 8)
+            .padding(.horizontal, 24)
 
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(hex: "F9FAFB"))
     }
 
     // MARK: - Data Methods
@@ -274,63 +304,103 @@ struct OwnerPropertiesView: View {
     }
 }
 
-// MARK: - Owner Property Card
+// MARK: - Modern Owner Property Card
 
-struct OwnerPropertyCard: View {
+struct ModernOwnerPropertyCard: View {
     let property: Property
+    let role: Theme.UserRole
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Image
-            AsyncImage(url: URL(string: property.images.first ?? "")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 200)
-                        .clipped()
-                case .failure(_), .empty:
-                    Rectangle()
-                        .fill(Color(hex: "E5E7EB"))
-                        .frame(height: 200)
-                @unknown default:
-                    EmptyView()
+        PinterestCard(role: role) {
+            VStack(alignment: .leading, spacing: 0) {
+                // Image
+                if let imageURL = property.images.first {
+                    AsyncImage(url: URL(string: imageURL)) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure(_), .empty:
+                            Rectangle()
+                                .fill(Color(hex: "F3F4F6"))
+                                .overlay(
+                                    Image(systemName: "photo")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(Color(hex: "9CA3AF"))
+                                )
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                    .frame(height: 180)
+                    .clipped()
+                    .cornerRadius(12, corners: [.topLeft, .topRight])
                 }
+
+                // Content
+                VStack(alignment: .leading, spacing: 8) {
+                    // Title
+                    Text(property.title)
+                        .font(Theme.PinterestTypography.bodyRegular(.bold))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(2)
+
+                    // Location
+                    HStack(spacing: 4) {
+                        Image(systemName: "mappin.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(hex: "9CA3AF"))
+
+                        Text("\(property.city)")
+                            .font(Theme.PinterestTypography.bodySmall(.medium))
+                            .foregroundColor(Theme.Colors.textSecondary)
+                    }
+
+                    // Stats Row
+                    HStack(spacing: 8) {
+                        PropertyStatBadge(
+                            icon: "eye.fill",
+                            value: "\(property.viewsCount)",
+                            color: Theme.Colors.Owner.primary
+                        )
+                        PropertyStatBadge(
+                            icon: "doc.text.fill",
+                            value: "\(property.applicationsCount)",
+                            color: Color(hex: "10B981")
+                        )
+                        PropertyStatBadge(
+                            icon: "heart.fill",
+                            value: "\(property.favoritesCount)",
+                            color: Color(hex: "EF4444")
+                        )
+                    }
+
+                    Divider()
+                        .padding(.vertical, 4)
+
+                    // Price & Status
+                    HStack {
+                        Text("€\(property.price)")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(Theme.Colors.Owner.primary)
+
+                        Text("/mois")
+                            .font(Theme.PinterestTypography.bodySmall(.medium))
+                            .foregroundColor(Theme.Colors.textSecondary)
+
+                        Spacer()
+
+                        ModernStatusBadge(status: property.status)
+                    }
+                }
+                .padding(12)
             }
-            .cornerRadius(16, corners: [.topLeft, .topRight])
-
-            // Content
-            VStack(alignment: .leading, spacing: 12) {
-                Text(property.title)
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(Color(hex: "111827"))
-
-                HStack(spacing: 16) {
-                    PropertyStatBadge(icon: "eye.fill", value: "\(property.viewsCount)", color: Color(hex: "6E56CF"))
-                    PropertyStatBadge(icon: "doc.text.fill", value: "\(property.applicationsCount)", color: Color(hex: "10B981"))
-                    PropertyStatBadge(icon: "heart.fill", value: "\(property.favoritesCount)", color: Color(hex: "EF4444"))
-                }
-
-                Divider()
-
-                HStack {
-                    Text("€\(Int(property.monthlyRent))/mois")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(Color(hex: "6E56CF"))
-
-                    Spacer()
-
-                    StatusBadge(status: property.status)
-                }
-            }
-            .padding(16)
         }
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
     }
 }
+
+// MARK: - Property Stat Badge
 
 private struct PropertyStatBadge: View {
     let icon: String
@@ -340,25 +410,31 @@ private struct PropertyStatBadge: View {
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
-                .font(.system(size: 12))
+                .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(color)
             Text(value)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(Color(hex: "374151"))
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(Theme.Colors.textSecondary)
         }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(color.opacity(0.1))
+        .cornerRadius(6)
     }
 }
 
-struct StatusBadge: View {
+// MARK: - Modern Status Badge
+
+struct ModernStatusBadge: View {
     let status: PropertyStatus
 
     var body: some View {
         Text(status.displayName)
-            .font(.system(size: 12, weight: .medium))
+            .font(.system(size: 11, weight: .bold))
             .foregroundColor(statusColor)
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
-            .background(statusColor.opacity(0.1))
+            .background(statusColor.opacity(0.15))
             .cornerRadius(999)
     }
 
@@ -378,10 +454,10 @@ struct StatusBadge: View {
 enum OwnerPropertySortOption: String, CaseIterable {
     case newest = "Plus récents"
     case oldest = "Plus anciens"
-    case priceHighToLow = "Prix décroissant"
-    case priceLowToHigh = "Prix croissant"
+    case priceHighToLow = "Prix ↓"
+    case priceLowToHigh = "Prix ↑"
     case mostViews = "Plus vus"
-    case mostApplications = "Plus de candidatures"
+    case mostApplications = "Candidatures"
 
     var displayName: String {
         self.rawValue
@@ -392,132 +468,96 @@ enum OwnerPropertySortOption: String, CaseIterable {
 
 struct OwnerPropertyDetailView: View {
     let property: Property
+    private let role: Theme.UserRole = .owner
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Photo principale
-                AsyncImage(url: URL(string: property.images.first ?? "")) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 250)
-                            .clipped()
-                    case .failure(_), .empty:
-                        Rectangle()
-                            .fill(Color(hex: "E5E7EB"))
-                            .frame(height: 250)
-                    @unknown default:
-                        EmptyView()
+        ZStack {
+            // Pinterest Background
+            PinterestBackground(role: role, intensity: 0.18)
+                .ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 20) {
+                    // Hero Image
+                    if let imageURL = property.images.first {
+                        AsyncImage(url: URL(string: imageURL)) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            case .failure(_), .empty:
+                                Rectangle()
+                                    .fill(Color(hex: "F3F4F6"))
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                        .frame(height: 250)
+                        .clipped()
+                        .cornerRadius(16)
+                    }
+
+                    // Title & Price Card
+                    PinterestCard(role: role) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text(property.title)
+                                        .font(Theme.PinterestTypography.heroSmall(.bold))
+                                        .foregroundColor(Theme.Colors.textPrimary)
+
+                                    Text("\(property.address), \(property.city)")
+                                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                }
+
+                                Spacer()
+
+                                VStack(alignment: .trailing, spacing: 4) {
+                                    Text("€\(property.price)")
+                                        .font(.system(size: 26, weight: .bold))
+                                        .foregroundColor(Theme.Colors.Owner.primary)
+
+                                    Text("/mois")
+                                        .font(.system(size: 12, weight: .medium))
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                }
+                            }
+                        }
+                    }
+
+                    // Quick Actions
+                    VStack(spacing: 8) {
+                        PinterestSecondaryButton("Voir les statistiques", role: role, icon: "chart.bar.fill") {
+                            // Navigate to stats
+                        }
+
+                        PinterestSecondaryButton("Modifier l'annonce", role: role, icon: "square.and.pencil") {
+                            // Edit property
+                        }
+
+                        PinterestSecondaryButton("Archiver", role: role, icon: "archivebox") {
+                            // Archive property
+                        }
                     }
                 }
-
-                VStack(alignment: .leading, spacing: 16) {
-                    // Titre et prix
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(property.title)
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(Color(hex: "111827"))
-
-                            Text("\(property.address), \(property.city)")
-                                .font(.system(size: 14))
-                                .foregroundColor(Color(hex: "6B7280"))
-                        }
-
-                        Spacer()
-
-                        VStack(alignment: .trailing, spacing: 4) {
-                            Text("€\(Int(property.monthlyRent))")
-                                .font(.system(size: 26, weight: .bold))
-                                .foregroundColor(Color(hex: "6E56CF"))
-
-                            Text("par mois")
-                                .font(.system(size: 12))
-                                .foregroundColor(Color(hex: "6B7280"))
-                        }
-                    }
-
-                    Divider()
-
-                    // Actions rapides
-                    VStack(spacing: 12) {
-                        NavigationLink(destination: PropertyStatsView(property: property)) {
-                            HStack {
-                                Image(systemName: "chart.bar.fill")
-                                    .foregroundColor(Color(hex: "6E56CF"))
-                                Text("Voir les statistiques")
-                                    .font(.system(size: 16, weight: .medium))
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(Color(hex: "9CA3AF"))
-                            }
-                            .padding(16)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
-                            )
-                        }
-                        .buttonStyle(PlainButtonStyle())
-
-                        Button(action: {}) {
-                            HStack {
-                                Image(systemName: "square.and.pencil")
-                                    .foregroundColor(Color(hex: "6E56CF"))
-                                Text("Modifier l'annonce")
-                                    .font(.system(size: 16, weight: .medium))
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(Color(hex: "9CA3AF"))
-                            }
-                            .padding(16)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
-                            )
-                        }
-                        .buttonStyle(PlainButtonStyle())
-
-                        Button(action: {}) {
-                            HStack {
-                                Image(systemName: "archivebox")
-                                    .foregroundColor(Color(hex: "EF4444"))
-                                Text("Archiver")
-                                    .font(.system(size: 16, weight: .medium))
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(Color(hex: "9CA3AF"))
-                            }
-                            .padding(16)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
-                            )
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-
-                    Text("Vue détaillée complète à implémenter")
-                        .font(.system(size: 14))
-                        .foregroundColor(Color(hex: "9CA3AF"))
-                        .padding(.top, 8)
-                }
-                .padding()
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
+                .padding(.bottom, 32)
             }
         }
-        .background(Color(hex: "F9FAFB"))
         .navigationTitle("Détails")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Preview
+
+struct OwnerPropertiesView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            OwnerPropertiesView()
+        }
     }
 }

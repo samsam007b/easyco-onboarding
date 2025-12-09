@@ -6,69 +6,40 @@ struct GuestTabView: View {
     @State private var selectedTab = 0
     @State private var showWelcome = false
 
-    init() {
-        // Configure glassmorphism tab bar appearance (same as authenticated views)
-        let appearance = UITabBarAppearance()
-
-        // Glassomorphism effect using blur material
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-        appearance.backgroundColor = .clear
-
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
-
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Tab Content
-            TabView(selection: $selectedTab) {
-                // 1. Explorer (Properties)
-                PropertiesListView()
-                    .tabItem {
-                        Label("Explorer", systemImage: AppIcon.search.sfSymbol)
+        ZStack {
+            // Main content based on selected tab
+            Group {
+                switch selectedTab {
+                case 0:
+                    NavigationStack {
+                        PropertiesListView()
                     }
-                    .tag(0)
-
-                // 2. Resident Feature
-                ResidentFeatureView()
-                    .tabItem {
-                        Label("Résident", systemImage: AppIcon.userGroup.sfSymbol)
+                case 1:
+                    NavigationStack {
+                        ResidentFeatureView()
                     }
-                    .tag(1)
-
-                // 3. Connexion (Center Button)
-                Color.clear
-                    .tabItem {
-                        Label("Connexion", systemImage: AppIcon.userPlus.sfSymbol)
+                case 2:
+                    NavigationStack {
+                        OwnerFeatureView()
                     }
-                    .tag(2)
-
-                // 4. Owner Feature
-                OwnerFeatureView()
-                    .tabItem {
-                        Label("Propriétaire", systemImage: AppIcon.building2.sfSymbol)
-                    }
-                    .tag(3)
-
-                // 5. Settings/Profile
-                GuestSettingsView()
-                    .tabItem {
-                        Label("Profil", systemImage: AppIcon.user.sfSymbol)
-                    }
-                    .tag(4)
-            }
-            .accentColor(Color(hex: "FFA040"))
-            .onChange(of: selectedTab) { newValue in
-                // When "Connexion" tab (tag 2) is tapped, show WelcomeView
-                if newValue == 2 {
-                    showWelcome = true
-                    // Reset to previous tab (Explorer) after showing sheet
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        selectedTab = 0
+                default:
+                    NavigationStack {
+                        PropertiesListView()
                     }
                 }
             }
+
+            // Floating Tab Bar
+            VStack {
+                Spacer()
+                GuestFloatingTabBar(
+                    selectedTab: $selectedTab,
+                    showWelcome: $showWelcome,
+                    primaryColor: Color(hex: "FFA040")
+                )
+            }
+            .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showWelcome) {
             WelcomeView()
@@ -76,118 +47,221 @@ struct GuestTabView: View {
     }
 }
 
+// MARK: - Guest Floating Tab Bar
+
+struct GuestFloatingTabBar: View {
+    @Binding var selectedTab: Int
+    @Binding var showWelcome: Bool
+    let primaryColor: Color
+    @Namespace private var tabAnimation
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // Tab 1: Searcher (Orange - default primaryColor)
+            GuestTabButton(
+                icon: "magnifyingglass",
+                label: "Chercheur",
+                isSelected: selectedTab == 0,
+                primaryColor: primaryColor  // #FFA040
+            ) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    selectedTab = 0
+                }
+                Haptic.selection()
+            }
+
+            // Tab 2: Resident (Orange/Coral)
+            GuestTabButton(
+                icon: "house.fill",
+                label: "Résident",
+                isSelected: selectedTab == 1,
+                primaryColor: Theme.Colors.Resident.primary  // #FF5722
+            ) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    selectedTab = 1
+                }
+                Haptic.selection()
+            }
+
+            // Tab 3: Owner (Mauve)
+            GuestTabButton(
+                icon: "building.2.fill",
+                label: "Propriétaire",
+                isSelected: selectedTab == 2,
+                primaryColor: Theme.Colors.Owner.primary  // #6E56CF
+            ) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    selectedTab = 2
+                }
+                Haptic.selection()
+            }
+        }
+        .frame(height: 80)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: -4)
+        )
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
+    }
+}
+
+// MARK: - Guest Tab Button
+
+struct GuestTabButton: View {
+    let icon: String
+    let label: String
+    let isSelected: Bool
+    let primaryColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
+                    .frame(height: 28)
+
+                Text(label)
+                    .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
+                    .foregroundColor(isSelected ? primaryColor : Color(hex: "6B7280"))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? primaryColor.opacity(0.12) : Color.clear)
+            )
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
 // MARK: - Guest Settings View
 
 struct GuestSettingsView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var showWelcome = false
     @State private var showAbout = false
     @State private var showHelp = false
     @State private var showTerms = false
     @State private var showPrivacy = false
     @State private var showLanguage = false
-    @State private var showNotifications = false
+    @State private var notificationsEnabled = true
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    Button(action: {
-                        showWelcome = true
-                    }) {
-                        HStack(spacing: 16) {
-                            // Icon with signature style
-                            ZStack {
-                                Circle()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [
-                                                Color(hex: "FFA040").opacity(0.15),
-                                                Color(hex: "FFB85C").opacity(0.15)
-                                            ],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                    )
-                                    .frame(width: 56, height: 56)
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Create Account CTA Section
+                    createAccountSection
 
-                                Image(systemName: AppIcon.userPlus.sfSymbol)
-                                    .font(.system(size: 28, weight: .medium))
-                                    .foregroundColor(Color(hex: "FFA040"))
-                            }
-
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Créer un compte")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .foregroundColor(Color(hex: "111827"))
-
-                                Text("Débloque toutes les fonctionnalités")
-                                    .font(.system(size: 14, weight: .medium))
-                                    .foregroundColor(Color(hex: "6B7280"))
-                            }
-
-                            Spacer()
-
-                            Image(systemName: AppIcon.chevronRight.sfSymbol)
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(Color(hex: "FFA040"))
+                    // Informations Section
+                    settingsSection(title: "Informations") {
+                        SettingsRow(
+                            icon: "info.circle.fill",
+                            title: "À propos",
+                            value: "",
+                            color: Color(hex: "3B82F6")
+                        ) {
+                            showAbout = true
                         }
-                        .padding(.vertical, 12)
+
+                        Divider()
+                            .padding(.leading, 52)
+
+                        SettingsRow(
+                            icon: "questionmark.circle.fill",
+                            title: "Aide & Support",
+                            value: "",
+                            color: Color(hex: "10B981")
+                        ) {
+                            showHelp = true
+                        }
+
+                        Divider()
+                            .padding(.leading, 52)
+
+                        SettingsRow(
+                            icon: "doc.text.fill",
+                            title: "Conditions d'utilisation",
+                            value: "",
+                            color: Color(hex: "6B7280")
+                        ) {
+                            showTerms = true
+                        }
+
+                        Divider()
+                            .padding(.leading, 52)
+
+                        SettingsRow(
+                            icon: "shield.fill",
+                            title: "Politique de confidentialité",
+                            value: "",
+                            color: Color(hex: "6B7280")
+                        ) {
+                            showPrivacy = true
+                        }
                     }
-                    .listRowBackground(
-                        LinearGradient(
-                            colors: [
-                                Color(hex: "FFF4ED"),
-                                Color(hex: "FFF9F5")
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
+
+                    // App Section
+                    settingsSection(title: "App") {
+                        SettingsRow(
+                            icon: "globe",
+                            title: "Langue",
+                            value: "Français",
+                            color: Color(hex: "6E56CF")
+                        ) {
+                            showLanguage = true
+                        }
+
+                        Divider()
+                            .padding(.leading, 52)
+
+                        SettingsToggleRow(
+                            icon: "bell.fill",
+                            title: "Notifications",
+                            isOn: $notificationsEnabled,
+                            color: Color(hex: "FBBF24")
                         )
-                    )
+                    }
+
+                    // App Info
+                    VStack(spacing: 12) {
+                        Image("EasyCoHouseIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 60, height: 60)
+
+                        Text("Version 1.0.0")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(hex: "9CA3AF"))
+                    }
+                    .padding(.top, 16)
+                    .padding(.bottom, 32)
                 }
-
-                Section {
-                    Button(action: { showAbout = true }) {
-                        GuestSettingsRow(icon: AppIcon.info.sfSymbol, title: "À propos", value: "", color: Color(hex: "3B82F6"))
-                    }
-
-                    Button(action: { showHelp = true }) {
-                        GuestSettingsRow(icon: AppIcon.questionmark.sfSymbol, title: "Aide & Support", value: "", color: Color(hex: "10B981"))
-                    }
-
-                    Button(action: { showTerms = true }) {
-                        GuestSettingsRow(icon: AppIcon.doc.sfSymbol, title: "Conditions d'utilisation", value: "", color: Color(hex: "6B7280"))
-                    }
-
-                    Button(action: { showPrivacy = true }) {
-                        GuestSettingsRow(icon: AppIcon.shield.sfSymbol, title: "Politique de confidentialité", value: "", color: Color(hex: "6B7280"))
-                    }
-                } header: {
-                    Text("Informations")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(Color(hex: "6B7280"))
-                        .textCase(.uppercase)
-                        .tracking(0.5)
+                .padding(16)
+            }
+            .background(Color(hex: "F9FAFB"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Paramètres")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(Color(hex: "111827"))
                 }
-
-                Section {
-                    Button(action: { showLanguage = true }) {
-                        GuestSettingsRow(icon: AppIcon.globe.sfSymbol, title: "Langue", value: "Français", color: Color(hex: "6E56CF"))
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { dismiss() }) {
+                        Image.lucide("xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(Color(hex: "6B7280"))
                     }
-
-                    Button(action: { showNotifications = true }) {
-                        GuestSettingsRow(icon: AppIcon.bell.sfSymbol, title: "Notifications", value: "", color: Color(hex: "F59E0B"))
-                    }
-                } header: {
-                    Text("App")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(Color(hex: "6B7280"))
-                        .textCase(.uppercase)
-                        .tracking(0.5)
                 }
             }
-            .listStyle(.insetGrouped)
-            .navigationTitle("Profil")
-            .navigationBarTitleDisplayMode(.large)
         }
         .fullScreenCover(isPresented: $showWelcome) {
             WelcomeView()
@@ -207,50 +281,81 @@ struct GuestSettingsView: View {
         .sheet(isPresented: $showLanguage) {
             LanguageSettingsGuestView()
         }
-        .sheet(isPresented: $showNotifications) {
-            NotificationSettingsGuestView()
+    }
+
+    // MARK: - Create Account Section
+
+    private var createAccountSection: some View {
+        Button(action: {
+            showWelcome = true
+        }) {
+            HStack(spacing: 16) {
+                // Icon with gradient background
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 56, height: 56)
+
+                    Image.lucide("user-plus")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.white)
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Créer un compte")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(Color(hex: "111827"))
+
+                    Text("Débloque toutes les fonctionnalités")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color(hex: "6B7280"))
+                }
+
+                Spacer()
+
+                Image.lucide("chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(Color(hex: "FFA040"))
+            }
+            .padding(20)
+            .background(
+                LinearGradient(
+                    colors: [Color(hex: "FFF4ED"), Color(hex: "FFF9F5")],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
         }
     }
-}
 
-// MARK: - Guest Settings Row Component
+    // MARK: - Settings Section
 
-struct GuestSettingsRow: View {
-    let icon: String
-    let title: String
-    let value: String
-    var color: Color = Color(hex: "6B7280")
-
-    var body: some View {
-        HStack(spacing: 16) {
-            // Icon container with color
-            ZStack {
-                Circle()
-                    .fill(color.opacity(0.12))
-                    .frame(width: 36, height: 36)
-
-                Image(systemName: icon)
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundColor(color)
-            }
-
+    private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
             Text(title)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundColor(Color(hex: "111827"))
-
-            Spacer()
-
-            if !value.isEmpty {
-                Text(value)
-                    .font(.system(size: 15))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-
-            Image(systemName: AppIcon.chevronRight.sfSymbol)
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(Color(hex: "D1D5DB"))
+                .foregroundColor(Color(hex: "6B7280"))
+                .padding(.leading, 4)
+
+            VStack(spacing: 0) {
+                content()
+            }
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
         }
-        .padding(.vertical, 4)
     }
 }
 

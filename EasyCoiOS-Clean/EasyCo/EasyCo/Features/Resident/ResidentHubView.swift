@@ -18,63 +18,22 @@ struct ResidentHubView: View {
     private let role: Theme.UserRole = .resident
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    ZStack {
-                        PinterestBackground(role: role, intensity: 0.18)
-                            .ignoresSafeArea()
+        Group {
+            if viewModel.isLoading {
+                ZStack {
+                    PinterestBackground(role: role, intensity: 0.18)
+                        .ignoresSafeArea()
 
-                        LoadingView(message: "Chargement du dashboard...")
-                    }
-                } else if let error = viewModel.error {
-                    errorView(error)
-                } else {
-                    contentView
+                    LoadingView(message: "Chargement du dashboard...")
                 }
+            } else if let error = viewModel.error {
+                errorView(error)
+            } else {
+                contentView
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    // Profile picture avec gradient
-                    Button(action: { showSettings = true }) {
-                        Circle()
-                            .fill(role.gradient)
-                            .frame(width: 40, height: 40)
-                            .overlay(
-                                Text("ME")
-                                    .font(Theme.PinterestTypography.caption(.bold))
-                                    .foregroundColor(.white)
-                            )
-                            .pinterestShadow(Theme.PinterestShadows.soft)
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 12) {
-                        // Notifications avec badge animé
-                        ZStack(alignment: .topTrailing) {
-                            PinterestIconButton("bell.fill", role: role, size: 44, action: {})
-
-                            if viewModel.getTotalAlerts() > 0 {
-                                Circle()
-                                    .fill(role.gradient)
-                                    .frame(width: 20, height: 20)
-                                    .overlay(
-                                        Text("\(viewModel.getTotalAlerts())")
-                                            .font(.system(size: 10, weight: .bold))
-                                            .foregroundColor(.white)
-                                    )
-                                    .offset(x: 6, y: -6)
-                                    .shadow(color: role.primaryColor.opacity(0.4), radius: 4, x: 0, y: 2)
-                            }
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
         .refreshable {
             await viewModel.refresh()
