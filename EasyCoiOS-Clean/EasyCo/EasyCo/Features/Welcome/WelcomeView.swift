@@ -206,7 +206,7 @@ struct AuthSheetView: View {
                             .blur(radius: 15)
 
                         // Logo officiel EasyCo
-                        Image("EasyCoHouseIcon")
+                        Image("IzzIcoHouseIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
@@ -500,7 +500,7 @@ struct LoginSheetView: View {
                                     .frame(width: 100, height: 100)
                                     .blur(radius: 20)
 
-                                Image("EasyCoHouseIcon")
+                                Image("IzzIcoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
@@ -734,7 +734,7 @@ struct SignupSheetView: View {
                                     .frame(width: 100, height: 100)
                                     .blur(radius: 20)
 
-                                Image("EasyCoHouseIcon")
+                                Image("IzzIcoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)

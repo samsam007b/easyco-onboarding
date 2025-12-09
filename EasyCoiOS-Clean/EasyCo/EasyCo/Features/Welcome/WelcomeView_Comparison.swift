@@ -99,7 +99,7 @@ struct AuthSheetView_V1_Purple: View {
 
             VStack(spacing: 24) {
                 // Logo
-                Image("EasyCoHouseIcon")
+                Image("IzzIcoHouseIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80, height: 80)
@@ -314,7 +314,7 @@ struct AuthSheetView_V2_Glass: View {
                         .frame(width: 120, height: 120)
                         .blur(radius: 20)
 
-                    Image("EasyCoHouseIcon")
+                    Image("IzzIcoHouseIcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 90, height: 90)
@@ -555,7 +555,7 @@ struct AuthSheetView_V3_Mix: View {
                         .frame(width: 140, height: 140)
                         .blur(radius: 25)
 
-                    Image("EasyCoHouseIcon")
+                    Image("IzzIcoHouseIcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 90, height: 90)
@@ -747,7 +747,7 @@ struct AuthSheetView_V4_White: View {
                 .padding(.bottom, 20)
 
             VStack(spacing: 24) {
-                Image("EasyCoHouseIcon")
+                Image("IzzIcoHouseIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 90, height: 90)
@@ -956,7 +956,7 @@ struct AuthSheetView_V5_Dark: View {
                         .frame(width: 120, height: 120)
                         .blur(radius: 20)
 
-                    Image("EasyCoHouseIcon")
+                    Image("IzzIcoHouseIcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 90, height: 90)

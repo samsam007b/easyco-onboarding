@@ -52,7 +52,7 @@ struct LoginView: View {
                         VStack(spacing: 0) {
                             // Logo and title
                             VStack(spacing: 16) {
-                                Image("EasyCoHouseIcon")
+                                Image("IzzIcoHouseIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)

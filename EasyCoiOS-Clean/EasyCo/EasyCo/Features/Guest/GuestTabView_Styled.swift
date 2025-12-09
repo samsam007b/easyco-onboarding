@@ -129,7 +129,7 @@ struct GuestTabView_Styled: View {
                                 )
 
                             // Icon
-                            Image("EasyCoHouseIcon")
+                            Image("IzzIcoHouseIcon")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 48, height: 48)

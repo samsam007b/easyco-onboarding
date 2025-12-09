@@ -156,7 +156,7 @@ struct SettingsView: View {
 
                     // App Info
                     VStack(spacing: 12) {
-                        Image("EasyCoHouseIcon")
+                        Image("IzzIcoHouseIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 60, height: 60)

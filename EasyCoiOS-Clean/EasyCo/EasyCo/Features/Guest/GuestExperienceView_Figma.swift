@@ -44,7 +44,7 @@ struct GuestExperienceView_Figma: View {
                 ToolbarItem(placement: .principal) {
                     // Logo EasyCo
                     HStack(spacing: 8) {
-                        Image("EasyCoHouseIcon")
+                        Image("IzzIcoHouseIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 32, height: 32)
@@ -217,7 +217,7 @@ struct GuestFeaturesTab_Figma: View {
                     )
                     .frame(width: 100, height: 100)
 
-                Image("EasyCoHouseIcon")
+                Image("IzzIcoHouseIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)

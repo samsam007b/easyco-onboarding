@@ -11,7 +11,7 @@ struct AboutView: View {
                 VStack(spacing: 32) {
                     // Logo et version
                     VStack(spacing: 16) {
-                        Image("EasyCoHouseIcon")
+                        Image("IzzIcoHouseIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100, height: 100)

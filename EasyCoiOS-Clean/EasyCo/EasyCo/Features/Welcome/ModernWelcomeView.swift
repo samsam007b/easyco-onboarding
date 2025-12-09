@@ -85,7 +85,7 @@ struct ModernWelcomeView: View {
                         .blur(radius: 15)
 
                     // Logo officiel
-                    Image("EasyCoHouseIcon")
+                    Image("IzzIcoHouseIcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 100)

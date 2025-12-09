@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "easyco-house.png",
+      "filename" : "izzico-house.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "easyco-house@2x.png",
+      "filename" : "izzico-house@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "easyco-house@3x.png",
+      "filename" : "izzico-house@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
