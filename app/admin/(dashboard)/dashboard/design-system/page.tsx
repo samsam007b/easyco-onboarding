@@ -1687,27 +1687,306 @@ function IconsSection() {
 
   return (
     <div className="space-y-6">
-      {/* Logo */}
+      {/* Header avec info */}
+      <div className="bg-gradient-to-br from-purple-900/50 via-orange-900/50 to-amber-900/50 rounded-xl border border-purple-700/50 p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <ImageIcon className="w-6 h-6 text-purple-400" />
+          <h2 className="text-2xl font-bold text-white">Logos & Identité visuelle</h2>
+        </div>
+        <p className="text-sm text-slate-300">
+          Système d'identité visuelle IzzIco avec gradient signature tricolore
+        </p>
+      </div>
+
+      {/* Logo FINAL - Mise en avant */}
+      <div className="bg-gradient-to-br from-purple-50 via-orange-50 to-amber-50 dark:from-purple-950/20 dark:via-orange-950/20 dark:to-amber-950/20 rounded-xl border-4 border-purple-500 p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Crown className="w-6 h-6 text-purple-600" />
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            ⭐ Logo textuel FINAL (Version signature)
+          </h3>
+          <Badge className="bg-gradient-to-r from-purple-600 to-orange-600 text-white border-0">
+            OFFICIEL
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Fond blanc */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-slate-700 dark:text-slate-300">Format bannière (600×200px)</h4>
+            <div className="bg-white rounded-xl p-8 flex items-center justify-center border-2 border-slate-200">
+              <img
+                src="/logos/izzico-logo-text-final.svg"
+                alt="Logo IzzIco Final - Fond blanc"
+                className="w-full max-w-md"
+              />
+            </div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 font-mono space-y-1">
+              <p>• Gradient horizontal (90deg)</p>
+              <p>• Stop orange : 55%</p>
+              <p>• Soft glow : 2px blur + offset</p>
+              <p>• Letter-spacing : -2px</p>
+            </div>
+          </div>
+
+          {/* Fond sombre */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-slate-700 dark:text-slate-300">Sur fond sombre</h4>
+            <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center">
+              <img
+                src="/logos/izzico-logo-text-final.svg"
+                alt="Logo IzzIco Final - Fond sombre"
+                className="w-full max-w-md"
+              />
+            </div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+              <p><strong>Couleurs :</strong></p>
+              <p>🟣 #9c5698 (Mauve Owner) → 0%</p>
+              <p>🟠 #FF5722 (Orange Resident) → 55%</p>
+              <p>🟡 #FFB10B (Jaune Searcher) → 100%</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Code SVG */}
+        <details className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <summary className="cursor-pointer font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <Code2 className="w-4 h-4" />
+            Voir le code SVG
+          </summary>
+          <pre className="mt-3 text-xs bg-slate-900 text-slate-100 p-4 rounded overflow-x-auto">
+{`<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="izzico-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9c5698;stop-opacity:1" />
+      <stop offset="55%" style="stop-color:#FF5722;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFB10B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="soft-glow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+      <feOffset in="blur" dx="2" dy="2" />
+    </filter>
+  </defs>
+  <text x="50%" y="50%"
+        font-family="Arial, Helvetica, sans-serif"
+        font-weight="900"
+        font-size="150"
+        fill="url(#izzico-gradient)"
+        filter="url(#soft-glow)"
+        style="letter-spacing: -2px;">
+    IzzIco
+  </text>
+</svg>`}
+          </pre>
+        </details>
+      </div>
+
+      {/* Logo compact pour headers */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Logo IzzIco</h3>
+        <div className="flex items-center gap-3 mb-4">
+          <Smartphone className="w-5 h-5 text-orange-400" />
+          <h3 className="text-lg font-bold text-white">Logo compact (pour headers)</h3>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <h4 className="font-semibold text-slate-400">Format compact (400×120px)</h4>
+            <div className="bg-white rounded-xl p-6 flex items-center justify-center border-2 border-slate-200">
+              <img
+                src="/logos/izzico-logo-compact.svg"
+                alt="Logo IzzIco Compact - Fond blanc"
+                className="w-full max-w-sm"
+              />
+            </div>
+            <p className="text-xs text-slate-500">
+              <strong>Usage :</strong> Headers web, navigation, signatures email
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="font-semibold text-slate-400">Sur fond sombre</h4>
+            <div className="bg-slate-900 rounded-xl p-6 flex items-center justify-center">
+              <img
+                src="/logos/izzico-logo-compact.svg"
+                alt="Logo IzzIco Compact - Fond sombre"
+                className="w-full max-w-sm"
+              />
+            </div>
+            <p className="text-xs text-slate-500">
+              Taille police : 90px • Glow : 1.5px • Letter-spacing : -1.5px
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Icône maison (favicon) */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Home className="w-5 h-5 text-amber-400" />
+          <h3 className="text-lg font-bold text-white">Icône maison (favicon & app)</h3>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center gap-3">
-            <div className="bg-white rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/izzico-logo-small.png" alt="Logo" className="h-12" />
+            <div className="bg-white rounded-xl p-6 w-full flex items-center justify-center border-2 border-slate-200">
+              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24" />
             </div>
-            <span className="text-sm text-slate-400">Sur fond clair</span>
+            <span className="text-sm text-slate-400">200×200px (SVG)</span>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <div className="bg-slate-900 rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/izzico-logo-small.png" alt="Logo" className="h-12" />
+            <div className="bg-slate-900 rounded-xl p-6 w-full flex items-center justify-center">
+              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24" />
             </div>
             <span className="text-sm text-slate-400">Sur fond sombre</span>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <div className="bg-gradient-to-br from-purple-600 to-orange-500 rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/izzico-icon-300.png" alt="Icon" className="h-12 w-12" />
+            <div className="bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 rounded-xl p-6 w-full flex items-center justify-center">
+              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24 drop-shadow-lg" />
             </div>
-            <span className="text-sm text-slate-400">Icone seule</span>
+            <span className="text-sm text-slate-400">Sur gradient</span>
+          </div>
+        </div>
+
+        <div className="mt-4 p-4 bg-slate-700/50 rounded-lg">
+          <p className="text-sm text-slate-300">
+            <strong>Usage :</strong> Favicon navigateur, icône d'app iOS/Android, notifications push, menus compacts
+          </p>
+          <p className="text-xs text-slate-400 mt-2">
+            Gradient diagonal (135deg) • Maison stylisée • Format carré parfait pour petites tailles
+          </p>
+        </div>
+      </div>
+
+      {/* Comparaison des versions textuelles */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <GitBranch className="w-5 h-5 text-blue-400" />
+          <h3 className="text-lg font-bold text-white">Évolution des versions textuelles</h3>
+        </div>
+
+        <div className="space-y-6">
+          {/* V1 - 50% */}
+          <div className="bg-slate-700/30 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge variant="outline" className="text-slate-400 border-slate-600">V1</Badge>
+              <span className="text-sm text-slate-400">Stop orange à 50%</span>
+            </div>
+            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
+              <img
+                src="/logos/izzico-logo-text-v1.svg"
+                alt="Logo V1"
+                className="w-full max-w-lg"
+              />
+            </div>
+            <p className="text-xs text-slate-500 mt-2">
+              Répartition équilibrée (50/50) • Sans effets • Gradient basique
+            </p>
+          </div>
+
+          {/* V2 - 55% */}
+          <div className="bg-slate-700/30 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge variant="outline" className="text-slate-400 border-slate-600">V2</Badge>
+              <span className="text-sm text-slate-400">Stop orange à 55%</span>
+            </div>
+            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
+              <img
+                src="/logos/izzico-logo-text-v2.svg"
+                alt="Logo V2"
+                className="w-full max-w-lg"
+              />
+            </div>
+            <p className="text-xs text-slate-500 mt-2">
+              Plus de mauve (55%) • Sans effets • Équilibre ajusté
+            </p>
+          </div>
+
+          {/* FINAL - 55% + effets */}
+          <div className="bg-gradient-to-r from-purple-900/50 to-orange-900/50 rounded-lg p-4 border-2 border-purple-500">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className="bg-purple-600 text-white border-0">FINAL</Badge>
+              <span className="text-sm text-white font-semibold">Stop orange à 55% + Soft glow + Letter-spacing</span>
+            </div>
+            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
+              <img
+                src="/logos/izzico-logo-text-final.svg"
+                alt="Logo Final"
+                className="w-full max-w-lg"
+              />
+            </div>
+            <p className="text-xs text-purple-200 mt-2">
+              ✨ Effets visuels modernes • Soft glow 2px • Letter-spacing -2px • Version officielle
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Guide d'utilisation */}
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <BookOpen className="w-5 h-5 text-green-400" />
+          <h3 className="text-lg font-bold text-white">Guide d'utilisation</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Logo textuel */}
+          <div className="bg-slate-700/50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Check className="w-5 h-5 text-green-400" />
+              <h4 className="font-semibold text-white">Logo textuel FINAL</h4>
+            </div>
+            <ul className="space-y-2 text-sm text-slate-300">
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-purple-400 shrink-0" />
+                Headers de site web (desktop)
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-purple-400 shrink-0" />
+                Bannières marketing et réseaux sociaux
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-purple-400 shrink-0" />
+                Signatures email professionnelles
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-purple-400 shrink-0" />
+                Présentations et documents
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-purple-400 shrink-0" />
+                Landing pages et pages marketing
+              </li>
+            </ul>
+          </div>
+
+          {/* Icône maison */}
+          <div className="bg-slate-700/50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Check className="w-5 h-5 text-green-400" />
+              <h4 className="font-semibold text-white">Icône maison</h4>
+            </div>
+            <ul className="space-y-2 text-sm text-slate-300">
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                Favicon navigateur (16px, 32px)
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                App icons iOS/Android
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                Notifications push
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                Menus compacts et navigation mobile
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowRight className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                Petits boutons et badges
+              </li>
+            </ul>
           </div>
         </div>
       </div>
