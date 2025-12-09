@@ -1685,23 +1685,23 @@ function IconsSection() {
     <div className="space-y-6">
       {/* Logo */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Logo EasyCo</h3>
+        <h3 className="text-lg font-bold text-white mb-4">Logo IzzIco</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center gap-3">
             <div className="bg-white rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/easyco-logo.svg" alt="Logo" className="h-12" />
+              <img src="/logos/izzico-logo-small.png" alt="Logo" className="h-12" />
             </div>
             <span className="text-sm text-slate-400">Sur fond clair</span>
           </div>
           <div className="flex flex-col items-center gap-3">
             <div className="bg-slate-900 rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/easyco-logo.svg" alt="Logo" className="h-12" />
+              <img src="/logos/izzico-logo-small.png" alt="Logo" className="h-12" />
             </div>
             <span className="text-sm text-slate-400">Sur fond sombre</span>
           </div>
           <div className="flex flex-col items-center gap-3">
             <div className="bg-gradient-to-br from-purple-600 to-orange-500 rounded-xl p-4 w-full flex items-center justify-center">
-              <img src="/logos/easyco-icon-300.png" alt="Icon" className="h-12 w-12" />
+              <img src="/logos/izzico-icon-300.png" alt="Icon" className="h-12 w-12" />
             </div>
             <span className="text-sm text-slate-400">Icone seule</span>
           </div>

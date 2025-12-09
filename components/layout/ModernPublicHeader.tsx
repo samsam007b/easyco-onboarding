@@ -121,8 +121,8 @@ export default function ModernPublicHeader({
             onClick={() => onNavigate?.(null)}
           >
             <Image
-              src="/logos/easyco-logo-small.png"
-              alt="EasyCo"
+              src="/logos/izzico-logo-small.png"
+              alt="IzzIco"
               width={90}
               height={23}
               className="transition-transform group-hover:scale-105"
