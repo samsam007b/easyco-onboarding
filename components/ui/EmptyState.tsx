@@ -148,11 +148,11 @@ export default function EmptyState({
                 transition={{ duration: 2, repeat: Infinity }}
                 className={`${sizes.iconContainer} mx-auto ${
                   variant === 'colorful'
-                    ? 'bg-gradient-to-br from-orange-100 to-purple-100'
+                    ? 'bg-gradient-to-br from-[#9c5698]/10 via-[#FF5722]/10 to-[#FFB10B]/10'
                     : 'bg-gray-100'
                 } rounded-full flex items-center justify-center`}
               >
-                <Icon className={`${sizes.icon} ${variant === 'colorful' ? 'text-orange-600' : 'text-gray-400'}`} />
+                <Icon className={`${sizes.icon} ${variant === 'colorful' ? 'text-[#FF5722]' : 'text-gray-400'}`} />
               </motion.div>
             )}
           </div>
@@ -177,11 +177,11 @@ export default function EmptyState({
               transition={{ duration: 2, repeat: Infinity }}
               className={`${sizes.iconContainer} mx-auto ${
                 variant === 'colorful'
-                  ? 'bg-gradient-to-br from-orange-100 to-purple-100'
+                  ? 'bg-gradient-to-br from-[#9c5698]/10 via-[#FF5722]/10 to-[#FFB10B]/10'
                   : 'bg-gray-100'
               } rounded-full flex items-center justify-center`}
             >
-              <Icon className={`${sizes.icon} ${variant === 'colorful' ? 'text-orange-600' : 'text-gray-400'}`} />
+              <Icon className={`${sizes.icon} ${variant === 'colorful' ? 'text-[#FF5722]' : 'text-gray-400'}`} />
             </motion.div>
           )}
         </div>
@@ -207,7 +207,7 @@ export default function EmptyState({
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 onClick={primaryAction.onClick}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 {primaryAction.icon && <primaryAction.icon className="w-5 h-5 mr-2" />}
                 {primaryAction.label}

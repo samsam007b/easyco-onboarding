@@ -20,8 +20,7 @@ linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)
 
 **Utilisation**:
 - ✅ Logo principal IzzIco
-- ✅ Bouton "S'inscrire" landing page
-- ✅ Bouton "Continuer" onboarding
+- ✅ Bouton "S'inscrire" landing page (élément générique multi-rôles)
 - ✅ Badge "Profil Vérifié"
 - ✅ Action "Super Like"
 - ✅ Empty states (icônes)
@@ -30,7 +29,7 @@ linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)
 **NE PAS utiliser pour**:
 - ❌ Navigation (trop de répétition)
 - ❌ Éléments répétitifs (perd son impact)
-- ❌ Boutons CTA par rôle (utiliser les gradients spécifiques ci-dessous)
+- ❌ Boutons CTA par rôle (y compris "Continuer" onboarding - utiliser les gradients CTA spécifiques ci-dessous)
 
 ---
 

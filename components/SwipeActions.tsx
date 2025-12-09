@@ -44,12 +44,12 @@ export default function SwipeActions({
         <X className="w-8 h-8 text-red-500" />
       </motion.button>
 
-      {/* Super Like Button */}
+      {/* Super Like Button - Gradient Signature IzzIco */}
       <motion.button
         whileHover={{ scale: 1.1, rotate: [0, -10, 10, -10, 0] }}
         whileTap={{ scale: 0.95 }}
         onClick={onSuperLike}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 flex items-center justify-center shadow-xl transition"
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B] hover:opacity-90 flex items-center justify-center shadow-xl transition"
         aria-label="Super Like"
       >
         <Star className="w-7 h-7 text-white fill-white" />

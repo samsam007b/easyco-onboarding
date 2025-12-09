@@ -27,17 +27,17 @@ const BADGE_STYLES = {
     label: 'Vérifié - Basique',
   },
   verified: {
-    bg: 'bg-blue-500',
-    border: 'border-blue-600',
+    bg: 'bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B]',
+    border: 'border-[#FF5722]',
     icon: 'text-white',
-    ring: 'ring-blue-200',
+    ring: 'ring-[#FFB10B]/30',
     label: 'Vérifié',
   },
   premium: {
-    bg: 'bg-blue-900',
-    border: 'border-blue-950',
+    bg: 'bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B]',
+    border: 'border-[#9c5698]',
     icon: 'text-white',
-    ring: 'ring-blue-400',
+    ring: 'ring-[#FFB10B]/50',
     label: 'Vérifié - Premium',
   },
 } as const;
