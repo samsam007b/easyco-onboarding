@@ -152,11 +152,11 @@ export default function LogoComparisonPage() {
           </div>
         </section>
 
-        {/* Version FINALE - Logo textuel avec soft glow */}
+        {/* Version FINALE - Logo textuel avec Z miroir et gradient diagonal */}
         <section className="mb-12 bg-gradient-to-br from-purple-50 via-orange-50 to-amber-50 rounded-2xl shadow-2xl p-8 border-4 border-purple-200">
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-3xl font-bold text-slate-900">
-              ⭐ Version FINALE - Avec soft glow
+              ⭐ Version FINALE - Z miroir + Gradient diagonal CODE
             </h2>
             <span className="px-4 py-1 bg-gradient-to-r from-purple-600 to-orange-600 text-white text-sm font-bold rounded-full">
               CHOIX FINAL
@@ -175,9 +175,9 @@ export default function LogoComparisonPage() {
                 />
               </div>
               <div className="mt-4 text-sm text-slate-600">
-                <p><strong>Type :</strong> Texte "IzzIco" avec effets</p>
+                <p><strong>Type :</strong> Texte "IzzIco" avec Z en miroir</p>
                 <p><strong>Dimensions :</strong> 600×200px (format bannière)</p>
-                <p><strong>Gradient :</strong> Horizontal (0deg, gauche→droite)</p>
+                <p><strong>Gradient :</strong> Diagonal 135deg (CODE officiel)</p>
               </div>
             </div>
             <div>
@@ -193,10 +193,10 @@ export default function LogoComparisonPage() {
               <div className="mt-4 text-sm text-slate-600 space-y-2">
                 <p><strong>✨ Caractéristiques :</strong></p>
                 <ul className="list-disc list-inside ml-2">
-                  <li>Stop orange à <strong>55%</strong></li>
-                  <li><strong>Soft glow</strong> (ombre portée 2px)</li>
-                  <li><strong>Letter-spacing -2px</strong></li>
-                  <li>Z inversés dans "IzzIco"</li>
+                  <li><strong>Z en miroir</strong> (effet symétrique)</li>
+                  <li>Gradient diagonal <strong>135deg</strong></li>
+                  <li>Stop orange à <strong>50%</strong> (CODE)</li>
+                  <li><strong>Pas d&apos;ombre</strong> (design épuré)</li>
                 </ul>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function LogoComparisonPage() {
             <p className="text-sm text-slate-600 mt-4">
               <strong>Dimensions :</strong> 400×120px •
               <strong> Taille police :</strong> 90px •
-              <strong> Glow :</strong> 1.5px (réduit)
+              <strong> Gradient :</strong> Diagonal 135deg (identique)
             </p>
           </div>
         </section>
