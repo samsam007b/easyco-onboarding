@@ -87,11 +87,16 @@ class AuthManager: ObservableObject {
             // Create profile
             try await createProfile(userData: userData)
 
-            // Fetch user profile
-            // TODO: Implement getCurrentUser in APIClient
-            // let user = try await apiClient.getCurrentUser()
-            // self.currentUser = user
+            // Fetch user profile from Supabase
+            print("👤 Fetching user profile after signup...")
+            let user = try await fetchUserProfileFromSupabase(
+                userId: session.user.id,
+                email: session.user.email,
+                token: session.accessToken
+            )
+            self.currentUser = user
             self.isAuthenticated = true
+            print("✅ User profile loaded: onboarding=\(user.onboardingCompleted), type=\(user.userType)")
 
             isLoading = false
 
@@ -458,6 +463,64 @@ class AuthManager: ObservableObject {
     private func createProfile(userData: [String: Any]) async throws {
         // TODO: Implement createProfile/updateProfile endpoint
         // try await apiClient.request(.updateProfile(userData: userData))
+    }
+
+    // MARK: - Update User Type
+
+    /// Updates the user's type (role) in Supabase and refreshes the current user
+    func updateUserType(_ userType: User.UserType) async throws {
+        guard let user = currentUser else {
+            print("❌ Cannot update user type: No current user")
+            throw AppError.authentication("No current user")
+        }
+
+        guard let token = EasyCoKeychainManager.shared.getAuthToken() else {
+            print("❌ Cannot update user type: No access token")
+            throw AppError.authentication("No access token")
+        }
+
+        print("🔄 Updating user type to: \(userType) for user: \(user.id)")
+
+        // Update user_type in public.users table
+        let url = URL(string: "\(AppConfig.supabaseURL)/rest/v1/users?id=eq.\(user.id)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(AppConfig.supabaseAnonKey, forHTTPHeaderField: "apikey")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("return=representation", forHTTPHeaderField: "Prefer")
+
+        let body = ["user_type": userType.rawValue]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("❌ Invalid response type")
+            throw AppError.network(.unknown(NSError(domain: "Invalid response", code: -1)))
+        }
+
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("🔄 Update response (\(httpResponse.statusCode)): \(responseString)")
+        }
+
+        guard httpResponse.statusCode == 200 || httpResponse.statusCode == 204 else {
+            print("❌ Failed to update user type: HTTP \(httpResponse.statusCode)")
+            throw NetworkError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+
+        // Refresh user profile
+        print("✅ User type updated, refreshing profile...")
+        let updatedUser = try await fetchUserProfileFromSupabase(
+            userId: user.id.uuidString,
+            email: user.email,
+            token: token
+        )
+
+        await MainActor.run {
+            self.currentUser = updatedUser
+            print("✅ User profile refreshed with new type: \(updatedUser.userType)")
+        }
     }
 }
 

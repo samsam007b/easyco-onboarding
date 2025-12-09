@@ -12,19 +12,42 @@ import SwiftUI
 struct RootView: View {
     @EnvironmentObject var authManager: AuthManager
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
+    @State private var isUpdatingRole = false
 
     var body: some View {
         ZStack {
-            if authManager.isLoading {
+            if authManager.isLoading || isUpdatingRole {
                 LoadingView()
             } else if authManager.isAuthenticated {
-                if let user = authManager.currentUser, !user.onboardingCompleted {
-                    // Show onboarding if not completed
-                    OnboardingContainerView(
-                        coordinator: OnboardingCoordinator(userType: user.userType)
-                    )
+                if let user = authManager.currentUser {
+                    // Check if user needs to select a role first
+                    if user.userType == .searcher && !user.onboardingCompleted {
+                        // Show role selection as first step for new users
+                        // (New users default to .searcher but haven't explicitly chosen)
+                        RoleSelectionView { selectedRole in
+                            Task {
+                                isUpdatingRole = true
+                                do {
+                                    try await authManager.updateUserType(selectedRole)
+                                    print("✅ Role selected and saved: \(selectedRole)")
+                                    isUpdatingRole = false
+                                } catch {
+                                    print("❌ Failed to save role: \(error)")
+                                    isUpdatingRole = false
+                                }
+                            }
+                        }
+                    } else if !user.onboardingCompleted {
+                        // Show onboarding if not completed
+                        OnboardingContainerView(
+                            coordinator: OnboardingCoordinator(userType: user.userType)
+                        )
+                    } else {
+                        // Show main app
+                        MainTabView()
+                    }
                 } else {
-                    // Show main app
+                    // Should not happen, but fallback to main tab
                     MainTabView()
                 }
             } else {
@@ -35,6 +58,9 @@ struct RootView: View {
         .onAppear {
             print("🔍 RootView appeared")
             print("📱 Auth status - isLoading: \(authManager.isLoading), isAuthenticated: \(authManager.isAuthenticated)")
+            if let user = authManager.currentUser {
+                print("📱 User type: \(user.userType), onboarding: \(user.onboardingCompleted)")
+            }
         }
     }
 }
