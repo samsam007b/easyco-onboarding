@@ -55,8 +55,10 @@
   --easy-orange: var(--easy-orange-500);
 
   /* ============================================
-     EasyCo Signature Gradient (Brand Identity)
+     🔒 IzzIco Signature Gradient (Brand Identity) - VERROUILLÉ
+     Version officielle choisie le 9 décembre 2025
      Uses the 3 role colors: Owner → Resident → Searcher
+     NE PAS MODIFIER sans approbation explicite
      ============================================ */
   --gradient-brand-start: var(--owner-primary);      /* Mauve #9c5698 */
   --gradient-brand-middle: var(--resident-primary);  /* Orange #FF5722 */

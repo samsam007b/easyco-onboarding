@@ -218,7 +218,7 @@ export default function AdminDesignSystemPage() {
         </div>
         <div>
           <h1 className="text-2xl font-bold text-white">Design System</h1>
-          <p className="text-sm text-slate-400">Documentation visuelle des composants EasyCo</p>
+          <p className="text-sm text-slate-400">Documentation visuelle des composants IzzIco</p>
         </div>
       </div>
 
@@ -637,13 +637,13 @@ function GradientSignatureEditor() {
     <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-bold text-white mb-1">Gradient Signature EasyCo</h3>
+          <h3 className="text-lg font-bold text-white mb-1">🔒 Gradient Signature IzzIco - VERROUILLÉ</h3>
           <p className="text-sm text-slate-400">
-            Mode Preview : Testez les gradients sans modifier les valeurs officielles
+            Version officielle choisie le 9 décembre 2025 • Mode Preview : Testez sans modifier les valeurs officielles
           </p>
         </div>
-        <div className="px-3 py-1.5 bg-blue-500/20 border border-blue-500/40 rounded-lg">
-          <span className="text-xs text-blue-300 font-medium">🎨 Mode Expérimentation</span>
+        <div className="px-3 py-1.5 bg-green-500/20 border border-green-500/40 rounded-lg">
+          <span className="text-xs text-green-300 font-medium">✅ Version Officielle</span>
         </div>
       </div>
 
@@ -1041,7 +1041,7 @@ function ColorAuditCard({ hex, name, usage, justification, status, location }: C
 function ColorsSection() {
   return (
     <div className="space-y-8">
-      {/* GRADIENT SIGNATURE EASYCO - En premier pour configurer les couleurs */}
+      {/* 🔒 GRADIENT SIGNATURE IZZICO - En premier pour configurer les couleurs */}
       <GradientSignatureEditor />
 
       {/* Semantic Colors */}
@@ -1101,37 +1101,41 @@ function ColorsSection() {
           </div>
         </div>
 
-        {/* 1. COULEURS PRINCIPALES DES ROLES */}
+        {/* 1. COULEURS PRINCIPALES DES ROLES - GRADIENT SIGNATURE IZZICO 🔒 */}
         <div className="mb-8">
           <h4 className="text-md font-semibold text-white mb-3 flex items-center gap-2">
-            <span className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 via-orange-500 to-yellow-500"></span>
-            1. Couleurs principales des roles
+            <span className="w-6 h-6 rounded bg-gradient-to-r from-[#9c5698] via-[#FF5722] to-[#FFB10B]"></span>
+            1. 🔒 Couleurs Gradient Signature IzzIco (Verrouillées)
           </h4>
-          <p className="text-xs text-slate-500 mb-4">Ces couleurs forment le coeur de l'identite visuelle.</p>
+          <p className="text-xs text-slate-500 mb-4">
+            Ces couleurs forment le cœur de l'identité visuelle IzzIco.
+            <strong className="text-green-400"> Version CODE officielle (9 déc 2025)</strong> -
+            Gradient: <code className="text-green-400 font-mono text-[10px]">linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)</code>
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <ColorAuditCard
               hex="#9c5698"
               name="Owner Primary (Mauve)"
-              usage="Couleur principale interface proprietaire"
-              justification="Couleur signature du gradient - debut. Evoque la royaute, la possession."
+              usage="Couleur principale interface propriétaire + 0% du gradient signature"
+              justification="🔒 VERROUILLÉ - Couleur signature du gradient IzzIco (début). Évoque la royauté, la possession."
               status="keep"
-              location="globals.css, tailwind.config"
+              location="globals.css, tailwind.config, lib/design-system/gradients.ts"
             />
             <ColorAuditCard
               hex="#FF5722"
-              name="Resident Primary (Orange/Coral)"
-              usage="Couleur principale interface resident"
-              justification="Couleur signature du gradient - centre. Evoque la chaleur, le foyer."
+              name="Resident Primary (Orange)"
+              usage="Couleur principale interface résident + 50% du gradient signature"
+              justification="🔒 VERROUILLÉ - Couleur signature du gradient IzzIco (centre). Évoque la chaleur, le foyer."
               status="keep"
-              location="globals.css, tailwind.config"
+              location="globals.css, tailwind.config, lib/design-system/gradients.ts"
             />
             <ColorAuditCard
               hex="#FFB10B"
-              name="Searcher Primary (Amber)"
-              usage="Couleur principale interface chercheur"
-              justification="Couleur signature du gradient - fin. Evoque l'energie, la recherche."
+              name="Searcher Primary (Jaune)"
+              usage="Couleur principale interface chercheur + 100% du gradient signature"
+              justification="🔒 VERROUILLÉ - Couleur signature du gradient IzzIco (fin). Évoque l'énergie, la recherche."
               status="keep"
-              location="globals.css, tailwind.config"
+              location="globals.css, tailwind.config, lib/design-system/gradients.ts"
             />
           </div>
         </div>
@@ -1381,7 +1385,7 @@ function ColorsSection() {
                 </div>
               </div>
               <p className="text-xs text-slate-500 italic">
-                Justification: C'est LE gradient signature EasyCo. A utiliser pour les CTA principaux et elements de marque.
+                🔒 Justification: C'est LE gradient signature IzzIco VERROUILLÉ (9 déc 2025). À utiliser pour les CTA principaux et éléments de marque.
               </p>
             </div>
           </div>
@@ -1982,9 +1986,9 @@ function ButtonsSection() {
       </div>
 
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <h3 className="text-lg font-bold text-white mb-4">Gradient Signature EasyCo</h3>
+        <h3 className="text-lg font-bold text-white mb-4">🔒 Gradient Signature IzzIco - VERROUILLÉ</h3>
         <p className="text-sm text-slate-400 mb-4">
-          Gradient extrait du logo original (globals.css). Les 3 boutons utilisent le MEME gradient avec backgroundPosition pour afficher chaque portion.
+          Version officielle (9 déc 2025) • Gradient extrait du logo original (globals.css). Les 3 boutons utilisent le MEME gradient avec backgroundPosition pour afficher chaque portion.
         </p>
 
         {/* Le gradient signature complet */}
@@ -4342,7 +4346,7 @@ function GradientUsageSection() {
         {/* Règle d'or */}
         <div className="mb-8 p-4 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 rounded-xl">
           <h4 className="font-bold text-white mb-2 flex items-center gap-2"><Crown className="w-5 h-5 text-yellow-400" />Règle d'or</h4>
-          <p className="text-sm text-slate-300">Le gradient signature représente <strong>l'ensemble des rôles EasyCo</strong>. Utilisé uniquement pour les <strong>moments clés</strong> et <strong>CTA principaux</strong>.</p>
+          <p className="text-sm text-slate-300">🔒 Le gradient signature IzzIco représente <strong>l'ensemble des 3 rôles</strong> (Owner/Resident/Searcher). <strong className="text-green-400">Version CODE verrouillée (9 déc 2025)</strong>. Utilisé uniquement pour les <strong>moments clés</strong> et <strong>CTA principaux</strong>.</p>
         </div>
 
         {/* Utilisations recommandées */}

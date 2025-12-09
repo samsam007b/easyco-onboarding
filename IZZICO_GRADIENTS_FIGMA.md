@@ -2,16 +2,26 @@
 
 ## 🎨 Gradient Signature de Marque (Logo Principal)
 
-### Brand Gradient (Tricolore)
+### Brand Gradient (Tricolore) - VERSION OFFICIELLE ✅
 **Direction**: Top-Left → Bottom-Right (Diagonal 135°)
+
+**🔒 VERSION VERROUILLÉE - NE PAS MODIFIER**
+Cette version a été choisie comme officielle le 9 décembre 2025.
 
 | Stop | Couleur | Hex | RGB | Description |
 |------|---------|-----|-----|-------------|
-| 0% | Mauve | `#9256A4` | RGB(146, 86, 164) | Owner Primary |
-| 50% | Orange | `#FF6F3C` | RGB(255, 111, 60) | Resident Orange |
+| 0% | Mauve | `#9c5698` | RGB(156, 86, 152) | Owner Primary |
+| 50% | Orange | `#FF5722` | RGB(255, 87, 34) | Resident Orange |
 | 100% | Jaune | `#FFB10B` | RGB(255, 177, 11) | Searcher Yellow |
 
+**CSS Officiel**: `linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)`
+
 **Usage**: Logo principal IzzIco, branding général, éléments multi-rôles
+
+---
+
+### ⚠️ Version Alternative (Non utilisée)
+Une version précédente existait avec `#9256A4` / `#FF6F3C` / `#FFB10B` mais a été **abandonnée** en faveur de la version ci-dessus.
 
 ---
 
