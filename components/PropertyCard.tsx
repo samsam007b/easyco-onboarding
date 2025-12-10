@@ -439,12 +439,13 @@ function PropertyCard({
                 e.stopPropagation();
                 window.location.href = `/properties/${property.id}`;
               }}
-              className="relative px-6 py-3 bg-gradient-to-br from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-sm font-semibold rounded-full transition-all shadow-[0_8px_20px_-6px_rgba(251,146,60,0.5)] hover:shadow-[0_12px_28px_-8px_rgba(251,146,60,0.6)] hover:scale-105 active:scale-95"
+              className="group relative px-8 py-4 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
               style={{
-                boxShadow: '0 8px 20px -6px rgba(251, 146, 60, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)'
+                background: 'rgba(255, 111, 60, 0.85)',
+                boxShadow: '0 10px 30px -5px rgba(255, 111, 60, 0.4), 0 4px 10px -2px rgba(255, 111, 60, 0.3)'
               }}
             >
-              Voir détails
+              <span className="relative z-10">Voir détails</span>
             </button>
           </div>
         </div>
