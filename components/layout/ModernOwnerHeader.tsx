@@ -165,8 +165,8 @@ export default function ModernOwnerHeader({
             <Image
               src="/logos/izzico-logo-small.png"
               alt="IzzIco"
-              width={90}
-              height={28}
+              width={110}
+              height={34}
               className="transition-transform group-hover:scale-105"
               priority
             />
