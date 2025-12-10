@@ -32,9 +32,9 @@ const sizeClasses = {
 };
 
 const logoSources = {
-  'text-full': '/logos/izzico-logo-text-final.svg',
-  'text-compact': '/logos/izzico-logo-compact.svg',
-  icon: '/logos/izzico-icon.svg',
+  'text-full': '/logos/easyco-logo-final.png',
+  'text-compact': '/logos/easyco-logo-final.png',
+  icon: '/logos/easyco-icon.png',
 };
 
 /**

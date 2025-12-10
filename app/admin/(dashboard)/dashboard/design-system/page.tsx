@@ -165,6 +165,7 @@ import {
   PenTool,
   Trophy,
   PartyPopper,
+  Code,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -1696,6 +1697,113 @@ function IconsSection() {
         <p className="text-sm text-slate-300">
           Système d'identité visuelle IzzIco avec gradient signature tricolore
         </p>
+      </div>
+
+      {/* NOUVEAU LOGO 2025 - En test */}
+      <div className="bg-gradient-to-br from-purple-900 via-orange-900 to-yellow-900 rounded-xl border-4 border-yellow-500 p-6 shadow-2xl">
+        <div className="flex items-center gap-3 mb-4">
+          <Sparkles className="w-8 h-8 text-yellow-400" />
+          <h3 className="text-2xl font-bold text-white">
+            🚀 NOUVEAU LOGO 2025 (En validation)
+          </h3>
+          <Badge className="bg-yellow-500 text-black border-0 animate-pulse">
+            GEMINI AI
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Fond blanc */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-white">Sur fond blanc</h4>
+            <div className="bg-white rounded-xl p-8 flex items-center justify-center border-2 border-slate-200">
+              <img
+                src="/logos/easyco-logo-final.png"
+                alt="Nouveau Logo IzzIco 2025 - Fond blanc"
+                className="w-full max-w-md"
+              />
+            </div>
+          </div>
+
+          {/* Fond sombre */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-white">Sur fond sombre</h4>
+            <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center border-2 border-slate-700">
+              <img
+                src="/logos/easyco-logo-final.png"
+                alt="Nouveau Logo IzzIco 2025 - Fond sombre"
+                className="w-full max-w-md"
+              />
+            </div>
+          </div>
+
+          {/* Fond gradient */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-white">Sur gradient</h4>
+            <div className="bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 rounded-xl p-8 flex items-center justify-center">
+              <img
+                src="/logos/easyco-logo-final.png"
+                alt="Nouveau Logo IzzIco 2025 - Gradient"
+                className="w-full max-w-md"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Caractéristiques */}
+          <div className="bg-black/30 rounded-xl p-4">
+            <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+              <Check className="w-5 h-5 text-green-400" />
+              Caractéristiques
+            </h4>
+            <ul className="text-sm text-slate-300 space-y-2">
+              <li>✅ Format SVG vectoriel (3712×1152px)</li>
+              <li>✅ Fond transparent natif</li>
+              <li>✅ Dégradé violet → orange → jaune</li>
+              <li>✅ Taille fichier: 446KB</li>
+              <li>✅ Scalable sans perte de qualité</li>
+              <li>✅ Génération Gemini AI</li>
+            </ul>
+          </div>
+
+          {/* Utilisation */}
+          <div className="bg-black/30 rounded-xl p-4">
+            <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+              <Code className="w-5 h-5 text-blue-400" />
+              Utilisation
+            </h4>
+            <div className="text-sm space-y-2">
+              <div className="bg-slate-900 rounded p-2 font-mono text-xs text-green-400">
+                <code>{`<IzzicoLogo variant="text-full" size="lg" />`}</code>
+              </div>
+              <div className="bg-slate-900 rounded p-2 font-mono text-xs text-slate-400">
+                src: /logos/easyco-logo-final.png
+              </div>
+              <p className="text-slate-300">
+                Component: <code className="bg-slate-900 px-2 py-1 rounded">components/ui/IzzicoLogo.tsx</code>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions de validation */}
+        <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+          <p className="text-yellow-400 font-semibold mb-2">⚠️ EN ATTENTE DE VALIDATION</p>
+          <p className="text-sm text-slate-300 mb-4">
+            Ce logo est actuellement en test. Après validation, il remplacera l'ancien logo dans toute l'application.
+          </p>
+          <div className="flex gap-3">
+            <Button variant="outline" className="border-green-500 text-green-400 hover:bg-green-500/10">
+              ✅ Valider et déployer
+            </Button>
+            <Button variant="outline" className="border-red-500 text-red-400 hover:bg-red-500/10">
+              ❌ Rejeter
+            </Button>
+            <Button variant="outline" className="border-blue-500 text-blue-400 hover:bg-blue-500/10">
+              🔄 Comparer avec l'ancien
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Logo FINAL - Mise en avant */}

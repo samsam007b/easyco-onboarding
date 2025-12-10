@@ -195,47 +195,19 @@ export default function ModernResidentHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo with SVG Gradient */}
+          {/* Logo IzzIco */}
           <Link
             href="/dashboard/resident"
             className="flex items-center group"
           >
-            <svg
-              width="120"
-              height="28"
-              viewBox="0 0 120 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <Image
+              src="/logos/izzico-logo-small.png"
+              alt="IzzIco"
+              width={90}
+              height={28}
               className="transition-transform group-hover:scale-105"
-            >
-              <defs>
-                <linearGradient id="residentLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#D97B6F" />
-                  <stop offset="50%" stopColor="#E8865D" />
-                  <stop offset="100%" stopColor="#FF8C4B" />
-                </linearGradient>
-              </defs>
-              <text
-                x="0"
-                y="20"
-                fontFamily="system-ui, -apple-system, sans-serif"
-                fontSize="24"
-                fontWeight="700"
-                fill="url(#residentLogoGradient)"
-              >
-                Easy
-              </text>
-              <text
-                x="54"
-                y="20"
-                fontFamily="system-ui, -apple-system, sans-serif"
-                fontSize="24"
-                fontWeight="300"
-                fill="url(#residentLogoGradient)"
-              >
-                Co
-              </text>
-            </svg>
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

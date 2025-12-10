@@ -168,8 +168,7 @@ struct OwnerTabView: View {
                 case 0:
                     NavigationStack {
                         OwnerDashboardView()
-                            .navigationTitle("Dashboard")
-                            .navigationBarTitleDisplayMode(.large)
+                            .toolbar(.hidden, for: .navigationBar)
                     }
                 case 1:
                     NavigationStack {

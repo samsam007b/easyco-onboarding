@@ -157,26 +157,19 @@ export default function ModernOwnerHeader({
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo IzzIco */}
           <Link
             href="/dashboard/owner"
             className="flex items-center group"
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-200/30 to-pink-200/30 opacity-0 group-hover:opacity-50 transition-opacity rounded-lg blur-sm"></div>
-              <h1
-                className="relative text-2xl font-bold transition-transform group-hover:scale-105"
-                style={{
-                  background: 'var(--gradient-owner)',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: 'transparent'
-                }}
-              >
-                EasyCo
-              </h1>
-            </div>
+            <Image
+              src="/logos/izzico-logo-small.png"
+              alt="IzzIco"
+              width={90}
+              height={28}
+              className="transition-transform group-hover:scale-105"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

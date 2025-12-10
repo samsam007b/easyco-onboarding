@@ -124,7 +124,7 @@ export default function ModernPublicHeader({
               src="/logos/izzico-logo-small.png"
               alt="IzzIco"
               width={90}
-              height={23}
+              height={28}
               className="transition-transform group-hover:scale-105"
               priority
             />

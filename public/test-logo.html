@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Logo Transparent</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+        }
+        .test-section {
+            margin-bottom: 40px;
+        }
+        .test-section h2 {
+            margin-bottom: 20px;
+        }
+        .logo-container {
+            display: inline-block;
+            padding: 20px;
+            margin: 10px;
+        }
+        .white { background: white; }
+        .gray { background: #f0f0f0; }
+        .dark { background: #1a1a1a; }
+        .gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .checkered {
+            background-image: 
+                linear-gradient(45deg, #ccc 25%, transparent 25%),
+                linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ccc 75%),
+                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        img {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de Transparence du Logo IzzIco</h1>
+    
+    <div class="test-section">
+        <h2>Logo sur différents fonds</h2>
+        
+        <div class="logo-container checkered">
+            <h3>Damier (transparent = damier visible)</h3>
+            <img src="/logos/izzico-logo-small.png" alt="Logo" width="180" height="46">
+        </div>
+        
+        <div class="logo-container white">
+            <h3>Fond Blanc</h3>
+            <img src="/logos/izzico-logo-small.png" alt="Logo" width="180" height="46">
+        </div>
+        
+        <div class="logo-container gray">
+            <h3>Fond Gris</h3>
+            <img src="/logos/izzico-logo-small.png" alt="Logo" width="180" height="46">
+        </div>
+        
+        <div class="logo-container dark">
+            <h3 style="color: white;">Fond Sombre</h3>
+            <img src="/logos/izzico-logo-small.png" alt="Logo" width="180" height="46">
+        </div>
+        
+        <div class="logo-container gradient">
+            <h3 style="color: white;">Fond Gradient</h3>
+            <img src="/logos/izzico-logo-small.png" alt="Logo" width="180" height="46">
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Logo HD sur damier</h2>
+        <div class="logo-container checkered">
+            <img src="/logos/easyco-logo-final.png" alt="Logo HD" width="400" height="124">
+        </div>
+    </div>
+
+    <p><strong>Si vous voyez un rectangle blanc autour du logo :</strong></p>
+    <ul>
+        <li>Le PNG n'est pas transparent</li>
+        <li>OU le cache du navigateur affiche une ancienne version</li>
+    </ul>
+    
+    <p><strong>Si le damier est visible autour du logo :</strong></p>
+    <ul>
+        <li>✅ Le PNG est bien transparent !</li>
+    </ul>
+
+</body>
+</html>
