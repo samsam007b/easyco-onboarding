@@ -16,12 +16,12 @@ export default function LandingPageAudit() {
     searcher: { name: 'Searcher (Chercheur)', current: 'Non défini', hex: '#FFD249', role: 'searcher' },
   };
 
-  // Couleurs du design system (nouvelle charte)
+  // Couleurs du design system (nouvelle charte - couleurs dominantes exactes)
   const designSystemColors = {
-    owner: { hex: '#9c5698', rgb: 'rgb(156, 86, 152)', name: 'Mauve (Owner Primary)' },
-    resident: { hex: '#FF5722', rgb: 'rgb(255, 87, 34)', name: 'Orange (Resident Primary)' },
-    searcher: { hex: '#FFB10B', rgb: 'rgb(255, 177, 11)', name: 'Jaune (Searcher Primary)' },
-    signature: { gradient: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)', name: 'Gradient Signature' },
+    owner: { hex: '#ad5684', rgb: 'rgb(173, 86, 132)', name: 'Mauve (Owner Primary)' },
+    resident: { hex: '#ee5736', rgb: 'rgb(238, 87, 54)', name: 'Orange (Resident Primary)' },
+    searcher: { hex: '#ffa50e', rgb: 'rgb(255, 165, 14)', name: 'Jaune (Searcher Primary)' },
+    signature: { gradient: 'linear-gradient(135deg, #ad5684 0%, #ee5736 50%, #ffa50e 100%)', name: 'Gradient Signature' },
   };
 
   // Détection des incohérences
@@ -29,37 +29,37 @@ export default function LandingPageAudit() {
     {
       type: 'warning',
       title: 'Bouton "Je loue mon bien" (Owner)',
-      description: `Utilise rgba(110, 86, 207, 0.6) au lieu de ${designSystemColors.owner.hex}`,
+      description: `Utilise rgba(110, 86, 207, 0.6) au lieu de la couleur dominante ${designSystemColors.owner.hex}`,
       impact: 'Couleur owner différente de la charte',
-      fix: `Changer vers ${designSystemColors.owner.hex} sans transparence`,
+      fix: `Changer vers ${designSystemColors.owner.hex} (opaque ou glassmorphism 85%)`,
     },
     {
       type: 'warning',
       title: 'Bouton "Je suis résident" (Resident)',
-      description: `Utilise rgba(255, 111, 60, 0.6) au lieu de ${designSystemColors.resident.hex}`,
-      impact: 'Couleur resident légèrement différente',
-      fix: `Changer vers ${designSystemColors.resident.hex} sans transparence`,
+      description: `Utilise rgba(255, 111, 60, 0.6) au lieu de la couleur dominante ${designSystemColors.resident.hex}`,
+      impact: 'Couleur resident différente de la charte',
+      fix: `Changer vers ${designSystemColors.resident.hex} (opaque ou glassmorphism 85%)`,
     },
     {
       type: 'error',
       title: 'Bouton Searcher manquant',
       description: 'Pas de bouton "Je cherche un logement" dans le hero',
       impact: 'Rôle searcher non représenté visuellement',
-      fix: `Ajouter bouton avec ${designSystemColors.searcher.hex}`,
+      fix: `Ajouter bouton avec ${designSystemColors.searcher.hex} (opaque ou glassmorphism 85%)`,
+    },
+    {
+      type: 'info',
+      title: 'Choix du style : Opaque vs Glassmorphism',
+      description: 'Décider entre couleurs opaques (plus vives) ou glassmorphism (plus moderne)',
+      impact: 'Cohérence visuelle et lisibilité',
+      fix: 'Tester les deux options et choisir celle qui correspond le mieux au design global',
     },
     {
       type: 'info',
       title: 'Bouton "Rechercher" principal',
-      description: 'Devrait utiliser le gradient signature',
-      impact: 'Bouton CTA principal',
-      fix: 'Appliquer le gradient signature IzzIco',
-    },
-    {
-      type: 'warning',
-      title: 'Transparence des boutons',
-      description: 'Les boutons utilisent backdrop-blur avec transparence',
-      impact: 'Rend les couleurs moins vives et lisibles',
-      fix: 'Utiliser couleurs pleines (opacité 1.0) pour meilleure visibilité',
+      description: 'Devrait utiliser le gradient signature des 3 couleurs',
+      impact: 'Bouton CTA principal - identité visuelle',
+      fix: `Appliquer gradient : ${designSystemColors.signature.gradient}`,
     },
   ];
 
@@ -142,18 +142,18 @@ export default function LandingPageAudit() {
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong>Appliquer les couleurs du design system</strong>
+                    <strong>Appliquer les couleurs dominantes exactes</strong>
                     <p className="text-sm text-slate-400">
-                      Utiliser les couleurs dominantes par rôle : Mauve (#9c5698), Orange (#FF5722), Jaune (#FFB10B)
+                      Utiliser les couleurs dominantes par rôle : Owner (#ad5684), Resident (#ee5736), Searcher (#ffa50e)
                     </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong>Supprimer les gradients des boutons par rôle</strong>
+                    <strong>Choisir entre couleurs opaques ou glassmorphism</strong>
                     <p className="text-sm text-slate-400">
-                      Utiliser uniquement la couleur dominante, sauf pour le bouton "S'inscrire" (gradient signature)
+                      Option A : Couleurs vives opaques pour maximum de visibilité | Option B : Glassmorphism avec 85% opacité pour effet moderne
                     </p>
                   </div>
                 </li>
@@ -175,7 +175,81 @@ export default function LandingPageAudit() {
         {activeSection === 'buttons' && (
           <div className="space-y-6">
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-4">🔘 Boutons CTA de la landing page</h2>
+              <h2 className="text-2xl font-bold mb-6">🔘 Boutons CTA de la landing page</h2>
+
+              {/* Comparaison rapide */}
+              <div className="bg-gradient-to-r from-purple-900/30 via-orange-900/30 to-amber-900/30 rounded-xl border border-purple-700/30 p-6 mb-8">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  ⚖️ Comparaison : Opaque vs Glassmorphism
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Version Opaque */}
+                  <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700">
+                    <h4 className="font-bold mb-4 text-green-400">OPTION A - Couleurs opaques</h4>
+                    <div className="space-y-4">
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl transition-all hover:scale-105"
+                        style={{ background: designSystemColors.owner.hex }}
+                      >
+                        Owner
+                      </button>
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl transition-all hover:scale-105"
+                        style={{ background: designSystemColors.resident.hex }}
+                      >
+                        Resident
+                      </button>
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl transition-all hover:scale-105"
+                        style={{ background: designSystemColors.searcher.hex }}
+                      >
+                        Searcher
+                      </button>
+                    </div>
+                    <div className="mt-4 text-sm text-slate-300">
+                      <strong>Avantages :</strong>
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        <li>Couleurs vives et vibrantes</li>
+                        <li>Excellente lisibilité</li>
+                        <li>Impact visuel maximum</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Version Glassmorphism */}
+                  <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700">
+                    <h4 className="font-bold mb-4 text-blue-400">OPTION B - Glassmorphism (85% opacité)</h4>
+                    <div className="space-y-4">
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                        style={{ background: `${designSystemColors.owner.hex}d9` }}
+                      >
+                        Owner
+                      </button>
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                        style={{ background: `${designSystemColors.resident.hex}d9` }}
+                      >
+                        Resident
+                      </button>
+                      <button
+                        className="w-full text-white font-bold px-6 py-4 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                        style={{ background: `${designSystemColors.searcher.hex}d9` }}
+                      >
+                        Searcher
+                      </button>
+                    </div>
+                    <div className="mt-4 text-sm text-slate-300">
+                      <strong>Avantages :</strong>
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        <li>Effet verre moderne et élégant</li>
+                        <li>Laisse transparaître l'arrière-plan</li>
+                        <li>Cohérent avec le style glassmorphism de la landing</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-8">
                 {/* Bouton Owner ACTUEL */}
@@ -207,11 +281,11 @@ export default function LandingPageAudit() {
                   </div>
                 </div>
 
-                {/* Bouton Owner PROPOSÉ */}
+                {/* Bouton Owner PROPOSÉ - Version Opaque */}
                 <div>
                   <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">PROPOSÉ</span>
-                    Je loue mon bien (Owner) - Nouvelle version
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">OPTION A</span>
+                    Je loue mon bien (Owner) - Version opaque
                   </h3>
                   <div className="bg-slate-900 rounded-lg p-6 mb-3">
                     <button
@@ -231,9 +305,39 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Solution:</strong> Couleur owner du design system, sans transparence
+                      <strong>✅ Avantages:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.owner.hex}</code>
+                  </div>
+                </div>
+
+                {/* Bouton Owner PROPOSÉ - Version Glassmorphism */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">OPTION B</span>
+                    Je loue mon bien (Owner) - Version glassmorphism
+                  </h3>
+                  <div className="bg-slate-900 rounded-lg p-6 mb-3">
+                    <button
+                      className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                      style={{
+                        background: `${designSystemColors.owner.hex}d9`,
+                        boxShadow: `0 10px 30px -5px ${designSystemColors.owner.hex}40, 0 4px 10px -2px ${designSystemColors.owner.hex}30`,
+                      }}
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                          <Building2 className="w-4 h-4" />
+                        </div>
+                        <span className="text-base">Je loue mon bien</span>
+                      </div>
+                    </button>
+                  </div>
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
+                    <p className="text-green-300 mb-2">
+                      <strong>✅ Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                    </p>
+                    <code className="text-xs text-green-200">background: {designSystemColors.owner.hex}d9 (85% opacité) + backdrop-blur-xl</code>
                   </div>
                 </div>
 
@@ -264,11 +368,11 @@ export default function LandingPageAudit() {
                   </div>
                 </div>
 
-                {/* Bouton Resident PROPOSÉ */}
+                {/* Bouton Resident PROPOSÉ - Version Opaque */}
                 <div>
                   <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">PROPOSÉ</span>
-                    Je suis résident (Resident) - Nouvelle version
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">OPTION A</span>
+                    Je suis résident (Resident) - Version opaque
                   </h3>
                   <div className="bg-slate-900 rounded-lg p-6 mb-3">
                     <button
@@ -288,17 +392,47 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Solution:</strong> Couleur resident du design system, sans transparence
+                      <strong>✅ Avantages:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.resident.hex}</code>
                   </div>
                 </div>
 
-                {/* Bouton Searcher MANQUANT */}
+                {/* Bouton Resident PROPOSÉ - Version Glassmorphism */}
                 <div>
                   <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">MANQUANT</span>
-                    Je cherche un logement (Searcher)
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">OPTION B</span>
+                    Je suis résident (Resident) - Version glassmorphism
+                  </h3>
+                  <div className="bg-slate-900 rounded-lg p-6 mb-3">
+                    <button
+                      className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                      style={{
+                        background: `${designSystemColors.resident.hex}d9`,
+                        boxShadow: `0 10px 30px -5px ${designSystemColors.resident.hex}40, 0 4px 10px -2px ${designSystemColors.resident.hex}30`,
+                      }}
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                          <Home className="w-4 h-4" />
+                        </div>
+                        <span className="text-base">Je suis résident</span>
+                      </div>
+                    </button>
+                  </div>
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
+                    <p className="text-green-300 mb-2">
+                      <strong>✅ Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                    </p>
+                    <code className="text-xs text-green-200">background: {designSystemColors.resident.hex}d9 (85% opacité) + backdrop-blur-xl</code>
+                  </div>
+                </div>
+
+                {/* Bouton Searcher PROPOSÉ - Version Opaque */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">NOUVEAU - OPTION A</span>
+                    Je cherche un logement (Searcher) - Version opaque
                   </h3>
                   <div className="bg-slate-900 rounded-lg p-6 mb-3">
                     <button
@@ -318,9 +452,39 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
                     <p className="text-yellow-300 mb-2">
-                      <strong>⚠️ À ajouter:</strong> Bouton searcher pour compléter les 3 rôles
+                      <strong>⚠️ À ajouter:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-yellow-200">background: {designSystemColors.searcher.hex}</code>
+                  </div>
+                </div>
+
+                {/* Bouton Searcher PROPOSÉ - Version Glassmorphism */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">NOUVEAU - OPTION B</span>
+                    Je cherche un logement (Searcher) - Version glassmorphism
+                  </h3>
+                  <div className="bg-slate-900 rounded-lg p-6 mb-3">
+                    <button
+                      className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl backdrop-blur-xl border border-white/30 transition-all hover:scale-105"
+                      style={{
+                        background: `${designSystemColors.searcher.hex}d9`,
+                        boxShadow: `0 10px 30px -5px ${designSystemColors.searcher.hex}40, 0 4px 10px -2px ${designSystemColors.searcher.hex}30`,
+                      }}
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                          <Search className="w-4 h-4" />
+                        </div>
+                        <span className="text-base">Je cherche un logement</span>
+                      </div>
+                    </button>
+                  </div>
+                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
+                    <p className="text-yellow-300 mb-2">
+                      <strong>⚠️ À ajouter:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                    </p>
+                    <code className="text-xs text-yellow-200">background: {designSystemColors.searcher.hex}d9 (85% opacité) + backdrop-blur-xl</code>
                   </div>
                 </div>
 
