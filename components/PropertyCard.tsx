@@ -439,7 +439,10 @@ function PropertyCard({
                 e.stopPropagation();
                 window.location.href = `/properties/${property.id}`;
               }}
-              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-full transition-colors shadow-md hover:shadow-lg"
+              className="relative px-6 py-3 bg-gradient-to-br from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-sm font-semibold rounded-full transition-all shadow-[0_8px_20px_-6px_rgba(251,146,60,0.5)] hover:shadow-[0_12px_28px_-8px_rgba(251,146,60,0.6)] hover:scale-105 active:scale-95"
+              style={{
+                boxShadow: '0 8px 20px -6px rgba(251, 146, 60, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)'
+              }}
             >
               Voir détails
             </button>
