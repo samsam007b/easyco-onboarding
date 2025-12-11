@@ -206,36 +206,38 @@ function OverviewSection() {
               5 couleurs équidistantes extraites du gradient pour créer des variations dans vos boutons, badges et composants
             </p>
 
-            {/* 5 Color Swatches in Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#d9574f' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#d9574f</p>
-                <p className="text-xs text-slate-400 text-center">0%</p>
-              </div>
+            {/* 5 Color Swatches in Grid - ISOLATED with white background */}
+            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid #e0e0e0', backgroundColor: '#d9574f', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                  <p style={{ color: '#1a1a1a', fontFamily: 'monospace', fontSize: '12px', fontWeight: 'bold', textAlign: 'center' }}>#d9574f</p>
+                  <p style={{ fontSize: '12px', color: '#666', textAlign: 'center' }}>0%</p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ee5736' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#ee5736</p>
-                <p className="text-xs text-slate-400 text-center">25%</p>
-              </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid #e0e0e0', backgroundColor: '#ee5736', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                  <p style={{ color: '#1a1a1a', fontFamily: 'monospace', fontSize: '12px', fontWeight: 'bold', textAlign: 'center' }}>#ee5736</p>
+                  <p style={{ fontSize: '12px', color: '#666', textAlign: 'center' }}>25%</p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff5b21' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#ff5b21</p>
-                <p className="text-xs text-slate-400 text-center">50%</p>
-              </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid #e0e0e0', backgroundColor: '#ff5b21', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                  <p style={{ color: '#1a1a1a', fontFamily: 'monospace', fontSize: '12px', fontWeight: 'bold', textAlign: 'center' }}>#ff5b21</p>
+                  <p style={{ fontSize: '12px', color: '#666', textAlign: 'center' }}>50%</p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff6e1c' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#ff6e1c</p>
-                <p className="text-xs text-slate-400 text-center">75%</p>
-              </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid #e0e0e0', backgroundColor: '#ff6e1c', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                  <p style={{ color: '#1a1a1a', fontFamily: 'monospace', fontSize: '12px', fontWeight: 'bold', textAlign: 'center' }}>#ff6e1c</p>
+                  <p style={{ fontSize: '12px', color: '#666', textAlign: 'center' }}>75%</p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff8017' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#ff8017</p>
-                <p className="text-xs text-slate-400 text-center">100%</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid #e0e0e0', backgroundColor: '#ff8017', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                  <p style={{ color: '#1a1a1a', fontFamily: 'monospace', fontSize: '12px', fontWeight: 'bold', textAlign: 'center' }}>#ff8017</p>
+                  <p style={{ fontSize: '12px', color: '#666', textAlign: 'center' }}>100%</p>
+                </div>
               </div>
             </div>
 
