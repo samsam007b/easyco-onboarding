@@ -12,6 +12,8 @@ import Charts
 struct ExpenseStatsView: View {
     @ObservedObject var viewModel: ExpensesViewModel
 
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -55,7 +57,7 @@ struct ExpenseStatsView: View {
     private func periodButton(for period: ExpenseTimePeriod) -> some View {
         let isSelected = viewModel.selectedPeriod == period
         let textColor = isSelected ? Color.white : Color(hex: "6B7280")
-        let backgroundColor = isSelected ? Color(hex: "E8865D") : Color.white
+        let backgroundColor = isSelected ? role.primaryColor : Color.white
 
         return Button(action: { viewModel.selectedPeriod = period }) {
             Text(period.displayName)
@@ -78,7 +80,7 @@ struct ExpenseStatsView: View {
 
             Text(String(format: "%.2f€", viewModel.getTotalForPeriod()))
                 .font(.system(size: 36, weight: .bold))
-                .foregroundColor(Color(hex: "E8865D"))
+                .foregroundColor(role.primaryColor)
 
             Text(viewModel.selectedPeriod.displayName.lowercased())
                 .font(.system(size: 13))
@@ -166,7 +168,7 @@ struct ExpenseStatsView: View {
 
                         Text(String(format: "%.2f€", expense.amount))
                             .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(Color(hex: "E8865D"))
+                            .foregroundColor(role.primaryColor)
                     }
                     .padding(12)
                     .background(Color.white)

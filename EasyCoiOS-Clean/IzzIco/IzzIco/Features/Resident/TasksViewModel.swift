@@ -33,7 +33,7 @@ enum TaskFilter: String, CaseIterable {
         case .todo: return "3B82F6"
         case .completed: return "10B981"
         case .overdue: return "EF4444"
-        case .today: return "E8865D"
+        case .today: return "FF5722"
         }
     }
 }

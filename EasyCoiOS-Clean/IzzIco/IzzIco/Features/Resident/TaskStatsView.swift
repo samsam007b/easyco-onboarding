@@ -12,6 +12,8 @@ struct TaskStatsView: View {
     @ObservedObject var viewModel: TasksViewModel
     @Environment(\.dismiss) var dismiss
 
+    private let role: Theme.UserRole = .resident
+
     @State private var selectedPeriod: TaskStatsPeriod = .month
     @State private var selectedTab: StatsTab = .overview
 
@@ -83,7 +85,7 @@ struct TaskStatsView: View {
                         .foregroundColor(selectedPeriod == period ? .white : Color(hex: "6B7280"))
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(selectedPeriod == period ? Color(hex: "E8865D") : Color.white)
+                        .background(selectedPeriod == period ? role.primaryColor : Color.white)
                         .cornerRadius(20)
                 }
             }
@@ -105,12 +107,12 @@ struct TaskStatsView: View {
                             Text(tab.displayName)
                                 .font(.system(size: 14, weight: selectedTab == tab ? .semibold : .regular))
                         }
-                        .foregroundColor(selectedTab == tab ? Color(hex: "E8865D") : Color(hex: "6B7280"))
+                        .foregroundColor(selectedTab == tab ? role.primaryColor : Color(hex: "6B7280"))
                         .padding(.vertical, 12)
                         .frame(maxWidth: .infinity)
 
                         Rectangle()
-                            .fill(selectedTab == tab ? Color(hex: "E8865D") : Color.clear)
+                            .fill(selectedTab == tab ? role.primaryColor : Color.clear)
                             .frame(height: 2)
                     }
                 }
@@ -152,7 +154,7 @@ struct TaskStatsView: View {
                     title: "Aujourd'hui",
                     value: "\(viewModel.todayCount)",
                     icon: "calendar",
-                    color: "E8865D"
+                    color: "FF5722"
                 )
             }
 
@@ -321,7 +323,7 @@ struct TaskStatsView: View {
                         // Completion rate
                         Text("\(Int(item.value * 100))%")
                             .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(Color(hex: "E8865D"))
+                            .foregroundColor(role.primaryColor)
                     }
                     .padding(16)
                     .background(Color.white)
@@ -375,7 +377,7 @@ struct TaskStatsView: View {
                                 let progress = Double(count) / Double(maxCount)
 
                                 Rectangle()
-                                    .fill(Color(hex: "E8865D"))
+                                    .fill(role.primaryColor)
                                     .frame(width: geometry.size.width * progress, height: 8)
                                     .cornerRadius(4)
                             }

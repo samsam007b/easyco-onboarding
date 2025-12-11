@@ -220,11 +220,13 @@ struct EventInfoRow: View {
     let title: String
     let value: String
 
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
         HStack {
             Image(systemName: icon)
                 .font(.system(size: 14))
-                .foregroundColor(Color(hex: "E8865D"))
+                .foregroundColor(role.primaryColor)
                 .frame(width: 24)
 
             Text(title)

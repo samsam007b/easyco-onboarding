@@ -200,8 +200,8 @@ export default function ModernSearcherHeader({
             <Image
               src="/logos/izzico-logo-small.png"
               alt="IzzIco"
-              width={110}
-              height={34}
+              width={90}
+              height={28}
               className="transition-transform group-hover:scale-105"
               priority
             />

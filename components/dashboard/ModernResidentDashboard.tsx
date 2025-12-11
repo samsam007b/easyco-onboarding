@@ -237,8 +237,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradient: 'from-[#F5D5CF] to-[#FFDAC9]/70',
-      bg: 'from-[#FFF3EF]/30 to-[#FFEBE5]/30',
+      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
+      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
       progress: rentPercentage,
       importance: 'critical' // Loyer = très important
     },
@@ -247,8 +247,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.sharedExpenses}`,
       subtitle: 'À répartir',
       icon: DollarSign,
-      gradient: 'from-[#FFD5C5] to-[#FFDAC9]/70',
-      bg: 'from-[#FFF3EF]/30 to-[#FFEBE5]/30',
+      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
+      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
       action: () => router.push('/hub/finances'),
       importance: 'high' // Important mais pas critique
     },
@@ -257,8 +257,8 @@ export default function ModernResidentDashboard() {
       value: stats.yourBalance > 0 ? `+€${stats.yourBalance}` : `-€${Math.abs(stats.yourBalance)}`,
       subtitle: stats.yourBalance > 0 ? 'On te doit' : 'Tu dois',
       icon: TrendingUp,
-      gradient: stats.yourBalance > 0 ? 'from-emerald-100 to-teal-100/70' : 'from-[#F5D5CF] to-[#FFDAC9]/70',
-      bg: stats.yourBalance > 0 ? 'from-emerald-50/30 to-teal-50/30' : 'from-[#FFF3EF]/30 to-[#FFEBE5]/30',
+      gradientStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b981, #14b8a680)' } : { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
+      bgStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b98120, #14b8a610)' } : { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
       action: () => router.push('/hub/finances'),
       importance: 'medium' // Informatif
     },
@@ -267,8 +267,8 @@ export default function ModernResidentDashboard() {
       value: stats.roommatesCount,
       subtitle: 'Membres actifs',
       icon: Users,
-      gradient: 'from-[#F5D5CF] to-[#FFDAC9]/70',
-      bg: 'from-[#FFF3EF]/30 to-[#FFEBE5]/30',
+      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
+      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
       action: () => router.push('/hub/members'),
       importance: 'medium' // Informatif
     },
@@ -295,7 +295,7 @@ export default function ModernResidentDashboard() {
           transition={{ delay: 0.1 }}
           className="max-w-7xl mx-auto bg-white/80 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-gray-200 hover:shadow-sm transition-all mb-6 mx-2 sm:mx-6 lg:mx-8 relative overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#FFF3EF]/30 via-transparent to-[#FFEBE5]/20" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, #ee573610, transparent, #ee573605)' }} />
           <button
             onClick={() => setShowCompletionDetails(!showCompletionDetails)}
             className="w-full flex items-center justify-between"
@@ -306,9 +306,9 @@ export default function ModernResidentDashboard() {
                 <svg className="w-12 h-12 transform -rotate-90">
                   <defs>
                     <linearGradient id="residentCompletionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#F5D5CF" />
-                      <stop offset="50%" stopColor="#FFD5C5" />
-                      <stop offset="100%" stopColor="#FFDAC9" />
+                      <stop offset="0%" stopColor="#ee5736" />
+                      <stop offset="50%" stopColor="#ee5736" />
+                      <stop offset="100%" stopColor="#ee5736" />
                     </linearGradient>
                   </defs>
                   <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" strokeWidth="3" />
@@ -410,23 +410,26 @@ export default function ModernResidentDashboard() {
               className={cn(
                 "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
                 "bg-white shadow-lg hover:shadow-xl",
-                card.action && "hover:ring-2 hover:ring-orange-500"
+                card.action && "hover:ring-2"
               )}
+              style={card.action ? { '--tw-ring-color': '#ee5736' } as React.CSSProperties : undefined}
             >
               {/* Gradient Background */}
-              <div className={cn(
-                "absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20",
-                `bg-gradient-to-br ${card.bg}`
-              )} />
+              <div
+                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
+                style={card.bgStyle}
+              />
 
               <div className="relative z-10">
                 {/* Icon with grain texture based on importance */}
-                <div className={cn(
-                  "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm border border-gray-200",
-                  `bg-gradient-to-br ${card.gradient}`,
-                  card.importance === 'critical' && "grain-medium",
-                  card.importance === 'high' && "grain-subtle"
-                )}>
+                <div
+                  className={cn(
+                    "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm border border-gray-200",
+                    card.importance === 'critical' && "grain-medium",
+                    card.importance === 'high' && "grain-subtle"
+                  )}
+                  style={card.gradientStyle}
+                >
                   <Icon className="w-6 h-6 text-gray-700 relative z-10" />
                 </div>
 
@@ -445,11 +448,11 @@ export default function ModernResidentDashboard() {
                   <>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
                       <div
-                        className={cn(
-                          "h-full rounded-full transition-all",
-                          `bg-gradient-to-r ${card.gradient}`
-                        )}
-                        style={{ width: `${card.progress}%` }}
+                        className="h-full rounded-full transition-all"
+                        style={{
+                          width: `${card.progress}%`,
+                          background: 'linear-gradient(to right, #ee5736, #ee573680)'
+                        }}
                       />
                     </div>
                     <p className="text-xs text-gray-500">{card.subtitle}</p>
@@ -472,13 +475,16 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6 mb-8"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Home className="w-5 h-5 text-orange-600" />
+            <Home className="w-5 h-5" style={{ color: '#ee5736' }} />
             Ta Résidence
           </h3>
 
           <div className="flex flex-col md:flex-row gap-6">
             {/* Property Image */}
-            <div className="relative h-48 md:h-auto md:w-64 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl overflow-hidden flex-shrink-0">
+            <div
+              className="relative h-48 md:h-auto md:w-64 rounded-2xl overflow-hidden flex-shrink-0"
+              style={{ background: 'linear-gradient(to bottom right, #ee573630, #ee573650)' }}
+            >
               {currentProperty.main_image ? (
                 <img
                   src={currentProperty.main_image}
@@ -487,7 +493,7 @@ export default function ModernResidentDashboard() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Home className="w-16 h-16 text-orange-400" />
+                  <Home className="w-16 h-16" style={{ color: '#ee573680' }} />
                 </div>
               )}
             </div>
@@ -507,7 +513,11 @@ export default function ModernResidentDashboard() {
                   <p className="text-sm font-medium text-gray-700 mb-2">Tes colocataires :</p>
                   <div className="flex flex-wrap gap-3">
                     {roommates.map((member: any, index: number) => (
-                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-orange-50 rounded-full">
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 px-3 py-2 rounded-full"
+                        style={{ background: '#ee573610' }}
+                      >
                         {member.users?.avatar_url ? (
                           <img
                             src={member.users.avatar_url}
@@ -515,7 +525,10 @@ export default function ModernResidentDashboard() {
                             className="w-6 h-6 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-6 h-6 rounded-full bg-orange-600 flex items-center justify-center text-xs text-white font-bold">
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white font-bold"
+                            style={{ background: '#ee5736' }}
+                          >
                             {member.users?.full_name?.charAt(0) || '?'}
                           </div>
                         )}
@@ -561,7 +574,7 @@ export default function ModernResidentDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-orange-600" />
+              <Clock className="w-5 h-5" style={{ color: '#ee5736' }} />
               Tâches à Venir
             </h3>
             <Button
@@ -582,7 +595,9 @@ export default function ModernResidentDashboard() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + index * 0.05 }}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl transition-colors cursor-pointer"
+                onMouseEnter={(e) => e.currentTarget.style.background = '#ee573610'}
+                onMouseLeave={(e) => e.currentTarget.style.background = '#f9fafb'}
               >
                 <div className="flex items-center gap-3">
                   <div className={cn(
@@ -633,7 +648,7 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-orange-600" />
+            <Sparkles className="w-5 h-5" style={{ color: '#ee5736' }} />
             Activité Récente
           </h3>
 
@@ -670,12 +685,15 @@ export default function ModernResidentDashboard() {
         transition={{ delay: 0.7 }}
         className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 relative overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FFF3EF]/50 via-transparent to-[#FFEBE5]/30" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, #ee573620, transparent, #ee573610)' }} />
         <div className="relative flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold mb-1 flex items-center gap-2 text-gray-900">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#F5D5CF] to-[#FFDAC9]/70 border border-gray-200">
-                <Heart className="w-5 h-5 text-gray-700" />
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200"
+                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+              >
+                <Heart className="w-5 h-5 text-white" />
               </div>
               Bonheur de la Coloc
             </h3>

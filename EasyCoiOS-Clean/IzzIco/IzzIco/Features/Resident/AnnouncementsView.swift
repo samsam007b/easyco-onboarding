@@ -10,7 +10,9 @@ import SwiftUI
 struct AnnouncementsView: View {
     @StateObject private var viewModel = AnnouncementsViewModel()
 
-    var body: some View {
+    private let role: Theme.UserRole = .resident
+
+    var body: some View{
         NavigationStack {
             VStack(spacing: 0) {
                 if viewModel.isLoading {
@@ -33,7 +35,7 @@ struct AnnouncementsView: View {
                     Button(action: { viewModel.showCreateAnnouncement = true }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 24))
-                            .foregroundColor(Color(hex: "E8865D"))
+                            .foregroundColor(role.primaryColor)
                     }
                 }
             }
@@ -78,7 +80,7 @@ struct AnnouncementsView: View {
         VStack(spacing: 20) {
             Image(systemName: "megaphone")
                 .font(.system(size: 60))
-                .foregroundColor(Color(hex: "E8865D").opacity(0.5))
+                .foregroundColor(role.primaryColor.opacity(0.5))
 
             Text("Aucune annonce")
                 .font(.system(size: 20, weight: .semibold))
@@ -98,7 +100,7 @@ struct AnnouncementsView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 12)
-                .background(Color(hex: "E8865D"))
+                .background(role.primaryColor)
                 .cornerRadius(12)
             }
         }
@@ -111,8 +113,9 @@ struct AnnouncementsView: View {
 
 struct AnnouncementCard: View {
     let announcement: Announcement
+    let role: Theme.UserRole = .resident
 
-    var body: some View {
+    var body: some View{
         VStack(alignment: .leading, spacing: 12) {
             // Header
             HStack {
@@ -181,7 +184,7 @@ struct AnnouncementCard: View {
                     Button(action: {}) {
                         Text("Lire plus")
                             .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(Color(hex: "E8865D"))
+                            .foregroundColor(role.primaryColor)
                     }
                 }
             }
@@ -198,6 +201,8 @@ struct AnnouncementCard: View {
 struct CreateAnnouncementView: View {
     @ObservedObject var viewModel: AnnouncementsViewModel
     @Environment(\.dismiss) var dismiss
+
+    private let role: Theme.UserRole = .resident
 
     @State private var title = ""
     @State private var content = ""
@@ -259,7 +264,7 @@ struct CreateAnnouncementView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 20)
                             .padding(.vertical, 8)
-                            .background(Color(hex: "E8865D"))
+                            .background(role.primaryColor)
                             .cornerRadius(10)
                     }
                 }

@@ -11,6 +11,8 @@ import SwiftUI
 struct BalanceView: View {
     @ObservedObject var viewModel: ExpensesViewModel
 
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -118,7 +120,7 @@ struct BalanceView: View {
 
             VStack(spacing: 12) {
                 ForEach(viewModel.balances) { balance in
-                    BalanceCard(balance: balance)
+                    BalanceCard(balance: balance, role: role)
                 }
             }
         }
@@ -149,6 +151,7 @@ struct BalanceView: View {
 
 struct BalanceCard: View {
     let balance: Balance
+    let role: Theme.UserRole
 
     var body: some View {
         HStack(spacing: 16) {
@@ -178,11 +181,11 @@ struct BalanceCard: View {
             VStack(spacing: 4) {
                 Image(systemName: "arrow.right")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color(hex: "E8865D"))
+                    .foregroundColor(role.primaryColor)
 
                 Text(String(format: "%.2f€", balance.amount))
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color(hex: "E8865D"))
+                    .foregroundColor(role.primaryColor)
             }
 
             // To person
@@ -215,7 +218,7 @@ struct BalanceCard: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(width: 36, height: 36)
-                    .background(Color(hex: "E8865D"))
+                    .background(role.primaryColor)
                     .cornerRadius(10)
             }
         }

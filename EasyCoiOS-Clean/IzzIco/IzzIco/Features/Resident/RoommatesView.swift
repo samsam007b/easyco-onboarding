@@ -6,6 +6,8 @@ struct RoommatesView: View {
     @StateObject private var viewModel = RoommatesViewModel()
     @State private var showAddRoommateSheet = false
 
+    private let role: Theme.UserRole = .resident
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -25,7 +27,7 @@ struct RoommatesView: View {
                     Button(action: { showAddRoommateSheet = true }) {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color(hex: "E8865D"))
+                            .foregroundColor(role.primaryColor)
                     }
                 }
             }
@@ -64,7 +66,7 @@ struct RoommatesView: View {
 
                 Image(systemName: "person.3.fill")
                     .font(.system(size: 48))
-                    .foregroundColor(Color(hex: "E8865D"))
+                    .foregroundColor(role.primaryColor)
             }
 
             VStack(spacing: 12) {
@@ -88,7 +90,7 @@ struct RoommatesView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 12)
-                .background(Color(hex: "E8865D"))
+                .background(role.primaryColor)
                 .cornerRadius(12)
             }
 
@@ -102,6 +104,7 @@ struct RoommatesView: View {
 
 struct RoommateCard: View {
     let roommate: Roommate
+    let role: Theme.UserRole = .resident
 
     var body: some View {
         HStack(spacing: 16) {
@@ -135,7 +138,7 @@ struct RoommateCard: View {
                 HStack(spacing: 12) {
                     Label(roommate.role.displayName, systemImage: "person.fill")
                         .font(.system(size: 12))
-                        .foregroundColor(Color(hex: "E8865D"))
+                        .foregroundColor(role.primaryColor)
                 }
             }
 
@@ -157,13 +160,7 @@ struct RoommateCard: View {
     private var profilePlaceholder: some View {
         ZStack {
             Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color(hex: "E8865D"), Color(hex: "F5A97A")],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(role.gradient)
 
             Text(roommate.initials)
                 .font(.system(size: 20, weight: .semibold))
@@ -178,6 +175,8 @@ struct AddRoommateSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var role: RoommateRole = .member
+
+    private let themeRole: Theme.UserRole = .resident
 
     var body: some View {
         NavigationStack {
@@ -206,7 +205,7 @@ struct AddRoommateSheet: View {
                         dismiss()
                     }
                     .frame(maxWidth: .infinity)
-                    .foregroundColor(Color(hex: "E8865D"))
+                    .foregroundColor(themeRole.primaryColor)
                     .disabled(email.isEmpty)
                 }
             }

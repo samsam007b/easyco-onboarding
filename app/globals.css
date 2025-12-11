@@ -23,11 +23,11 @@
   --owner-light: #F3F1FF;
   --owner-dark: #4A148C;
 
-  /* RESIDENT - Orange (#FF5722 - couleur dominante) */
-  --resident-primary: #FF5722;
-  --resident-hover: #E64A19;
+  /* RESIDENT - Orange (#ee5736 - couleur dominante) */
+  --resident-primary: #ee5736;
+  --resident-hover: #d94b2a;
   --resident-light: #FFF3EF;
-  --resident-dark: #D84315;
+  --resident-dark: #c23f21;
 
   /* Legacy Brand Colors (backward compatibility) */
   --easy-purple-900: #9c5698;   /* Primary Owner - UPDATED */
@@ -43,11 +43,11 @@
   --easy-yellow-100: #FFF9E6;   /* Backgrounds */
   --easy-yellow-50: #FFFEF0;    /* Lightest yellow */
 
-  --easy-orange-600: #E64A19;   /* Hover - UPDATED */
-  --easy-orange-500: #FF5722;   /* Primary Resident - UPDATED */
-  --easy-orange-400: #FF8C5C;   /* Lighter */
-  --easy-orange-100: #FFF3EF;   /* Backgrounds */
-  --easy-orange-50: #FFFAF8;    /* Lightest */
+  --easy-orange-600: #d94b2a;   /* Hover - UPDATED */
+  --easy-orange-500: #ee5736;   /* Primary Resident - UPDATED */
+  --easy-orange-400: #FF926F;   /* Lighter */
+  --easy-orange-100: #FFF0EB;   /* Backgrounds */
+  --easy-orange-50: #FFF9F7;    /* Lightest */
 
   /* Legacy support */
   --easy-purple: var(--easy-purple-900);
@@ -143,22 +143,22 @@
   --searcher-shadow: rgba(255, 193, 7, 0.2); /* Ombres */
 
   /* 🟠 RESIDENT DESIGN SYSTEM - Orange/Corail/Terracotta */
-  --resident-50: #FFFAF8;      /* Backgrounds très subtils */
-  --resident-100: #FFF3EF;     /* Backgrounds légers */
-  --resident-200: #FFB88C;     /* Hover backgrounds */
-  --resident-300: #FF8C5C;     /* Borders, dividers */
-  --resident-400: #FF6F3C;     /* Icons secondaires */
-  --resident-500: #FF5722;     /* PRINCIPALE - Boutons, highlights */
-  --resident-600: #E64A19;     /* Hover states actifs */
-  --resident-700: #D84315;     /* Textes importants */
-  --resident-800: #BF360C;     /* Headers, emphase */
-  --resident-900: #8D2A0E;     /* Textes ultra-importants */
+  --resident-50: #FFF9F7;      /* Backgrounds très subtils */
+  --resident-100: #FFF0EB;     /* Backgrounds légers */
+  --resident-200: #FFD4C4;     /* Hover backgrounds */
+  --resident-300: #FFB39A;     /* Borders, dividers */
+  --resident-400: #FF926F;     /* Icons secondaires */
+  --resident-500: #ee5736;     /* PRINCIPALE - Boutons, highlights */
+  --resident-600: #d94b2a;     /* Hover states actifs */
+  --resident-700: #c23f21;     /* Textes importants */
+  --resident-800: #a83319;     /* Headers, emphase */
+  --resident-900: #8e2814;     /* Textes ultra-importants */
 
   /* Couleurs complémentaires Resident (pour variety) */
-  --resident-accent: #FF7043;  /* Accent corail */
+  --resident-accent: #ff7050;  /* Accent corail */
   --resident-muted: #FFCCBC;   /* Backgrounds désactivés */
-  --resident-border: #FFAB91;  /* Borders subtiles */
-  --resident-shadow: rgba(255, 87, 34, 0.2); /* Ombres */
+  --resident-border: #ffbfa8;  /* Borders subtiles */
+  --resident-shadow: rgba(238, 87, 54, 0.2); /* Ombres */
 
   /* 🟣 OWNER DESIGN SYSTEM - Mauve/Violet/Indigo */
   --owner-50: #F9F8FF;         /* Backgrounds très subtils */
