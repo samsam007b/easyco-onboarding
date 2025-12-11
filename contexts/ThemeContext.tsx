@@ -15,75 +15,51 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'easyco-theme';
 
-function getSystemTheme(): 'light' | 'dark' {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
+  // Force light mode - dark mode disabled
+  const [theme, setThemeState] = useState<Theme>('light');
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage
+  // Initialize theme - always force light mode
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (stored && ['light', 'dark', 'system'].includes(stored)) {
-      setThemeState(stored);
-    }
+    // Always force light mode, ignore localStorage
+    setThemeState('light');
+    // Clear any stored dark mode preference
+    localStorage.setItem(THEME_STORAGE_KEY, 'light');
   }, []);
 
-  // Update resolved theme and apply to document
+  // Update resolved theme and apply to document - always light
   useEffect(() => {
     if (!mounted) return;
 
-    const resolved = theme === 'system' ? getSystemTheme() : theme;
-    setResolvedTheme(resolved);
+    // Always resolve to light mode
+    setResolvedTheme('light');
 
-    // Apply dark class to html element
+    // Ensure dark class is never applied
     const root = document.documentElement;
-    if (resolved === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    root.classList.remove('dark');
 
-    // Update theme-color meta tag for PWA
+    // Update theme-color meta tag for PWA - always light
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', resolved === 'dark' ? '#0F0F12' : '#FFFFFF');
+      metaThemeColor.setAttribute('content', '#FFFFFF');
     }
-  }, [theme, mounted]);
+  }, [mounted]);
 
-  // Listen for system theme changes
-  useEffect(() => {
-    if (!mounted || theme !== 'system') return;
+  // Disabled - no longer listen for system theme changes
+  // Dark mode is disabled
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      setResolvedTheme(e.matches ? 'dark' : 'light');
-      const root = document.documentElement;
-      if (e.matches) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, mounted]);
-
-  const setTheme = useCallback((newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+  const setTheme = useCallback((_newTheme: Theme) => {
+    // Ignore theme changes - always stay in light mode
+    setThemeState('light');
+    localStorage.setItem(THEME_STORAGE_KEY, 'light');
   }, []);
 
   const toggleTheme = useCallback(() => {
-    const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-  }, [resolvedTheme, setTheme]);
+    // Do nothing - dark mode is disabled
+  }, []);
 
   // Prevent flash of wrong theme
   if (!mounted) {
