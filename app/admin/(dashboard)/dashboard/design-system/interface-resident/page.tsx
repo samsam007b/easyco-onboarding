@@ -209,32 +209,32 @@ function OverviewSection() {
             {/* 5 Color Swatches in Grid */}
             <div className="grid grid-cols-5 gap-3">
               <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#D97B6F' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#D97B6F</p>
+                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#d9574f' }} />
+                <p className="text-white font-mono text-xs font-bold text-center">#d9574f</p>
                 <p className="text-xs text-slate-400 text-center">0%</p>
               </div>
 
               <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#DF8267' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#DF8267</p>
+                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#ee5736' }} />
+                <p className="text-white font-mono text-xs font-bold text-center">#ee5736</p>
                 <p className="text-xs text-slate-400 text-center">25%</p>
               </div>
 
               <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#E8865D' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#E8865D</p>
+                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#ff5b21' }} />
+                <p className="text-white font-mono text-xs font-bold text-center">#ff5b21</p>
                 <p className="text-xs text-slate-400 text-center">50%</p>
               </div>
 
               <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#F38954' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#F38954</p>
+                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#ff6e1c' }} />
+                <p className="text-white font-mono text-xs font-bold text-center">#ff6e1c</p>
                 <p className="text-xs text-slate-400 text-center">75%</p>
               </div>
 
               <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#FF8C4B' }} />
-                <p className="text-white font-mono text-xs font-bold text-center">#FF8C4B</p>
+                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: '#ff8017' }} />
+                <p className="text-white font-mono text-xs font-bold text-center">#ff8017</p>
                 <p className="text-xs text-slate-400 text-center">100%</p>
               </div>
             </div>
