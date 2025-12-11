@@ -243,10 +243,13 @@ export default function ModernResidentHeader({
                         : "text-gray-600 hover:bg-orange-50/50"
                     )}
                   >
-                    <Icon className={cn(
-                      "w-4 h-4 transition-all",
-                      isActive ? "" : "group-hover:text-[#E8865D]"
-                    )} />
+                    <Icon
+                      className={cn(
+                        "w-4 h-4 transition-all",
+                        isActive ? "" : "group-hover:text-[#E8865D]"
+                      )}
+                      style={isActive ? { color: '#ee5736' } : undefined}
+                    />
                     <span className={cn(
                       isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#D97B6F] group-hover:via-[#E8865D] group-hover:to-[#FF8C4B] group-hover:bg-clip-text group-hover:text-transparent"
                     )}>{item.label}</span>
