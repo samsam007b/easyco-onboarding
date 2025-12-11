@@ -2,7 +2,8 @@
 //  CreateEventView.swift
 //  IzzIco
 //
-//  Formulaire de création d'événement
+//  Formulaire de création d'événement - REDESIGN Pinterest Style
+//  Glassmorphism, profondeur, contraste élevé
 //
 
 import SwiftUI
@@ -41,7 +42,8 @@ enum ReminderTime: String, CaseIterable {
 
 struct CreateEventView: View {
     @ObservedObject var viewModel: CalendarViewModel
-    @Environment(\.dismiss) var dismiss
+
+    private let role: Theme.UserRole = .resident
 
     @State private var title = ""
     @State private var description = ""
@@ -57,73 +59,62 @@ struct CreateEventView: View {
     @State private var reminderBefore: ReminderTime? = .oneDay
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    basicInfoSection
-                    typeSection
-                    dateTimeSection
-                    if selectedType == .guest {
-                        guestsSection
-                    }
-                    recurrenceSection
-                    reminderSection
+        PinterestFormContainer(
+            title: "Nouvel Événement",
+            role: role,
+            isPresented: $viewModel.showCreateEvent,
+            onSave: createEvent
+        ) {
+            VStack(spacing: Theme.PinterestSpacing.xl) {
+                basicInfoSection
+                typeSection
+                dateTimeSection
+
+                if selectedType == .guest {
+                    guestsSection
                 }
-                .padding(16)
-            }
-            .background(Color(hex: "F9FAFB"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Nouvel Événement")
-                        .font(.system(size: 18, weight: .semibold))
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Annuler") { dismiss() }
-                        .foregroundColor(Color(hex: "6B7280"))
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: createEvent) {
-                        Text("Créer")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 8)
-                            .background(Color(hex: "E8865D"))
-                            .cornerRadius(10)
-                    }
-                }
+
+                recurrenceSection
+                reminderSection
             }
         }
     }
 
+    // MARK: - Sections
+
     private var basicInfoSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Informations")
-                .font(.system(size: 16, weight: .semibold))
+        PinterestFormSection("Informations") {
+            VStack(spacing: Theme.PinterestSpacing.md) {
+                PinterestFormTextField(
+                    placeholder: "Titre de l'événement",
+                    text: $title,
+                    icon: "calendar",
+                    role: role,
+                    isRequired: true
+                )
 
-            TextField("Titre de l'événement", text: $title)
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
-
-            TextField("Description (optionnelle)", text: $description, axis: .vertical)
-                .lineLimit(3...6)
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+                PinterestFormTextEditor(
+                    placeholder: "Description (optionnelle)",
+                    text: $description,
+                    role: role
+                )
+            }
         }
     }
 
     private var typeSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Type d'événement")
-                .font(.system(size: 16, weight: .semibold))
-
+        PinterestFormSection("Type d'événement") {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 ForEach(EventType.allCases, id: \.self) { type in
-                    EventTypeButton(type: type, isSelected: selectedType == type) {
-                        selectedType = type
+                    EventTypeCard(
+                        type: type,
+                        isSelected: selectedType == type,
+                        role: role
+                    ) {
+                        withAnimation(Theme.PinterestAnimations.quickSpring) {
+                            selectedType = type
+                        }
+                        Haptic.selection()
                     }
                 }
             }
@@ -131,86 +122,173 @@ struct CreateEventView: View {
     }
 
     private var dateTimeSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Date et heure")
-                .font(.system(size: 16, weight: .semibold))
+        PinterestFormSection("Date et heure") {
+            VStack(spacing: Theme.PinterestSpacing.md) {
+                // Toggle Toute la journée
+                PinterestToggle(
+                    title: "Toute la journée",
+                    isOn: $isAllDay,
+                    role: role
+                )
 
-            Toggle("Toute la journée", isOn: $isAllDay)
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+                // Date de début
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Début")
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
 
-            DatePicker("Début", selection: $startDate, displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+                    DatePicker(
+                        "",
+                        selection: $startDate,
+                        displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute]
+                    )
+                    .datePickerStyle(.compact)
+                    .labelsHidden()
+                    .padding(Theme.PinterestSpacing.md)
+                    .background(Color.white)
+                    .cornerRadius(Theme.PinterestRadius.medium)
+                    .pinterestShadow(Theme.PinterestShadows.subtle)
+                }
 
-            DatePicker("Fin", selection: $endDate, displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+                // Date de fin
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Fin")
+                        .font(Theme.PinterestTypography.bodySmall(.medium))
+                        .foregroundColor(Theme.Colors.textSecondary)
+
+                    DatePicker(
+                        "",
+                        selection: $endDate,
+                        displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute]
+                    )
+                    .datePickerStyle(.compact)
+                    .labelsHidden()
+                    .padding(Theme.PinterestSpacing.md)
+                    .background(Color.white)
+                    .cornerRadius(Theme.PinterestRadius.medium)
+                    .pinterestShadow(Theme.PinterestShadows.subtle)
+                }
+            }
         }
     }
 
     private var guestsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Invités")
-                .font(.system(size: 16, weight: .semibold))
+        PinterestFormSection("Invités") {
+            VStack(spacing: Theme.PinterestSpacing.md) {
+                PinterestToggle(
+                    title: "Des invités viennent dormir",
+                    isOn: $hasGuests,
+                    role: role
+                )
 
-            Toggle("Des invités viennent dormir", isOn: $hasGuests)
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+                if hasGuests {
+                    // Stepper nombre d'invités
+                    HStack {
+                        Text("Nombre d'invités")
+                            .font(Theme.PinterestTypography.bodyRegular(.medium))
+                            .foregroundColor(Theme.Colors.textPrimary)
 
-            if hasGuests {
-                Stepper("Nombre: \(numberOfGuests)", value: $numberOfGuests, in: 1...10)
-                    .padding(12)
+                        Spacer()
+
+                        HStack(spacing: 16) {
+                            Button(action: {
+                                if numberOfGuests > 1 {
+                                    numberOfGuests -= 1
+                                    Haptic.light()
+                                }
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(numberOfGuests > 1 ? role.primaryColor : Theme.Colors.textTertiary)
+                            }
+
+                            Text("\(numberOfGuests)")
+                                .font(Theme.PinterestTypography.bodyRegular(.bold))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                                .frame(minWidth: 30)
+
+                            Button(action: {
+                                if numberOfGuests < 10 {
+                                    numberOfGuests += 1
+                                    Haptic.light()
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(numberOfGuests < 10 ? role.primaryColor : Theme.Colors.textTertiary)
+                            }
+                        }
+                    }
+                    .padding(Theme.PinterestSpacing.md)
                     .background(Color.white)
-                    .cornerRadius(12)
+                    .cornerRadius(Theme.PinterestRadius.medium)
+                    .pinterestShadow(Theme.PinterestShadows.subtle)
 
-                TextField("Noms des invités", text: $guestNames)
-                    .padding(12)
-                    .background(Color.white)
-                    .cornerRadius(12)
+                    PinterestFormTextField(
+                        placeholder: "Noms des invités",
+                        text: $guestNames,
+                        icon: "person.2.fill",
+                        role: role
+                    )
+                }
             }
         }
     }
 
     private var recurrenceSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Toggle("Récurrent", isOn: $isRecurring)
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
+        PinterestFormSection("Récurrence") {
+            VStack(spacing: Theme.PinterestSpacing.md) {
+                PinterestToggle(
+                    title: "Événement récurrent",
+                    isOn: $isRecurring,
+                    role: role
+                )
 
-            if isRecurring {
-                Picker("Fréquence", selection: $recurrencePattern) {
-                    ForEach(RecurrencePattern.allCases, id: \.self) { pattern in
-                        Text(pattern.displayName).tag(pattern)
+                if isRecurring {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Fréquence")
+                            .font(Theme.PinterestTypography.bodySmall(.medium))
+                            .foregroundColor(Theme.Colors.textSecondary)
+
+                        Picker("Fréquence", selection: $recurrencePattern) {
+                            ForEach(RecurrencePattern.allCases, id: \.self) { pattern in
+                                Text(pattern.displayName).tag(pattern)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(Theme.PinterestSpacing.sm)
+                        .background(Color.white)
+                        .cornerRadius(Theme.PinterestRadius.medium)
+                        .pinterestShadow(Theme.PinterestShadows.subtle)
                     }
                 }
-                .pickerStyle(.segmented)
             }
         }
     }
 
     private var reminderSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Rappel")
-                .font(.system(size: 16, weight: .semibold))
+        PinterestFormSection("Rappel") {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Me rappeler")
+                    .font(Theme.PinterestTypography.bodySmall(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
 
-            Picker("Rappel", selection: $reminderBefore) {
-                Text("Aucun").tag(nil as ReminderTime?)
-                ForEach(ReminderTime.allCases, id: \.self) { time in
-                    Text(time.displayName).tag(time as ReminderTime?)
+                Picker("Rappel", selection: $reminderBefore) {
+                    Text("Aucun rappel").tag(nil as ReminderTime?)
+                    ForEach(ReminderTime.allCases, id: \.self) { time in
+                        Text(time.displayName).tag(time as ReminderTime?)
+                    }
                 }
+                .pickerStyle(.menu)
+                .padding(Theme.PinterestSpacing.md)
+                .background(Color.white)
+                .cornerRadius(Theme.PinterestRadius.medium)
+                .pinterestShadow(Theme.PinterestShadows.subtle)
             }
-            .pickerStyle(.menu)
-            .padding(12)
-            .background(Color.white)
-            .cornerRadius(12)
         }
     }
+
+    // MARK: - Actions
 
     private func createEvent() {
         // Convert local RecurrencePattern to model's RecurringPattern
@@ -249,42 +327,83 @@ struct CreateEventView: View {
             reminderMinutesBefore: reminderMinutes
         )
 
-        _Concurrency.Task {
+        Task {
             await viewModel.createEvent(event)
-            dismiss()
         }
     }
 }
 
-struct EventTypeButton: View {
+// MARK: - Event Type Card
+
+struct EventTypeCard: View {
     let type: EventType
     let isSelected: Bool
+    let role: Theme.UserRole
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 8) {
+            VStack(spacing: 12) {
+                // Icon circle
                 Circle()
-                    .fill(isSelected ? Color(hex: type.color) : Color(hex: type.color).opacity(0.1))
-                    .frame(width: 48, height: 48)
+                    .fill(isSelected ? Color(hex: type.color) : Color(hex: type.color).opacity(0.15))
+                    .frame(width: 52, height: 52)
                     .overlay(
                         Image(systemName: type.icon)
-                            .font(.system(size: 20))
+                            .font(.system(size: 22, weight: .semibold))
                             .foregroundColor(isSelected ? .white : Color(hex: type.color))
                     )
+                    .pinterestShadow(
+                        isSelected ?
+                        Theme.PinterestShadows.colored(Color(hex: type.color), intensity: 0.3) :
+                        Theme.PinterestShadows.subtle
+                    )
 
+                // Label
                 Text(type.displayName)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(isSelected ? Color(hex: "111827") : Color(hex: "6B7280"))
+                    .font(Theme.PinterestTypography.bodySmall(.semibold))
+                    .foregroundColor(isSelected ? Theme.Colors.textPrimary : Theme.Colors.textSecondary)
+                    .lineLimit(1)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
+            .padding(.vertical, Theme.PinterestSpacing.md)
             .background(Color.white)
-            .cornerRadius(12)
+            .cornerRadius(Theme.PinterestRadius.medium)
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? Color(hex: type.color) : Color(hex: "E5E7EB"), lineWidth: isSelected ? 2 : 1)
+                RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                    .stroke(
+                        isSelected ? Color(hex: type.color) : Color.white.opacity(0.6),
+                        lineWidth: isSelected ? 2 : 1.5
+                    )
             )
+            .pinterestShadow(isSelected ? Theme.PinterestShadows.medium : Theme.PinterestShadows.subtle)
         }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Pinterest Toggle Component
+
+struct PinterestToggle: View {
+    let title: String
+    @Binding var isOn: Bool
+    let role: Theme.UserRole
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Spacer()
+
+            Toggle("", isOn: $isOn)
+                .labelsHidden()
+                .tint(role.primaryColor)
+        }
+        .padding(Theme.PinterestSpacing.md)
+        .background(Color.white)
+        .cornerRadius(Theme.PinterestRadius.medium)
+        .pinterestShadow(Theme.PinterestShadows.subtle)
     }
 }

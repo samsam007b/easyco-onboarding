@@ -1726,3 +1726,191 @@ html.dark::before {
     display: none !important;
   }
 }
+
+/* ============================================
+   GOOGLE MAPS AUTOCOMPLETE - MODERN STYLE
+   ============================================ */
+
+/* Main dropdown container */
+.pac-container {
+  background: white !important;
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04),
+              0 0 0 1px rgba(173, 86, 132, 0.1) !important;
+  margin-top: 8px !important;
+  padding: 8px !important;
+  font-family: var(--font-body) !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Dark mode container */
+.dark .pac-container {
+  background: rgba(26, 26, 31, 0.95) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+              0 10px 10px -5px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(173, 86, 132, 0.3) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Each suggestion item */
+.pac-item {
+  padding: 12px 16px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  line-height: 1.5 !important;
+  font-size: 15px !important;
+  margin: 4px 0 !important;
+}
+
+/* Hover state */
+.pac-item:hover {
+  background: linear-gradient(to right, #ad568410, #ad568405) !important;
+  transform: translateX(4px);
+}
+
+/* Selected/Active state */
+.pac-item-selected,
+.pac-item:active {
+  background: linear-gradient(to right, #ad568420, #ad568410) !important;
+  transform: translateX(4px);
+}
+
+/* Dark mode items */
+.dark .pac-item:hover {
+  background: linear-gradient(to right, #ad568420, #ad568410) !important;
+}
+
+.dark .pac-item-selected,
+.dark .pac-item:active {
+  background: linear-gradient(to right, #ad568430, #ad568415) !important;
+}
+
+/* Icon styling */
+.pac-icon {
+  background-image: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 12px !important;
+  margin-top: 2px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Add custom map pin icon using CSS */
+.pac-icon::before {
+  content: '📍';
+  font-size: 16px;
+  filter: grayscale(0.3);
+}
+
+/* Main text (city/place name) */
+.pac-item-query {
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  margin-right: 4px !important;
+}
+
+.dark .pac-item-query {
+  color: #f5f5f7 !important;
+}
+
+/* Secondary text (region/country) */
+.pac-matched {
+  color: #ad5684 !important;
+  font-weight: 700 !important;
+}
+
+.dark .pac-matched {
+  color: #d9a0b3 !important;
+}
+
+/* Unmatched text */
+span:not(.pac-matched) {
+  color: #666666 !important;
+  font-weight: 400 !important;
+}
+
+.dark span:not(.pac-matched) {
+  color: #a1a1aa !important;
+}
+
+/* Remove Google logo (optional - keep for attribution) */
+.pac-logo::after {
+  display: none !important;
+}
+
+/* Powered by Google text */
+.hdpi.pac-logo {
+  background-size: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+}
+
+/* Separator between items - removed for cleaner look */
+.pac-item:not(:last-child)::after {
+  display: none !important;
+}
+
+/* Loading state */
+.pac-container.pac-loading {
+  opacity: 0.7;
+}
+
+/* Scrollbar styling for long lists */
+.pac-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pac-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pac-container::-webkit-scrollbar-thumb {
+  background: rgba(173, 86, 132, 0.2);
+  border-radius: 4px;
+}
+
+.pac-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(173, 86, 132, 0.3);
+}
+
+.dark .pac-container::-webkit-scrollbar-thumb {
+  background: rgba(173, 86, 132, 0.3);
+}
+
+.dark .pac-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(173, 86, 132, 0.4);
+}
+
+/* Animation for dropdown appearance */
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pac-container {
+  animation: slideDownFade 0.2s ease-out;
+}
+
+/* Ensure proper z-index above other elements */
+.pac-container {
+  z-index: 9999 !important;
+}
+
+/* Hide the query match highlight boxes for cleaner look */
+.pac-item .pac-icon-marker {
+  display: none !important;
+}
