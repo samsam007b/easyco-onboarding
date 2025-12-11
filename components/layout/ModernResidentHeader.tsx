@@ -310,29 +310,34 @@ export default function ModernResidentHeader({
             <div className="hidden lg:block relative">
               <button
                 onClick={() => setShowQuickActions(!showQuickActions)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 transition-all border border-gray-200"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
                 style={{
-                  background: showQuickActions ? '#ee573610' : 'transparent',
-                  borderColor: showQuickActions ? '#ee573630' : 'rgba(229, 231, 235, 1)'
+                  background: showQuickActions ? 'linear-gradient(to bottom right, #ee5736, #ee573680)' : '#ee573610',
+                  borderColor: '#ee573630',
+                  color: showQuickActions ? 'white' : '#ee5736'
                 }}
                 onMouseEnter={(e) => {
-                  if (!showQuickActions) e.currentTarget.style.background = '#ee573610';
-                  e.currentTarget.style.borderColor = '#ee573630';
+                  e.currentTarget.style.background = 'linear-gradient(to bottom right, #ee5736, #ee573680)';
+                  e.currentTarget.style.borderColor = '#ee5736';
+                  e.currentTarget.style.color = 'white';
                 }}
                 onMouseLeave={(e) => {
-                  if (!showQuickActions) e.currentTarget.style.background = 'transparent';
-                  if (!showQuickActions) e.currentTarget.style.borderColor = 'rgba(229, 231, 235, 1)';
+                  if (!showQuickActions) {
+                    e.currentTarget.style.background = '#ee573610';
+                    e.currentTarget.style.borderColor = '#ee573630';
+                    e.currentTarget.style.color = '#ee5736';
+                  }
                 }}
                 aria-label="Menu actions rapides"
                 aria-expanded={showQuickActions}
                 aria-haspopup="true"
               >
-                <Zap className="w-4 h-4" style={{ color: '#ee5736' }} />
+                <Zap className="w-4 h-4" style={{ color: showQuickActions ? 'white' : '#ee5736' }} />
                 <span>Actions Rapides</span>
                 <ChevronDown className={cn(
                   "w-4 h-4 transition-transform",
                   showQuickActions && "rotate-180"
-                )} />
+                )} style={{ color: showQuickActions ? 'white' : '#ee5736' }} />
               </button>
 
               {/* Quick Actions Dropdown */}
