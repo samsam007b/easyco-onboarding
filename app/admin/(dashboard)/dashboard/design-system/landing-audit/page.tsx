@@ -20,8 +20,8 @@ export default function LandingPageAudit() {
   const designSystemColors = {
     owner: { hex: '#ad5684', rgb: 'rgb(173, 86, 132)', name: 'Mauve (Owner Primary)' },
     resident: { hex: '#ee5736', rgb: 'rgb(238, 87, 54)', name: 'Orange (Resident Primary)' },
-    searcher: { hex: '#ffa50e', rgb: 'rgb(255, 165, 14)', name: 'Jaune (Searcher Primary)' },
-    signature: { gradient: 'linear-gradient(135deg, #ad5684 0%, #ee5736 50%, #ffa50e 100%)', name: 'Gradient Signature' },
+    searcher: { hex: '#ff9811', rgb: 'rgb(255, 152, 17)', name: 'Jaune (Searcher Primary)' },
+    signature: { gradient: 'linear-gradient(135deg, #ad5684 0%, #ee5736 50%, #ff9811 100%)', name: 'Gradient Signature' },
   };
 
   // Détection des incohérences
@@ -144,7 +144,7 @@ export default function LandingPageAudit() {
                   <div>
                     <strong>Appliquer les couleurs dominantes exactes</strong>
                     <p className="text-sm text-slate-400">
-                      Utiliser les couleurs dominantes par rôle : Owner (#ad5684), Resident (#ee5736), Searcher (#ffa50e)
+                      Utiliser les couleurs dominantes par rôle : Owner (#ad5684), Resident (#ee5736), Searcher (#ff9811)
                     </p>
                   </div>
                 </li>
