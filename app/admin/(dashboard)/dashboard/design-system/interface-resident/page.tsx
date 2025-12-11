@@ -207,33 +207,33 @@ function OverviewSection() {
             </p>
 
             {/* 5 Color Swatches in Grid */}
-            <div className="grid grid-cols-5 gap-3">
-              <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ backgroundColor: '#d9574f', opacity: 1 }} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#d9574f' }} />
                 <p className="text-white font-mono text-xs font-bold text-center">#d9574f</p>
                 <p className="text-xs text-slate-400 text-center">0%</p>
               </div>
 
-              <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ backgroundColor: '#ee5736', opacity: 1 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ee5736' }} />
                 <p className="text-white font-mono text-xs font-bold text-center">#ee5736</p>
                 <p className="text-xs text-slate-400 text-center">25%</p>
               </div>
 
-              <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ backgroundColor: '#ff5b21', opacity: 1 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff5b21' }} />
                 <p className="text-white font-mono text-xs font-bold text-center">#ff5b21</p>
                 <p className="text-xs text-slate-400 text-center">50%</p>
               </div>
 
-              <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ backgroundColor: '#ff6e1c', opacity: 1 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff6e1c' }} />
                 <p className="text-white font-mono text-xs font-bold text-center">#ff6e1c</p>
                 <p className="text-xs text-slate-400 text-center">75%</p>
               </div>
 
-              <div className="space-y-2">
-                <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ backgroundColor: '#ff8017', opacity: 1 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ width: '100%', height: '96px', borderRadius: '8px', border: '2px solid white', backgroundColor: '#ff8017' }} />
                 <p className="text-white font-mono text-xs font-bold text-center">#ff8017</p>
                 <p className="text-xs text-slate-400 text-center">100%</p>
               </div>
