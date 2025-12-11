@@ -118,7 +118,7 @@ function GuestPageContent() {
       label: 'Je cherche',
       icon: Search,
       description: 'Trouve ta colocation idéale',
-      color: 'from-orange-500 to-amber-500',
+      color: '#ff9811',
       bgColor: 'bg-orange-50',
     },
     {
@@ -126,7 +126,7 @@ function GuestPageContent() {
       label: 'Je vis en coloc',
       icon: Home,
       description: 'Gère ta vie en colocation',
-      color: 'from-rose-400 to-pink-500',
+      color: '#ee5736',
       bgColor: 'bg-rose-50',
     },
     {
@@ -134,7 +134,7 @@ function GuestPageContent() {
       label: 'Je suis proprio',
       icon: Building2,
       description: 'Gère tes propriétés',
-      color: 'from-purple-500 to-indigo-500',
+      color: '#ad5684',
       bgColor: 'bg-purple-50',
     },
   ];
@@ -147,10 +147,16 @@ function GuestPageContent() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
+              >
                 <Home className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">EasyCo</span>
+              <span className="text-xl font-bold">
+                <span style={{ color: '#ad5684' }}>Easy</span>
+                <span style={{ color: '#ff9811' }}>Co</span>
+              </span>
               <Badge variant="warning" size="sm" className="ml-2">
                 Mode Découverte
               </Badge>
@@ -169,7 +175,8 @@ function GuestPageContent() {
               <Button
                 size="sm"
                 onClick={() => router.push('/auth?mode=signup')}
-                className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+                className="text-white font-semibold hover:brightness-110"
+                style={{ background: '#ff9811' }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Créer un compte
@@ -186,12 +193,10 @@ function GuestPageContent() {
             <div className="relative inline-flex items-center bg-gray-100 rounded-2xl p-1.5">
               {/* Sliding pill background */}
               <motion.div
-                className={cn(
-                  "absolute top-1.5 bottom-1.5 rounded-xl shadow-lg",
-                  activeView === 'searcher' && "bg-gradient-to-r from-orange-500 to-amber-500",
-                  activeView === 'resident' && "bg-gradient-to-r from-rose-400 to-pink-500",
-                  activeView === 'owner' && "bg-gradient-to-r from-purple-500 to-indigo-500"
-                )}
+                className="absolute top-1.5 bottom-1.5 rounded-xl shadow-lg"
+                style={{
+                  background: activeView === 'searcher' ? '#ff9811' : activeView === 'resident' ? '#ee5736' : '#ad5684'
+                }}
                 initial={false}
                 animate={{
                   left: activeView === 'searcher' ? '6px' : activeView === 'resident' ? 'calc(33.33% + 2px)' : 'calc(66.66% - 2px)',
@@ -277,7 +282,8 @@ function GuestPageContent() {
           <div className="flex gap-3 w-full sm:w-auto">
             <Button
               onClick={() => router.push('/auth?mode=signup')}
-              className="flex-1 sm:flex-none bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+              className="flex-1 sm:flex-none text-white font-semibold hover:brightness-110"
+              style={{ background: '#ff9811' }}
               size="lg"
             >
               <UserPlus className="w-5 h-5 mr-2" />
@@ -312,8 +318,11 @@ function GuestPageContent() {
               </button>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Lock className="w-8 h-8 text-orange-600" />
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  style={{ background: '#ff981120' }}
+                >
+                  <Lock className="w-8 h-8" style={{ color: '#ff9811' }} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   Fonctionnalité Premium
@@ -339,7 +348,8 @@ function GuestPageContent() {
                 <div className="flex flex-col gap-3">
                   <Button
                     onClick={() => router.push('/auth?mode=signup')}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-500"
+                    className="w-full text-white font-semibold hover:brightness-110"
+                    style={{ background: '#ff9811' }}
                     size="lg"
                   >
                     <UserPlus className="w-5 h-5 mr-2" />
@@ -397,23 +407,27 @@ function SearcherGuestView({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-sm border border-orange-200 p-4"
+          className="bg-white rounded-2xl shadow-sm p-4"
+          style={{ borderColor: '#ff981140', border: '1px solid' }}
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: '#ff9811' }}
+            >
               <Search className="w-4 h-4 text-white" />
             </div>
             <h3 className="font-semibold text-gray-900">Ta recherche</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {searchCriteria.location && (
-              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
                 <MapPin className="w-3.5 h-3.5" />
                 {searchCriteria.location}
               </Badge>
             )}
             {(searchCriteria.budgetMin || searchCriteria.budgetMax) && (
-              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
                 <Euro className="w-3.5 h-3.5" />
                 {searchCriteria.budgetMin && searchCriteria.budgetMax
                   ? `${searchCriteria.budgetMin}€ - ${searchCriteria.budgetMax}€`
@@ -424,21 +438,21 @@ function SearcherGuestView({
               </Badge>
             )}
             {searchCriteria.moveInDate && (
-              <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200 flex items-center gap-1.5 px-3 py-1.5">
+              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
                 <Calendar className="w-3.5 h-3.5" />
                 {formatDate(searchCriteria.moveInDate)}
               </Badge>
             )}
           </div>
           <p className="text-sm text-gray-500 mt-3">
-            <Sparkles className="w-4 h-4 inline mr-1 text-orange-500" />
+            <Sparkles className="w-4 h-4 inline mr-1" style={{ color: '#ff9811' }} />
             Crée un compte pour sauvegarder ta recherche et recevoir des alertes
           </p>
         </motion.div>
       )}
 
       {/* Fake Dashboard Compact */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E88A2D] via-[#F5A035] to-[#FFB85C] shadow-xl p-4">
+      <div className="relative overflow-hidden rounded-3xl shadow-xl p-4" style={{ background: 'linear-gradient(135deg, #ff9811 0%, #FFB85C 100%)' }}>
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }} />
@@ -525,7 +539,7 @@ function SearcherGuestView({
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">Propriétés disponibles</h2>
-          <Badge variant="default" className="bg-orange-100 text-orange-700 border-orange-200">
+          <Badge variant="default" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
             Aperçu limité
           </Badge>
         </div>
@@ -540,14 +554,15 @@ function SearcherGuestView({
               className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
             >
               {/* Property Image */}
-              <div className="relative h-40 bg-gradient-to-br from-orange-100 to-amber-100">
+              <div className="relative h-40" style={{ background: '#ff981120' }}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Home className="w-12 h-12 text-orange-300" />
+                  <Home className="w-12 h-12" style={{ color: '#ff981160' }} />
                 </div>
                 {/* Compatibility Badge - Blurred */}
                 <div className="absolute top-3 right-3">
                   <div
-                    className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 flex items-center gap-1.5 cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    style={{ background: '#ff9811' }}
                     onClick={() => onLockedFeature('Crée ton compte pour voir ton score de compatibilité')}
                   >
                     <Sparkles className="w-3.5 h-3.5 text-white" />
@@ -576,7 +591,7 @@ function SearcherGuestView({
                       {property.bathrooms}
                     </div>
                   </div>
-                  <p className="text-lg font-bold text-orange-600">
+                  <p className="text-lg font-bold" style={{ color: '#ff9811' }}>
                     {property.monthly_rent}€<span className="text-sm font-normal text-gray-500">/mois</span>
                   </p>
                 </div>
@@ -594,7 +609,8 @@ function SearcherGuestView({
                   </Button>
                   <Button
                     size="sm"
-                    className="flex-1 bg-orange-500 hover:bg-orange-600"
+                    className="flex-1 text-white hover:brightness-110"
+                    style={{ background: '#ff9811' }}
                     onClick={() => onLockedFeature('Crée ton compte pour contacter le propriétaire')}
                   >
                     Contacter
@@ -607,15 +623,18 @@ function SearcherGuestView({
       </div>
 
       {/* Matching Section - Teaser */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-50 to-orange-50 border border-orange-200 p-6">
+      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #ee573615)', borderColor: '#ff981140', border: '1px solid' }}>
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #ee5736, #ff9811)' }}
+              >
                 <Users className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">Trouve tes colocataires idéaux</h3>
-              <Lock className="w-5 h-5 text-orange-500" />
+              <Lock className="w-5 h-5" style={{ color: '#ff9811' }} />
             </div>
             <p className="text-gray-600 mb-4">
               Notre algorithme de matching te connecte avec des personnes qui partagent ton style de vie,
@@ -623,7 +642,8 @@ function SearcherGuestView({
             </p>
             <Button
               onClick={() => onLockedFeature('Crée ton compte pour accéder au matching intelligent')}
-              className="bg-gradient-to-r from-pink-500 to-orange-500"
+              className="text-white font-semibold hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff9811)' }}
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Découvrir le matching
@@ -643,7 +663,10 @@ function SearcherGuestView({
                 )}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-200 to-amber-200 flex items-center justify-center text-xs font-bold text-orange-700">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{ background: '#ff981140', color: '#ff9811' }}
+                  >
                     {mate.name.charAt(0)}
                   </div>
                   <div>
@@ -734,11 +757,11 @@ function ResidentGuestView({
               className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
-                <Lock className="w-4 h-4 text-rose-400 group-hover:scale-110 transition" />
+                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ee5736' }} />
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mb-3">
-                <Icon className="w-5 h-5 text-rose-600" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ee573620' }}>
+                <Icon className="w-5 h-5" style={{ color: '#ee5736' }} />
               </div>
 
               <p className="text-xs font-medium text-gray-500 mb-1">{card.title}</p>
@@ -759,16 +782,17 @@ function ResidentGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
               onClick={() => onLockedFeature(`Crée ton compte pour accéder à "${feature.title}"`)}
-              className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-rose-200 transition-all group"
+              className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
+              style={{ borderColor: '#ee573640' }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition">
-                  <Icon className="w-6 h-6 text-rose-600" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ee573620' }}>
+                  <Icon className="w-6 h-6" style={{ color: '#ee5736' }} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-bold text-gray-900">{feature.title}</h3>
-                    <Lock className="w-4 h-4 text-rose-400" />
+                    <Lock className="w-4 h-4" style={{ color: '#ee5736' }} />
                   </div>
                   <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
@@ -779,11 +803,11 @@ function ResidentGuestView({
       </div>
 
       {/* Mock Residence Card */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 p-6">
+      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: '#ee573610', borderColor: '#ee573640', border: '1px solid' }}>
         <div className="flex flex-col md:flex-row gap-6 items-center">
           {/* Property preview */}
-          <div className="w-full md:w-64 h-40 bg-gradient-to-br from-rose-200 to-pink-200 rounded-2xl flex items-center justify-center">
-            <Home className="w-16 h-16 text-rose-400" />
+          <div className="w-full md:w-64 h-40 rounded-2xl flex items-center justify-center" style={{ background: '#ee573640' }}>
+            <Home className="w-16 h-16" style={{ color: '#ee5736' }} />
           </div>
 
           <div className="flex-1 text-center md:text-left">
@@ -794,7 +818,7 @@ function ResidentGuestView({
             </p>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
               {['Gestion loyer', 'Tâches partagées', 'Chat groupe', 'Événements'].map((tag) => (
-                <Badge key={tag} variant="default" className="bg-rose-100 text-rose-700 border-rose-200">
+                <Badge key={tag} variant="default" style={{ background: '#ee573620', color: '#ee5736', borderColor: '#ee573640' }}>
                   {tag}
                 </Badge>
               ))}
@@ -876,11 +900,11 @@ function OwnerGuestView({
               className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
-                <Lock className="w-4 h-4 text-purple-400 group-hover:scale-110 transition" />
+                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ad5684' }} />
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center mb-3">
-                <Icon className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ad568420' }}>
+                <Icon className="w-5 h-5" style={{ color: '#ad5684' }} />
               </div>
 
               <p className="text-xs font-medium text-gray-500 mb-1">{card.title}</p>
@@ -907,16 +931,17 @@ function OwnerGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
               onClick={() => onLockedFeature(`Créez votre compte pour accéder à "${feature.title}"`)}
-              className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-purple-200 transition-all group"
+              className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
+              style={{ borderColor: '#ad568440' }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition">
-                  <Icon className="w-6 h-6 text-purple-600" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ad568420' }}>
+                  <Icon className="w-6 h-6" style={{ color: '#ad5684' }} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-bold text-gray-900">{feature.title}</h3>
-                    <Lock className="w-4 h-4 text-purple-400" />
+                    <Lock className="w-4 h-4" style={{ color: '#ad5684' }} />
                   </div>
                   <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
@@ -927,9 +952,9 @@ function OwnerGuestView({
       </div>
 
       {/* Add Property CTA */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 p-8 text-center">
+      <div className="relative overflow-hidden rounded-3xl p-8 text-center" style={{ background: '#ad568410', borderColor: '#ad568440', border: '1px solid' }}>
         <div className="max-w-md mx-auto">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: '#ad5684' }}>
             <Plus className="w-8 h-8 text-white" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -942,7 +967,8 @@ function OwnerGuestView({
           <Button
             onClick={() => router.push('/auth?mode=signup&role=owner')}
             size="lg"
-            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+            className="text-white font-semibold hover:brightness-110"
+            style={{ background: '#ad5684' }}
           >
             <Building2 className="w-5 h-5 mr-2" />
             Créer mon compte propriétaire
@@ -954,14 +980,14 @@ function OwnerGuestView({
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-purple-600" />
+            <TrendingUp className="w-5 h-5" style={{ color: '#ad5684' }} />
             Évolution des revenus
           </h3>
-          <Lock className="w-5 h-5 text-purple-400" />
+          <Lock className="w-5 h-5" style={{ color: '#ad5684' }} />
         </div>
-        <div className="h-48 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl flex items-center justify-center border border-dashed border-purple-200">
+        <div className="h-48 rounded-xl flex items-center justify-center border border-dashed" style={{ background: '#ad568410', borderColor: '#ad568440' }}>
           <div className="text-center">
-            <Eye className="w-10 h-10 text-purple-300 mx-auto mb-2" />
+            <Eye className="w-10 h-10 mx-auto mb-2" style={{ color: '#ad568460' }} />
             <p className="text-sm text-gray-500">Graphiques disponibles après inscription</p>
           </div>
         </div>
@@ -976,7 +1002,7 @@ export default function GuestPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#ff9811', borderTopColor: 'transparent' }} />
           <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
