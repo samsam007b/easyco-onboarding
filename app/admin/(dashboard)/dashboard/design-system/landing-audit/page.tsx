@@ -21,7 +21,7 @@ export default function LandingPageAudit() {
     owner: { hex: '#ad5684', rgb: 'rgb(173, 86, 132)', name: 'Mauve (Owner Primary)' },
     resident: { hex: '#ee5736', rgb: 'rgb(238, 87, 54)', name: 'Orange (Resident Primary)' },
     searcher: { hex: '#ff9811', rgb: 'rgb(255, 152, 17)', name: 'Jaune (Searcher Primary)' },
-    signature: { gradient: 'linear-gradient(135deg, #ad5684 0%, #ee5736 50%, #ff9811 100%)', name: 'Gradient Signature' },
+    signature: { gradient: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)', name: 'Gradient Signature' },
   };
 
   // Détection des incohérences
