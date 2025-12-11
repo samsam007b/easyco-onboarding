@@ -439,10 +439,10 @@ function PropertyCard({
                 e.stopPropagation();
                 window.location.href = `/properties/${property.id}`;
               }}
-              className="group relative px-8 py-4 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
+              className="group relative px-8 py-5 text-white font-bold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
               style={{
-                background: 'rgba(255, 111, 60, 0.85)',
-                boxShadow: '0 10px 30px -5px rgba(255, 111, 60, 0.4), 0 4px 10px -2px rgba(255, 111, 60, 0.3)'
+                background: '#ee5736d9',
+                boxShadow: '0 10px 30px -5px rgba(238, 87, 54, 0.4), 0 4px 10px -2px rgba(238, 87, 54, 0.3)'
               }}
             >
               <span className="relative z-10">Voir détails</span>
