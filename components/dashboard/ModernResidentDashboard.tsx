@@ -430,7 +430,7 @@ export default function ModernResidentDashboard() {
                   )}
                   style={card.gradientStyle}
                 >
-                  <Icon className="w-6 h-6 text-gray-700 relative z-10" />
+                  <Icon className="w-6 h-6 text-white relative z-10" />
                 </div>
 
                 {/* Title */}

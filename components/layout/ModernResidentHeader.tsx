@@ -370,7 +370,7 @@ export default function ModernResidentHeader({
                                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
                                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                               >
-                                <Icon className="w-5 h-5 text-gray-700" />
+                                <Icon className="w-5 h-5 text-white" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-gray-900">
@@ -474,7 +474,7 @@ export default function ModernResidentHeader({
                   className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm"
                   style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                 >
-                  <Key className="w-4 h-4 text-gray-700" />
+                  <Key className="w-4 h-4 text-white" />
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-600 transition-colors hidden md:block" style={{ color: showProfileMenu ? '#ee5736' : undefined }} />
               </button>
