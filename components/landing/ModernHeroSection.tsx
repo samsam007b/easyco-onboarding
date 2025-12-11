@@ -200,12 +200,15 @@ export default function ModernHeroSection() {
                 />
               </div>
 
-              {/* Search Button - Glassmorphism Style (Option D) */}
+              {/* Search Button - Gradient Signature */}
               <div className="p-2 flex items-center justify-center">
                 <Button
                   onClick={handleSearch}
-                  className="w-full h-full group text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105 backdrop-blur-xl border border-white/30"
-                  style={{ background: 'rgba(255, 160, 64, 0.7)' }}
+                  className="w-full h-full group text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  style={{
+                    background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
+                    boxShadow: '0 10px 30px -5px rgba(156, 86, 152, 0.4), 0 4px 10px -2px rgba(255, 87, 34, 0.3)'
+                  }}
                 >
                   <div className="flex items-center">
                     <Search className="w-5 h-5 mr-2" />
@@ -251,14 +254,17 @@ export default function ModernHeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            {/* Owner CTA - Glassmorphism Style (Option D) */}
+            {/* Owner CTA - Glassmorphism Style */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
-                style={{ background: 'rgba(110, 86, 207, 0.6)' }}
+                style={{
+                  background: '#ad5684d9',
+                  boxShadow: '0 10px 30px -5px rgba(173, 86, 132, 0.4), 0 4px 10px -2px rgba(173, 86, 132, 0.3)'
+                }}
               >
                 <div className="flex items-center justify-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all">
@@ -269,20 +275,44 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
 
-            {/* Resident CTA - Glassmorphism Style (Option D) */}
+            {/* Resident CTA - Glassmorphism Style */}
             <Link href="/onboarding/resident" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
-                style={{ background: 'rgba(255, 111, 60, 0.6)' }}
+                style={{
+                  background: '#ee5736d9',
+                  boxShadow: '0 10px 30px -5px rgba(238, 87, 54, 0.4), 0 4px 10px -2px rgba(238, 87, 54, 0.3)'
+                }}
               >
                 <div className="flex items-center justify-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all">
                     <Home className="w-4 h-4" />
                   </div>
                   <span className="text-base">Je suis résident</span>
+                </div>
+              </motion.button>
+            </Link>
+
+            {/* Searcher CTA - Glassmorphism Style */}
+            <Link href="/guest" className="w-full sm:w-auto">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
+                style={{
+                  background: '#ff9811d9',
+                  boxShadow: '0 10px 30px -5px rgba(255, 152, 17, 0.4), 0 4px 10px -2px rgba(255, 152, 17, 0.3)'
+                }}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all">
+                    <Search className="w-4 h-4" />
+                  </div>
+                  <span className="text-base">Je cherche un logement</span>
                 </div>
               </motion.button>
             </Link>
