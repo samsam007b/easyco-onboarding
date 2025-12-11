@@ -36,6 +36,9 @@ struct AddExpenseView: View {
     ]
     @State private var selectedPayer: ExpenseRoommate?
 
+    // Custom split amounts
+    @State private var customAmounts: [UUID: String] = [:]
+
     // Validation
     @State private var showValidationError = false
     @State private var validationMessage = ""
@@ -44,7 +47,7 @@ struct AddExpenseView: View {
         PinterestFormContainer(
             title: "Nouvelle Dépense",
             role: role,
-            isPresented: .constant(true),
+            isPresented: $viewModel.showAddExpense,
             onSave: createExpense
         ) {
             VStack(spacing: Theme.PinterestSpacing.xl) {
@@ -54,6 +57,12 @@ struct AddExpenseView: View {
                 dateSection
                 payerSection
                 splitTypeSection
+
+                // Custom split section (only shown when custom is selected)
+                if splitType == .custom {
+                    customSplitSection
+                }
+
                 receiptSection
                 validationErrorSection
             }
@@ -251,6 +260,109 @@ struct AddExpenseView: View {
         .buttonStyle(ScaleButtonStyle())
     }
 
+    private var customSplitSection: some View {
+        PinterestFormSection("Montants par personne") {
+            VStack(spacing: 12) {
+                ForEach(roommates) { roommate in
+                    customAmountRow(for: roommate)
+                }
+
+                // Total et reste
+                customSplitSummary
+            }
+        }
+    }
+
+    private func customAmountRow(for roommate: ExpenseRoommate) -> some View {
+        HStack(spacing: 12) {
+            // Avatar
+            ZStack {
+                Circle()
+                    .fill(role.primaryColor.opacity(0.15))
+                    .frame(width: 40, height: 40)
+
+                Text(String(roommate.name.prefix(1)))
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(role.primaryColor)
+            }
+
+            // Name
+            Text(roommate.name)
+                .font(Theme.PinterestTypography.bodyRegular(.medium))
+                .foregroundColor(Theme.Colors.textPrimary)
+
+            Spacer()
+
+            // Amount field
+            HStack(spacing: 4) {
+                TextField("0.00", text: Binding(
+                    get: { customAmounts[roommate.id] ?? "" },
+                    set: { customAmounts[roommate.id] = $0 }
+                ))
+                .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                .foregroundColor(Theme.Colors.textPrimary)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 70)
+
+                Text("€")
+                    .font(Theme.PinterestTypography.bodyRegular(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(hex: "F9FAFB"))
+            )
+        }
+        .padding(Theme.PinterestSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                .fill(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: Theme.PinterestRadius.medium)
+                        .stroke(Color.white.opacity(0.6), lineWidth: 1.5)
+                )
+        )
+        .pinterestShadow(Theme.PinterestShadows.subtle)
+    }
+
+    private var customSplitSummary: some View {
+        let totalAmount = Double(amount.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let assignedAmount = customAmounts.values.compactMap { Double($0.replacingOccurrences(of: ",", with: ".")) }.reduce(0, +)
+        let remaining = totalAmount - assignedAmount
+
+        return VStack(spacing: 8) {
+            Divider()
+
+            HStack {
+                Text("Total attribué")
+                    .font(Theme.PinterestTypography.bodyRegular(.medium))
+                    .foregroundColor(Theme.Colors.textSecondary)
+
+                Spacer()
+
+                Text(String(format: "%.2f€", assignedAmount))
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+
+            HStack {
+                Text("Reste à attribuer")
+                    .font(Theme.PinterestTypography.bodyRegular(.semibold))
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Spacer()
+
+                Text(String(format: "%.2f€", remaining))
+                    .font(Theme.PinterestTypography.bodyRegular(.bold))
+                    .foregroundColor(remaining == 0 ? Color(hex: "10B981") : (remaining > 0 ? Color(hex: "F59E0B") : Color(hex: "EF4444")))
+            }
+        }
+        .padding(.horizontal, Theme.PinterestSpacing.md)
+    }
+
     private var receiptSection: some View {
         PinterestFormSection("Reçu (optionnel)") {
             PhotosPicker(selection: $selectedPhoto, matching: .images) {
@@ -336,14 +448,37 @@ struct AddExpenseView: View {
             return
         }
 
-        // Create expense
-        let splits: [ExpenseSplit] = roommates.map { roommate in
-            ExpenseSplit(
-                userId: roommate.id,
-                userName: roommate.name,
-                amount: amountValue / Double(roommates.count),
-                isPaid: roommate.id == selectedPayer?.id
-            )
+        // Create expense splits based on split type
+        let splits: [ExpenseSplit]
+        if splitType == .custom {
+            // Custom splits - use custom amounts
+            splits = roommates.map { roommate in
+                let customAmount = Double(customAmounts[roommate.id]?.replacingOccurrences(of: ",", with: ".") ?? "0") ?? 0
+                return ExpenseSplit(
+                    userId: roommate.id,
+                    userName: roommate.name,
+                    amount: customAmount,
+                    isPaid: roommate.id == selectedPayer?.id
+                )
+            }
+
+            // Validate custom amounts total matches expense amount
+            let totalCustom = splits.reduce(0) { $0 + $1.amount }
+            if abs(totalCustom - amountValue) > 0.01 {
+                validationMessage = "Le total des montants personnalisés (\(String(format: "%.2f€", totalCustom))) ne correspond pas au montant total (\(String(format: "%.2f€", amountValue)))"
+                showValidationError = true
+                return
+            }
+        } else {
+            // Equal splits
+            splits = roommates.map { roommate in
+                ExpenseSplit(
+                    userId: roommate.id,
+                    userName: roommate.name,
+                    amount: amountValue / Double(roommates.count),
+                    isPaid: roommate.id == selectedPayer?.id
+                )
+            }
         }
 
         let newExpense = Expense(

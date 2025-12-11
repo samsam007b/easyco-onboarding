@@ -56,12 +56,15 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-yellow-400 rounded-lg flex items-center justify-center">
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
+              >
                 <span className="text-white font-bold text-xl">E</span>
               </div>
               <span className="text-2xl font-bold">
-                <span className={resolvedTheme === 'dark' ? 'text-purple-400' : 'text-purple-600'}>Easy</span>
-                <span className={resolvedTheme === 'dark' ? 'text-yellow-400' : 'text-yellow-600'}>Co</span>
+                <span style={{ color: '#ad5684' }}>Easy</span>
+                <span style={{ color: '#ff9811' }}>Co</span>
               </span>
             </div>
             <p className={`mb-4 leading-relaxed ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -75,7 +78,13 @@ export default function Footer() {
               </div>
               <div className={`flex items-center gap-2 text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                 <Mail className={`w-4 h-4 ${resolvedTheme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`} />
-                <a href="mailto:contact@easyco.be" className={`transition ${resolvedTheme === 'dark' ? 'hover:text-purple-400' : 'hover:text-purple-600'}`}>
+                <a
+                  href="mailto:contact@easyco.be"
+                  className="transition"
+                  style={{ color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
+                >
                   contact@easyco.be
                 </a>
               </div>
@@ -94,7 +103,12 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-sm transition ${resolvedTheme === 'dark' ? 'text-gray-400 hover:text-purple-400' : 'text-gray-600 hover:text-purple-600'}`}
+                    className="text-sm transition"
+                    style={{
+                      color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
                   </Link>
@@ -111,7 +125,12 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-sm transition ${resolvedTheme === 'dark' ? 'text-gray-400 hover:text-purple-400' : 'text-gray-600 hover:text-purple-600'}`}
+                    className="text-sm transition"
+                    style={{
+                      color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
                   </Link>
@@ -128,7 +147,12 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-sm transition ${resolvedTheme === 'dark' ? 'text-gray-400 hover:text-purple-400' : 'text-gray-600 hover:text-purple-600'}`}
+                    className="text-sm transition"
+                    style={{
+                      color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
                   </Link>
@@ -145,7 +169,12 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-sm transition ${resolvedTheme === 'dark' ? 'text-gray-400 hover:text-purple-400' : 'text-gray-600 hover:text-purple-600'}`}
+                    className="text-sm transition"
+                    style={{
+                      color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
                   </Link>
@@ -173,11 +202,25 @@ export default function Footer() {
                 placeholder="ton@email.com"
                 className={`flex-1 px-4 py-2 rounded-lg transition focus:outline-none focus:ring-2 ${
                   resolvedTheme === 'dark'
-                    ? 'bg-white/5 border border-white/10 text-gray-100 placeholder-gray-500 focus:border-purple-400 focus:ring-purple-400/20'
-                    : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:ring-purple-200'
+                    ? 'bg-white/5 border border-white/10 text-gray-100 placeholder-gray-500'
+                    : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400'
                 }`}
+                style={{
+                  borderColor: resolvedTheme === 'dark' ? '#ad568420' : '#ad568430',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#ad5684';
+                  e.currentTarget.style.boxShadow = `0 0 0 3px ${resolvedTheme === 'dark' ? '#ad568420' : '#ad568410'}`;
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = resolvedTheme === 'dark' ? '#ad568420' : '#ad568430';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
-              <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg">
+              <button
+                className="px-6 py-2 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg hover:scale-105"
+                style={{ background: '#ad5684' }}
+              >
                 S'abonner
               </button>
             </div>
@@ -199,11 +242,19 @@ export default function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-10 h-10 rounded-lg flex items-center justify-center transition ${
-                  resolvedTheme === 'dark'
-                    ? 'bg-white/5 hover:bg-purple-500/20 text-gray-400 hover:text-purple-400'
-                    : 'bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-600'
-                }`}
+                className="w-10 h-10 rounded-lg flex items-center justify-center transition"
+                style={{
+                  background: resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#F3F4F6',
+                  color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = resolvedTheme === 'dark' ? '#ad568420' : '#ad568415';
+                  e.currentTarget.style.color = '#ad5684';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#F3F4F6';
+                  e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563';
+                }}
                 aria-label={social.label}
               >
                 <social.icon className="w-5 h-5" />

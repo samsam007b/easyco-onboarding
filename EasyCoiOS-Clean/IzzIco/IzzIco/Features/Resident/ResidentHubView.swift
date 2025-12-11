@@ -13,27 +13,51 @@ import SwiftUI
 struct ResidentHubView: View {
     @StateObject private var viewModel = ResidentHubViewModel()
     @State private var showSettings = false
+    @State private var showProfileSheet = false
+    @State private var showAlertsSheet = false
+    @State private var showMenuSheet = false
     @State private var selectedSegment = 0
 
     private let role: Theme.UserRole = .resident
 
     var body: some View {
-        Group {
-            if viewModel.isLoading {
-                ZStack {
-                    PinterestBackground(role: role, intensity: 0.18)
-                        .ignoresSafeArea()
+        ZStack(alignment: .top) {
+            Group {
+                if viewModel.isLoading {
+                    ZStack {
+                        PinterestBackground(role: role, intensity: 0.18)
+                            .ignoresSafeArea()
 
-                    LoadingView(message: "Chargement du dashboard...")
+                        LoadingView(message: "Chargement du dashboard...")
+                    }
+                } else if let error = viewModel.error {
+                    errorView(error)
+                } else {
+                    contentView
                 }
-            } else if let error = viewModel.error {
-                errorView(error)
-            } else {
-                contentView
             }
+
+            // Floating Header
+            FloatingHeaderView(
+                role: role,
+                showAddButton: false,
+                onProfileTap: { showProfileSheet = true },
+                onAlertTap: { showAlertsSheet = true },
+                onMenuTap: { showMenuSheet = true },
+                onAddTap: nil
+            )
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+        }
+        .sheet(isPresented: $showProfileSheet) {
+            ProfileView()
+        }
+        .sheet(isPresented: $showAlertsSheet) {
+            AlertsView()
+        }
+        .sheet(isPresented: $showMenuSheet) {
+            MenuView()
         }
         .refreshable {
             await viewModel.refresh()
@@ -87,9 +111,13 @@ struct ResidentHubView: View {
                 .ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
-                VStack(spacing: Theme.PinterestSpacing.lg) {
-                    // Hero Welcome Section
-                    heroWelcomeSection
+                VStack(spacing: 0) {
+                    // Spacer for floating header
+                    Color.clear.frame(height: 70)
+
+                    VStack(spacing: Theme.PinterestSpacing.lg) {
+                        // Hero Welcome Section
+                        heroWelcomeSection
 
                     // Hero Balance Card (Finance app style)
                     if !viewModel.balance.isEmpty {
@@ -115,10 +143,11 @@ struct ResidentHubView: View {
 
                     // Quick Actions Grid
                     quickActionsSection
+                    }
+                    .padding(.horizontal, Theme.PinterestSpacing.lg)
+                    .padding(.top, Theme.PinterestSpacing.md)
+                    .padding(.bottom, Theme.PinterestSpacing.xxxl)
                 }
-                .padding(.horizontal, Theme.PinterestSpacing.lg)
-                .padding(.top, Theme.PinterestSpacing.md)
-                .padding(.bottom, Theme.PinterestSpacing.xxxl)
             }
         }
     }

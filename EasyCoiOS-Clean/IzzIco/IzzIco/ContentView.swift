@@ -496,29 +496,33 @@ struct FloatingTabBar: View {
     var body: some View {
         GeometryReader { geometry in
             let tabWidth = geometry.size.width / CGFloat(tabs.count)
-            let indicatorWidth = tabWidth - 16
+            let indicatorWidth = tabWidth - 20
             let indicatorOffset = CGFloat(selectedTab) * tabWidth + (tabWidth - indicatorWidth) / 2
 
-            ZStack(alignment: .leading) {
-                // Sliding indicator background
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(primaryColor.opacity(0.15))
-                    .frame(width: indicatorWidth, height: 56)
-                    .offset(x: indicatorOffset, y: 12)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.75), value: selectedTab)
-
+            ZStack(alignment: .top) {
                 // Tab buttons
                 HStack(spacing: 0) {
                     ForEach(tabs) { tab in
-                        FloatingTabButton(
-                            tab: tab,
-                            isSelected: selectedTab == tab.id,
-                            primaryColor: primaryColor
-                        ) {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                selectedTab = tab.id
+                        ZStack {
+                            // Indicator background for selected tab
+                            if selectedTab == tab.id {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(primaryColor.opacity(0.15))
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 16)
+                                    .matchedGeometryEffect(id: "tab_indicator", in: tabAnimation)
                             }
-                            Haptic.selection()
+
+                            FloatingTabButton(
+                                tab: tab,
+                                isSelected: selectedTab == tab.id,
+                                primaryColor: primaryColor
+                            ) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    selectedTab = tab.id
+                                }
+                                Haptic.selection()
+                            }
                         }
                         .frame(width: tabWidth)
                     }
@@ -528,7 +532,15 @@ struct FloatingTabBar: View {
         .frame(height: 80)
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white)
+                .fill(Color.white.opacity(0.5))
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .fill(Color.white.opacity(0.3))
+                        .frame(height: 0.5),
+                    alignment: .top
+                )
                 .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: -4)
         )
         .padding(.horizontal, 16)
@@ -546,17 +558,20 @@ struct FloatingTabButton: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 6) {
+            VStack(spacing: 4) {
                 Image(systemName: tab.icon)
                     .font(.system(size: 22, weight: isSelected ? .semibold : .medium))
                     .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
-                    .frame(height: 28)
+                    .frame(width: 24, height: 24)
 
                 Text(tab.title)
                     .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
                     .foregroundColor(isSelected ? primaryColor : Color(hex: "9CA3AF"))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.vertical, 12)
         }
         .buttonStyle(PlainButtonStyle())
     }

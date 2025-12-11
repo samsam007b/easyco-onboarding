@@ -91,7 +91,15 @@ struct FloatingTabBar: View {
         .frame(height: 80)
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white)
+                .fill(Color.white.opacity(0.5))
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .fill(Color.white.opacity(0.3))
+                        .frame(height: 0.5),
+                    alignment: .top
+                )
                 .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: -4)
         )
         .padding(.horizontal, 16)

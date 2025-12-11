@@ -5,16 +5,16 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ChevronDown, HelpCircle, Mail } from 'lucide-react';
 
-// Couleurs extraites du logo gradient pour chaque rôle
+// Couleurs du design system - couleurs dominantes exactes par rôle
 const ROLE_COLORS = {
   owner: {
-    gradient: { start: '#7B5FB8', end: '#C98B9E' },
-    gradientDark: { start: '#8B6FCF', end: '#D9A0B3' },
+    gradient: { start: '#ad5684', end: '#ad5684' },
+    gradientDark: { start: '#ad5684', end: '#ad5684' },
     light: '#F3F1FF',
   },
   searcher: {
-    gradient: { start: '#FFA040', end: '#FFD080' },
-    gradientDark: { start: '#FFB050', end: '#FFD890' },
+    gradient: { start: '#ff9811', end: '#ff9811' },
+    gradientDark: { start: '#ff9811', end: '#ff9811' },
     light: '#FFF9E6',
   },
 };

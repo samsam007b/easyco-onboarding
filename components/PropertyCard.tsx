@@ -439,7 +439,7 @@ function PropertyCard({
                 e.stopPropagation();
                 window.location.href = `/properties/${property.id}`;
               }}
-              className="group relative px-8 py-5 text-white font-bold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
+              className="group relative px-6 py-3 text-white font-bold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
               style={{
                 background: '#ee5736d9',
                 boxShadow: '0 10px 30px -5px rgba(238, 87, 54, 0.4), 0 4px 10px -2px rgba(238, 87, 54, 0.3)'

@@ -109,8 +109,8 @@ export default function Home() {
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #8B6FCF20, #D9A0B320)'
-                    : 'linear-gradient(to bottom right, #7B5FB815, #C98B9E15)',
+                    ? 'linear-gradient(to bottom right, #ad568420, #ad568420)'
+                    : 'linear-gradient(to bottom right, #ad568415, #ad568415)',
                 }}
               />
 
@@ -118,16 +118,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#8B6FCF40' : '#7B5FB830',
+                  borderColor: resolvedTheme === 'dark' ? '#ad568440' : '#ad568430',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to bottom right, #8B6FCF, #D9A0B3)'
-                      : 'linear-gradient(to bottom right, #7B5FB8, #C98B9E)',
+                    background: '#ad5684',
                   }}
                 >
                   <Shield className="w-10 h-10 text-white" />
@@ -135,9 +133,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to right, #8B6FCF, #D9A0B3)'
-                      : 'linear-gradient(to right, #7B5FB8, #C98B9E)',
+                    backgroundImage: 'linear-gradient(to right, #ad5684, #ad5684)',
                   }}
                 >
                   {landing.benefits.verified.title}
@@ -155,8 +151,8 @@ export default function Home() {
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #E88B7F20, #FFA05B20)'
-                    : 'linear-gradient(to bottom right, #D97B6F15, #FF8C4B15)',
+                    ? 'linear-gradient(to bottom right, #ee573620, #ee573620)'
+                    : 'linear-gradient(to bottom right, #ee573615, #ee573615)',
                 }}
               />
 
@@ -164,16 +160,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#E88B7F40' : '#FF572230',
+                  borderColor: resolvedTheme === 'dark' ? '#ee573640' : '#ee573630',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to bottom right, #E88B7F, #FFA05B)'
-                      : 'linear-gradient(to bottom right, #D97B6F, #FF8C4B)',
+                    background: '#ee5736',
                   }}
                 >
                   <Target className="w-10 h-10 text-white" />
@@ -181,9 +175,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to right, #E88B7F, #FFA05B)'
-                      : 'linear-gradient(to right, #D97B6F, #FF8C4B)',
+                    backgroundImage: 'linear-gradient(to right, #ee5736, #ee5736)',
                   }}
                 >
                   {landing.benefits.compatibility.title}
@@ -201,8 +193,8 @@ export default function Home() {
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #FFB05020, #FFD89020)'
-                    : 'linear-gradient(to bottom right, #FFA04015, #FFD08015)',
+                    ? 'linear-gradient(to bottom right, #ff981120, #ff981120)'
+                    : 'linear-gradient(to bottom right, #ff981115, #ff981115)',
                 }}
               />
 
@@ -210,16 +202,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#FFB05040' : '#FFA04030',
+                  borderColor: resolvedTheme === 'dark' ? '#ff981140' : '#ff981130',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to bottom right, #FFB050, #FFD890)'
-                      : 'linear-gradient(to bottom right, #FFA040, #FFD080)',
+                    background: '#ff9811',
                   }}
                 >
                   <Zap className="w-10 h-10 text-white" />
@@ -227,9 +217,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: resolvedTheme === 'dark'
-                      ? 'linear-gradient(to right, #FFB050, #FFD890)'
-                      : 'linear-gradient(to right, #FFA040, #FFD080)',
+                    backgroundImage: 'linear-gradient(to right, #ff9811, #ff9811)',
                   }}
                 >
                   {landing.benefits.groups.title}
@@ -250,8 +238,8 @@ export default function Home() {
       {/* Stats Section */}
       <StatsSection />
 
-      {/* Testimonials Section */}
-      <Testimonials />
+      {/* Testimonials Section - Désactivé temporairement (pas de vrais utilisateurs) */}
+      {/* <Testimonials /> */}
 
       {/* FAQ Section */}
       <FAQ />
