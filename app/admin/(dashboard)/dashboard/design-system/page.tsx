@@ -188,7 +188,8 @@ type Section =
   | 'badges'
   | 'gradient-usage'
   | 'dashboard-variants'
-  | 'choices';
+  | 'choices'
+  | 'interface-resident';
 
 const sections: { id: Section; label: string; icon: React.ElementType }[] = [
   { id: 'colors', label: 'Couleurs', icon: Palette },
@@ -204,6 +205,7 @@ const sections: { id: Section; label: string; icon: React.ElementType }[] = [
   { id: 'shadows', label: 'Ombres & Effets', icon: Moon },
   { id: 'inputs', label: 'Formulaires', icon: ToggleLeft },
   { id: 'badges', label: 'Badges', icon: BoxSelect },
+  { id: 'interface-resident', label: '🔑 Interface Resident', icon: Key },
   { id: 'choices', label: 'V1 vs V2', icon: Sparkles },
 ];
 
@@ -274,6 +276,7 @@ export default function AdminDesignSystemPage() {
           {activeSection === 'inputs' && <InputsSection />}
           {activeSection === 'badges' && <BadgesSection />}
           {activeSection === 'dashboard-variants' && <SearcherDashboardSection />}
+          {activeSection === 'interface-resident' && <InterfaceResidentSection />}
           {activeSection === 'choices' && <ChoicesSection />}
         </motion.div>
       </AnimatePresence>
@@ -377,8 +380,8 @@ function GradientSignatureEditor() {
   // PREVIEW MODE - Curseurs INDEPENDANTS pour expérimentation (ne modifie PAS les valeurs officielles)
   const [previewOwnerPos, setPreviewOwnerPos] = useState(21);
   const [previewOwnerWidth, setPreviewOwnerWidth] = useState(34);
-  const [previewResidentPos, setPreviewResidentPos] = useState(57);
-  const [previewResidentWidth, setPreviewResidentWidth] = useState(28);
+  const [previewResidentPos, setPreviewResidentPos] = useState(58);
+  const [previewResidentWidth, setPreviewResidentWidth] = useState(47);
   const [previewSearcherPos, setPreviewSearcherPos] = useState(95);
   const [previewSearcherWidth, setPreviewSearcherWidth] = useState(50);
 
@@ -390,8 +393,8 @@ function GradientSignatureEditor() {
   // SAVED MODE - Valeurs officielles sauvegardées (celles qui sont appliquées)
   const [savedOwnerPos, setSavedOwnerPos] = useState(21);
   const [savedOwnerWidth, setSavedOwnerWidth] = useState(34);
-  const [savedResidentPos, setSavedResidentPos] = useState(57);
-  const [savedResidentWidth, setSavedResidentWidth] = useState(28);
+  const [savedResidentPos, setSavedResidentPos] = useState(58);
+  const [savedResidentWidth, setSavedResidentWidth] = useState(47);
   const [savedSearcherPos, setSavedSearcherPos] = useState(95);
   const [savedSearcherWidth, setSavedSearcherWidth] = useState(50);
 
@@ -7646,6 +7649,348 @@ function SearcherDashboardSection() {
         <p className="mt-4 text-xs text-slate-400 italic">
           Toutes les propositions suivent la structure du dashboard Resident: rounded-3xl, grain texture, gradients jaune/or (Searcher colors), et focus sur la qualité premium.
         </p>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
+   INTERFACE RESIDENT SECTION
+   ============================================ */
+function InterfaceResidentSection() {
+  // Extract 5 colors from the resident gradient using the saved values
+  const residentColors = {
+    color1: '#D97B6F', // Start - Terracotta rosé
+    color2: '#DF8267', // 25%
+    color3: '#E8865D', // 50% - Corail doux (mid)
+    color4: '#F38954', // 75%
+    color5: '#FF8C4B'  // 100% - Orange vif (end)
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+        <div className="flex items-center gap-3 mb-4">
+          <div
+            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+          >
+            <Key className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-white">Couleurs Interface Resident</h2>
+            <p className="text-sm text-slate-400">Palette de couleurs pour l'interface colocation</p>
+          </div>
+        </div>
+      </div>
+
+      {/* PALETTE 5 COULEURS DU GRADIENT - NEW SECTION AT TOP */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-6 border-2 border-orange-500/30 shadow-2xl">
+        <div className="flex items-center gap-2 mb-4">
+          <Palette className="w-5 h-5 text-orange-400" />
+          <h3 className="text-lg font-bold text-white">Palette 5 Couleurs du Gradient Resident</h3>
+        </div>
+        <p className="text-sm text-slate-400 mb-6">Les 5 couleurs équidistantes extraites du gradient signature pour enrichir vos boutons et composants</p>
+
+        {/* Visual Gradient Bar showing the full range */}
+        <div className="relative h-24 rounded-xl overflow-hidden border-2 border-white shadow-xl mb-6">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <code className="text-white font-bold text-sm drop-shadow-lg bg-black/30 px-4 py-2 rounded-lg">
+              linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)
+            </code>
+          </div>
+        </div>
+
+        {/* 5 Color Swatches */}
+        <div className="grid grid-cols-5 gap-3">
+          <div className="space-y-2">
+            <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: residentColors.color1 }} />
+            <p className="text-white font-mono text-xs font-bold text-center">{residentColors.color1}</p>
+            <p className="text-xs text-slate-400 text-center">0%</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: residentColors.color2 }} />
+            <p className="text-white font-mono text-xs font-bold text-center">{residentColors.color2}</p>
+            <p className="text-xs text-slate-400 text-center">25%</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: residentColors.color3 }} />
+            <p className="text-white font-mono text-xs font-bold text-center">{residentColors.color3}</p>
+            <p className="text-xs text-slate-400 text-center">50%</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: residentColors.color4 }} />
+            <p className="text-white font-mono text-xs font-bold text-center">{residentColors.color4}</p>
+            <p className="text-xs text-slate-400 text-center">75%</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="w-full h-24 rounded-lg border-2 border-white shadow-lg" style={{ background: residentColors.color5 }} />
+            <p className="text-white font-mono text-xs font-bold text-center">{residentColors.color5}</p>
+            <p className="text-xs text-slate-400 text-center">100%</p>
+          </div>
+        </div>
+
+        <div className="mt-6 p-4 bg-slate-900/80 rounded-lg border border-orange-500/30">
+          <p className="text-sm text-orange-300 font-medium mb-2">💡 Usage recommandé</p>
+          <p className="text-xs text-slate-400">
+            Utilisez ces 5 couleurs pour créer des variations dans vos boutons, badges, icônes et composants.
+            Le gradient complet (3 couleurs) est réservé aux grandes surfaces comme les headers.
+          </p>
+        </div>
+      </div>
+
+      {/* Dégradé Signature - 3 couleurs */}
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-5 h-5 text-orange-400" />
+          <h3 className="text-lg font-bold text-white">Dégradé Signature (3 couleurs)</h3>
+        </div>
+        <p className="text-sm text-slate-400 mb-6">Gradient officiel extrait du logo IzzIco</p>
+
+        {/* Visual Gradient Bar */}
+        <div className="relative h-20 rounded-xl overflow-hidden border-2 border-white shadow-xl mb-6">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <code className="text-white font-bold text-sm drop-shadow-lg bg-black/20 px-3 py-1 rounded">
+              linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)
+            </code>
+          </div>
+        </div>
+
+        {/* Les 3 couleurs */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#D97B6F' }} />
+            <div>
+              <p className="text-white font-mono font-bold">#D97B6F</p>
+              <p className="text-xs text-slate-400">Terracotta rosé</p>
+              <p className="text-xs text-orange-300">0% - Start</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#E8865D' }} />
+            <div>
+              <p className="text-white font-mono font-bold">#E8865D</p>
+              <p className="text-xs text-slate-400">Corail doux</p>
+              <p className="text-xs text-orange-300">50% - Middle</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#FF8C4B' }} />
+            <div>
+              <p className="text-white font-mono font-bold">#FF8C4B</p>
+              <p className="text-xs text-slate-400">Orange vif</p>
+              <p className="text-xs text-orange-300">100% - End</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-slate-900 rounded-lg border border-slate-600">
+          <p className="text-xs text-slate-500 mb-1">CSS Variable (recommandé)</p>
+          <code className="text-sm text-green-400 font-mono">background: var(--gradient-resident);</code>
+        </div>
+      </div>
+
+      {/* Couleur Principale + Variations */}
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+        <h3 className="text-lg font-bold text-white mb-4">Couleur Principale & Variations</h3>
+        <p className="text-sm text-slate-400 mb-6">Couleur solide et ses déclinaisons pour boutons, textes et icônes</p>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Primary */}
+          <div className="space-y-2">
+            <div className="w-full h-20 rounded-lg border-2 border-white shadow-lg flex items-center justify-center" style={{ background: '#ee5736' }}>
+              <span className="text-white font-bold text-xs">Principal</span>
+            </div>
+            <p className="text-white font-mono text-sm font-bold">#ee5736</p>
+            <p className="text-xs text-slate-400">Orange Resident</p>
+          </div>
+
+          {/* Gradient 2 couleurs */}
+          <div className="space-y-2">
+            <div className="w-full h-20 rounded-lg border-2 border-white shadow-lg" style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }} />
+            <p className="text-white font-mono text-xs">to-br, #ee5736 → 80</p>
+            <p className="text-xs text-slate-400">Dégradé 2 couleurs</p>
+          </div>
+
+          {/* 10% opacity */}
+          <div className="space-y-2">
+            <div className="w-full h-20 rounded-lg border-2 border-slate-600 shadow-lg" style={{ background: '#ee573610' }} />
+            <p className="text-white font-mono text-xs">#ee573610</p>
+            <p className="text-xs text-slate-400">Fond Subtil 10%</p>
+          </div>
+
+          {/* 30% opacity */}
+          <div className="space-y-2">
+            <div className="w-full h-20 rounded-lg border-2 shadow-lg bg-slate-900" style={{ borderColor: '#ee573630' }} />
+            <p className="text-white font-mono text-xs">#ee573630</p>
+            <p className="text-xs text-slate-400">Bordure 30%</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Avant / Après - Corrections */}
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertTriangle className="w-5 h-5 text-yellow-400" />
+          <h3 className="text-lg font-bold text-white">Avant / Après - Corrections appliquées</h3>
+        </div>
+        <p className="text-sm text-slate-400 mb-6">Comparaison entre les anciennes couleurs utilisées et les nouvelles couleurs du design system</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* AVANT */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-3">
+              <X className="w-5 h-5 text-red-400" />
+              <h4 className="font-bold text-white">❌ Avant (Incohérent)</h4>
+            </div>
+
+            {/* Navigation avec gradient 3 couleurs (ancien - faux gradient) */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Navigation active (ancien)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  <span className="font-medium bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">Résidents</span>
+                </div>
+                <code className="text-xs text-orange-300 block">from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]</code>
+                <p className="text-xs text-yellow-400 mt-1">❌ Utilise le gradient 3 couleurs pour du texte</p>
+              </div>
+            </div>
+
+            {/* Bouton membres avec #c23f21 */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Bouton "membres" (ancien)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl border" style={{ background: '#ee573610', borderColor: '#ee573630' }}>
+                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  <span className="text-sm font-medium" style={{ color: '#c23f21' }}>4 membres</span>
+                </div>
+                <code className="text-xs text-orange-300 block mt-2">color: #c23f21</code>
+                <p className="text-xs text-yellow-400 mt-1">❌ Utilise #c23f21 au lieu de #ee5736</p>
+              </div>
+            </div>
+
+            {/* Badge avec var(--gradient-resident) */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Badge notification (ancien)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded text-white text-xs font-bold" style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}>
+                  3
+                </div>
+                <code className="text-xs text-orange-300 block mt-2">var(--gradient-resident)</code>
+                <p className="text-xs text-yellow-400 mt-1">❌ Gradient 3 couleurs sur petit badge</p>
+              </div>
+            </div>
+          </div>
+
+          {/* APRÈS */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Check className="w-5 h-5 text-green-400" />
+              <h4 className="font-bold text-white">✅ Après (Cohérent)</h4>
+            </div>
+
+            {/* Navigation avec couleur principale */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Navigation active (nouveau)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  <span className="font-semibold" style={{ color: '#ee5736' }}>Résidents</span>
+                </div>
+                <code className="text-xs text-green-300 block">color: #ee5736</code>
+                <p className="text-xs text-green-400 mt-1">✅ Couleur solide pour lisibilité</p>
+              </div>
+            </div>
+
+            {/* Bouton membres avec #ee5736 */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Bouton "membres" (nouveau)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl border" style={{ background: '#ee573610', borderColor: '#ee573630' }}>
+                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  <span className="text-sm font-medium" style={{ color: '#ee5736' }}>4 membres</span>
+                </div>
+                <code className="text-xs text-green-300 block mt-2">color: #ee5736</code>
+                <p className="text-xs text-green-400 mt-1">✅ Couleur principale cohérente</p>
+              </div>
+            </div>
+
+            {/* Badge avec gradient 2 couleurs */}
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300 font-medium">Badge notification (nouveau)</p>
+              <div className="p-3 bg-slate-900 rounded-lg">
+                <div className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded text-white text-xs font-bold" style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+                  3
+                </div>
+                <code className="text-xs text-green-300 block mt-2">to-br, #ee5736 → 80</code>
+                <p className="text-xs text-green-400 mt-1">✅ Gradient 2 couleurs plus subtil</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Règles d'usage */}
+        <div className="mt-6 p-4 bg-blue-900/20 border border-blue-700/30 rounded-lg">
+          <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+            <Info className="w-4 h-4 text-blue-400" />
+            Règles d'usage recommandées
+          </h4>
+          <ul className="space-y-2 text-sm text-slate-300">
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 font-bold">•</span>
+              <span><strong className="text-white">Gradient 3 couleurs</strong> : Réservé aux bannières larges (ResidenceHeader) et éléments décoratifs</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 font-bold">•</span>
+              <span><strong className="text-white">Couleur principale #ee5736</strong> : Textes, icônes actives, liens</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 font-bold">•</span>
+              <span><strong className="text-white">Gradient 2 couleurs</strong> : Petits badges, avatars, icônes rondes</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 font-bold">•</span>
+              <span><strong className="text-white">Opacités 10%-30%</strong> : Fonds subtils et bordures</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Link to detailed page */}
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+        <div className="flex items-start gap-3">
+          <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-white font-medium mb-2">Documentation complète</p>
+            <p className="text-sm text-slate-300 mb-4">
+              Consultez la page dédiée pour voir tous les composants, exemples d'usage et oppositions détectées.
+            </p>
+            <a
+              href="/admin/dashboard/design-system/interface-resident"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-all hover:shadow-lg"
+              style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+            >
+              Voir la documentation complète
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
