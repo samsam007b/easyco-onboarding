@@ -239,9 +239,15 @@ export default function ModernResidentHeader({
                     className={cn(
                       "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all group",
                       isActive
-                        ? "bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent font-semibold"
+                        ? "font-semibold"
                         : "text-gray-600 hover:bg-orange-50/50"
                     )}
+                    style={isActive ? {
+                      background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    } : undefined}
                   >
                     <Icon
                       className={cn(
@@ -250,9 +256,7 @@ export default function ModernResidentHeader({
                       )}
                       style={isActive ? { color: '#ee5736' } : undefined}
                     />
-                    <span className={cn(
-                      isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#D97B6F] group-hover:via-[#E8865D] group-hover:to-[#FF8C4B] group-hover:bg-clip-text group-hover:text-transparent"
-                    )}>{item.label}</span>
+                    <span>{item.label}</span>
                     {item.badge && (
                       <Badge
                         className="ml-1 badge-gradient-resident h-5 min-w-[20px] px-1.5"
@@ -297,8 +301,8 @@ export default function ModernResidentHeader({
                 href="/hub/members"
                 className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border hover:shadow-md transition-all group"
                 style={{
-                  background: '#ee573610',
-                  borderColor: '#ee573630'
+                  background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)',
+                  borderColor: 'rgba(217, 87, 79, 0.2)'
                 }}
               >
                 <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
@@ -312,19 +316,19 @@ export default function ModernResidentHeader({
                 onClick={() => setShowQuickActions(!showQuickActions)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
                 style={{
-                  background: showQuickActions ? 'linear-gradient(to bottom right, #ee5736, #ee573680)' : '#ee573610',
-                  borderColor: '#ee573630',
+                  background: showQuickActions ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' : 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)',
+                  borderColor: 'rgba(217, 87, 79, 0.2)',
                   color: showQuickActions ? 'white' : '#ee5736'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(to bottom right, #ee5736, #ee573680)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
                   e.currentTarget.style.borderColor = '#ee5736';
                   e.currentTarget.style.color = 'white';
                 }}
                 onMouseLeave={(e) => {
                   if (!showQuickActions) {
-                    e.currentTarget.style.background = '#ee573610';
-                    e.currentTarget.style.borderColor = '#ee573630';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(217, 87, 79, 0.2)';
                     e.currentTarget.style.color = '#ee5736';
                   }
                 }}
@@ -370,13 +374,13 @@ export default function ModernResidentHeader({
                               href={action.href}
                               className="flex items-start gap-3 px-3 py-3 rounded-xl transition group"
                               style={{ background: 'transparent' }}
-                              onMouseEnter={(e) => e.currentTarget.style.background = '#ee573610'}
+                              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
                               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               onClick={() => setShowQuickActions(false)}
                             >
                               <div
                                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
-                                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+                                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                               >
                                 <Icon className="w-5 h-5 text-white" />
                               </div>
@@ -480,7 +484,7 @@ export default function ModernResidentHeader({
                 {/* Avatar rond avec icône key */}
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm"
-                  style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                 >
                   <Key className="w-4 h-4 text-white" />
                 </div>
@@ -503,7 +507,7 @@ export default function ModernResidentHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 text-gray-900" style={{ background: 'linear-gradient(to bottom right, #ee573620, #ee573630, #ee573610)' }}>
+                      <div className="relative px-6 py-5 text-gray-900" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
                         <div className="absolute inset-0 bg-white/10" />
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
@@ -513,7 +517,7 @@ export default function ModernResidentHeader({
                               <circle
                                 cx="34" cy="34" r="32"
                                 fill="none"
-                                stroke="rgba(238, 87, 54, 0.5)"
+                                stroke="url(#profileProgressGradient)"
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeDasharray={`${2 * Math.PI * 32}`}
@@ -521,6 +525,13 @@ export default function ModernResidentHeader({
                                 transform="rotate(-90 34 34)"
                                 className="transition-all duration-1000"
                               />
+                              <defs>
+                                <linearGradient id="profileProgressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" stopColor="#d9574f" />
+                                  <stop offset="50%" stopColor="#ff5b21" />
+                                  <stop offset="100%" stopColor="#ff8017" />
+                                </linearGradient>
+                              </defs>
                             </svg>
                             <div className="w-16 h-16 rounded-full bg-white/50 backdrop-blur-sm border-2 border-gray-300 flex items-center justify-center overflow-hidden">
                               <Key className="w-8 h-8 text-gray-700" />
@@ -533,7 +544,7 @@ export default function ModernResidentHeader({
                             <p className="text-gray-700 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
                               <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                                <div className="h-full rounded-full" style={{ width: '75%', background: '#ee5736' }} />
+                                <div className="h-full rounded-full" style={{ width: '75%', background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }} />
                               </div>
                               <span className="text-xs text-gray-700 font-medium">75%</span>
                             </div>
@@ -542,7 +553,7 @@ export default function ModernResidentHeader({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 border-b" style={{ background: 'linear-gradient(to bottom right, #ee573610, #ee573620)', borderColor: '#ee573630' }}>
+                      <div className="px-4 py-3 border-b" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.12) 100%)', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
                             <div className="text-lg font-bold text-gray-900">
@@ -571,12 +582,12 @@ export default function ModernResidentHeader({
                           href="/profile"
                           className="group flex items-center gap-3 px-4 py-3 transition-all"
                           style={{ background: 'transparent' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = '#ee573610'}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: '#ee573620' }}>
-                            <User className="w-4 h-4" style={{ color: '#ee5736' }} />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
+                            <User className="w-4 h-4 text-[#ee5736]" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -675,21 +686,27 @@ export default function ModernResidentHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 rounded-xl transition-all group",
                         isActive
-                          ? "bg-orange-50 font-semibold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent"
+                          ? "bg-orange-50 font-semibold"
                           : "text-gray-700 hover:bg-gray-100"
                       )}
+                      style={isActive ? {
+                        background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
+                      } : undefined}
                     >
                       <div className="flex items-center gap-3">
                         <Icon className={cn(
                           "w-5 h-5 transition-all",
-                          isActive ? "" : "group-hover:text-[#E8865D]"
+                          isActive ? "" : "group-hover:text-[#ff5b21]"
                         )} />
                         <span className={cn(
-                          isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#D97B6F] group-hover:via-[#E8865D] group-hover:to-[#FF8C4B] group-hover:bg-clip-text group-hover:text-transparent"
+                          isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#d9574f] group-hover:via-[#ff5b21] group-hover:to-[#ff8017] group-hover:bg-clip-text group-hover:text-transparent"
                         )}>{item.label}</span>
                       </div>
                       {item.badge && (
-                        <Badge className="bg-gradient-to-r from-[#D97B6F] to-[#E8865D] hover:from-[#D97B6F] hover:to-[#E8865D] text-white border-0">
+                        <Badge className="text-white border-0" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                           {item.badge}
                         </Badge>
                       )}
