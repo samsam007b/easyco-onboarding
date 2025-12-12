@@ -122,11 +122,11 @@ function OverviewSection() {
           <div className="relative h-24 rounded-2xl overflow-hidden border-2 border-white shadow-2xl">
             <div
               className="absolute inset-0"
-              style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="text-white font-bold text-lg drop-shadow-lg">
-                linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)
+                linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)
               </p>
             </div>
           </div>
@@ -136,17 +136,17 @@ function OverviewSection() {
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-3 h-3 rounded-full bg-white" />
-                <label className="text-sm font-semibold text-slate-300">Couleur 1 - Terracotta</label>
+                <label className="text-sm font-semibold text-slate-300">Couleur 1</label>
               </div>
               <div className="flex items-center gap-3">
                 <div
                   className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
-                  style={{ background: '#D97B6F' }}
+                  style={{ background: '#d9574f' }}
                 />
                 <div>
-                  <p className="text-white font-mono font-bold text-lg">#D97B6F</p>
+                  <p className="text-white font-mono font-bold text-lg">#d9574f</p>
                   <p className="text-xs text-slate-400">0% - Start</p>
-                  <p className="text-xs text-orange-300 mt-1">Terracotta rosé</p>
+                  <p className="text-xs text-orange-300 mt-1">Rouge orangé</p>
                 </div>
               </div>
             </div>
@@ -154,17 +154,17 @@ function OverviewSection() {
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-3 h-3 rounded-full bg-white" />
-                <label className="text-sm font-semibold text-slate-300">Couleur 2 - Corail</label>
+                <label className="text-sm font-semibold text-slate-300">Couleur 2</label>
               </div>
               <div className="flex items-center gap-3">
                 <div
                   className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
-                  style={{ background: '#E8865D' }}
+                  style={{ background: '#ff5b21' }}
                 />
                 <div>
-                  <p className="text-white font-mono font-bold text-lg">#E8865D</p>
+                  <p className="text-white font-mono font-bold text-lg">#ff5b21</p>
                   <p className="text-xs text-slate-400">50% - Middle</p>
-                  <p className="text-xs text-orange-300 mt-1">Corail doux</p>
+                  <p className="text-xs text-orange-300 mt-1">Orange vif</p>
                 </div>
               </div>
             </div>
@@ -172,17 +172,17 @@ function OverviewSection() {
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-3 h-3 rounded-full bg-white" />
-                <label className="text-sm font-semibold text-slate-300">Couleur 3 - Orange</label>
+                <label className="text-sm font-semibold text-slate-300">Couleur 3</label>
               </div>
               <div className="flex items-center gap-3">
                 <div
                   className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
-                  style={{ background: '#FF8C4B' }}
+                  style={{ background: '#ff8017' }}
                 />
                 <div>
-                  <p className="text-white font-mono font-bold text-lg">#FF8C4B</p>
+                  <p className="text-white font-mono font-bold text-lg">#ff8017</p>
                   <p className="text-xs text-slate-400">100% - End</p>
-                  <p className="text-xs text-orange-300 mt-1">Orange vif</p>
+                  <p className="text-xs text-orange-300 mt-1">Orange doré</p>
                 </div>
               </div>
             </div>
