@@ -344,6 +344,162 @@ function OverviewSection() {
         </CardContent>
       </Card>
 
+      {/* Variantes de Boutons avec les 5 Couleurs */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Wrench className="w-5 h-5 text-orange-400" />
+            Variantes de Boutons - Choisissez votre Style
+          </CardTitle>
+          <p className="text-sm text-slate-400 mt-2">
+            Testez différentes combinaisons de couleurs pour vos boutons et composants
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* Version 1 - Gradient complet */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-xs font-bold">1</div>
+              <h4 className="text-base font-bold text-white">Version 1 - Gradient Signature Complet</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                Action Principale
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Users className="w-4 h-4 inline mr-2" />
+                Membres
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Plus className="w-4 h-4 inline mr-2" />
+                Ajouter
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                Valider
+              </button>
+            </div>
+          </div>
+
+          {/* Version 2 - Couleur unique (#ee5736) */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">2</div>
+              <h4 className="text-base font-bold text-white">Version 2 - Couleur Principale Unie (#ee5736)</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                Action Principale
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                <Users className="w-4 h-4 inline mr-2" />
+                Membres
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                <Plus className="w-4 h-4 inline mr-2" />
+                Ajouter
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                Valider
+              </button>
+            </div>
+          </div>
+
+          {/* Version 3 - Mix des 5 couleurs */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">3</div>
+              <h4 className="text-base font-bold text-white">Version 3 - Mix Palette (1 couleur par bouton)</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#d9574f' }}>
+                Couleur 1
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                Couleur 2
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ff5b21' }}>
+                Couleur 3
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ff6e1c' }}>
+                Couleur 4
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ff8017' }}>
+                Couleur 5
+              </button>
+            </div>
+          </div>
+
+          {/* Version 4 - Gradient 2 couleurs */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center text-white text-xs font-bold">4</div>
+              <h4 className="text-base font-bold text-white">Version 4 - Gradient 2 Couleurs (Principal + Transparent)</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+                Action Principale
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+                <Users className="w-4 h-4 inline mr-2" />
+                Membres
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+                <Plus className="w-4 h-4 inline mr-2" />
+                Ajouter
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+                Valider
+              </button>
+            </div>
+          </div>
+
+          {/* Version 5 - Outline avec couleurs */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center text-white text-xs font-bold">5</div>
+              <h4 className="text-base font-bold text-white">Version 5 - Outline (Bordure Colorée)</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                Action Principale
+              </button>
+              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                <Users className="w-4 h-4 inline mr-2" />
+                Membres
+              </button>
+              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                <Plus className="w-4 h-4 inline mr-2" />
+                Ajouter
+              </button>
+              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                Valider
+              </button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Navigation Items */}
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
