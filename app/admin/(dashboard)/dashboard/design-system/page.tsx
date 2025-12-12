@@ -7658,13 +7658,13 @@ function SearcherDashboardSection() {
    INTERFACE RESIDENT SECTION
    ============================================ */
 function InterfaceResidentSection() {
-  // Extract 5 colors from the resident gradient using the saved values
+  // Extract 5 colors from the resident gradient - VOS COULEURS EXACTES
   const residentColors = {
-    color1: '#D97B6F', // Start - Terracotta rosé
-    color2: '#DF8267', // 25%
-    color3: '#E8865D', // 50% - Corail doux (mid)
-    color4: '#F38954', // 75%
-    color5: '#FF8C4B'  // 100% - Orange vif (end)
+    color1: '#d9574f', // 0%
+    color2: '#ee5736', // 25%
+    color3: '#ff5b21', // 50%
+    color4: '#ff6e1c', // 75%
+    color5: '#ff8017'  // 100%
   };
 
   return (
@@ -7697,11 +7697,11 @@ function InterfaceResidentSection() {
         <div className="relative h-24 rounded-xl overflow-hidden border-2 border-white shadow-xl mb-6">
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <code className="text-white font-bold text-sm drop-shadow-lg bg-black/30 px-4 py-2 rounded-lg">
-              linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)
+              linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)
             </code>
           </div>
         </div>
@@ -7760,11 +7760,11 @@ function InterfaceResidentSection() {
         <div className="relative h-20 rounded-xl overflow-hidden border-2 border-white shadow-xl mb-6">
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <code className="text-white font-bold text-sm drop-shadow-lg bg-black/20 px-3 py-1 rounded">
-              linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)
+              linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)
             </code>
           </div>
         </div>
@@ -7772,28 +7772,28 @@ function InterfaceResidentSection() {
         {/* Les 3 couleurs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
-            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#D97B6F' }} />
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#d9574f' }} />
             <div>
-              <p className="text-white font-mono font-bold">#D97B6F</p>
-              <p className="text-xs text-slate-400">Terracotta rosé</p>
+              <p className="text-white font-mono font-bold">#d9574f</p>
+              <p className="text-xs text-slate-400">Rouge orangé</p>
               <p className="text-xs text-orange-300">0% - Start</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
-            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#E8865D' }} />
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#ff5b21' }} />
             <div>
-              <p className="text-white font-mono font-bold">#E8865D</p>
-              <p className="text-xs text-slate-400">Corail doux</p>
+              <p className="text-white font-mono font-bold">#ff5b21</p>
+              <p className="text-xs text-slate-400">Orange vif</p>
               <p className="text-xs text-orange-300">50% - Middle</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-lg">
-            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#FF8C4B' }} />
+            <div className="w-16 h-16 rounded-lg border-2 border-white shadow-lg flex-shrink-0" style={{ background: '#ff8017' }} />
             <div>
-              <p className="text-white font-mono font-bold">#FF8C4B</p>
-              <p className="text-xs text-slate-400">Orange vif</p>
+              <p className="text-white font-mono font-bold">#ff8017</p>
+              <p className="text-xs text-slate-400">Orange doré</p>
               <p className="text-xs text-orange-300">100% - End</p>
             </div>
           </div>
