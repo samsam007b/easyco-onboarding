@@ -700,106 +700,335 @@ function OverviewSection() {
 function ComponentsSection() {
   return (
     <div className="space-y-6">
-      {/* Header Components */}
+      {/* Logo IzzIco avec Gradient */}
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
-          <CardTitle className="text-white">Header - ModernResidentHeader</CardTitle>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-orange-400" />
+            Logo IzzIco avec Gradient Signature
+          </CardTitle>
+          <p className="text-sm text-slate-400 mt-2">
+            Utilisé dans le header pour les Actions Rapides, Profile Dropdown, et Logo principal
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Version 1 - Logo avec gradient complet en background */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Version 1 - Background Gradient Complet</h4>
+            <div className="p-6 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <div className="text-white font-bold text-xl">IzzIco</div>
+            </div>
+            <code className="text-xs text-slate-400 block p-2 bg-slate-900 rounded">
+              background: linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)
+            </code>
+          </div>
+
+          {/* Version 2 - Icon avec gradient en background */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Version 2 - Icon Background (Profile Dropdown)</h4>
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <User className="w-5 h-5 text-white" />
+              </div>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Settings className="w-5 h-5 text-white" />
+              </div>
+              <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Bell className="w-5 h-5 text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* Version 3 - Bouton "Actions Rapides" avec gradient */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Version 3 - Bouton "Actions Rapides"</h4>
+            <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <Zap className="w-5 h-5" />
+              Actions Rapides
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Navigation Items */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Home className="w-5 h-5 text-orange-400" />
+            Navigation Items - États et Variantes
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Logo */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-400 mb-3">Logo IzzIco</h3>
-            <div className="p-4 bg-slate-900 rounded-lg border border-slate-700">
-              <code className="text-xs text-slate-300">
-                width: 90px, height: 28px
-              </code>
+          {/* État Actif */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">État Actif (Page courante)</h4>
+            <div className="p-3 rounded-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
+              <div className="flex items-center gap-2">
+                <Home className="w-5 h-5" style={{ color: '#ee5736' }} />
+                <span style={{ color: '#ee5736' }} className="text-sm font-semibold">Dashboard</span>
+              </div>
             </div>
           </div>
 
-          {/* Navigation Items */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-400 mb-3">Items de Navigation</h3>
+          {/* État Inactif */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">État Inactif</h4>
+            <div className="p-3 rounded-xl bg-transparent hover:bg-slate-700/50 transition-all cursor-pointer">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-slate-400" />
+                <span className="text-sm font-medium text-slate-400">Membres</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Avec Badge */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Avec Badge de Notification</h4>
+            <div className="p-3 rounded-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5" style={{ color: '#ee5736' }} />
+                  <span style={{ color: '#ee5736' }} className="text-sm font-semibold">Messages</span>
+                </div>
+                <Badge className="text-white text-xs font-bold px-2 py-0.5"
+                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                  3
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Liste complète d'exemples */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Exemples d'Items de Navigation</h4>
             <div className="space-y-2">
-              <div className="p-3 rounded-xl" style={{ background: '#ee573610', borderColor: '#ee573630', border: '1px solid' }}>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
-                  <span style={{ color: '#ee5736' }} className="text-sm font-medium">État actif avec triangle pointer</span>
+              {[
+                { icon: Home, label: 'Dashboard', active: true, badge: null },
+                { icon: Users, label: 'Membres', active: false, badge: 4 },
+                { icon: CheckSquare, label: 'Tâches', active: false, badge: 3 },
+                { icon: DollarSign, label: 'Finances', active: false, badge: '!' },
+                { icon: MessageCircle, label: 'Messages', active: false, badge: 2 }
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className={`p-3 rounded-xl transition-all cursor-pointer ${item.active ? 'border-l-3' : ''}`}
+                    style={item.active ? { background: '#ee573610', borderLeft: '3px solid #ee5736' } : {}}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Icon className="w-5 h-5" style={{ color: item.active ? '#ee5736' : '#94a3b8' }} />
+                        <span className={`text-sm font-${item.active ? 'semibold' : 'medium'}`}
+                          style={{ color: item.active ? '#ee5736' : '#94a3b8' }}>
+                          {item.label}
+                        </span>
+                      </div>
+                      {item.badge && (
+                        <Badge className="text-white text-xs font-bold px-2 py-0.5"
+                          style={{ background: item.badge === '!' ? '#ef4444' : 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Dropdowns */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <ChevronDown className="w-5 h-5 text-orange-400" />
+            Dropdowns - Actions Rapides & Profile
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Actions Rapides Dropdown */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Dropdown "Actions Rapides"</h4>
+            <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 space-y-2">
+              {[
+                { icon: UserPlus, label: 'Inviter un colocataire', color: '#ee5736' },
+                { icon: Plus, label: 'Nouvelle dépense', color: '#ee5736' },
+                { icon: CheckSquare, label: 'Créer une tâche', color: '#ee5736' },
+                { icon: Calendar, label: 'Ajouter un événement', color: '#ee5736' }
+              ].map((action) => {
+                const Icon = action.icon;
+                return (
+                  <button
+                    key={action.label}
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-all text-left"
+                  >
+                    <Icon className="w-5 h-5" style={{ color: action.color }} />
+                    <span className="text-sm font-medium text-white">{action.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Profile Dropdown */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Dropdown "Profile"</h4>
+            <div className="bg-slate-900 rounded-xl border border-slate-700 p-4">
+              {/* User Info */}
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-700">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg"
+                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                  <User className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">Jean Dupont</p>
+                  <p className="text-slate-400 text-xs">jean@example.com</p>
                 </div>
               </div>
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-700">
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm font-medium text-gray-600">État inactif (hover: fond orange subtil)</span>
+
+              {/* Menu Items */}
+              <div className="space-y-1 pt-3">
+                {[
+                  { icon: User, label: 'Mon Profil' },
+                  { icon: Settings, label: 'Paramètres' },
+                  { icon: Bell, label: 'Notifications' },
+                  { icon: Globe, label: 'Langue' }
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.label}
+                      className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-800 transition-all text-left"
+                    >
+                      <Icon className="w-4 h-4 text-slate-400" />
+                      <span className="text-sm text-slate-300">{item.label}</span>
+                    </button>
+                  );
+                })}
+
+                {/* Logout */}
+                <div className="pt-2 border-t border-slate-700">
+                  <button className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-red-500/10 transition-all text-left">
+                    <LogOut className="w-4 h-4 text-red-400" />
+                    <span className="text-sm text-red-400 font-medium">Déconnexion</span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Buttons */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-400 mb-3">Boutons</h3>
-            <div className="space-y-3">
-              {/* Actions Rapides Button */}
-              <div className="space-y-2">
-                <label className="text-xs text-slate-500">Bouton "Actions Rapides"</label>
-                <div className="flex gap-3">
-                  <button
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
-                    style={{
-                      background: '#ee573610',
-                      borderColor: '#ee573630',
-                      color: '#ee5736'
-                    }}
-                  >
-                    <Zap className="w-4 h-4" style={{ color: '#ee5736' }} />
-                    <span>État Normal</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
-                    style={{
-                      background: 'linear-gradient(to bottom right, #ee5736, #ee573680)',
-                      borderColor: '#ee5736',
-                      color: 'white'
-                    }}
-                  >
-                    <Zap className="w-4 h-4 text-white" />
-                    <span>État Hover/Actif</span>
-                    <ChevronDown className="w-4 h-4 text-white rotate-180" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Members Button */}
-              <div className="space-y-2">
-                <label className="text-xs text-slate-500">Bouton "Membres"</label>
-                <button
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl border transition-all"
-                  style={{
-                    background: '#ee573610',
-                    borderColor: '#ee573630'
-                  }}
-                >
-                  <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
-                  <span className="text-sm font-medium" style={{ color: '#c23f21' }}>4 membres</span>
-                </button>
-              </div>
+      {/* Buttons Variantes */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Wrench className="w-5 h-5 text-orange-400" />
+            Boutons - Toutes les Variantes
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Primary CTA - Gradient */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Primary CTA - Gradient Complet</h4>
+            <div className="flex flex-wrap gap-3">
+              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                Inviter un colocataire
+              </button>
+              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Plus className="w-5 h-5" />
+                Nouvelle dépense
+              </button>
             </div>
           </div>
 
-          {/* Profile Avatar */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-400 mb-3">Avatar Profil</h3>
-            <div className="flex items-center gap-3">
-              <div
-                className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 shadow-sm"
-                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
-              >
-                <Key className="w-4 h-4 text-white" />
-              </div>
-              <div className="text-sm text-slate-300">
-                Icône Key avec dégradé orange
-              </div>
+          {/* Secondary - Couleur Unie */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Secondary - Couleur Unie (#ee5736)</h4>
+            <div className="flex flex-wrap gap-3">
+              <button className="px-5 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                style={{ background: '#ee5736' }}>
+                Sauvegarder
+              </button>
+              <button className="px-5 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#ee5736' }}>
+                <CheckSquare className="w-4 h-4" />
+                Valider
+              </button>
+            </div>
+          </div>
+
+          {/* Outline */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Outline - Bordure Colorée</h4>
+            <div className="flex flex-wrap gap-3">
+              <button className="px-5 py-2.5 rounded-xl font-semibold transition-transform hover:scale-105 border-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                Annuler
+              </button>
+              <button className="px-5 py-2.5 rounded-xl font-semibold transition-transform hover:scale-105 border-2 flex items-center gap-2"
+                style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
+                <Users className="w-4 h-4" />
+                Voir les membres
+              </button>
+            </div>
+          </div>
+
+          {/* Ghost - Fond Subtil */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Ghost - Fond Subtil</h4>
+            <div className="flex flex-wrap gap-3">
+              <button className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:scale-105"
+                style={{ background: '#ee573610', color: '#ee5736' }}>
+                Modifier
+              </button>
+              <button className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:scale-105 flex items-center gap-2"
+                style={{ background: '#ee573610', color: '#ee5736' }}>
+                <Settings className="w-4 h-4" />
+                Paramètres
+              </button>
+            </div>
+          </div>
+
+          {/* Avec Icons */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Avec Icônes - Mix Palette</h4>
+            <div className="flex flex-wrap gap-3">
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#d9574f' }}>
+                <Home className="w-4 h-4" />
+                Résidence
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#ee5736' }}>
+                <Users className="w-4 h-4" />
+                Membres
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#ff5b21' }}>
+                <CheckSquare className="w-4 h-4" />
+                Tâches
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#ff6e1c' }}>
+                <DollarSign className="w-4 h-4" />
+                Finances
+              </button>
+              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                style={{ background: '#ff8017' }}>
+                <Calendar className="w-4 h-4" />
+                Calendrier
+              </button>
             </div>
           </div>
         </CardContent>
@@ -948,6 +1177,323 @@ function ComponentsSection() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* DASHBOARD RÉSIDENCE MODERNE - COMPLET */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-orange-400" />
+            Dashboard Résidence - Vue Complète Moderne
+          </CardTitle>
+          <p className="text-sm text-slate-400 mt-2">
+            Dashboard complet inspiré des meilleures apps : Utile + Beau + Intuitif
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Header Section avec Photo Résidence */}
+          <div className="rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+            <div className="p-6">
+              {/* Top Row - Photo + Infos + CTA Principal */}
+              <div className="flex items-start gap-6 mb-6">
+                {/* Photo Résidence (comme photo de profil) */}
+                <div className="relative flex-shrink-0">
+                  <div className="w-24 h-24 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                      <Home className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
+                    style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                    <span className="text-white text-xs font-bold">✓</span>
+                  </div>
+                </div>
+
+                {/* Infos Résidence */}
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-white mb-2">Résidence Bruxelles Centre</h2>
+                  <div className="flex items-center gap-4 text-white/90 text-sm mb-3">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-4 h-4" />
+                      <span>Ixelles, Bruxelles</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-4 h-4" />
+                      <span>4/6 colocataires</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Home className="w-4 h-4" />
+                      <span>6 chambres</span>
+                    </div>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex gap-2">
+                    <Badge className="bg-white/20 text-white text-xs backdrop-blur-sm border border-white/30">
+                      Actif
+                    </Badge>
+                    <Badge className="bg-white/20 text-white text-xs backdrop-blur-sm border border-white/30">
+                      Vérifié
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* CTA Principal - Inviter des colocataires */}
+                <button className="px-6 py-3 bg-white text-orange-600 rounded-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                  style={{ color: '#ee5736' }}>
+                  <UserPlus className="w-5 h-5" />
+                  Inviter des Colocs
+                </button>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-4 gap-3">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                  <p className="text-3xl font-bold text-white">€1,250</p>
+                  <p className="text-xs text-white/70 mt-1">Loyer Total/mois</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                  <p className="text-3xl font-bold text-white">4.8★</p>
+                  <p className="text-xs text-white/70 mt-1">Note Résidence</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                  <p className="text-3xl font-bold text-white">3</p>
+                  <p className="text-xs text-white/70 mt-1">Tâches en cours</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                  <p className="text-3xl font-bold text-white">€245</p>
+                  <p className="text-xs text-white/70 mt-1">Dépenses ce mois</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bonheur de la Résidence - GROS POURCENTAGE */}
+          <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
+              style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }} />
+
+            <div className="relative z-10">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="w-6 h-6 text-orange-400" />
+                    <h3 className="text-xl font-bold text-white">Bonheur de la Résidence</h3>
+                  </div>
+                  <p className="text-sm text-slate-400">Basé sur l'activité, les paiements et la satisfaction</p>
+                </div>
+                <Badge className="text-white text-xs font-bold px-3 py-1.5"
+                  style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                  +12% ce mois
+                </Badge>
+              </div>
+
+              {/* GRAND POURCENTAGE */}
+              <div className="flex items-center gap-8">
+                <div className="relative">
+                  {/* Cercle de progression */}
+                  <svg className="w-48 h-48 transform -rotate-90">
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke="#1e293b"
+                      strokeWidth="12"
+                      fill="none"
+                    />
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke="url(#gradient)"
+                      strokeWidth="12"
+                      fill="none"
+                      strokeDasharray="552.92"
+                      strokeDashoffset={552.92 * (1 - 0.87)}
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#d9574f" />
+                        <stop offset="50%" stopColor="#ff5b21" />
+                        <stop offset="100%" stopColor="#ff8017" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+
+                  {/* Pourcentage au centre */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-6xl font-bold text-white mb-1">87%</p>
+                      <p className="text-sm text-slate-400">Excellent</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Détails des métriques */}
+                <div className="flex-1 grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #d9574f, #ff5b21)' }}>
+                        <Users className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">Participation</span>
+                    </div>
+                    <p className="text-2xl font-bold text-white">92%</p>
+                    <p className="text-xs text-slate-400 mt-1">4/4 membres actifs</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #ff5b21, #ff8017)' }}>
+                        <DollarSign className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">Paiements</span>
+                    </div>
+                    <p className="text-2xl font-bold text-white">100%</p>
+                    <p className="text-xs text-slate-400 mt-1">À jour ce mois</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #d9574f, #ff5b21)' }}>
+                        <CheckSquare className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">Tâches</span>
+                    </div>
+                    <p className="text-2xl font-bold text-white">78%</p>
+                    <p className="text-xs text-slate-400 mt-1">21/27 complétées</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #ff5b21, #ff8017)' }}>
+                        <MessageCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-300">Communication</span>
+                    </div>
+                    <p className="text-2xl font-bold text-white">85%</p>
+                    <p className="text-xs text-slate-400 mt-1">Très actif</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Complétion des Détails Résidence */}
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-xl">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }}>
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-white">Complétez votre résidence</h4>
+                  <p className="text-xs text-slate-400">6 étapes restantes pour 100%</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-white">72%</p>
+                <p className="text-xs text-slate-400">Complété</p>
+              </div>
+            </div>
+
+            {/* Barre de progression */}
+            <div className="h-3 w-full overflow-hidden rounded-full bg-slate-700/50 mb-6">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: '72%',
+                  background: 'linear-gradient(90deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+                }}
+              />
+            </div>
+
+            {/* Checklist des étapes */}
+            <div className="space-y-3">
+              {[
+                { label: 'Ajouter une photo de la résidence', done: true },
+                { label: 'Inviter tous les colocataires (4/6)', done: false },
+                { label: 'Configurer le calendrier de ménage', done: true },
+                { label: 'Définir les règles de la maison', done: true },
+                { label: 'Ajouter les équipements communs', done: false },
+                { label: 'Créer le budget mensuel', done: false }
+              ].map((step, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                    step.done ? 'bg-slate-800/50' : 'bg-slate-700/30 border-2 border-dashed border-slate-600'
+                  }`}
+                >
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    step.done ? 'bg-green-500' : 'bg-slate-600'
+                  }`}>
+                    {step.done ? (
+                      <span className="text-white text-sm font-bold">✓</span>
+                    ) : (
+                      <span className="text-slate-400 text-sm">{index + 1}</span>
+                    )}
+                  </div>
+                  <span className={`text-sm font-medium flex-1 ${
+                    step.done ? 'text-slate-400 line-through' : 'text-white'
+                  }`}>
+                    {step.label}
+                  </span>
+                  {!step.done && (
+                    <button className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white hover:scale-105 transition-transform"
+                      style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }}>
+                      Compléter
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: UserPlus, label: 'Inviter', color: '#d9574f', description: 'Nouveau coloc' },
+              { icon: Plus, label: 'Dépense', color: '#ee5736', description: 'Partager frais' },
+              { icon: CheckSquare, label: 'Tâche', color: '#ff5b21', description: 'Ajouter tâche' },
+              { icon: Calendar, label: 'Événement', color: '#ff8017', description: 'Planifier' }
+            ].map((action) => {
+              const Icon = action.icon;
+              return (
+                <button
+                  key={action.label}
+                  className="p-4 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-slate-600 transition-all group text-left"
+                >
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
+                    style={{ background: action.color }}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-white mb-1">{action.label}</p>
+                  <p className="text-xs text-slate-400">{action.description}</p>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Recommendations */}
+          <div className="p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-xl border border-orange-500/30">
+            <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Design Principles Appliqués</h4>
+            <div className="space-y-2 text-xs text-slate-300">
+              <p>✨ <strong className="text-white">Hiérarchie Visuelle:</strong> Photo résidence en haut à gauche (principe F-pattern), CTA principal en haut à droite</p>
+              <p>📊 <strong className="text-white">Data Visualization:</strong> Grand pourcentage circulaire pour le bonheur (inspiré des fitness apps)</p>
+              <p>🎯 <strong className="text-white">Gamification:</strong> Progression de complétion avec checklist (inspiré d'Airbnb host onboarding)</p>
+              <p>🚀 <strong className="text-white">Call-to-Actions:</strong> Boutons d'action rapide avec icons colorés différenciés (inspiré de Notion)</p>
+              <p>🎨 <strong className="text-white">Visual Consistency:</strong> Gradient signature utilisé stratégiquement pour attirer l'attention</p>
             </div>
           </div>
         </CardContent>
