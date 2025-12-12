@@ -331,7 +331,7 @@ export default function ModernResidentDashboard() {
               </div>
 
               <div className="text-left">
-                <h3 className="text-sm font-semibold text-gray-900">Complétion du profil</h3>
+                <h3 className="text-sm font-semibold text-gray-800">Complétion du profil</h3>
                 <p className="text-xs text-gray-600">
                   {profileCompletion === 100 ? "Profil complet" : `${6 - Math.round((profileCompletion / 100) * 6)} section${6 - Math.round((profileCompletion / 100) * 6) > 1 ? 's' : ''} à compléter`}
                 </p>
@@ -474,7 +474,7 @@ export default function ModernResidentDashboard() {
           transition={{ delay: 0.4 }}
           className="bg-white rounded-3xl shadow-lg p-6 mb-8"
         >
-          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
               <Home className="w-5 h-5 text-white" />
             </div>
@@ -484,7 +484,7 @@ export default function ModernResidentDashboard() {
           <div className="flex flex-col md:flex-row gap-6">
             {/* Property Image */}
             <div
-              className="relative h-48 md:h-auto md:w-64 rounded-2xl overflow-hidden flex-shrink-0"
+              className="relative h-64 md:h-auto md:w-80 rounded-2xl overflow-hidden flex-shrink-0 shadow-md"
               style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.2) 0%, rgba(255, 91, 33, 0.3) 50%, rgba(255, 128, 23, 0.3) 100%)' }}
             >
               {currentProperty.main_image ? (
@@ -501,52 +501,21 @@ export default function ModernResidentDashboard() {
             </div>
 
             {/* Property Details */}
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-gray-900 mb-2">
-                {currentProperty.title}
-              </h4>
-              <p className="text-gray-600 mb-4">
-                {currentProperty.address}, {currentProperty.city}
-              </p>
+            <div className="flex-1 flex flex-col justify-between">
+              <div>
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                  {currentProperty.title}
+                </h4>
+                <p className="text-gray-600 mb-6 text-base">
+                  {currentProperty.address}, {currentProperty.city}
+                </p>
+              </div>
 
-              {/* Roommates */}
-              {roommates.length > 0 && (
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Tes colocataires :</p>
-                  <div className="flex flex-wrap gap-3">
-                    {roommates.map((member: any, index: number) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 px-3 py-2 rounded-full"
-                        style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)' }}
-                      >
-                        {member.users?.avatar_url ? (
-                          <img
-                            src={member.users.avatar_url}
-                            alt={member.users?.full_name || 'User'}
-                            className="w-6 h-6 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div
-                            className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white font-bold"
-                            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-                          >
-                            {member.users?.full_name?.charAt(0) || '?'}
-                          </div>
-                        )}
-                        <span className="text-sm font-medium text-gray-900">
-                          {member.users?.full_name || 'Utilisateur'}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   onClick={() => router.push('/hub/members')}
-                  className="cta-resident rounded-full"
+                  className="rounded-full text-white font-medium px-6 py-3 hover:shadow-lg transition-all"
+                  style={{ background: 'linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%)' }}
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Voir les membres
@@ -554,7 +523,14 @@ export default function ModernResidentDashboard() {
                 <Button
                   onClick={() => router.push('/messages')}
                   variant="outline"
-                  className="rounded-full border-resident-300 hover:bg-resident-50 text-resident-700"
+                  className="rounded-full font-medium px-6 py-3 transition-all"
+                  style={{ borderColor: '#d9574f', color: '#d9574f' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Chat de groupe
