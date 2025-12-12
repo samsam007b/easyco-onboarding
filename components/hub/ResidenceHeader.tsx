@@ -231,15 +231,15 @@ export default function ResidenceHeader() {
               {propertyInfo.title}
             </h2>
 
-            <div className="flex flex-wrap items-center gap-3 text-white/90 text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-white text-sm">
               <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                <span>{propertyInfo.city}</span>
+                <MapPin className="w-4 h-4 text-white" />
+                <span className="text-white">{propertyInfo.city}</span>
               </div>
 
               <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" />
-                <span>{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
+                <Users className="w-4 h-4 text-white" />
+                <span className="text-white">{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
               </div>
             </div>
           </div>
