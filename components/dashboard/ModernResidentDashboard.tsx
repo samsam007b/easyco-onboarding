@@ -237,8 +237,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
-      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
+      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
+      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       progress: rentPercentage,
       importance: 'critical' // Loyer = très important
     },
@@ -247,8 +247,8 @@ export default function ModernResidentDashboard() {
       value: `€${stats.sharedExpenses}`,
       subtitle: 'À répartir',
       icon: DollarSign,
-      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
-      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
+      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
+      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/finances'),
       importance: 'high' // Important mais pas critique
     },
@@ -257,8 +257,8 @@ export default function ModernResidentDashboard() {
       value: stats.yourBalance > 0 ? `+€${stats.yourBalance}` : `-€${Math.abs(stats.yourBalance)}`,
       subtitle: stats.yourBalance > 0 ? 'On te doit' : 'Tu dois',
       icon: TrendingUp,
-      gradientStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b981, #14b8a680)' } : { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
-      bgStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b98120, #14b8a610)' } : { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
+      gradientStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b981, #14b8a680)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
+      bgStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b98120, #14b8a610)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/finances'),
       importance: 'medium' // Informatif
     },
@@ -267,8 +267,8 @@ export default function ModernResidentDashboard() {
       value: stats.roommatesCount,
       subtitle: 'Membres actifs',
       icon: Users,
-      gradientStyle: { background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' },
-      bgStyle: { background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' },
+      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
+      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/members'),
       importance: 'medium' // Informatif
     },
@@ -295,7 +295,7 @@ export default function ModernResidentDashboard() {
           transition={{ delay: 0.1 }}
           className="max-w-7xl mx-auto bg-white/80 backdrop-blur-sm rounded-b-2xl rounded-t-none p-4 border-l border-r border-b border-gray-200 hover:shadow-sm transition-all mb-6 mx-2 sm:mx-6 lg:mx-8 relative overflow-hidden"
         >
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, #ee573610, transparent, #ee573605)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, transparent 50%, rgba(255, 128, 23, 0.03) 100%)' }} />
           <button
             onClick={() => setShowCompletionDetails(!showCompletionDetails)}
             className="w-full flex items-center justify-between"
@@ -305,10 +305,10 @@ export default function ModernResidentDashboard() {
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90">
                   <defs>
-                    <linearGradient id="residentCompletionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#ee5736" />
-                      <stop offset="50%" stopColor="#ee5736" />
-                      <stop offset="100%" stopColor="#ee5736" />
+                    <linearGradient id="residentCompletionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#d9574f" />
+                      <stop offset="50%" stopColor="#ff5b21" />
+                      <stop offset="100%" stopColor="#ff8017" />
                     </linearGradient>
                   </defs>
                   <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" strokeWidth="3" />
@@ -451,7 +451,7 @@ export default function ModernResidentDashboard() {
                         className="h-full rounded-full transition-all"
                         style={{
                           width: `${card.progress}%`,
-                          background: 'linear-gradient(to right, #ee5736, #ee573680)'
+                          background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                         }}
                       />
                     </div>
@@ -475,7 +475,9 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6 mb-8"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Home className="w-5 h-5" style={{ color: '#ee5736' }} />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <Home className="w-5 h-5 text-white" />
+            </div>
             Ta Résidence
           </h3>
 
@@ -483,7 +485,7 @@ export default function ModernResidentDashboard() {
             {/* Property Image */}
             <div
               className="relative h-48 md:h-auto md:w-64 rounded-2xl overflow-hidden flex-shrink-0"
-              style={{ background: 'linear-gradient(to bottom right, #ee573630, #ee573650)' }}
+              style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.2) 0%, rgba(255, 91, 33, 0.3) 50%, rgba(255, 128, 23, 0.3) 100%)' }}
             >
               {currentProperty.main_image ? (
                 <img
@@ -493,7 +495,7 @@ export default function ModernResidentDashboard() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Home className="w-16 h-16" style={{ color: '#ee573680' }} />
+                  <Home className="w-16 h-16 text-white opacity-60" />
                 </div>
               )}
             </div>
@@ -516,7 +518,7 @@ export default function ModernResidentDashboard() {
                       <div
                         key={index}
                         className="flex items-center gap-2 px-3 py-2 rounded-full"
-                        style={{ background: '#ee573610' }}
+                        style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)' }}
                       >
                         {member.users?.avatar_url ? (
                           <img
@@ -527,7 +529,7 @@ export default function ModernResidentDashboard() {
                         ) : (
                           <div
                             className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white font-bold"
-                            style={{ background: '#ee5736' }}
+                            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                           >
                             {member.users?.full_name?.charAt(0) || '?'}
                           </div>
@@ -574,7 +576,9 @@ export default function ModernResidentDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Clock className="w-5 h-5" style={{ color: '#ee5736' }} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Clock className="w-5 h-5 text-white" />
+              </div>
               Tâches à Venir
             </h3>
             <Button
@@ -596,7 +600,7 @@ export default function ModernResidentDashboard() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + index * 0.05 }}
                 className="flex items-center justify-between p-4 bg-gray-50 rounded-xl transition-colors cursor-pointer"
-                onMouseEnter={(e) => e.currentTarget.style.background = '#ee573610'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = '#f9fafb'}
               >
                 <div className="flex items-center gap-3">
@@ -648,7 +652,9 @@ export default function ModernResidentDashboard() {
           className="bg-white rounded-3xl shadow-lg p-6"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5" style={{ color: '#ee5736' }} />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
             Activité Récente
           </h3>
 
@@ -685,13 +691,13 @@ export default function ModernResidentDashboard() {
         transition={{ delay: 0.7 }}
         className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 relative overflow-hidden"
       >
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, #ee573620, transparent, #ee573610)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, transparent 50%, rgba(255, 128, 23, 0.06) 100%)' }} />
         <div className="relative flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold mb-1 flex items-center gap-2 text-gray-900">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200"
-                style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 <Heart className="w-5 h-5 text-white" />
               </div>

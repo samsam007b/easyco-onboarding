@@ -218,7 +218,7 @@ export default function ResidenceHeader() {
 
   return (
     <>
-    <Card className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg">
+    <Card className="p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
         <div className="flex items-start gap-4">
@@ -365,7 +365,8 @@ export default function ResidenceHeader() {
               </div>
               <button
                 onClick={() => propertyInfo.invitationCode && copyToClipboard(propertyInfo.invitationCode, 'invitation')}
-                className="p-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white transition-colors"
+                className="p-3 rounded-lg text-white transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
@@ -400,7 +401,8 @@ export default function ResidenceHeader() {
 
           <button
             onClick={() => setShowInviteModal(false)}
-            className="w-full mt-4 py-3 bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] text-white font-medium rounded-lg hover:shadow-lg transition-shadow"
+            className="w-full mt-4 py-3 text-white font-medium rounded-lg hover:shadow-lg transition-all hover:scale-105"
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
           >
             Fermer
           </button>
