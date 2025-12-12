@@ -500,6 +500,157 @@ function OverviewSection() {
         </CardContent>
       </Card>
 
+      {/* Variantes de Headers/Banners Résidence */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Home className="w-5 h-5 text-orange-400" />
+            Variantes Header/Banner Résidence - Choisissez votre Style
+          </CardTitle>
+          <p className="text-sm text-slate-400 mt-2">
+            Testez différentes combinaisons pour le header de votre résidence
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Version 1 - Gradient Signature Complet */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-xs font-bold">1</div>
+              <h4 className="text-base font-bold text-white">Version 1 - Gradient Signature Complet</h4>
+              <Badge className="bg-blue-500/20 text-blue-300 text-xs">Recommandé pour Actions Rapides</Badge>
+            </div>
+            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Home className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Résidence Bruxelles Centre</h3>
+                      <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
+                    </div>
+                  </div>
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                    Actions Rapides
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">€850</p>
+                    <p className="text-xs text-white/70">Loyer moyen</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">4.8★</p>
+                    <p className="text-xs text-white/70">Note globale</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">2</p>
+                    <p className="text-xs text-white/70">Tâches en cours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Version 2 - Couleur Unie (#ee5736) */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">2</div>
+              <h4 className="text-base font-bold text-white">Version 2 - Couleur Principale Unie (#ee5736)</h4>
+              <Badge className="bg-green-500/20 text-green-300 text-xs">Simple & Élégant</Badge>
+            </div>
+            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+              style={{ background: '#ee5736' }}>
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Home className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Résidence Bruxelles Centre</h3>
+                      <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
+                    </div>
+                  </div>
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                    Actions Rapides
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">€850</p>
+                    <p className="text-xs text-white/70">Loyer moyen</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">4.8★</p>
+                    <p className="text-xs text-white/70">Note globale</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">2</p>
+                    <p className="text-xs text-white/70">Tâches en cours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Version 4 - Gradient 2 Couleurs (déjà existante) */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center text-white text-xs font-bold">4</div>
+              <h4 className="text-base font-bold text-white">Version 4 - Gradient 2 Couleurs (Principal + Transparent)</h4>
+              <Badge className="bg-purple-500/20 text-purple-300 text-xs">Doux & Moderne</Badge>
+            </div>
+            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+              style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Home className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Résidence Bruxelles Centre</h3>
+                      <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
+                    </div>
+                  </div>
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                    Actions Rapides
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">€850</p>
+                    <p className="text-xs text-white/70">Loyer moyen</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">4.8★</p>
+                    <p className="text-xs text-white/70">Note globale</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-white">2</p>
+                    <p className="text-xs text-white/70">Tâches en cours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recommandations d'usage */}
+          <div className="mt-6 p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-xl border border-orange-500/30">
+            <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Recommandations d'usage</h4>
+            <div className="space-y-2 text-xs text-slate-300">
+              <p><strong className="text-white">Version 1 (Gradient complet):</strong> Idéal pour les sections qui nécessitent une attention maximale - Actions Rapides, Profile Dropdown Background, Logo IzzIco</p>
+              <p><strong className="text-white">Version 2 (Couleur unie):</strong> Parfait pour les boutons généraux d'utilisation de l'app - Navigation, CTAs standards</p>
+              <p><strong className="text-white">Version 3 (Mix palette):</strong> Excellent pour différencier visuellement les thèmes/pages/actions avec des couleurs respectives par catégorie</p>
+              <p><strong className="text-white">Version 4 (Gradient doux):</strong> Élégant pour les headers/banners de résidence avec un look moderne et subtil</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Navigation Items */}
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
