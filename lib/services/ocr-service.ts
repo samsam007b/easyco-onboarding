@@ -453,30 +453,134 @@ class OCRService {
 
   /**
    * Extract individual line items from receipt
-   * This is complex and may not work perfectly with all receipts
+   * Handles various receipt formats including:
+   * - "1 PZ 4 Saisons 14,50 14,50 B"
+   * - "Pain complet 1.20"
+   * - "2x Coca Cola 2.50 5.00"
    */
   private extractLineItems(text: string): OCRLineItem[] {
+    console.log('[OCR] Extracting line items...');
     const items: OCRLineItem[] = [];
 
-    // Pattern to match line items like:
-    // "Pain complet 1.20"
-    // "Lait demi-écrémé 0.95"
-    const linePattern = /^([A-Za-zÀ-ÿ\s]+)\s+(\d+[.,]\d{2})$/gm;
+    // Split text into lines
+    const lines = text.split('\n');
 
-    let match;
-    while ((match = linePattern.exec(text)) !== null) {
-      const name = match[1].trim();
-      const priceStr = match[2].replace(',', '.');
-      const price = parseFloat(priceStr);
+    // Patterns for different receipt formats
+    const patterns = [
+      // Format 1: "1  PZ 4 Saisons      14,50   14,50 B"
+      // Quantity, Name, Unit Price, Total Price, Tax Code
+      /^(\d+)\s+([A-Za-z0-9À-ÿ\/\s\-'\.]+?)\s+(\d+[.,]\d{2})\s+(\d+[.,]\d{2})\s*[A-Z]?\s*$/,
 
-      if (name.length > 2 && !isNaN(price) && price > 0) {
-        items.push({
-          name,
-          total_price: price,
-        });
+      // Format 2: "PZ Campericoise      14,50   14,50 B"
+      // Name, Unit Price, Total Price, Tax Code (no quantity)
+      /^([A-Za-z0-9À-ÿ\/\s\-'\.]+?)\s+(\d+[.,]\d{2})\s+(\d+[.,]\d{2})\s*[A-Z]?\s*$/,
+
+      // Format 3: "2x Pain complet 2.40"
+      // Quantity x Name Total
+      /^(\d+)x\s+([A-Za-zÀ-ÿ\s\-'\.]+)\s+(\d+[.,]\d{2})$/,
+
+      // Format 4: "Pain complet 1.20" (simple format)
+      // Name Price
+      /^([A-Za-zÀ-ÿ\s\-'\.]{3,})\s+(\d+[.,]\d{2})$/,
+    ];
+
+    // Words to exclude (headers, footers, etc.)
+    const excludeWords = [
+      'TOTAL',
+      'SOUS-TOTAL',
+      'SUBTOTAL',
+      'TVA',
+      'TAX',
+      'SOMME',
+      'MONTANT',
+      'CASH',
+      'CARTE',
+      'ESPECE',
+      'CHANGE',
+      'RENDU',
+      'QTE',
+      'PRIX',
+      'P.U.',
+      'ARTICLE',
+      'DESIGNATION',
+      'GRAND TOTAL',
+    ];
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Skip empty lines or lines with exclude words
+      if (!trimmedLine || excludeWords.some((word) => trimmedLine.toUpperCase().includes(word))) {
+        continue;
+      }
+
+      // Try each pattern
+      for (let i = 0; i < patterns.length; i++) {
+        const pattern = patterns[i];
+        const match = trimmedLine.match(pattern);
+
+        if (match) {
+          let name: string;
+          let quantity = 1;
+          let unitPrice: number | undefined;
+          let totalPrice: number;
+
+          if (i === 0) {
+            // Format 1: quantity, name, unit price, total price
+            quantity = parseInt(match[1]);
+            name = match[2].trim();
+            unitPrice = parseFloat(match[3].replace(',', '.'));
+            totalPrice = parseFloat(match[4].replace(',', '.'));
+          } else if (i === 1) {
+            // Format 2: name, unit price, total price (quantity = 1)
+            name = match[1].trim();
+            unitPrice = parseFloat(match[2].replace(',', '.'));
+            totalPrice = parseFloat(match[3].replace(',', '.'));
+          } else if (i === 2) {
+            // Format 3: quantity x name total
+            quantity = parseInt(match[1]);
+            name = match[2].trim();
+            totalPrice = parseFloat(match[3].replace(',', '.'));
+            unitPrice = totalPrice / quantity;
+          } else {
+            // Format 4: name price (simple)
+            name = match[1].trim();
+            totalPrice = parseFloat(match[2].replace(',', '.'));
+            unitPrice = totalPrice;
+          }
+
+          // Validate the extracted item
+          if (
+            name.length >= 3 &&
+            name.length <= 100 &&
+            !isNaN(totalPrice) &&
+            totalPrice > 0 &&
+            totalPrice < 10000 &&
+            !/^\d+$/.test(name) && // Not just numbers
+            !/^[\s\-\.\/]+$/.test(name) // Not just punctuation
+          ) {
+            const item: OCRLineItem = {
+              name,
+              total_price: totalPrice,
+            };
+
+            if (quantity > 1) {
+              item.quantity = quantity;
+            }
+
+            if (unitPrice !== undefined && unitPrice !== totalPrice) {
+              item.unit_price = unitPrice;
+            }
+
+            items.push(item);
+            console.log(`[OCR] ✅ Item found: ${name} - ${totalPrice}€ (qty: ${quantity})`);
+            break; // Found a match, no need to try other patterns
+          }
+        }
       }
     }
 
+    console.log(`[OCR] ✅ Extracted ${items.length} line items`);
     return items;
   }
 

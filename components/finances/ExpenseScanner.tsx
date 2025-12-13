@@ -20,6 +20,12 @@ import {
   Edit3,
   Users,
   DollarSign,
+  ShoppingCart,
+  Zap,
+  Sparkles as SparklesIcon,
+  Wifi,
+  Wrench,
+  Package,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,43 +55,43 @@ type ScanStep = 'upload' | 'scanning' | 'review' | 'category' | 'confirm';
 const CATEGORY_OPTIONS: Array<{
   value: ExpenseCategory;
   label: string;
-  emoji: string;
+  icon: any;
   color: string;
 }> = [
   {
     value: 'groceries',
     label: 'Courses',
-    emoji: '🛒',
+    icon: ShoppingCart,
     color: 'from-green-500 to-emerald-600',
   },
   {
     value: 'utilities',
     label: 'Factures',
-    emoji: '⚡',
+    icon: Zap,
     color: 'from-yellow-500 to-orange-600',
   },
   {
     value: 'cleaning',
     label: 'Ménage',
-    emoji: '🧹',
+    icon: SparklesIcon,
     color: 'from-blue-500 to-cyan-600',
   },
   {
     value: 'internet',
     label: 'Internet',
-    emoji: '📡',
+    icon: Wifi,
     color: 'from-purple-500 to-indigo-600',
   },
   {
     value: 'maintenance',
     label: 'Entretien',
-    emoji: '🔧',
+    icon: Wrench,
     color: 'from-gray-500 to-slate-600',
   },
   {
     value: 'other',
     label: 'Autre',
-    emoji: '📦',
+    icon: Package,
     color: 'from-pink-500 to-rose-600',
   },
 ];
@@ -198,30 +204,37 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
       {/* Progress Indicator */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          {['📸 Scanner', '✏️ Vérifier', '📂 Catégorie', '✅ Confirmer'].map(
-            (label, index) => {
+          {[
+            { icon: Scan, label: 'Scanner' },
+            { icon: Edit3, label: 'Vérifier' },
+            { icon: Package, label: 'Catégorie' },
+            { icon: Check, label: 'Confirmer' }
+          ].map((step, index) => {
               const stepIndex = ['upload', 'review', 'category', 'confirm'].indexOf(
                 currentStep
               );
               const isActive = index <= stepIndex;
+              const StepIcon = step.icon;
               return (
                 <div key={index} className="flex items-center">
                   <div
                     className={cn(
                       'flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold transition-all',
                       isActive
-                        ? 'bg-gradient-to-r from-resident-600 to-resident-700 text-white shadow-lg'
+                        ? 'text-white shadow-lg'
                         : 'bg-gray-200 text-gray-400'
                     )}
+                    style={isActive ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' } : undefined}
                   >
-                    {label.split(' ')[0]}
+                    <StepIcon className="w-5 h-5" />
                   </div>
                   {index < 3 && (
                     <div
                       className={cn(
                         'w-12 h-1 mx-2',
-                        isActive ? 'bg-resident-500' : 'bg-gray-200'
+                        isActive ? '' : 'bg-gray-200'
                       )}
+                      style={isActive ? { background: '#ee5736' } : undefined}
                     />
                   )}
                 </div>
@@ -442,6 +455,42 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 />
               </div>
             </div>
+
+            {/* Extracted Line Items */}
+            {ocrData && ocrData.items && ocrData.items.length > 0 && (
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="w-5 h-5 text-green-600" />
+                  <h3 className="text-sm font-bold text-green-900">
+                    Articles détectés ({ocrData.items.length})
+                  </h3>
+                </div>
+                <div className="space-y-2 max-h-48 overflow-y-auto">
+                  {ocrData.items.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-white rounded-lg p-3 text-sm"
+                    >
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">{item.name}</p>
+                        {item.quantity && item.quantity > 1 && (
+                          <p className="text-xs text-gray-500">
+                            Quantité: {item.quantity}
+                            {item.unit_price && ` × ${item.unit_price.toFixed(2)}€`}
+                          </p>
+                        )}
+                      </div>
+                      <p className="font-bold text-green-700 ml-3">
+                        {item.total_price?.toFixed(2)}€
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-green-700 mt-3 text-center">
+                  ✨ Ces articles ont été extraits automatiquement du ticket
+                </p>
+              </div>
+            )}
 
             <div className="flex gap-3">
               <Button
