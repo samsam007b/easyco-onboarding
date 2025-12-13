@@ -611,7 +611,7 @@ export default function DocumentsPage() {
                         style={uploadForm.category === cat.value ? { borderColor: '#ee5736' } : undefined}
                       >
                         <div className="mb-1 flex items-center justify-center">
-                          <Icon className="w-6 h-6" style={{ color: uploadForm.category === cat.value ? '#ee5736' : '#6b7280' }} />
+                          <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ee5736]" : "text-gray-500")} />
                         </div>
                         <div className="text-xs font-medium text-gray-700">{cat.label}</div>
                       </button>
