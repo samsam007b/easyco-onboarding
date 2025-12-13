@@ -598,11 +598,14 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/hub/finances"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 transition-all"
+                          style={{ background: 'transparent' }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center transition-transform">
-                            <DollarSign className="w-4 h-4 text-green-600" />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
+                            <DollarSign className="w-4 h-4 text-[#ee5736]" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Finances</span>
@@ -613,11 +616,14 @@ export default function ModernResidentHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 transition-all"
+                          style={{ background: 'transparent' }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center transition-transform">
-                            <Settings className="w-4 h-4 text-blue-600" />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
+                            <Settings className="w-4 h-4 text-[#ee5736]" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Paramètres</span>
