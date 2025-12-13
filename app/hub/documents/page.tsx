@@ -52,6 +52,22 @@ import {
   getFileIcon,
 } from '@/types/documents.types';
 
+// Map icon names to icon components
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  FileText,
+  Shield,
+  ClipboardList,
+  ScrollText,
+  Receipt,
+  Wrench,
+  FileSignature,
+  Paperclip,
+};
+
+const getCategoryIcon = (iconName: string) => {
+  return iconMap[iconName] || FileText;
+};
+
 export default function DocumentsPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -363,18 +379,22 @@ export default function DocumentsPage() {
               >
                 Tous
               </Button>
-              {DOCUMENT_CATEGORIES.slice(0, 5).map((cat) => (
-                <Button
-                  key={cat.value}
-                  size="sm"
-                  variant={filterCategory === cat.value ? 'default' : 'outline'}
-                  onClick={() => setFilterCategory(cat.value)}
-                  className="rounded-full flex-shrink-0 text-white border-none"
-                  style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
-                >
-                  {cat.emoji} {cat.label}
-                </Button>
-              ))}
+              {DOCUMENT_CATEGORIES.slice(0, 5).map((cat) => {
+                const Icon = getCategoryIcon(cat.icon);
+                return (
+                  <Button
+                    key={cat.value}
+                    size="sm"
+                    variant={filterCategory === cat.value ? 'default' : 'outline'}
+                    onClick={() => setFilterCategory(cat.value)}
+                    className="rounded-full flex-shrink-0 text-white border-none"
+                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
+                  >
+                    <Icon className="w-4 h-4 mr-1" />
+                    {cat.label}
+                  </Button>
+                );
+              })}
             </div>
           </div>
         </motion.div>
@@ -576,22 +596,27 @@ export default function DocumentsPage() {
               <div>
                 <Label>Catégorie *</Label>
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
-                  {DOCUMENT_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.value}
-                      onClick={() => setUploadForm({ ...uploadForm, category: cat.value })}
-                      className={cn(
-                        'p-3 rounded-xl border-2 text-center transition-all',
-                        uploadForm.category === cat.value
-                          ? 'bg-orange-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      )}
-                      style={uploadForm.category === cat.value ? { borderColor: '#ee5736' } : undefined}
-                    >
-                      <div className="text-2xl mb-1">{cat.emoji}</div>
-                      <div className="text-xs font-medium text-gray-700">{cat.label}</div>
-                    </button>
-                  ))}
+                  {DOCUMENT_CATEGORIES.map((cat) => {
+                    const Icon = getCategoryIcon(cat.icon);
+                    return (
+                      <button
+                        key={cat.value}
+                        onClick={() => setUploadForm({ ...uploadForm, category: cat.value })}
+                        className={cn(
+                          'p-3 rounded-xl border-2 text-center transition-all',
+                          uploadForm.category === cat.value
+                            ? 'bg-orange-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        )}
+                        style={uploadForm.category === cat.value ? { borderColor: '#ee5736' } : undefined}
+                      >
+                        <div className="mb-1 flex items-center justify-center">
+                          <Icon className="w-6 h-6" style={{ color: uploadForm.category === cat.value ? '#ee5736' : '#6b7280' }} />
+                        </div>
+                        <div className="text-xs font-medium text-gray-700">{cat.label}</div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
