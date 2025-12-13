@@ -157,7 +157,7 @@ export default function HubMembersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50/30">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 128, 23, 0.03) 100%)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -168,7 +168,7 @@ export default function HubMembersPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full"
+            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10"
           >
             ← Retour au hub
           </Button>
@@ -178,13 +178,14 @@ export default function HubMembersPage() {
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 Membres de la Coloc
               </h1>
-              <p className="text-gray-600">
+              <p style={{ color: '#ee5736' }}>
                 {currentProperty?.title || 'Votre résidence'} • {members.length} colocataire{members.length > 1 ? 's' : ''}
               </p>
             </div>
 
             <Button
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+              className="rounded-full text-white font-medium hover:shadow-lg transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
               <UserPlus className="w-4 h-4 mr-2" />
               Inviter
@@ -203,7 +204,7 @@ export default function HubMembersPage() {
               className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all"
             >
               {/* Member Header */}
-              <div className="bg-gradient-to-br from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 text-white">
+              <div className="p-6 text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <div className="flex items-center gap-4 mb-4">
                   {member.avatar ? (
                     <img
@@ -225,7 +226,7 @@ export default function HubMembersPage() {
                 </div>
 
                 {member.bio && (
-                  <p className="text-sm text-orange-100 line-clamp-2">
+                  <p className="text-sm line-clamp-2" style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
                     {member.bio}
                   </p>
                 )}
@@ -236,26 +237,26 @@ export default function HubMembersPage() {
                 {/* Contact Info */}
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center gap-3 text-sm">
-                    <Mail className="w-4 h-4 text-orange-600" />
+                    <Mail className="w-4 h-4" style={{ color: '#ee5736' }} />
                     <span className="text-gray-700">{member.email}</span>
                   </div>
 
                   {member.phone && (
                     <div className="flex items-center gap-3 text-sm">
-                      <Phone className="w-4 h-4 text-orange-600" />
+                      <Phone className="w-4 h-4" style={{ color: '#ee5736' }} />
                       <span className="text-gray-700">{member.phone}</span>
                     </div>
                   )}
 
                   {member.occupation && (
                     <div className="flex items-center gap-3 text-sm">
-                      <Briefcase className="w-4 h-4 text-orange-600" />
+                      <Briefcase className="w-4 h-4" style={{ color: '#ee5736' }} />
                       <span className="text-gray-700">{member.occupation}</span>
                     </div>
                   )}
 
                   <div className="flex items-center gap-3 text-sm">
-                    <Calendar className="w-4 h-4 text-orange-600" />
+                    <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
                     <span className="text-gray-700">
                       Depuis {new Date(member.moveInDate).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
                     </span>
@@ -280,8 +281,9 @@ export default function HubMembersPage() {
                 <div className="flex gap-2 pt-4 border-t border-gray-100">
                   <Button
                     onClick={() => router.push('/messages')}
-                    className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                    className="flex-1 rounded-full text-white font-medium hover:shadow-lg transition-all"
                     size="sm"
+                    style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                   >
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Message
@@ -306,8 +308,8 @@ export default function HubMembersPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-3xl shadow-lg p-12 text-center"
           >
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-orange-600" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
+              <Users className="w-8 h-8" style={{ color: '#ee5736' }} />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               Aucun colocataire pour le moment
@@ -315,7 +317,7 @@ export default function HubMembersPage() {
             <p className="text-gray-600 mb-6">
               Invitez des personnes à rejoindre votre colocation
             </p>
-            <Button className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
+            <Button className="rounded-full text-white font-medium hover:shadow-lg transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
               <UserPlus className="w-4 h-4 mr-2" />
               Inviter des membres
             </Button>
