@@ -106,16 +106,16 @@ export default function LanguageSwitcher() {
                     onMouseEnter={(e) => {
                       if (language !== code) {
                         e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        e.currentTarget.style.WebkitBackgroundClip = 'text';
-                        e.currentTarget.style.WebkitTextFillColor = 'transparent';
+                        e.currentTarget.style.webkitBackgroundClip = 'text';
+                        e.currentTarget.style.webkitTextFillColor = 'transparent';
                         e.currentTarget.style.backgroundClip = 'text';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (language !== code) {
                         e.currentTarget.style.background = 'none';
-                        e.currentTarget.style.WebkitBackgroundClip = 'unset';
-                        e.currentTarget.style.WebkitTextFillColor = 'unset';
+                        e.currentTarget.style.webkitBackgroundClip = 'unset';
+                        e.currentTarget.style.webkitTextFillColor = 'unset';
                         e.currentTarget.style.backgroundClip = 'unset';
                         e.currentTarget.style.color = '#6b7280';
                       }
