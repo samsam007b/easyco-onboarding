@@ -211,7 +211,11 @@ export default function ModernTasksPage() {
             </div>
           </div>
 
-          <Button onClick={() => setShowCreateModal(true)} className="cta-resident rounded-full">
+          <Button
+            onClick={() => setShowCreateModal(true)}
+            className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Nouvelle tâche
           </Button>
