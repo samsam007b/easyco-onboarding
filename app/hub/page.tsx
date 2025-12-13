@@ -1,10 +1,10 @@
 'use client';
 
-import ModernResidentDashboard from '@/components/dashboard/ModernResidentDashboard';
+import ResidenceHeader from '@/components/hub/ResidenceHeader';
 
 /**
  * Hub home page - main dashboard
  */
 export default function HubPage() {
-  return <ModernResidentDashboard />;
+  return <ResidenceHeader />;
 }
