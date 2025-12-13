@@ -36,15 +36,16 @@ const getNotificationIcon = (type: NotificationType) => {
 };
 
 const getNotificationColor = (type: NotificationType) => {
+  // Use V1 gradient colors for all notification types
   switch (type) {
-    case 'message': return 'from-blue-500 to-blue-700';
-    case 'payment': return 'from-green-500 to-green-700';
-    case 'member': return 'from-purple-500 to-purple-700';
-    case 'property': return 'from-orange-500 to-orange-700';
-    case 'application': return 'from-yellow-500 to-yellow-700';
-    case 'task': return 'from-pink-500 to-pink-700';
-    case 'system': return 'from-gray-500 to-gray-700';
-    default: return 'from-gray-500 to-gray-700';
+    case 'message': return 'from-[#d9574f] to-[#ff5b21]';
+    case 'payment': return 'from-[#ff5b21] to-[#ff8017]';
+    case 'member': return 'from-[#d9574f] via-[#ff5b21] to-[#ff8017]';
+    case 'property': return 'from-[#ee5736] to-[#ff6e1c]';
+    case 'application': return 'from-[#ff5b21] to-[#ff8017]';
+    case 'task': return 'from-[#d9574f] to-[#ff8017]';
+    case 'system': return 'from-[#d9574f] to-[#ff5b21]';
+    default: return 'from-[#d9574f] to-[#ff8017]';
   }
 };
 
@@ -80,14 +81,18 @@ export default function NotificationBell() {
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+        className="relative p-2 rounded-full transition-colors"
+        style={{ background: 'transparent' }}
+        onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
       >
-        <Bell className="w-5 h-5 text-gray-700" />
+        <Bell className="w-5 h-5" style={{ color: '#ee5736' }} />
         {stats.unreadCount > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+            className="absolute -top-1 -right-1 w-5 h-5 text-white text-xs font-bold rounded-full flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
           >
             {stats.unreadCount > 9 ? '9+' : stats.unreadCount}
           </motion.span>
@@ -105,7 +110,7 @@ export default function NotificationBell() {
             className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
           >
             {/* Header */}
-            <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-blue-50">
+            <div className="p-4 border-b border-gray-100" style={{ background: '#fff5f3' }}>
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
                 {stats.unreadCount > 0 && (
@@ -113,14 +118,15 @@ export default function NotificationBell() {
                     onClick={markAllAsRead}
                     variant="ghost"
                     size="sm"
-                    className="text-xs rounded-full"
+                    className="text-xs rounded-full hover:bg-white/60"
+                    style={{ color: '#ee5736' }}
                   >
                     <CheckCheck className="w-3 h-3 mr-1" />
                     Tout marquer lu
                   </Button>
                 )}
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-600">
+              <div className="flex items-center gap-4 text-xs" style={{ color: '#c23f21' }}>
                 <span>{stats.unreadCount} non lues</span>
                 <span>•</span>
                 <span>{stats.todayCount} aujourd'hui</span>
@@ -142,9 +148,20 @@ export default function NotificationBell() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
                         className={cn(
-                          "p-4 hover:bg-gray-50 transition-colors cursor-pointer group",
-                          !notification.isRead && "bg-blue-50/30"
+                          "p-4 transition-colors cursor-pointer group",
+                          !notification.isRead && "bg-gradient-to-r from-[#fff5f3] to-white"
                         )}
+                        style={{ background: notification.isRead ? 'transparent' : undefined }}
+                        onMouseEnter={(e) => {
+                          if (notification.isRead) {
+                            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.04) 0%, rgba(255, 128, 23, 0.04) 100%)';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (notification.isRead) {
+                            e.currentTarget.style.background = 'transparent';
+                          }
+                        }}
                         onClick={() => handleNotificationClick(notification.id, notification.actionUrl)}
                       >
                         <div className="flex items-start gap-3">
@@ -163,7 +180,7 @@ export default function NotificationBell() {
                                 {notification.title}
                               </p>
                               {!notification.isRead && (
-                                <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1" />
+                                <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: '#ff5b21' }} />
                               )}
                             </div>
                             <p className="text-xs text-gray-600 line-clamp-2 mb-2">
@@ -177,7 +194,7 @@ export default function NotificationBell() {
                                 })}
                               </span>
                               {notification.actionLabel && (
-                                <span className="text-xs text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#ee5736' }}>
                                   {notification.actionLabel} →
                                 </span>
                               )}
@@ -195,7 +212,7 @@ export default function NotificationBell() {
                                 className="p-1 hover:bg-white rounded-lg transition-colors"
                                 title="Marquer comme lu"
                               >
-                                <Check className="w-4 h-4 text-green-600" />
+                                <Check className="w-4 h-4" style={{ color: '#10b981' }} />
                               </button>
                             )}
                             <button
@@ -206,7 +223,7 @@ export default function NotificationBell() {
                               className="p-1 hover:bg-white rounded-lg transition-colors"
                               title="Supprimer"
                             >
-                              <X className="w-4 h-4 text-red-600" />
+                              <X className="w-4 h-4" style={{ color: '#ee5736' }} />
                             </button>
                           </div>
                         </div>
@@ -216,8 +233,8 @@ export default function NotificationBell() {
                 </div>
               ) : (
                 <div className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Bell className="w-8 h-8 text-gray-400" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
+                    <Bell className="w-8 h-8" style={{ color: '#ee5736' }} />
                   </div>
                   <p className="text-sm font-medium text-gray-900 mb-1">
                     Aucune notification
@@ -231,14 +248,15 @@ export default function NotificationBell() {
 
             {/* Footer */}
             {recentNotifications.length > 0 && (
-              <div className="p-3 border-t border-gray-100 bg-gray-50">
+              <div className="p-3 border-t border-gray-100" style={{ background: '#fff5f3' }}>
                 <Button
                   onClick={() => {
                     setIsOpen(false);
                     router.push('/notifications');
                   }}
                   variant="ghost"
-                  className="w-full rounded-full text-sm font-medium"
+                  className="w-full rounded-full text-sm font-medium hover:bg-white/60"
+                  style={{ color: '#ee5736' }}
                 >
                   Voir toutes les notifications
                   <ArrowRight className="w-4 h-4 ml-2" />
