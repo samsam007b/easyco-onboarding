@@ -241,9 +241,12 @@ export default function ModernFinancesPage() {
             onClick={handleExport}
             variant="outline"
             size="sm"
-            className="hidden md:flex rounded-full"
+            className="hidden md:flex rounded-full border-gray-200 hover:border-transparent"
+            style={{ color: '#ee5736' }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            <Download className="w-4 h-4 mr-2" />
+            <Download className="w-4 h-4 mr-2" style={{ color: '#ee5736' }} />
             Export PDF
           </Button>
         </div>
@@ -256,7 +259,7 @@ export default function ModernFinancesPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           whileHover={{ scale: 1.02, y: -2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-transparent hover:border-resident-200"
+          className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-100"
         >
           <div className="flex items-center justify-between mb-4">
             <div
@@ -268,7 +271,7 @@ export default function ModernFinancesPage() {
             >
               <DollarSign className="w-7 h-7 text-white relative z-10" />
             </div>
-            <Badge className="bg-resident-100 text-resident-700 border-resident-200">
+            <Badge className="text-xs border-none text-white" style={{ background: 'rgba(217, 87, 79, 0.8)' }}>
               Ce mois
             </Badge>
           </div>
@@ -285,7 +288,7 @@ export default function ModernFinancesPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           whileHover={{ scale: 1.02, y: -2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-transparent hover:border-resident-200"
+          className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-100"
         >
           <div className="flex items-center justify-between mb-4">
             <div
@@ -296,7 +299,7 @@ export default function ModernFinancesPage() {
             >
               <Users className="w-7 h-7 text-white relative z-10" />
             </div>
-            <Badge className="bg-resident-100 text-resident-700 border-resident-200">
+            <Badge className="text-xs border-none text-white" style={{ background: 'rgba(255, 91, 33, 0.8)' }}>
               Ta part
             </Badge>
           </div>
@@ -366,7 +369,8 @@ export default function ModernFinancesPage() {
       >
         <button
           onClick={() => setCreateMode('scanner')}
-          className="w-full bg-gradient-to-r from-resident-600 to-resident-700 text-white rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] flex items-center justify-between group"
+          className="w-full text-white rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] flex items-center justify-between group"
+          style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
@@ -393,7 +397,7 @@ export default function ModernFinancesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-transparent"
+          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-100"
         >
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-gray-900">Dépenses Récentes</h3>
@@ -429,7 +433,7 @@ export default function ModernFinancesPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.6 + index * 0.05 }}
                   whileHover={{ scale: 1.01, x: 4 }}
-                  className="group flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-[#fff5f3] rounded-2xl hover:shadow-md transition-all cursor-pointer border border-transparent hover:border-resident-200"
+                  className="group flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-[#fff5f3] rounded-2xl hover:shadow-md transition-all cursor-pointer border border-gray-100"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div
@@ -454,7 +458,7 @@ export default function ModernFinancesPage() {
                         </span>
                       </p>
                       <div className="mt-1.5 flex items-center gap-2">
-                        <Badge className="text-xs bg-resident-100 text-resident-700 border-resident-200">
+                        <Badge className="text-xs border-none text-white" style={{ background: 'rgba(217, 87, 79, 0.8)' }}>
                           Ta part: €{(expense.your_share || 0).toFixed(2)}
                         </Badge>
                         {expense.receipt_image_url && (
@@ -482,7 +486,7 @@ export default function ModernFinancesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-transparent"
+          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-100"
         >
           <h3 className="text-xl font-bold text-gray-900 mb-6">
             Soldes Entre Colocataires

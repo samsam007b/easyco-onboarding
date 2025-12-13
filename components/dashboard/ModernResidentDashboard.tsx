@@ -27,7 +27,8 @@ import {
   MapPin,
   UserPlus,
   Copy,
-  X
+  X,
+  Vote
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -612,6 +613,16 @@ export default function ModernResidentDashboard() {
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   Dépense
+                </Button>
+
+                <Button
+                  onClick={() => router.push('/hub/rules')}
+                  size="sm"
+                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
+                  variant="outline"
+                >
+                  <Vote className="w-4 h-4 mr-1" />
+                  Règles
                 </Button>
 
                 <Button
