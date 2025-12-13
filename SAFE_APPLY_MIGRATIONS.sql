@@ -148,8 +148,6 @@ CREATE TRIGGER update_rent_payments_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
-RAISE NOTICE '✅ Migration 080: Enhanced Finances - Complete';
-
 -- ============================================================================
 -- MIGRATION 081: ENHANCED TASKS SYSTEM
 -- ============================================================================
@@ -304,8 +302,6 @@ DROP TRIGGER IF EXISTS update_user_availability_updated_at ON user_availability;
 CREATE TRIGGER update_user_availability_updated_at
   BEFORE UPDATE ON user_availability FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-RAISE NOTICE '✅ Migration 081: Enhanced Tasks - Complete';
-
 -- ============================================================================
 -- MIGRATION 082: DOCUMENT VAULT SYSTEM
 -- ============================================================================
@@ -454,8 +450,6 @@ $$;
 DROP TRIGGER IF EXISTS update_property_documents_updated_at ON property_documents;
 CREATE TRIGGER update_property_documents_updated_at
   BEFORE UPDATE ON property_documents FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-RAISE NOTICE '✅ Migration 082: Document Vault - Complete';
 
 -- ============================================================================
 -- MIGRATION 083: HOUSE RULES + VOTING SYSTEM
@@ -696,8 +690,6 @@ CREATE TRIGGER update_house_rules_updated_at
   BEFORE UPDATE ON house_rules
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
-
-RAISE NOTICE '✅ Migration 083: House Rules + Voting - Complete';
 
 COMMIT;
 
