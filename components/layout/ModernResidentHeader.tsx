@@ -553,25 +553,25 @@ export default function ModernResidentHeader({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 border-b" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.12) 100%)', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
+                      <div className="px-4 py-3 border-b" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
-                            <div className="text-lg font-bold text-gray-900">
+                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {pendingTasks || 0}
                             </div>
-                            <div className="text-xs text-gray-600">Tâches</div>
+                            <div className="text-xs" style={{ color: '#c23f21' }}>Tâches</div>
                           </div>
-                          <div className="text-center border-x border-[#FFDAC9]/50">
-                            <div className="text-lg font-bold text-gray-900">
+                          <div className="text-center border-x" style={{ borderColor: 'rgba(217, 87, 79, 0.2)' }}>
+                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {activeMembersCount || 0}
                             </div>
-                            <div className="text-xs text-gray-600">Membres</div>
+                            <div className="text-xs" style={{ color: '#c23f21' }}>Membres</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-lg font-bold text-gray-900">
+                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {unreadMessages || 0}
                             </div>
-                            <div className="text-xs text-gray-600">Messages</div>
+                            <div className="text-xs" style={{ color: '#c23f21' }}>Messages</div>
                           </div>
                         </div>
                       </div>
