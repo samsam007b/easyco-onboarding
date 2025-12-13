@@ -192,9 +192,6 @@ export default function ModernResidentDashboard() {
 
       if (propertyMember && propertyMember.properties) {
         setCurrentProperty(propertyMember.properties);
-        setInvitationCode(propertyMember.properties.invitation_code);
-        setOwnerCode(propertyMember.properties.owner_code);
-        setIsCreator(propertyMember.is_creator || false);
 
         // Update rent stats with real data
         const rentTotal = propertyMember.properties.monthly_rent || 1000;
