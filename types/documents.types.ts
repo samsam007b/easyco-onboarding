@@ -138,6 +138,10 @@ export const formatFileSize = (bytes?: number): string => {
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
 };
 
+export const getCategoryInfo = (category: DocumentCategory) => {
+  return DOCUMENT_CATEGORIES.find(cat => cat.value === category) || DOCUMENT_CATEGORIES[DOCUMENT_CATEGORIES.length - 1];
+};
+
 export const getFileIcon = (fileType?: string): string => {
   if (!fileType) return FILE_TYPE_ICONS.default;
   return FILE_TYPE_ICONS[fileType] || FILE_TYPE_ICONS.default;
