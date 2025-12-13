@@ -218,47 +218,8 @@ export default function ResidenceHeader() {
 
   return (
     <>
-    <Card className="p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-2xl mb-6 relative overflow-visible">
-      {/* Glassmorphism background with V1 gradient */}
-      <div className="absolute inset-0 rounded-2xl"
-           style={{
-             background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.25) 0%, rgba(255, 91, 33, 0.22) 50%, rgba(255, 128, 23, 0.25) 100%)',
-             backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-             WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-             boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(217, 87, 79, 0.3)',
-             overflow: 'hidden'
-           }}
-      />
-
-      {/* Refraction overlay - prismatic effect */}
-      <div className="absolute inset-0 rounded-2xl"
-           style={{
-             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(217, 87, 79, 0.3) 100%)',
-             mixBlendMode: 'overlay',
-             overflow: 'hidden'
-           }}
-      />
-
-      {/* Light reflection top-left */}
-      <div className="absolute top-0 left-0 w-1/2 h-1/2 rounded-2xl"
-           style={{
-             background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.5) 0%, transparent 60%)',
-             mixBlendMode: 'soft-light',
-             overflow: 'hidden'
-           }}
-      />
-
-      {/* Border with refraction effect */}
-      <div className="absolute -inset-[2px] rounded-[18px] pointer-events-none"
-           style={{
-             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(217, 87, 79, 0.4) 25%, rgba(255, 91, 33, 0.4) 50%, rgba(255, 128, 23, 0.4) 75%, rgba(255, 255, 255, 0.6) 100%)',
-             filter: 'blur(1px)',
-             opacity: 0.6,
-             overflow: 'hidden'
-           }}
-      />
-
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 relative z-10">
+    <Card className="p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg mb-6" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
