@@ -252,7 +252,7 @@ class ExpenseService {
       expenses?.forEach((exp) => {
         const splits = exp.expense_splits || [];
 
-        splits.forEach((split: ExpenseSplit) => {
+        splits.forEach((split: any) => {
           if (split.user_id === userId) return; // Skip self
 
           const current = balanceMap.get(split.user_id) || 0;
@@ -263,7 +263,7 @@ class ExpenseService {
           }
           // If they paid and I owe them
           else if (exp.paid_by_id === split.user_id) {
-            const mySplit = splits.find((s: ExpenseSplit) => s.user_id === userId);
+            const mySplit = splits.find((s: any) => s.user_id === userId);
             if (mySplit && !mySplit.paid) {
               balanceMap.set(split.user_id, current - mySplit.amount_owed);
             }
