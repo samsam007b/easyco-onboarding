@@ -239,7 +239,7 @@ export default function DocumentsPage() {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => router.push('/hub')}
             className="mb-4 rounded-full"
           >
@@ -456,7 +456,7 @@ export default function DocumentsPage() {
 
                     {/* Private Badge */}
                     {doc.is_private && (
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="secondary" className="text-xs">
                         🔒 Privé
                       </Badge>
                     )}
@@ -510,7 +510,7 @@ export default function DocumentsPage() {
                       <p className="text-sm text-gray-500">{formatFileSize(selectedFile.size)}</p>
                       <Button
                         size="sm"
-                        variant="outline"
+                        variant="secondary"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedFile(null);
@@ -611,7 +611,7 @@ export default function DocumentsPage() {
             {/* Actions */}
             <div className="flex gap-3 mt-6">
               <Button
-                variant="outline"
+                variant="secondary"
                 onClick={() => {
                   setShowUploadModal(false);
                   resetUploadForm();
@@ -737,7 +737,7 @@ export default function DocumentsPage() {
               <Button
                 onClick={() => window.open(selectedDocument.file_url, '_blank')}
                 className="flex-1 rounded-full"
-                variant="outline"
+                variant="secondary"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Télécharger
