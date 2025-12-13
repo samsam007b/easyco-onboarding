@@ -221,10 +221,10 @@ export default function ModernTasksPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Mes tâches', value: myTasks.length, icon: Users, color: 'blue' },
-          { label: 'En attente', value: pendingTasks.length, icon: Clock, color: 'yellow' },
-          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, color: 'green' },
-          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, color: 'red' },
+          { label: 'Mes tâches', value: myTasks.length, icon: Users, gradient: 'from-[#d9574f] to-[#ff5b21]' },
+          { label: 'En attente', value: pendingTasks.length, icon: Clock, gradient: 'from-[#ff5b21] to-[#ff8017]' },
+          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, gradient: 'from-[#d9574f] via-[#ff5b21] to-[#ff8017]' },
+          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, gradient: 'from-[#ee5736] to-[#ff6e1c]' },
         ].map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -233,10 +233,12 @@ export default function ModernTasksPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * (index + 1) }}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all"
             >
               <div className="flex items-center gap-3 mb-2">
-                <Icon className={`w-8 h-8 text-${stat.color}-600`} />
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br", stat.gradient)}>
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
                 <h3 className="text-sm font-semibold text-gray-600">{stat.label}</h3>
               </div>
               <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
@@ -257,7 +259,9 @@ export default function ModernTasksPage() {
         <div className="space-y-3">
           {pendingTasks.length === 0 ? (
             <div className="text-center py-12">
-              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
+                <CheckCircle2 className="w-8 h-8" style={{ color: '#ee5736' }} />
+              </div>
               <p className="font-semibold text-gray-900 mb-2">Aucune tâche en attente</p>
               <p className="text-sm text-gray-500">Tout est fait ! 🎉</p>
             </div>
@@ -276,9 +280,10 @@ export default function ModernTasksPage() {
                   className={cn(
                     'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
                     isMyTask
-                      ? 'bg-gradient-to-r from-resident-50 to-resident-100 border-resident-200 hover:shadow-md'
+                      ? 'border-gray-200 hover:shadow-md'
                       : 'bg-gray-50 border-gray-200 hover:border-gray-300'
                   )}
+                  style={isMyTask ? { background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)' } : undefined}
                 >
                   <div className="flex items-center gap-4 flex-1">
                     <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-2xl', category?.color)}>
@@ -289,13 +294,13 @@ export default function ModernTasksPage() {
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-semibold text-gray-900">{task.title}</h4>
                         {task.has_rotation && (
-                          <Badge className="bg-purple-100 text-purple-700 text-xs">
+                          <Badge className="text-xs border-none text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                             <RotateCw className="w-3 h-3 mr-1" />
                             Rotation
                           </Badge>
                         )}
                         {task.is_overdue && (
-                          <Badge className="bg-red-100 text-red-700 text-xs">
+                          <Badge className="bg-red-100 text-red-700 text-xs border-red-200">
                             <AlertCircle className="w-3 h-3 mr-1" />
                             En retard
                           </Badge>
@@ -304,12 +309,12 @@ export default function ModernTasksPage() {
 
                       <div className="flex items-center gap-4 text-sm text-gray-600">
                         <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
+                          <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
                           {task.assigned_to_name}
                         </span>
                         {task.due_date && (
                           <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
+                            <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
                             {new Date(task.due_date).toLocaleDateString('fr-FR')}
                             {task.days_until_due !== undefined && (
                               <span className={cn(task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500')}>
