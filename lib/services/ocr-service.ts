@@ -55,25 +55,11 @@ class OCRService {
       console.log('[OCR] 📸 Starting receipt scan...');
       const startTime = Date.now();
 
-      // Convert File to blob URL
-      const imageUrl = URL.createObjectURL(imageFile);
+      // Tesseract.js can work directly with File objects
+      console.log('[OCR] 📄 Processing file:', imageFile.name, `(${imageFile.size} bytes)`);
 
-      // Create an Image element and wait for it to load
-      // This ensures Tesseract.js can properly read the image
-      const image = new Image();
-      await new Promise<void>((resolve, reject) => {
-        image.onload = () => resolve();
-        image.onerror = () => reject(new Error('Failed to load image'));
-        image.src = imageUrl;
-      });
-
-      console.log('[OCR] 🖼️ Image loaded successfully, starting OCR...');
-
-      // Perform OCR with the loaded image element
-      const { data } = await this.worker.recognize(image);
-
-      // Clean up object URL
-      URL.revokeObjectURL(imageUrl);
+      // Perform OCR directly with the File object
+      const { data } = await this.worker.recognize(imageFile);
 
       const duration = Date.now() - startTime;
       console.log(`[OCR] ✅ Scan completed in ${duration}ms`);

@@ -24,6 +24,13 @@ import {
   Search,
   Filter,
   FolderOpen,
+  Shield,
+  ClipboardList,
+  ScrollText,
+  Receipt,
+  Wrench,
+  FileSignature,
+  Paperclip,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -250,11 +257,16 @@ export default function DocumentsPage() {
           </Button>
 
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                📁 Coffre-fort documents
-              </h1>
-              <p className="text-gray-600">Stockez et partagez vos documents importants</p>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <FolderOpen className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                  Coffre-fort documents
+                </h1>
+                <p className="text-gray-600">Stockez et partagez vos documents importants</p>
+              </div>
             </div>
 
             <Button

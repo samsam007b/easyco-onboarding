@@ -103,17 +103,18 @@ export const DOCUMENT_CATEGORIES: Array<{
   value: DocumentCategory;
   label: string;
   emoji: string;
+  icon: string;
   color: string;
 }> = [
-  { value: 'lease', label: 'Bail', emoji: '📄', color: 'bg-blue-100 text-blue-700' },
-  { value: 'insurance', label: 'Assurance', emoji: '🛡️', color: 'bg-green-100 text-green-700' },
-  { value: 'inventory', label: 'État des lieux', emoji: '📋', color: 'bg-purple-100 text-purple-700' },
-  { value: 'rules', label: 'Règlement', emoji: '📜', color: 'bg-orange-100 text-orange-700' },
-  { value: 'bills', label: 'Factures', emoji: '🧾', color: 'bg-yellow-100 text-yellow-700' },
-  { value: 'maintenance', label: 'Maintenance', emoji: '🔧', color: 'bg-red-100 text-red-700' },
-  { value: 'contracts', label: 'Contrats', emoji: '✍️', color: 'bg-indigo-100 text-indigo-700' },
-  { value: 'receipts', label: 'Reçus', emoji: '🧾', color: 'bg-pink-100 text-pink-700' },
-  { value: 'other', label: 'Autre', emoji: '📎', color: 'bg-gray-100 text-gray-700' },
+  { value: 'lease', label: 'Bail', emoji: '📄', icon: 'FileText', color: 'bg-blue-100 text-blue-700' },
+  { value: 'insurance', label: 'Assurance', emoji: '🛡️', icon: 'Shield', color: 'bg-green-100 text-green-700' },
+  { value: 'inventory', label: 'État des lieux', emoji: '📋', icon: 'ClipboardList', color: 'bg-purple-100 text-purple-700' },
+  { value: 'rules', label: 'Règlement', emoji: '📜', icon: 'ScrollText', color: 'bg-orange-100 text-orange-700' },
+  { value: 'bills', label: 'Factures', emoji: '🧾', icon: 'Receipt', color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'maintenance', label: 'Maintenance', emoji: '🔧', icon: 'Wrench', color: 'bg-red-100 text-red-700' },
+  { value: 'contracts', label: 'Contrats', emoji: '✍️', icon: 'FileSignature', color: 'bg-indigo-100 text-indigo-700' },
+  { value: 'receipts', label: 'Reçus', emoji: '🧾', icon: 'Receipt', color: 'bg-pink-100 text-pink-700' },
+  { value: 'other', label: 'Autre', emoji: '📎', icon: 'Paperclip', color: 'bg-gray-100 text-gray-700' },
 ];
 
 export const FILE_TYPE_ICONS: Record<string, string> = {
