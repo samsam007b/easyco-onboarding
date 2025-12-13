@@ -236,22 +236,31 @@ export default function RulesPage() {
           <Button
             variant="outline"
             onClick={() => router.push('/hub')}
-            className="mb-4 rounded-full"
+            className="mb-4 rounded-full border-gray-200 hover:border-transparent"
+            style={{ color: '#ee5736' }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
             ← Retour au hub
           </Button>
 
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                📜 Règles de la maison
-              </h1>
-              <p className="text-gray-600">Créez et votez sur les règles de vie en commun</p>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                <Vote className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                  Règles de la maison
+                </h1>
+                <p className="text-gray-600">Créez et votez sur les règles de vie en commun</p>
+              </div>
             </div>
 
             <Button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:opacity-90"
+              className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Proposer une règle
@@ -262,10 +271,7 @@ export default function RulesPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <motion.button
               onClick={() => setFilter('all')}
-              className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'all' && 'ring-2 ring-resident-500'
-              )}
+              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -278,18 +284,15 @@ export default function RulesPage() {
                       (stats?.total_rejected || 0)}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-resident-100 to-resident-200 flex items-center justify-center">
-                  <Vote className="w-6 h-6 text-resident-700" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}>
+                  <Vote className="w-6 h-6 text-white" />
                 </div>
               </div>
             </motion.button>
 
             <motion.button
               onClick={() => setFilter('voting')}
-              className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'voting' && 'ring-2 ring-blue-500'
-              )}
+              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -300,18 +303,15 @@ export default function RulesPage() {
                     {stats?.total_voting || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)' }}>
+                  <Clock className="w-6 h-6 text-white" />
                 </div>
               </div>
             </motion.button>
 
             <motion.button
               onClick={() => setFilter('active')}
-              className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'active' && 'ring-2 ring-green-500'
-              )}
+              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -330,10 +330,7 @@ export default function RulesPage() {
 
             <motion.button
               onClick={() => setFilter('rejected')}
-              className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'rejected' && 'ring-2 ring-red-500'
-              )}
+              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -367,7 +364,8 @@ export default function RulesPage() {
               <p className="text-gray-600 mb-6">Proposez la première règle de la maison</p>
               <Button
                 onClick={() => setShowCreateModal(true)}
-                className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Proposer une règle
@@ -478,9 +476,9 @@ export default function RulesPage() {
                                 variant={rule.has_voted ? 'outline' : 'default'}
                                 className={cn(
                                   'rounded-full text-xs',
-                                  !rule.has_voted &&
-                                    'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]'
+                                  !rule.has_voted && 'text-white border-none'
                                 )}
+                                style={!rule.has_voted ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
                                 onClick={() => openVoteModal(rule)}
                               >
                                 <Vote className="w-3 h-3 mr-1" />
@@ -610,7 +608,10 @@ export default function RulesPage() {
                   setShowCreateModal(false);
                   resetCreateForm();
                 }}
-                className="flex-1 rounded-full"
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 disabled={isCreating}
               >
                 Annuler
@@ -618,7 +619,8 @@ export default function RulesPage() {
               <Button
                 onClick={handleCreateRule}
                 disabled={isCreating || !createForm.title || !createForm.description}
-                className="flex-1 rounded-full cta-resident"
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 {isCreating ? (
                   <>
@@ -708,7 +710,10 @@ export default function RulesPage() {
                   setShowVoteModal(false);
                   resetVoteModal();
                 }}
-                className="flex-1 rounded-full"
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 disabled={isVoting}
               >
                 Annuler
@@ -716,7 +721,8 @@ export default function RulesPage() {
               <Button
                 onClick={handleVote}
                 disabled={isVoting || !selectedVote}
-                className="flex-1 rounded-full cta-resident"
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 {isVoting ? (
                   <>
