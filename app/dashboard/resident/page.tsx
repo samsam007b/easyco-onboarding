@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRole } from '@/lib/role/role-context'
-import ModernResidentDashboard from '@/components/dashboard/ModernResidentDashboard'
+import ResidenceHeader from '@/components/hub/ResidenceHeader'
 
 export default function ResidentDashboardPage() {
   const { setActiveRole } = useRole()
@@ -12,5 +12,5 @@ export default function ResidentDashboardPage() {
     setActiveRole('resident')
   }, [setActiveRole])
 
-  return <ModernResidentDashboard />
+  return <ResidenceHeader />
 }
