@@ -1,68 +1,85 @@
+/**
+ * Modern Tasks Page with Smart Rotations
+ * Complete task management with automatic rotations
+ */
+
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import HubLayout from '@/components/hub/HubLayout';
 import {
   CheckCircle2,
-  Circle,
   Clock,
+  Calendar,
+  RotateCw,
   Plus,
-  Trash2,
-  User,
-  Calendar as CalendarIcon,
+  Users,
   AlertCircle,
-  X,
-  ListTodo,
-  Sparkles,
-  Check
+  Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { taskService } from '@/lib/services/task-service';
+import type { TaskWithDetails, CreateTaskForm, CompleteTaskForm } from '@/types/tasks.types';
 
-interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  dueDate: string;
-  priority: 'low' | 'medium' | 'high';
-  status: 'pending' | 'in_progress' | 'completed';
-  assignedTo?: string;
-  assignedToName?: string;
-  createdBy: string;
-  createdByName?: string;
-  createdAt: string;
-}
+const CATEGORY_OPTIONS = [
+  { value: 'cleaning', label: 'Nettoyage', emoji: '🧹', color: 'bg-blue-100 text-blue-700' },
+  { value: 'groceries', label: 'Courses', emoji: '🛒', color: 'bg-green-100 text-green-700' },
+  { value: 'maintenance', label: 'Entretien', emoji: '🔧', color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'admin', label: 'Administratif', emoji: '📋', color: 'bg-purple-100 text-purple-700' },
+  { value: 'other', label: 'Autre', emoji: '📦', color: 'bg-gray-100 text-gray-700' },
+];
 
-export default function HubTasksPage() {
+const PRIORITY_OPTIONS = [
+  { value: 'low', label: 'Basse', color: 'bg-gray-100 text-gray-600' },
+  { value: 'medium', label: 'Moyenne', color: 'bg-blue-100 text-blue-600' },
+  { value: 'high', label: 'Haute', color: 'bg-orange-100 text-orange-600' },
+  { value: 'urgent', label: 'Urgente', color: 'bg-red-100 text-red-600' },
+];
+
+export default function ModernTasksPage() {
   const router = useRouter();
   const supabase = createClient();
+
   const [isLoading, setIsLoading] = useState(true);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskWithDetails[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [currentPropertyId, setCurrentPropertyId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'pending' | 'in_progress' | 'completed'>('all');
+  const [propertyId, setPropertyId] = useState<string | null>(null);
+
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [newTask, setNewTask] = useState({
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<TaskWithDetails | null>(null);
+
+  const [createForm, setCreateForm] = useState<CreateTaskForm>({
     title: '',
     description: '',
-    dueDate: '',
-    priority: 'medium' as 'low' | 'medium' | 'high',
-    assignedTo: ''
+    category: 'cleaning',
+    priority: 'medium',
+    due_date: new Date().toISOString().split('T')[0],
+    recurrence: 'none',
   });
-  const [roommates, setRoommates] = useState<Array<{ id: string; name: string }>>([]);
+
+  const [completeForm, setCompleteForm] = useState<CompleteTaskForm>({
+    task_id: '',
+    completion_notes: '',
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    loadTasks();
+    loadData();
   }, []);
 
-  const loadTasks = async () => {
+  const loadData = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -72,794 +89,393 @@ export default function HubTasksPage() {
 
       setCurrentUserId(user.id);
 
-      // Get user's property membership using RPC function
-      const { data: membershipData, error: memberError } = await supabase
-        .rpc('get_user_property_membership', { p_user_id: user.id });
+      const { data: membershipData } = await supabase.rpc('get_user_property_membership', {
+        p_user_id: user.id,
+      });
 
-      if (memberError || !membershipData?.property_id) {
-        console.error('No property membership found');
+      if (!membershipData?.property_id) {
         setIsLoading(false);
         return;
       }
 
-      const propertyId = membershipData.property_id;
-      setCurrentPropertyId(propertyId);
+      setPropertyId(membershipData.property_id);
 
-      // Load roommates for task assignment from property_members
-      const { data: membersData } = await supabase
-        .from('property_members')
-        .select('user_id')
-        .eq('property_id', propertyId)
-        .eq('status', 'active');
+      const tasksData = await taskService.getPropertyTasks(membershipData.property_id, user.id);
+      setTasks(tasksData);
 
-      // Get user profiles for roommates
-      const memberUserIds = membersData?.map(m => m.user_id) || [];
-      const { data: roommatesData } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name')
-        .in('id', memberUserIds);
-
-      if (roommatesData) {
-        setRoommates(roommatesData.map(r => ({
-          id: r.id,
-          name: r.id === user.id ? 'Toi' : `${r.first_name} ${r.last_name}`
-        })));
-      }
-
-      // Fetch tasks
-      const { data: tasksData, error } = await supabase
-        .from('tasks')
-        .select('*')
-        .eq('property_id', propertyId)
-        .order('due_date', { ascending: true });
-
-      if (error) throw error;
-
-      // Fetch user names
-      const userIds = [
-        ...new Set([
-          ...tasksData.map(t => t.created_by),
-          ...tasksData.map(t => t.assigned_to).filter(Boolean)
-        ])
-      ];
-
-      const { data: usersData } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name')
-        .in('id', userIds);
-
-      const userMap = new Map(
-        usersData?.map(u => [u.id, `${u.first_name} ${u.last_name}`])
-      );
-
-      // Enrich tasks with user names
-      const enrichedTasks = tasksData.map(task => ({
-        id: task.id,
-        title: task.title,
-        description: task.description,
-        dueDate: task.due_date,
-        priority: task.priority as 'low' | 'medium' | 'high',
-        status: task.status as 'pending' | 'in_progress' | 'completed',
-        assignedTo: task.assigned_to,
-        assignedToName: task.assigned_to
-          ? (task.assigned_to === user.id ? 'Toi' : userMap.get(task.assigned_to) || 'Inconnu')
-          : 'Non assigné',
-        createdBy: task.created_by,
-        createdByName: task.created_by === user.id ? 'Toi' : userMap.get(task.created_by) || 'Inconnu',
-        createdAt: task.created_at
-      }));
-
-      setTasks(enrichedTasks);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error loading tasks:', error);
+      console.error('[Tasks] Error:', error);
       setIsLoading(false);
     }
   };
 
-  const toggleTaskStatus = async (taskId: string) => {
-    const task = tasks.find(t => t.id === taskId);
-    if (!task) return;
+  const handleCreateTask = async () => {
+    if (!propertyId || !currentUserId) return;
 
-    let newStatus: 'pending' | 'in_progress' | 'completed' = 'pending';
-    if (task.status === 'pending') newStatus = 'in_progress';
-    else if (task.status === 'in_progress') newStatus = 'completed';
-    else newStatus = 'pending';
-
-    // Optimistic update
-    setTasks(tasks.map(t =>
-      t.id === taskId ? { ...t, status: newStatus } : t
-    ));
-
-    // Update in database
-    const { error } = await supabase
-      .from('tasks')
-      .update({
-        status: newStatus,
-        completed_at: newStatus === 'completed' ? new Date().toISOString() : null
-      })
-      .eq('id', taskId);
-
-    if (error) {
-      console.error('Error updating task:', error);
-      // Revert optimistic update
-      setTasks(tasks.map(t =>
-        t.id === taskId ? task : t
-      ));
-    }
-  };
-
-  const deleteTask = async (taskId: string) => {
-    // Optimistic update
-    setTasks(tasks.filter(t => t.id !== taskId));
-
-    // Delete from database
-    const { error } = await supabase
-      .from('tasks')
-      .delete()
-      .eq('id', taskId);
-
-    if (error) {
-      console.error('Error deleting task:', error);
-      // Reload tasks
-      loadTasks();
-    }
-  };
-
-  const createTask = async () => {
-    if (!newTask.title.trim() || !currentUserId || !currentPropertyId) return;
-
-    setIsCreating(true);
+    setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('tasks')
-        .insert({
-          title: newTask.title,
-          description: newTask.description || null,
-          due_date: newTask.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Default to 7 days from now
-          priority: newTask.priority,
-          status: 'pending',
-          assigned_to: newTask.assignedTo || null,
-          created_by: currentUserId,
-          property_id: currentPropertyId
+      const result = await taskService.createTask(propertyId, currentUserId, createForm);
+
+      if (result.success) {
+        setShowCreateModal(false);
+        setCreateForm({
+          title: '',
+          description: '',
+          category: 'cleaning',
+          priority: 'medium',
+          due_date: new Date().toISOString().split('T')[0],
+          recurrence: 'none',
         });
-
-      if (error) throw error;
-
-      // Reset form and close modal
-      setNewTask({
-        title: '',
-        description: '',
-        dueDate: '',
-        priority: 'medium',
-        assignedTo: ''
-      });
-      setShowCreateModal(false);
-
-      // Reload tasks
-      loadTasks();
-    } catch (error) {
-      console.error('Error creating task:', error);
+        await loadData();
+      } else {
+        alert(`Erreur: ${result.error}`);
+      }
+    } catch (error: any) {
+      alert(`Erreur: ${error.message}`);
     } finally {
-      setIsCreating(false);
+      setIsSubmitting(false);
     }
   };
 
-  const filteredTasks = filter === 'all'
-    ? tasks
-    : tasks.filter(task => task.status === filter);
+  const handleCompleteTask = async () => {
+    if (!selectedTask) return;
 
-  const pendingCount = tasks.filter(t => t.status === 'pending').length;
-  const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
-  const completedCount = tasks.filter(t => t.status === 'completed').length;
+    setIsSubmitting(true);
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'text-red-600 bg-red-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'low': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
+    try {
+      const result = await taskService.completeTask({
+        ...completeForm,
+        task_id: selectedTask.id,
+      });
+
+      if (result.success) {
+        setShowCompleteModal(false);
+        setSelectedTask(null);
+        setCompleteForm({ task_id: '', completion_notes: '' });
+        await loadData();
+      } else {
+        alert(`Erreur: ${result.error}`);
+      }
+    } catch (error: any) {
+      alert(`Erreur: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const getPriorityLabel = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'Urgent';
-      case 'medium': return 'Moyen';
-      case 'low': return 'Bas';
-      default: return priority;
+  const handleRotateTask = async (taskId: string) => {
+    try {
+      const result = await taskService.rotateTask(taskId);
+
+      if (result.success) {
+        alert(`✅ Tâche assignée à ${result.new_assignee_name}`);
+        await loadData();
+      } else {
+        alert(`Erreur: ${result.message}`);
+      }
+    } catch (error: any) {
+      alert(`Erreur: ${error.message}`);
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed': return CheckCircle2;
-      case 'in_progress': return Clock;
-      default: return Circle;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'text-green-600';
-      case 'in_progress': return 'text-orange-600';
-      default: return 'text-gray-400';
-    }
-  };
+  const pendingTasks = tasks.filter((t) => t.status === 'pending' || t.status === 'in_progress');
+  const completedTasks = tasks.filter((t) => t.status === 'completed');
+  const myTasks = pendingTasks.filter((t) => t.assigned_to === currentUserId);
+  const overdueTasks = pendingTasks.filter((t) => t.is_overdue);
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">Chargement...</p>
-        </div>
+        <LoadingHouse size={80} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <Button
-            onClick={() => router.back()}
-            variant="ghost"
-            className="mb-6 rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10 transition-colors"
-          >
-            ← Retour au hub
-          </Button>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                     style={{
-                       background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                     }}>
-                  <ListTodo className="w-6 h-6 text-white" />
-                </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Tâches de la Coloc
-                </h1>
-              </div>
-              <p className="ml-15" style={{ color: '#ee5736' }}>
-                Organisez et suivez les tâches communes avec vos colocataires
-              </p>
-            </div>
-
-            <Button
-              onClick={() => setShowCreateModal(true)}
-              className="rounded-full text-white font-medium hover:shadow-lg transition-all flex-shrink-0"
+    <HubLayout>
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-3">
+            <div
+              className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg grain-medium"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Nouvelle tâche
-            </Button>
+              <CheckCircle2 className="w-7 h-7 text-white relative z-10" />
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Tâches Ménagères</h1>
+              <p className="text-gray-600">Organisation et rotations automatiques</p>
+            </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <motion.button
-              onClick={() => setFilter(filter === 'pending' ? 'all' : 'pending')}
-              className={cn(
-                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'pending' ? "border-[#ff5b21]" : "border-transparent hover:border-gray-200"
-              )}
-              style={filter === 'pending' ? { background: 'rgba(217, 87, 79, 0.08)' } : undefined}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">À faire</p>
-                  <p className="text-4xl font-bold text-gray-900 mt-2">{pendingCount}</p>
-                  <p className="text-xs text-gray-500 mt-1">tâches en attente</p>
-                </div>
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <Circle className="w-7 h-7 text-gray-600" />
-                </div>
-              </div>
-            </motion.button>
+          <Button onClick={() => setShowCreateModal(true)} className="cta-resident rounded-full">
+            <Plus className="w-4 h-4 mr-2" />
+            Nouvelle tâche
+          </Button>
+        </div>
+      </motion.div>
 
-            <motion.button
-              onClick={() => setFilter(filter === 'in_progress' ? 'all' : 'in_progress')}
-              className={cn(
-                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'in_progress' ? "border-[#ff5b21]" : "border-transparent hover:border-gray-200"
-              )}
-              style={filter === 'in_progress' ? { background: 'rgba(217, 87, 79, 0.08)' } : undefined}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#ee5736' }}>En cours</p>
-                  <p className="text-4xl font-bold mt-2" style={{
-                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}>{inProgressCount}</p>
-                  <p className="text-xs text-gray-500 mt-1">tâches actives</p>
-                </div>
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center"
-                     style={{
-                       background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                     }}>
-                  <Clock className="w-7 h-7 text-white" />
-                </div>
-              </div>
-            </motion.button>
-
-            <motion.button
-              onClick={() => setFilter(filter === 'completed' ? 'all' : 'completed')}
-              className={cn(
-                "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'completed' ? "border-green-400 bg-green-50/50" : "border-transparent hover:border-gray-200"
-              )}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-green-600 uppercase tracking-wider">Terminées</p>
-                  <p className="text-4xl font-bold text-green-600 mt-2">{completedCount}</p>
-                  <p className="text-xs text-gray-500 mt-1">tâches complétées</p>
-                </div>
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                  <CheckCircle2 className="w-7 h-7 text-green-600" />
-                </div>
-              </div>
-            </motion.button>
-          </div>
-
-          {/* Active Filter Badge */}
-          {filter !== 'all' && (
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {[
+          { label: 'Mes tâches', value: myTasks.length, icon: Users, color: 'blue' },
+          { label: 'En attente', value: pendingTasks.length, icon: Clock, color: 'yellow' },
+          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, color: 'green' },
+          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, color: 'red' },
+        ].map((stat, index) => {
+          const Icon = stat.icon;
+          return (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex items-center gap-2"
+              transition={{ delay: 0.1 * (index + 1) }}
+              className="bg-white rounded-2xl shadow-lg p-6"
             >
-              <Badge className="px-3 py-1" style={{ background: 'rgba(217, 87, 79, 0.12)', color: '#c23f21', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
-                Filtré par : {filter === 'pending' ? 'À faire' : filter === 'in_progress' ? 'En cours' : 'Terminées'}
-              </Badge>
-              <button
-                onClick={() => setFilter('all')}
-                className="text-xs text-gray-500 hover:text-gray-700 underline"
-              >
-                Afficher tout
-              </button>
+              <div className="flex items-center gap-3 mb-2">
+                <Icon className={`w-8 h-8 text-${stat.color}-600`} />
+                <h3 className="text-sm font-semibold text-gray-600">{stat.label}</h3>
+              </div>
+              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
             </motion.div>
-          )}
-        </motion.div>
+          );
+        })}
+      </div>
 
-        {/* Tasks List */}
-        <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {filteredTasks.map((task, index) => {
-              const StatusIcon = getStatusIcon(task.status);
-              const isOverdue = new Date(task.dueDate) < new Date() && task.status !== 'completed';
+      {/* Tasks List */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="bg-white rounded-3xl shadow-lg p-6"
+      >
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Toutes les tâches</h3>
+
+        <div className="space-y-3">
+          {pendingTasks.length === 0 ? (
+            <div className="text-center py-12">
+              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <p className="font-semibold text-gray-900 mb-2">Aucune tâche en attente</p>
+              <p className="text-sm text-gray-500">Tout est fait ! 🎉</p>
+            </div>
+          ) : (
+            pendingTasks.map((task, index) => {
+              const category = CATEGORY_OPTIONS.find((c) => c.value === task.category);
+              const priority = PRIORITY_OPTIONS.find((p) => p.value === task.priority);
+              const isMyTask = task.assigned_to === currentUserId;
 
               return (
                 <motion.div
                   key={task.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, x: -100 }}
-                  transition={{ delay: index * 0.05 }}
-                  layout
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + index * 0.05 }}
                   className={cn(
-                    "group bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border",
-                    task.status === 'completed' ? "opacity-70 border-green-200" : "border-gray-200 hover:border-[#ff8c6b]"
+                    'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
+                    isMyTask
+                      ? 'bg-gradient-to-r from-resident-50 to-resident-100 border-resident-200 hover:shadow-md'
+                      : 'bg-gray-50 border-gray-200 hover:border-gray-300'
                   )}
                 >
-                  <div className="flex items-start gap-4">
-                    {/* Status Icon */}
-                    <button
-                      onClick={() => toggleTaskStatus(task.id)}
-                      className={cn(
-                        "flex-shrink-0 transition-all hover:scale-110 active:scale-95",
-                        getStatusColor(task.status)
-                      )}
-                    >
-                      <StatusIcon className="w-7 h-7" strokeWidth={2.5} />
-                    </button>
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-2xl', category?.color)}>
+                      {category?.emoji}
+                    </div>
 
-                    {/* Task Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4 mb-2">
-                        <h3 className={cn(
-                          "text-lg font-bold",
-                          task.status === 'completed' ? "line-through text-gray-500" : "text-gray-900"
-                        )}>
-                          {task.title}
-                        </h3>
-
-                        <Button
-                          onClick={() => deleteTask(task.id)}
-                          variant="ghost"
-                          size="sm"
-                          className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-semibold text-gray-900">{task.title}</h4>
+                        {task.has_rotation && (
+                          <Badge className="bg-purple-100 text-purple-700 text-xs">
+                            <RotateCw className="w-3 h-3 mr-1" />
+                            Rotation
+                          </Badge>
+                        )}
+                        {task.is_overdue && (
+                          <Badge className="bg-red-100 text-red-700 text-xs">
+                            <AlertCircle className="w-3 h-3 mr-1" />
+                            En retard
+                          </Badge>
+                        )}
                       </div>
 
-                      {task.description && (
-                        <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                          {task.description}
-                        </p>
-                      )}
-
-                      <div className="flex flex-wrap items-center gap-3">
-                        {/* Priority Badge */}
-                        <Badge className={cn(
-                          "text-xs font-semibold px-2.5 py-0.5 rounded-full",
-                          getPriorityColor(task.priority)
-                        )}>
-                          {getPriorityLabel(task.priority)}
-                        </Badge>
-
-                        {/* Due Date */}
-                        <div className={cn(
-                          "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full",
-                          isOverdue ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-700"
-                        )}>
-                          {isOverdue && <AlertCircle className="w-3.5 h-3.5" />}
-                          <CalendarIcon className="w-3.5 h-3.5" />
-                          <span>
-                            {new Date(task.dueDate).toLocaleDateString('fr-FR', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric'
-                            })}
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          {task.assigned_to_name}
+                        </span>
+                        {task.due_date && (
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {new Date(task.due_date).toLocaleDateString('fr-FR')}
+                            {task.days_until_due !== undefined && (
+                              <span className={cn(task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500')}>
+                                (J{task.days_until_due > 0 ? `-${task.days_until_due}` : task.days_until_due})
+                              </span>
+                            )}
                           </span>
-                        </div>
-
-                        {/* Assigned To */}
-                        <div className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: 'rgba(217, 87, 79, 0.12)', color: '#c23f21' }}>
-                          <User className="w-3.5 h-3.5" />
-                          <span>{task.assignedToName || 'Non assigné'}</span>
-                        </div>
+                        )}
+                        <Badge className={priority?.color}>{priority?.label}</Badge>
                       </div>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {isMyTask && (
+                      <Button
+                        onClick={() => {
+                          setSelectedTask(task);
+                          setShowCompleteModal(true);
+                        }}
+                        size="sm"
+                        className="cta-resident rounded-full"
+                      >
+                        <Check className="w-4 h-4 mr-1" />
+                        Terminer
+                      </Button>
+                    )}
+                    {task.has_rotation && (
+                      <Button
+                        onClick={() => handleRotateTask(task.id)}
+                        size="sm"
+                        variant="outline"
+                        className="rounded-full"
+                      >
+                        <RotateCw className="w-4 h-4" />
+                      </Button>
+                    )}
                   </div>
                 </motion.div>
               );
-            })}
-          </AnimatePresence>
-        </div>
-
-        {/* Empty State */}
-        {filteredTasks.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl shadow-xl p-12 text-center"
-            style={{
-              background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)',
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'rgba(217, 87, 79, 0.2)'
-            }}
-          >
-            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                 style={{
-                   background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                 }}>
-              <Sparkles className="w-10 h-10 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              {filter === 'all' ? 'Aucune tâche pour le moment' : `Aucune tâche ${filter === 'pending' ? 'à faire' : filter === 'in_progress' ? 'en cours' : 'terminée'}`}
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              {filter === 'all'
-                ? 'Créez votre première tâche pour commencer à organiser la vie de votre coloc efficacement'
-                : filter === 'completed'
-                ? 'Vous n\'avez pas encore complété de tâches. Commencez dès maintenant!'
-                : 'Changez de filtre ou créez une nouvelle tâche'
-              }
-            </p>
-            <Button
-              onClick={() => setShowCreateModal(true)}
-              className="rounded-full text-white hover:shadow-lg transition-all px-6 py-6 text-base"
-              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Créer ma première tâche
-            </Button>
-          </motion.div>
-        )}
-
-        {/* Task Creation Modal */}
-        <AnimatePresence>
-          {showCreateModal && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-                onClick={() => setShowCreateModal(false)}
-              />
-
-              {/* Modal */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                transition={{ type: "spring", duration: 0.5 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                onClick={() => setShowCreateModal(false)}
-              >
-                <div
-                  className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Modal Header */}
-                  <div className="sticky top-0 p-6 rounded-t-3xl" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                          <Plus className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h2 className="text-2xl font-bold text-white">Nouvelle Tâche</h2>
-                          <p className="text-white/80 text-sm">Créer une tâche pour la coloc</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => setShowCreateModal(false)}
-                        className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-colors"
-                      >
-                        <X className="w-5 h-5 text-white" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Modal Content */}
-                  <div className="p-6 space-y-6">
-                    {/* Title */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Titre de la tâche *
-                      </label>
-                      <Input
-                        value={newTask.title}
-                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                        placeholder="Ex: Sortir les poubelles, Nettoyer la cuisine..."
-                        className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
-                      />
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Description (optionnel)
-                      </label>
-                      <Textarea
-                        value={newTask.description}
-                        onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                        placeholder="Ajouter plus de détails sur la tâche..."
-                        rows={3}
-                        className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
-                      />
-                    </div>
-
-                    {/* Priority and Due Date Row */}
-                    <div className="space-y-4">
-                      {/* Priority - Modern Radio Buttons */}
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-3">
-                          Priorité
-                        </label>
-                        <div className="grid grid-cols-3 gap-3">
-                          <button
-                            type="button"
-                            onClick={() => setNewTask({ ...newTask, priority: 'low' })}
-                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
-                              newTask.priority === 'low'
-                                ? 'border-green-500 bg-green-50 shadow-md'
-                                : 'border-gray-200 hover:border-green-300 hover:bg-green-50/50'
-                            }`}
-                          >
-                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'low' ? 'scale-110' : ''}`}>
-                              🟢
-                            </div>
-                            <span className={`text-xs font-semibold ${newTask.priority === 'low' ? 'text-green-700' : 'text-gray-600'}`}>
-                              Basse
-                            </span>
-                            {newTask.priority === 'low' && (
-                              <div className="absolute top-2 right-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                                <Check className="w-3 h-3 text-white" />
-                              </div>
-                            )}
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => setNewTask({ ...newTask, priority: 'medium' })}
-                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
-                              newTask.priority === 'medium'
-                                ? 'border-yellow-500 bg-yellow-50 shadow-md'
-                                : 'border-gray-200 hover:border-yellow-300 hover:bg-yellow-50/50'
-                            }`}
-                          >
-                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'medium' ? 'scale-110' : ''}`}>
-                              🟡
-                            </div>
-                            <span className={`text-xs font-semibold ${newTask.priority === 'medium' ? 'text-yellow-700' : 'text-gray-600'}`}>
-                              Moyenne
-                            </span>
-                            {newTask.priority === 'medium' && (
-                              <div className="absolute top-2 right-2 w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
-                                <Check className="w-3 h-3 text-white" />
-                              </div>
-                            )}
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => setNewTask({ ...newTask, priority: 'high' })}
-                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
-                              newTask.priority === 'high'
-                                ? 'border-red-500 bg-red-50 shadow-md'
-                                : 'border-gray-200 hover:border-red-300 hover:bg-red-50/50'
-                            }`}
-                          >
-                            <div className={`text-2xl mb-1 transition-transform ${newTask.priority === 'high' ? 'scale-110' : ''}`}>
-                              🔴
-                            </div>
-                            <span className={`text-xs font-semibold ${newTask.priority === 'high' ? 'text-red-700' : 'text-gray-600'}`}>
-                              Haute
-                            </span>
-                            {newTask.priority === 'high' && (
-                              <div className="absolute top-2 right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                                <Check className="w-3 h-3 text-white" />
-                              </div>
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Due Date */}
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Date d'échéance
-                        </label>
-                        <Input
-                          type="date"
-                          value={newTask.dueDate}
-                          onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                          className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
-                          min={new Date().toISOString().split('T')[0]}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Assigned To - Modern Select */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">
-                        Assigner à
-                      </label>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setNewTask({ ...newTask, assignedTo: '' })}
-                          className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
-                            newTask.assignedTo === ''
-                              ? 'shadow-md'
-                              : 'border-gray-200'
-                          }`}
-                          style={newTask.assignedTo === '' ? {
-                            borderColor: '#ff5b21',
-                            background: 'rgba(217, 87, 79, 0.08)'
-                          } : undefined}
-                          onMouseEnter={(e) => {
-                            if (newTask.assignedTo !== '') {
-                              e.currentTarget.style.borderColor = '#ff8c6b';
-                              e.currentTarget.style.background = 'rgba(217, 87, 79, 0.05)';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (newTask.assignedTo !== '') {
-                              e.currentTarget.style.borderColor = '#e5e7eb';
-                              e.currentTarget.style.background = 'transparent';
-                            }
-                          }}
-                        >
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                            <User className="w-4 h-4 text-gray-500" />
-                          </div>
-                          <span className="text-xs font-semibold" style={newTask.assignedTo === '' ? { color: '#c23f21' } : { color: '#6b7280' }}>
-                            Non assigné
-                          </span>
-                        </button>
-
-                        {roommates.map((roommate) => (
-                          <button
-                            key={roommate.id}
-                            type="button"
-                            onClick={() => setNewTask({ ...newTask, assignedTo: roommate.id })}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
-                              newTask.assignedTo === roommate.id
-                                ? 'shadow-md'
-                                : 'border-gray-200'
-                            }`}
-                            style={newTask.assignedTo === roommate.id ? {
-                              borderColor: '#ff5b21',
-                              background: 'rgba(217, 87, 79, 0.08)'
-                            } : undefined}
-                            onMouseEnter={(e) => {
-                              if (newTask.assignedTo !== roommate.id) {
-                                e.currentTarget.style.borderColor = '#ff8c6b';
-                                e.currentTarget.style.background = 'rgba(217, 87, 79, 0.05)';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (newTask.assignedTo !== roommate.id) {
-                                e.currentTarget.style.borderColor = '#e5e7eb';
-                                e.currentTarget.style.background = 'transparent';
-                              }
-                            }}
-                          >
-                            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                                 style={{
-                                   background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                                 }}>
-                              {roommate.name.charAt(0).toUpperCase()}
-                            </div>
-                            <span className="text-xs font-semibold" style={newTask.assignedTo === roommate.id ? { color: '#c23f21' } : { color: '#6b7280' }}>
-                              {roommate.name}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-3 pt-4">
-                      <Button
-                        onClick={() => setShowCreateModal(false)}
-                        variant="outline"
-                        className="flex-1 rounded-full border-gray-300 hover:bg-gray-50"
-                      >
-                        Annuler
-                      </Button>
-                      <Button
-                        onClick={createTask}
-                        disabled={!newTask.title.trim() || isCreating}
-                        className="flex-1 rounded-full text-white hover:shadow-lg transition-all disabled:opacity-50"
-                        style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-                      >
-                        {isCreating ? (
-                          <>
-                            <Clock className="w-4 h-4 mr-2 animate-spin" />
-                            Création...
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="w-4 h-4 mr-2" />
-                            Créer la tâche
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </>
+            })
           )}
-        </AnimatePresence>
-      </div>
-    </div>
+        </div>
+      </motion.div>
+
+      {/* Create Task Modal */}
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Nouvelle tâche</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <Label>Titre *</Label>
+              <Input
+                value={createForm.title}
+                onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
+                placeholder="Ex: Nettoyer la cuisine"
+                className="rounded-xl"
+              />
+            </div>
+
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={createForm.description}
+                onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
+                placeholder="Détails (optionnel)"
+                className="rounded-xl"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Catégorie</Label>
+                <select
+                  value={createForm.category}
+                  onChange={(e) => setCreateForm({ ...createForm, category: e.target.value as any })}
+                  className="w-full rounded-xl border border-gray-300 p-2"
+                >
+                  {CATEGORY_OPTIONS.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.emoji} {cat.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <Label>Priorité</Label>
+                <select
+                  value={createForm.priority}
+                  onChange={(e) => setCreateForm({ ...createForm, priority: e.target.value as any })}
+                  className="w-full rounded-xl border border-gray-300 p-2"
+                >
+                  {PRIORITY_OPTIONS.map((pri) => (
+                    <option key={pri.value} value={pri.value}>
+                      {pri.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <Label>Date d'échéance</Label>
+              <Input
+                type="date"
+                value={createForm.due_date}
+                onChange={(e) => setCreateForm({ ...createForm, due_date: e.target.value })}
+                className="rounded-xl"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={() => setShowCreateModal(false)} className="flex-1 rounded-full">
+                Annuler
+              </Button>
+              <Button onClick={handleCreateTask} disabled={isSubmitting || !createForm.title} className="flex-1 rounded-full cta-resident">
+                {isSubmitting ? 'Création...' : 'Créer'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Complete Task Modal */}
+      <Dialog open={showCompleteModal} onOpenChange={setShowCompleteModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Terminer la tâche</DialogTitle>
+          </DialogHeader>
+
+          {selectedTask && (
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-xl p-4">
+                <h4 className="font-semibold text-gray-900">{selectedTask.title}</h4>
+                {selectedTask.description && (
+                  <p className="text-sm text-gray-600 mt-1">{selectedTask.description}</p>
+                )}
+              </div>
+
+              <div>
+                <Label>Notes de complétion</Label>
+                <Textarea
+                  value={completeForm.completion_notes}
+                  onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
+                  placeholder="Comment ça s'est passé ? (optionnel)"
+                  className="rounded-xl"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="outline" onClick={() => setShowCompleteModal(false)} className="flex-1 rounded-full">
+                  Annuler
+                </Button>
+                <Button onClick={handleCompleteTask} disabled={isSubmitting} className="flex-1 rounded-full cta-resident">
+                  <Check className="w-4 h-4 mr-2" />
+                  {isSubmitting ? 'Finalisation...' : 'Marquer comme terminée'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </HubLayout>
   );
 }
