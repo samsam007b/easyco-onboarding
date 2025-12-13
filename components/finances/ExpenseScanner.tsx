@@ -279,7 +279,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               {/* Camera Button */}
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-resident-600 to-resident-700 p-8 text-white transition-all hover:shadow-2xl hover:scale-105"
+                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all hover:shadow-2xl hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 <div className="relative z-10">
                   <Camera className="w-16 h-16 mb-4 mx-auto" />
@@ -319,7 +320,10 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             <Button
               variant="outline"
               onClick={onCancel}
-              className="w-full rounded-full"
+              className="w-full rounded-full border-gray-200 hover:border-transparent"
+              style={{ color: '#ee5736' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
             >
               Annuler
             </Button>
@@ -499,14 +503,18 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   cleanup();
                   setCurrentStep('upload');
                 }}
-                className="flex-1 rounded-full"
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour
               </Button>
               <Button
                 onClick={handleReviewNext}
-                className="flex-1 rounded-full cta-resident"
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 Suivant
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -534,7 +542,9 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {CATEGORY_OPTIONS.map((cat) => (
+              {CATEGORY_OPTIONS.map((cat) => {
+                const CategoryIcon = cat.icon;
+                return (
                 <button
                   key={cat.value}
                   onClick={() => setCategory(cat.value)}
@@ -542,35 +552,40 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                     'group relative overflow-hidden rounded-2xl p-6 text-center transition-all',
                     'border-2',
                     category === cat.value
-                      ? 'border-resident-500 bg-gradient-to-br from-resident-50 to-resident-100 shadow-lg scale-105'
+                      ? 'shadow-lg scale-105 bg-orange-50'
                       : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                   )}
+                  style={category === cat.value ? { borderColor: '#ee5736' } : undefined}
                 >
-                  <div className="text-4xl mb-2">{cat.emoji}</div>
+                  <CategoryIcon className={cn("w-12 h-12 mb-2 mx-auto", category === cat.value ? "text-[#ee5736]" : "text-gray-500")} />
                   <div className="text-sm font-semibold text-gray-900">
                     {cat.label}
                   </div>
                   {category === cat.value && (
                     <div className="absolute top-2 right-2">
-                      <Check className="w-5 h-5 text-resident-600" />
+                      <Check className="w-5 h-5" style={{ color: '#ee5736' }} />
                     </div>
                   )}
                 </button>
-              ))}
+              )})}
             </div>
 
             <div className="flex gap-3">
               <Button
                 variant="outline"
                 onClick={() => setCurrentStep('review')}
-                className="flex-1 rounded-full"
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour
               </Button>
               <Button
                 onClick={() => setCurrentStep('confirm')}
-                className="flex-1 rounded-full cta-resident"
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 Suivant
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -612,8 +627,11 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
 
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-600">Catégorie</span>
-                <Badge className="bg-resident-100 text-resident-700 border-resident-200">
-                  {CATEGORY_OPTIONS.find((c) => c.value === category)?.emoji}{' '}
+                <Badge className="bg-orange-50 border-orange-200 flex items-center gap-1" style={{ color: '#ee5736' }}>
+                  {(() => {
+                    const SelectedCategoryIcon = CATEGORY_OPTIONS.find((c) => c.value === category)?.icon;
+                    return SelectedCategoryIcon ? <SelectedCategoryIcon className="w-4 h-4" /> : null;
+                  })()}
                   {CATEGORY_OPTIONS.find((c) => c.value === category)?.label}
                 </Badge>
               </div>
@@ -639,14 +657,18 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               <Button
                 variant="outline"
                 onClick={() => setCurrentStep('category')}
-                className="flex-1 rounded-full"
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour
               </Button>
               <Button
                 onClick={handleConfirm}
-                className="flex-1 rounded-full cta-resident"
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 <Check className="w-4 h-4 mr-2" />
                 Créer la dépense
