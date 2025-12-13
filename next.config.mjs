@@ -106,7 +106,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' blob: data: https://fgthoyilfupywmpmiuwd.supabase.co wss://fgthoyilfupywmpmiuwd.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://*.ingest.de.sentry.io https://*.ingest.sentry.io https://maps.googleapis.com https://cdn.jsdelivr.net https://unpkg.com",
+              "connect-src 'self' blob: data: https://fgthoyilfupywmpmiuwd.supabase.co wss://fgthoyilfupywmpmiuwd.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://*.ingest.de.sentry.io https://*.ingest.sentry.io https://maps.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com",
               "worker-src 'self' blob: data:",
               "frame-ancestors 'none'",
               "base-uri 'self'",

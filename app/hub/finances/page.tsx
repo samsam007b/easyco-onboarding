@@ -31,7 +31,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { expenseService } from '@/lib/services/expense-service';
 import type { ExpenseWithDetails, Balance, SplitConfig } from '@/types/finances.types';
 
@@ -569,6 +569,9 @@ export default function ModernFinancesPage() {
       {/* Expense Creation Modal */}
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogTitle className="sr-only">
+            {createMode === 'scanner' ? 'Scanner un ticket' : 'Répartir la dépense'}
+          </DialogTitle>
           <AnimatePresence mode="wait">
             {createMode === 'scanner' && (
               <ExpenseScanner

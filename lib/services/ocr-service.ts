@@ -21,7 +21,12 @@ class OCRService {
 
     try {
       console.log('[OCR] Initializing Tesseract worker...');
+
+      // Create worker with explicit CDN paths for CSP compatibility
       this.worker = await createWorker('fra', 1, {
+        workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@v5/dist/worker.min.js',
+        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+        corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@v5/tesseract-core.wasm.js',
         logger: (m) => {
           // Only log progress for debugging
           if (m.status === 'recognizing text') {
