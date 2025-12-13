@@ -295,21 +295,6 @@ export default function ModernResidentHeader({
               </Link>
             )}
 
-            {/* Group Members Button avec dégradé orange subtil */}
-            {activeMembersCount > 0 && (
-              <Link
-                href="/hub/members"
-                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border hover:shadow-md transition-all group"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)',
-                  borderColor: 'rgba(217, 87, 79, 0.2)'
-                }}
-              >
-                <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
-                <span className="text-sm font-medium" style={{ color: '#c23f21' }}>{activeMembersCount} membres</span>
-              </Link>
-            )}
-
             {/* Quick Actions Menu - Desktop Only */}
             <div className="hidden lg:block relative">
               <button
