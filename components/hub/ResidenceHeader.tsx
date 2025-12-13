@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
-import { Home, Users, MapPin, Sparkles, Plus, UserPlus, Copy, X, Check } from 'lucide-react';
+import { Home, Users, MapPin, Sparkles, Plus, UserPlus, Copy, X, Check, FileText, Vote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -246,7 +246,7 @@ export default function ResidenceHeader() {
         </div>
 
         {/* Right: Quick Actions */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
           <Button
             onClick={() => router.push('/hub/finances')}
             size="sm"
@@ -255,6 +255,26 @@ export default function ResidenceHeader() {
           >
             <Plus className="w-4 h-4 mr-1" />
             Dépense
+          </Button>
+
+          <Button
+            onClick={() => router.push('/hub/documents')}
+            size="sm"
+            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
+            variant="outline"
+          >
+            <FileText className="w-4 h-4 mr-1" />
+            Documents
+          </Button>
+
+          <Button
+            onClick={() => router.push('/hub/rules')}
+            size="sm"
+            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
+            variant="outline"
+          >
+            <Vote className="w-4 h-4 mr-1" />
+            Règles
           </Button>
 
           <Button

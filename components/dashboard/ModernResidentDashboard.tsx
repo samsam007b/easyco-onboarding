@@ -24,12 +24,7 @@ import {
   Target,
   FileText,
   Plus,
-  Sparkles,
-  MapPin,
-  UserPlus,
-  Copy,
-  X,
-  Vote
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -76,12 +71,6 @@ export default function ModernResidentDashboard() {
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [showCompletionDetails, setShowCompletionDetails] = useState(false);
   const [memberCount, setMemberCount] = useState(1);
-  const [residenceCompletion, setResidenceCompletion] = useState({ percentage: 0, nextSteps: [] as string[] });
-  const [showInviteModal, setShowInviteModal] = useState(false);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [invitationCode, setInvitationCode] = useState<string | null>(null);
-  const [ownerCode, setOwnerCode] = useState<string | null>(null);
-  const [isCreator, setIsCreator] = useState(false);
   const [stats, setStats] = useState<DashboardStats>({
     rentStatus: {
       paid: 850,
@@ -247,9 +236,6 @@ export default function ModernResidentDashboard() {
             roommatesCount: members.length
           }));
         }
-
-        // Calculate residence completion
-        await calculateResidenceCompletion(propertyMember.properties.id, totalMembers, propertyMember.properties.images?.length > 0);
       }
 
     } catch (error) {
@@ -257,62 +243,6 @@ export default function ModernResidentDashboard() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const calculateResidenceCompletion = async (propertyId: string, memberCount: number, hasPhoto: boolean) => {
-    let percentage = 20; // Base: residence created
-    const nextSteps: string[] = [];
-
-    // Check member count (20%)
-    if (memberCount >= 2) {
-      percentage += 20;
-    } else {
-      nextSteps.push('Inviter des colocataires');
-    }
-
-    // Check if photo added (15%)
-    if (hasPhoto) {
-      percentage += 15;
-    } else {
-      nextSteps.push('Ajouter une photo de la résidence');
-    }
-
-    // Check expenses (30% total)
-    const { count: expenseCount } = await supabase
-      .from('expenses')
-      .select('*', { count: 'exact', head: true })
-      .eq('property_id', propertyId);
-
-    if (expenseCount && expenseCount >= 1) {
-      percentage += 15; // First expense
-      if (expenseCount >= 3) {
-        percentage += 15; // 3+ expenses
-      } else {
-        nextSteps.push(`Ajouter ${3 - expenseCount} dépenses de plus`);
-      }
-    } else {
-      nextSteps.push('Créer votre première dépense');
-    }
-
-    // Check tasks (15%)
-    const { count: taskCount } = await supabase
-      .from('tasks')
-      .select('*', { count: 'exact', head: true })
-      .eq('property_id', propertyId);
-
-    if (taskCount && taskCount >= 1) {
-      percentage += 15;
-    } else {
-      nextSteps.push('Configurer des tâches');
-    }
-
-    setResidenceCompletion({ percentage, nextSteps });
-  };
-
-  const copyToClipboard = (code: string, type: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(type);
-    setTimeout(() => setCopiedCode(null), 2000);
   };
 
   const rentPercentage = (stats.rentStatus.paid / stats.rentStatus.total) * 100;
@@ -570,249 +500,6 @@ export default function ModernResidentDashboard() {
           );
         })}
       </div>
-
-      {/* Residence Header Card */}
-      {currentProperty && (
-        <>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="p-6 rounded-2xl border-none shadow-lg mb-8"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              {/* Left: Property Info */}
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
-                  <Home className="w-6 h-6 text-white" />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-bold text-white mb-1 truncate">
-                    {currentProperty.title}
-                  </h2>
-
-                  <div className="flex flex-wrap items-center gap-3 text-white text-sm">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4 text-white" />
-                      <span className="text-white">{currentProperty.city}</span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4 text-white" />
-                      <span className="text-white">{memberCount} {memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Quick Actions */}
-              <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
-                <Button
-                  onClick={() => router.push('/hub/finances')}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <DollarSign className="w-4 h-4 mr-1" />
-                  Finances
-                </Button>
-
-                <Button
-                  onClick={() => router.push('/hub/tasks')}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <Check className="w-4 h-4 mr-1" />
-                  Tâches
-                </Button>
-
-                <Button
-                  onClick={() => router.push('/hub/maintenance')}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <Wrench className="w-4 h-4 mr-1" />
-                  Maintenance
-                </Button>
-
-                <Button
-                  onClick={() => router.push('/hub/documents')}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <FileText className="w-4 h-4 mr-1" />
-                  Documents
-                </Button>
-
-                <Button
-                  onClick={() => router.push('/hub/rules')}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <Vote className="w-4 h-4 mr-1" />
-                  Règles
-                </Button>
-
-                <Button
-                  onClick={() => setShowInviteModal(true)}
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-                  variant="outline"
-                >
-                  <UserPlus className="w-4 h-4 mr-1" />
-                  Inviter
-                </Button>
-              </div>
-            </div>
-
-            {/* Progress Section */}
-            {residenceCompletion.percentage < 100 && residenceCompletion.nextSteps.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-white/20">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-white" />
-                    <span className="text-white font-medium text-sm">
-                      Complétez votre résidence
-                    </span>
-                  </div>
-                  <span className="text-white font-bold text-sm">
-                    {residenceCompletion.percentage}%
-                  </span>
-                </div>
-
-                <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/20 mb-3">
-                  <div
-                    className="h-full transition-all"
-                    style={{
-                      width: `${residenceCompletion.percentage}%`,
-                      background: 'linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
-                    }}
-                  />
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {residenceCompletion.nextSteps.slice(0, 3).map((step, index) => {
-                    const handleStepClick = (stepText: string) => {
-                      if (stepText.includes('Inviter')) {
-                        setShowInviteModal(true);
-                      } else if (stepText.includes('photo')) {
-                        router.push('/settings/residence-profile');
-                      } else if (stepText.includes('dépense')) {
-                        router.push('/hub/finances');
-                      }
-                    };
-
-                    const isClickable = step.includes('Inviter') || step.includes('photo') || step.includes('dépense');
-
-                    return isClickable ? (
-                      <button
-                        key={index}
-                        onClick={() => handleStepClick(step)}
-                        className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
-                      >
-                        {step}
-                      </button>
-                    ) : (
-                      <span
-                        key={index}
-                        className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full"
-                      >
-                        {step}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Celebration for completion */}
-            {residenceCompletion.percentage >= 100 && (
-              <div className="mt-4 pt-4 border-t border-white/20">
-                <div className="flex items-center gap-2 text-white">
-                  <Sparkles className="w-5 h-5 animate-pulse" />
-                  <span className="font-medium">
-                    🎉 Félicitations ! Votre résidence est complète !
-                  </span>
-                </div>
-              </div>
-            )}
-          </motion.div>
-
-          {/* Invite Modal */}
-          {showInviteModal && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowInviteModal(false)}>
-              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">Codes d'invitation</h3>
-                  <button onClick={() => setShowInviteModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Invitation Code for Residents */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Code pour les colocataires
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
-                      {invitationCode || 'N/A'}
-                    </div>
-                    <button
-                      onClick={() => invitationCode && copyToClipboard(invitationCode, 'invitation')}
-                      className="p-3 rounded-lg text-white transition-all hover:scale-105"
-                      style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-                    >
-                      {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Partagez ce code avec vos futurs colocataires
-                  </p>
-                </div>
-
-                {/* Owner Code (only for creators) */}
-                {isCreator && ownerCode && (
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Code propriétaire
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
-                        {ownerCode}
-                      </div>
-                      <button
-                        onClick={() => copyToClipboard(ownerCode, 'owner')}
-                        className="p-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
-                      >
-                        {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                      </button>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Code réservé au propriétaire légal pour revendiquer la résidence
-                    </p>
-                  </div>
-                )}
-
-                <button
-                  onClick={() => setShowInviteModal(false)}
-                  className="w-full mt-4 py-3 text-white font-medium rounded-lg hover:shadow-lg transition-all hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-                >
-                  Fermer
-                </button>
-              </div>
-            </div>
-          )}
-        </>
-      )}
 
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
