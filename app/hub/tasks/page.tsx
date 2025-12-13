@@ -311,7 +311,7 @@ export default function HubTasksPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-6 rounded-full hover:bg-orange-50 transition-colors"
+            className="mb-6 rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10 transition-colors"
           >
             ← Retour au hub
           </Button>
@@ -321,7 +321,7 @@ export default function HubTasksPage() {
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
                      style={{
-                       background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                       background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                      }}>
                   <ListTodo className="w-6 h-6 text-white" />
                 </div>
@@ -329,14 +329,15 @@ export default function HubTasksPage() {
                   Tâches de la Coloc
                 </h1>
               </div>
-              <p className="text-gray-600 ml-15">
+              <p className="ml-15" style={{ color: '#ee5736' }}>
                 Organisez et suivez les tâches communes avec vos colocataires
               </p>
             </div>
 
             <Button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all flex-shrink-0"
+              className="rounded-full text-white font-medium hover:shadow-lg transition-all flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle tâche
@@ -349,8 +350,9 @@ export default function HubTasksPage() {
               onClick={() => setFilter(filter === 'pending' ? 'all' : 'pending')}
               className={cn(
                 "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'pending' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
+                filter === 'pending' ? "border-[#ff5b21]" : "border-transparent hover:border-gray-200"
               )}
+              style={filter === 'pending' ? { background: 'rgba(217, 87, 79, 0.08)' } : undefined}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -370,20 +372,26 @@ export default function HubTasksPage() {
               onClick={() => setFilter(filter === 'in_progress' ? 'all' : 'in_progress')}
               className={cn(
                 "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'in_progress' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
+                filter === 'in_progress' ? "border-[#ff5b21]" : "border-transparent hover:border-gray-200"
               )}
+              style={filter === 'in_progress' ? { background: 'rgba(217, 87, 79, 0.08)' } : undefined}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold text-orange-600 uppercase tracking-wider">En cours</p>
-                  <p className="text-4xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mt-2">{inProgressCount}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#ee5736' }}>En cours</p>
+                  <p className="text-4xl font-bold mt-2" style={{
+                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>{inProgressCount}</p>
                   <p className="text-xs text-gray-500 mt-1">tâches actives</p>
                 </div>
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center"
                      style={{
-                       background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                       background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                      }}>
                   <Clock className="w-7 h-7 text-white" />
                 </div>
@@ -394,7 +402,7 @@ export default function HubTasksPage() {
               onClick={() => setFilter(filter === 'completed' ? 'all' : 'completed')}
               className={cn(
                 "bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all text-left border-2",
-                filter === 'completed' ? "border-orange-400 bg-orange-50/50" : "border-transparent hover:border-gray-200"
+                filter === 'completed' ? "border-green-400 bg-green-50/50" : "border-transparent hover:border-gray-200"
               )}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -419,7 +427,7 @@ export default function HubTasksPage() {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 flex items-center gap-2"
             >
-              <Badge className="bg-orange-100 text-orange-800 border-orange-200 px-3 py-1">
+              <Badge className="px-3 py-1" style={{ background: 'rgba(217, 87, 79, 0.12)', color: '#c23f21', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
                 Filtré par : {filter === 'pending' ? 'À faire' : filter === 'in_progress' ? 'En cours' : 'Terminées'}
               </Badge>
               <button
@@ -449,7 +457,7 @@ export default function HubTasksPage() {
                   layout
                   className={cn(
                     "group bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border",
-                    task.status === 'completed' ? "opacity-70 border-green-200" : "border-gray-200 hover:border-orange-300"
+                    task.status === 'completed' ? "opacity-70 border-green-200" : "border-gray-200 hover:border-[#ff8c6b]"
                   )}
                 >
                   <div className="flex items-start gap-4">
@@ -516,7 +524,7 @@ export default function HubTasksPage() {
                         </div>
 
                         {/* Assigned To */}
-                        <div className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-orange-100 text-orange-700">
+                        <div className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: 'rgba(217, 87, 79, 0.12)', color: '#c23f21' }}>
                           <User className="w-3.5 h-3.5" />
                           <span>{task.assignedToName || 'Non assigné'}</span>
                         </div>
@@ -534,11 +542,17 @@ export default function HubTasksPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-white via-orange-50/30 to-white rounded-3xl shadow-xl border border-orange-100 p-12 text-center"
+            className="rounded-3xl shadow-xl p-12 text-center"
+            style={{
+              background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'rgba(217, 87, 79, 0.2)'
+            }}
           >
             <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
                  style={{
-                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                   background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                  }}>
               <Sparkles className="w-10 h-10 text-white" />
             </div>
@@ -555,7 +569,8 @@ export default function HubTasksPage() {
             </p>
             <Button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all px-6 py-6 text-base"
+              className="rounded-full text-white hover:shadow-lg transition-all px-6 py-6 text-base"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
               <Plus className="w-5 h-5 mr-2" />
               Créer ma première tâche
@@ -590,7 +605,7 @@ export default function HubTasksPage() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* Modal Header */}
-                  <div className="sticky top-0 bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-6 rounded-t-3xl">
+                  <div className="sticky top-0 p-6 rounded-t-3xl" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -621,7 +636,7 @@ export default function HubTasksPage() {
                         value={newTask.title}
                         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                         placeholder="Ex: Sortir les poubelles, Nettoyer la cuisine..."
-                        className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                        className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
                       />
                     </div>
 
@@ -635,7 +650,7 @@ export default function HubTasksPage() {
                         onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                         placeholder="Ajouter plus de détails sur la tâche..."
                         rows={3}
-                        className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                        className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
                       />
                     </div>
 
@@ -724,7 +739,7 @@ export default function HubTasksPage() {
                           type="date"
                           value={newTask.dueDate}
                           onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                          className="rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                          className="rounded-xl border-gray-300 focus:border-[#ff5b21] focus:ring-[#ff5b21]"
                           min={new Date().toISOString().split('T')[0]}
                         />
                       </div>
@@ -741,14 +756,30 @@ export default function HubTasksPage() {
                           onClick={() => setNewTask({ ...newTask, assignedTo: '' })}
                           className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
                             newTask.assignedTo === ''
-                              ? 'border-orange-400 bg-orange-50 shadow-md'
-                              : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                              ? 'shadow-md'
+                              : 'border-gray-200'
                           }`}
+                          style={newTask.assignedTo === '' ? {
+                            borderColor: '#ff5b21',
+                            background: 'rgba(217, 87, 79, 0.08)'
+                          } : undefined}
+                          onMouseEnter={(e) => {
+                            if (newTask.assignedTo !== '') {
+                              e.currentTarget.style.borderColor = '#ff8c6b';
+                              e.currentTarget.style.background = 'rgba(217, 87, 79, 0.05)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (newTask.assignedTo !== '') {
+                              e.currentTarget.style.borderColor = '#e5e7eb';
+                              e.currentTarget.style.background = 'transparent';
+                            }
+                          }}
                         >
                           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                             <User className="w-4 h-4 text-gray-500" />
                           </div>
-                          <span className={`text-xs font-semibold ${newTask.assignedTo === '' ? 'text-orange-700' : 'text-gray-600'}`}>
+                          <span className="text-xs font-semibold" style={newTask.assignedTo === '' ? { color: '#c23f21' } : { color: '#6b7280' }}>
                             Non assigné
                           </span>
                         </button>
@@ -760,17 +791,33 @@ export default function HubTasksPage() {
                             onClick={() => setNewTask({ ...newTask, assignedTo: roommate.id })}
                             className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
                               newTask.assignedTo === roommate.id
-                                ? 'border-orange-400 bg-orange-50 shadow-md'
-                                : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                                ? 'shadow-md'
+                                : 'border-gray-200'
                             }`}
+                            style={newTask.assignedTo === roommate.id ? {
+                              borderColor: '#ff5b21',
+                              background: 'rgba(217, 87, 79, 0.08)'
+                            } : undefined}
+                            onMouseEnter={(e) => {
+                              if (newTask.assignedTo !== roommate.id) {
+                                e.currentTarget.style.borderColor = '#ff8c6b';
+                                e.currentTarget.style.background = 'rgba(217, 87, 79, 0.05)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (newTask.assignedTo !== roommate.id) {
+                                e.currentTarget.style.borderColor = '#e5e7eb';
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
                           >
                             <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
                                  style={{
-                                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                                   background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                                  }}>
                               {roommate.name.charAt(0).toUpperCase()}
                             </div>
-                            <span className={`text-xs font-semibold ${newTask.assignedTo === roommate.id ? 'text-orange-700' : 'text-gray-600'}`}>
+                            <span className="text-xs font-semibold" style={newTask.assignedTo === roommate.id ? { color: '#c23f21' } : { color: '#6b7280' }}>
                               {roommate.name}
                             </span>
                           </button>
@@ -790,7 +837,8 @@ export default function HubTasksPage() {
                       <Button
                         onClick={createTask}
                         disabled={!newTask.title.trim() || isCreating}
-                        className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-all disabled:opacity-50"
+                        className="flex-1 rounded-full text-white hover:shadow-lg transition-all disabled:opacity-50"
+                        style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                       >
                         {isCreating ? (
                           <>
