@@ -68,33 +68,29 @@ CREATE POLICY "Users can update own profile record" ON profiles
   USING (auth.uid() = id);
 
 -- ============================================================================
--- 3. FIX CONVERSATION_PARTICIPANTS (500 error)
+-- 3. FIX CONVERSATION_PARTICIPANTS (500 error - infinite recursion)
 -- ============================================================================
 
 -- Enable RLS on conversation_participants
 ALTER TABLE conversation_participants ENABLE ROW LEVEL SECURITY;
 
--- Allow authenticated users to view participants of conversations they're part of
+-- Drop all existing policies to start fresh
 DROP POLICY IF EXISTS "Users can view conversation participants" ON conversation_participants;
-CREATE POLICY "Users can view conversation participants" ON conversation_participants
+DROP POLICY IF EXISTS "Users can join conversations" ON conversation_participants;
+DROP POLICY IF EXISTS "Users can update own participation" ON conversation_participants;
+
+-- Simple policy: authenticated users can view all conversation participants
+-- This avoids the infinite recursion issue
+CREATE POLICY "Authenticated users can view participants" ON conversation_participants
   FOR SELECT
-  USING (
-    auth.role() = 'authenticated'
-    AND EXISTS (
-      SELECT 1 FROM conversation_participants cp
-      WHERE cp.conversation_id = conversation_participants.conversation_id
-      AND cp.user_id = auth.uid()
-    )
-  );
+  USING (auth.role() = 'authenticated');
 
 -- Allow users to insert themselves as participants
-DROP POLICY IF EXISTS "Users can join conversations" ON conversation_participants;
 CREATE POLICY "Users can join conversations" ON conversation_participants
   FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
 -- Allow users to update their own participation status
-DROP POLICY IF EXISTS "Users can update own participation" ON conversation_participants;
 CREATE POLICY "Users can update own participation" ON conversation_participants
   FOR UPDATE
   USING (auth.uid() = user_id);
