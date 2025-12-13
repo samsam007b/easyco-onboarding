@@ -48,15 +48,18 @@ export default function LanguageSwitcher() {
       {/* Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm text-gray-700 hover:bg-gray-100 transition-all"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition-all"
+        style={{ color: '#ee5736' }}
+        onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         aria-label="Change language"
       >
-        <Globe className="w-4 h-4" />
+        <Globe className="w-4 h-4" style={{ color: '#ee5736' }} />
         <span className="font-medium">{language.toUpperCase()}</span>
         <ChevronDown className={cn(
           "w-3 h-3 transition-transform",
           isOpen && "rotate-180"
-        )} />
+        )} style={{ color: '#ee5736' }} />
       </button>
 
       {/* Dropdown */}
@@ -72,23 +75,56 @@ export default function LanguageSwitcher() {
               <div key={code}>
                 <button
                   onClick={() => handleLanguageChange(code as Language)}
-                  className={cn(
-                    "w-full flex items-center justify-between px-4 py-3 text-sm transition-all group",
-                    language === code
-                      ? "bg-orange-50/50"
-                      : "hover:bg-orange-50/30"
-                  )}
+                  className="w-full flex items-center justify-between px-4 py-3 text-sm transition-all group relative overflow-hidden"
+                  style={{
+                    background: language === code
+                      ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'
+                      : 'transparent'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (language !== code) {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (language !== code) {
+                      e.currentTarget.style.background = 'transparent';
+                    }
+                  }}
                 >
-                  <span className={cn(
-                    "font-medium transition-colors",
-                    language === code
-                      ? "text-[#FFA040]"
-                      : "text-gray-700 group-hover:text-[#FFA040]"
-                  )}>
+                  <span
+                    className="font-medium transition-all duration-300"
+                    style={{
+                      background: language === code || undefined
+                        ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+                        : undefined,
+                      WebkitBackgroundClip: language === code || undefined ? 'text' : undefined,
+                      WebkitTextFillColor: language === code || undefined ? 'transparent' : undefined,
+                      backgroundClip: language === code || undefined ? 'text' : undefined,
+                      color: language !== code ? '#6b7280' : undefined
+                    }}
+                    onMouseEnter={(e) => {
+                      if (language !== code) {
+                        e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+                        e.currentTarget.style.WebkitBackgroundClip = 'text';
+                        e.currentTarget.style.WebkitTextFillColor = 'transparent';
+                        e.currentTarget.style.backgroundClip = 'text';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (language !== code) {
+                        e.currentTarget.style.background = 'none';
+                        e.currentTarget.style.WebkitBackgroundClip = 'unset';
+                        e.currentTarget.style.WebkitTextFillColor = 'unset';
+                        e.currentTarget.style.backgroundClip = 'unset';
+                        e.currentTarget.style.color = '#6b7280';
+                      }
+                    }}
+                  >
                     {label}
                   </span>
                   {language === code && (
-                    <span className="text-[#FFA040] text-xs">✓</span>
+                    <span style={{ color: '#ee5736' }} className="text-xs">✓</span>
                   )}
                 </button>
                 {index < Object.keys(languageLabels).length - 1 && (
