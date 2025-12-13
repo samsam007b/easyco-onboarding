@@ -507,17 +507,16 @@ export default function ModernResidentHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 text-gray-900" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
-                        <div className="absolute inset-0 bg-white/10" />
+                      <div className="relative px-6 py-5 text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
                           <div className="relative">
                             <svg className="absolute inset-0 -m-1.5" width="68" height="68">
-                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
+                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
                               <circle
                                 cx="34" cy="34" r="32"
                                 fill="none"
-                                stroke="url(#profileProgressGradient)"
+                                stroke="white"
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeDasharray={`${2 * Math.PI * 32}`}
@@ -525,53 +524,46 @@ export default function ModernResidentHeader({
                                 transform="rotate(-90 34 34)"
                                 className="transition-all duration-1000"
                               />
-                              <defs>
-                                <linearGradient id="profileProgressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" stopColor="#d9574f" />
-                                  <stop offset="50%" stopColor="#ff5b21" />
-                                  <stop offset="100%" stopColor="#ff8017" />
-                                </linearGradient>
-                              </defs>
                             </svg>
-                            <div className="w-16 h-16 rounded-full bg-white/50 backdrop-blur-sm border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-                              <Key className="w-8 h-8 text-gray-700" />
+                            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center overflow-hidden">
+                              <Key className="w-8 h-8 text-white" />
                             </div>
                           </div>
 
                           {/* User Info */}
                           <div className="flex-1 min-w-0">
-                            <p className="font-bold text-gray-900 truncate text-lg">{profile.full_name}</p>
-                            <p className="text-gray-700 text-sm truncate">{profile.email}</p>
+                            <p className="font-bold text-white truncate text-lg">{profile.full_name}</p>
+                            <p className="text-white/90 text-sm truncate">{profile.email}</p>
                             <div className="mt-1 flex items-center gap-1.5">
-                              <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                                <div className="h-full rounded-full" style={{ width: '75%', background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }} />
+                              <div className="h-1.5 flex-1 bg-white/30 rounded-full overflow-hidden">
+                                <div className="h-full rounded-full bg-white" style={{ width: '75%' }} />
                               </div>
-                              <span className="text-xs text-gray-700 font-medium">75%</span>
+                              <span className="text-xs text-white font-medium">75%</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 border-b" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)', borderColor: 'rgba(217, 87, 79, 0.2)' }}>
+                      <div className="px-4 py-3 border-b border-gray-100" style={{ background: '#fff5f3' }}>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {pendingTasks || 0}
                             </div>
-                            <div className="text-xs" style={{ color: '#c23f21' }}>Tâches</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Tâches</div>
                           </div>
-                          <div className="text-center border-x" style={{ borderColor: 'rgba(217, 87, 79, 0.2)' }}>
+                          <div className="text-center border-x border-gray-200">
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {activeMembersCount || 0}
                             </div>
-                            <div className="text-xs" style={{ color: '#c23f21' }}>Membres</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Membres</div>
                           </div>
                           <div className="text-center">
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {unreadMessages || 0}
                             </div>
-                            <div className="text-xs" style={{ color: '#c23f21' }}>Messages</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Messages</div>
                           </div>
                         </div>
                       </div>
@@ -582,12 +574,12 @@ export default function ModernResidentHeader({
                           href="/profile"
                           className="group flex items-center gap-3 px-4 py-3 transition-all"
                           style={{ background: 'transparent' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
-                            <User className="w-4 h-4 text-[#ee5736]" />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                            <User className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -600,12 +592,12 @@ export default function ModernResidentHeader({
                           href="/hub/finances"
                           className="group flex items-center gap-3 px-4 py-3 transition-all"
                           style={{ background: 'transparent' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
-                            <DollarSign className="w-4 h-4 text-[#ee5736]" />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                            <DollarSign className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Finances</span>
@@ -618,12 +610,12 @@ export default function ModernResidentHeader({
                           href="/settings"
                           className="group flex items-center gap-3 px-4 py-3 transition-all"
                           style={{ background: 'transparent' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, rgba(255, 128, 23, 0.12) 100%)' }}>
-                            <Settings className="w-4 h-4 text-[#ee5736]" />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                            <Settings className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Paramètres</span>
