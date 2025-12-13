@@ -1,16 +1,15 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRole } from '@/lib/role/role-context'
-import ModernResidentDashboard from '@/components/dashboard/ModernResidentDashboard'
+import { useRouter } from 'next/navigation'
 
 export default function ResidentDashboardPage() {
-  const { setActiveRole } = useRole()
+  const router = useRouter()
 
   useEffect(() => {
-    // Set active role when dashboard loads
-    setActiveRole('resident')
-  }, [setActiveRole])
+    // Redirect to /hub instead
+    router.replace('/hub')
+  }, [router])
 
-  return <ModernResidentDashboard />
+  return null
 }

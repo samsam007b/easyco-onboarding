@@ -1,14 +1,18 @@
 'use client';
 
-import ResidenceHeader from '@/components/hub/ResidenceHeader';
+import { useEffect } from 'react';
+import { useRole } from '@/lib/role/role-context';
+import ModernResidentDashboard from '@/components/dashboard/ModernResidentDashboard';
 
 /**
- * Hub home page - full-width residence header
+ * Hub home page - main resident dashboard
  */
 export default function HubPage() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <ResidenceHeader />
-    </div>
-  );
+  const { setActiveRole } = useRole();
+
+  useEffect(() => {
+    setActiveRole('resident');
+  }, [setActiveRole]);
+
+  return <ModernResidentDashboard />;
 }
