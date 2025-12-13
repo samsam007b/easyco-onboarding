@@ -403,12 +403,13 @@ export default function ResidenceHeader() {
                 Code propriétaire
               </label>
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
+                <div className="flex-1 rounded-lg px-4 py-3 font-mono text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.2) 0%, rgba(255, 91, 33, 0.2) 50%, rgba(255, 128, 23, 0.2) 100%)', color: '#ee5736' }}>
                   {propertyInfo.ownerCode}
                 </div>
                 <button
                   onClick={() => copyToClipboard(propertyInfo.ownerCode!, 'owner')}
-                  className="p-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
+                  className="p-3 rounded-lg text-white transition-all hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                 >
                   {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                 </button>
