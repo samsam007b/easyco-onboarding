@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import ResidenceHeader from '@/components/hub/ResidenceHeader';
 import {
   Users,
   MessageCircle,
@@ -385,6 +386,9 @@ export default function ModernResidentDashboard() {
         {/* Glass effect overlay */}
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/40" />
       </div>
+
+      {/* Residence Header at the top */}
+      <ResidenceHeader />
 
       {/* Content */}
       <>

@@ -218,7 +218,7 @@ export default function ResidenceHeader() {
 
   return (
     <>
-    <Card className="p-6 rounded-none border-none shadow-none" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+    <Card className="p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg mb-6" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Property Info */}
         <div className="flex items-start gap-4">
