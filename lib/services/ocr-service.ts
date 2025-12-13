@@ -22,9 +22,11 @@ class OCRService {
     try {
       console.log('[OCR] Initializing Tesseract worker...');
 
-      // Create worker with default settings
-      // Tesseract.js will handle CDN paths automatically
+      // Create worker with explicit configuration
       this.worker = await createWorker('fra', 1, {
+        workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js',
+        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+        corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.0/tesseract-core-simd.wasm.js',
         logger: (m) => {
           console.log('[OCR] Status:', m.status, m.progress ? `${Math.round(m.progress * 100)}%` : '');
         },
