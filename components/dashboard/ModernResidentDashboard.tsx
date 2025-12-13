@@ -615,18 +615,28 @@ export default function ModernResidentDashboard() {
                   className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
                   variant="outline"
                 >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Dépense
+                  <DollarSign className="w-4 h-4 mr-1" />
+                  Finances
                 </Button>
 
                 <Button
-                  onClick={() => router.push('/hub/rules')}
+                  onClick={() => router.push('/hub/tasks')}
                   size="sm"
                   className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
                   variant="outline"
                 >
-                  <Vote className="w-4 h-4 mr-1" />
-                  Règles
+                  <Check className="w-4 h-4 mr-1" />
+                  Tâches
+                </Button>
+
+                <Button
+                  onClick={() => router.push('/hub/maintenance')}
+                  size="sm"
+                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
+                  variant="outline"
+                >
+                  <Wrench className="w-4 h-4 mr-1" />
+                  Maintenance
                 </Button>
 
                 <Button
@@ -637,6 +647,16 @@ export default function ModernResidentDashboard() {
                 >
                   <FileText className="w-4 h-4 mr-1" />
                   Documents
+                </Button>
+
+                <Button
+                  onClick={() => router.push('/hub/rules')}
+                  size="sm"
+                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
+                  variant="outline"
+                >
+                  <Vote className="w-4 h-4 mr-1" />
+                  Règles
                 </Button>
 
                 <Button
