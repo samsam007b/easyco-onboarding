@@ -435,10 +435,22 @@ export default function ModernTasksPage() {
             </div>
 
             <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setShowCreateModal(false)} className="flex-1 rounded-full">
+              <Button
+                variant="outline"
+                onClick={() => setShowCreateModal(false)}
+                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                style={{ color: '#ee5736' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+              >
                 Annuler
               </Button>
-              <Button onClick={handleCreateTask} disabled={isSubmitting || !createForm.title} className="flex-1 rounded-full cta-resident">
+              <Button
+                onClick={handleCreateTask}
+                disabled={isSubmitting || !createForm.title}
+                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+              >
                 {isSubmitting ? 'Création...' : 'Créer'}
               </Button>
             </div>
@@ -473,10 +485,22 @@ export default function ModernTasksPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setShowCompleteModal(false)} className="flex-1 rounded-full">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCompleteModal(false)}
+                  className="flex-1 rounded-full border-gray-200 hover:border-transparent"
+                  style={{ color: '#ee5736' }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
                   Annuler
                 </Button>
-                <Button onClick={handleCompleteTask} disabled={isSubmitting} className="flex-1 rounded-full cta-resident">
+                <Button
+                  onClick={handleCompleteTask}
+                  disabled={isSubmitting}
+                  className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                >
                   <Check className="w-4 h-4 mr-2" />
                   {isSubmitting ? 'Finalisation...' : 'Marquer comme terminée'}
                 </Button>
