@@ -370,7 +370,23 @@ export default function ModernResidentDashboard() {
   }
 
   return (
-    <>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Glassmorphism background with resident orange gradient */}
+      <div className="fixed inset-0 -z-10">
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#d9574f]/20 via-[#ff5b21]/15 to-[#ff8017]/10" />
+
+        {/* Animated gradient blobs */}
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-[#d9574f]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#ff5b21]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#ff8017]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+
+        {/* Glass effect overlay */}
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/40" />
+      </div>
+
+      {/* Content */}
+      <>
       {/* Profile Completion Widget - Outside container to match residence width */}
       {profileCompletion < 100 && (
         <motion.div
@@ -900,6 +916,7 @@ export default function ModernResidentDashboard() {
         </div>
       </motion.div>
       </div>
-    </>
+      </>
+    </div>
   );
 }
