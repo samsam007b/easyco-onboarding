@@ -464,35 +464,51 @@ class OCRService {
    * Looks for patterns like "TOTAL 45.50", "Total: 45,50€", "Grand Total: 47.90", "Cash 47,90" etc.
    */
   private extractTotal(text: string): number | undefined {
-    console.log('[OCR] 💰 Extracting total from text (v2 - last number on line)...');
+    console.log('[OCR] 💰 Extracting total from text (v3 - prioritize Total: over Grand Votal)...');
 
-    // Look for lines containing "Total" or "Cash" and extract the LAST number on that line
-    // This handles cases like "Total: 6.39 41,51 47,90" where 47,90 is the real total
-    const totalLinePatterns = [
-      /Grand\s+[VT]otal\s*:?.*?(\d+[.,]\d{2})[^\d]*$/im, // Grand Total (with typo tolerance)
-      /Total\s*:?.*?(\d+[.,]\d{2})[^\d]*$/im, // Total: ... last number
-      /Cash\s+(\d+[.,]\d{2})/i, // Cash 47,90
-      /SOMME\s*:?\s*(\d+[.,]\d{2})/i, // SOMME: 45,50
-      /MONTANT\s*:?\s*(\d+[.,]\d{2})/i, // MONTANT: 45,50
-      /NET\s+A\s+PAYER\s*:?\s*(\d+[.,]\d{2})/i, // NET A PAYER: 45,50
-      /CARTE\s*:?\s*(\d+[.,]\d{2})/i, // CARTE: 45,50
+    const lines = text.split('\n');
+
+    // Strategy: Prioritize "Total:" lines over "Grand Votal:" lines
+    // First pass: Look for "Total:" (not "Grand")
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Match "Total:" but NOT "Grand Total" or "Grand Votal"
+      if (/(?<!Grand\s+)(?<!Grand\s+[VT])Total\s*:/i.test(trimmedLine)) {
+        // Extract all numbers from this line
+        const numbers = trimmedLine.match(/\d+[.,]\d{2,}/g);
+        if (numbers && numbers.length > 0) {
+          // Take the LAST number (usually the actual total)
+          const lastNumber = numbers[numbers.length - 1];
+          const amountStr = lastNumber.replace(',', '.');
+          const amount = parseFloat(amountStr);
+          if (!isNaN(amount) && amount > 0 && amount < 100000) {
+            console.log(`[OCR] ✅ Total found on "Total:" line: ${amount} (from: "${trimmedLine.substring(0, 60)}...")`);
+            return amount;
+          }
+        }
+      }
+    }
+
+    // Second pass: Look for other total-like keywords
+    const totalKeywords = [
+      { pattern: /Cash\s*:?\s*/i, name: 'Cash' },
+      { pattern: /SOMME\s*:?\s*/i, name: 'SOMME' },
+      { pattern: /MONTANT\s*:?\s*/i, name: 'MONTANT' },
+      { pattern: /NET\s+A\s+PAYER\s*:?\s*/i, name: 'NET A PAYER' },
+      { pattern: /CARTE\s*:?\s*/i, name: 'CARTE' },
     ];
 
-    for (const pattern of totalLinePatterns) {
-      // Find all lines that match this pattern
-      const lines = text.split('\n');
+    for (const keyword of totalKeywords) {
       for (const line of lines) {
-        // Extract all numbers from lines containing total-like keywords
-        if (/Grand\s+[VT]otal|Total|Cash|SOMME|MONTANT|NET\s+A\s+PAYER|CARTE/i.test(line)) {
-          // Get ALL numbers from this line
-          const numbers = line.match(/\d+[.,]\d{2}/g);
+        if (keyword.pattern.test(line)) {
+          const numbers = line.match(/\d+[.,]\d{2,}/g);
           if (numbers && numbers.length > 0) {
-            // Take the LAST number (usually the actual total)
             const lastNumber = numbers[numbers.length - 1];
             const amountStr = lastNumber.replace(',', '.');
             const amount = parseFloat(amountStr);
             if (!isNaN(amount) && amount > 0 && amount < 100000) {
-              console.log(`[OCR] ✅ Total found: ${amount} (last number on line: "${line.trim().substring(0, 50)}...")`);
+              console.log(`[OCR] ✅ Total found on "${keyword.name}" line: ${amount}`);
               return amount;
             }
           }
@@ -500,8 +516,24 @@ class OCRService {
       }
     }
 
+    // Third pass: Only check "Grand Total" / "Grand Votal" if nothing else found
+    for (const line of lines) {
+      if (/Grand\s+[VT]otal\s*:/i.test(line)) {
+        const numbers = line.match(/\d+[.,]\d{2,}/g);
+        if (numbers && numbers.length > 0) {
+          const lastNumber = numbers[numbers.length - 1];
+          const amountStr = lastNumber.replace(',', '.');
+          const amount = parseFloat(amountStr);
+          if (!isNaN(amount) && amount > 0 && amount < 100000) {
+            console.log(`[OCR] ⚠️ Total found on "Grand Votal" line: ${amount} (last resort)`);
+            return amount;
+          }
+        }
+      }
+    }
+
     // Fallback: Look for largest number on the receipt (likely the total)
-    const allNumbers = text.match(/\d+[.,]\d{2}/g);
+    const allNumbers = text.match(/\d+[.,]\d{2,}/g);
     if (allNumbers && allNumbers.length > 0) {
       const amounts = allNumbers
         .map((n) => parseFloat(n.replace(',', '.')))
