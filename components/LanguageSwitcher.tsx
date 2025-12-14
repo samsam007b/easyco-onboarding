@@ -108,8 +108,8 @@ export default function LanguageSwitcher() {
                     onMouseEnter={(e) => {
                       const target = e.currentTarget as HTMLElement;
                       target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                      target.style.WebkitBackgroundClip = 'text';
-                      target.style.WebkitTextFillColor = 'transparent';
+                      target.style.webkitBackgroundClip = 'text';
+                      target.style.webkitTextFillColor = 'transparent';
                       target.style.backgroundClip = 'text';
                       target.style.color = 'transparent';
                       target.style.transform = 'scale(1.05)';
