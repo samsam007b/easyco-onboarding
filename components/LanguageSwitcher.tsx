@@ -119,15 +119,15 @@ export default function LanguageSwitcher() {
                       target.style.transform = 'scale(1)';
                       if (language !== code) {
                         target.style.background = 'transparent';
-                        target.style.WebkitBackgroundClip = 'border-box';
-                        target.style.WebkitTextFillColor = '#6b7280';
+                        target.style.webkitBackgroundClip = 'border-box';
+                        target.style.webkitTextFillColor = '#6b7280';
                         target.style.backgroundClip = 'border-box';
                         target.style.color = '#6b7280';
                       } else {
                         // Keep gradient for active language
                         target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        target.style.WebkitBackgroundClip = 'text';
-                        target.style.WebkitTextFillColor = 'transparent';
+                        target.style.webkitBackgroundClip = 'text';
+                        target.style.webkitTextFillColor = 'transparent';
                         target.style.backgroundClip = 'text';
                         target.style.color = 'transparent';
                       }
