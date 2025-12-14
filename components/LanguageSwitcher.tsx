@@ -93,35 +93,43 @@ export default function LanguageSwitcher() {
                   }}
                 >
                   <span
-                    className="font-medium transition-all duration-300 hover:scale-105"
+                    className="font-medium transition-all duration-300"
                     style={{
                       background: language === code
                         ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                        : undefined,
-                      WebkitBackgroundClip: language === code ? 'text' : undefined,
-                      WebkitTextFillColor: language === code ? 'transparent' : undefined,
-                      backgroundClip: language === code ? 'text' : undefined,
-                      color: language !== code ? '#6b7280' : undefined
+                        : 'transparent',
+                      WebkitBackgroundClip: language === code ? 'text' : 'border-box',
+                      WebkitTextFillColor: language === code ? 'transparent' : '#6b7280',
+                      backgroundClip: language === code ? 'text' : 'border-box',
+                      color: language === code ? 'transparent' : '#6b7280',
+                      display: 'inline-block',
+                      transform: 'scale(1)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                      e.currentTarget.style.webkitBackgroundClip = 'text';
-                      e.currentTarget.style.webkitTextFillColor = 'transparent';
-                      e.currentTarget.style.backgroundClip = 'text';
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+                      target.style.WebkitBackgroundClip = 'text';
+                      target.style.WebkitTextFillColor = 'transparent';
+                      target.style.backgroundClip = 'text';
+                      target.style.color = 'transparent';
+                      target.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.transform = 'scale(1)';
                       if (language !== code) {
-                        e.currentTarget.style.background = 'none';
-                        e.currentTarget.style.webkitBackgroundClip = 'unset';
-                        e.currentTarget.style.webkitTextFillColor = 'unset';
-                        e.currentTarget.style.backgroundClip = 'unset';
-                        e.currentTarget.style.color = '#6b7280';
+                        target.style.background = 'transparent';
+                        target.style.WebkitBackgroundClip = 'border-box';
+                        target.style.WebkitTextFillColor = '#6b7280';
+                        target.style.backgroundClip = 'border-box';
+                        target.style.color = '#6b7280';
                       } else {
                         // Keep gradient for active language
-                        e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        e.currentTarget.style.webkitBackgroundClip = 'text';
-                        e.currentTarget.style.webkitTextFillColor = 'transparent';
-                        e.currentTarget.style.backgroundClip = 'text';
+                        target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+                        target.style.WebkitBackgroundClip = 'text';
+                        target.style.WebkitTextFillColor = 'transparent';
+                        target.style.backgroundClip = 'text';
+                        target.style.color = 'transparent';
                       }
                     }}
                   >
