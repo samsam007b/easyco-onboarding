@@ -272,6 +272,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) handleFileSelect(file);
+                // Reset input value to allow selecting the same file again
+                e.target.value = '';
               }}
             />
 
@@ -294,16 +296,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
 
               {/* Upload Button */}
               <button
-                onClick={() => {
-                  const input = document.createElement('input');
-                  input.type = 'file';
-                  input.accept = 'image/*';
-                  input.onchange = (e) => {
-                    const file = (e.target as HTMLInputElement).files?.[0];
-                    if (file) handleFileSelect(file);
-                  };
-                  input.click();
-                }}
+                onClick={() => fileInputRef.current?.click()}
                 className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white transition-all hover:shadow-2xl hover:scale-105"
               >
                 <div className="relative z-10">
