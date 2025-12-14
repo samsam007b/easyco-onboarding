@@ -231,15 +231,15 @@ export default function ResidenceHeader() {
               {propertyInfo.title}
             </h2>
 
-            <div className="flex flex-wrap items-center gap-3 text-white text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-sm">
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4 text-white" />
-                <span className="text-white">{propertyInfo.city}</span>
+                <span className="text-white font-medium">{propertyInfo.city}</span>
               </div>
 
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4 text-white" />
-                <span className="text-white">{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
+                <span className="text-white font-medium">{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
               </div>
             </div>
           </div>
@@ -295,11 +295,11 @@ export default function ResidenceHeader() {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-white font-medium text-sm">
+              <span className="text-white font-semibold text-sm">
                 Complétez votre résidence
               </span>
             </div>
-            <span className="text-white font-bold text-sm">
+            <span className="text-white font-bold text-base">
               {completion.percentage}%
             </span>
           </div>
@@ -332,14 +332,14 @@ export default function ResidenceHeader() {
                 <button
                   key={index}
                   onClick={() => handleStepClick(step)}
-                  className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
+                  className="text-xs bg-white/20 backdrop-blur text-white font-medium px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
                 >
                   {step}
                 </button>
               ) : (
                 <span
                   key={index}
-                  className="text-xs bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full"
+                  className="text-xs bg-white/20 backdrop-blur text-white font-medium px-3 py-1 rounded-full"
                 >
                   {step}
                 </span>
