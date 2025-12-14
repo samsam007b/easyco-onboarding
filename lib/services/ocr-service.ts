@@ -70,6 +70,11 @@ class OCRService {
       const imageDataUrl = await this.fileToDataURL(imageFile);
       console.log('[OCR] ✅ Image converted to base64');
 
+      // Preprocess image for better OCR results
+      console.log('[OCR] 🔧 Preprocessing image for better OCR...');
+      const preprocessedDataUrl = await this.preprocessImage(imageDataUrl);
+      console.log('[OCR] ✅ Image preprocessed');
+
       // Initialize worker if needed
       await this.initialize();
 
@@ -79,9 +84,9 @@ class OCRService {
 
       const startTime = Date.now();
 
-      // Perform OCR with the base64 data URL
+      // Perform OCR with the preprocessed image
       console.log('[OCR] 🔍 Starting Tesseract recognition...');
-      const { data } = await this.worker.recognize(imageDataUrl);
+      const { data } = await this.worker.recognize(preprocessedDataUrl);
 
       const duration = Date.now() - startTime;
       console.log(`[OCR] ✅ Scan completed in ${duration}ms`);
@@ -119,6 +124,180 @@ class OCRService {
       reader.onerror = () => reject(new Error('Impossible de lire le fichier'));
       reader.readAsDataURL(file);
     });
+  }
+
+  /**
+   * Preprocess image to improve OCR quality
+   * Applies: grayscale, contrast enhancement, sharpening, and binarization
+   */
+  private async preprocessImage(dataUrl: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+
+      img.onload = () => {
+        try {
+          // Create canvas with same dimensions
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            reject(new Error('Impossible de créer le canvas'));
+            return;
+          }
+
+          // Draw original image
+          ctx.drawImage(img, 0, 0);
+
+          // Get image data for manipulation
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          // Step 1: Convert to grayscale and increase contrast
+          for (let i = 0; i < data.length; i += 4) {
+            // Grayscale using luminosity method
+            const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+
+            // Apply high contrast (increase difference from middle gray)
+            const contrast = 1.5; // Contrast factor (1.0 = no change, >1.0 = more contrast)
+            const factor = (259 * (contrast * 255 + 255)) / (255 * (259 - contrast * 255));
+            const enhanced = factor * (gray - 128) + 128;
+
+            // Clamp to 0-255
+            const value = Math.max(0, Math.min(255, enhanced));
+
+            data[i] = value;     // R
+            data[i + 1] = value; // G
+            data[i + 2] = value; // B
+            // Alpha stays same
+          }
+
+          // Step 2: Apply sharpening (using basic unsharp mask approximation)
+          const sharpened = this.sharpenImageData(imageData);
+
+          // Step 3: Apply adaptive threshold (binarization)
+          // This converts to pure black/white based on local neighborhood
+          const binarized = this.binarizeImageData(sharpened);
+
+          // Put processed image data back
+          ctx.putImageData(binarized, 0, 0);
+
+          // Convert canvas to data URL
+          const processedDataUrl = canvas.toDataURL('image/png');
+
+          console.log('[OCR] 🔧 Applied preprocessing: grayscale → contrast → sharpen → binarize');
+          resolve(processedDataUrl);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      img.onerror = () => reject(new Error('Impossible de charger l\'image'));
+      img.src = dataUrl;
+    });
+  }
+
+  /**
+   * Sharpen image data using a 3x3 convolution kernel
+   */
+  private sharpenImageData(imageData: ImageData): ImageData {
+    const width = imageData.width;
+    const height = imageData.height;
+    const data = imageData.data;
+    const output = new ImageData(width, height);
+
+    // Sharpening kernel (edge enhancement)
+    const kernel = [
+      [0, -1, 0],
+      [-1, 5, -1],
+      [0, -1, 0]
+    ];
+
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 1; x < width - 1; x++) {
+        let sum = 0;
+
+        // Apply convolution kernel
+        for (let ky = -1; ky <= 1; ky++) {
+          for (let kx = -1; kx <= 1; kx++) {
+            const idx = ((y + ky) * width + (x + kx)) * 4;
+            sum += data[idx] * kernel[ky + 1][kx + 1];
+          }
+        }
+
+        const idx = (y * width + x) * 4;
+        const value = Math.max(0, Math.min(255, sum));
+
+        output.data[idx] = value;     // R
+        output.data[idx + 1] = value; // G
+        output.data[idx + 2] = value; // B
+        output.data[idx + 3] = 255;   // A
+      }
+    }
+
+    return output;
+  }
+
+  /**
+   * Apply adaptive threshold (Otsu's method approximation)
+   * Converts to pure black/white for better OCR
+   */
+  private binarizeImageData(imageData: ImageData): ImageData {
+    const data = imageData.data;
+    const output = new ImageData(imageData.width, imageData.height);
+
+    // Calculate histogram
+    const histogram = new Array(256).fill(0);
+    for (let i = 0; i < data.length; i += 4) {
+      histogram[data[i]]++;
+    }
+
+    // Calculate optimal threshold using Otsu's method (simplified)
+    const total = imageData.width * imageData.height;
+    let sum = 0;
+    for (let i = 0; i < 256; i++) {
+      sum += i * histogram[i];
+    }
+
+    let sumB = 0;
+    let wB = 0;
+    let wF = 0;
+    let maxVariance = 0;
+    let threshold = 0;
+
+    for (let t = 0; t < 256; t++) {
+      wB += histogram[t];
+      if (wB === 0) continue;
+
+      wF = total - wB;
+      if (wF === 0) break;
+
+      sumB += t * histogram[t];
+
+      const mB = sumB / wB;
+      const mF = (sum - sumB) / wF;
+
+      const variance = wB * wF * (mB - mF) * (mB - mF);
+
+      if (variance > maxVariance) {
+        maxVariance = variance;
+        threshold = t;
+      }
+    }
+
+    console.log(`[OCR] 📊 Binarization threshold: ${threshold}`);
+
+    // Apply threshold
+    for (let i = 0; i < data.length; i += 4) {
+      const value = data[i] >= threshold ? 255 : 0;
+      output.data[i] = value;     // R
+      output.data[i + 1] = value; // G
+      output.data[i + 2] = value; // B
+      output.data[i + 3] = 255;   // A
+    }
+
+    return output;
   }
 
   /**

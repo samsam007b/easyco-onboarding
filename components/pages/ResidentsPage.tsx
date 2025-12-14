@@ -5,6 +5,7 @@ import { Users, Heart, Shield, TrendingUp, Check, ArrowRight } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import MatchingPreviewSection from '@/components/hub/matching/MatchingPreviewSection';
 
 // Couleurs Resident extraites du logo gradient
 const RESIDENT_COLORS = {
@@ -306,6 +307,14 @@ export default function ResidentsPage() {
           </div>
         </div>
       </div>
+
+      {/* Matching Preview Section - NEW */}
+      <MatchingPreviewSection
+        matchCount={23}
+        candidateCount={147}
+        hasInvitations={true}
+        invitationCount={3}
+      />
 
       {/* Final CTA with glassmorphism */}
       <motion.div
