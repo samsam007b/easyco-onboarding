@@ -464,7 +464,7 @@ class OCRService {
    * Looks for patterns like "TOTAL 45.50", "Total: 45,50€", "Grand Total: 47.90", "Cash 47,90" etc.
    */
   private extractTotal(text: string): number | undefined {
-    console.log('[OCR] Extracting total from text...');
+    console.log('[OCR] 💰 Extracting total from text (v2 - last number on line)...');
 
     // Look for lines containing "Total" or "Cash" and extract the LAST number on that line
     // This handles cases like "Total: 6.39 41,51 47,90" where 47,90 is the real total
