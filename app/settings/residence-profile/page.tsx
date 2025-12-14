@@ -17,7 +17,8 @@ import {
   X,
   Lock,
   UserPlus,
-  Sparkles
+  Sparkles,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -353,6 +354,40 @@ export default function ResidenceProfilePage() {
               <Camera className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.images?.length || 0}</div>
               <div className="text-sm text-gray-600">Photos</div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Documents Card */}
+        <Card className="p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-indigo-600" />
+              Documents officiels
+            </h2>
+          </div>
+
+          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-6 border border-indigo-100">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white/80 backdrop-blur flex items-center justify-center flex-shrink-0 shadow-sm">
+                <FileText className="w-6 h-6 text-indigo-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  Accédez à vos documents
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Consultez et gérez tous les documents importants de votre résidence (baux, règlements, attestations, etc.)
+                </p>
+                <Button
+                  onClick={() => router.push('/hub/documents')}
+                  className="text-white shadow-md hover:shadow-lg transition-all"
+                  style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' }}
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  Voir les documents
+                </Button>
+              </div>
             </div>
           </div>
         </Card>
