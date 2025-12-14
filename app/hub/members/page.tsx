@@ -19,6 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import MatchingPreviewSection from '@/components/hub/matching/MatchingPreviewSection';
 
 interface Member {
   id: string;
@@ -323,6 +324,16 @@ export default function HubMembersPage() {
             </Button>
           </motion.div>
         )}
+
+        {/* Matching Preview Section - Anticiper les départs */}
+        <div className="mt-16">
+          <MatchingPreviewSection
+            matchCount={23}
+            candidateCount={147}
+            hasInvitations={true}
+            invitationCount={3}
+          />
+        </div>
       </div>
     </div>
   );

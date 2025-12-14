@@ -39,7 +39,7 @@ export default function QuickActionsCard({
 
       {/* Main CTA */}
       <Button
-        onClick={() => router.push('/matching/swipe')}
+        onClick={() => router.push('/matching/swipe?context=resident_matching')}
         className="w-full rounded-full text-white font-semibold py-6 text-base shadow-lg hover:shadow-xl transition-all border-none"
         style={{ background: RESIDENT_GRADIENT }}
       >
