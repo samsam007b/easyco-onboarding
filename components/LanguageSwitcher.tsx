@@ -14,9 +14,13 @@ const languageLabels: Record<Language, string> = {
   de: 'Deutsch',
 };
 
+// Gradient constants
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredLang, setHoveredLang] = useState<Language | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -71,76 +75,51 @@ export default function LanguageSwitcher() {
             exit={{ opacity: 0, y: -10 }}
             className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden min-w-[160px] z-50"
           >
-            {Object.entries(languageLabels).map(([code, label], index) => (
-              <div key={code}>
-                <button
-                  onClick={() => handleLanguageChange(code as Language)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-sm transition-all group relative overflow-hidden"
-                  style={{
-                    background: language === code
-                      ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'
-                      : 'transparent'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (language !== code) {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (language !== code) {
-                      e.currentTarget.style.background = 'transparent';
-                    }
-                  }}
-                >
-                  <span
-                    className="font-medium transition-all duration-300 inline-block"
+            {Object.entries(languageLabels).map(([code, label], index) => {
+              const langCode = code as Language;
+              const isActive = language === langCode;
+              const isHovered = hoveredLang === langCode;
+              const shouldShowGradient = isActive || isHovered;
+
+              return (
+                <div key={code}>
+                  <button
+                    onClick={() => handleLanguageChange(langCode)}
+                    onMouseEnter={() => setHoveredLang(langCode)}
+                    onMouseLeave={() => setHoveredLang(null)}
+                    className="w-full flex items-center justify-between px-4 py-3 text-sm transition-all group relative overflow-hidden"
                     style={{
-                      background: language === code
-                        ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                        : 'none',
-                      WebkitBackgroundClip: language === code ? 'text' : undefined,
-                      WebkitTextFillColor: language === code ? 'transparent' : undefined,
-                      backgroundClip: language === code ? 'text' : undefined,
-                      color: language === code ? 'transparent' : '#6b7280',
-                    } as React.CSSProperties}
-                    onMouseEnter={(e) => {
-                      const target = e.currentTarget;
-                      target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                      target.style.setProperty('-webkit-background-clip', 'text');
-                      target.style.setProperty('-webkit-text-fill-color', 'transparent');
-                      target.style.setProperty('background-clip', 'text');
-                      target.style.color = 'transparent';
-                      target.style.transform = 'scale(1.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      const target = e.currentTarget;
-                      target.style.transform = 'scale(1)';
-                      if (language !== code) {
-                        target.style.background = 'none';
-                        target.style.removeProperty('-webkit-background-clip');
-                        target.style.removeProperty('-webkit-text-fill-color');
-                        target.style.removeProperty('background-clip');
-                        target.style.color = '#6b7280';
-                      } else {
-                        target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        target.style.setProperty('-webkit-background-clip', 'text');
-                        target.style.setProperty('-webkit-text-fill-color', 'transparent');
-                        target.style.setProperty('background-clip', 'text');
-                        target.style.color = 'transparent';
-                      }
+                      background: isActive
+                        ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'
+                        : isHovered
+                        ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)'
+                        : 'transparent'
                     }}
                   >
-                    {label}
-                  </span>
-                  {language === code && (
-                    <span style={{ color: '#ee5736' }} className="text-xs">✓</span>
+                    <span
+                      className="font-medium transition-all duration-200"
+                      style={{
+                        background: shouldShowGradient ? RESIDENT_GRADIENT : 'none',
+                        WebkitBackgroundClip: shouldShowGradient ? 'text' : 'unset',
+                        WebkitTextFillColor: shouldShowGradient ? 'transparent' : 'unset',
+                        backgroundClip: shouldShowGradient ? 'text' : 'unset',
+                        color: shouldShowGradient ? 'transparent' : '#6b7280',
+                        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                        display: 'inline-block',
+                      }}
+                    >
+                      {label}
+                    </span>
+                    {isActive && (
+                      <span style={{ color: '#ee5736' }} className="text-xs">✓</span>
+                    )}
+                  </button>
+                  {index < Object.keys(languageLabels).length - 1 && (
+                    <div className="h-px bg-gray-100 mx-3" />
                   )}
-                </button>
-                {index < Object.keys(languageLabels).length - 1 && (
-                  <div className="h-px bg-gray-100 mx-3" />
-                )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
