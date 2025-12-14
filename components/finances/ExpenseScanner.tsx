@@ -96,6 +96,14 @@ const CATEGORY_OPTIONS: Array<{
   },
 ];
 
+interface LineItem {
+  id: string;
+  name: string;
+  quantity: number;
+  unit_price?: number;
+  total_price: number;
+}
+
 export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerProps) {
   const [currentStep, setCurrentStep] = useState<ScanStep>('upload');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -110,6 +118,9 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
   const [category, setCategory] = useState<ExpenseCategory>('groceries');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+
+  // Line items (articles)
+  const [lineItems, setLineItems] = useState<LineItem[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -150,6 +161,18 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
           setDate(result.data.date);
         }
 
+        // Initialize line items from OCR
+        if (result.data.items && result.data.items.length > 0) {
+          const items: LineItem[] = result.data.items.map((item, index) => ({
+            id: `ocr-${index}-${Date.now()}`,
+            name: item.name,
+            quantity: item.quantity || 1,
+            unit_price: item.unit_price,
+            total_price: item.total_price || 0,
+          }));
+          setLineItems(items);
+        }
+
         setCurrentStep('review');
       } else {
         setScanError(result.error || 'Échec du scan');
@@ -162,6 +185,32 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
     } finally {
       setIsScanning(false);
     }
+  };
+
+  // Line items management
+  const addLineItem = () => {
+    const newItem: LineItem = {
+      id: `manual-${Date.now()}`,
+      name: '',
+      quantity: 1,
+      total_price: 0,
+    };
+    setLineItems([...lineItems, newItem]);
+  };
+
+  const updateLineItem = (id: string, field: keyof LineItem, value: any) => {
+    setLineItems(lineItems.map(item =>
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  const removeLineItem = (id: string) => {
+    setLineItems(lineItems.filter(item => item.id !== id));
+  };
+
+  // Calculate total from line items
+  const calculateTotalFromItems = () => {
+    return lineItems.reduce((sum, item) => sum + (item.total_price || 0), 0);
   };
 
   // Step 3: Proceed to category selection
@@ -453,41 +502,84 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               </div>
             </div>
 
-            {/* Extracted Line Items */}
-            {ocrData && ocrData.items && ocrData.items.length > 0 && (
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="w-5 h-5 text-green-600" />
-                  <h3 className="text-sm font-bold text-green-900">
-                    Articles détectés ({ocrData.items.length})
+            {/* Editable Line Items */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <ShoppingCart className="w-5 h-5 text-blue-600" />
+                  <h3 className="text-sm font-bold text-blue-900">
+                    Articles ({lineItems.length})
                   </h3>
                 </div>
-                <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {ocrData.items.map((item, index) => (
+                <Button
+                  onClick={addLineItem}
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Ajouter
+                </Button>
+              </div>
+
+              {lineItems.length > 0 ? (
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {lineItems.map((item) => (
                     <div
-                      key={index}
-                      className="flex items-center justify-between bg-white rounded-lg p-3 text-sm"
+                      key={item.id}
+                      className="bg-white rounded-lg p-3 space-y-2"
                     >
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        {item.quantity && item.quantity > 1 && (
-                          <p className="text-xs text-gray-500">
-                            Quantité: {item.quantity}
-                            {item.unit_price && ` × ${item.unit_price.toFixed(2)}€`}
-                          </p>
-                        )}
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1 space-y-2">
+                          <Input
+                            value={item.name}
+                            onChange={(e) => updateLineItem(item.id, 'name', e.target.value)}
+                            placeholder="Nom de l'article"
+                            className="text-sm"
+                          />
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input
+                              type="number"
+                              value={item.quantity}
+                              onChange={(e) => updateLineItem(item.id, 'quantity', parseFloat(e.target.value) || 1)}
+                              placeholder="Qté"
+                              min="1"
+                              className="text-sm"
+                            />
+                            <Input
+                              type="number"
+                              step="0.01"
+                              value={item.total_price}
+                              onChange={(e) => updateLineItem(item.id, 'total_price', parseFloat(e.target.value) || 0)}
+                              placeholder="Prix"
+                              className="text-sm"
+                            />
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => removeLineItem(item.id)}
+                          className="text-red-500 hover:text-red-700 p-1"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
-                      <p className="font-bold text-green-700 ml-3">
-                        {item.total_price?.toFixed(2)}€
-                      </p>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-green-700 mt-3 text-center">
-                  ✨ Ces articles ont été extraits automatiquement du ticket
+              ) : (
+                <p className="text-sm text-blue-600 text-center py-4">
+                  Aucun article. Cliquez sur "Ajouter" pour en ajouter.
                 </p>
-              </div>
-            )}
+              )}
+
+              {lineItems.length > 0 && (
+                <div className="mt-3 pt-3 border-t border-blue-200 flex items-center justify-between">
+                  <span className="text-sm font-medium text-blue-900">Total calculé:</span>
+                  <span className="text-lg font-bold text-blue-700">
+                    {calculateTotalFromItems().toFixed(2)}€
+                  </span>
+                </div>
+              )}
+            </div>
 
             <div className="flex gap-3">
               <Button
