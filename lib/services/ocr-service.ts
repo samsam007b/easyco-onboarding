@@ -590,7 +590,7 @@ class OCRService {
     // Split text into lines
     const lines = text.split('\n');
 
-    // Words to exclude (headers, footers, etc.)
+    // Words to exclude (headers, footers, tax lines, etc.)
     const excludeWords = [
       'TOTAL',
       'SOUS-TOTAL',
@@ -611,6 +611,13 @@ class OCRService {
       'DESIGNATION',
       'GRAND',
       'VOTAL',
+      'IVA',  // TVA in other languages
+      'IVAX', // OCR error for IVA
+      'EXCEL', // Headers
+      'INCL', // Tax included
+      '21X',  // Tax rate 21%
+      '12%',  // Tax rate 12%
+      '%',    // Any line with percentage (tax lines)
     ];
 
     for (const line of lines) {
