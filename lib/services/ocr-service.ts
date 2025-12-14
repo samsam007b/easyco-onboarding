@@ -466,34 +466,36 @@ class OCRService {
   private extractTotal(text: string): number | undefined {
     console.log('[OCR] Extracting total from text...');
 
-    // Common French patterns for total (ordered by priority)
-    const patterns = [
-      // "Grand Total: 47.90"
-      /Grand\s+Total\s*:?\s*(\d+[.,]\d{2})/i,
-      // "Total: 47.90"
-      /Total\s*:?\s*(\d+[.,]\d{2})/i,
-      // "Cash 47,90"
-      /Cash\s+(\d+[.,]\d{2})/i,
-      // "SOMME: 45,50"
-      /SOMME\s*:?\s*(\d+[.,]\d{2})/i,
-      // "MONTANT: 45,50"
-      /MONTANT\s*:?\s*(\d+[.,]\d{2})/i,
-      // "NET A PAYER: 45,50"
-      /NET\s+A\s+PAYER\s*:?\s*(\d+[.,]\d{2})/i,
-      // "CARTE: 45,50" (card payment)
-      /CARTE\s*:?\s*(\d+[.,]\d{2})/i,
-      // "45,50 EUR" or "45.50€"
-      /(\d+[.,]\d{2})\s*(?:EUR|€)/,
+    // Look for lines containing "Total" or "Cash" and extract the LAST number on that line
+    // This handles cases like "Total: 6.39 41,51 47,90" where 47,90 is the real total
+    const totalLinePatterns = [
+      /Grand\s+[VT]otal\s*:?.*?(\d+[.,]\d{2})[^\d]*$/im, // Grand Total (with typo tolerance)
+      /Total\s*:?.*?(\d+[.,]\d{2})[^\d]*$/im, // Total: ... last number
+      /Cash\s+(\d+[.,]\d{2})/i, // Cash 47,90
+      /SOMME\s*:?\s*(\d+[.,]\d{2})/i, // SOMME: 45,50
+      /MONTANT\s*:?\s*(\d+[.,]\d{2})/i, // MONTANT: 45,50
+      /NET\s+A\s+PAYER\s*:?\s*(\d+[.,]\d{2})/i, // NET A PAYER: 45,50
+      /CARTE\s*:?\s*(\d+[.,]\d{2})/i, // CARTE: 45,50
     ];
 
-    for (const pattern of patterns) {
-      const match = text.match(pattern);
-      if (match) {
-        const amountStr = match[1].replace(',', '.');
-        const amount = parseFloat(amountStr);
-        if (!isNaN(amount) && amount > 0 && amount < 100000) {
-          console.log(`[OCR] ✅ Total found: ${amount} (pattern: ${pattern})`);
-          return amount;
+    for (const pattern of totalLinePatterns) {
+      // Find all lines that match this pattern
+      const lines = text.split('\n');
+      for (const line of lines) {
+        // Extract all numbers from lines containing total-like keywords
+        if (/Grand\s+[VT]otal|Total|Cash|SOMME|MONTANT|NET\s+A\s+PAYER|CARTE/i.test(line)) {
+          // Get ALL numbers from this line
+          const numbers = line.match(/\d+[.,]\d{2}/g);
+          if (numbers && numbers.length > 0) {
+            // Take the LAST number (usually the actual total)
+            const lastNumber = numbers[numbers.length - 1];
+            const amountStr = lastNumber.replace(',', '.');
+            const amount = parseFloat(amountStr);
+            if (!isNaN(amount) && amount > 0 && amount < 100000) {
+              console.log(`[OCR] ✅ Total found: ${amount} (last number on line: "${line.trim().substring(0, 50)}...")`);
+              return amount;
+            }
+          }
         }
       }
     }
@@ -579,6 +581,7 @@ class OCRService {
    * - "1 PZ 4 Saisons 14,50 14,50 B"
    * - "Pain complet 1.20"
    * - "2x Coca Cola 2.50 5.00"
+   * - OCR errors like "! V7 4 Snsuons 14,50 14,906"
    */
   private extractLineItems(text: string): OCRLineItem[] {
     console.log('[OCR] Extracting line items...');
@@ -586,25 +589,6 @@ class OCRService {
 
     // Split text into lines
     const lines = text.split('\n');
-
-    // Patterns for different receipt formats
-    const patterns = [
-      // Format 1: "1  PZ 4 Saisons      14,50   14,50 B"
-      // Quantity, Name, Unit Price, Total Price, Tax Code
-      /^(\d+)\s+([A-Za-z0-9À-ÿ\/\s\-'\.]+?)\s+(\d+[.,]\d{2})\s+(\d+[.,]\d{2})\s*[A-Z]?\s*$/,
-
-      // Format 2: "PZ Campericoise      14,50   14,50 B"
-      // Name, Unit Price, Total Price, Tax Code (no quantity)
-      /^([A-Za-z0-9À-ÿ\/\s\-'\.]+?)\s+(\d+[.,]\d{2})\s+(\d+[.,]\d{2})\s*[A-Z]?\s*$/,
-
-      // Format 3: "2x Pain complet 2.40"
-      // Quantity x Name Total
-      /^(\d+)x\s+([A-Za-zÀ-ÿ\s\-'\.]+)\s+(\d+[.,]\d{2})$/,
-
-      // Format 4: "Pain complet 1.20" (simple format)
-      // Name Price
-      /^([A-Za-zÀ-ÿ\s\-'\.]{3,})\s+(\d+[.,]\d{2})$/,
-    ];
 
     // Words to exclude (headers, footers, etc.)
     const excludeWords = [
@@ -625,7 +609,8 @@ class OCRService {
       'P.U.',
       'ARTICLE',
       'DESIGNATION',
-      'GRAND TOTAL',
+      'GRAND',
+      'VOTAL',
     ];
 
     for (const line of lines) {
@@ -636,49 +621,48 @@ class OCRService {
         continue;
       }
 
-      // Try each pattern
-      for (let i = 0; i < patterns.length; i++) {
-        const pattern = patterns[i];
-        const match = trimmedLine.match(pattern);
+      // More permissive approach: look for any line with at least 2 price-like numbers
+      // Format: [optional symbols/numbers] TEXT PRICE1 PRICE2 [optional letter]
+      // Example: "! V7 4 Snsuons 14,50 14,906" or "PZ Campericoise 14,50 14,50 B"
+      const numbers = trimmedLine.match(/\d+[.,]\d{1,3}/g);
 
-        if (match) {
-          let name: string;
+      if (numbers && numbers.length >= 2) {
+        // Extract the last 2 numbers (unit price and total price)
+        const lastTwo = numbers.slice(-2);
+        const unitPriceStr = lastTwo[0].replace(',', '.');
+        const totalPriceStr = lastTwo[1].replace(',', '.');
+
+        const unitPrice = parseFloat(unitPriceStr);
+        const totalPrice = parseFloat(totalPriceStr);
+
+        // Extract item name: everything before the first price number
+        const firstPriceIdx = trimmedLine.indexOf(lastTwo[0]);
+        if (firstPriceIdx > 0) {
+          let name = trimmedLine.substring(0, firstPriceIdx).trim();
+
+          // Clean up name: remove leading symbols and numbers
+          name = name.replace(/^[!•\-\*\s\d]+/, '').trim();
+
+          // Try to extract quantity from the beginning
           let quantity = 1;
-          let unitPrice: number | undefined;
-          let totalPrice: number;
-
-          if (i === 0) {
-            // Format 1: quantity, name, unit price, total price
-            quantity = parseInt(match[1]);
-            name = match[2].trim();
-            unitPrice = parseFloat(match[3].replace(',', '.'));
-            totalPrice = parseFloat(match[4].replace(',', '.'));
-          } else if (i === 1) {
-            // Format 2: name, unit price, total price (quantity = 1)
-            name = match[1].trim();
-            unitPrice = parseFloat(match[2].replace(',', '.'));
-            totalPrice = parseFloat(match[3].replace(',', '.'));
-          } else if (i === 2) {
-            // Format 3: quantity x name total
-            quantity = parseInt(match[1]);
-            name = match[2].trim();
-            totalPrice = parseFloat(match[3].replace(',', '.'));
-            unitPrice = totalPrice / quantity;
-          } else {
-            // Format 4: name price (simple)
-            name = match[1].trim();
-            totalPrice = parseFloat(match[2].replace(',', '.'));
-            unitPrice = totalPrice;
+          const qtyMatch = name.match(/^(\d+)\s+/);
+          if (qtyMatch) {
+            quantity = parseInt(qtyMatch[1]);
+            name = name.replace(/^\d+\s+/, '').trim();
           }
 
           // Validate the extracted item
           if (
-            name.length >= 3 &&
+            name.length >= 2 &&
             name.length <= 100 &&
+            !isNaN(unitPrice) &&
             !isNaN(totalPrice) &&
+            unitPrice > 0 &&
+            unitPrice < 1000 &&
             totalPrice > 0 &&
             totalPrice < 10000 &&
             !/^\d+$/.test(name) && // Not just numbers
+            !/^[IVA\s\d]+$/.test(name) && // Not just "IVA" or roman numerals
             !/^[\s\-\.\/]+$/.test(name) // Not just punctuation
           ) {
             const item: OCRLineItem = {
@@ -690,13 +674,13 @@ class OCRService {
               item.quantity = quantity;
             }
 
-            if (unitPrice !== undefined && unitPrice !== totalPrice) {
+            // Only include unit price if different from total
+            if (Math.abs(unitPrice - totalPrice) > 0.01) {
               item.unit_price = unitPrice;
             }
 
             items.push(item);
-            console.log(`[OCR] ✅ Item found: ${name} - ${totalPrice}€ (qty: ${quantity})`);
-            break; // Found a match, no need to try other patterns
+            console.log(`[OCR] ✅ Item found: "${name}" - ${totalPrice}€ (qty: ${quantity}, unit: ${unitPrice}€)`);
           }
         }
       }
