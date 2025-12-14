@@ -93,23 +93,21 @@ export default function LanguageSwitcher() {
                   }}
                 >
                   <span
-                    className="font-medium transition-all duration-300"
+                    className="font-medium transition-all duration-300 hover:scale-105"
                     style={{
-                      background: language === code || undefined
+                      background: language === code
                         ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
                         : undefined,
-                      WebkitBackgroundClip: language === code || undefined ? 'text' : undefined,
-                      WebkitTextFillColor: language === code || undefined ? 'transparent' : undefined,
-                      backgroundClip: language === code || undefined ? 'text' : undefined,
+                      WebkitBackgroundClip: language === code ? 'text' : undefined,
+                      WebkitTextFillColor: language === code ? 'transparent' : undefined,
+                      backgroundClip: language === code ? 'text' : undefined,
                       color: language !== code ? '#6b7280' : undefined
                     }}
                     onMouseEnter={(e) => {
-                      if (language !== code) {
-                        e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        e.currentTarget.style.webkitBackgroundClip = 'text';
-                        e.currentTarget.style.webkitTextFillColor = 'transparent';
-                        e.currentTarget.style.backgroundClip = 'text';
-                      }
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+                      e.currentTarget.style.webkitBackgroundClip = 'text';
+                      e.currentTarget.style.webkitTextFillColor = 'transparent';
+                      e.currentTarget.style.backgroundClip = 'text';
                     }}
                     onMouseLeave={(e) => {
                       if (language !== code) {
@@ -118,6 +116,12 @@ export default function LanguageSwitcher() {
                         e.currentTarget.style.webkitTextFillColor = 'unset';
                         e.currentTarget.style.backgroundClip = 'unset';
                         e.currentTarget.style.color = '#6b7280';
+                      } else {
+                        // Keep gradient for active language
+                        e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+                        e.currentTarget.style.webkitBackgroundClip = 'text';
+                        e.currentTarget.style.webkitTextFillColor = 'transparent';
+                        e.currentTarget.style.backgroundClip = 'text';
                       }
                     }}
                   >
