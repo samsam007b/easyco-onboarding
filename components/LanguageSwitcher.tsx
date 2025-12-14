@@ -93,42 +93,39 @@ export default function LanguageSwitcher() {
                   }}
                 >
                   <span
-                    className="font-medium transition-all duration-300"
+                    className="font-medium transition-all duration-300 inline-block"
                     style={{
                       background: language === code
                         ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                        : 'transparent',
-                      WebkitBackgroundClip: language === code ? 'text' : 'border-box',
-                      WebkitTextFillColor: language === code ? 'transparent' : '#6b7280',
-                      backgroundClip: language === code ? 'text' : 'border-box',
+                        : 'none',
+                      WebkitBackgroundClip: language === code ? 'text' : undefined,
+                      WebkitTextFillColor: language === code ? 'transparent' : undefined,
+                      backgroundClip: language === code ? 'text' : undefined,
                       color: language === code ? 'transparent' : '#6b7280',
-                      display: 'inline-block',
-                      transform: 'scale(1)',
-                    }}
+                    } as React.CSSProperties}
                     onMouseEnter={(e) => {
-                      const target = e.currentTarget as HTMLElement;
+                      const target = e.currentTarget;
                       target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                      target.style.webkitBackgroundClip = 'text';
-                      target.style.webkitTextFillColor = 'transparent';
-                      target.style.backgroundClip = 'text';
+                      target.style.setProperty('-webkit-background-clip', 'text');
+                      target.style.setProperty('-webkit-text-fill-color', 'transparent');
+                      target.style.setProperty('background-clip', 'text');
                       target.style.color = 'transparent';
                       target.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
-                      const target = e.currentTarget as HTMLElement;
+                      const target = e.currentTarget;
                       target.style.transform = 'scale(1)';
                       if (language !== code) {
-                        target.style.background = 'transparent';
-                        target.style.webkitBackgroundClip = 'border-box';
-                        target.style.webkitTextFillColor = '#6b7280';
-                        target.style.backgroundClip = 'border-box';
+                        target.style.background = 'none';
+                        target.style.removeProperty('-webkit-background-clip');
+                        target.style.removeProperty('-webkit-text-fill-color');
+                        target.style.removeProperty('background-clip');
                         target.style.color = '#6b7280';
                       } else {
-                        // Keep gradient for active language
                         target.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                        target.style.webkitBackgroundClip = 'text';
-                        target.style.webkitTextFillColor = 'transparent';
-                        target.style.backgroundClip = 'text';
+                        target.style.setProperty('-webkit-background-clip', 'text');
+                        target.style.setProperty('-webkit-text-fill-color', 'transparent');
+                        target.style.setProperty('background-clip', 'text');
                         target.style.color = 'transparent';
                       }
                     }}
