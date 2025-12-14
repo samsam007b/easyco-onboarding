@@ -209,48 +209,60 @@ export default function HubMessagesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+        {/* Back Button */}
+        <Button
+          onClick={() => router.push('/hub')}
+          variant="ghost"
+          className="mb-4 rounded-full"
+        >
+          ← Retour au hub
+        </Button>
+
+        {/* Header with Orange Gradient */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-8 p-6 rounded-2xl shadow-lg border-none"
+          style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
         >
-          <Button
-            onClick={() => router.push('/hub')}
-            variant="ghost"
-            className="mb-4 rounded-full"
-          >
-            ← Retour au hub
-          </Button>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            {/* Left: Page Title & Description */}
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
 
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                Messages
-              </h1>
-              <p className="text-gray-600">
-                Communiquez avec votre résidence et vos colocataires
-              </p>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">
+                  Messages
+                </h1>
+                <p className="text-white font-medium text-sm">
+                  Communiquez avec votre résidence et vos colocataires
+                </p>
+              </div>
             </div>
 
+            {/* Right: New Message Button */}
             <Button
               onClick={() => router.push('/hub/messages/new')}
-              className="rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+              size="sm"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur flex-shrink-0"
+              variant="outline"
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-1" />
               Nouveau
             </Button>
           </div>
 
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          {/* Search Bar */}
+          <div className="relative mt-4">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
             <input
               type="text"
               placeholder="Rechercher une conversation..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/20 backdrop-blur border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 transition-all"
             />
           </div>
         </motion.div>
