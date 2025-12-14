@@ -233,13 +233,13 @@ export default function ResidenceHeader() {
 
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4 text-white" />
-                <span className="text-white! font-medium" style={{ color: 'white' }}>{propertyInfo.city}</span>
+                <MapPin className="w-4 h-4" style={{ color: '#ffffff' }} />
+                <span style={{ color: '#ffffff', fontWeight: 500 }}>{propertyInfo.city}</span>
               </div>
 
               <div className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-white" />
-                <span className="text-white! font-medium" style={{ color: 'white' }}>{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
+                <Users className="w-4 h-4" style={{ color: '#ffffff' }} />
+                <span style={{ color: '#ffffff', fontWeight: 500 }}>{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
               </div>
             </div>
           </div>
@@ -294,12 +294,12 @@ export default function ResidenceHeader() {
         <div className="mt-4 pt-4 border-t border-white/20">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-white! font-semibold text-sm" style={{ color: 'white' }}>
+              <Sparkles className="w-4 h-4" style={{ color: '#ffffff' }} />
+              <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '0.875rem' }}>
                 Complétez votre résidence
               </span>
             </div>
-            <span className="text-white! font-bold text-base" style={{ color: 'white' }}>
+            <span style={{ color: '#ffffff', fontWeight: 700, fontSize: '1rem' }}>
               {completion.percentage}%
             </span>
           </div>
@@ -332,16 +332,16 @@ export default function ResidenceHeader() {
                 <button
                   key={index}
                   onClick={() => handleStepClick(step)}
-                  className="text-xs bg-white/20 backdrop-blur text-white! font-medium px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
-                  style={{ color: 'white' }}
+                  className="bg-white/20 backdrop-blur px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
+                  style={{ color: '#ffffff', fontWeight: 500, fontSize: '0.75rem' }}
                 >
                   {step}
                 </button>
               ) : (
                 <span
                   key={index}
-                  className="text-xs bg-white/20 backdrop-blur text-white! font-medium px-3 py-1 rounded-full"
-                  style={{ color: 'white' }}
+                  className="bg-white/20 backdrop-blur px-3 py-1 rounded-full"
+                  style={{ color: '#ffffff', fontWeight: 500, fontSize: '0.75rem' }}
                 >
                   {step}
                 </span>
