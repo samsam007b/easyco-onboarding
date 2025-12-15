@@ -21,8 +21,18 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import MainResidentWelcome from '@/components/onboarding/MainResidentWelcome';
+import ResidentWelcome from '@/components/onboarding/ResidentWelcome';
 
 type SetupMode = 'choice' | 'create' | 'join';
+
+interface PropertyCreatedData {
+  id: string;
+  title: string;
+  city: string;
+  invitation_code: string;
+  owner_code: string;
+}
 
 export default function ResidentPropertySetupPage() {
   const router = useRouter();
@@ -31,6 +41,11 @@ export default function ResidentPropertySetupPage() {
   const [mode, setMode] = useState<SetupMode>('choice');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  // Welcome modals
+  const [showMainResidentWelcome, setShowMainResidentWelcome] = useState(false);
+  const [showResidentWelcome, setShowResidentWelcome] = useState(false);
+  const [propertyCreatedData, setPropertyCreatedData] = useState<PropertyCreatedData | null>(null);
 
   // Form state for creating a property
   const [createForm, setCreateForm] = useState({
@@ -143,8 +158,17 @@ export default function ResidentPropertySetupPage() {
 
       toast.success('Résidence créée avec succès! 🎉');
 
-      // Redirect directly to hub
-      router.push('/hub');
+      // Store created property data for welcome modal
+      setPropertyCreatedData({
+        id: property.id,
+        title: property.title,
+        city: property.city,
+        invitation_code: property.invitation_code,
+        owner_code: property.owner_code,
+      });
+
+      // Show Main Resident welcome modal
+      setShowMainResidentWelcome(true);
     } catch (error: any) {
       console.error('❌ Error creating property:', error);
       toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
@@ -207,8 +231,17 @@ export default function ResidentPropertySetupPage() {
 
       toast.success('Vous avez rejoint la résidence! 🎉');
 
-      // Redirect directly to hub
-      router.push('/hub');
+      // Store property data for welcome modal
+      setPropertyCreatedData({
+        id: property.id,
+        title: property.title || 'Ma Colocation',
+        city: property.city || '',
+        invitation_code: property.invitation_code || '',
+        owner_code: '', // Standard residents don't see owner code in join flow
+      });
+
+      // Show Resident welcome modal
+      setShowResidentWelcome(true);
     } catch (error: any) {
       console.error('❌ Error joining property:', error);
       toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
@@ -470,6 +503,27 @@ export default function ResidentPropertySetupPage() {
           </motion.div>
         )}
       </div>
+
+      {/* Welcome Modals */}
+      {showMainResidentWelcome && propertyCreatedData && (
+        <MainResidentWelcome
+          propertyData={propertyCreatedData}
+          onClose={() => {
+            setShowMainResidentWelcome(false);
+            router.push('/hub');
+          }}
+        />
+      )}
+
+      {showResidentWelcome && propertyCreatedData && (
+        <ResidentWelcome
+          propertyData={propertyCreatedData}
+          onClose={() => {
+            setShowResidentWelcome(false);
+            router.push('/hub');
+          }}
+        />
+      )}
     </div>
   );
 }
