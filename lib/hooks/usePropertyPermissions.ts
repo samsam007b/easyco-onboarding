@@ -45,7 +45,7 @@ interface UsePropertyPermissionsReturn {
 /**
  * Permission matrix - defines what each role can do
  */
-const PERMISSIONS: Record<PropertyRole, Permission[]> = {
+const PERMISSIONS: Record<Exclude<PropertyRole, null>, Permission[]> = {
   owner: [
     'view_property',
     'edit_property',
@@ -74,7 +74,6 @@ const PERMISSIONS: Record<PropertyRole, Permission[]> = {
     'manage_rules',
     'upload_documents',
   ],
-  null: [],
 };
 
 export function usePropertyPermissions(propertyId?: string): UsePropertyPermissionsReturn {
@@ -128,7 +127,8 @@ export function usePropertyPermissions(propertyId?: string): UsePropertyPermissi
 
   const hasPermission = (permission: Permission): boolean => {
     if (!membership || !membership.role) return false;
-    return PERMISSIONS[membership.role]?.includes(permission) || false;
+    const rolePermissions = PERMISSIONS[membership.role as Exclude<PropertyRole, null>];
+    return rolePermissions?.includes(permission) || false;
   };
 
   return {
