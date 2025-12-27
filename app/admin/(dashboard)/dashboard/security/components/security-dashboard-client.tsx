@@ -4,6 +4,7 @@ import { useSecurityRealtime } from '@/lib/hooks/use-security-realtime';
 import { RealtimeStats } from './realtime-stats';
 import { RealtimeAlerts } from './realtime-alerts';
 import { RealtimeErrors } from './realtime-errors';
+import { SecurityAuditLogs } from './security-audit-logs';
 import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -226,37 +227,43 @@ export function SecurityDashboardClient({
         </Card>
       </div>
 
-      {/* System Status */}
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Globe className="w-5 h-5 text-blue-400" />
-            Etat du Systeme
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { name: 'Error Tracker', icon: Bug, active: true },
-              { name: 'Route Monitor', icon: Activity, active: true },
-              { name: 'Alert System', icon: AlertTriangle, active: true },
-              { name: 'Vuln Scanner', icon: Shield, active: true },
-            ].map((system) => (
-              <div key={system.name} className="flex items-center gap-3 p-3 rounded-lg bg-slate-700/30">
-                <div className={cn('p-2 rounded-lg', system.active ? 'bg-green-500/10' : 'bg-red-500/10')}>
-                  <system.icon className={cn('w-4 h-4', system.active ? 'text-green-400' : 'text-red-400')} />
+      {/* System Status + Audit Logs */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* System Status */}
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Globe className="w-5 h-5 text-blue-400" />
+              Etat du Systeme
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { name: 'Error Tracker', icon: Bug, active: true },
+                { name: 'Route Monitor', icon: Activity, active: true },
+                { name: 'Alert System', icon: AlertTriangle, active: true },
+                { name: 'Vuln Scanner', icon: Shield, active: true },
+              ].map((system) => (
+                <div key={system.name} className="flex items-center gap-3 p-3 rounded-lg bg-slate-700/30">
+                  <div className={cn('p-2 rounded-lg', system.active ? 'bg-green-500/10' : 'bg-red-500/10')}>
+                    <system.icon className={cn('w-4 h-4', system.active ? 'text-green-400' : 'text-red-400')} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-white">{system.name}</p>
+                    <p className={cn('text-xs', system.active ? 'text-green-400' : 'text-red-400')}>
+                      {system.active ? 'operational' : 'down'}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-white">{system.name}</p>
-                  <p className={cn('text-xs', system.active ? 'text-green-400' : 'text-red-400')}>
-                    {system.active ? 'operational' : 'down'}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Security Audit Logs */}
+        <SecurityAuditLogs maxLogs={8} />
+      </div>
     </div>
   );
 }

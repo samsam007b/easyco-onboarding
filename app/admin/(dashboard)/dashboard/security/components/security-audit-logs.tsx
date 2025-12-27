@@ -19,6 +19,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 
+interface UserInfo {
+  email: string;
+  full_name: string | null;
+}
+
 interface AuditLog {
   id: string;
   user_id: string | null;
@@ -27,10 +32,7 @@ interface AuditLog {
   resource_id: string | null;
   metadata: Record<string, any>;
   created_at: string;
-  users?: {
-    email: string;
-    full_name: string | null;
-  };
+  users?: UserInfo | UserInfo[] | null;
 }
 
 interface SecurityAuditLogsProps {
@@ -134,6 +136,13 @@ function formatAction(action: string): string {
   return action
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function getUserDisplayName(users: UserInfo | UserInfo[] | null | undefined): string {
+  if (!users) return 'Systeme';
+  const user = Array.isArray(users) ? users[0] : users;
+  if (!user) return 'Systeme';
+  return user.full_name || user.email || 'Systeme';
 }
 
 export function SecurityAuditLogs({ maxLogs = 10 }: SecurityAuditLogsProps) {
@@ -317,7 +326,7 @@ export function SecurityAuditLogs({ maxLogs = 10 }: SecurityAuditLogsProps) {
                     </div>
                     <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
                       <span>
-                        {log.users?.full_name || log.users?.email || 'Systeme'}
+                        {getUserDisplayName(log.users)}
                       </span>
                       <span>-</span>
                       <span>{formatDate(log.created_at)}</span>
