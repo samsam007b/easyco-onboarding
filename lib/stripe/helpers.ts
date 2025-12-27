@@ -73,22 +73,22 @@ export function getSubscriptionInfo(plan: string) {
   const info: Record<string, { name: string; price: string; interval: string }> = {
     'owner_monthly': {
       name: 'EASYCO Owner - Mensuel',
-      price: '€29.99',
+      price: '€15.99',
       interval: 'mois',
     },
     'owner_annual': {
       name: 'EASYCO Owner - Annuel',
-      price: '€299',
+      price: '€159.90',
       interval: 'an',
     },
     'resident_monthly': {
       name: 'EASYCO Resident - Mensuel',
-      price: '€19.99',
+      price: '€7.99',
       interval: 'mois',
     },
     'resident_annual': {
       name: 'EASYCO Resident - Annuel',
-      price: '€199',
+      price: '€79.90',
       interval: 'an',
     },
   };
