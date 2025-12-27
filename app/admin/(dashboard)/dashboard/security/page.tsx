@@ -553,7 +553,7 @@ export default async function SecurityDashboardPage() {
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-xs font-mono">
+                          <Badge className="text-xs font-mono bg-slate-600/50 text-slate-300 border-slate-500">
                             {route.method}
                           </Badge>
                           <span className="text-sm text-white font-mono truncate max-w-[200px]">
