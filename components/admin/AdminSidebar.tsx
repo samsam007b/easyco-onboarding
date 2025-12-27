@@ -15,6 +15,7 @@ import {
   Database,
   LogOut,
   Palette,
+  ShieldAlert,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -27,6 +28,7 @@ interface AdminSidebarProps {
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Security Center', href: '/admin/dashboard/security', icon: ShieldAlert, highlight: true },
   { name: 'Utilisateurs', href: '/admin/dashboard/users', icon: Users },
   { name: 'Propriétés', href: '/admin/dashboard/properties', icon: Building2 },
   { name: 'Applications', href: '/admin/dashboard/applications', icon: FileText },
@@ -79,17 +81,26 @@ export default function AdminSidebar({ userEmail, userRole }: AdminSidebarProps)
                     <Link
                       href={item.href}
                       className={cn(
-                        'group flex gap-x-3 rounded-lg p-2 text-sm leading-6 font-medium transition-colors',
+                        'group flex gap-x-3 rounded-lg p-2 text-sm leading-6 font-medium transition-colors relative',
                         pathname === item.href
                           ? 'bg-purple-600/20 text-purple-400'
-                          : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-700/50',
+                        item.highlight && 'ring-2 ring-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-transparent'
                       )}
                     >
                       <item.icon className={cn(
                         'h-5 w-5 shrink-0',
-                        pathname === item.href ? 'text-purple-400' : 'text-slate-400 group-hover:text-white'
+                        pathname === item.href ? 'text-purple-400' : item.highlight ? 'text-emerald-400 group-hover:text-emerald-300' : 'text-slate-400 group-hover:text-white'
                       )} />
-                      {item.name}
+                      <span className={item.highlight ? 'text-emerald-400 font-semibold' : ''}>
+                        {item.name}
+                      </span>
+                      {item.highlight && (
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                      )}
                     </Link>
                   </li>
                 ))}

@@ -442,11 +442,11 @@ ALTER TABLE security_score_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE security_alerts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE security_config ENABLE ROW LEVEL SECURITY;
 
--- Policies : Seuls les admins peuvent accéder
+-- Policies : Seuls les admins peuvent accéder (utilise la table admins existante)
 CREATE POLICY "Admin access only" ON security_errors
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -454,7 +454,7 @@ CREATE POLICY "Admin access only" ON security_errors
 CREATE POLICY "Admin access only" ON security_events
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -462,7 +462,7 @@ CREATE POLICY "Admin access only" ON security_events
 CREATE POLICY "Admin access only" ON route_analytics
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -470,7 +470,7 @@ CREATE POLICY "Admin access only" ON route_analytics
 CREATE POLICY "Admin access only" ON security_vulnerabilities
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -478,7 +478,7 @@ CREATE POLICY "Admin access only" ON security_vulnerabilities
 CREATE POLICY "Admin access only" ON performance_metrics
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -486,7 +486,7 @@ CREATE POLICY "Admin access only" ON performance_metrics
 CREATE POLICY "Admin access only" ON security_score_history
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -494,7 +494,7 @@ CREATE POLICY "Admin access only" ON security_score_history
 CREATE POLICY "Admin access only" ON security_alerts
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
@@ -502,7 +502,7 @@ CREATE POLICY "Admin access only" ON security_alerts
 CREATE POLICY "Admin access only" ON security_config
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM admin_users
+      SELECT 1 FROM public.admins
       WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );

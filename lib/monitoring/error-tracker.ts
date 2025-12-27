@@ -19,6 +19,7 @@ export interface ErrorContext {
   statusCode?: number;
   ipAddress?: string;
   userAgent?: string;
+  timestamp?: string;
   metadata?: Record<string, any>;
 }
 
@@ -89,7 +90,7 @@ class ErrorTracker {
             route: context.route,
           },
           contexts: {
-            custom: enrichedContext,
+            custom: enrichedContext as Record<string, any>,
           },
         });
       } else {
