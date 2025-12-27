@@ -10,7 +10,7 @@ import Stripe from 'stripe';
 // Lazy initialization to avoid build-time errors when env vars aren't available
 let _stripe: Stripe | null = null;
 
-function getStripe(): Stripe {
+export function getStripe(): Stripe {
   if (!_stripe) {
     if (!process.env.STRIPE_SECRET_KEY) {
       throw new Error('Missing STRIPE_SECRET_KEY environment variable');
@@ -28,10 +28,16 @@ function getStripe(): Stripe {
   return _stripe;
 }
 
-// Export as a getter to ensure lazy initialization
+// Export a proxy that lazily initializes and properly binds methods
 export const stripe = new Proxy({} as Stripe, {
-  get(_, prop) {
-    return (getStripe() as any)[prop];
+  get(_, prop: string | symbol) {
+    const stripeInstance = getStripe();
+    const value = (stripeInstance as any)[prop];
+    // Bind functions to maintain proper 'this' context
+    if (typeof value === 'function') {
+      return value.bind(stripeInstance);
+    }
+    return value;
   },
 });
 
