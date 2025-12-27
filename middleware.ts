@@ -63,44 +63,54 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // 🔴 CLOSED BETA: Block all Searcher-related routes
-  const searcherRoutes = [
-    '/dashboard/searcher',
-    '/onboarding/searcher',
-    '/matching',
-    '/favorites'
-  ]
-
-  const isSearcherRoute = searcherRoutes.some(route => pathname.startsWith(route))
-
-  if (isSearcherRoute) {
-    // Redirect ALL searcher-related routes to coming-soon page
-    return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+  // Check if user is a super admin (bypass all restrictions)
+  let isSuperAdmin = false
+  if (user?.email) {
+    const { data: superAdminCheck } = await supabase
+      .rpc('is_super_admin', { user_email: user.email })
+    isSuperAdmin = superAdminCheck === true
   }
 
-  // 🔴 CLOSED BETA: Also block if user has user_type = 'searcher'
-  if (user) {
-    const { data: userData } = await supabase
-      .from('users')
-      .select('user_type')
-      .eq('id', user.id)
-      .single()
+  // 🔴 CLOSED BETA: Block all Searcher-related routes (EXCEPT for super admins)
+  if (!isSuperAdmin) {
+    const searcherRoutes = [
+      '/dashboard/searcher',
+      '/onboarding/searcher',
+      '/matching',
+      '/favorites'
+    ]
 
-    if (userData?.user_type === 'searcher') {
-      // Allow only specific paths for searcher users
-      const allowedPathsForSearchers = [
-        '/coming-soon/searcher',
-        '/profile',
-        '/auth',
-        '/welcome'
-      ]
+    const isSearcherRoute = searcherRoutes.some(route => pathname.startsWith(route))
 
-      const isAllowedPath = allowedPathsForSearchers.some(path =>
-        pathname.startsWith(path)
-      )
+    if (isSearcherRoute) {
+      // Redirect ALL searcher-related routes to coming-soon page
+      return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+    }
 
-      if (!isAllowedPath) {
-        return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+    // 🔴 CLOSED BETA: Also block if user has user_type = 'searcher'
+    if (user) {
+      const { data: userData } = await supabase
+        .from('users')
+        .select('user_type')
+        .eq('id', user.id)
+        .single()
+
+      if (userData?.user_type === 'searcher') {
+        // Allow only specific paths for searcher users
+        const allowedPathsForSearchers = [
+          '/coming-soon/searcher',
+          '/profile',
+          '/auth',
+          '/welcome'
+        ]
+
+        const isAllowedPath = allowedPathsForSearchers.some(path =>
+          pathname.startsWith(path)
+        )
+
+        if (!isAllowedPath) {
+          return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+        }
       }
     }
   }
