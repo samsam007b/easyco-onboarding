@@ -38,6 +38,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import type { Property } from '@/types/property.types';
+import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -54,6 +55,7 @@ export default function ModernOwnerDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
   const [stats, setStats] = useState<DashboardStats>({
     totalRevenue: 0,
@@ -77,6 +79,8 @@ export default function ModernOwnerDashboard() {
         router.push('/login');
         return;
       }
+
+      setUserId(user.id);
 
       // Load properties
       const { data: propertiesData } = await supabase
@@ -219,6 +223,9 @@ export default function ModernOwnerDashboard() {
           Vue d'ensemble de votre portefeuille immobilier
         </p>
       </motion.div>
+
+      {/* Subscription Banner */}
+      {userId && <SubscriptionBanner userId={userId} />}
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

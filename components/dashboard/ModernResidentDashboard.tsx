@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 
 interface DashboardStats {
   rentStatus: {
@@ -66,6 +67,7 @@ export default function ModernResidentDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
   const [roommates, setRoommates] = useState<any[]>([]);
   const [profileCompletion, setProfileCompletion] = useState(0);
@@ -142,6 +144,8 @@ export default function ModernResidentDashboard() {
         router.push('/login');
         return;
       }
+
+      setUserId(user.id);
 
       // Load profile completion
       const { data: userData } = await supabase
@@ -316,6 +320,13 @@ export default function ModernResidentDashboard() {
 
       {/* Residence Header at the top */}
       <ResidenceHeader />
+
+      {/* Subscription Banner */}
+      {userId && (
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
+          <SubscriptionBanner userId={userId} />
+        </div>
+      )}
 
       {/* Content */}
       <>
