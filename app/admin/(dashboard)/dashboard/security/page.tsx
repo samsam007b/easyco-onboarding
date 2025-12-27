@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache';
-import { createClient } from '@/lib/auth/supabase-server';
+import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { SecurityDashboardClient } from './components';
 
 // ============================================================================
@@ -36,7 +36,7 @@ interface RouteAnalytics {
 
 const getSecurityStats = unstable_cache(
   async (): Promise<SecurityStats> => {
-    const supabase = await createClient();
+    const supabase = getAdminClient();
     const last24h = new Date(Date.now() - 86400000).toISOString();
 
     const [
@@ -53,12 +53,13 @@ const getSecurityStats = unstable_cache(
       supabase.from('security_score_history').select('overall_score').order('recorded_at', { ascending: false }).limit(1),
     ]);
 
+    const scoreRecord = scoreData as { overall_score: number }[] | null;
     return {
       totalErrors: totalErrors || 0,
       errors24h: errors24h || 0,
       unresolvedErrors: unresolvedErrors || 0,
       activeAlerts: activeAlerts || 0,
-      securityScore: scoreData?.[0]?.overall_score || 85,
+      securityScore: scoreRecord?.[0]?.overall_score || 85,
     };
   },
   ['security-stats'],
@@ -67,13 +68,13 @@ const getSecurityStats = unstable_cache(
 
 const getVulnerabilityCounts = unstable_cache(
   async (): Promise<VulnCounts> => {
-    const supabase = await createClient();
+    const supabase = getAdminClient();
     const { data } = await supabase
       .from('security_vulnerabilities')
       .select('severity')
       .neq('status', 'resolved');
 
-    const vulns = data || [];
+    const vulns = (data || []) as { severity: string }[];
     return {
       critical: vulns.filter(v => v.severity === 'critical').length,
       high: vulns.filter(v => v.severity === 'high').length,
@@ -87,7 +88,7 @@ const getVulnerabilityCounts = unstable_cache(
 
 const getRoutePerformance = unstable_cache(
   async (): Promise<RouteAnalytics[]> => {
-    const supabase = await createClient();
+    const supabase = getAdminClient();
     const today = new Date().toISOString().split('T')[0];
     const { data } = await supabase
       .from('route_analytics')
@@ -95,7 +96,7 @@ const getRoutePerformance = unstable_cache(
       .eq('date', today)
       .order('total_requests', { ascending: false })
       .limit(5);
-    return data || [];
+    return (data || []) as RouteAnalytics[];
   },
   ['route-performance'],
   { revalidate: 60, tags: ['security'] }
