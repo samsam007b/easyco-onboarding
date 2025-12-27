@@ -100,6 +100,9 @@ export default function WelcomePage() {
     );
   }
 
+  // 🔴 CLOSED BETA: Searcher disabled
+  const searcherAvailable = false;
+
   const roleCards = [
     {
       id: 'searcher',
@@ -111,6 +114,7 @@ export default function WelcomePage() {
       gradient: 'from-yellow-50 to-yellow-100',
       borderColor: 'border-yellow-300 hover:border-yellow-400',
       bgHover: 'hover:bg-yellow-50',
+      disabled: !searcherAvailable, // 🔴 CLOSED BETA
     },
     {
       id: 'owner',
@@ -122,6 +126,7 @@ export default function WelcomePage() {
       gradient: 'from-purple-50 to-purple-100',
       borderColor: 'border-purple-300 hover:border-purple-400',
       bgHover: 'hover:bg-purple-50',
+      disabled: false,
     },
     {
       id: 'resident',
@@ -133,6 +138,7 @@ export default function WelcomePage() {
       gradient: 'from-orange-50 to-orange-100',
       borderColor: 'border-orange-300 hover:border-orange-400',
       bgHover: 'hover:bg-orange-50',
+      disabled: false,
     },
   ];
 
@@ -177,53 +183,83 @@ export default function WelcomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {roleCards.map((card, index) => {
               const IconComponent = card.icon;
+              const isDisabled = card.disabled;
+
               return (
-                <button
+                <div
                   key={card.id}
-                  onClick={() => handleRoleSelect(card.id as any)}
                   className={`
                     group relative bg-white rounded-3xl p-4 sm:p-8
-                    border-2 ${card.borderColor}
-                    shadow-lg hover:shadow-2xl
+                    border-2 ${isDisabled ? 'border-gray-300' : card.borderColor}
+                    shadow-lg
                     transition-all duration-300
-                    hover:scale-105 hover:-translate-y-2
-                    ${card.bgHover}
+                    ${isDisabled
+                      ? 'opacity-60 cursor-not-allowed'
+                      : 'hover:shadow-2xl hover:scale-105 hover:-translate-y-2 cursor-pointer ' + card.bgHover
+                    }
                     animate-slideUp
                   `}
                   style={{
                     animationDelay: `${index * 100}ms`,
                   }}
+                  onClick={() => !isDisabled && handleRoleSelect(card.id as any)}
                 >
+                  {/* 🔴 CLOSED BETA: Badge "Bientôt" pour Searcher */}
+                  {isDisabled && (
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-bounce">
+                      🚀 Bientôt
+                    </div>
+                  )}
+
                   {/* Icon Circle */}
                   <div
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: card.color }}
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center text-white shadow-md ${
+                      isDisabled ? '' : 'group-hover:scale-110'
+                    } transition-transform`}
+                    style={{ backgroundColor: isDisabled ? '#9CA3AF' : card.color }}
                   >
                     <IconComponent className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
+                  <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${
+                    isDisabled ? 'text-gray-500' : 'text-gray-900'
+                  }`}>
                     {card.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 min-h-[40px] sm:min-h-[48px]">
+                  <p className={`text-sm sm:text-base mb-4 sm:mb-6 min-h-[40px] sm:min-h-[48px] ${
+                    isDisabled ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
                     {card.description}
                   </p>
 
+                  {/* 🔴 CLOSED BETA: Message explicatif pour Searcher */}
+                  {isDisabled && (
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-xs sm:text-sm text-yellow-800 font-medium text-center">
+                        Cette fonctionnalité arrive très prochainement ! 🎉
+                      </p>
+                    </div>
+                  )}
+
                   {/* Arrow */}
-                  <div className="flex items-center justify-center text-gray-400 group-hover:text-gray-900 transition-colors">
-                    <span className="mr-2 text-sm font-medium">
-                      {welcome.continue || 'Continuer'}
-                    </span>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                  {!isDisabled && (
+                    <div className="flex items-center justify-center text-gray-400 group-hover:text-gray-900 transition-colors">
+                      <span className="mr-2 text-sm font-medium">
+                        {welcome.continue || 'Continuer'}
+                      </span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  )}
 
                   {/* Hover Effect Overlay */}
-                  <div
-                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"
-                    style={{ backgroundColor: card.color }}
-                  />
-                </button>
+                  {!isDisabled && (
+                    <div
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"
+                      style={{ backgroundColor: card.color }}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>

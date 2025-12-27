@@ -63,19 +63,61 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
+  // 🔴 CLOSED BETA: Block all Searcher-related routes
+  const searcherRoutes = [
+    '/dashboard/searcher',
+    '/onboarding/searcher',
+    '/matching',
+    '/favorites'
+  ]
+
+  const isSearcherRoute = searcherRoutes.some(route => pathname.startsWith(route))
+
+  if (isSearcherRoute) {
+    // Redirect ALL searcher-related routes to coming-soon page
+    return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+  }
+
+  // 🔴 CLOSED BETA: Also block if user has user_type = 'searcher'
+  if (user) {
+    const { data: userData } = await supabase
+      .from('users')
+      .select('user_type')
+      .eq('id', user.id)
+      .single()
+
+    if (userData?.user_type === 'searcher') {
+      // Allow only specific paths for searcher users
+      const allowedPathsForSearchers = [
+        '/coming-soon/searcher',
+        '/profile',
+        '/auth',
+        '/welcome'
+      ]
+
+      const isAllowedPath = allowedPathsForSearchers.some(path =>
+        pathname.startsWith(path)
+      )
+
+      if (!isAllowedPath) {
+        return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
+      }
+    }
+  }
+
   // Handle route redirects for standardization
   const routeRedirects: Record<string, string> = {
     '/properties/new': '/properties/add',
-    '/groups/new': '/dashboard/searcher/groups/create',
-    '/groups/create': '/dashboard/searcher/groups/create',
+    '/groups/new': '/coming-soon/searcher', // 🔴 CLOSED BETA
+    '/groups/create': '/coming-soon/searcher', // 🔴 CLOSED BETA
     '/auth/signup': '/auth?mode=signup',
     '/auth/login': '/auth',
     '/login': '/auth',
     '/signup': '/auth?mode=signup',
-    '/properties': '/dashboard/searcher',
-    '/properties/browse': '/dashboard/searcher',
-    '/matching/matches': '/dashboard/searcher/groups',
-    '/dashboard/searcher/top-matches': '/dashboard/searcher/groups',
+    '/properties': '/coming-soon/searcher', // 🔴 CLOSED BETA
+    '/properties/browse': '/coming-soon/searcher', // 🔴 CLOSED BETA
+    '/matching/matches': '/coming-soon/searcher', // 🔴 CLOSED BETA
+    '/dashboard/searcher/top-matches': '/coming-soon/searcher', // 🔴 CLOSED BETA
   }
 
   // Check if current path needs redirection

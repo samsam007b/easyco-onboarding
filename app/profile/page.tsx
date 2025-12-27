@@ -112,10 +112,11 @@ interface UserProfile {
   verification_status?: string | null
 }
 
+// 🔴 CLOSED BETA: Searcher disabled
 const USER_TYPES = [
-  { value: 'searcher', label: 'Searcher (looking for a place)' },
-  { value: 'owner', label: 'Owner (have properties to rent)' },
-  { value: 'resident', label: 'Resident (currently renting)' },
+  { value: 'searcher', label: 'Searcher (looking for a place)', disabled: true }, // 🔴 CLOSED BETA
+  { value: 'owner', label: 'Owner (have properties to rent)', disabled: false },
+  { value: 'resident', label: 'Resident (currently renting)', disabled: false },
 ]
 
 type TabType = 'profile' | 'settings'
@@ -257,6 +258,15 @@ export default function ProfilePage() {
   // Confirm role switch
   const handleConfirmRoleSwitch = async () => {
     if (!userData) return
+
+    // 🔴 CLOSED BETA: Block switch to Searcher
+    if (selectedUserType === 'searcher') {
+      toast.error('La fonction Chercheur arrive très prochainement !', {
+        description: 'Consultez /coming-soon/searcher pour plus d\'informations'
+      })
+      setShowRoleSwitchModal(false)
+      return
+    }
 
     setIsChangingUserType(true)
 

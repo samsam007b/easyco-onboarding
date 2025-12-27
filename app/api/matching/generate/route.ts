@@ -10,6 +10,18 @@ export const dynamic = 'force-dynamic';
  * Generate matches for the current user
  */
 export async function POST(request: Request) {
+  // 🔴 CLOSED BETA: Matching feature temporarily unavailable
+  return NextResponse.json(
+    {
+      error: 'Feature coming soon',
+      message: 'La fonction de matching sera disponible prochainement. Inscrivez-vous à la liste d\'attente !',
+      status: 'coming_soon',
+      redirect: '/coming-soon/searcher'
+    },
+    { status: 503 } // Service Unavailable
+  );
+
+  /* DISABLED FOR CLOSED BETA
   try {
     const supabase = await createClient();
 
@@ -64,4 +76,5 @@ export async function POST(request: Request) {
     console.error('Error generating matches:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
+  */
 }
