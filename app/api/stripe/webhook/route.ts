@@ -138,8 +138,25 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     status = 'cancelled';
   }
 
-  // Get the price ID from the first subscription item
-  const priceId = subscription.items.data[0]?.price.id;
+  // Get the first subscription item (contains price and period info)
+  const subscriptionItem = subscription.items.data[0];
+  const priceId = subscriptionItem?.price.id;
+
+  // Get period dates from subscription item (API 2025-12-15.clover structure)
+  // Use type assertion for newer Stripe API structure
+  const subData = subscription as unknown as {
+    current_period_start?: number;
+    current_period_end?: number;
+    cancel_at_period_end: boolean;
+    customer: string | Stripe.Customer | Stripe.DeletedCustomer;
+    id: string;
+  };
+
+  // Period dates might be at subscription level or item level depending on API version
+  const periodStart = subData.current_period_start
+    || (subscriptionItem as unknown as { current_period_start?: number })?.current_period_start;
+  const periodEnd = subData.current_period_end
+    || (subscriptionItem as unknown as { current_period_end?: number })?.current_period_end;
 
   // Update subscription in database
   const { error } = await supabase
@@ -150,8 +167,8 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
       stripe_customer_id: subscription.customer as string,
       stripe_subscription_id: subscription.id,
       stripe_price_id: priceId,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      current_period_start: periodStart ? new Date(periodStart * 1000).toISOString() : null,
+      current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
       cancel_at_period_end: subscription.cancel_at_period_end,
     })
     .eq('user_id', userId);
@@ -198,7 +215,11 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
  * Update subscription status when payment succeeds
  */
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription;
+  // Use type assertion for newer Stripe API structure
+  const invoiceData = invoice as unknown as {
+    subscription?: string | null;
+  };
+  const subscriptionId = invoiceData.subscription;
 
   if (!subscriptionId || typeof subscriptionId !== 'string') {
     return;
@@ -214,7 +235,11 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
  * Update subscription status when payment fails
  */
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription;
+  // Use type assertion for newer Stripe API structure
+  const invoiceData = invoice as unknown as {
+    subscription?: string | null;
+  };
+  const subscriptionId = invoiceData.subscription;
 
   if (!subscriptionId || typeof subscriptionId !== 'string') {
     return;

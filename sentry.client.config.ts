@@ -7,8 +7,8 @@ import * as Sentry from "@sentry/nextjs";
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1,
+  // Sample rate - lower in production for cost efficiency
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
@@ -20,10 +20,30 @@ Sentry.init({
   // Integrations
   integrations: [
     Sentry.replayIntegration({
-      // Additional SDK configuration goes in here, for example:
       maskAllText: true,
       blockAllMedia: true,
     }),
+  ],
+
+  // Environment and release info
+  environment: process.env.NODE_ENV,
+  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+
+  // Ignore known benign errors
+  ignoreErrors: [
+    // Browser extensions
+    'top.GLOBALS',
+    'originalCreateNotification',
+    'canvas.contentDocument',
+    'MyApp_RemoveAllHighlights',
+    // Facebook errors
+    'fb_xd_fragment',
+    // Network errors that are expected
+    'NetworkError',
+    'Failed to fetch',
+    'Load failed',
+    // Browser quirks
+    'ResizeObserver loop',
   ],
 
   // Filter out certain errors that aren't useful
@@ -34,14 +54,9 @@ Sentry.init({
       return null;
     }
 
-    // Filter out known benign errors
+    // Filter out hydration errors that don't affect UX
     const error = hint.originalException;
     if (error instanceof Error) {
-      // Ignore ResizeObserver errors (common browser quirk)
-      if (error.message?.includes('ResizeObserver')) {
-        return null;
-      }
-      // Ignore hydration errors that don't affect UX
       if (error.message?.includes('Hydration failed')) {
         return null;
       }
@@ -49,7 +64,4 @@ Sentry.init({
 
     return event;
   },
-
-  // Environment
-  environment: process.env.NODE_ENV,
 });
