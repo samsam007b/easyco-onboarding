@@ -35,6 +35,9 @@ COMMENT ON COLUMN public.subscriptions.current_period_start IS 'Start of current
 COMMENT ON COLUMN public.subscriptions.current_period_end IS 'End of current billing period (from Stripe)';
 COMMENT ON COLUMN public.subscriptions.cancel_at_period_end IS 'Whether subscription will cancel at end of current period';
 
+-- Drop existing function first (to allow changing return type)
+DROP FUNCTION IF EXISTS public.get_subscription_status(uuid);
+
 -- Update the get_subscription_status function to include Stripe info
 CREATE OR REPLACE FUNCTION public.get_subscription_status(p_user_id uuid)
 RETURNS jsonb AS $$
