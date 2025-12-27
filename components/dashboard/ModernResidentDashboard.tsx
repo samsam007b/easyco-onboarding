@@ -31,6 +31,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
+import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
 
 interface DashboardStats {
   rentStatus: {
@@ -304,6 +305,9 @@ export default function ModernResidentDashboard() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Stripe Upgrade Notification */}
+      <UpgradeNotification />
+
       {/* Glassmorphism background with resident orange gradient */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}

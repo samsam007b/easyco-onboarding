@@ -68,8 +68,8 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
   const isEndingSoon = status.trial_days_remaining <= 7;
   const isCritical = status.trial_days_remaining <= 3;
 
-  // Calculate pricing based on user type
-  const monthlyPrice = status.user_type === 'owner' ? 29 : 9;
+  // Calculate pricing based on user type (tarif de lancement)
+  const monthlyPrice = status.user_type === 'owner' ? 15.99 : 7.99;
   const trialDaysTotal = status.user_type === 'owner' ? 90 : 180;
 
   // Color scheme based on urgency

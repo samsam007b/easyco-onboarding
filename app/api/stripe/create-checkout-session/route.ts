@@ -69,6 +69,10 @@ export async function POST(request: NextRequest) {
     // Get Stripe Price ID for the plan
     const priceId = getPriceId(plan);
 
+    // Determine redirect URL based on user type
+    const isOwner = plan.startsWith('owner_');
+    const dashboardUrl = isOwner ? '/dashboard/owner' : '/hub';
+
     // Create Checkout Session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -80,8 +84,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${request.nextUrl.origin}/dashboard?upgrade=success`,
-      cancel_url: `${request.nextUrl.origin}/dashboard?upgrade=cancelled`,
+      success_url: `${request.nextUrl.origin}${dashboardUrl}?upgrade=success`,
+      cancel_url: `${request.nextUrl.origin}${dashboardUrl}?upgrade=cancelled`,
       metadata: {
         supabase_user_id: user.id,
         plan: plan,

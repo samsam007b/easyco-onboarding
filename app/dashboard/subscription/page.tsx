@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import PlanSelectorModal from '@/components/subscriptions/PlanSelectorModal';
 
 interface SubscriptionStatus {
   subscription_id: string;
@@ -38,6 +39,7 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<SubscriptionStatus | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [showPlanModal, setShowPlanModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -76,8 +78,7 @@ export default function SubscriptionPage() {
   };
 
   const handleAddPaymentMethod = () => {
-    // TODO: Integrate Stripe Checkout for payment method setup
-    alert('🚧 Intégration Stripe en cours de développement');
+    setShowPlanModal(true);
   };
 
   const handleCancelSubscription = async () => {
@@ -161,9 +162,10 @@ export default function SubscriptionPage() {
     );
   }
 
-  const monthlyPrice = status.user_type === 'owner' ? 29 : 9;
-  const annualPrice = status.user_type === 'owner' ? 290 : 90;
-  const annualSavings = monthlyPrice * 12 - annualPrice;
+  // Tarif de lancement
+  const monthlyPrice = status.user_type === 'owner' ? 15.99 : 7.99;
+  const annualPrice = status.user_type === 'owner' ? 159.90 : 79.90;
+  const annualSavings = (monthlyPrice * 12 - annualPrice).toFixed(2);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -391,10 +393,10 @@ export default function SubscriptionPage() {
                 <p className="text-sm text-white/90">Économisez {annualSavings}€ par an</p>
               </div>
               <button
-                disabled
-                className="w-full py-3 bg-white text-purple-600 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => setShowPlanModal(true)}
+                className="w-full py-3 bg-white text-purple-600 rounded-lg font-semibold hover:bg-gray-100 transition"
               >
-                🚧 Bientôt disponible
+                Passer à l'annuel
               </button>
             </motion.div>
 
@@ -460,6 +462,15 @@ export default function SubscriptionPage() {
             </motion.div>
           </div>
         </div>
+
+        {/* Plan Selector Modal */}
+        {status && (
+          <PlanSelectorModal
+            isOpen={showPlanModal}
+            onClose={() => setShowPlanModal(false)}
+            userType={status.user_type}
+          />
+        )}
       </div>
     </div>
   );

@@ -39,6 +39,7 @@ import {
 } from 'recharts';
 import type { Property } from '@/types/property.types';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
+import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -209,6 +210,9 @@ export default function ModernOwnerDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
+      {/* Stripe Upgrade Notification */}
+      <UpgradeNotification />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Welcome Section */}
       <motion.div
