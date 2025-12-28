@@ -212,7 +212,7 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
           'Authorization': `Bearer ${resendApiKey}`,
         },
         body: JSON.stringify({
-          from: 'Easyco Security <security@easyco.be>',
+          from: 'IzzIco Security <hello@izzico.be>',
           to: recipients,
           subject: `[${event.severity.toUpperCase()}] Security ${event.type}: ${event.title}`,
           html: htmlContent,
