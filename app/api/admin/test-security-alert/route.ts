@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
       success: result.success,
       message: 'Test alert sent',
       channels: result.channels,
+      errors: result.errors,
       config: {
         emailEnabled: !!process.env.SECURITY_EMAIL_ENABLED,
         slackEnabled: !!process.env.SECURITY_SLACK_WEBHOOK_URL,

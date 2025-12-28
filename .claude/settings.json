@@ -1,5 +1,28 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/.claude/plugins/cache/claude-code-plugins/project-sync/1.0.0/hooks-handlers/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "TodoWrite"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/.claude/plugins/cache/claude-code-plugins/project-sync/1.0.0/hooks-handlers/post-todowrite.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

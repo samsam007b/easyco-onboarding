@@ -21,7 +21,10 @@ import {
   Settings as SettingsIcon,
   HelpCircle,
   Home,
-  ArrowLeft
+  ArrowLeft,
+  Sparkles,
+  Receipt,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -171,13 +174,31 @@ export default function SettingsPage() {
       category: 'preferences',
     },
     {
+      id: 'subscription',
+      title: 'Mon Abonnement',
+      description: 'Gérer votre plan et votre essai gratuit',
+      icon: Sparkles,
+      href: '/dashboard/subscription',
+      color: 'bg-gradient-to-br from-purple-100 to-pink-100',
+      badge: 'Premium',
+      category: 'advanced',
+    },
+    {
       id: 'payment',
-      title: 'Paiement',
-      description: 'Gérer vos moyens de paiement',
+      title: 'Moyens de paiement',
+      description: 'Gérer vos cartes et méthodes de paiement',
       icon: CreditCard,
       href: '/settings/payment',
       color: 'bg-indigo-100',
-      badge: userType === 'owner' ? 'Pro' : undefined,
+      category: 'advanced',
+    },
+    {
+      id: 'invoices',
+      title: 'Factures',
+      description: 'Historique et téléchargement des factures',
+      icon: Receipt,
+      href: '/settings/invoices',
+      color: 'bg-emerald-100',
       category: 'advanced',
     },
     {
@@ -324,14 +345,21 @@ export default function SettingsPage() {
                               section.id === 'notifications' ? 'text-yellow-600' :
                               section.id === 'language' ? 'text-emerald-600' :
                               section.id === 'email' ? 'text-pink-600' :
+                              section.id === 'subscription' ? 'text-purple-600' :
                               section.id === 'payment' ? 'text-indigo-600' :
+                              section.id === 'invoices' ? 'text-emerald-600' :
                               section.id === 'devices' ? 'text-cyan-600' :
                               'text-gray-700'
                             )} />
                           </div>
                           {section.badge && (
-                            <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-100 text-orange-700 border border-orange-200">
-                              {section.badge}
+                            <span className={cn(
+                              "px-2.5 py-1 rounded-lg text-xs font-semibold border",
+                              section.badge === 'Premium'
+                                ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200'
+                                : 'bg-orange-100 text-orange-700 border-orange-200'
+                            )}>
+                              {section.badge === 'Premium' && '✨ '}{section.badge}
                             </span>
                           )}
                         </div>

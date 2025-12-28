@@ -219,15 +219,19 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
         }),
       });
 
+      const responseText = await response.text();
+
       if (!response.ok) {
-        console.error('[SecurityNotifications] Email notification failed:', await response.text());
-        return false;
+        console.error('[SecurityNotifications] Email notification failed:', responseText);
+        throw new Error(`Resend API error: ${responseText}`);
       }
 
+      console.log('[SecurityNotifications] Email sent successfully:', responseText);
       return true;
     } catch (error) {
       console.error('[SecurityNotifications] Email notification error:', error);
-      return false;
+      // Re-throw to propagate error to caller
+      throw error;
     }
   } else {
     // Log for development
@@ -289,6 +293,7 @@ async function sendInAppNotification(event: SecurityEvent): Promise<boolean> {
 export async function sendSecurityNotification(event: SecurityEvent): Promise<{
   success: boolean;
   channels: { email: boolean; slack: boolean; inApp: boolean };
+  errors?: { email?: string; slack?: string; inApp?: string };
 }> {
   const config = getNotificationConfig();
   const eventLevel = SEVERITY_LEVELS[event.severity];
@@ -305,6 +310,8 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
     inApp: false,
   };
 
+  const errors: { email?: string; slack?: string; inApp?: string } = {};
+
   // Check if severity meets threshold
   if (eventLevel < minLevel) {
     console.log(`[SecurityNotifications] Event severity ${event.severity} below threshold ${config.minSeverity}`);
@@ -317,27 +324,27 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
   // Slack
   if (config.slackEnabled && config.slackWebhookUrl) {
     promises.push(
-      sendSlackNotification(event, config.slackWebhookUrl).then((r) => {
-        results.slack = r;
-      })
+      sendSlackNotification(event, config.slackWebhookUrl)
+        .then((r) => { results.slack = r; })
+        .catch((e) => { errors.slack = String(e); })
     );
   }
 
   // Email
   if (config.emailEnabled && config.emailRecipients.length > 0) {
     promises.push(
-      sendEmailNotification(event, config.emailRecipients).then((r) => {
-        results.email = r;
-      })
+      sendEmailNotification(event, config.emailRecipients)
+        .then((r) => { results.email = r; })
+        .catch((e) => { errors.email = String(e); })
     );
   }
 
   // In-app (always for critical/high)
   if (config.inAppEnabled && (event.severity === 'critical' || event.severity === 'high')) {
     promises.push(
-      sendInAppNotification(event).then((r) => {
-        results.inApp = r;
-      })
+      sendInAppNotification(event)
+        .then((r) => { results.inApp = r; })
+        .catch((e) => { errors.inApp = String(e); })
     );
   }
 
@@ -349,9 +356,10 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
     event: event.title,
     severity: event.severity,
     channels: results,
+    errors,
   });
 
-  return { success, channels: results };
+  return { success, channels: results, errors: Object.keys(errors).length > 0 ? errors : undefined };
 }
 
 // ============================================================================
