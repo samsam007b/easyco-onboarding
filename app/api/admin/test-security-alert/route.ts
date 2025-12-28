@@ -7,11 +7,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
+import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendSecurityNotification } from '@/lib/services/security-notifications';
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify admin authentication
+    // Verify authentication
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -22,8 +23,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
+    // Check if user is admin using admin client (bypasses RLS)
+    const adminClient = getAdminClient();
+    const { data: admin } = await adminClient
       .from('admins')
       .select('id')
       .eq('user_id', user.id)
@@ -78,7 +80,7 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check configuration status
 export async function GET(request: NextRequest) {
   try {
-    // Verify admin authentication
+    // Verify authentication
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -89,8 +91,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
+    // Check if user is admin using admin client (bypasses RLS)
+    const adminClient = getAdminClient();
+    const { data: admin } = await adminClient
       .from('admins')
       .select('id')
       .eq('user_id', user.id)
