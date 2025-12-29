@@ -3,7 +3,7 @@
  * Unified types for multi-provider AI integration
  */
 
-export type AIProvider = 'gemini' | 'openai' | 'together' | 'groq' | 'mistral' | 'tesseract';
+export type AIProvider = 'gemini' | 'vision+gemini' | 'openai' | 'groq' | 'mistral' | 'tesseract' | 'none';
 
 export type AIFeature = 'ocr' | 'categorization' | 'chat' | 'document_analysis';
 
