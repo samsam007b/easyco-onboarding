@@ -18,7 +18,8 @@ if (!STRIPE_SECRET_KEY) {
 }
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2025-12-15.clover',
+  // Use latest stable API version - cast needed because stripe@20.x types expect preview version
+  apiVersion: '2024-12-18.acacia' as Stripe.LatestApiVersion,
 });
 
 interface ProductConfig {
