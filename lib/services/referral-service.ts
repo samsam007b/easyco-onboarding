@@ -281,7 +281,7 @@ export async function checkPendingReferral(
  */
 export async function getReferralCredits(
   userId?: string
-): Promise<ServiceResult<{ earned: number; used: number; available: number }>> {
+): Promise<ServiceResult<{ earned: number; used: number; available: number; successfulReferrals: number }>> {
   try {
     const supabase = createClient();
 
@@ -297,7 +297,7 @@ export async function getReferralCredits(
 
     const { data, error } = await supabase
       .from('referral_credits')
-      .select('total_credits_earned, credits_used')
+      .select('total_credits_earned, credits_used, successful_referrals')
       .eq('user_id', targetUserId)
       .single();
 
@@ -309,10 +309,11 @@ export async function getReferralCredits(
     const earned = data?.total_credits_earned || 0;
     const used = data?.credits_used || 0;
     const available = Math.min(earned - used, 24); // Cap at 24 months
+    const successfulReferrals = data?.successful_referrals || 0;
 
     return {
       success: true,
-      data: { earned, used, available: Math.max(0, available) },
+      data: { earned, used, available: Math.max(0, available), successfulReferrals },
     };
   } catch (error) {
     logger.error('getReferralCredits error:', error);

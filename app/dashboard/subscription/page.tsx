@@ -34,7 +34,14 @@ import PlanSelectorModal from '@/components/subscriptions/PlanSelectorModal';
 import { useStripeCheckout, SubscriptionPlan } from '@/hooks/use-stripe-checkout';
 import { Loader2 } from 'lucide-react';
 import { getReferralCredits } from '@/lib/services/referral-service';
-import type { ReferralCredits } from '@/types/referral.types';
+
+// Simple type for referral credits display
+interface ReferralCreditsDisplay {
+  earned: number;
+  used: number;
+  available: number;
+  successfulReferrals: number;
+}
 
 interface SubscriptionStatus {
   status: 'trial' | 'active' | 'past_due' | 'canceled' | 'expired';
@@ -64,7 +71,7 @@ export default function SubscriptionPage() {
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [showPlanModal, setShowPlanModal] = useState(false);
-  const [referralCredits, setReferralCredits] = useState<ReferralCredits | null>(null);
+  const [referralCredits, setReferralCredits] = useState<ReferralCreditsDisplay | null>(null);
   const { startCheckout, isLoading: checkoutLoading, error: checkoutError } = useStripeCheckout();
 
   useEffect(() => {
@@ -1091,7 +1098,7 @@ export default function SubscriptionPage() {
           {/* Sidebar - Right 1/3 */}
           <div className="space-y-6">
             {/* Referral Credits Card */}
-            {referralCredits && referralCredits.credits_available > 0 && (
+            {referralCredits && referralCredits.available > 0 && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1104,11 +1111,11 @@ export default function SubscriptionPage() {
                 </div>
                 <div className="mb-4">
                   <div className="flex items-baseline gap-1 mb-1">
-                    <span className="text-4xl font-bold">{referralCredits.credits_available}</span>
+                    <span className="text-4xl font-bold">{referralCredits.available}</span>
                     <span className="text-white/80">mois disponibles</span>
                   </div>
                   <p className="text-sm text-white/90">
-                    {referralCredits.successful_referrals} parrainage{referralCredits.successful_referrals > 1 ? 's' : ''} réussi{referralCredits.successful_referrals > 1 ? 's' : ''}
+                    {referralCredits.successfulReferrals} parrainage{referralCredits.successfulReferrals > 1 ? 's' : ''} réussi{referralCredits.successfulReferrals > 1 ? 's' : ''}
                   </p>
                 </div>
                 <button
@@ -1121,7 +1128,7 @@ export default function SubscriptionPage() {
             )}
 
             {/* Invite Friends Card (shown when no credits) */}
-            {(!referralCredits || referralCredits.credits_available === 0) && (
+            {(!referralCredits || referralCredits.available === 0) && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
