@@ -28,12 +28,21 @@ async function checkSuperAdmin() {
   return user;
 }
 
-async function getAdmins() {
+interface Admin {
+  id: string;
+  email: string;
+  role: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+async function getAdmins(): Promise<Admin[]> {
   // Use admin client to bypass RLS - user is already verified as super_admin
   const adminClient = getAdminClient();
 
-  const { data: admins, error } = await adminClient
-    .from('admins')
+  const { data: admins, error } = await (adminClient
+    .from('admins') as any)
     .select(`
       id,
       email,
@@ -46,10 +55,10 @@ async function getAdmins() {
 
   if (error) {
     console.error('Error fetching admins:', error);
-    return [];
+    return [] as Admin[];
   }
 
-  return admins || [];
+  return (admins || []) as Admin[];
 }
 
 export default async function AdminsManagementPage() {
