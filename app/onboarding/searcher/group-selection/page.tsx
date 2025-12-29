@@ -2,10 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, UserCircle, UserPlus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Users, UserCircle, UserPlus, Info, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import {
+  OnboardingLayout,
+  OnboardingHeading,
+  OnboardingButton,
+  OnboardingGrid,
+} from '@/components/onboarding';
 
 type SearchMode = 'alone' | 'create_group' | 'join_group' | null;
 
@@ -22,13 +26,10 @@ export default function GroupSelectionPage() {
 
     // Route based on selection
     if (selectedMode === 'alone') {
-      // Go directly to basic-info onboarding
       router.push('/onboarding/searcher/basic-info');
     } else if (selectedMode === 'create_group') {
-      // Go to group creation page
       router.push('/onboarding/searcher/create-group');
     } else if (selectedMode === 'join_group') {
-      // Go to join group page
       router.push('/onboarding/searcher/join-group');
     }
   };
@@ -37,125 +38,114 @@ export default function GroupSelectionPage() {
     {
       id: 'alone' as SearchMode,
       icon: UserCircle,
-      title: 'Search Alone',
-      description: 'Find and apply for properties individually',
-      gradient: 'from-[#FFA040] to-[#FFB85C]',
+      title: t('onboarding.groupSelection.aloneTitle') || 'Seul(e)',
+      description: t('onboarding.groupSelection.aloneDesc') || 'Recherchez et postulez individuellement',
     },
     {
       id: 'create_group' as SearchMode,
       icon: Users,
-      title: 'Create a Group',
-      description: 'Start a group and invite friends to search together',
-      gradient: 'from-[#FFA040] to-[#FFB85C]',
+      title: t('onboarding.groupSelection.createTitle') || 'Créer un groupe',
+      description: t('onboarding.groupSelection.createDesc') || 'Invitez des amis pour chercher ensemble',
     },
     {
       id: 'join_group' as SearchMode,
       icon: UserPlus,
-      title: 'Join a Group',
-      description: 'Enter an invite code to join an existing group',
-      gradient: 'from-blue-500 to-blue-600',
+      title: t('onboarding.groupSelection.joinTitle') || 'Rejoindre un groupe',
+      description: t('onboarding.groupSelection.joinDesc') || 'Utilisez un code d\'invitation',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-8 px-4">
-      {/* Language Switcher */}
-      <div className="absolute top-6 right-6 z-50">
-        <LanguageSwitcher />
-      </div>
+    <OnboardingLayout
+      role="searcher"
+      backUrl="/onboarding/searcher"
+      backLabel={t('common.back') || 'Retour'}
+      progress={{
+        current: 0,
+        total: 6,
+        label: t('onboarding.groupSelection.progress') || 'Étape préliminaire',
+        stepName: t('onboarding.groupSelection.stepName') || 'Mode de recherche',
+      }}
+    >
+      <OnboardingHeading
+        role="searcher"
+        title={t('onboarding.groupSelection.title') || 'Comment souhaitez-vous chercher ?'}
+        description={t('onboarding.groupSelection.subtitle') || 'Choisissez si vous voulez chercher seul(e) ou en groupe'}
+      />
 
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            How do you want to search?
-          </h1>
-          <p className="text-lg text-gray-600">
-            Choose whether you want to search for properties alone or with a group
-          </p>
-        </div>
+      {/* Options Grid */}
+      <OnboardingGrid columns={3} className="mb-6">
+        {options.map((option) => {
+          const Icon = option.icon;
+          const isSelected = selectedMode === option.id;
 
-        {/* Options Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {options.map((option) => {
-            const Icon = option.icon;
-            const isSelected = selectedMode === option.id;
+          return (
+            <button
+              key={option.id}
+              onClick={() => setSelectedMode(option.id)}
+              className={`
+                relative p-6 rounded-2xl text-center transition-all duration-200
+                ${isSelected
+                  ? 'bg-orange-50 border-2 border-orange-500 shadow-lg'
+                  : 'bg-white border-2 border-gray-200 hover:border-orange-300 hover:shadow-md'
+                }
+              `}
+            >
+              {/* Icon Circle */}
+              <div className={`
+                w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center
+                bg-gradient-to-br from-[#FF8C42] to-[#FFB85C]
+                ${isSelected ? 'ring-4 ring-orange-200' : ''}
+              `}>
+                <Icon className="w-8 h-8 text-white" />
+              </div>
 
-            return (
-              <button
-                key={option.id}
-                onClick={() => setSelectedMode(option.id)}
-                className={`
-                  relative bg-white rounded-3xl p-8 text-center transition-all duration-300
-                  ${isSelected
-                    ? 'ring-4 ring-orange-500 shadow-2xl scale-105'
-                    : 'shadow-lg hover:shadow-xl hover:scale-102'
-                  }
-                `}
-              >
-                {/* Icon Circle */}
-                <div className={`
-                  w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center
-                  bg-gradient-to-br ${option.gradient}
-                  ${isSelected ? 'ring-4 ring-orange-200' : ''}
-                `}>
-                  <Icon className="w-10 h-10 text-white" />
-                </div>
+              {/* Title */}
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                {option.title}
+              </h3>
 
-                {/* Title */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  {option.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {option.description}
-                </p>
-
-                {/* Selected Indicator */}
-                {isSelected && (
-                  <div className="absolute top-4 right-4 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Info Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
-          <div className="flex gap-3">
-            <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-semibold text-blue-900 mb-1">
-                Don't worry, you can change this later
-              </h4>
-              <p className="text-blue-800 text-sm">
-                You can create or join groups at any time from your dashboard. This just helps us get started.
+              {/* Description */}
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {option.description}
               </p>
-            </div>
+
+              {/* Selected Indicator */}
+              {isSelected && (
+                <div className="absolute top-3 right-3 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                  <Check className="w-4 h-4 text-white" />
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </OnboardingGrid>
+
+      {/* Info Box */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+        <div className="flex gap-3">
+          <div className="flex-shrink-0">
+            <Info className="w-5 h-5 text-blue-600 mt-0.5" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-blue-900 text-sm mb-1">
+              {t('onboarding.groupSelection.infoTitle') || 'Vous pourrez changer plus tard'}
+            </h4>
+            <p className="text-blue-800 text-sm">
+              {t('onboarding.groupSelection.infoDesc') || 'Créez ou rejoignez des groupes à tout moment depuis votre tableau de bord.'}
+            </p>
           </div>
         </div>
-
-        {/* Continue Button */}
-        <div className="flex justify-center">
-          <Button
-            onClick={handleContinue}
-            disabled={!selectedMode}
-            size="lg"
-            className="px-12 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Continue
-          </Button>
-        </div>
       </div>
-    </div>
+
+      {/* Continue Button */}
+      <OnboardingButton
+        role="searcher"
+        onClick={handleContinue}
+        disabled={!selectedMode}
+      >
+        {t('common.continue') || 'Continuer'}
+      </OnboardingButton>
+    </OnboardingLayout>
   );
 }
