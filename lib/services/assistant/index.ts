@@ -25,5 +25,7 @@ export {
   tryFAQAnswer,
   detectIntent,
   getFAQResponse,
+  DEFAULT_USER_CONTEXT,
   type Intent,
+  type UserContext,
 } from './faq-system';

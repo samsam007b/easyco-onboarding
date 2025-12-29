@@ -179,7 +179,7 @@ async function structureTextWithGemini(
 ): Promise<OCRResult> {
   const startTime = Date.now();
 
-  const prompt = `Analyze this receipt text and extract information in JSON format:
+  const prompt = `Analyze this receipt text and extract ALL line items in JSON format:
 
 RECEIPT TEXT:
 """
@@ -192,18 +192,25 @@ Return this JSON structure:
   "total": numeric total amount (just the number, no currency symbol),
   "date": "YYYY-MM-DD format",
   "items": [
-    {"name": "item name", "quantity": 1, "unit_price": 0.00, "total_price": 0.00}
+    {"name": "item name or — if unclear", "quantity": 1, "unit_price": 0.00, "total_price": 0.00}
   ],
   "category": one of: "groceries", "cleaning", "utilities", "internet", "rent", "entertainment", "transport", "health", "other",
   "confidence": 0.0-1.0 confidence score
 }
 
-Rules:
+CRITICAL RULES FOR ITEMS:
+- Include EVERY line that looks like a product/item, even if partially readable
+- If you see a price but can't read the name clearly, use "—" as the name
+- If you see a name but no price, include with total_price: 0
+- The SUM of all item prices should be CLOSE to the total amount
+- Better to include too many items than too few - user can delete extras
+- Look for prices at end of lines (e.g., "FRITES 6,50" or "6.50 FRITES")
+
+OTHER RULES:
 - Extract the TOTAL amount paid (look for "Total", "Somme", "Net à payer", "Cash", "Carte", "CB")
 - Date should be in YYYY-MM-DD format
-- Items should include quantity if available
+- Items should include quantity if available (default to 1)
 - Category should match the type of purchase
-- If information is unclear, omit the field rather than guess
 - Return ONLY valid JSON, no explanations`;
 
   try {
@@ -297,24 +304,30 @@ async function analyzeWithGemini(
 ): Promise<OCRResult> {
   const startTime = Date.now();
 
-  const prompt = `Analyze this receipt image and extract the following information in JSON format:
+  const prompt = `Analyze this receipt image and extract ALL line items in JSON format:
 {
   "merchant": "store name",
   "total": numeric total amount (just the number, no currency symbol),
   "date": "YYYY-MM-DD format",
   "items": [
-    {"name": "item name", "quantity": 1, "unit_price": 0.00, "total_price": 0.00}
+    {"name": "item name or — if unclear", "quantity": 1, "unit_price": 0.00, "total_price": 0.00}
   ],
   "category": one of: "groceries", "cleaning", "utilities", "internet", "rent", "entertainment", "transport", "health", "other",
   "confidence": 0.0-1.0 confidence score
 }
 
-Rules:
-- Extract the TOTAL amount paid (look for "Total", "Somme", "Net à payer", "Cash", "Carte")
+CRITICAL RULES FOR ITEMS:
+- Include EVERY line that looks like a product/item, even if partially readable
+- If you see a price but can't read the name clearly, use "—" as the name
+- If you see a name but no price, include with total_price: 0
+- The SUM of all item prices should be CLOSE to the total amount
+- Better to include too many items than too few - user can delete extras
+
+OTHER RULES:
+- Extract the TOTAL amount paid (look for "Total", "Somme", "Net à payer", "Cash", "Carte", "CB")
 - Date should be in YYYY-MM-DD format
-- Items should include quantity if available
+- Items should include quantity if available (default to 1)
 - Category should match the type of purchase
-- If information is unclear, omit the field rather than guess
 - Return ONLY valid JSON, no explanations`;
 
   try {

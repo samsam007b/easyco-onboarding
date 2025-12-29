@@ -15,7 +15,13 @@
  * Estimation coût: < $5/mois pour 5000 conversations
  */
 
-import { tryFAQAnswer, detectIntent, type Intent } from './faq-system';
+import {
+  tryFAQAnswer,
+  detectIntent,
+  type Intent,
+  type UserContext,
+  DEFAULT_USER_CONTEXT,
+} from './faq-system';
 
 // =====================================================
 // CONFIGURATION
@@ -119,7 +125,11 @@ interface ComplexityAnalysis {
 /**
  * Analyze message complexity to route to appropriate provider
  */
-export function analyzeComplexity(message: string, conversationLength: number): ComplexityAnalysis {
+export function analyzeComplexity(
+  message: string,
+  conversationLength: number,
+  userContext: UserContext = DEFAULT_USER_CONTEXT
+): ComplexityAnalysis {
   const reasons: string[] = [];
   let score = 0;
 
@@ -167,8 +177,8 @@ export function analyzeComplexity(message: string, conversationLength: number): 
   let recommendedProvider: 'faq' | 'groq' | 'openai' = 'groq';
 
   if (score < 0.2) {
-    // Try FAQ first
-    const faqResult = tryFAQAnswer(message, ASSISTANT_CONFIG.faq.minConfidence);
+    // Try FAQ first - pass user context for personalized responses
+    const faqResult = tryFAQAnswer(message, ASSISTANT_CONFIG.faq.minConfidence, userContext);
     if (faqResult) {
       recommendedProvider = 'faq';
     }
@@ -323,25 +333,33 @@ export async function processAssistantMessage(
   options: {
     forceProvider?: 'faq' | 'groq' | 'openai';
     userId?: string;
+    userContext?: UserContext;
   } = {}
 ): Promise<AssistantResponse> {
   const startTime = Date.now();
   resetIfNewDay();
 
-  console.log(`[Assistant] Processing message: "${userMessage.substring(0, 50)}..."`);
+  // Use provided context or default
+  const context = options.userContext || DEFAULT_USER_CONTEXT;
 
-  // Analyze complexity
-  const complexity = analyzeComplexity(userMessage, conversationHistory.length);
+  console.log(`[Assistant] Processing message: "${userMessage.substring(0, 50)}..."`);
+  if (context.firstName) {
+    console.log(`[Assistant] User context: ${context.firstName} (${context.userType})`);
+  }
+
+  // Analyze complexity with user context
+  const complexity = analyzeComplexity(userMessage, conversationHistory.length, context);
   console.log(`[Assistant] Complexity: ${(complexity.score * 100).toFixed(0)}%, Provider: ${complexity.recommendedProvider}`);
 
   // Force provider if specified
   const targetProvider = options.forceProvider || complexity.recommendedProvider;
 
   // =====================================================
-  // Layer 1: FAQ (LOCAL - $0)
+  // Layer 1: FAQ (LOCAL - $0) - PERSONALIZED
   // =====================================================
   if (targetProvider === 'faq' || (!options.forceProvider && conversationHistory.length === 0)) {
-    const faqResponse = tryFAQAnswer(userMessage, ASSISTANT_CONFIG.faq.minConfidence);
+    // Pass user context for personalized responses
+    const faqResponse = tryFAQAnswer(userMessage, ASSISTANT_CONFIG.faq.minConfidence, context);
 
     if (faqResponse && faqResponse.confidence >= ASSISTANT_CONFIG.faq.minConfidence) {
       console.log(`[Assistant] FAQ match: ${faqResponse.intent} (${(faqResponse.confidence * 100).toFixed(0)}%)`);

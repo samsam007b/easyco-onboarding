@@ -13,6 +13,7 @@
 import { openai } from '@ai-sdk/openai';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
+import { createClient } from '@/lib/auth/supabase-server';
 import {
   processAssistantMessage,
   streamGroqResponse,
@@ -20,6 +21,242 @@ import {
   SYSTEM_PROMPT,
   type ChatMessage,
 } from '@/lib/services/assistant';
+import { type UserContext, DEFAULT_USER_CONTEXT } from '@/lib/services/assistant/faq-system';
+
+// =====================================================
+// USER CONTEXT BUILDER
+// =====================================================
+
+/**
+ * Build UserContext from authenticated user's data
+ * Aggregates data from multiple tables for personalization
+ */
+async function buildUserContext(): Promise<UserContext> {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.log('[Assistant] No authenticated user, using default context');
+      return DEFAULT_USER_CONTEXT;
+    }
+
+    // Fetch user profile
+    const { data: profile } = await supabase
+      .from('users')
+      .select(`
+        id,
+        first_name,
+        last_name,
+        display_name,
+        email,
+        user_type,
+        onboarding_completed,
+        onboarding_step,
+        profile_completion_score,
+        email_verified,
+        phone_verified,
+        kyc_status,
+        referral_code,
+        preferred_city,
+        budget_min,
+        budget_max,
+        is_smoker,
+        has_pets,
+        cleanliness_level,
+        sociability_level
+      `)
+      .eq('id', user.id)
+      .single();
+
+    if (!profile) {
+      console.log('[Assistant] No profile found, using default context');
+      return { ...DEFAULT_USER_CONTEXT, userId: user.id, email: user.email };
+    }
+
+    // Fetch subscription info
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('status, trial_end_date, current_period_end')
+      .eq('user_id', user.id)
+      .single();
+
+    // Fetch referral stats
+    const { data: referralStats } = await supabase
+      .from('referrals')
+      .select('id')
+      .eq('referrer_id', user.id);
+
+    const { data: referralCredits } = await supabase
+      .from('referral_credits')
+      .select('credits_months')
+      .eq('user_id', user.id)
+      .single();
+
+    // Fetch property stats (for owners)
+    let propertiesCount = 0;
+    let publishedPropertiesCount = 0;
+    let applicationsCount = 0;
+
+    if (profile.user_type === 'owner') {
+      const { data: properties } = await supabase
+        .from('properties')
+        .select('id, status')
+        .eq('owner_id', user.id);
+
+      propertiesCount = properties?.length || 0;
+      publishedPropertiesCount = properties?.filter(p => p.status === 'published').length || 0;
+
+      // Count pending applications
+      if (propertiesCount > 0) {
+        const propertyIds = properties?.map(p => p.id) || [];
+        const { count } = await supabase
+          .from('applications')
+          .select('id', { count: 'exact', head: true })
+          .in('property_id', propertyIds)
+          .eq('status', 'pending');
+
+        applicationsCount = count || 0;
+      }
+    }
+
+    // Fetch searcher/resident specific data
+    let savedSearchesCount = 0;
+    let favoritesCount = 0;
+    let matchesCount = 0;
+    let currentPropertyName: string | undefined;
+
+    if (profile.user_type === 'searcher' || profile.user_type === 'resident') {
+      // Favorites count
+      const { count: favCount } = await supabase
+        .from('favorites')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      favoritesCount = favCount || 0;
+
+      // Saved searches
+      const { count: searchCount } = await supabase
+        .from('saved_searches')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      savedSearchesCount = searchCount || 0;
+
+      // Matches count (simplified - could be more complex)
+      const { count: matchCount } = await supabase
+        .from('matches')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      matchesCount = matchCount || 0;
+
+      // Current property for residents
+      if (profile.user_type === 'resident') {
+        const { data: residency } = await supabase
+          .from('residencies')
+          .select('property:properties(name)')
+          .eq('user_id', user.id)
+          .eq('status', 'active')
+          .single();
+
+        currentPropertyName = (residency?.property as { name?: string })?.name;
+      }
+    }
+
+    // Unread messages count
+    const { count: unreadCount } = await supabase
+      .from('messages')
+      .select('id', { count: 'exact', head: true })
+      .eq('recipient_id', user.id)
+      .eq('read', false);
+
+    // Calculate trial days remaining
+    let trialDaysRemaining: number | undefined;
+    let subscriptionStatus: UserContext['subscriptionStatus'] = 'none';
+
+    if (subscription) {
+      if (subscription.status === 'trial' && subscription.trial_end_date) {
+        const trialEnd = new Date(subscription.trial_end_date);
+        const now = new Date();
+        trialDaysRemaining = Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+        subscriptionStatus = 'trial';
+      } else if (subscription.status === 'active') {
+        subscriptionStatus = 'active';
+      } else if (subscription.status === 'expired') {
+        subscriptionStatus = 'expired';
+      } else if (subscription.status === 'cancelled') {
+        subscriptionStatus = 'cancelled';
+      }
+    }
+
+    // Build the context
+    const context: UserContext = {
+      // Basic identity
+      userId: user.id,
+      firstName: profile.first_name || undefined,
+      lastName: profile.last_name || undefined,
+      displayName: profile.display_name || undefined,
+      email: profile.email || user.email,
+
+      // User type & status
+      userType: (profile.user_type as UserContext['userType']) || 'unknown',
+      onboardingCompleted: profile.onboarding_completed ?? false,
+      onboardingStep: profile.onboarding_step || undefined,
+      profileCompletionScore: profile.profile_completion_score || undefined,
+
+      // Subscription info
+      subscriptionStatus,
+      trialDaysRemaining,
+      subscriptionEndDate: subscription?.current_period_end || undefined,
+      isPremium: subscriptionStatus === 'active',
+
+      // Verification status
+      emailVerified: profile.email_verified ?? false,
+      phoneVerified: profile.phone_verified ?? false,
+      idVerified: profile.kyc_status === 'verified',
+      kycStatus: profile.kyc_status as UserContext['kycStatus'] || undefined,
+
+      // Referral info
+      referralCode: profile.referral_code || undefined,
+      referralCreditsMonths: referralCredits?.credits_months || 0,
+      referralsCount: referralStats?.length || 0,
+
+      // Property info (for owners)
+      propertiesCount,
+      publishedPropertiesCount,
+      applicationsCount,
+
+      // Searcher/Resident specific
+      savedSearchesCount,
+      favoritesCount,
+      matchesCount,
+      currentPropertyName,
+
+      // Activity
+      unreadMessagesCount: unreadCount || 0,
+
+      // Preferences
+      preferredCity: profile.preferred_city || undefined,
+      budgetMin: profile.budget_min || undefined,
+      budgetMax: profile.budget_max || undefined,
+      language: 'fr',
+
+      // Personality traits
+      isSmoker: profile.is_smoker ?? undefined,
+      hasPets: profile.has_pets ?? undefined,
+      cleanlinessLevel: profile.cleanliness_level || undefined,
+      sociabilityLevel: profile.sociability_level || undefined,
+    };
+
+    console.log(`[Assistant] Built context for ${context.firstName || 'user'} (${context.userType})`);
+    return context;
+
+  } catch (error: any) {
+    console.error('[Assistant] Error building user context:', error.message);
+    return DEFAULT_USER_CONTEXT;
+  }
+}
 
 // =====================================================
 // TOOL DEFINITIONS (shared across providers)
@@ -247,17 +484,20 @@ export async function POST(req: Request) {
       });
     }
 
+    // Build personalized user context (fetches from Supabase)
+    const userContext = await buildUserContext();
+
     // Convert to our ChatMessage format
     const conversationHistory: ChatMessage[] = messages.slice(0, -1).map((m: any) => ({
       role: m.role as 'user' | 'assistant',
       content: typeof m.content === 'string' ? m.content : m.content[0]?.text || '',
     }));
 
-    // Process through hybrid pipeline
+    // Process through hybrid pipeline with user context for personalization
     const result = await processAssistantMessage(
       lastUserMessage.content,
       conversationHistory,
-      { forceProvider }
+      { forceProvider, userContext }
     );
 
     console.log(`[Assistant API] Provider: ${result.provider}, Latency: ${result.metadata.latencyMs}ms`);
