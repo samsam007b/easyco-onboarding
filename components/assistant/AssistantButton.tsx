@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle,
@@ -12,17 +12,25 @@ import {
   User,
   Bot,
   ArrowRight,
-  Home,
   Settings,
   Search,
   Filter,
   HelpCircle,
   ExternalLink,
   CheckCircle2,
+  Star,
+  Lightbulb,
+  ThumbsUp,
+  MessageSquarePlus,
+  ChevronDown,
+  Bug,
+  Zap,
+  Heart,
 } from 'lucide-react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { cn } from '@/lib/utils';
+import { useAssistantConversation } from '@/hooks/useAssistantConversation';
 
 interface SuggestedAction {
   icon: React.ElementType;
@@ -33,8 +41,8 @@ interface SuggestedAction {
 const suggestedActions: SuggestedAction[] = [
   {
     icon: HelpCircle,
-    label: 'Comment ça marche ?',
-    prompt: 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalités principales.',
+    label: 'Comment \u00e7a marche ?',
+    prompt: 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalit\u00e9s principales.',
   },
   {
     icon: Search,
@@ -44,12 +52,34 @@ const suggestedActions: SuggestedAction[] = [
   {
     icon: Filter,
     label: 'Configurer mes filtres',
-    prompt: 'Aide-moi à configurer mes filtres de recherche pour trouver le logement idéal.',
+    prompt: 'Aide-moi \u00e0 configurer mes filtres de recherche pour trouver le logement id\u00e9al.',
   },
   {
     icon: Settings,
-    label: 'Paramètres',
-    prompt: 'Comment modifier mes paramètres de notification et de confidentialité ?',
+    label: 'Param\u00e8tres',
+    prompt: 'Comment modifier mes param\u00e8tres de notification et de confidentialit\u00e9 ?',
+  },
+];
+
+// Feedback prompts shown after conversations
+const feedbackPrompts = [
+  {
+    icon: Lightbulb,
+    label: 'Une id\u00e9e ?',
+    type: 'suggestion' as const,
+    color: 'from-amber-500 to-orange-500',
+  },
+  {
+    icon: Bug,
+    label: 'Un probl\u00e8me ?',
+    type: 'bug' as const,
+    color: 'from-red-500 to-pink-500',
+  },
+  {
+    icon: Zap,
+    label: 'Am\u00e9lioration ?',
+    type: 'improvement' as const,
+    color: 'from-blue-500 to-cyan-500',
   },
 ];
 
@@ -63,14 +93,35 @@ interface ToolResult {
   feature?: string;
 }
 
+type FeedbackMode = 'none' | 'rating' | 'suggestion' | 'thanks';
+type SuggestionCategory = 'ui_ux' | 'new_feature' | 'improvement' | 'integration' | 'performance' | 'other';
+
 export default function AssistantButton() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [pendingAction, setPendingAction] = useState<ToolResult | null>(null);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Feedback state
+  const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('none');
+  const [rating, setRating] = useState(0);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [suggestionCategory, setSuggestionCategory] = useState<SuggestionCategory>('new_feature');
+  const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
+
+  // Conversation tracking
+  const {
+    conversationId,
+    saveMessage,
+    endConversation,
+    submitFeedback,
+    submitSuggestion,
+    feedbackSubmitted,
+  } = useAssistantConversation();
 
   const {
     messages,
@@ -80,11 +131,22 @@ export default function AssistantButton() {
     transport: new DefaultChatTransport({
       api: '/api/assistant/chat',
     }),
-    onFinish: () => {
+    onFinish: (message) => {
       setHasNewMessage(true);
+      // Save assistant message
+      if (message.parts) {
+        const text = message.parts
+          .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
+          .map(part => part.text)
+          .join('');
+        saveMessage(text, 'assistant');
+      }
+      // Show feedback prompt after a few messages
+      if (messages.length >= 3 && !feedbackSubmitted) {
+        setTimeout(() => setShowFeedbackPrompt(true), 2000);
+      }
     },
     onToolCall: async ({ toolCall }) => {
-      // Handle tool calls from the assistant
       if (toolCall.toolName === 'navigate' && toolCall.input) {
         const args = toolCall.input as { path: string; description: string };
         setPendingAction({
@@ -112,7 +174,7 @@ export default function AssistantButton() {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages, feedbackMode]);
 
   // Focus input when chat opens
   useEffect(() => {
@@ -128,13 +190,30 @@ export default function AssistantButton() {
     }
   }, [isOpen]);
 
-  const handleSuggestedAction = (prompt: string) => {
+  // Handle closing the chat
+  const handleClose = async () => {
+    setIsOpen(false);
+    if (messages.length > 0) {
+      await endConversation();
+    }
+    // Reset feedback state
+    setFeedbackMode('none');
+    setRating(0);
+    setFeedbackText('');
+    setShowFeedbackPrompt(false);
+  };
+
+  const handleSuggestedAction = async (prompt: string) => {
+    // Save user message
+    await saveMessage(prompt, 'user');
     sendMessage({ text: prompt });
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
+      // Save user message
+      await saveMessage(input.trim(), 'user');
       sendMessage({ text: input });
       setInput('');
     }
@@ -142,6 +221,39 @@ export default function AssistantButton() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+  };
+
+  // Submit rating feedback
+  const handleRatingSubmit = async () => {
+    if (rating > 0) {
+      await submitFeedback({
+        rating,
+        text: feedbackText || undefined,
+        type: rating >= 4 ? 'praise' : rating <= 2 ? 'complaint' : 'question',
+      });
+      setFeedbackMode('thanks');
+      setTimeout(() => {
+        setFeedbackMode('none');
+        setShowFeedbackPrompt(false);
+      }, 2000);
+    }
+  };
+
+  // Submit suggestion
+  const handleSuggestionSubmit = async () => {
+    if (feedbackText.trim()) {
+      await submitSuggestion({
+        text: feedbackText,
+        category: suggestionCategory,
+        priority: 'medium',
+      });
+      setFeedbackMode('thanks');
+      setFeedbackText('');
+      setTimeout(() => {
+        setFeedbackMode('none');
+        setShowFeedbackPrompt(false);
+      }, 2000);
+    }
   };
 
   // Helper function to extract text from message parts
@@ -211,11 +323,13 @@ export default function AssistantButton() {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold">Assistant IzzIco</h3>
-                  <p className="text-white/80 text-xs">Je suis là pour vous aider</p>
+                  <p className="text-white/80 text-xs">
+                    {pathname ? `Page: ${pathname.split('/').pop() || 'accueil'}` : 'Je suis l\u00e0 pour vous aider'}
+                  </p>
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="p-2 hover:bg-white/20 rounded-full transition"
                 aria-label="Fermer l'assistant"
               >
@@ -235,12 +349,12 @@ export default function AssistantButton() {
                     <div className="flex-1">
                       <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm">
                         <p className="text-gray-800 text-sm">
-                          Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider à :
+                          Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider \u00e0 :
                         </p>
                         <ul className="mt-2 space-y-1 text-sm text-gray-600">
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Comprendre les fonctionnalités
+                            Comprendre les fonctionnalit\u00e9s
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
@@ -252,9 +366,20 @@ export default function AssistantButton() {
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Modifier vos paramètres
+                            Modifier vos param\u00e8tres
                           </li>
                         </ul>
+                      </div>
+
+                      {/* Suggestion prompt in welcome */}
+                      <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
+                        <div className="flex items-center gap-2 text-amber-700">
+                          <Lightbulb className="w-4 h-4" />
+                          <span className="text-xs font-medium">Votre avis compte !</span>
+                        </div>
+                        <p className="text-xs text-amber-600 mt-1">
+                          N'h\u00e9sitez pas \u00e0 me partager vos id\u00e9es d'am\u00e9lioration ou les fonctionnalit\u00e9s que vous aimeriez voir.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -272,6 +397,15 @@ export default function AssistantButton() {
                       </button>
                     ))}
                   </div>
+
+                  {/* Quick suggestion button */}
+                  <button
+                    onClick={() => setFeedbackMode('suggestion')}
+                    className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl hover:from-amber-600 hover:to-orange-600 transition font-medium text-sm"
+                  >
+                    <MessageSquarePlus className="w-4 h-4" />
+                    Proposer une id\u00e9e ou am\u00e9lioration
+                  </button>
                 </div>
               )}
 
@@ -320,7 +454,7 @@ export default function AssistantButton() {
                   <div className="bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
-                      <span className="text-sm text-gray-500">Réflexion en cours...</span>
+                      <span className="text-sm text-gray-500">R\u00e9flexion en cours...</span>
                     </div>
                   </div>
                 </div>
@@ -335,7 +469,7 @@ export default function AssistantButton() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-5 h-5 text-purple-600" />
-                    <span className="font-medium text-gray-900">Action suggérée</span>
+                    <span className="font-medium text-gray-900">Action sugg\u00e9r\u00e9e</span>
                   </div>
                   <p className="text-sm text-gray-700 mb-3">{pendingAction.message}</p>
                   <div className="flex gap-2">
@@ -344,7 +478,7 @@ export default function AssistantButton() {
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition text-sm"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Exécuter
+                      Ex\u00e9cuter
                     </button>
                     <button
                       onClick={() => setPendingAction(null)}
@@ -353,6 +487,186 @@ export default function AssistantButton() {
                       Ignorer
                     </button>
                   </div>
+                </motion.div>
+              )}
+
+              {/* Feedback Prompt (shows after a few messages) */}
+              {showFeedbackPrompt && messages.length >= 3 && feedbackMode === 'none' && !feedbackSubmitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Heart className="w-5 h-5 text-pink-500" />
+                    <span className="font-medium text-gray-900">Votre avis nous int\u00e9resse !</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {feedbackPrompts.map((prompt, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setFeedbackMode(prompt.type === 'suggestion' || prompt.type === 'improvement' ? 'suggestion' : 'rating');
+                          if (prompt.type === 'bug') {
+                            setSuggestionCategory('other');
+                          } else if (prompt.type === 'improvement') {
+                            setSuggestionCategory('improvement');
+                          } else {
+                            setSuggestionCategory('new_feature');
+                          }
+                        }}
+                        className={cn(
+                          'flex flex-col items-center gap-1 p-2 rounded-lg transition',
+                          'bg-white border border-gray-200 hover:border-purple-300',
+                          'hover:shadow-sm'
+                        )}
+                      >
+                        <div className={cn('p-1.5 rounded-full bg-gradient-to-r', prompt.color)}>
+                          <prompt.icon className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="text-xs text-gray-600">{prompt.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Rating Feedback UI */}
+              {feedbackMode === 'rating' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
+                >
+                  <p className="text-sm font-medium text-gray-900 mb-3">Comment \u00e9valuez-vous cette conversation ?</p>
+                  <div className="flex justify-center gap-2 mb-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onClick={() => setRating(star)}
+                        className="p-1 transition hover:scale-110"
+                      >
+                        <Star
+                          className={cn(
+                            'w-8 h-8 transition',
+                            star <= rating
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-gray-300'
+                          )}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  <textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Un commentaire ? (optionnel)"
+                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    rows={2}
+                  />
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={handleRatingSubmit}
+                      disabled={rating === 0}
+                      className={cn(
+                        'flex-1 py-2 rounded-lg font-medium text-sm transition',
+                        rating > 0
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      )}
+                    >
+                      Envoyer
+                    </button>
+                    <button
+                      onClick={() => setFeedbackMode('none')}
+                      className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm transition"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Suggestion UI */}
+              {feedbackMode === 'suggestion' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
+                >
+                  <p className="text-sm font-medium text-gray-900 mb-3">
+                    Partagez votre id\u00e9e ou suggestion !
+                  </p>
+
+                  {/* Category selector */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { value: 'new_feature', label: 'Nouvelle fonctionnalit\u00e9', icon: Sparkles },
+                      { value: 'improvement', label: 'Am\u00e9lioration', icon: Zap },
+                      { value: 'ui_ux', label: 'Design/UX', icon: Heart },
+                      { value: 'other', label: 'Autre', icon: MessageCircle },
+                    ].map((cat) => (
+                      <button
+                        key={cat.value}
+                        onClick={() => setSuggestionCategory(cat.value as SuggestionCategory)}
+                        className={cn(
+                          'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition',
+                          suggestionCategory === cat.value
+                            ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                            : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:bg-gray-200'
+                        )}
+                      >
+                        <cat.icon className="w-3 h-3" />
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="D\u00e9crivez votre id\u00e9e en d\u00e9tail... Que souhaiteriez-vous voir dans l'application ?"
+                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    rows={4}
+                  />
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={handleSuggestionSubmit}
+                      disabled={!feedbackText.trim()}
+                      className={cn(
+                        'flex-1 py-2 rounded-lg font-medium text-sm transition flex items-center justify-center gap-2',
+                        feedbackText.trim()
+                          ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      )}
+                    >
+                      <Send className="w-4 h-4" />
+                      Envoyer ma suggestion
+                    </button>
+                    <button
+                      onClick={() => setFeedbackMode('none')}
+                      className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm transition"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Thanks message */}
+              {feedbackMode === 'thanks' && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200 text-center"
+                >
+                  <div className="w-12 h-12 mx-auto bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-3">
+                    <ThumbsUp className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="font-medium text-green-800">Merci pour votre retour !</p>
+                  <p className="text-sm text-green-600 mt-1">
+                    Votre avis nous aide \u00e0 am\u00e9liorer IzzIco.
+                  </p>
                 </motion.div>
               )}
 
@@ -367,16 +681,16 @@ export default function AssistantButton() {
                   type="text"
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Posez votre question..."
+                  placeholder="Posez votre question ou partagez une id\u00e9e..."
                   className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
-                  disabled={isLoading}
+                  disabled={isLoading || feedbackMode !== 'none'}
                 />
                 <button
                   type="submit"
-                  disabled={isLoading || !input.trim()}
+                  disabled={isLoading || !input.trim() || feedbackMode !== 'none'}
                   className={cn(
                     'p-3 rounded-xl transition',
-                    input.trim() && !isLoading
+                    input.trim() && !isLoading && feedbackMode === 'none'
                       ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   )}
@@ -385,8 +699,20 @@ export default function AssistantButton() {
                   <Send className="w-5 h-5" />
                 </button>
               </div>
+
+              {/* Quick feedback button at bottom */}
+              {messages.length > 0 && feedbackMode === 'none' && !feedbackSubmitted && (
+                <button
+                  onClick={() => setFeedbackMode('suggestion')}
+                  className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition"
+                >
+                  <Lightbulb className="w-3 h-3" />
+                  Une id\u00e9e d'am\u00e9lioration ?
+                </button>
+              )}
+
               <p className="mt-2 text-xs text-gray-400 text-center">
-                Propulsé par IA • Réponses en temps réel
+                Propuls\u00e9 par IA \u2022 Vos retours am\u00e9liorent IzzIco
               </p>
             </form>
           </motion.div>

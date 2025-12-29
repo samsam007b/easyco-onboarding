@@ -10,7 +10,6 @@
  */
 
 import { GeminiProvider } from './providers/gemini';
-import { TogetherProvider } from './providers/together';
 import { GroqProvider } from './providers/groq';
 import { ocrService } from '../ocr-service'; // Tesseract fallback
 import {
@@ -33,27 +32,28 @@ import type {
 // In production, use Supabase for persistence
 const usageTracker: Record<AIProvider, { count: number; resetAt: Date }> = {
   gemini: { count: 0, resetAt: new Date() },
+  'vision+gemini': { count: 0, resetAt: new Date() }, // Cost-effective pipeline
   openai: { count: 0, resetAt: new Date() },
-  together: { count: 0, resetAt: new Date() },
   groq: { count: 0, resetAt: new Date() },
   mistral: { count: 0, resetAt: new Date() },
   tesseract: { count: 0, resetAt: new Date() }, // Unlimited
+  none: { count: 0, resetAt: new Date() }, // Failed requests
 };
 
 // Daily limits per provider - CONSERVATIVE to stay in free tier
 // We switch at 80% of these limits to NEVER hit paid usage
 const DAILY_LIMITS: Record<AIProvider, number> = {
-  gemini: 40,      // Free tier ~50/day, switch at 32
-  openai: 10,      // $5 credits, switch at 8
-  together: 80,    // $25 credits, switch at 64
-  groq: 8000,      // Very generous free tier, switch at 6400
-  mistral: 400,    // Good free tier, switch at 320
-  tesseract: Infinity, // Local, unlimited, never switch
+  gemini: 40,           // Free tier ~50/day, switch at 32
+  'vision+gemini': 900, // Cloud Vision: 1000 free/month, be conservative
+  openai: 10,           // $5 credits, switch at 8
+  groq: 8000,           // Very generous free tier, switch at 6400
+  mistral: 400,         // Good free tier, switch at 320
+  tesseract: Infinity,  // Local, unlimited, never switch
+  none: Infinity,       // Placeholder for failed requests
 };
 
 class AIService {
   private gemini: GeminiProvider | null = null;
-  private together: TogetherProvider | null = null;
   private groq: GroqProvider | null = null;
 
   constructor() {
@@ -66,7 +66,6 @@ class AIService {
   private initializeProviders() {
     // Get API keys from environment
     const geminiKey = process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY;
-    const togetherKey = process.env.NEXT_PUBLIC_TOGETHER_API_KEY;
     const groqKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
     if (geminiKey) {
@@ -74,17 +73,12 @@ class AIService {
       console.log('[AI] ✅ Gemini provider initialized');
     }
 
-    if (togetherKey) {
-      this.together = new TogetherProvider(togetherKey);
-      console.log('[AI] ✅ Together AI provider initialized');
-    }
-
     if (groqKey) {
       this.groq = new GroqProvider(groqKey);
       console.log('[AI] ✅ Groq provider initialized');
     }
 
-    if (!geminiKey && !togetherKey) {
+    if (!geminiKey) {
       console.warn('[AI] ⚠️ No vision AI providers configured, using Tesseract fallback');
     }
   }
@@ -276,17 +270,6 @@ class AIService {
       }
     }
 
-    // Try Together AI - only if safely under limit
-    if (this.together && this.canSafelyUseProvider('together')) {
-      const startTime = Date.now();
-      const result = await this.together.categorizeExpense(safeDescription, safeMerchant);
-      this.trackUsage('together', result.confidence > 0.5, Date.now() - startTime);
-
-      if (result.confidence > 0.5) {
-        return result;
-      }
-    }
-
     // Fallback to rule-based categorization (100% local)
     console.log('[AI] 🔒 Using local rule-based categorization');
     return this.ruleBasedCategorization(safeDescription, safeMerchant);
@@ -423,7 +406,7 @@ Réponds de manière concise en français. N'inclus jamais d'informations person
    * Check if any AI providers are available
    */
   hasAIProviders(): boolean {
-    return !!(this.gemini || this.together || this.groq);
+    return !!(this.gemini || this.groq);
   }
 
   /**

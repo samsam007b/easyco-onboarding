@@ -16,6 +16,8 @@ import {
   LogOut,
   Palette,
   ShieldAlert,
+  Lightbulb,
+  Bot,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -29,6 +31,8 @@ interface AdminSidebarProps {
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Security Center', href: '/admin/dashboard/security', icon: ShieldAlert, highlight: true },
+  { name: 'Assistant IA', href: '/admin/dashboard/assistant', icon: Bot },
+  { name: 'Feedback & Suggestions', href: '/admin/dashboard/feedback', icon: Lightbulb },
   { name: 'Utilisateurs', href: '/admin/dashboard/users', icon: Users },
   { name: 'Propriétés', href: '/admin/dashboard/properties', icon: Building2 },
   { name: 'Applications', href: '/admin/dashboard/applications', icon: FileText },

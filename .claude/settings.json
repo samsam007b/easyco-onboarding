@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$TOOL_INPUT\" | grep -qE '(git\\s+(commit|push)|git\\s+.*--amend)'; then /Users/samuelbaudon/easyco-onboarding/.claude/hooks/scan-secrets.sh; else echo '{\"status\": \"continue\"}'; fi"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
