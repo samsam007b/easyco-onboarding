@@ -18,6 +18,7 @@ import {
   ShieldAlert,
   Lightbulb,
   Bot,
+  Brain,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -31,6 +32,7 @@ interface AdminSidebarProps {
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Security Center', href: '/admin/dashboard/security', icon: ShieldAlert, highlight: true },
+  { name: 'Agent Analytics', href: '/admin/dashboard/agent', icon: Brain, highlight: true },
   { name: 'Assistant IA', href: '/admin/dashboard/assistant', icon: Bot },
   { name: 'Feedback & Suggestions', href: '/admin/dashboard/feedback', icon: Lightbulb },
   { name: 'Utilisateurs', href: '/admin/dashboard/users', icon: Users },

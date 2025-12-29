@@ -9,6 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import AddAdminForm from '@/components/admin/AddAdminForm';
 import AdminsList from '@/components/admin/AdminsList';
+import PendingInvitations from '@/components/admin/PendingInvitations';
 
 async function checkSuperAdmin() {
   const supabase = await createClient();
@@ -113,6 +114,9 @@ export default async function AdminsManagementPage() {
 
       {/* Add Admin Form */}
       <AddAdminForm />
+
+      {/* Pending Invitations */}
+      <PendingInvitations />
 
       {/* Admins List */}
       <Card className="bg-slate-800/50 border-slate-700">

@@ -22,6 +22,7 @@ import {
   type UserContext,
   DEFAULT_USER_CONTEXT,
 } from './faq-system';
+import { createClient } from '@/lib/auth/supabase-server';
 
 // =====================================================
 // CONFIGURATION
@@ -274,6 +275,80 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 5. Propose des actions concrètes (navigation, filtres)`;
 
 // =====================================================
+// DATABASE LOGGING (non-blocking)
+// =====================================================
+
+interface LogRequestParams {
+  userMessage: string;
+  provider: 'faq' | 'groq' | 'openai' | 'error';
+  intent?: Intent;
+  confidence?: number;
+  responseTimeMs: number;
+  tokensUsed?: number;
+  estimatedCost?: number;
+  userType?: string;
+  pagePath?: string;
+  userId?: string;
+  conversationId?: string;
+}
+
+/**
+ * Log assistant request to database for analytics
+ * Non-blocking - errors are logged but don't affect response
+ */
+async function logRequestToDatabase(params: LogRequestParams): Promise<void> {
+  try {
+    const supabase = await createClient();
+
+    const { error } = await supabase.from('agent_request_logs').insert({
+      user_message: params.userMessage.substring(0, 2000), // Truncate long messages
+      detected_intent: params.intent || 'unknown',
+      intent_confidence: params.confidence,
+      provider: params.provider,
+      response_time_ms: params.responseTimeMs,
+      tokens_used: params.tokensUsed,
+      estimated_cost: params.estimatedCost,
+      user_type: params.userType,
+      page_path: params.pagePath,
+      user_id: params.userId,
+      conversation_id: params.conversationId,
+    });
+
+    if (error) {
+      console.error('[Assistant] Failed to log request:', error.message);
+    }
+  } catch (err: any) {
+    // Non-blocking - just log the error
+    console.error('[Assistant] Logging error:', err.message);
+  }
+}
+
+/**
+ * Flag a request for potential FAQ improvement
+ * Called when confidence is low or escalation is requested
+ */
+async function flagForImprovement(
+  userMessage: string,
+  intent: Intent,
+  improvementType: 'low_confidence' | 'escalation' | 'missing_intent' | 'poor_response',
+  confidence?: number
+): Promise<void> {
+  try {
+    const supabase = await createClient();
+
+    await supabase.from('agent_improvement_candidates').insert({
+      user_message: userMessage.substring(0, 2000),
+      detected_intent: intent,
+      improvement_type: improvementType,
+      current_confidence: confidence,
+      status: 'pending',
+    });
+  } catch (err: any) {
+    console.error('[Assistant] Failed to flag for improvement:', err.message);
+  }
+}
+
+// =====================================================
 // GROQ API CALL
 // =====================================================
 
@@ -334,6 +409,8 @@ export async function processAssistantMessage(
     forceProvider?: 'faq' | 'groq' | 'openai';
     userId?: string;
     userContext?: UserContext;
+    pagePath?: string;
+    conversationId?: string;
   } = {}
 ): Promise<AssistantResponse> {
   const startTime = Date.now();
@@ -370,6 +447,27 @@ export async function processAssistantMessage(
         (ASSISTANT_CONFIG.costs.avgTokensPerMessage / 1_000_000) *
         ASSISTANT_CONFIG.costs.openai.output;
 
+      const latencyMs = Date.now() - startTime;
+
+      // Log to database (non-blocking)
+      logRequestToDatabase({
+        userMessage,
+        provider: 'faq',
+        intent: faqResponse.intent,
+        confidence: faqResponse.confidence,
+        responseTimeMs: latencyMs,
+        estimatedCost: 0,
+        userType: context.userType,
+        pagePath: options.pagePath,
+        userId: options.userId || context.userId,
+        conversationId: options.conversationId,
+      });
+
+      // Flag for improvement if confidence is borderline
+      if (faqResponse.confidence < 0.85 && faqResponse.confidence >= ASSISTANT_CONFIG.faq.minConfidence) {
+        flagForImprovement(userMessage, faqResponse.intent, 'low_confidence', faqResponse.confidence);
+      }
+
       return {
         success: true,
         content: faqResponse.response,
@@ -378,7 +476,7 @@ export async function processAssistantMessage(
         confidence: faqResponse.confidence,
         suggestedActions: faqResponse.suggestedActions,
         metadata: {
-          latencyMs: Date.now() - startTime,
+          latencyMs,
           costEstimate: 0,
           complexity: complexity.score,
         },
@@ -404,16 +502,35 @@ export async function processAssistantMessage(
       usageTracker.groq.count++;
       usageTracker.groq.tokens += groqResult.tokens;
 
+      const latencyMs = Date.now() - startTime;
       const costEstimate =
         (groqResult.tokens / 1_000_000) *
         (ASSISTANT_CONFIG.costs.groq.input + ASSISTANT_CONFIG.costs.groq.output) / 2;
+
+      // Detect intent for logging (even though we used AI)
+      const detectedIntent = detectIntent(userMessage);
+
+      // Log to database (non-blocking)
+      logRequestToDatabase({
+        userMessage,
+        provider: 'groq',
+        intent: detectedIntent?.intent,
+        confidence: detectedIntent?.confidence,
+        responseTimeMs: latencyMs,
+        tokensUsed: groqResult.tokens,
+        estimatedCost: costEstimate,
+        userType: context.userType,
+        pagePath: options.pagePath,
+        userId: options.userId || context.userId,
+        conversationId: options.conversationId,
+      });
 
       return {
         success: true,
         content: groqResult.content,
         provider: 'groq',
         metadata: {
-          latencyMs: Date.now() - startTime,
+          latencyMs,
           tokensUsed: groqResult.tokens,
           costEstimate,
           complexity: complexity.score,
@@ -431,6 +548,32 @@ export async function processAssistantMessage(
   if (targetProvider === 'openai' || !isGroqAvailable()) {
     console.log('[Assistant] Using OpenAI fallback');
 
+    const latencyMs = Date.now() - startTime;
+    const detectedIntent = detectIntent(userMessage);
+
+    // Log OpenAI usage (will be updated with actual cost by the route)
+    logRequestToDatabase({
+      userMessage,
+      provider: 'openai',
+      intent: detectedIntent?.intent,
+      confidence: detectedIntent?.confidence,
+      responseTimeMs: latencyMs,
+      userType: context.userType,
+      pagePath: options.pagePath,
+      userId: options.userId || context.userId,
+      conversationId: options.conversationId,
+    });
+
+    // Flag escalation requests for potential FAQ improvement
+    if (complexity.reasons.includes('escalation_request')) {
+      flagForImprovement(
+        userMessage,
+        detectedIntent?.intent || 'unknown',
+        'escalation',
+        detectedIntent?.confidence
+      );
+    }
+
     // Note: OpenAI call is handled by the existing Vercel AI SDK in the route
     // We return a special response to indicate the route should use OpenAI
     return {
@@ -438,7 +581,7 @@ export async function processAssistantMessage(
       content: '__USE_OPENAI__', // Signal to use OpenAI streaming
       provider: 'openai',
       metadata: {
-        latencyMs: Date.now() - startTime,
+        latencyMs,
         complexity: complexity.score,
       },
     };
@@ -447,12 +590,28 @@ export async function processAssistantMessage(
   // =====================================================
   // Error fallback
   // =====================================================
+  const errorLatencyMs = Date.now() - startTime;
+  const errorIntent = detectIntent(userMessage);
+
+  // Log error for analysis
+  logRequestToDatabase({
+    userMessage,
+    provider: 'error',
+    intent: errorIntent?.intent,
+    confidence: errorIntent?.confidence,
+    responseTimeMs: errorLatencyMs,
+    userType: context.userType,
+    pagePath: options.pagePath,
+    userId: options.userId || context.userId,
+    conversationId: options.conversationId,
+  });
+
   return {
     success: false,
     content: "Désolé, je rencontre un problème technique. Veuillez réessayer dans quelques instants.",
     provider: 'error',
     metadata: {
-      latencyMs: Date.now() - startTime,
+      latencyMs: errorLatencyMs,
       complexity: complexity.score,
     },
   };
