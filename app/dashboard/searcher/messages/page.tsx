@@ -7,10 +7,8 @@ import { SkeletonDashboard } from '@/components/ui/skeleton';
 import { logger } from '@/lib/utils/logger';
 import {
   MessageCircle,
-  Home,
   Users,
   Search,
-  Filter,
   Archive,
   Building2,
   UserCircle2,
@@ -20,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { MessagesLayout } from '@/components/messaging/MessagesLayout';
 import { ConversationList } from '@/components/messaging/ConversationList';
 import { ChatWindow } from '@/components/messaging/ChatWindow';
 import {
@@ -36,6 +35,7 @@ import {
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 type SearcherMessageTab = 'all' | 'owners' | 'searchers' | 'groups' | 'requests';
 
@@ -55,78 +55,6 @@ function SearcherMessagesContent() {
   const [showArchived, setShowArchived] = useState(false);
   const [activeTab, setActiveTab] = useState<SearcherMessageTab>('all');
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
-
-  // Helper function to render the correct icon based on active tab
-  const renderTabIcon = (tab: SearcherMessageTab) => {
-    const iconProps = { className: "w-10 h-10 text-white" };
-    switch (tab) {
-      case 'owners': return <Building2 {...iconProps} />;
-      case 'searchers': return <UserCircle2 {...iconProps} />;
-      case 'groups': return <UsersRound {...iconProps} />;
-      case 'requests': return <UserPlus {...iconProps} />;
-      default: return <MessageCircle {...iconProps} />;
-    }
-  };
-
-  // Helper function to get empty state title
-  const getEmptyStateTitle = (tab: SearcherMessageTab) => {
-    switch (tab) {
-      case 'owners': return 'Aucun message avec des propriétaires';
-      case 'searchers': return 'Aucun match';
-      case 'groups': return 'Aucune conversation de groupe';
-      case 'requests': return 'Aucune demande de contact';
-      default: return 'Aucune conversation';
-    }
-  };
-
-  // Helper function to get empty state description
-  const getEmptyStateDescription = (tab: SearcherMessageTab) => {
-    switch (tab) {
-      case 'owners': return 'Postulez à des propriétés pour commencer à échanger avec les propriétaires';
-      case 'searchers': return 'Vos matchs avec d\'autres chercheurs de colocation apparaîtront ici';
-      case 'groups': return 'Créez ou rejoignez un groupe pour chercher ensemble';
-      case 'requests': return 'Les personnes avec qui vous avez matché et qui n\'ont pas encore de conversation avec vous apparaîtront ici';
-      default: return 'Vos conversations apparaîtront ici';
-    }
-  };
-
-  // Helper function to render empty state action button
-  const renderEmptyStateAction = (tab: SearcherMessageTab) => {
-    const buttonClass = "rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105";
-
-    switch (tab) {
-      case 'owners':
-        return (
-          <Button onClick={() => router.push('/dashboard/searcher')} className={buttonClass}>
-            <Search className="w-5 h-5 mr-2" />
-            Explorer les propriétés
-          </Button>
-        );
-      case 'searchers':
-        return (
-          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
-            <Users className="w-5 h-5 mr-2" />
-            Trouver des colocataires
-          </Button>
-        );
-      case 'groups':
-        return (
-          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
-            <UsersRound className="w-5 h-5 mr-2" />
-            Gérer mes groupes
-          </Button>
-        );
-      case 'requests':
-        return (
-          <Button onClick={() => router.push('/dashboard/searcher/groups')} className={buttonClass}>
-            <Heart className="w-5 h-5 mr-2" />
-            Voir mes matchs
-          </Button>
-        );
-      default:
-        return null;
-    }
-  };
 
   // Load user data
   useEffect(() => {
@@ -223,7 +151,6 @@ function SearcherMessagesContent() {
       logger.error('Error loading conversations', result.error);
     }
 
-    // Load pending message requests from matches
     await loadPendingRequests();
   };
 
@@ -231,8 +158,6 @@ function SearcherMessagesContent() {
     if (!userId) return;
 
     try {
-      // Get matches where user hasn't started a conversation yet
-      // The matches table uses searcher_id and owner_id columns
       const { data: matches, error } = await supabase
         .from('matches')
         .select(`
@@ -257,7 +182,6 @@ function SearcherMessagesContent() {
         return;
       }
 
-      // Filter out matches that already have conversations
       const existingConversationUserIds = new Set(
         conversations.map(c => c.other_user_id)
       );
@@ -385,19 +309,16 @@ function SearcherMessagesContent() {
     }
 
     return conversations.filter((conv) => {
-      // Owners: conversations with property owners (for applications)
       if (activeTab === 'owners') {
         return conv.metadata?.conversationType === 'owner_application' ||
                conv.metadata?.userType === 'owner';
       }
 
-      // Searchers: conversations with other searchers (matches)
       if (activeTab === 'searchers') {
         return conv.metadata?.conversationType === 'searcher_match' ||
                conv.metadata?.userType === 'searcher';
       }
 
-      // Groups: group conversations
       if (activeTab === 'groups') {
         return conv.metadata?.conversationType === 'group' ||
                conv.metadata?.isGroup === true;
@@ -434,368 +355,230 @@ function SearcherMessagesContent() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30 p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-searcher flex items-center justify-center">
-                <MessageCircle className="w-5 h-5 text-white" />
-              </div>
-              Messages
-            </h1>
-            <p className="text-gray-600 mt-1">Chargement...</p>
-          </div>
           <SkeletonDashboard />
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-searcher-50/20 via-white to-searcher-50/20">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 sm:p-8 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-searcher bg-clip-text text-transparent flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-searcher flex items-center justify-center shadow-lg">
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-                Messages
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Gérez vos conversations avec propriétaires, colocataires et groupes
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant={showArchived ? 'default' : 'outline'}
-                onClick={() => setShowArchived(!showArchived)}
-                className={cn(
-                  'rounded-full',
-                  showArchived && 'bg-gradient-searcher hover:opacity-90'
-                )}
-              >
-                <Archive className="w-4 h-4 mr-2" />
-                {showArchived ? 'Actives' : 'Archivées'}
-              </Button>
-            </div>
+  // Sidebar Header with tabs
+  const sidebarHeader = (
+    <div className="p-4 border-b border-gray-100 bg-white">
+      {/* Title */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-searcher flex items-center justify-center shadow-md">
+            <MessageCircle className="w-5 h-5 text-white" />
           </div>
-
-          {/* Searcher-specific tabs */}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={activeTab === 'all' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('all')}
-              size="sm"
-              className={cn(
-                'rounded-full',
-                activeTab === 'all' && 'bg-gradient-searcher hover:opacity-90'
-              )}
-            >
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Tous
-              <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
-                {conversations.length}
-              </Badge>
-            </Button>
-
-            <Button
-              variant={activeTab === 'owners' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('owners')}
-              size="sm"
-              className={cn(
-                'rounded-full',
-                activeTab === 'owners' && 'bg-gradient-searcher hover:opacity-90'
-              )}
-            >
-              <Building2 className="w-4 h-4 mr-2" />
-              Propriétaires
-              {ownersCount > 0 && (
-                <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
-                  {ownersCount}
-                </Badge>
-              )}
-            </Button>
-
-            <Button
-              variant={activeTab === 'searchers' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('searchers')}
-              size="sm"
-              className={cn(
-                'rounded-full',
-                activeTab === 'searchers' && 'bg-gradient-searcher hover:opacity-90'
-              )}
-            >
-              <UserCircle2 className="w-4 h-4 mr-2" />
-              Matchs
-              {searchersCount > 0 && (
-                <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
-                  {searchersCount}
-                </Badge>
-              )}
-            </Button>
-
-            <Button
-              variant={activeTab === 'groups' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('groups')}
-              size="sm"
-              className={cn(
-                'rounded-full',
-                activeTab === 'groups' && 'bg-gradient-searcher hover:opacity-90'
-              )}
-            >
-              <UsersRound className="w-4 h-4 mr-2" />
-              Groupes
-              {groupsCount > 0 && (
-                <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
-                  {groupsCount}
-                </Badge>
-              )}
-            </Button>
-
-            <Button
-              variant={activeTab === 'requests' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('requests')}
-              size="sm"
-              className={cn(
-                'rounded-full',
-                activeTab === 'requests' && 'bg-gradient-searcher hover:opacity-90'
-              )}
-            >
-              <UserPlus className="w-4 h-4 mr-2" />
-              Demandes
-              {pendingRequests.length > 0 && (
-                <Badge variant="secondary" className="ml-2 bg-orange-100 text-orange-900">
-                  {pendingRequests.length}
-                </Badge>
-              )}
-            </Button>
+          <div>
+            <h1 className="text-lg font-bold text-gray-900">Messages</h1>
+            <p className="text-xs text-gray-500">{conversations.length} conversations</p>
           </div>
         </div>
+        <Button
+          variant={showArchived ? 'default' : 'ghost'}
+          size="icon"
+          onClick={() => setShowArchived(!showArchived)}
+          className={cn(
+            'rounded-full h-9 w-9',
+            showArchived && 'bg-gradient-searcher hover:opacity-90'
+          )}
+        >
+          <Archive className="w-4 h-4" />
+        </Button>
+      </div>
 
-        {/* Messages Container */}
-        {activeTab === 'requests' ? (
-          /* Pending Requests View */
-          pendingRequests.length === 0 ? (
-            <div className="relative overflow-hidden bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30 rounded-3xl p-12 text-center">
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-searcher-200/20 to-searcher-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-searcher-300/10 to-searcher-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+      {/* Tabs */}
+      <div className="flex flex-wrap gap-1.5">
+        {[
+          { key: 'all', label: 'Tous', icon: MessageCircle, count: conversations.length },
+          { key: 'owners', label: 'Proprios', icon: Building2, count: ownersCount },
+          { key: 'searchers', label: 'Matchs', icon: UserCircle2, count: searchersCount },
+          { key: 'groups', label: 'Groupes', icon: UsersRound, count: groupsCount },
+          { key: 'requests', label: 'Demandes', icon: UserPlus, count: pendingRequests.length },
+        ].map((tab) => (
+          <Button
+            key={tab.key}
+            variant={activeTab === tab.key ? 'default' : 'ghost'}
+            onClick={() => setActiveTab(tab.key as SearcherMessageTab)}
+            size="sm"
+            className={cn(
+              'rounded-full h-8 text-xs px-3',
+              activeTab === tab.key
+                ? 'bg-gradient-searcher hover:opacity-90 text-white'
+                : 'hover:bg-searcher-50 text-gray-600'
+            )}
+          >
+            <tab.icon className="w-3.5 h-3.5 mr-1.5" />
+            {tab.label}
+            {tab.count > 0 && (
+              <Badge
+                variant="secondary"
+                className={cn(
+                  'ml-1.5 h-5 min-w-5 text-xs px-1.5',
+                  activeTab === tab.key
+                    ? 'bg-white/20 text-white'
+                    : 'bg-searcher-100 text-searcher-700'
+                )}
+              >
+                {tab.count}
+              </Badge>
+            )}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
 
-              <div className="relative z-10">
-                <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                  <UserPlus className="w-10 h-10 text-white" />
-                </div>
-
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  Aucune demande de contact
-                </h3>
-
-                <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
-                  Les personnes avec qui vous avez matché et qui n'ont pas encore de conversation avec vous apparaîtront ici
-                </p>
-
-                <Button
-                  onClick={() => router.push('/dashboard/searcher/groups')}
-                  className="rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Trouver des colocataires
-                </Button>
-              </div>
+  // Requests view - special sidebar content
+  const requestsSidebar = (
+    <div className="flex flex-col h-full">
+      {sidebarHeader}
+      <div className="flex-1 overflow-y-auto p-4">
+        {pendingRequests.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center p-8">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-searcher flex items-center justify-center mb-4 shadow-md">
+              <UserPlus className="h-8 w-8 text-white" />
             </div>
-          ) : (
-            <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <UserPlus className="w-5 h-5 text-searcher-500" />
-                  Demandes de contact ({pendingRequests.length})
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Ces personnes ont matché avec vous et souhaitent peut-être vous contacter
-                </p>
-
-                <div className="space-y-4">
-                  {pendingRequests.map((request: any) => (
-                    <div
-                      key={request.match_id}
-                      className="group relative bg-gradient-to-br from-searcher-50/50 to-searcher-50/50 hover:from-searcher-50 hover:to-searcher-100 rounded-2xl p-6 border border-searcher-100 hover:border-searcher-200 transition-all hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
-                          {/* Avatar */}
-                          <div className="relative">
-                            {request.user_photo ? (
-                              <img
-                                src={request.user_photo}
-                                alt={request.user_name}
-                                className="w-16 h-16 rounded-full object-cover ring-2 ring-searcher-200"
-                              />
-                            ) : (
-                              <div className="w-16 h-16 rounded-full bg-gradient-searcher flex items-center justify-center ring-2 ring-searcher-200">
-                                <UserCircle2 className="w-8 h-8 text-white" />
-                              </div>
-                            )}
-                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center ring-2 ring-white">
-                              <Heart className="w-3 h-3 text-white fill-white" />
-                            </div>
-                          </div>
-
-                          {/* User Info */}
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                              {request.user_name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-3">
-                              Match depuis {new Date(request.matched_at).toLocaleDateString('fr-FR', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: new Date(request.matched_at).getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
-                              })}
-                            </p>
-                            <div className="flex items-center gap-2 text-sm text-searcher-700 bg-searcher-100/50 rounded-full px-3 py-1 w-fit">
-                              <Heart className="w-3.5 h-3.5 fill-searcher-700" />
-                              <span className="font-medium">Match confirmé</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex flex-col gap-2">
-                          <Button
-                            onClick={async () => {
-                              if (!userId || !request.user_id) return;
-
-                              try {
-                                // Create a new conversation
-                                const { data: newConv, error } = await supabase
-                                  .from('conversations')
-                                  .insert({
-                                    created_by: userId,
-                                    metadata: {
-                                      conversationType: 'searcher_match',
-                                      userType: 'searcher',
-                                      matchId: request.match_id
-                                    }
-                                  })
-                                  .select()
-                                  .single();
-
-                                if (error) throw error;
-
-                                // Add participants
-                                await supabase
-                                  .from('conversation_participants')
-                                  .insert([
-                                    { conversation_id: newConv.id, user_id: userId, is_read: true },
-                                    { conversation_id: newConv.id, user_id: request.user_id, is_read: false }
-                                  ]);
-
-                                toast.success('Conversation créée !');
-
-                                // Reload conversations and requests
-                                await loadConversations();
-                                await loadPendingRequests();
-
-                                // Switch to the new conversation
-                                setSelectedConversationId(newConv.id);
-                                setActiveTab('searchers');
-                              } catch (error) {
-                                logger.error('Error creating conversation', error);
-                                toast.error('Échec de la création de la conversation');
-                              }
-                            }}
-                            className="rounded-full bg-gradient-searcher hover:opacity-90 text-white font-semibold px-6 py-2 shadow-md hover:shadow-lg transition-all hover:scale-105"
-                          >
-                            <MessageCircle className="w-4 h-4 mr-2" />
-                            Envoyer un message
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => router.push(`/dashboard/searcher/groups?user=${request.user_id}`)}
-                            className="rounded-full border-searcher-200 hover:bg-searcher-50 text-gray-700"
-                          >
-                            Voir le profil
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )
-        ) : filteredConversations.length === 0 && !showArchived ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30 rounded-3xl p-12 text-center">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-searcher-200/20 to-searcher-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-searcher-300/10 to-searcher-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-
-            <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                {renderTabIcon(activeTab)}
-              </div>
-
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                {getEmptyStateTitle(activeTab)}
-              </h3>
-
-              <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
-                {getEmptyStateDescription(activeTab)}
-              </p>
-
-              {renderEmptyStateAction(activeTab)}
-            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Aucune demande
+            </h3>
+            <p className="text-sm text-gray-500 max-w-xs mb-4">
+              Les personnes avec qui vous matcherez apparaîtront ici
+            </p>
+            <Button
+              onClick={() => router.push('/dashboard/searcher/groups')}
+              size="sm"
+              className="rounded-full bg-gradient-searcher hover:opacity-90 text-white"
+            >
+              <Users className="w-4 h-4 mr-2" />
+              Trouver des colocataires
+            </Button>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow overflow-hidden h-[calc(100vh-300px)]">
-            <div className="grid md:grid-cols-3 h-full">
-              {/* Conversations List */}
-              <div className={`${selectedConversationId ? 'hidden md:block' : ''} border-r border-gray-200`}>
-                <ConversationList
-                  conversations={filteredConversations}
-                  selectedConversationId={selectedConversationId || undefined}
-                  onSelectConversation={setSelectedConversationId}
-                  showArchived={showArchived}
-                />
-              </div>
-
-              {/* Chat Window */}
-              <div className={`md:col-span-2 ${!selectedConversationId ? 'hidden md:flex' : ''}`}>
-                {selectedConversation && userId ? (
-                  <ChatWindow
-                    conversationId={selectedConversationId!}
-                    messages={messages}
-                    currentUserId={userId}
-                    otherUserName={selectedConversation.other_user_name}
-                    otherUserPhoto={selectedConversation.other_user_photo}
-                    isTyping={!!isOtherUserTyping}
-                    onSendMessage={handleSendMessage}
-                    onStartTyping={handleStartTyping}
-                    onStopTyping={handleStopTyping}
-                    onArchive={handleArchive}
-                    onDelete={handleDelete}
-                    onBack={() => setSelectedConversationId(null)}
-                  />
-                ) : (
-                  <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-searcher-50/30 to-searcher-50/30">
-                    <div className="text-center">
-                      <div className="w-20 h-20 bg-gradient-searcher rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <MessageCircle className="w-10 h-10 text-white" />
-                      </div>
-                      <p className="text-lg font-bold text-gray-900 mb-2">Sélectionnez une conversation</p>
-                      <p className="text-sm text-gray-600">
-                        Choisissez une conversation pour commencer à discuter
-                      </p>
+          <div className="space-y-3">
+            {pendingRequests.map((request: any, index: number) => (
+              <motion.div
+                key={request.match_id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-gradient-to-br from-searcher-50/50 to-orange-50/50 rounded-2xl p-4 border border-searcher-100 hover:border-searcher-200 transition-all hover:shadow-md"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  {request.user_photo ? (
+                    <img
+                      src={request.user_photo}
+                      alt={request.user_name}
+                      className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-gradient-searcher flex items-center justify-center ring-2 ring-white shadow-sm">
+                      <UserCircle2 className="w-6 h-6 text-white" />
                     </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 truncate">
+                      {request.user_name}
+                    </h3>
+                    <p className="text-xs text-gray-500 flex items-center gap-1">
+                      <Heart className="w-3 h-3 fill-searcher-500 text-searcher-500" />
+                      Match {new Date(request.matched_at).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'short'
+                      })}
+                    </p>
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+                <Button
+                  onClick={async () => {
+                    if (!userId || !request.user_id) return;
+
+                    try {
+                      const { data: newConv, error } = await supabase
+                        .from('conversations')
+                        .insert({
+                          created_by: userId,
+                          metadata: {
+                            conversationType: 'searcher_match',
+                            userType: 'searcher',
+                            matchId: request.match_id
+                          }
+                        })
+                        .select()
+                        .single();
+
+                      if (error) throw error;
+
+                      await supabase
+                        .from('conversation_participants')
+                        .insert([
+                          { conversation_id: newConv.id, user_id: userId, is_read: true },
+                          { conversation_id: newConv.id, user_id: request.user_id, is_read: false }
+                        ]);
+
+                      toast.success('Conversation créée !');
+                      await loadConversations();
+                      await loadPendingRequests();
+                      setSelectedConversationId(newConv.id);
+                      setActiveTab('searchers');
+                    } catch (error) {
+                      logger.error('Error creating conversation', error);
+                      toast.error('Échec de la création de la conversation');
+                    }
+                  }}
+                  className="w-full rounded-xl bg-gradient-searcher hover:opacity-90 text-white"
+                  size="sm"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Envoyer un message
+                </Button>
+              </motion.div>
+            ))}
           </div>
         )}
-      </main>
+      </div>
     </div>
+  );
+
+  return (
+    <MessagesLayout
+      variant="searcher"
+      hasSelectedConversation={!!selectedConversationId}
+      onBack={() => setSelectedConversationId(null)}
+      sidebar={
+        activeTab === 'requests' ? (
+          requestsSidebar
+        ) : (
+          <ConversationList
+            conversations={filteredConversations}
+            selectedConversationId={selectedConversationId || undefined}
+            onSelectConversation={setSelectedConversationId}
+            showArchived={showArchived}
+            variant="searcher"
+            header={sidebarHeader}
+          />
+        )
+      }
+    >
+      {selectedConversation && userId ? (
+        <ChatWindow
+          conversationId={selectedConversationId!}
+          messages={messages}
+          currentUserId={userId}
+          otherUserName={selectedConversation.other_user_name}
+          otherUserPhoto={selectedConversation.other_user_photo}
+          isTyping={!!isOtherUserTyping}
+          onSendMessage={handleSendMessage}
+          onStartTyping={handleStartTyping}
+          onStopTyping={handleStopTyping}
+          onArchive={handleArchive}
+          onDelete={handleDelete}
+          onBack={() => setSelectedConversationId(null)}
+          variant="searcher"
+        />
+      ) : null}
+    </MessagesLayout>
   );
 }
 

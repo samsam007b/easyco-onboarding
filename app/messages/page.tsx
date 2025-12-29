@@ -37,7 +37,8 @@ export default function MessagesRedirectPage() {
             router.replace('/dashboard/owner/messages');
             break;
           case 'resident':
-            router.replace('/dashboard/resident/messages');
+            // Residents use the hub messaging system
+            router.replace('/hub/messages');
             break;
           default:
             // Fallback to searcher

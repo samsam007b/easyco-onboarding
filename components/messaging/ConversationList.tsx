@@ -1,33 +1,64 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { formatMessageTime, type ConversationListItem } from '@/lib/services/messaging-service';
-import { MessageCircle, Archive, Search } from 'lucide-react';
+import { MessageCircle, Search, Pin, Archive } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useOnlineStatus } from '@/lib/hooks/use-online-status';
 import { useAuth } from '@/lib/contexts/auth-context';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface ConversationListProps {
   conversations: ConversationListItem[];
   selectedConversationId?: string;
   onSelectConversation: (conversationId: string) => void;
   showArchived?: boolean;
+  variant?: 'searcher' | 'owner' | 'hub';
+  header?: React.ReactNode;
 }
+
+const variantStyles = {
+  searcher: {
+    selected: 'bg-gradient-to-r from-searcher-50 to-searcher-100/50 border-l-4 border-l-searcher-500',
+    badge: 'bg-searcher-500 text-white',
+    accent: 'bg-gradient-searcher',
+    avatarGradient: 'from-searcher-500 to-orange-500',
+    online: 'bg-green-500',
+    searchFocus: 'focus:ring-searcher-200 focus:border-searcher-300',
+  },
+  owner: {
+    selected: 'bg-gradient-to-r from-purple-50 to-indigo-100/50 border-l-4 border-l-purple-500',
+    badge: 'bg-purple-500 text-white',
+    accent: 'bg-gradient-to-br from-purple-500 to-indigo-500',
+    avatarGradient: 'from-purple-500 to-pink-500',
+    online: 'bg-green-500',
+    searchFocus: 'focus:ring-purple-200 focus:border-purple-300',
+  },
+  hub: {
+    selected: 'bg-gradient-to-r from-orange-50 to-red-100/50 border-l-4 border-l-orange-500',
+    badge: 'bg-orange-500 text-white',
+    accent: 'bg-gradient-to-br from-orange-500 to-red-500',
+    avatarGradient: 'from-orange-500 to-red-500',
+    online: 'bg-green-500',
+    searchFocus: 'focus:ring-orange-200 focus:border-orange-300',
+  },
+};
 
 export function ConversationList({
   conversations,
   selectedConversationId,
   onSelectConversation,
   showArchived = false,
+  variant = 'searcher',
+  header,
 }: ConversationListProps) {
-  const router = useRouter();
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const { isUserOnline } = useOnlineStatus(user?.id || null);
+  const styles = variantStyles[variant];
 
   // Filter conversations
   const filteredConversations = conversations.filter((conv) => {
@@ -46,50 +77,86 @@ export function ConversationList({
     return true;
   });
 
-  if (filteredConversations.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-8">
-        <MessageCircle className="h-12 w-12 text-gray-300 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          {showArchived ? 'No archived conversations' : 'No conversations yet'}
-        </h3>
-        <p className="text-sm text-gray-500 max-w-xs">
-          {showArchived
-            ? 'Archived conversations will appear here'
-            : 'Start a conversation with a property owner or potential roommate'}
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-full">
+      {/* Custom Header */}
+      {header && (
+        <div className="flex-shrink-0">
+          {header}
+        </div>
+      )}
+
       {/* Search bar */}
-      <div className="p-4 border-b">
+      <div className="p-4 flex-shrink-0">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search conversations..."
+            placeholder="Rechercher une conversation..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 rounded-full"
+            className={cn(
+              'pl-11 pr-4 py-3 rounded-xl border-gray-200 bg-white shadow-sm transition-all',
+              styles.searchFocus
+            )}
           />
         </div>
       </div>
 
       {/* Conversation list */}
-      <div className="flex-1 overflow-y-auto">
-        {filteredConversations.map((conversation) => (
-          <ConversationItem
-            key={conversation.conversation_id}
-            conversation={conversation}
-            isSelected={conversation.conversation_id === selectedConversationId}
-            onClick={() => onSelectConversation(conversation.conversation_id)}
-            isUserOnline={isUserOnline}
-          />
-        ))}
+      <div className="flex-1 overflow-y-auto px-2">
+        {filteredConversations.length === 0 ? (
+          <EmptyState showArchived={showArchived} variant={variant} styles={styles} />
+        ) : (
+          <div className="space-y-1 pb-4">
+            {filteredConversations.map((conversation, index) => (
+              <motion.div
+                key={conversation.conversation_id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+              >
+                <ConversationItem
+                  conversation={conversation}
+                  isSelected={conversation.conversation_id === selectedConversationId}
+                  onClick={() => onSelectConversation(conversation.conversation_id)}
+                  isUserOnline={isUserOnline}
+                  variant={variant}
+                  styles={styles}
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
+
+interface EmptyStateProps {
+  showArchived: boolean;
+  variant: 'searcher' | 'owner' | 'hub';
+  styles: typeof variantStyles.searcher;
+}
+
+function EmptyState({ showArchived, variant, styles }: EmptyStateProps) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center p-8">
+      <div className={cn('w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-md', styles.accent)}>
+        {showArchived ? (
+          <Archive className="h-8 w-8 text-white" />
+        ) : (
+          <MessageCircle className="h-8 w-8 text-white" />
+        )}
+      </div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        {showArchived ? 'Aucune conversation archivée' : 'Aucune conversation'}
+      </h3>
+      <p className="text-sm text-gray-500 max-w-xs">
+        {showArchived
+          ? 'Les conversations archivées apparaîtront ici'
+          : 'Vos conversations apparaîtront ici'}
+      </p>
     </div>
   );
 }
@@ -99,17 +166,30 @@ interface ConversationItemProps {
   isSelected: boolean;
   onClick: () => void;
   isUserOnline: (userId: string) => boolean;
+  variant: 'searcher' | 'owner' | 'hub';
+  styles: typeof variantStyles.searcher;
 }
 
-function ConversationItem({ conversation, isSelected, onClick, isUserOnline }: ConversationItemProps) {
+function ConversationItem({
+  conversation,
+  isSelected,
+  onClick,
+  isUserOnline,
+  variant,
+  styles,
+}: ConversationItemProps) {
   const hasUnread = conversation.unread_count > 0;
+  const isOnline = isUserOnline(conversation.other_user_id);
 
   return (
     <button
       onClick={onClick}
-      className={`w-full p-4 flex items-start gap-3 hover:bg-gray-50 transition-colors border-b ${
-        isSelected ? 'bg-purple-50 border-l-4 border-l-purple-600' : ''
-      }`}
+      className={cn(
+        'w-full p-3 flex items-center gap-3 rounded-xl transition-all duration-200',
+        'hover:bg-gray-100/80 active:scale-[0.99]',
+        isSelected ? styles.selected : 'bg-transparent',
+        hasUnread && !isSelected && 'bg-white shadow-sm'
+      )}
     >
       {/* Avatar */}
       <div className="relative flex-shrink-0">
@@ -117,37 +197,47 @@ function ConversationItem({ conversation, isSelected, onClick, isUserOnline }: C
           <Image
             src={conversation.other_user_photo}
             alt={conversation.other_user_name}
-            width={48}
-            height={48}
-            className="w-12 h-12 rounded-full object-cover"
+            width={52}
+            height={52}
+            className="w-13 h-13 rounded-full object-cover ring-2 ring-white shadow-sm"
             priority={false}
           />
         ) : (
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+          <div
+            className={cn(
+              'w-13 h-13 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-sm bg-gradient-to-br',
+              styles.avatarGradient
+            )}
+            style={{ width: 52, height: 52 }}
+          >
             {conversation.other_user_name.charAt(0).toUpperCase()}
           </div>
         )}
 
         {/* Online indicator */}
-        {isUserOnline(conversation.other_user_id) && (
+        {isOnline && (
           <div
-            className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"
-            title="Online"
+            className={cn(
+              'absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white',
+              styles.online
+            )}
+            title="En ligne"
           />
         )}
       </div>
 
       {/* Content */}
       <div className="flex-1 min-w-0 text-left">
-        <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center justify-between mb-0.5">
           <h4
-            className={`text-sm font-medium truncate ${
-              hasUnread ? 'text-gray-900 font-semibold' : 'text-gray-700'
-            }`}
+            className={cn(
+              'text-sm truncate max-w-[160px]',
+              hasUnread ? 'font-bold text-gray-900' : 'font-medium text-gray-700'
+            )}
           >
             {conversation.other_user_name}
           </h4>
-          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+          <span className="text-xs text-gray-400 flex-shrink-0 ml-2 tabular-nums">
             {conversation.last_message_at
               ? formatMessageTime(conversation.last_message_at)
               : ''}
@@ -156,19 +246,22 @@ function ConversationItem({ conversation, isSelected, onClick, isUserOnline }: C
 
         <div className="flex items-center justify-between gap-2">
           <p
-            className={`text-sm truncate ${
-              hasUnread ? 'text-gray-900 font-medium' : 'text-gray-500'
-            }`}
+            className={cn(
+              'text-sm truncate',
+              hasUnread ? 'text-gray-800 font-medium' : 'text-gray-500'
+            )}
           >
-            {conversation.last_message || 'No messages yet'}
+            {conversation.last_message || 'Pas encore de messages'}
           </p>
 
           {hasUnread && (
             <Badge
-              variant="default"
-              className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full flex-shrink-0"
+              className={cn(
+                'text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-semibold min-w-[20px] justify-center',
+                styles.badge
+              )}
             >
-              {conversation.unread_count}
+              {conversation.unread_count > 99 ? '99+' : conversation.unread_count}
             </Badge>
           )}
         </div>
