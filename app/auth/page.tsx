@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X, Gift, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -34,6 +34,12 @@ function AuthContent() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
+  // Referral code states
+  const [referralCode, setReferralCode] = useState('');
+  const [referralCodeStatus, setReferralCodeStatus] = useState<'idle' | 'validating' | 'valid' | 'invalid'>('idle');
+  const [referrerName, setReferrerName] = useState<string | null>(null);
+  const [showReferralInput, setShowReferralInput] = useState(false);
+
   const supabase = createClient();
 
   useEffect(() => {
@@ -41,6 +47,15 @@ function AuthContent() {
     const modeParam = searchParams?.get('mode');
     if (modeParam === 'signup') {
       setMode('signup');
+    }
+
+    // Get referral code from URL (e.g., /auth?mode=signup&ref=EASY7KM2)
+    const refCode = searchParams?.get('ref');
+    if (refCode) {
+      setReferralCode(refCode.toUpperCase());
+      setShowReferralInput(true);
+      setMode('signup'); // Force signup mode when referral code is present
+      validateReferralCode(refCode);
     }
 
     // Get redirect parameter
@@ -63,6 +78,48 @@ function AuthContent() {
       }
     }
   }, [searchParams]);
+
+  // Validate referral code
+  const validateReferralCode = async (code: string) => {
+    if (!code || code.length < 4) {
+      setReferralCodeStatus('idle');
+      setReferrerName(null);
+      return;
+    }
+
+    setReferralCodeStatus('validating');
+
+    try {
+      const response = await fetch(`/api/referral/validate/${encodeURIComponent(code)}`);
+      const data = await response.json();
+
+      if (data.valid) {
+        setReferralCodeStatus('valid');
+        setReferrerName(data.referrer_name);
+      } else {
+        setReferralCodeStatus('invalid');
+        setReferrerName(null);
+      }
+    } catch {
+      setReferralCodeStatus('invalid');
+      setReferrerName(null);
+    }
+  };
+
+  // Debounced referral code validation
+  useEffect(() => {
+    if (!referralCode) {
+      setReferralCodeStatus('idle');
+      setReferrerName(null);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      validateReferralCode(referralCode);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [referralCode]);
 
   // Password strength
   const getPasswordStrength = (pwd: string) => {
@@ -190,12 +247,14 @@ function AuthContent() {
 
     try {
       // Sign up WITHOUT user_type - we'll select it on welcome page
+      // Include referral code in metadata if valid
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             full_name: fullName,
+            ...(referralCode && referralCodeStatus === 'valid' ? { referral_code: referralCode } : {}),
           },
           emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
@@ -211,9 +270,30 @@ function AuthContent() {
       }
 
       if (data.user) {
-        toast.success(t('auth.signup.success.accountCreated'), {
-          description: t('auth.signup.success.checkEmail'),
-        });
+        // Apply referral code if valid
+        if (referralCode && referralCodeStatus === 'valid') {
+          try {
+            await fetch('/api/referral/apply-code', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code: referralCode }),
+            });
+            toast.success(t('auth.signup.success.accountCreated'), {
+              description: referrerName
+                ? `Parrainé par ${referrerName}! Vous recevrez 1 mois gratuit après avoir complété votre profil.`
+                : t('auth.signup.success.checkEmail'),
+            });
+          } catch {
+            // Referral application failed silently - don't block signup
+            toast.success(t('auth.signup.success.accountCreated'), {
+              description: t('auth.signup.success.checkEmail'),
+            });
+          }
+        } else {
+          toast.success(t('auth.signup.success.accountCreated'), {
+            description: t('auth.signup.success.checkEmail'),
+          });
+        }
 
         // Redirect to welcome page to select role
         router.push('/welcome');
@@ -350,6 +430,69 @@ function AuthContent() {
                       disabled={isLoading}
                     />
                   </div>
+                </div>
+              )}
+
+              {/* Referral Code (Signup only) */}
+              {mode === 'signup' && (
+                <div>
+                  {!showReferralInput ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowReferralInput(true)}
+                      className="flex items-center gap-2 text-sm text-owner-600 hover:text-owner-800 transition-colors"
+                    >
+                      <Gift className="w-4 h-4" />
+                      <span>J&apos;ai un code parrainage</span>
+                    </button>
+                  ) : (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Code de parrainage (optionnel)
+                      </label>
+                      <div className="relative">
+                        <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Input
+                          type="text"
+                          value={referralCode}
+                          onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                          placeholder="Ex: EASY7KM2"
+                          className={`pl-12 pr-12 uppercase ${
+                            referralCodeStatus === 'valid'
+                              ? 'border-green-500 focus:ring-green-500'
+                              : referralCodeStatus === 'invalid'
+                              ? 'border-red-500 focus:ring-red-500'
+                              : ''
+                          }`}
+                          disabled={isLoading}
+                          maxLength={8}
+                        />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                          {referralCodeStatus === 'validating' && (
+                            <div className="w-5 h-5 border-2 border-gray-300 border-t-owner-600 rounded-full animate-spin" />
+                          )}
+                          {referralCodeStatus === 'valid' && (
+                            <CheckCircle className="w-5 h-5 text-green-500" />
+                          )}
+                          {referralCodeStatus === 'invalid' && (
+                            <AlertCircle className="w-5 h-5 text-red-500" />
+                          )}
+                        </div>
+                      </div>
+                      {referralCodeStatus === 'valid' && referrerName && (
+                        <p className="mt-2 text-sm text-green-600 flex items-center gap-1">
+                          <CheckCircle className="w-4 h-4" />
+                          Invité par {referrerName} - 1 mois offert !
+                        </p>
+                      )}
+                      {referralCodeStatus === 'invalid' && referralCode.length >= 4 && (
+                        <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          Code invalide ou expiré
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 

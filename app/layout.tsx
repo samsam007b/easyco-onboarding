@@ -142,16 +142,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SkipLink />
         <Analytics />
         <WebVitalsReporter />
-        <ApiErrorTrackingProvider />
-        <ClientProviders>
-          <ErrorBoundary>
-            {children}
-          </ErrorBoundary>
-          <Toaster position="top-right" />
-          <CookieConsentBanner />
-          <PWAInstallPrompt />
-          <DevTools />
-        </ClientProviders>
+        <ApiErrorTrackingProvider>
+          <ClientProviders>
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
+            <Toaster position="top-right" />
+            <CookieConsentBanner />
+            <PWAInstallPrompt />
+            <DevTools />
+          </ClientProviders>
+        </ApiErrorTrackingProvider>
       </body>
     </html>
   )

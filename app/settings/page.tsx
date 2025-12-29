@@ -24,7 +24,8 @@ import {
   ArrowLeft,
   Sparkles,
   Receipt,
-  FileText
+  FileText,
+  Gift,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -144,6 +145,16 @@ export default function SettingsPage() {
       href: '/settings/residence-profile',
       color: 'bg-pink-100',
       badge: userType === 'resident' ? 'New' : undefined,
+      category: 'account',
+    },
+    {
+      id: 'referrals',
+      title: 'Parrainage',
+      description: 'Invitez vos amis et gagnez des mois gratuits',
+      icon: Gift,
+      href: '/settings/referrals',
+      color: 'bg-green-100',
+      badge: 'Nouveau',
       category: 'account',
     },
     {
@@ -349,6 +360,7 @@ export default function SettingsPage() {
                               section.id === 'payment' ? 'text-indigo-600' :
                               section.id === 'invoices' ? 'text-emerald-600' :
                               section.id === 'devices' ? 'text-cyan-600' :
+                              section.id === 'referrals' ? 'text-green-600' :
                               'text-gray-700'
                             )} />
                           </div>

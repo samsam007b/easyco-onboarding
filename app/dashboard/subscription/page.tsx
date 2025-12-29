@@ -33,6 +33,8 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import PlanSelectorModal from '@/components/subscriptions/PlanSelectorModal';
 import { useStripeCheckout, SubscriptionPlan } from '@/hooks/use-stripe-checkout';
 import { Loader2 } from 'lucide-react';
+import { getReferralCredits } from '@/lib/services/referral-service';
+import type { ReferralCredits } from '@/types/referral.types';
 
 interface SubscriptionStatus {
   status: 'trial' | 'active' | 'past_due' | 'canceled' | 'expired';
@@ -62,6 +64,7 @@ export default function SubscriptionPage() {
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [showPlanModal, setShowPlanModal] = useState(false);
+  const [referralCredits, setReferralCredits] = useState<ReferralCredits | null>(null);
   const { startCheckout, isLoading: checkoutLoading, error: checkoutError } = useStripeCheckout();
 
   useEffect(() => {
@@ -108,6 +111,12 @@ export default function SubscriptionPage() {
           next_billing_date: subData.current_period_end,
         } as SubscriptionStatus;
         setStatus(statusData);
+      }
+
+      // Load referral credits
+      const creditsResult = await getReferralCredits();
+      if (creditsResult.success && creditsResult.data) {
+        setReferralCredits(creditsResult.data);
       }
     } catch (error) {
       console.error('Error in loadData:', error);
@@ -1081,6 +1090,62 @@ export default function SubscriptionPage() {
 
           {/* Sidebar - Right 1/3 */}
           <div className="space-y-6">
+            {/* Referral Credits Card */}
+            {referralCredits && referralCredits.credits_available > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 }}
+                className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <Gift className="w-6 h-6" />
+                  <h3 className="text-lg font-bold">Crédits Parrainage</h3>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="text-4xl font-bold">{referralCredits.credits_available}</span>
+                    <span className="text-white/80">mois disponibles</span>
+                  </div>
+                  <p className="text-sm text-white/90">
+                    {referralCredits.successful_referrals} parrainage{referralCredits.successful_referrals > 1 ? 's' : ''} réussi{referralCredits.successful_referrals > 1 ? 's' : ''}
+                  </p>
+                </div>
+                <button
+                  onClick={() => router.push('/settings/referrals')}
+                  className="w-full py-3 bg-white text-green-600 rounded-lg font-semibold hover:bg-gray-100 transition"
+                >
+                  Voir mon parrainage
+                </button>
+              </motion.div>
+            )}
+
+            {/* Invite Friends Card (shown when no credits) */}
+            {(!referralCredits || referralCredits.credits_available === 0) && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 }}
+                className="bg-white rounded-2xl shadow-lg p-6 border-2 border-green-100"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Gift className="w-5 h-5 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900">Parrainez vos amis</h3>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Invitez vos amis et gagnez jusqu'à 3 mois d'abonnement gratuit par parrainage !
+                </p>
+                <button
+                  onClick={() => router.push('/settings/referrals')}
+                  className="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
+                >
+                  Commencer à parrainer
+                </button>
+              </motion.div>
+            )}
+
             {/* Upgrade to Annual Card */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}

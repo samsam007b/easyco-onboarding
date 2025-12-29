@@ -257,7 +257,7 @@ export async function checkPendingReferral(
       };
     }
 
-    const referrerData = referral.referrer as { full_name: string } | null;
+    const referrerData = (Array.isArray(referral.referrer) ? referral.referrer[0] : referral.referrer) as { full_name: string } | null;
 
     return {
       success: true,
