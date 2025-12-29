@@ -137,6 +137,23 @@ async function getStats() {
     ? ratings.reduce((a, b) => a + b, 0) / ratings.length
     : 0;
 
+  // Transform Supabase join results (arrays) to single objects
+  const transformConversations = (data: typeof recentConversations): Conversation[] => {
+    if (!data) return [];
+    return data.map(conv => ({
+      ...conv,
+      users: Array.isArray(conv.users) ? conv.users[0] || null : conv.users,
+    }));
+  };
+
+  const transformSuggestions = (data: typeof topSuggestions): Suggestion[] => {
+    if (!data) return [];
+    return data.map(sug => ({
+      ...sug,
+      users: Array.isArray(sug.users) ? sug.users[0] || null : sug.users,
+    }));
+  };
+
   return {
     totalConversations: totalConversations || 0,
     conversationsThisWeek: conversationsThisWeek || 0,
@@ -144,8 +161,8 @@ async function getStats() {
     pendingSuggestions: pendingSuggestions || 0,
     avgRating: avgRating.toFixed(1),
     totalRatings: ratings.length,
-    recentConversations: (recentConversations || []) as Conversation[],
-    topSuggestions: (topSuggestions || []) as Suggestion[],
+    recentConversations: transformConversations(recentConversations),
+    topSuggestions: transformSuggestions(topSuggestions),
     pageAnalytics: (pageAnalytics || []) as PageAnalytics[],
   };
 }
