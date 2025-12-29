@@ -46,7 +46,7 @@ export interface OCRLineItem {
   name: string;
   quantity?: number;
   unit_price?: number;
-  total_price: number;
+  total_price?: number;
 }
 
 export type ExpenseCategory =

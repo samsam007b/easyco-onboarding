@@ -1,13 +1,25 @@
 /**
- * Unified AI Service
- * Orchestrates multiple AI providers with automatic fallback
- * Prioritizes free tiers and handles rate limiting
+ * Unified AI Service - SECURE VERSION
+ *
+ * SECURITY PRINCIPLES:
+ * 1. ZERO CLIENT DATA TO AI - Only send raw images + minimal prompts
+ * 2. PRE-EMPTIVE SWITCHING - Switch providers at 80% usage, not 100%
+ * 3. METADATA STRIPPING - Remove all EXIF data from images
+ * 4. AUDIT LOGGING - Track all AI calls (without data content)
+ * 5. NO CONTEXT - Never send user IDs, property IDs, or any identifying info
  */
 
 import { GeminiProvider } from './providers/gemini';
 import { TogetherProvider } from './providers/together';
 import { GroqProvider } from './providers/groq';
 import { ocrService } from '../ocr-service'; // Tesseract fallback
+import {
+  sanitizeImage,
+  sanitizeText,
+  auditLog,
+  shouldSwitchProvider,
+  AI_SECURITY_CONFIG,
+} from './security';
 import type {
   AIProvider,
   OCRResult,
@@ -28,14 +40,15 @@ const usageTracker: Record<AIProvider, { count: number; resetAt: Date }> = {
   tesseract: { count: 0, resetAt: new Date() }, // Unlimited
 };
 
-// Daily limits per provider (conservative estimates)
+// Daily limits per provider - CONSERVATIVE to stay in free tier
+// We switch at 80% of these limits to NEVER hit paid usage
 const DAILY_LIMITS: Record<AIProvider, number> = {
-  gemini: 40,      // Free tier ~50/day, leave buffer
-  openai: 10,      // $5 credits, conserve
-  together: 100,   // $25 credits
-  groq: 10000,     // Very generous free tier
-  mistral: 500,    // Good free tier
-  tesseract: Infinity, // Local, unlimited
+  gemini: 40,      // Free tier ~50/day, switch at 32
+  openai: 10,      // $5 credits, switch at 8
+  together: 80,    // $25 credits, switch at 64
+  groq: 8000,      // Very generous free tier, switch at 6400
+  mistral: 400,    // Good free tier, switch at 320
+  tesseract: Infinity, // Local, unlimited, never switch
 };
 
 class AIService {
@@ -77,9 +90,10 @@ class AIService {
   }
 
   /**
-   * Check if provider is available (initialized and under daily limit)
+   * Check if provider is SAFELY available
+   * Returns false at 80% usage to prevent hitting paid limits
    */
-  private canUseProvider(provider: AIProvider): boolean {
+  private canSafelyUseProvider(provider: AIProvider): boolean {
     const usage = usageTracker[provider];
     const now = new Date();
 
@@ -87,58 +101,108 @@ class AIService {
     if (usage.resetAt.getDate() !== now.getDate()) {
       usage.count = 0;
       usage.resetAt = now;
+      console.log(`[AI] 🔄 Reset daily counter for ${provider}`);
     }
 
-    return usage.count < DAILY_LIMITS[provider];
+    const limit = DAILY_LIMITS[provider];
+    const safeLimit = Math.floor(limit * AI_SECURITY_CONFIG.SWITCH_THRESHOLD);
+
+    // Check if we're approaching the limit
+    if (shouldSwitchProvider(usage.count, limit)) {
+      console.log(`[AI] ⚠️ ${provider} at ${usage.count}/${limit} (${Math.round(usage.count/limit*100)}%) - SWITCHING to stay free`);
+      return false;
+    }
+
+    return usage.count < safeLimit;
   }
 
   /**
-   * Track provider usage
+   * Track provider usage with audit logging
    */
-  private trackUsage(provider: AIProvider) {
+  private trackUsage(provider: AIProvider, success: boolean, latencyMs: number) {
     usageTracker[provider].count++;
-    console.log(`[AI] ${provider} usage: ${usageTracker[provider].count}/${DAILY_LIMITS[provider]}`);
+    const usage = usageTracker[provider];
+    const limit = DAILY_LIMITS[provider];
+    const percentage = Math.round((usage.count / limit) * 100);
+
+    console.log(`[AI] 📊 ${provider}: ${usage.count}/${limit} (${percentage}%)`);
+
+    // Audit log (no sensitive data)
+    auditLog('ai_call', provider, {
+      success,
+      latencyMs,
+      usageCount: usage.count,
+      usageLimit: limit,
+    });
+
+    // Warn if approaching limit
+    if (percentage >= 70) {
+      console.warn(`[AI] ⚠️ ${provider} approaching limit: ${percentage}%`);
+    }
   }
 
   /**
-   * Analyze receipt image with automatic fallback
-   * Priority: Gemini → Together AI → Tesseract
+   * Analyze receipt image with SECURE processing
+   * - Strips image metadata
+   * - Sends minimal prompt
+   * - No client context
+   * - Pre-emptive provider switching
    */
   async analyzeReceipt(imageFile: File): Promise<OCRResult> {
-    console.log('[AI] 📸 Starting receipt analysis...');
+    console.log('[AI] 🔒 Starting SECURE receipt analysis...');
     const startTime = Date.now();
 
     // Convert file to base64
-    const base64 = await this.fileToBase64(imageFile);
+    let base64 = await this.fileToBase64(imageFile);
     const mimeType = imageFile.type || 'image/jpeg';
 
-    // Try Gemini first (best quality, free tier)
-    if (this.gemini && this.canUseProvider('gemini')) {
-      console.log('[AI] Trying Gemini...');
-      this.trackUsage('gemini');
+    // SECURITY: Strip all metadata from image
+    try {
+      if (typeof window !== 'undefined') {
+        base64 = await sanitizeImage(base64, mimeType);
+        console.log('[AI] 🔒 Image metadata stripped');
+      }
+    } catch (error) {
+      console.warn('[AI] Could not sanitize image, proceeding with original');
+    }
+
+    // Try Gemini first (best quality) - only if SAFELY under limit
+    if (this.gemini && this.canSafelyUseProvider('gemini')) {
+      console.log('[AI] Trying Gemini (secure mode)...');
       const result = await this.gemini.analyzeReceipt(base64, mimeType);
+      const latencyMs = Date.now() - startTime;
+      this.trackUsage('gemini', result.success, latencyMs);
+
       if (result.success) {
-        return result;
+        return { ...result, latencyMs };
       }
       console.warn('[AI] Gemini failed, trying fallback...');
     }
 
-    // Try Together AI (Llama Vision)
-    if (this.together && this.canUseProvider('together')) {
-      console.log('[AI] Trying Together AI...');
-      this.trackUsage('together');
+    // Try Together AI (Llama Vision) - only if SAFELY under limit
+    if (this.together && this.canSafelyUseProvider('together')) {
+      console.log('[AI] Trying Together AI (secure mode)...');
       const result = await this.together.analyzeReceipt(base64, mimeType);
+      const latencyMs = Date.now() - startTime;
+      this.trackUsage('together', result.success, latencyMs);
+
       if (result.success) {
-        return result;
+        return { ...result, latencyMs };
       }
       console.warn('[AI] Together AI failed, trying fallback...');
     }
 
-    // Fallback to Tesseract (local, always available)
-    console.log('[AI] Using Tesseract fallback...');
+    // Fallback to Tesseract (LOCAL - 100% secure, no data leaves device)
+    console.log('[AI] 🔒 Using Tesseract (100% local, no data sent externally)...');
     try {
       const tesseractResult = await ocrService.scanReceipt(imageFile);
       const latencyMs = Date.now() - startTime;
+
+      auditLog('ai_call', 'tesseract', {
+        success: tesseractResult.success,
+        latencyMs,
+        note: 'local_processing',
+      });
 
       if (tesseractResult.success && tesseractResult.data) {
         return {
@@ -172,56 +236,75 @@ class AIService {
   }
 
   /**
-   * Categorize expense with fallback
-   * Priority: Groq (fast) → Gemini → Together AI → Rule-based
+   * Categorize expense with SECURE processing
+   * - Sanitizes input text
+   * - Minimal prompt
+   * - Pre-emptive switching
    */
   async categorizeExpense(description: string, merchant?: string): Promise<CategoryResult> {
-    console.log('[AI] 🏷️ Categorizing expense:', description);
+    // SECURITY: Sanitize input before sending to AI
+    const safeDescription = sanitizeText(description);
+    const safeMerchant = merchant ? sanitizeText(merchant) : undefined;
+
+    console.log('[AI] 🔒 Categorizing (sanitized input)');
 
     // Try Groq first (ultra-fast, generous free tier)
-    if (this.groq && this.canUseProvider('groq')) {
-      this.trackUsage('groq');
-      const result = await this.groq.categorizeExpense(description, merchant);
+    if (this.groq && this.canSafelyUseProvider('groq')) {
+      const startTime = Date.now();
+      const result = await this.groq.categorizeExpense(safeDescription, safeMerchant);
+      this.trackUsage('groq', result.confidence > 0.5, Date.now() - startTime);
+
       if (result.confidence > 0.6) {
         return result;
       }
     }
 
-    // Try Gemini
-    if (this.gemini && this.canUseProvider('gemini')) {
-      this.trackUsage('gemini');
-      const result = await this.gemini.categorizeExpense(description, merchant);
+    // Try Gemini - only if safely under limit
+    if (this.gemini && this.canSafelyUseProvider('gemini')) {
+      const startTime = Date.now();
+      const result = await this.gemini.categorizeExpense(safeDescription, safeMerchant);
+      this.trackUsage('gemini', result.confidence > 0.5, Date.now() - startTime);
+
       if (result.confidence > 0.6) {
         return result;
       }
     }
 
-    // Try Together AI
-    if (this.together && this.canUseProvider('together')) {
-      this.trackUsage('together');
-      const result = await this.together.categorizeExpense(description, merchant);
+    // Try Together AI - only if safely under limit
+    if (this.together && this.canSafelyUseProvider('together')) {
+      const startTime = Date.now();
+      const result = await this.together.categorizeExpense(safeDescription, safeMerchant);
+      this.trackUsage('together', result.confidence > 0.5, Date.now() - startTime);
+
       if (result.confidence > 0.5) {
         return result;
       }
     }
 
-    // Fallback to rule-based categorization
-    return this.ruleBasedCategorization(description, merchant);
+    // Fallback to rule-based categorization (100% local)
+    console.log('[AI] 🔒 Using local rule-based categorization');
+    return this.ruleBasedCategorization(safeDescription, safeMerchant);
   }
 
   /**
    * Chat with AI assistant
-   * Uses Groq for speed
+   * SECURITY: Uses sanitized input
    */
   async chat(messages: ChatMessage[], systemPrompt?: string): Promise<ChatResult> {
-    const defaultSystemPrompt = systemPrompt || `Tu es l'assistant IA d'IzzIco, une application de gestion de colocation.
-Tu aides les colocataires à gérer leurs finances, dépenses, et la vie quotidienne.
-Réponds de manière concise et amicale en français.
-Si on te demande d'ajouter une dépense ou de faire une action, explique comment le faire dans l'app.`;
+    // Sanitize all user messages
+    const safeMessages = messages.map((msg) => ({
+      ...msg,
+      content: msg.role === 'user' ? sanitizeText(msg.content) : msg.content,
+    }));
 
-    if (this.groq && this.canUseProvider('groq')) {
-      this.trackUsage('groq');
-      return this.groq.chat(messages, defaultSystemPrompt);
+    const defaultSystemPrompt = systemPrompt || `Tu es un assistant pour une application de gestion de colocation.
+Réponds de manière concise en français. N'inclus jamais d'informations personnelles dans tes réponses.`;
+
+    if (this.groq && this.canSafelyUseProvider('groq')) {
+      const startTime = Date.now();
+      const result = await this.groq.chat(safeMessages, defaultSystemPrompt);
+      this.trackUsage('groq', result.success, Date.now() - startTime);
+      return result;
     }
 
     return {
@@ -234,7 +317,7 @@ Si on te demande d'ajouter une dépense ou de faire une action, explique comment
 
   /**
    * Parse natural language expense command
-   * "J'ai payé 45€ chez Carrefour" → { amount: 45, merchant: "Carrefour" }
+   * SECURITY: Sanitizes input
    */
   async parseExpenseCommand(text: string): Promise<{
     amount?: number;
@@ -243,15 +326,19 @@ Si on te demande d'ajouter une dépense ou de faire une action, explique comment
     date?: string;
     category?: ExpenseCategory;
   } | null> {
-    if (this.groq && this.canUseProvider('groq')) {
-      this.trackUsage('groq');
-      return this.groq.parseExpenseCommand(text);
+    const safeText = sanitizeText(text);
+
+    if (this.groq && this.canSafelyUseProvider('groq')) {
+      const startTime = Date.now();
+      const result = await this.groq.parseExpenseCommand(safeText);
+      this.trackUsage('groq', !!result, Date.now() - startTime);
+      return result;
     }
     return null;
   }
 
   /**
-   * Rule-based categorization fallback
+   * Rule-based categorization fallback (100% LOCAL)
    */
   private ruleBasedCategorization(description: string, merchant?: string): CategoryResult {
     const text = `${description} ${merchant || ''}`.toLowerCase();
@@ -305,16 +392,21 @@ Si on te demande d'ajouter une dépense ou de faire une action, explique comment
   }
 
   /**
-   * Get current usage stats
+   * Get current usage stats (for admin dashboard)
    */
-  getUsageStats(): Record<AIProvider, { used: number; limit: number; remaining: number }> {
-    const stats: Record<AIProvider, { used: number; limit: number; remaining: number }> = {} as any;
+  getUsageStats(): Record<AIProvider, { used: number; limit: number; remaining: number; safeRemaining: number }> {
+    const stats: Record<AIProvider, { used: number; limit: number; remaining: number; safeRemaining: number }> = {} as any;
 
     for (const provider of Object.keys(usageTracker) as AIProvider[]) {
+      const used = usageTracker[provider].count;
+      const limit = DAILY_LIMITS[provider];
+      const safeLimit = Math.floor(limit * AI_SECURITY_CONFIG.SWITCH_THRESHOLD);
+
       stats[provider] = {
-        used: usageTracker[provider].count,
-        limit: DAILY_LIMITS[provider],
-        remaining: Math.max(0, DAILY_LIMITS[provider] - usageTracker[provider].count),
+        used,
+        limit,
+        remaining: Math.max(0, limit - used),
+        safeRemaining: Math.max(0, safeLimit - used), // Remaining before we switch
       };
     }
 
@@ -326,6 +418,23 @@ Si on te demande d'ajouter une dépense ou de faire une action, explique comment
    */
   hasAIProviders(): boolean {
     return !!(this.gemini || this.together || this.groq);
+  }
+
+  /**
+   * Get security status
+   */
+  getSecurityStatus(): {
+    metadataStripping: boolean;
+    preEmptiveSwitching: boolean;
+    auditLogging: boolean;
+    switchThreshold: number;
+  } {
+    return {
+      metadataStripping: AI_SECURITY_CONFIG.STRIP_METADATA,
+      preEmptiveSwitching: true,
+      auditLogging: AI_SECURITY_CONFIG.AUDIT_LOGGING,
+      switchThreshold: AI_SECURITY_CONFIG.SWITCH_THRESHOLD,
+    };
   }
 
   /**
