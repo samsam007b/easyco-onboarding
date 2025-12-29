@@ -55,7 +55,8 @@ CREATE INDEX IF NOT EXISTS idx_agent_logs_provider ON agent_request_logs(provide
 CREATE INDEX IF NOT EXISTS idx_agent_logs_created ON agent_request_logs(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_agent_logs_user_type ON agent_request_logs(user_type);
 CREATE INDEX IF NOT EXISTS idx_agent_logs_page ON agent_request_logs(page_path);
-CREATE INDEX IF NOT EXISTS idx_agent_logs_date ON agent_request_logs(DATE(created_at));
+-- Note: For date-based queries, use created_at with date truncation in queries
+-- or create a generated column if needed for heavy date filtering
 
 -- =====================================================
 -- TABLE: agent_intent_stats (aggregated intent analytics)
