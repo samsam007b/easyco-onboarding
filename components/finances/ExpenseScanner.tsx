@@ -33,7 +33,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { ocrService } from '@/lib/services/ocr-service';
+import { aiService, type OCRResult as AIServiceOCRResult } from '@/lib/services/ai';
 import type { OCRData, ExpenseCategory } from '@/types/finances.types';
 
 interface ExpenseScannerProps {
@@ -112,6 +112,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
   const [ocrData, setOcrData] = useState<OCRData | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanError, setScanError] = useState<string | null>(null);
+  const [aiProvider, setAiProvider] = useState<string | null>(null);
 
   // Form data
   const [title, setTitle] = useState('');
@@ -139,16 +140,33 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
     await performOCRScan(file);
   };
 
-  // Step 2: Perform OCR scan
+  // Step 2: Perform OCR scan using AI service (with automatic fallback)
   const performOCRScan = async (file: File) => {
     setIsScanning(true);
     setScanError(null);
+    setAiProvider(null);
 
     try {
-      const result = await ocrService.scanReceipt(file);
+      // Use the new AI service which tries Gemini → Together AI → Tesseract
+      const result = await aiService.analyzeReceipt(file);
+
+      // Track which provider was used
+      setAiProvider(result.provider);
+      console.log(`[Scanner] OCR completed using ${result.provider} in ${result.latencyMs}ms`);
 
       if (result.success && result.data) {
-        setOcrData(result.data);
+        // Convert AI service response to OCRData format
+        const ocrDataFromAI: OCRData = {
+          merchant: result.data.merchant,
+          total: result.data.total,
+          date: result.data.date,
+          items: result.data.items,
+          confidence: result.data.confidence,
+          raw_text: result.data.raw_text,
+          processed_at: new Date().toISOString(),
+          language: 'fra',
+        };
+        setOcrData(ocrDataFromAI);
 
         // Auto-fill form with OCR data
         if (result.data.total) {
@@ -160,6 +178,24 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
         }
         if (result.data.date) {
           setDate(result.data.date);
+        }
+
+        // Auto-set category if AI detected one
+        if (result.data.category) {
+          // Map AI category to our ExpenseCategory type
+          const categoryMap: Record<string, ExpenseCategory> = {
+            groceries: 'groceries',
+            cleaning: 'cleaning',
+            utilities: 'utilities',
+            internet: 'utilities', // Map to utilities
+            rent: 'utilities',
+            entertainment: 'other',
+            transport: 'other',
+            health: 'other',
+            other: 'other',
+          };
+          const mappedCategory = categoryMap[result.data.category] || 'other';
+          setCategory(mappedCategory);
         }
 
         // Initialize line items from OCR
@@ -383,20 +419,25 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             className="text-center py-16"
           >
             <div className="relative w-32 h-32 mx-auto mb-8">
-              <Scan className="w-full h-full text-resident-600 animate-pulse" />
-              <div className="absolute inset-0 bg-resident-500/20 rounded-full blur-2xl animate-pulse" />
+              <Sparkles className="w-full h-full animate-pulse" style={{ color: '#ee5736' }} />
+              <div className="absolute inset-0 rounded-full blur-2xl animate-pulse" style={{ background: 'rgba(238, 87, 54, 0.2)' }} />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Scan en cours...
+              Analyse IA en cours...
             </h2>
             <p className="text-gray-600 mb-4">
-              Lecture du ticket avec OCR
+              Intelligence artificielle en action
             </p>
-            <div className="flex items-center justify-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin text-resident-600" />
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Loader2 className="w-5 h-5 animate-spin" style={{ color: '#ee5736' }} />
               <span className="text-sm text-gray-500">
-                Cela peut prendre quelques secondes
+                Extraction des données du ticket
               </span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400">
+              <span className="px-2 py-1 bg-gray-100 rounded-full">Google Gemini</span>
+              <span className="px-2 py-1 bg-gray-100 rounded-full">Llama Vision</span>
+              <span className="px-2 py-1 bg-gray-100 rounded-full">Tesseract</span>
             </div>
           </motion.div>
         )}
@@ -415,12 +456,33 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 Vérifiez les informations
               </h2>
               <p className="text-gray-600">
-                {ocrData && ocrData.confidence > 0.7 ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <Sparkles className="w-4 h-4 text-green-600" />
-                    <span>
-                      Données extraites automatiquement (confiance:{' '}
-                      {Math.round(ocrData.confidence * 100)}%)
+                {ocrData && ocrData.confidence > 0.5 ? (
+                  <span className="flex flex-col items-center gap-2">
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-green-600" />
+                      <span>
+                        Données extraites automatiquement
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 text-xs">
+                      {aiProvider && (
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "text-xs",
+                            aiProvider === 'gemini' && "bg-blue-50 text-blue-700 border-blue-200",
+                            aiProvider === 'together' && "bg-purple-50 text-purple-700 border-purple-200",
+                            aiProvider === 'tesseract' && "bg-gray-50 text-gray-700 border-gray-200"
+                          )}
+                        >
+                          {aiProvider === 'gemini' && '🤖 Google Gemini'}
+                          {aiProvider === 'together' && '🦙 Llama Vision'}
+                          {aiProvider === 'tesseract' && '📝 Tesseract (local)'}
+                        </Badge>
+                      )}
+                      <span className="text-gray-400">
+                        Confiance: {Math.round((ocrData.confidence || 0) * 100)}%
+                      </span>
                     </span>
                   </span>
                 ) : (
