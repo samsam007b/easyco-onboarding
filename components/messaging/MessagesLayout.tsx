@@ -66,8 +66,8 @@ export function MessagesLayout({
       {/* Optional Header */}
       {header && <div className="mb-6">{header}</div>}
 
-      {/* Main Container */}
-      <div className="h-[calc(100vh-2rem)] md:h-[calc(100vh-4rem)] max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+      {/* Main Container - accounts for fixed header (pt-24 = 6rem in parent layout) */}
+      <div className="h-[calc(100vh-8rem)] md:h-[calc(100vh-7rem)] max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="h-full bg-white rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex">
           {/* Sidebar - Conversation List */}
           <aside

@@ -190,14 +190,14 @@ export async function getUserResidenceInfo(userId: string): Promise<{
     const property = (membership as any).properties;
     if (!property) return null;
 
-    // Get owner info separately
+    // Get owner info separately (use maybeSingle to avoid 406 error if no profile)
     let ownerName: string | null = null;
     if (property.owner_id) {
       const { data: ownerProfile } = await supabase
         .from('user_profiles')
         .select('first_name, last_name')
         .eq('id', property.owner_id)
-        .single();
+        .maybeSingle();
 
       if (ownerProfile) {
         ownerName = [ownerProfile.first_name, ownerProfile.last_name]
@@ -338,19 +338,19 @@ export async function getUnifiedConversations(
         isPinned = true;
         otherUserRole = 'owner';
       } else if (otherParticipants && otherParticipants.length === 1) {
-        // 1-to-1 conversation - fetch user profile
+        // 1-to-1 conversation - fetch user profile (use maybeSingle to avoid 406 error)
         const otherUserId = otherParticipants[0].user_id;
         const { data: otherProfile } = await supabase
           .from('user_profiles')
           .select('id, first_name, last_name, profile_photo_url')
           .eq('id', otherUserId)
-          .single();
+          .maybeSingle();
 
         const { data: otherUser } = await supabase
           .from('users')
           .select('user_type')
           .eq('id', otherUserId)
-          .single();
+          .maybeSingle();
 
         if (otherProfile) {
           name = [otherProfile.first_name, otherProfile.last_name].filter(Boolean).join(' ') || 'Utilisateur';
