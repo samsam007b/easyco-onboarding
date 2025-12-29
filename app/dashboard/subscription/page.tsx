@@ -35,17 +35,21 @@ import { useStripeCheckout, SubscriptionPlan } from '@/hooks/use-stripe-checkout
 import { Loader2 } from 'lucide-react';
 
 interface SubscriptionStatus {
-  subscription_id: string;
-  user_type: 'owner' | 'resident';
-  plan: string;
   status: 'trial' | 'active' | 'past_due' | 'canceled' | 'expired';
-  is_trial: boolean;
-  trial_days_remaining: number;
-  trial_progress_percent: number;
-  days_until_billing: number | null;
+  plan: string;
   trial_end_date: string;
-  next_billing_date: string | null;
+  trial_days_remaining: number;
+  trial_days_total: number;
+  is_trial_active: boolean;
+  requires_payment: boolean;
+  can_access_features: boolean;
+  has_stripe_subscription: boolean;
+  current_period_start: string | null;
+  current_period_end: string | null;
   cancel_at_period_end: boolean;
+  // Computed from current_period_end for display purposes
+  next_billing_date?: string | null;
+  error?: string;
 }
 
 type UserRole = 'owner' | 'resident' | 'searcher' | null;
@@ -79,26 +83,31 @@ export default function SubscriptionPage() {
 
       setUser(authUser);
 
-      // Get user profile to determine role
-      const { data: profileData } = await supabase
-        .from('profiles')
+      // Get user type from users table
+      const { data: userData } = await supabase
+        .from('users')
         .select('user_type')
         .eq('id', authUser.id)
         .single();
 
-      if (profileData?.user_type) {
-        setUserRole(profileData.user_type as UserRole);
+      if (userData?.user_type) {
+        setUserRole(userData.user_type as UserRole);
       }
 
-      // Get subscription status
+      // Get subscription status (returns JSONB directly)
       const { data: subData, error: subError } = await supabase.rpc('get_subscription_status', {
         p_user_id: authUser.id,
       });
 
       if (subError) {
         console.error('Error loading subscription:', subError);
-      } else if (subData && subData.length > 0) {
-        setStatus(subData[0]);
+      } else if (subData && !subData.error) {
+        // Add next_billing_date as alias for current_period_end
+        const statusData = {
+          ...subData,
+          next_billing_date: subData.current_period_end,
+        } as SubscriptionStatus;
+        setStatus(statusData);
       }
     } catch (error) {
       console.error('Error in loadData:', error);
@@ -855,10 +864,15 @@ export default function SubscriptionPage() {
     );
   }
 
-  // Tarif de lancement
-  const monthlyPrice = status.user_type === 'owner' ? 15.99 : 7.99;
-  const annualPrice = status.user_type === 'owner' ? 159.90 : 79.90;
+  // Tarif de lancement (use userRole since status doesn't have user_type anymore)
+  const monthlyPrice = userRole === 'owner' ? 15.99 : 7.99;
+  const annualPrice = userRole === 'owner' ? 159.90 : 79.90;
   const annualSavings = (monthlyPrice * 12 - annualPrice).toFixed(2);
+
+  // Compute trial progress percent
+  const trialProgressPercent = status.trial_days_total > 0
+    ? Math.round(100 - (status.trial_days_remaining / status.trial_days_total * 100))
+    : 0;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -917,7 +931,7 @@ export default function SubscriptionPage() {
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Mon Abonnement</h1>
               <p className="text-gray-600 mt-1">
-                Gérez votre abonnement {status.user_type === 'owner' ? 'Owner' : 'Resident'}
+                Gérez votre abonnement {userRole === 'owner' ? 'Owner' : 'Resident'}
               </p>
             </div>
             {getStatusBadge()}
@@ -940,18 +954,18 @@ export default function SubscriptionPage() {
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">Plan Actuel</h2>
                   <p className="text-sm text-gray-600">
-                    {status.user_type === 'owner' ? 'Owner Monthly' : 'Resident Monthly'}
+                    {userRole === 'owner' ? 'Owner Monthly' : 'Resident Monthly'}
                   </p>
                 </div>
               </div>
 
-              {status.is_trial && (
+              {status.is_trial_active && (
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 mb-4">
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 text-green-600 mt-0.5" />
                     <div className="flex-1">
                       <p className="font-semibold text-green-900 mb-1">
-                        Essai gratuit de {status.user_type === 'owner' ? '3 mois' : '6 mois'}
+                        Essai gratuit de {userRole === 'owner' ? '3 mois' : '6 mois'}
                       </p>
                       <p className="text-sm text-green-700 mb-2">
                         {status.trial_days_remaining === 0
@@ -965,7 +979,7 @@ export default function SubscriptionPage() {
                         <motion.div
                           className="h-full bg-green-600"
                           initial={{ width: 0 }}
-                          animate={{ width: `${status.trial_progress_percent}%` }}
+                          animate={{ width: `${trialProgressPercent}%` }}
                           transition={{ duration: 1 }}
                         />
                       </div>
@@ -1013,7 +1027,7 @@ export default function SubscriptionPage() {
                   'Support client prioritaire',
                   'Stockage illimité de documents',
                   'Notifications personnalisées',
-                  status.user_type === 'owner' ? 'Gestion multi-propriétés' : 'Communauté de résidents',
+                  userRole === 'owner' ? 'Gestion multi-propriétés' : 'Communauté de résidents',
                   'Accès mobile et desktop',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-2">
@@ -1033,7 +1047,7 @@ export default function SubscriptionPage() {
             >
               <h3 className="text-lg font-bold text-gray-900 mb-4">Moyen de paiement</h3>
 
-              {status.is_trial ? (
+              {status.is_trial_active ? (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <CreditCard className="w-5 h-5 text-blue-600 mt-0.5" />
@@ -1157,11 +1171,11 @@ export default function SubscriptionPage() {
         </div>
 
         {/* Plan Selector Modal */}
-        {status && (
+        {status && userRole && userRole !== 'searcher' && (
           <PlanSelectorModal
             isOpen={showPlanModal}
             onClose={() => setShowPlanModal(false)}
-            userType={status.user_type}
+            userType={userRole as 'owner' | 'resident'}
           />
         )}
       </div>
