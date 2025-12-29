@@ -162,7 +162,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
           date: result.data.date,
           items: result.data.items,
           confidence: result.data.confidence,
-          raw_text: result.data.raw_text,
+          raw_text: result.data.raw_text ?? '',
           processed_at: new Date().toISOString(),
           language: 'fra',
         };
@@ -467,7 +467,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                     <span className="flex items-center gap-2 text-xs">
                       {aiProvider && (
                         <Badge
-                          variant="outline"
+                          variant="secondary"
                           className={cn(
                             "text-xs",
                             aiProvider === 'gemini' && "bg-blue-50 text-blue-700 border-blue-200",
