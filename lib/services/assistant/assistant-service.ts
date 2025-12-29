@@ -198,7 +198,32 @@ export function analyzeComplexity(
 // PROVIDER AVAILABILITY
 // =====================================================
 
+/**
+ * Check if any AI provider is configured (Groq or OpenAI)
+ */
+export function isAnyAIProviderConfigured(): boolean {
+  const hasGroq = !!(process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY);
+  const hasOpenAI = !!process.env.OPENAI_API_KEY;
+  return hasGroq || hasOpenAI;
+}
+
+/**
+ * Check if Groq is configured
+ */
+export function isGroqConfigured(): boolean {
+  return !!(process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY);
+}
+
+/**
+ * Check if OpenAI is configured
+ */
+export function isOpenAIConfigured(): boolean {
+  return !!process.env.OPENAI_API_KEY;
+}
+
 export function isGroqAvailable(): boolean {
+  if (!isGroqConfigured()) return false;
+
   resetIfNewDay();
   const { dailyLimit, switchThreshold } = ASSISTANT_CONFIG.primary;
   const safeLimit = Math.floor(dailyLimit * switchThreshold);
@@ -273,6 +298,101 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 3. Utilise des emojis avec modération
 4. Si tu ne sais pas, dis-le honnêtement
 5. Propose des actions concrètes (navigation, filtres)`;
+
+// =====================================================
+// FAQ-ONLY FALLBACK RESPONSES
+// =====================================================
+
+interface FAQFallbackResponse {
+  message: string;
+  suggestedActions?: Array<{
+    type: 'navigate' | 'explain' | 'contact';
+    label: string;
+    value: string;
+  }>;
+}
+
+/**
+ * Generate a helpful response when no AI providers are configured
+ * and the FAQ system didn't find a match.
+ *
+ * Returns intent-specific guidance with navigation actions.
+ */
+function getFAQOnlyFallbackResponse(
+  userMessage: string,
+  intent?: Intent,
+  context?: UserContext
+): FAQFallbackResponse {
+  const userName = context?.firstName ? ` ${context.firstName}` : '';
+
+  // Intent-specific fallbacks with navigation
+  const intentFallbacks: Record<string, FAQFallbackResponse> = {
+    pricing: {
+      message: `Bonjour${userName} ! Pour toutes les informations sur nos tarifs :\n\n• **Trial gratuit** : 3 mois (propriétaires) ou 6 mois (résidents)\n• **Abonnement Owner** : 15,99€/mois\n• **Abonnement Resident** : 7,99€/mois\n• **Parrainage** : Jusqu'à 24 mois gratuits\n\nVous pouvez consulter tous les détails sur la page des tarifs.`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Voir les tarifs', value: '/pricing' },
+        { type: 'navigate', label: 'Mon abonnement', value: '/settings/subscription' },
+      ],
+    },
+    matching: {
+      message: `Notre système de matching analyse vos préférences et votre personnalité pour vous proposer des colocations compatibles.\n\nPour améliorer vos résultats :\n1. Complétez votre profil de personnalité\n2. Définissez vos critères de recherche\n3. Parcourez les annonces suggérées`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Mon profil', value: '/profile' },
+        { type: 'navigate', label: 'Rechercher', value: '/search' },
+      ],
+    },
+    finances: {
+      message: `La gestion des finances partagées vous permet de :\n\n• Scanner vos tickets de caisse\n• Répartir automatiquement les dépenses\n• Suivre qui doit quoi\n• Gérer les comptes communs\n\nAccédez à vos finances depuis votre Hub.`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Mes finances', value: '/hub/finances' },
+        { type: 'navigate', label: 'Scanner un ticket', value: '/hub/finances/scan' },
+      ],
+    },
+    search: {
+      message: `Pour trouver votre colocation idéale :\n\n1. Utilisez les filtres (ville, budget, type)\n2. Consultez les profils compatibles\n3. Envoyez une demande de contact\n\nN'oubliez pas de compléter votre profil pour de meilleures suggestions !`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Rechercher', value: '/search' },
+        { type: 'navigate', label: 'Mon profil', value: '/profile' },
+      ],
+    },
+    account: {
+      message: `Gérez votre compte depuis les paramètres :\n\n• Informations personnelles\n• Notifications\n• Abonnement\n• Sécurité`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Paramètres', value: '/settings' },
+        { type: 'navigate', label: 'Mon profil', value: '/profile' },
+      ],
+    },
+    messaging: {
+      message: `La messagerie IzzIco vous permet de communiquer en toute sécurité avec les autres utilisateurs.\n\nVous recevrez une notification pour chaque nouveau message.`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Mes messages', value: '/messages' },
+        { type: 'navigate', label: 'Notifications', value: '/settings/notifications' },
+      ],
+    },
+    property: {
+      message: `Pour gérer vos propriétés :\n\n• Ajoutez ou modifiez vos annonces\n• Gérez les candidatures\n• Suivez vos résidents actuels\n\nAccédez à votre dashboard propriétaire.`,
+      suggestedActions: [
+        { type: 'navigate', label: 'Mes propriétés', value: '/properties' },
+        { type: 'navigate', label: 'Dashboard', value: '/dashboard/owner' },
+      ],
+    },
+  };
+
+  // Check if we have an intent-specific fallback
+  if (intent && intentFallbacks[intent]) {
+    return intentFallbacks[intent];
+  }
+
+  // Generic fallback with common actions
+  return {
+    message: `Bonjour${userName} ! Je suis l'assistant IzzIco en mode FAQ.\n\nJe peux vous aider avec :\n• **Navigation** sur la plateforme\n• **Questions fréquentes** sur les tarifs et fonctionnalités\n• **Aide** pour trouver une page\n\nPour une question spécifique, essayez de reformuler ou consultez notre centre d'aide.`,
+    suggestedActions: [
+      { type: 'navigate', label: 'Centre d\'aide', value: '/help' },
+      { type: 'navigate', label: 'Rechercher', value: '/search' },
+      { type: 'contact', label: 'Contacter le support', value: 'support@izzico.be' },
+    ],
+  };
+}
 
 // =====================================================
 // DATABASE LOGGING (fire-and-forget, never blocks)
@@ -559,9 +679,9 @@ export async function processAssistantMessage(
   }
 
   // =====================================================
-  // Layer 3: OpenAI (FALLBACK - $$)
+  // Layer 3: OpenAI (FALLBACK - $$) - Only if configured
   // =====================================================
-  if (targetProvider === 'openai' || !isGroqAvailable()) {
+  if ((targetProvider === 'openai' || !isGroqAvailable()) && isOpenAIConfigured()) {
     console.log('[Assistant] Using OpenAI fallback');
 
     const latencyMs = Date.now() - startTime;
@@ -598,6 +718,58 @@ export async function processAssistantMessage(
       provider: 'openai',
       metadata: {
         latencyMs,
+        complexity: complexity.score,
+      },
+    };
+  }
+
+  // =====================================================
+  // Layer 4: FAQ-ONLY FALLBACK (No OpenAI available after Groq failed/skipped)
+  // =====================================================
+  // This triggers if:
+  // - No AI providers are configured at all, OR
+  // - Groq failed/skipped AND OpenAI is not configured
+  if (!isOpenAIConfigured()) {
+    console.log('[Assistant] OpenAI not configured - FAQ-only fallback mode');
+
+    const latencyMs = Date.now() - startTime;
+    const detectedIntent = detectIntent(userMessage);
+
+    // Log for analytics
+    logRequestToDatabase({
+      userMessage,
+      provider: 'faq',
+      intent: detectedIntent?.intent || 'faq_fallback',
+      confidence: detectedIntent?.confidence,
+      responseTimeMs: latencyMs,
+      estimatedCost: 0,
+      userType: context.userType,
+      pagePath: options.pagePath,
+      userId: options.userId || context.userId,
+      conversationId: options.conversationId,
+    });
+
+    // Flag for FAQ improvement - this message didn't match any FAQ
+    flagForImprovement(
+      userMessage,
+      detectedIntent?.intent || 'unknown',
+      'missing_intent',
+      detectedIntent?.confidence
+    );
+
+    // Provide helpful fallback based on detected intent
+    const fallbackContent = getFAQOnlyFallbackResponse(userMessage, detectedIntent?.intent, context);
+
+    return {
+      success: true,
+      content: fallbackContent.message,
+      provider: 'faq',
+      intent: detectedIntent?.intent,
+      confidence: detectedIntent?.confidence,
+      suggestedActions: fallbackContent.suggestedActions,
+      metadata: {
+        latencyMs,
+        costEstimate: 0,
         complexity: complexity.score,
       },
     };

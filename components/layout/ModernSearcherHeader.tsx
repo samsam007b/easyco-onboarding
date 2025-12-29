@@ -99,7 +99,6 @@ export default function ModernSearcherHeader({
         email_verified: profile?.email_verified,
         phone_verified: profile?.phone_verified,
         id_verified: profile?.id_verified,
-        background_check: profile?.background_check,
       });
       setVerificationLevel(level);
     };

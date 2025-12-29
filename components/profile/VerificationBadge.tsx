@@ -1,9 +1,9 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import { Check, BadgeCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export type VerificationLevel = 'starter' | 'basic' | 'verified' | 'premium';
+export type VerificationLevel = 'starter' | 'basic' | 'verified' | 'itsme' | 'premium';
 
 interface VerificationBadgeProps {
   level: VerificationLevel;
@@ -18,6 +18,7 @@ const BADGE_STYLES = {
     icon: 'text-gray-400/40',
     ring: 'ring-0',
     label: 'Starter',
+    useItsmeIcon: false,
   },
   basic: {
     bg: 'bg-blue-100',
@@ -25,13 +26,23 @@ const BADGE_STYLES = {
     icon: 'text-blue-400',
     ring: 'ring-blue-100',
     label: 'Vérifié - Basique',
+    useItsmeIcon: false,
   },
   verified: {
-    bg: 'bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B]',
-    border: 'border-[#FF5722]',
+    bg: 'bg-gradient-to-br from-emerald-400 to-emerald-600',
+    border: 'border-emerald-500',
     icon: 'text-white',
-    ring: 'ring-[#FFB10B]/30',
+    ring: 'ring-emerald-300/30',
     label: 'Vérifié',
+    useItsmeIcon: false,
+  },
+  itsme: {
+    bg: 'bg-gradient-to-br from-[#FF6B35] to-[#E55A2B]',
+    border: 'border-[#FF6B35]',
+    icon: 'text-white',
+    ring: 'ring-[#FF6B35]/40',
+    label: 'ITSME Vérifié',
+    useItsmeIcon: true,
   },
   premium: {
     bg: 'bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B]',
@@ -39,6 +50,7 @@ const BADGE_STYLES = {
     icon: 'text-white',
     ring: 'ring-[#FFB10B]/50',
     label: 'Vérifié - Premium',
+    useItsmeIcon: true,
   },
 } as const;
 
@@ -81,8 +93,8 @@ export default function VerificationBadge({
       )}
       title={badgeStyle.label}
     >
-      {/* Ring effect pour premium */}
-      {level === 'premium' && (
+      {/* Ring effect pour premium et itsme */}
+      {(level === 'premium' || level === 'itsme') && (
         <div className={cn(
           'absolute inset-0 rounded-full animate-pulse',
           'ring-2',
@@ -90,45 +102,80 @@ export default function VerificationBadge({
         )} />
       )}
 
-      {/* Check icon */}
-      <Check
-        className={cn(
-          sizeStyle.icon,
-          badgeStyle.icon,
-          'stroke-[3]'
-        )}
-        strokeWidth={3}
-      />
+      {/* Icon - BadgeCheck for ITSME levels, Check for others */}
+      {badgeStyle.useItsmeIcon ? (
+        <BadgeCheck
+          className={cn(
+            sizeStyle.icon,
+            badgeStyle.icon,
+            'stroke-[2.5]'
+          )}
+          strokeWidth={2.5}
+        />
+      ) : (
+        <Check
+          className={cn(
+            sizeStyle.icon,
+            badgeStyle.icon,
+            'stroke-[3]'
+          )}
+          strokeWidth={3}
+        />
+      )}
     </div>
   );
 }
 
 /**
  * Calculate verification level based on user profile verification status
+ *
+ * Levels:
+ * - starter: No verifications
+ * - basic: Email only
+ * - verified: Email + Phone
+ * - itsme: ITSME verified (without other verifications)
+ * - premium: ITSME + Email + Phone (full verification)
  */
 export function getVerificationLevel(verificationData: {
   email_verified?: boolean;
   phone_verified?: boolean;
+  itsme_verified?: boolean;
+  /** @deprecated Use itsme_verified instead */
   id_verified?: boolean;
-  background_check?: boolean;
 }): VerificationLevel {
   const {
     email_verified = false,
     phone_verified = false,
+    itsme_verified = false,
     id_verified = false,
-    background_check = false,
   } = verificationData;
 
-  // Count verified items
-  const verifiedCount = [
-    email_verified,
-    phone_verified,
-    id_verified,
-    background_check,
-  ].filter(Boolean).length;
+  // ITSME is the strongest verification
+  const hasItsme = itsme_verified || id_verified;
 
-  if (verifiedCount === 0) return 'starter'; // V gris transparent - Aucune vérification
-  if (verifiedCount === 1) return 'basic'; // Bleu clair - Email ou téléphone seulement
-  if (verifiedCount === 2) return 'verified'; // Bleu normal - Email + Téléphone
-  return 'premium'; // Bleu foncé profond - Tout vérifié (4/4)
+  // Count basic verifications (email + phone)
+  const basicVerifiedCount = [email_verified, phone_verified].filter(Boolean).length;
+
+  // Premium: ITSME + at least email verified
+  if (hasItsme && email_verified) {
+    return 'premium';
+  }
+
+  // ITSME only (without email/phone)
+  if (hasItsme) {
+    return 'itsme';
+  }
+
+  // Verified: Email + Phone
+  if (email_verified && phone_verified) {
+    return 'verified';
+  }
+
+  // Basic: At least one basic verification
+  if (basicVerifiedCount >= 1) {
+    return 'basic';
+  }
+
+  // No verification
+  return 'starter';
 }

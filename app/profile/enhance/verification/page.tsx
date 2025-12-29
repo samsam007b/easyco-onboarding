@@ -68,7 +68,6 @@ export default function VerificationPage() {
       email_verified: emailVerified,
       phone_verified: phoneVerified,
       id_verified: idVerified,
-      background_check: backgroundCheck,
     });
   };
 
@@ -79,7 +78,7 @@ export default function VerificationPage() {
   };
 
   const getBadgeInfo = (level: VerificationLevel) => {
-    const badges = {
+    const badges: Record<VerificationLevel, { name: string; color: string; bg: string; border: string; description: string }> = {
       starter: {
         name: 'Starter',
         color: 'text-gray-600',
@@ -101,12 +100,19 @@ export default function VerificationPage() {
         border: 'border-blue-300',
         description: 'Email + Téléphone vérifiés'
       },
+      itsme: {
+        name: 'ITSME',
+        color: 'text-orange-600',
+        bg: 'bg-orange-50',
+        border: 'border-orange-200',
+        description: 'Identité vérifiée via ITSME'
+      },
       premium: {
         name: 'Premium',
-        color: 'text-blue-900',
-        bg: 'bg-blue-900/10',
-        border: 'border-blue-900',
-        description: 'Tout vérifié (4/4)'
+        color: 'text-purple-700',
+        bg: 'bg-gradient-to-r from-purple-50 to-orange-50',
+        border: 'border-purple-300',
+        description: 'ITSME + Email vérifiés'
       }
     };
     return badges[level];

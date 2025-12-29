@@ -26,6 +26,7 @@ import {
   Receipt,
   FileText,
   Gift,
+  BadgeCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -116,6 +117,16 @@ export default function SettingsPage() {
       icon: Shield,
       href: '/settings/security',
       color: 'bg-red-100',
+      category: 'account',
+    },
+    {
+      id: 'verification',
+      title: 'Vérifications',
+      description: 'Téléphone, identité ITSME et badges',
+      icon: BadgeCheck,
+      href: '/settings/verification',
+      color: 'bg-emerald-100',
+      badge: 'Nouveau',
       category: 'account',
     },
     {
@@ -359,6 +370,7 @@ export default function SettingsPage() {
                               "w-6 h-6",
                               section.id === 'profile' ? 'text-orange-600' :
                               section.id === 'security' ? 'text-red-600' :
+                              section.id === 'verification' ? 'text-emerald-600' :
                               section.id === 'privacy' ? 'text-blue-600' :
                               section.id === 'private-codes' ? 'text-purple-600' :
                               section.id === 'residence-profile' ? 'text-pink-600' :
