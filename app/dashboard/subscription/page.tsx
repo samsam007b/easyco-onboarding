@@ -398,38 +398,217 @@ export default function SubscriptionPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {userRole ? 'Votre plan' : 'Choisissez votre plan'}
+              {userRole ? (
+                <>
+                  Abonnement{' '}
+                  <span className={userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'}>
+                    {userRole === 'owner' ? 'Owner' : 'Resident'}
+                  </span>
+                </>
+              ) : (
+                'Choisissez votre plan'
+              )}
             </h2>
             <p className="text-gray-600">
               {userRole
-                ? `Activez votre essai gratuit ${userRole === 'owner' ? 'Owner' : 'Resident'}`
+                ? 'Choisissez la formule qui vous convient le mieux'
                 : 'Commencez gratuitement, évoluez selon vos besoins'
               }
             </p>
           </motion.div>
 
-          <div className={`grid gap-8 max-w-4xl mx-auto ${userRole ? 'md:grid-cols-1 max-w-lg' : 'md:grid-cols-2'}`}>
-            {/* Owner Plan - Show if no role or if owner */}
-            {(!userRole || userRole === 'owner') && (
+          {/* Role-specific pricing: Monthly vs Annual side by side */}
+          {userRole && (
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Monthly Plan */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden ${
-                  userRole === 'owner'
-                    ? 'border-2 border-purple-400 ring-4 ring-purple-100'
-                    : 'border-2 border-purple-200'
+                className={`bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border-2 ${
+                  userRole === 'owner' ? 'border-purple-200' : 'border-orange-200'
                 }`}
               >
-                {userRole === 'owner' ? (
-                  <div className="absolute top-0 right-0 px-4 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-semibold rounded-bl-xl">
-                    VOTRE PLAN
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                    userRole === 'owner'
+                      ? 'bg-gradient-to-br from-purple-100 to-indigo-100'
+                      : 'bg-gradient-to-br from-orange-100 to-amber-100'
+                  }`}>
+                    {userRole === 'owner'
+                      ? <Crown className="w-6 h-6 text-purple-600" />
+                      : <Users className="w-6 h-6 text-orange-600" />
+                    }
                   </div>
-                ) : (
-                  <div className="absolute top-0 right-0 px-4 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold rounded-bl-xl">
-                    POPULAIRE
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Mensuel</h3>
+                    <p className="text-sm text-gray-500">Flexibilité maximale</p>
                   </div>
-                )}
+                </div>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-gray-900">
+                      {userRole === 'owner' ? '15,99€' : '7,99€'}
+                    </span>
+                    <span className="text-gray-500">/mois</span>
+                  </div>
+                  <p className="text-sm text-green-600 font-medium mt-1">
+                    {userRole === 'owner' ? '3 mois' : '6 mois'} d'essai gratuit
+                  </p>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  {(userRole === 'owner' ? [
+                    'Gestion multi-propriétés',
+                    'Matching avancé de colocataires',
+                    'Messagerie illimitée',
+                    'Tableau de bord analytique',
+                    'Documents & contrats',
+                    'Support prioritaire',
+                  ] : [
+                    'Profil vérifié & visible',
+                    'Matching de colocations',
+                    'Messagerie illimitée',
+                    'Alertes personnalisées',
+                    'Communauté de résidents',
+                    'Support dédié',
+                  ]).map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                        userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'
+                      }`} />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => router.push('/profile')}
+                  className={`w-full py-4 rounded-xl font-semibold transition-all border-2 ${
+                    userRole === 'owner'
+                      ? 'border-purple-300 text-purple-700 bg-purple-50 hover:bg-purple-100'
+                      : 'border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100'
+                  }`}
+                >
+                  Choisir mensuel
+                </motion.button>
+              </motion.div>
+
+              {/* Annual Plan - Highlighted */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className={`bg-white rounded-3xl p-8 shadow-xl relative overflow-hidden ${
+                  userRole === 'owner'
+                    ? 'border-2 border-purple-400 ring-4 ring-purple-100'
+                    : 'border-2 border-orange-400 ring-4 ring-orange-100'
+                }`}
+              >
+                {/* Best Value Badge */}
+                <div className={`absolute top-0 right-0 px-4 py-1 text-white text-xs font-semibold rounded-bl-xl ${
+                  userRole === 'owner'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                    : 'bg-gradient-to-r from-orange-500 to-amber-500'
+                }`}>
+                  MEILLEUR RAPPORT QUALITÉ-PRIX
+                </div>
+
+                <div className="flex items-center gap-3 mb-4 mt-2">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                    userRole === 'owner'
+                      ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
+                      : 'bg-gradient-to-br from-orange-500 to-amber-500'
+                  }`}>
+                    {userRole === 'owner'
+                      ? <Crown className="w-6 h-6 text-white" />
+                      : <Users className="w-6 h-6 text-white" />
+                    }
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Annuel</h3>
+                    <p className="text-sm text-gray-500">Économisez 17%</p>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-gray-900">
+                      {userRole === 'owner' ? '159,90€' : '79,90€'}
+                    </span>
+                    <span className="text-gray-500">/an</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-sm text-green-600 font-medium">
+                      {userRole === 'owner' ? '3 mois' : '6 mois'} d'essai gratuit
+                    </p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      userRole === 'owner'
+                        ? 'bg-purple-100 text-purple-700'
+                        : 'bg-orange-100 text-orange-700'
+                    }`}>
+                      -{userRole === 'owner' ? '31,98€' : '15,98€'}
+                    </span>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  {(userRole === 'owner' ? [
+                    'Gestion multi-propriétés',
+                    'Matching avancé de colocataires',
+                    'Messagerie illimitée',
+                    'Tableau de bord analytique',
+                    'Documents & contrats',
+                    'Support prioritaire',
+                  ] : [
+                    'Profil vérifié & visible',
+                    'Matching de colocations',
+                    'Messagerie illimitée',
+                    'Alertes personnalisées',
+                    'Communauté de résidents',
+                    'Support dédié',
+                  ]).map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                        userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'
+                      }`} />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => router.push('/profile')}
+                  className={`w-full py-4 text-white rounded-xl font-semibold shadow-lg transition-all ${
+                    userRole === 'owner'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
+                      : 'bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30'
+                  }`}
+                >
+                  Choisir annuel
+                </motion.button>
+              </motion.div>
+            </div>
+          )}
+
+          {/* No role - Show both Owner and Resident options */}
+          {!userRole && (
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Owner Plan */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border-2 border-purple-200"
+              >
+                <div className="absolute top-0 right-0 px-4 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold rounded-bl-xl">
+                  POPULAIRE
+                </div>
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center">
@@ -443,10 +622,13 @@ export default function SubscriptionPage() {
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-gray-900">15,99€</span>
+                    <span className="text-3xl font-bold text-gray-900">15,99€</span>
                     <span className="text-gray-500">/mois</span>
                   </div>
-                  <p className="text-sm text-green-600 font-medium mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
+                    ou 159,90€/an (économisez 17%)
+                  </p>
+                  <p className="text-sm text-green-600 font-medium mt-2">
                     3 mois d'essai gratuit
                   </p>
                 </div>
@@ -470,32 +652,20 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push(userRole === 'owner' ? '/profile' : '/onboarding/owner')}
+                  onClick={() => router.push('/onboarding/owner')}
                   className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all"
                 >
-                  {userRole === 'owner' ? 'Activer mon essai gratuit' : 'Essayer gratuitement'}
+                  Devenir Owner
                 </motion.button>
               </motion.div>
-            )}
 
-            {/* Resident Plan - Show if no role or if searcher/resident */}
-            {(!userRole || userRole === 'searcher' || userRole === 'resident') && (
+              {/* Resident Plan */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden ${
-                  userRole
-                    ? 'border-2 border-orange-400 ring-4 ring-orange-100'
-                    : 'border border-gray-200'
-                }`}
+                className="bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border border-gray-200"
               >
-                {(userRole === 'searcher' || userRole === 'resident') && (
-                  <div className="absolute top-0 right-0 px-4 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-semibold rounded-bl-xl">
-                    VOTRE PLAN
-                  </div>
-                )}
-
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl flex items-center justify-center">
                     <Users className="w-6 h-6 text-orange-600" />
@@ -508,10 +678,13 @@ export default function SubscriptionPage() {
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-gray-900">7,99€</span>
+                    <span className="text-3xl font-bold text-gray-900">7,99€</span>
                     <span className="text-gray-500">/mois</span>
                   </div>
-                  <p className="text-sm text-green-600 font-medium mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
+                    ou 79,90€/an (économisez 17%)
+                  </p>
+                  <p className="text-sm text-green-600 font-medium mt-2">
                     6 mois d'essai gratuit
                   </p>
                 </div>
@@ -535,29 +708,14 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push(userRole ? '/profile' : '/onboarding/searcher')}
+                  onClick={() => router.push('/onboarding/searcher')}
                   className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all"
                 >
-                  {userRole ? 'Activer mon essai gratuit' : 'Essayer gratuitement'}
+                  Devenir Resident
                 </motion.button>
               </motion.div>
-            )}
-          </div>
-
-          {/* Annual savings note */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-8 text-center"
-          >
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
-              <Zap className="w-5 h-5 text-emerald-600" />
-              <span className="text-emerald-700 font-medium">
-                Économisez jusqu'à 17% avec l'abonnement annuel
-              </span>
             </div>
-          </motion.div>
+          )}
         </div>
 
 
