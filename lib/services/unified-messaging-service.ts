@@ -262,36 +262,32 @@ export async function getUnifiedConversations(
     // Get all conversations where user is a participant
     const { data: participations, error: partError } = await supabase
       .from('conversation_participants')
-      .select(`
-        conversation_id,
-        last_read_at,
-        conversations (
-          id,
-          conversation_type,
-          is_official,
-          subject,
-          property_id,
-          last_message_at,
-          metadata,
-          properties (
-            id,
-            title,
-            owner_id
-          )
-        )
-      `)
+      .select('conversation_id, last_read_at')
       .eq('user_id', userId);
 
     if (partError) throw partError;
 
     const conversationIds = (participations || []).map(p => p.conversation_id);
 
+    // Fetch conversation details separately
+    let conversationsMap: Record<string, any> = {};
+    if (conversationIds.length > 0) {
+      const { data: conversations } = await supabase
+        .from('conversations')
+        .select('id, conversation_type, is_official, subject, property_id, last_message_at, metadata')
+        .in('id', conversationIds);
+
+      for (const conv of conversations || []) {
+        conversationsMap[conv.id] = conv;
+      }
+    }
+
     // Build unified conversations
     const pinnedConversations: UnifiedConversation[] = [];
     const regularConversations: UnifiedConversation[] = [];
 
     for (const part of participations || []) {
-      const conv = (part as any).conversations;
+      const conv = conversationsMap[part.conversation_id];
       if (!conv) continue;
 
       // Get last message
