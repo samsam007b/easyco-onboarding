@@ -18,7 +18,8 @@ export const dynamic = 'force-dynamic';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 const GEMINI_MODEL = 'gemini-2.0-flash';
 const TOGETHER_API_URL = 'https://api.together.xyz/v1/chat/completions';
-const TOGETHER_MODEL = 'meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo';
+// Use serverless-compatible vision model (11B is available for serverless, 90B requires dedicated endpoint)
+const TOGETHER_MODEL = 'meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo';
 
 // Daily usage tracking (in-memory for now)
 const usageTracker: Record<string, { count: number; resetAt: Date }> = {
