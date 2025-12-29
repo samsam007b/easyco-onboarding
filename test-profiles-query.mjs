@@ -9,11 +9,17 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+// Validate env vars before proceeding
+if (!process.env.TEST_USER_EMAIL || !process.env.TEST_USER_PASSWORD) {
+  console.log('❌ Missing TEST_USER_EMAIL or TEST_USER_PASSWORD in .env.local');
+  process.exit(1);
+}
+
 console.log('🔐 Signing in...\n');
 
 const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-  email: 'sam7777jones@gmail.com',
-  password: 'Leumas1?'
+  email: process.env.TEST_USER_EMAIL,
+  password: process.env.TEST_USER_PASSWORD
 });
 
 if (authError) {

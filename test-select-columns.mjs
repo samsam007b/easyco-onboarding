@@ -10,10 +10,16 @@ const supabase = createClient(
 
 console.log('🧪 Testing Supabase select() with specific columns...\n');
 
+// Validate env vars before proceeding
+if (!process.env.TEST_USER_EMAIL || !process.env.TEST_USER_PASSWORD) {
+  console.log('❌ Missing TEST_USER_EMAIL or TEST_USER_PASSWORD in .env.local');
+  process.exit(1);
+}
+
 // First, sign in to get a token
 const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-  email: 'sam7777jones@gmail.com',
-  password: 'Leumas1?'
+  email: process.env.TEST_USER_EMAIL,
+  password: process.env.TEST_USER_PASSWORD
 });
 
 if (authError) {
