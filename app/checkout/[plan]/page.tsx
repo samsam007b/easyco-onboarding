@@ -112,8 +112,10 @@ export default function CheckoutPage() {
   const plan = params.plan as string;
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [pageError, setPageError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   // Validate plan
   const isValidPlan = (p: string): p is PlanType => {
@@ -148,11 +150,17 @@ export default function CheckoutPage() {
   const themeColors = currentPlan ? colors[currentPlan.userType] : colors.resident;
 
   // Fetch client secret for embedded checkout
-  const fetchClientSecret = useCallback(async () => {
+  const fetchClientSecret = useCallback(async (isRetry = false) => {
     if (!isValidPlan(plan)) {
-      setError('Plan invalide');
+      setPageError('Plan invalide');
       setLoading(false);
       return;
+    }
+
+    // Use checkoutLoading for retries, loading for initial load
+    if (isRetry) {
+      setCheckoutLoading(true);
+      setCheckoutError(null);
     }
 
     try {
@@ -167,15 +175,27 @@ export default function CheckoutPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 401) {
+          setPageError('Vous devez être connecté pour accéder à cette page');
+          return;
+        }
         throw new Error(data.error || 'Erreur lors de la création du checkout');
       }
 
+      // Check if clientSecret is actually present
+      if (!data.clientSecret) {
+        throw new Error('La session de paiement n\'a pas pu être créée. Veuillez réessayer.');
+      }
+
       setClientSecret(data.clientSecret);
+      setCheckoutError(null);
     } catch (err: any) {
       console.error('Checkout error:', err);
-      setError(err.message || 'Une erreur est survenue');
+      setCheckoutError(err.message || 'Une erreur est survenue');
     } finally {
       setLoading(false);
+      setCheckoutLoading(false);
     }
   }, [plan]);
 
@@ -222,8 +242,8 @@ export default function CheckoutPage() {
     );
   }
 
-  // Error state
-  if (error) {
+  // Page-level error state (invalid plan, unauthorized, etc.)
+  if (pageError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50 flex items-center justify-center p-4">
         <motion.div
@@ -235,11 +255,11 @@ export default function CheckoutPage() {
             <AlertCircle className="w-8 h-8 text-red-600" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Erreur</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
+          <p className="text-gray-600 mb-6">{pageError}</p>
           <div className="space-y-3">
             <button
               onClick={() => {
-                setError(null);
+                setPageError(null);
                 setLoading(true);
                 fetchClientSecret();
               }}
@@ -383,13 +403,77 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
               <h2 className="text-xl font-bold text-gray-900 mb-6">Finaliser votre abonnement</h2>
 
-              {clientSecret && (
+              {clientSecret ? (
                 <EmbeddedCheckoutProvider
                   stripe={stripePromise}
                   options={{ clientSecret }}
                 >
                   <EmbeddedCheckout />
                 </EmbeddedCheckoutProvider>
+              ) : checkoutError ? (
+                // Inline error state with retry
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Impossible de charger le formulaire
+                  </h3>
+                  <p className="text-gray-600 mb-6 max-w-sm mx-auto">
+                    {checkoutError}
+                  </p>
+                  <button
+                    onClick={() => fetchClientSecret(true)}
+                    disabled={checkoutLoading}
+                    className={`px-6 py-3 bg-gradient-to-r ${themeColors.gradient} text-white rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {checkoutLoading ? (
+                      <span className="flex items-center gap-2">
+                        <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Chargement...
+                      </span>
+                    ) : (
+                      'Réessayer'
+                    )}
+                  </button>
+                </div>
+              ) : checkoutLoading ? (
+                // Loading state for retry
+                <div className="space-y-4">
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="h-12 bg-gray-100 rounded-lg"></div>
+                      <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    </div>
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-14 bg-gray-200 rounded-lg"></div>
+                  </div>
+                  <p className="text-sm text-gray-500 text-center pt-4">
+                    Chargement du formulaire de paiement...
+                  </p>
+                </div>
+              ) : (
+                // Initial loading state
+                <div className="space-y-4">
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="h-12 bg-gray-100 rounded-lg"></div>
+                      <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    </div>
+                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-14 bg-gray-200 rounded-lg"></div>
+                  </div>
+                  <p className="text-sm text-gray-500 text-center pt-4">
+                    Chargement du formulaire de paiement...
+                  </p>
+                </div>
               )}
             </div>
           </motion.div>

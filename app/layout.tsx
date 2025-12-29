@@ -32,6 +32,10 @@ const ApiErrorTrackingProvider = dynamic(() => import('@/components/providers/ap
   ssr: false,
 })
 
+const AssistantButton = dynamic(() => import('@/components/assistant/AssistantButton'), {
+  ssr: false,
+})
+
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
@@ -150,6 +154,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Toaster position="top-right" />
             <CookieConsentBanner />
             <PWAInstallPrompt />
+            <AssistantButton />
             <DevTools />
           </ClientProviders>
         </ApiErrorTrackingProvider>

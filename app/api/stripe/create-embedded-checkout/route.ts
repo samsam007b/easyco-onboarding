@@ -76,6 +76,10 @@ export async function POST(request: NextRequest) {
     const isOwner = plan.startsWith('owner_');
     const dashboardUrl = isOwner ? '/dashboard/owner' : '/hub';
 
+    // Calculate trial days based on plan type
+    // Owner plans: 3 months (90 days), Resident plans: 6 months (180 days)
+    const trialDays = isOwner ? 90 : 180;
+
     // Create Embedded Checkout Session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -93,6 +97,7 @@ export async function POST(request: NextRequest) {
         plan: plan,
       },
       subscription_data: {
+        trial_period_days: trialDays,
         metadata: {
           supabase_user_id: user.id,
           plan: plan,

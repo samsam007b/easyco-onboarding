@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Gift, Users, Award, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Gift, Users, Award, TrendingUp, Share2, UserPlus, Sparkles, Home, Building2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ReferralCodeCard, ReferralStatsCard } from '@/components/referral';
 import { getReferralStats } from '@/lib/services/referral-service';
@@ -205,16 +205,18 @@ export default function ReferralsSettingsPage() {
           transition={{ delay: 0.4 }}
           className="mt-8"
         >
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border-2 border-green-100">
+          <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <span className="text-2xl">🎁</span>
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                <Gift className="w-5 h-5 text-green-600" />
+              </div>
               Comment ça marche ?
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">1️⃣</span>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-green-200">
+                  <Share2 className="w-6 h-6 text-green-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Partagez votre code</h3>
                 <p className="text-sm text-gray-600">
@@ -223,8 +225,8 @@ export default function ReferralsSettingsPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">2️⃣</span>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-blue-200">
+                  <UserPlus className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Ils s'inscrivent</h3>
                 <p className="text-sm text-gray-600">
@@ -233,8 +235,8 @@ export default function ReferralsSettingsPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">3️⃣</span>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-purple-200">
+                  <Sparkles className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Vous êtes récompensés</h3>
                 <p className="text-sm text-gray-600">
@@ -244,32 +246,36 @@ export default function ReferralsSettingsPage() {
             </div>
 
             {/* Rewards table */}
-            <div className="mt-8 bg-white rounded-2xl p-6 border border-green-200">
+            <div className="mt-8 bg-gray-50 rounded-2xl p-6 border border-gray-200">
               <h3 className="font-semibold text-gray-900 mb-4">Récompenses</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-orange-50">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-orange-100">
                   <div className="flex items-center gap-3">
-                    <span className="text-xl">🏠</span>
+                    <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                      <Home className="w-5 h-5 text-orange-600" />
+                    </div>
                     <span className="font-medium text-gray-900">Inviter un résident</span>
                   </div>
                   <div className="text-right">
                     <span className="text-sm text-gray-600">Vous: </span>
                     <span className="font-bold text-orange-600">+2 mois</span>
-                    <span className="text-gray-400 mx-2">|</span>
+                    <span className="text-gray-300 mx-2">|</span>
                     <span className="text-sm text-gray-600">Lui: </span>
                     <span className="font-bold text-orange-600">+1 mois</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-purple-50">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-purple-100">
                   <div className="flex items-center gap-3">
-                    <span className="text-xl">🏢</span>
+                    <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                      <Building2 className="w-5 h-5 text-purple-600" />
+                    </div>
                     <span className="font-medium text-gray-900">Inviter un propriétaire</span>
                   </div>
                   <div className="text-right">
                     <span className="text-sm text-gray-600">Vous: </span>
                     <span className="font-bold text-purple-600">+3 mois</span>
-                    <span className="text-gray-400 mx-2">|</span>
+                    <span className="text-gray-300 mx-2">|</span>
                     <span className="text-sm text-gray-600">Lui: </span>
                     <span className="font-bold text-purple-600">+1 mois</span>
                   </div>
