@@ -50,7 +50,7 @@ const getSecurityStats = unstable_cache(
       supabase.from('security_errors').select('*', { count: 'exact', head: true }).gte('created_at', last24h),
       supabase.from('security_errors').select('*', { count: 'exact', head: true }).eq('resolved', false),
       supabase.from('security_alerts').select('*', { count: 'exact', head: true }).eq('acknowledged', false),
-      supabase.from('security_score_history').select('overall_score').order('recorded_at', { ascending: false }).limit(1),
+      supabase.from('security_score_history').select('overall_score').order('calculated_at', { ascending: false }).limit(1),
     ]);
 
     const scoreRecord = scoreData as { overall_score: number }[] | null;

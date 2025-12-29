@@ -164,11 +164,7 @@ export function SecurityAuditLogs({ maxLogs = 10 }: SecurityAuditLogsProps) {
           resource_type,
           resource_id,
           metadata,
-          created_at,
-          users (
-            email,
-            full_name
-          )
+          created_at
         `)
         .order('created_at', { ascending: false })
         .limit(50);
