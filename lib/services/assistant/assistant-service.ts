@@ -275,7 +275,7 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 5. Propose des actions concrètes (navigation, filtres)`;
 
 // =====================================================
-// DATABASE LOGGING (non-blocking)
+// DATABASE LOGGING (fire-and-forget, never blocks)
 // =====================================================
 
 interface LogRequestParams {
@@ -294,58 +294,63 @@ interface LogRequestParams {
 
 /**
  * Log assistant request to database for analytics
- * Non-blocking - errors are logged but don't affect response
+ * FIRE-AND-FORGET: Never blocks, never throws, silently fails if tables don't exist
  */
-async function logRequestToDatabase(params: LogRequestParams): Promise<void> {
-  try {
-    const supabase = await createClient();
+function logRequestToDatabase(params: LogRequestParams): void {
+  // Wrap in setTimeout to make truly non-blocking
+  setTimeout(async () => {
+    try {
+      const supabase = await createClient();
 
-    const { error } = await supabase.from('agent_request_logs').insert({
-      user_message: params.userMessage.substring(0, 2000), // Truncate long messages
-      detected_intent: params.intent || 'unknown',
-      intent_confidence: params.confidence,
-      provider: params.provider,
-      response_time_ms: params.responseTimeMs,
-      tokens_used: params.tokensUsed,
-      estimated_cost: params.estimatedCost,
-      user_type: params.userType,
-      page_path: params.pagePath,
-      user_id: params.userId,
-      conversation_id: params.conversationId,
-    });
+      const { error } = await supabase.from('agent_request_logs').insert({
+        user_message: params.userMessage.substring(0, 2000),
+        detected_intent: params.intent || 'unknown',
+        intent_confidence: params.confidence,
+        provider: params.provider,
+        response_time_ms: params.responseTimeMs,
+        tokens_used: params.tokensUsed,
+        estimated_cost: params.estimatedCost,
+        user_type: params.userType,
+        page_path: params.pagePath,
+        user_id: params.userId,
+        conversation_id: params.conversationId,
+      });
 
-    if (error) {
-      console.error('[Assistant] Failed to log request:', error.message);
+      if (error) {
+        // Silently log - don't crash anything
+        console.warn('[Assistant Analytics] Log skipped:', error.code);
+      }
+    } catch {
+      // Completely silent - tables may not exist yet
     }
-  } catch (err: any) {
-    // Non-blocking - just log the error
-    console.error('[Assistant] Logging error:', err.message);
-  }
+  }, 0);
 }
 
 /**
  * Flag a request for potential FAQ improvement
- * Called when confidence is low or escalation is requested
+ * FIRE-AND-FORGET: Never blocks, never throws
  */
-async function flagForImprovement(
+function flagForImprovement(
   userMessage: string,
   intent: Intent,
   improvementType: 'low_confidence' | 'escalation' | 'missing_intent' | 'poor_response',
   confidence?: number
-): Promise<void> {
-  try {
-    const supabase = await createClient();
+): void {
+  setTimeout(async () => {
+    try {
+      const supabase = await createClient();
 
-    await supabase.from('agent_improvement_candidates').insert({
-      user_message: userMessage.substring(0, 2000),
-      detected_intent: intent,
-      improvement_type: improvementType,
-      current_confidence: confidence,
-      status: 'pending',
-    });
-  } catch (err: any) {
-    console.error('[Assistant] Failed to flag for improvement:', err.message);
-  }
+      await supabase.from('agent_improvement_candidates').insert({
+        user_message: userMessage.substring(0, 2000),
+        detected_intent: intent,
+        improvement_type: improvementType,
+        current_confidence: confidence,
+        status: 'pending',
+      });
+    } catch {
+      // Completely silent - tables may not exist yet
+    }
+  }, 0);
 }
 
 // =====================================================
