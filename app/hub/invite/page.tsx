@@ -13,20 +13,34 @@ import {
   MessageCircle,
   Home,
   Building2,
-  Sparkles
+  Sparkles,
+  Link as LinkIcon,
+  RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
+import {
+  createInvitation,
+  shareViaWhatsApp,
+  shareViaEmail,
+  copyInviteUrl
+} from '@/lib/services/invitation-service';
+import type { InvitedRole } from '@/types/invitation.types';
 
 export default function InvitePage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [propertyId, setPropertyId] = useState<string | null>(null);
   const [propertyName, setPropertyName] = useState<string>('');
   const [members, setMembers] = useState<any[]>([]);
   const [copiedType, setCopiedType] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<InvitedRole>('resident');
+  const [inviteToken, setInviteToken] = useState<string | null>(null);
+  const [inviteUrl, setInviteUrl] = useState<string | null>(null);
 
   useEffect(() => {
     loadPropertyInfo();
@@ -84,23 +98,52 @@ export default function InvitePage() {
     }
   };
 
-  const copyInviteCode = () => {
+  const generateInviteLink = async () => {
     if (!propertyId) return;
-    navigator.clipboard.writeText(propertyId);
-    setCopiedType('residence');
-    setTimeout(() => setCopiedType(null), 2000);
+
+    setIsGenerating(true);
+    try {
+      const response = await createInvitation({
+        property_id: propertyId,
+        invited_role: selectedRole
+      });
+
+      if (response.success && response.token) {
+        setInviteToken(response.token);
+        const url = `${window.location.origin}/invite/${response.token}`;
+        setInviteUrl(url);
+        toast.success('Lien d\'invitation genere !');
+      } else {
+        toast.error(response.message || 'Erreur lors de la generation');
+      }
+    } catch (error) {
+      toast.error('Erreur lors de la generation du lien');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  const shareViaWhatsApp = () => {
-    if (!propertyId) return;
-    const text = `Rejoins ${propertyName} sur EasyCo ! Utilise ce code pour nous rejoindre : ${propertyId}\n\nInscris-toi ici : https://easyco-onboarding.vercel.app/onboarding/resident/property-setup`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  const handleCopyLink = async () => {
+    if (inviteUrl) {
+      const success = await copyInviteUrl(inviteUrl);
+      if (success) {
+        setCopiedType('link');
+        toast.success('Lien copie !');
+        setTimeout(() => setCopiedType(null), 2000);
+      }
+    }
   };
 
-  const shareViaEmail = () => {
-    const subject = `Rejoins-nous sur ${propertyName}`;
-    const body = `Salut !\n\nJe t'invite à rejoindre notre colocation "${propertyName}" sur EasyCo.\n\nUtilise ce code d'invitation : ${propertyId}\n\n1. Va sur https://easyco-onboarding.vercel.app/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nOn gagne tous les deux des mois gratuits quand tu t'inscris !\n\nÀ bientôt !`;
-    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const handleShareWhatsApp = () => {
+    if (inviteUrl) {
+      shareViaWhatsApp(inviteUrl, propertyName, selectedRole);
+    }
+  };
+
+  const handleShareEmail = () => {
+    if (inviteUrl) {
+      shareViaEmail(inviteUrl, propertyName, selectedRole);
+    }
   };
 
   if (isLoading) {
@@ -128,7 +171,7 @@ export default function InvitePage() {
             variant="ghost"
             className="mb-6 rounded-full hover:bg-orange-50 transition-colors"
           >
-            ← Retour
+            Retour
           </Button>
 
           <div className="flex items-center gap-3 mb-2">
@@ -158,16 +201,16 @@ export default function InvitePage() {
           <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-5 h-5 text-green-600" />
-              <span className="font-semibold text-green-800">Récompenses automatiques</span>
+              <span className="font-semibold text-green-800">Recompenses automatiques</span>
             </div>
             <p className="text-sm text-green-700 mb-3">
-              Quand quelqu'un rejoint avec votre code, vous gagnez tous les deux des mois gratuits !
+              Quand quelqu'un rejoint avec votre lien, vous gagnez tous les deux des mois gratuits !
             </p>
             <div className="flex gap-3">
               <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                 <div className="flex items-center justify-center gap-1">
                   <Home className="w-3.5 h-3.5 text-orange-600" />
-                  <span className="text-xs text-gray-600">Résident</span>
+                  <span className="text-xs text-gray-600">Resident</span>
                 </div>
                 <p className="font-bold text-orange-600">+2 mois</p>
               </div>
@@ -182,7 +225,7 @@ export default function InvitePage() {
           </Card>
         </motion.div>
 
-        {/* Residence Invite Code Card */}
+        {/* Trackable Invite Link Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -190,60 +233,155 @@ export default function InvitePage() {
         >
           <Card className="p-6 mb-6 bg-white">
             <div className="flex items-center gap-2 mb-4">
-              <Home className="w-5 h-5 text-orange-600" />
+              <LinkIcon className="w-5 h-5 text-orange-600" />
               <h2 className="text-xl font-bold text-gray-900">
-                Code d'invitation
+                Creer un lien d'invitation
               </h2>
             </div>
 
             <p className="text-gray-600 mb-4">
-              Partagez ce code avec vos futurs colocataires pour qu'ils puissent rejoindre la colocation.
+              Generez un lien unique et trackable pour inviter quelqu'un a rejoindre votre colocation.
             </p>
 
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200">
-                <p className="text-sm text-gray-600 mb-1">Code d'invitation</p>
-                <p className="text-2xl font-mono font-bold text-orange-700 break-all">
-                  {propertyId}
-                </p>
+            {/* Role Selection */}
+            <div className="mb-4">
+              <p className="text-sm font-medium text-gray-700 mb-2">Inviter en tant que :</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setSelectedRole('resident');
+                    setInviteUrl(null);
+                    setInviteToken(null);
+                  }}
+                  className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                    selectedRole === 'resident'
+                      ? 'border-orange-400 bg-orange-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Home className={`w-5 h-5 ${selectedRole === 'resident' ? 'text-orange-600' : 'text-gray-500'}`} />
+                    <span className={`font-medium ${selectedRole === 'resident' ? 'text-orange-700' : 'text-gray-600'}`}>
+                      Resident
+                    </span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedRole('owner');
+                    setInviteUrl(null);
+                    setInviteToken(null);
+                  }}
+                  className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                    selectedRole === 'owner'
+                      ? 'border-purple-400 bg-purple-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Building2 className={`w-5 h-5 ${selectedRole === 'owner' ? 'text-purple-600' : 'text-gray-500'}`} />
+                    <span className={`font-medium ${selectedRole === 'owner' ? 'text-purple-700' : 'text-gray-600'}`}>
+                      Proprietaire
+                    </span>
+                  </div>
+                </button>
               </div>
+            </div>
 
+            {/* Generate Button or Link Display */}
+            {!inviteUrl ? (
               <Button
-                onClick={copyInviteCode}
-                className="rounded-xl bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                onClick={generateInviteLink}
+                disabled={isGenerating}
+                className={`w-full rounded-xl py-6 text-white ${
+                  selectedRole === 'owner'
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
+                    : 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]'
+                }`}
               >
-                {copiedType === 'residence' ? (
+                {isGenerating ? (
                   <>
-                    <Check className="w-5 h-5 mr-2" />
-                    Copié
+                    <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+                    Generation...
                   </>
                 ) : (
                   <>
-                    <Copy className="w-5 h-5 mr-2" />
-                    Copier
+                    <LinkIcon className="w-5 h-5 mr-2" />
+                    Generer le lien d'invitation
                   </>
                 )}
               </Button>
-            </div>
+            ) : (
+              <>
+                {/* Link Display */}
+                <div className={`p-4 rounded-xl border-2 mb-4 ${
+                  selectedRole === 'owner'
+                    ? 'bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200'
+                    : 'bg-gradient-to-r from-orange-50 to-yellow-50 border-orange-200'
+                }`}>
+                  <p className="text-sm text-gray-600 mb-1">Lien d'invitation ({selectedRole === 'owner' ? 'Proprietaire' : 'Resident'})</p>
+                  <p className={`text-sm font-mono break-all ${
+                    selectedRole === 'owner' ? 'text-purple-700' : 'text-orange-700'
+                  }`}>
+                    {inviteUrl}
+                  </p>
+                </div>
 
-            <div className="flex gap-3">
-              <Button
-                onClick={shareViaWhatsApp}
-                variant="outline"
-                className="flex-1 rounded-xl border-green-200 text-green-600 hover:bg-green-50"
-              >
-                <MessageCircle className="w-5 h-5 mr-2" />
-                WhatsApp
-              </Button>
-              <Button
-                onClick={shareViaEmail}
-                variant="outline"
-                className="flex-1 rounded-xl border-blue-200 text-blue-600 hover:bg-blue-50"
-              >
-                <Mail className="w-5 h-5 mr-2" />
-                Email
-              </Button>
-            </div>
+                {/* Action Buttons */}
+                <div className="flex gap-3 mb-4">
+                  <Button
+                    onClick={handleCopyLink}
+                    className={`flex-1 rounded-xl ${
+                      selectedRole === 'owner'
+                        ? 'bg-gradient-to-r from-purple-500 to-indigo-600'
+                        : 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]'
+                    }`}
+                  >
+                    {copiedType === 'link' ? (
+                      <>
+                        <Check className="w-5 h-5 mr-2" />
+                        Copie !
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-5 h-5 mr-2" />
+                        Copier le lien
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setInviteUrl(null);
+                      setInviteToken(null);
+                    }}
+                    variant="outline"
+                    className="rounded-xl"
+                  >
+                    <RefreshCw className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                {/* Share Buttons */}
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleShareWhatsApp}
+                    variant="outline"
+                    className="flex-1 rounded-xl border-green-200 text-green-600 hover:bg-green-50"
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    WhatsApp
+                  </Button>
+                  <Button
+                    onClick={handleShareEmail}
+                    variant="outline"
+                    className="flex-1 rounded-xl border-blue-200 text-blue-600 hover:bg-blue-50"
+                  >
+                    <Mail className="w-5 h-5 mr-2" />
+                    Email
+                  </Button>
+                </div>
+              </>
+            )}
           </Card>
         </motion.div>
 
@@ -288,7 +426,7 @@ export default function InvitePage() {
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge className="bg-orange-100 text-orange-700 border-orange-200 text-xs">
-                        {member.role === 'resident' ? 'Résident' : member.role}
+                        {member.role === 'resident' ? 'Resident' : member.role}
                       </Badge>
                       <Badge className={
                         member.status === 'active'
