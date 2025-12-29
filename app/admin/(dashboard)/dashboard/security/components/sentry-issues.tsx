@@ -26,7 +26,16 @@ export function SentryIssues() {
   const [issues, setIssues] = useState<SentryIssue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [debug, setDebug] = useState<{ org?: string; project?: string; region?: string; apiUrl?: string } | null>(null);
+  const [debug, setDebug] = useState<{
+    org?: string;
+    project?: string;
+    region?: string;
+    apiUrl?: string;
+    status?: number;
+    statusText?: string;
+    errorDetail?: string;
+    tokenPrefix?: string;
+  } | null>(null);
 
   const fetchIssues = async () => {
     setLoading(true);
@@ -34,12 +43,15 @@ export function SentryIssues() {
       const response = await fetch('/api/admin/security/sentry-issues');
       const data = await response.json();
 
-      if (data.error && !data.issues) {
+      // Set issues (may be empty array)
+      setIssues(data.issues || []);
+
+      // Set error and debug info if present
+      if (data.error) {
         setError(data.error);
         setDebug(data.debug || null);
       } else {
-        setIssues(data.issues || []);
-        setError(data.error || null);
+        setError(null);
         setDebug(null);
       }
     } catch (err) {
@@ -107,11 +119,16 @@ export function SentryIssues() {
             <AlertTriangle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
             <p className="text-slate-400 text-sm">{error}</p>
             {debug && (
-              <div className="mt-3 text-left bg-slate-900/50 rounded p-3 text-xs font-mono">
-                <p className="text-slate-500">Debug info:</p>
+              <div className="mt-3 text-left bg-slate-900/50 rounded p-3 text-xs font-mono space-y-1">
+                <p className="text-slate-500 font-semibold">Debug info:</p>
+                <p className="text-slate-400">Status: {debug.status} {debug.statusText}</p>
                 <p className="text-slate-400">Org: {debug.org || 'not set'}</p>
                 <p className="text-slate-400">Project: {debug.project || 'not set'}</p>
                 <p className="text-slate-400">Region: {debug.region || 'unknown'}</p>
+                <p className="text-slate-400">Token: {debug.tokenPrefix || 'not set'}</p>
+                {debug.errorDetail && (
+                  <p className="text-red-400 mt-2">Detail: {debug.errorDetail}</p>
+                )}
               </div>
             )}
             {!debug && (

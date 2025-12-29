@@ -143,6 +143,7 @@ class AIService {
 
   /**
    * Analyze receipt image with SECURE processing
+   * - Uses server-side API route to bypass CSP restrictions
    * - Strips image metadata
    * - Sends minimal prompt
    * - No client context
@@ -166,30 +167,35 @@ class AIService {
       console.warn('[AI] Could not sanitize image, proceeding with original');
     }
 
-    // Try Gemini first (best quality) - only if SAFELY under limit
-    if (this.gemini && this.canSafelyUseProvider('gemini')) {
-      console.log('[AI] Trying Gemini (secure mode)...');
-      const result = await this.gemini.analyzeReceipt(base64, mimeType);
-      const latencyMs = Date.now() - startTime;
-      this.trackUsage('gemini', result.success, latencyMs);
+    // Use server-side API route to bypass CSP restrictions
+    // The API route handles Gemini/Together AI calls from the server
+    try {
+      console.log('[AI] Calling server-side OCR API...');
+      const response = await fetch('/api/ai/ocr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageBase64: base64,
+          mimeType,
+        }),
+      });
 
-      if (result.success) {
+      const result: OCRResult = await response.json();
+      const latencyMs = Date.now() - startTime;
+
+      if (result.success && result.provider) {
+        // Track usage for the provider that was used
+        this.trackUsage(result.provider as AIProvider, true, latencyMs);
+        console.log(`[AI] ✅ Server-side OCR succeeded with ${result.provider}`);
         return { ...result, latencyMs };
       }
-      console.warn('[AI] Gemini failed, trying fallback...');
-    }
 
-    // Try Together AI (Llama Vision) - only if SAFELY under limit
-    if (this.together && this.canSafelyUseProvider('together')) {
-      console.log('[AI] Trying Together AI (secure mode)...');
-      const result = await this.together.analyzeReceipt(base64, mimeType);
-      const latencyMs = Date.now() - startTime;
-      this.trackUsage('together', result.success, latencyMs);
-
-      if (result.success) {
-        return { ...result, latencyMs };
-      }
-      console.warn('[AI] Together AI failed, trying fallback...');
+      // API returned an error - log and fall through to Tesseract
+      console.warn('[AI] Server-side OCR failed:', result.error);
+    } catch (error: any) {
+      console.warn('[AI] Server-side OCR API error:', error.message);
     }
 
     // Fallback to Tesseract (LOCAL - 100% secure, no data leaves device)

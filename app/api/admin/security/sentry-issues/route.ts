@@ -99,14 +99,25 @@ export async function GET() {
         body: errorBody,
       });
 
+      // Try to parse error body for more details
+      let errorDetail = '';
+      try {
+        const errorJson = JSON.parse(errorBody);
+        errorDetail = errorJson.detail || errorJson.message || errorJson.error || '';
+      } catch {
+        errorDetail = errorBody.slice(0, 200);
+      }
+
       // Provide more helpful error messages
       let errorMessage = `Sentry API error: ${response.statusText}`;
-      if (response.status === 404) {
+      if (response.status === 400) {
+        errorMessage = `Bad Request: ${errorDetail || 'Invalid request parameters'}`;
+      } else if (response.status === 404) {
         errorMessage = `Project not found. Verify SENTRY_ORG (${sentryOrg}) and SENTRY_PROJECT (${sentryProject}) are correct`;
       } else if (response.status === 401) {
-        errorMessage = 'Invalid token. Check SENTRY_AUTH_TOKEN_READ permissions';
+        errorMessage = `Invalid or expired token. ${errorDetail || 'Check SENTRY_AUTH_TOKEN_READ'}`;
       } else if (response.status === 403) {
-        errorMessage = 'Token does not have access to this project';
+        errorMessage = `Token does not have access to this project. ${errorDetail}`;
       }
 
       return NextResponse.json({
@@ -115,9 +126,12 @@ export async function GET() {
         debug: {
           apiUrl,
           status: response.status,
+          statusText: response.statusText,
           org: sentryOrg,
           project: sentryProject,
           region: isEuRegion ? 'EU' : 'US',
+          errorDetail,
+          tokenPrefix: sentryToken.slice(0, 10) + '...',
         },
         total: 0,
       });
