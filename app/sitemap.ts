@@ -4,13 +4,13 @@
  * Generates sitemap.xml for all public pages in the application.
  * Automatically includes properties, blog posts, and static pages.
  *
- * Accessible at: https://easyco.be/sitemap.xml
+ * Accessible at: https://izzico.be/sitemap.xml
  */
 
 import { MetadataRoute } from 'next';
 import { createClient } from '@/lib/auth/supabase-server';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://easyco.be';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://izzico.be';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();

@@ -1,4 +1,4 @@
--- EasyCo Database Schema
+-- Izzico Database Schema
 -- Authentication and User Management
 
 -- ============================================================================

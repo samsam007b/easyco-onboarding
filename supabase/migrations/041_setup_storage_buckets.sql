@@ -1,4 +1,4 @@
--- Create storage buckets for EasyCo platform
+-- Create storage buckets for Izzico platform
 
 -- Application documents bucket (private - only accessible to owner and applicant)
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

@@ -1,5 +1,5 @@
 -- ============================================================================
--- SEED TEST DATA FOR EASYCO
+-- SEED TEST DATA FOR IZZICO
 -- ============================================================================
 -- This script creates diverse test profiles and properties in Brussels
 -- All data is fictional but realistic for testing purposes

@@ -1,4 +1,4 @@
-// Internationalization translations for EasyCo
+// Internationalization translations for Izzico
 // Supported languages: FR (default), EN, NL, DE
 
 export type Language = 'fr' | 'en' | 'nl' | 'de';
@@ -251,10 +251,10 @@ export const translations = {
           de: 'Eingeschränkte Funktion',
         },
         description: {
-          fr: 'Cette fonctionnalité nécessite un compte EasyCo. Créez votre compte gratuitement pour accéder à toutes nos fonctionnalités.',
-          en: 'This feature requires an EasyCo account. Create your account for free to access all our features.',
-          nl: 'Deze functie vereist een EasyCo-account. Maak gratis een account aan om toegang te krijgen tot al onze functies.',
-          de: 'Diese Funktion erfordert ein EasyCo-Konto. Erstelle dein Konto kostenlos, um auf alle unsere Funktionen zuzugreifen.',
+          fr: 'Cette fonctionnalité nécessite un compte Izzico. Créez votre compte gratuitement pour accéder à toutes nos fonctionnalités.',
+          en: 'This feature requires an Izzico account. Create your account for free to access all our features.',
+          nl: 'Deze functie vereist een Izzico-account. Maak gratis een account aan om toegang te krijgen tot al onze functies.',
+          de: 'Diese Funktion erfordert ein Izzico-Konto. Erstelle dein Konto kostenlos, um auf alle unsere Funktionen zuzugreifen.',
         },
       },
       continueAsGuest: {
@@ -411,10 +411,10 @@ export const translations = {
 
     stats: {
       title: {
-        fr: 'EasyCo en chiffres',
-        en: 'EasyCo by the numbers',
-        nl: 'EasyCo in cijfers',
-        de: 'EasyCo in Zahlen',
+        fr: 'Izzico en chiffres',
+        en: 'Izzico by the numbers',
+        nl: 'Izzico in cijfers',
+        de: 'Izzico in Zahlen',
       },
       subtitle: {
         fr: 'Rejoins des milliers d\'utilisateurs satisfaits',
@@ -481,10 +481,10 @@ export const translations = {
           de: 'Student an der ULB',
         },
         text: {
-          fr: 'J\'ai trouvé mes colocataires en moins de 2 semaines grâce à EasyCo. Le matching est vraiment précis, on s\'entend super bien ! Plus besoin de passer des heures sur des sites douteux.',
-          en: 'I found my flatmates in less than 2 weeks thanks to EasyCo. The matching is really accurate, we get along great! No more spending hours on dodgy sites.',
-          nl: 'Ik vond mijn huisgenoten in minder dan 2 weken dankzij EasyCo. De matching is echt nauwkeurig, we kunnen het geweldig vinden! Niet meer uren spenderen op dubieuze sites.',
-          de: 'Ich habe meine Mitbewohner in weniger als 2 Wochen dank EasyCo gefunden. Das Matching ist wirklich genau, wir verstehen uns super! Keine Stunden mehr auf dubiosen Seiten verbringen.',
+          fr: 'J\'ai trouvé mes colocataires en moins de 2 semaines grâce à Izzico. Le matching est vraiment précis, on s\'entend super bien ! Plus besoin de passer des heures sur des sites douteux.',
+          en: 'I found my flatmates in less than 2 weeks thanks to Izzico. The matching is really accurate, we get along great! No more spending hours on dodgy sites.',
+          nl: 'Ik vond mijn huisgenoten in minder dan 2 weken dankzij Izzico. De matching is echt nauwkeurig, we kunnen het geweldig vinden! Niet meer uren spenderen op dubieuze sites.',
+          de: 'Ich habe meine Mitbewohner in weniger als 2 Wochen dank Izzico gefunden. Das Matching ist wirklich genau, wir verstehen uns super! Keine Stunden mehr auf dubiosen Seiten verbringen.',
         },
       },
       testimonial2: {
@@ -521,10 +521,10 @@ export const translations = {
           de: 'Entwickler',
         },
         text: {
-          fr: 'Fini les arnaques et les mauvaises surprises. Avec EasyCo, tous les profils sont vérifiés et les annonces sont authentiques. J\'ai trouvé une coloc en 3 semaines, c\'est incroyable.',
-          en: 'No more scams and bad surprises. With EasyCo, all profiles are verified and listings are authentic. I found a flatshare in 3 weeks, it\'s amazing.',
-          nl: 'Geen oplichting en slechte verrassingen meer. Met EasyCo zijn alle profielen geverifieerd en advertenties authentiek. Ik vond een flatshare in 3 weken, het is geweldig.',
-          de: 'Keine Betrügereien und schlechten Überraschungen mehr. Mit EasyCo sind alle Profile verifiziert und Anzeigen authentisch. Ich fand eine WG in 3 Wochen, es ist unglaublich.',
+          fr: 'Fini les arnaques et les mauvaises surprises. Avec Izzico, tous les profils sont vérifiés et les annonces sont authentiques. J\'ai trouvé une coloc en 3 semaines, c\'est incroyable.',
+          en: 'No more scams and bad surprises. With Izzico, all profiles are verified and listings are authentic. I found a flatshare in 3 weeks, it\'s amazing.',
+          nl: 'Geen oplichting en slechte verrassingen meer. Met Izzico zijn alle profielen geverifieerd en advertenties authentiek. Ik vond een flatshare in 3 weken, het is geweldig.',
+          de: 'Keine Betrügereien und schlechten Überraschungen mehr. Mit Izzico sind alle Profile verifiziert und Anzeigen authentisch. Ich fand eine WG in 3 Wochen, es ist unglaublich.',
         },
       },
       rating: {
@@ -1289,10 +1289,10 @@ export const translations = {
     // Owner specific
     owner: {
       welcomeTitle: {
-        fr: 'Bienvenue sur EasyCo pour Propriétaires',
-        en: 'Welcome to EasyCo for Homeowners',
-        nl: 'Welkom bij EasyCo voor Huiseigenaren',
-        de: 'Willkommen bei EasyCo für Hausbesitzer',
+        fr: 'Bienvenue sur Izzico pour Propriétaires',
+        en: 'Welcome to Izzico for Homeowners',
+        nl: 'Welkom bij Izzico voor Huiseigenaren',
+        de: 'Willkommen bei Izzico für Hausbesitzer',
       },
       welcomeSubtitle: {
         fr: 'Listez votre bien, rencontrez les bons locataires et gérez tout depuis un seul endroit.',
@@ -1830,10 +1830,10 @@ export const translations = {
           de: 'Profil erfolgreich erstellt!',
         },
         welcome: {
-          fr: 'Bienvenue sur EasyCo ! Votre profil d\'hôte est maintenant actif. Prêt à ajouter votre première annonce de propriété ?',
-          en: 'Welcome to EasyCo! Your host profile is now active. Ready to add your first property listing?',
-          nl: 'Welkom bij EasyCo! Je hostprofiel is nu actief. Klaar om je eerste eigendomsadvertentie toe te voegen?',
-          de: 'Willkommen bei EasyCo! Ihr Gastgeberprofil ist jetzt aktiv. Bereit, Ihre erste Immobilienanzeige hinzuzufügen?',
+          fr: 'Bienvenue sur Izzico ! Votre profil d\'hôte est maintenant actif. Prêt à ajouter votre première annonce de propriété ?',
+          en: 'Welcome to Izzico! Your host profile is now active. Ready to add your first property listing?',
+          nl: 'Welkom bij Izzico! Je hostprofiel is nu actief. Klaar om je eerste eigendomsadvertentie toe te voegen?',
+          de: 'Willkommen bei Izzico! Ihr Gastgeberprofil ist jetzt aktiv. Bereit, Ihre erste Immobilienanzeige hinzuzufügen?',
         },
         stat3xLabel: {
           fr: '3x',
@@ -2427,10 +2427,10 @@ export const translations = {
           de: 'Anzeige veröffentlicht!',
         },
         subtitle: {
-          fr: 'Votre propriété est maintenant en ligne sur EasyCo. Des locataires de qualité peuvent maintenant voir et s\'informer sur votre annonce.',
-          en: 'Your property is now live on EasyCo. Quality tenants can now view and inquire about your listing.',
-          nl: 'Je eigendom is nu live op EasyCo. Kwaliteitshuurders kunnen nu je advertentie bekijken en erover informeren.',
-          de: 'Ihre Immobilie ist jetzt auf EasyCo live. Qualitätsmieter können jetzt Ihre Anzeige ansehen und anfragen.',
+          fr: 'Votre propriété est maintenant en ligne sur Izzico. Des locataires de qualité peuvent maintenant voir et s\'informer sur votre annonce.',
+          en: 'Your property is now live on Izzico. Quality tenants can now view and inquire about your listing.',
+          nl: 'Je eigendom is nu live op Izzico. Kwaliteitshuurders kunnen nu je advertentie bekijken en erover informeren.',
+          de: 'Ihre Immobilie ist jetzt auf Izzico live. Qualitätsmieter können jetzt Ihre Anzeige ansehen und anfragen.',
         },
         trackViewsLabel: {
           fr: 'Suivre les vues',
@@ -3847,10 +3847,10 @@ export const translations = {
         de: 'Willkommen zurück',
       },
       subtitle: {
-        fr: 'Connectez-vous à votre compte EasyCo',
-        en: 'Sign in to your EasyCo account',
-        nl: 'Log in op je EasyCo-account',
-        de: 'Melden Sie sich bei Ihrem EasyCo-Konto an',
+        fr: 'Connectez-vous à votre compte Izzico',
+        en: 'Sign in to your Izzico account',
+        nl: 'Log in op je Izzico-account',
+        de: 'Melden Sie sich bei Ihrem Izzico-Konto an',
       },
       email: {
         fr: 'Adresse e-mail',
@@ -3987,10 +3987,10 @@ export const translations = {
     // Signup Page
     signup: {
       title: {
-        fr: 'Rejoignez EasyCo',
-        en: 'Join EasyCo',
-        nl: 'Word lid van EasyCo',
-        de: 'Tritt EasyCo bei',
+        fr: 'Rejoignez Izzico',
+        en: 'Join Izzico',
+        nl: 'Word lid van Izzico',
+        de: 'Tritt Izzico bei',
       },
       subtitle: {
         fr: 'Commencez votre aventure coliving aujourd\'hui',
@@ -4158,7 +4158,7 @@ export const translations = {
       },
       termsAgree: {
         fr: 'J\'accepte les',
-        en: 'I agree to EasyCo\'s',
+        en: 'I agree to Izzico\'s',
         nl: 'Ik ga akkoord met',
         de: 'Ich stimme zu',
       },
@@ -4413,10 +4413,10 @@ export const translations = {
     // Select User Type Page
     selectUserType: {
       title: {
-        fr: 'Bienvenue sur EasyCo !',
-        en: 'Welcome to EasyCo!',
-        nl: 'Welkom bij EasyCo!',
-        de: 'Willkommen bei EasyCo!',
+        fr: 'Bienvenue sur Izzico !',
+        en: 'Welcome to Izzico!',
+        nl: 'Welkom bij Izzico!',
+        de: 'Willkommen bei Izzico!',
       },
       subtitle: {
         fr: 'Parlez-nous de vous pour commencer',
@@ -4568,10 +4568,10 @@ export const translations = {
         de: 'Wie wir Ihre personenbezogenen Daten erfassen, verwenden und schützen',
       },
       intro: {
-        fr: 'EasyCo SPRL/BVBA s\'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD).',
-        en: 'EasyCo SPRL/BVBA is committed to protecting your privacy. This privacy policy explains how we collect, use, share and protect your personal information in accordance with the General Data Protection Regulation (GDPR).',
-        nl: 'EasyCo SPRL/BVBA verbindt zich ertoe uw privacy te beschermen. Dit privacybeleid legt uit hoe we uw persoonlijke informatie verzamelen, gebruiken, delen en beschermen in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).',
-        de: 'EasyCo SPRL/BVBA verpflichtet sich, Ihre Privatsphäre zu schützen. Diese Datenschutzerklärung erklärt, wie wir Ihre persönlichen Informationen gemäß der Datenschutz-Grundverordnung (DSGVO) erfassen, verwenden, weitergeben und schützen.',
+        fr: 'Izzico SPRL/BVBA s\'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD).',
+        en: 'Izzico SPRL/BVBA is committed to protecting your privacy. This privacy policy explains how we collect, use, share and protect your personal information in accordance with the General Data Protection Regulation (GDPR).',
+        nl: 'Izzico SPRL/BVBA verbindt zich ertoe uw privacy te beschermen. Dit privacybeleid legt uit hoe we uw persoonlijke informatie verzamelen, gebruiken, delen en beschermen in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).',
+        de: 'Izzico SPRL/BVBA verpflichtet sich, Ihre Privatsphäre zu schützen. Diese Datenschutzerklärung erklärt, wie wir Ihre persönlichen Informationen gemäß der Datenschutz-Grundverordnung (DSGVO) erfassen, verwenden, weitergeben und schützen.',
       },
 
       dataCollection: {
@@ -4872,16 +4872,16 @@ export const translations = {
         de: 'Allgemeine Geschäftsbedingungen',
       },
       subtitle: {
-        fr: 'Conditions régissant l\'utilisation de la plateforme EasyCo',
-        en: 'Terms governing the use of the EasyCo platform',
-        nl: 'Voorwaarden voor het gebruik van het EasyCo-platform',
-        de: 'Bedingungen für die Nutzung der EasyCo-Plattform',
+        fr: 'Conditions régissant l\'utilisation de la plateforme Izzico',
+        en: 'Terms governing the use of the Izzico platform',
+        nl: 'Voorwaarden voor het gebruik van het Izzico-platform',
+        de: 'Bedingungen für die Nutzung der Izzico-Plattform',
       },
       intro: {
-        fr: 'En utilisant EasyCo, vous acceptez les présentes conditions générales d\'utilisation. Veuillez les lire attentivement avant d\'utiliser nos services.',
-        en: 'By using EasyCo, you accept these terms of service. Please read them carefully before using our services.',
-        nl: 'Door EasyCo te gebruiken, accepteert u deze algemene gebruiksvoorwaarden. Lees ze zorgvuldig door voordat u onze diensten gebruikt.',
-        de: 'Durch die Nutzung von EasyCo akzeptieren Sie diese Allgemeinen Geschäftsbedingungen. Bitte lesen Sie sie sorgfältig durch, bevor Sie unsere Dienste nutzen.',
+        fr: 'En utilisant Izzico, vous acceptez les présentes conditions générales d\'utilisation. Veuillez les lire attentivement avant d\'utiliser nos services.',
+        en: 'By using Izzico, you accept these terms of service. Please read them carefully before using our services.',
+        nl: 'Door Izzico te gebruiken, accepteert u deze algemene gebruiksvoorwaarden. Lees ze zorgvuldig door voordat u onze diensten gebruikt.',
+        de: 'Durch die Nutzung von Izzico akzeptieren Sie diese Allgemeinen Geschäftsbedingungen. Bitte lesen Sie sie sorgfältig durch, bevor Sie unsere Dienste nutzen.',
       },
 
       service: {
@@ -4892,10 +4892,10 @@ export const translations = {
           de: '1. Dienstbeschreibung',
         },
         content: {
-          fr: 'EasyCo est une plateforme de mise en relation pour la colocation en Belgique. Nous offrons :',
-          en: 'EasyCo is a matching platform for flatsharing in Belgium. We offer:',
-          nl: 'EasyCo is een matchingplatform voor flatsharing in België. We bieden:',
-          de: 'EasyCo ist eine Matching-Plattform für WG-Suche in Belgien. Wir bieten:',
+          fr: 'Izzico est une plateforme de mise en relation pour la colocation en Belgique. Nous offrons :',
+          en: 'Izzico is a matching platform for flatsharing in Belgium. We offer:',
+          nl: 'Izzico is een matchingplatform voor flatsharing in België. We bieden:',
+          de: 'Izzico ist eine Matching-Plattform für WG-Suche in Belgien. Wir bieten:',
         },
         matching: {
           fr: 'Matching intelligent entre chercheurs et propriétés',
@@ -4931,10 +4931,10 @@ export const translations = {
           de: '2. Berechtigung',
         },
         content: {
-          fr: 'Pour utiliser EasyCo, vous devez :',
-          en: 'To use EasyCo, you must:',
-          nl: 'Om EasyCo te gebruiken, moet u:',
-          de: 'Um EasyCo zu nutzen, müssen Sie:',
+          fr: 'Pour utiliser Izzico, vous devez :',
+          en: 'To use Izzico, you must:',
+          nl: 'Om Izzico te gebruiken, moet u:',
+          de: 'Um Izzico zu nutzen, müssen Sie:',
         },
         age: {
           fr: 'Avoir au moins 18 ans',
@@ -5015,10 +5015,10 @@ export const translations = {
           de: '4. Geistiges Eigentum',
         },
         content: {
-          fr: 'Tous les contenus de la plateforme EasyCo (logo, design, algorithmes, textes) sont protégés par le droit d\'auteur et appartiennent à EasyCo SPRL/BVBA. Vous conservez vos droits sur le contenu que vous publiez, mais nous accordez une licence d\'utilisation.',
-          en: 'All content on the EasyCo platform (logo, design, algorithms, texts) is protected by copyright and belongs to EasyCo SPRL/BVBA. You retain rights to content you post, but grant us a license to use it.',
-          nl: 'Alle inhoud op het EasyCo-platform (logo, ontwerp, algoritmen, teksten) is beschermd door auteursrecht en behoort toe aan EasyCo SPRL/BVBA. U behoudt rechten op inhoud die u plaatst, maar verleent ons een licentie om deze te gebruiken.',
-          de: 'Alle Inhalte auf der EasyCo-Plattform (Logo, Design, Algorithmen, Texte) sind urheberrechtlich geschützt und gehören EasyCo SPRL/BVBA. Sie behalten Rechte an von Ihnen veröffentlichten Inhalten, gewähren uns jedoch eine Nutzungslizenz.',
+          fr: 'Tous les contenus de la plateforme Izzico (logo, design, algorithmes, textes) sont protégés par le droit d\'auteur et appartiennent à Izzico SPRL/BVBA. Vous conservez vos droits sur le contenu que vous publiez, mais nous accordez une licence d\'utilisation.',
+          en: 'All content on the Izzico platform (logo, design, algorithms, texts) is protected by copyright and belongs to Izzico SPRL/BVBA. You retain rights to content you post, but grant us a license to use it.',
+          nl: 'Alle inhoud op het Izzico-platform (logo, ontwerp, algoritmen, teksten) is beschermd door auteursrecht en behoort toe aan Izzico SPRL/BVBA. U behoudt rechten op inhoud die u plaatst, maar verleent ons een licentie om deze te gebruiken.',
+          de: 'Alle Inhalte auf der Izzico-Plattform (Logo, Design, Algorithmen, Texte) sind urheberrechtlich geschützt und gehören Izzico SPRL/BVBA. Sie behalten Rechte an von Ihnen veröffentlichten Inhalten, gewähren uns jedoch eine Nutzungslizenz.',
         },
       },
 
@@ -5030,10 +5030,10 @@ export const translations = {
           de: '5. Haftungsbeschränkung',
         },
         content: {
-          fr: 'EasyCo agit comme intermédiaire. Nous ne sommes pas responsables de :',
-          en: 'EasyCo acts as an intermediary. We are not responsible for:',
-          nl: 'EasyCo treedt op als tussenpersoon. We zijn niet verantwoordelijk voor:',
-          de: 'EasyCo fungiert als Vermittler. Wir sind nicht verantwortlich für:',
+          fr: 'Izzico agit comme intermédiaire. Nous ne sommes pas responsables de :',
+          en: 'Izzico acts as an intermediary. We are not responsible for:',
+          nl: 'Izzico treedt op als tussenpersoon. We zijn niet verantwoordelijk voor:',
+          de: 'Izzico fungiert als Vermittler. Wir sind nicht verantwortlich für:',
         },
         listings: {
           fr: 'La véracité des annonces publiées par les utilisateurs',
@@ -5161,10 +5161,10 @@ export const translations = {
         de: 'Impressum',
       },
       subtitle: {
-        fr: 'Informations légales sur EasyCo SPRL/BVBA',
-        en: 'Legal information about EasyCo SPRL/BVBA',
-        nl: 'Juridische informatie over EasyCo SPRL/BVBA',
-        de: 'Rechtliche Informationen über EasyCo SPRL/BVBA',
+        fr: 'Informations légales sur Izzico SPRL/BVBA',
+        en: 'Legal information about Izzico SPRL/BVBA',
+        nl: 'Juridische informatie over Izzico SPRL/BVBA',
+        de: 'Rechtliche Informationen über Izzico SPRL/BVBA',
       },
 
       company: {
@@ -5253,10 +5253,10 @@ export const translations = {
           de: 'E-Mail',
         },
         emailValue: {
-          fr: 'contact@easyco.be',
-          en: 'contact@easyco.be',
-          nl: 'contact@easyco.be',
-          de: 'contact@easyco.be',
+          fr: 'contact@izzico.be',
+          en: 'contact@izzico.be',
+          nl: 'contact@izzico.be',
+          de: 'contact@izzico.be',
         },
         website: {
           fr: 'Site web',
@@ -5265,10 +5265,10 @@ export const translations = {
           de: 'Website',
         },
         websiteValue: {
-          fr: 'www.easyco.be',
-          en: 'www.easyco.be',
-          nl: 'www.easyco.be',
-          de: 'www.easyco.be',
+          fr: 'www.izzico.be',
+          en: 'www.izzico.be',
+          nl: 'www.izzico.be',
+          de: 'www.izzico.be',
         },
       },
 
@@ -5280,10 +5280,10 @@ export const translations = {
           de: '4. Veröffentlichungsleiter',
         },
         content: {
-          fr: 'Le directeur de la publication est le représentant légal de EasyCo SPRL/BVBA.',
-          en: 'The publication director is the legal representative of EasyCo SPRL/BVBA.',
-          nl: 'De publicatiedirecteur is de wettelijke vertegenwoordiger van EasyCo SPRL/BVBA.',
-          de: 'Der Veröffentlichungsleiter ist der gesetzliche Vertreter von EasyCo SPRL/BVBA.',
+          fr: 'Le directeur de la publication est le représentant légal de Izzico SPRL/BVBA.',
+          en: 'The publication director is the legal representative of Izzico SPRL/BVBA.',
+          nl: 'De publicatiedirecteur is de wettelijke vertegenwoordiger van Izzico SPRL/BVBA.',
+          de: 'Der Veröffentlichungsleiter ist der gesetzliche Vertreter von Izzico SPRL/BVBA.',
         },
       },
 
@@ -5322,10 +5322,10 @@ export const translations = {
           de: '6. Tätigkeit',
         },
         content: {
-          fr: 'EasyCo est une plateforme digitale de mise en relation pour la colocation et le colivingn en Belgique. Nous facilitons la recherche de colocataires compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
-          en: 'EasyCo is a digital matching platform for flatsharing and coliving in Belgium. We facilitate the search for compatible flatmates and suitable housing through smart matching algorithms.',
-          nl: 'EasyCo is een digitaal matchingplatform voor flatsharing en coliving in België. We faciliteren het zoeken naar compatibele huisgenoten en geschikte huisvesting via slimme matching-algoritmen.',
-          de: 'EasyCo ist eine digitale Matching-Plattform für WG-Suche und Coliving in Belgien. Wir erleichtern die Suche nach kompatiblen Mitbewohnern und geeigneten Unterkünften durch intelligente Matching-Algorithmen.',
+          fr: 'Izzico est une plateforme digitale de mise en relation pour la colocation et le coliving en Belgique. Nous facilitons la recherche de colocataires compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
+          en: 'Izzico is a digital matching platform for flatsharing and coliving in Belgium. We facilitate the search for compatible flatmates and suitable housing through smart matching algorithms.',
+          nl: 'Izzico is een digitaal matchingplatform voor flatsharing en coliving in België. We faciliteren het zoeken naar compatibele huisgenoten en geschikte huisvesting via slimme matching-algoritmen.',
+          de: 'Izzico ist eine digitale Matching-Plattform für WG-Suche und Coliving in Belgien. Wir erleichtern die Suche nach kompatiblen Mitbewohnern und geeigneten Unterkünften durch intelligente Matching-Algorithmen.',
         },
       },
 
@@ -5337,10 +5337,10 @@ export const translations = {
           de: '7. Geistiges Eigentum',
         },
         content: {
-          fr: 'L\'ensemble du contenu de ce site (textes, images, logos, algorithmes) est la propriété exclusive de EasyCo SPRL/BVBA et est protégé par les lois sur la propriété intellectuelle. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable.',
-          en: 'All content on this website (texts, images, logos, algorithms) is the exclusive property of EasyCo SPRL/BVBA and is protected by intellectual property laws. Any reproduction, even partial, is strictly prohibited without prior authorization.',
-          nl: 'Alle inhoud op deze website (teksten, afbeeldingen, logo\'s, algoritmen) is het exclusieve eigendom van EasyCo SPRL/BVBA en wordt beschermd door wetgeving inzake intellectuele eigendom. Elke reproductie, zelfs gedeeltelijk, is strikt verboden zonder voorafgaande toestemming.',
-          de: 'Alle Inhalte dieser Website (Texte, Bilder, Logos, Algorithmen) sind ausschließliches Eigentum von EasyCo SPRL/BVBA und durch Gesetze zum Schutz des geistigen Eigentums geschützt. Jede Reproduktion, auch teilweise, ist ohne vorherige Genehmigung strengstens untersagt.',
+          fr: 'L\'ensemble du contenu de ce site (textes, images, logos, algorithmes) est la propriété exclusive de Izzico SPRL/BVBA et est protégé par les lois sur la propriété intellectuelle. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable.',
+          en: 'All content on this website (texts, images, logos, algorithms) is the exclusive property of Izzico SPRL/BVBA and is protected by intellectual property laws. Any reproduction, even partial, is strictly prohibited without prior authorization.',
+          nl: 'Alle inhoud op deze website (teksten, afbeeldingen, logo\'s, algoritmen) is het exclusieve eigendom van Izzico SPRL/BVBA en wordt beschermd door wetgeving inzake intellectuele eigendom. Elke reproductie, zelfs gedeeltelijk, is strikt verboden zonder voorafgaande toestemming.',
+          de: 'Alle Inhalte dieser Website (Texte, Bilder, Logos, Algorithmen) sind ausschließliches Eigentum von Izzico SPRL/BVBA und durch Gesetze zum Schutz des geistigen Eigentums geschützt. Jede Reproduktion, auch teilweise, ist ohne vorherige Genehmigung strengstens untersagt.',
         },
       },
 
@@ -5375,10 +5375,10 @@ export const translations = {
         de: 'Wie wir Cookies und ähnliche Technologien verwenden',
       },
       intro: {
-        fr: 'EasyCo utilise des cookies et technologies similaires pour améliorer votre expérience sur notre plateforme. Cette politique explique ce que sont les cookies, comment nous les utilisons et comment vous pouvez les gérer.',
-        en: 'EasyCo uses cookies and similar technologies to improve your experience on our platform. This policy explains what cookies are, how we use them and how you can manage them.',
-        nl: 'EasyCo gebruikt cookies en vergelijkbare technologieën om uw ervaring op ons platform te verbeteren. Dit beleid legt uit wat cookies zijn, hoe we ze gebruiken en hoe u ze kunt beheren.',
-        de: 'EasyCo verwendet Cookies und ähnliche Technologien, um Ihre Erfahrung auf unserer Plattform zu verbessern. Diese Richtlinie erklärt, was Cookies sind, wie wir sie verwenden und wie Sie sie verwalten können.',
+        fr: 'Izzico utilise des cookies et technologies similaires pour améliorer votre expérience sur notre plateforme. Cette politique explique ce que sont les cookies, comment nous les utilisons et comment vous pouvez les gérer.',
+        en: 'Izzico uses cookies and similar technologies to improve your experience on our platform. This policy explains what cookies are, how we use them and how you can manage them.',
+        nl: 'Izzico gebruikt cookies en vergelijkbare technologieën om uw ervaring op ons platform te verbeteren. Dit beleid legt uit wat cookies zijn, hoe we ze gebruiken en hoe u ze kunt beheren.',
+        de: 'Izzico verwendet Cookies und ähnliche Technologien, um Ihre Erfahrung auf unserer Plattform zu verbessern. Diese Richtlinie erklärt, was Cookies sind, wie wir sie verwenden und wie Sie sie verwalten können.',
       },
 
       whatAre: {
@@ -5493,28 +5493,28 @@ export const translations = {
           de: '3. Von uns verwendete Cookies',
         },
         content: {
-          fr: 'Liste des principaux cookies utilisés sur EasyCo :',
-          en: 'List of main cookies used on EasyCo:',
-          nl: 'Lijst van belangrijkste cookies gebruikt op EasyCo:',
-          de: 'Liste der wichtigsten auf EasyCo verwendeten Cookies:',
+          fr: 'Liste des principaux cookies utilisés sur Izzico :',
+          en: 'List of main cookies used on Izzico:',
+          nl: 'Lijst van belangrijkste cookies gebruikt op Izzico:',
+          de: 'Liste der wichtigsten auf Izzico verwendeten Cookies:',
         },
         session: {
-          fr: 'easyco_session : cookie de session essentiel (durée : session)',
-          en: 'easyco_session: essential session cookie (duration: session)',
-          nl: 'easyco_session: essentiële sessiecookie (duur: sessie)',
-          de: 'easyco_session: essenzielles Sitzungscookie (Dauer: Sitzung)',
+          fr: 'izzico_session : cookie de session essentiel (durée : session)',
+          en: 'izzico_session: essential session cookie (duration: session)',
+          nl: 'izzico_session: essentiële sessiecookie (duur: sessie)',
+          de: 'izzico_session: essenzielles Sitzungscookie (Dauer: Sitzung)',
         },
         language: {
-          fr: 'easyco_lang : préférence de langue (durée : 1 an)',
-          en: 'easyco_lang: language preference (duration: 1 year)',
-          nl: 'easyco_lang: taalvoorkeur (duur: 1 jaar)',
-          de: 'easyco_lang: Sprachpräferenz (Dauer: 1 Jahr)',
+          fr: 'izzico_lang : préférence de langue (durée : 1 an)',
+          en: 'izzico_lang: language preference (duration: 1 year)',
+          nl: 'izzico_lang: taalvoorkeur (duur: 1 jaar)',
+          de: 'izzico_lang: Sprachpräferenz (Dauer: 1 Jahr)',
         },
         consent: {
-          fr: 'easyco_cookie_consent : mémorisation du consentement cookies (durée : 1 an)',
-          en: 'easyco_cookie_consent: cookie consent memory (duration: 1 year)',
-          nl: 'easyco_cookie_consent: cookie toestemmingsgeheugen (duur: 1 jaar)',
-          de: 'easyco_cookie_consent: Cookie-Einwilligungsspeicher (Dauer: 1 Jahr)',
+          fr: 'izzico_cookie_consent : mémorisation du consentement cookies (durée : 1 an)',
+          en: 'izzico_cookie_consent: cookie consent memory (duration: 1 year)',
+          nl: 'izzico_cookie_consent: cookie toestemmingsgeheugen (duur: 1 jaar)',
+          de: 'izzico_cookie_consent: Cookie-Einwilligungsspeicher (Dauer: 1 Jahr)',
         },
         analytics: {
           fr: '_ga, _gid : Google Analytics (durée : 2 ans / 24 heures)',

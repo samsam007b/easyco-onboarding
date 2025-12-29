@@ -55,16 +55,16 @@ CREATE TRIGGER app_settings_updated_at
 
 -- Insert default settings
 INSERT INTO public.app_settings (key, value, category, description) VALUES
-  ('app_name', '"EasyCo"', 'general', 'Application name'),
-  ('site_url', '"https://easyco.be"', 'general', 'Site URL'),
-  ('support_email', '"support@easyco.be"', 'general', 'Support email address'),
+  ('app_name', '"Izzico"', 'general', 'Application name'),
+  ('site_url', '"https://izzico.be"', 'general', 'Site URL'),
+  ('support_email', '"support@izzico.be"', 'general', 'Support email address'),
   ('default_language', '"fr"', 'general', 'Default language'),
   ('email_notifications', 'true', 'notifications', 'Enable email notifications'),
   ('push_notifications', 'true', 'notifications', 'Enable push notifications'),
   ('weekly_summary', 'false', 'notifications', 'Send weekly summary to owners'),
   ('admin_alerts', 'true', 'notifications', 'Send alerts to admins'),
-  ('email_from', '"EasyCo <noreply@easyco.be>"', 'email', 'Email sender'),
-  ('email_reply_to', '"support@easyco.be"', 'email', 'Email reply-to address'),
+  ('email_from', '"Izzico <noreply@izzico.be>"', 'email', 'Email sender'),
+  ('email_reply_to', '"support@izzico.be"', 'email', 'Email reply-to address'),
   ('require_2fa', 'true', 'security', 'Require 2FA for admins'),
   ('audit_logs', 'true', 'security', 'Enable audit logging'),
   ('session_timeout', '60', 'security', 'Session timeout in minutes'),

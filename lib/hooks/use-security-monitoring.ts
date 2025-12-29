@@ -1,5 +1,5 @@
 /**
- * EASYCO SECURITY MONITORING HOOK
+ * IZZICO SECURITY MONITORING HOOK
  *
  * React hook pour capturer automatiquement les erreurs frontend
  * et envoyer des métriques de performance

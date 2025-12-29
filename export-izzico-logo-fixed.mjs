@@ -3,20 +3,20 @@ import { writeFileSync } from 'fs';
 
 // Lettres du logo avec leurs couleurs respectives
 const letters = [
-  { char: 'E', color: '#7B5FB8' },      // Owner - Mauve
-  { char: 'a', color: '#A67BB8' },      // Owner gradient
-  { char: 's', color: '#C98B9E' },      // Owner gradient rose
-  { char: 'y', color: '#E8865D' },      // Resident - Orange/Coral
-  { char: 'C', color: '#FF8C4B' },      // Resident gradient
+  { char: 'I', color: '#7B5FB8' },      // Owner - Mauve
+  { char: 'z', color: '#A67BB8' },      // Owner gradient
+  { char: 'z', color: '#C98B9E' },      // Owner gradient rose
+  { char: 'i', color: '#E8865D' },      // Resident - Orange/Coral
+  { char: 'c', color: '#FF8C4B' },      // Resident gradient
   { char: 'o', color: '#FFD080' },      // Searcher - Jaune doré
 ];
 
 // Différentes tailles à exporter
 const sizes = [
-  { name: 'easyco-logo-256', fontSize: 256 },
-  { name: 'easyco-logo-512', fontSize: 512 },
-  { name: 'easyco-logo-1024', fontSize: 1024 },
-  { name: 'easyco-logo-2048', fontSize: 2048 },
+  { name: 'izzico-logo-256', fontSize: 256 },
+  { name: 'izzico-logo-512', fontSize: 512 },
+  { name: 'izzico-logo-1024', fontSize: 1024 },
+  { name: 'izzico-logo-2048', fontSize: 2048 },
 ];
 
 const outputDir = '/Users/samuelbaudon/easyco-onboarding/exported-logos';
@@ -103,13 +103,13 @@ function createLogo(fontSize, outputName) {
 }
 
 // Générer toutes les tailles
-console.log('🎨 Generating high-resolution EasyCo logos with auto-crop...\n');
+console.log('🎨 Generating high-resolution Izzico logos with auto-crop...\n');
 
 sizes.forEach(({ name, fontSize }) => {
   createLogo(fontSize, name);
 });
 
-console.log('\n🎉 Perfect! Your EasyCo logos are ready!');
+console.log('\n🎉 Perfect! Your Izzico logos are ready!');
 console.log('   ✓ Transparent backgrounds');
 console.log('   ✓ Automatically cropped to content');
 console.log('   ✓ High resolution for any use');

@@ -1,5 +1,5 @@
 /**
- * EASYCO MONITORING MIDDLEWARE
+ * IZZICO MONITORING MIDDLEWARE
  *
  * Middleware pour capturer automatiquement toutes les requêtes
  * et les analyser pour la sécurité et la performance

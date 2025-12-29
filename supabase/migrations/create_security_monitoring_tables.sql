@@ -1,5 +1,5 @@
 -- ============================================
--- EASYCO SECURITY MONITORING SYSTEM
+-- IZZICO SECURITY MONITORING SYSTEM
 -- Centre de Commandement de Sécurité & Observabilité
 -- ============================================
 

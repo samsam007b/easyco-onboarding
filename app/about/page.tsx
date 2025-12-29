@@ -74,7 +74,7 @@ export default function AboutPage() {
         <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-purple-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              À Propos d'<span className="text-purple-600">EasyCo</span>
+              À Propos d'<span className="text-purple-600">Izzico</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed mb-8">
               Nous révolutionnons la recherche de colocation à Bruxelles avec une plateforme moderne,
@@ -109,7 +109,7 @@ export default function AboutPage() {
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed mb-6">
                   Chercher une colocation peut être stressant, chronophage et frustrant. Nous avons créé
-                  EasyCo pour transformer cette expérience en quelque chose de simple, rapide et même
+                  Izzico pour transformer cette expérience en quelque chose de simple, rapide et même
                   agréable.
                 </p>
                 <p className="text-lg text-gray-600 leading-relaxed">
@@ -164,7 +164,7 @@ export default function AboutPage() {
         <section className="py-20 px-6 bg-gradient-to-r from-purple-600 to-purple-700 text-white">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">EasyCo en Chiffres</h2>
+              <h2 className="text-4xl font-bold mb-4">Izzico en Chiffres</h2>
               <p className="text-xl text-purple-100">
                 Notre impact sur la communauté
               </p>
@@ -189,7 +189,7 @@ export default function AboutPage() {
                 Notre Équipe
               </div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Rencontre l'équipe derrière EasyCo
+                Rencontre l'équipe derrière Izzico
               </h2>
               <p className="text-xl text-gray-600">
                 Des passionnés qui travaillent chaque jour pour améliorer ton expérience
@@ -225,7 +225,7 @@ export default function AboutPage() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Notre Histoire</h2>
               <p className="text-xl text-gray-600">
-                Comment EasyCo est né
+                Comment Izzico est né
               </p>
             </div>
             <div className="prose prose-lg max-w-none">
@@ -243,7 +243,7 @@ export default function AboutPage() {
                   sécurité, et qui rend le processus aussi simple que possible.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  Aujourd'hui, EasyCo aide des milliers de personnes à trouver leur colocation idéale
+                  Aujourd'hui, Izzico aide des milliers de personnes à trouver leur colocation idéale
                   chaque mois. Notre équipe grandit, notre technologie s'améliore, mais notre mission
                   reste la même : simplifier la vie en colocation pour tous.
                 </p>

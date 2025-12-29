@@ -154,8 +154,8 @@ function GuestPageContent() {
                 <Home className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold">
-                <span style={{ color: '#ad5684' }}>Easy</span>
-                <span style={{ color: '#ff9811' }}>Co</span>
+                <span style={{ color: '#ad5684' }}>Izzi</span>
+                <span style={{ color: '#ff9811' }}>co</span>
               </span>
               <Badge variant="warning" size="sm" className="ml-2">
                 Mode Découverte
@@ -471,7 +471,7 @@ function SearcherGuestView({
                 <p className="text-xs text-white/90 drop-shadow-sm">
                   {hasSearchCriteria
                     ? `${mockProperties.length} propriétés correspondent`
-                    : 'Découvre EasyCo en mode invité'
+                    : 'Découvre Izzico en mode invité'
                   }
                 </p>
               </div>

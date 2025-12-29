@@ -16,7 +16,7 @@ import type {
 // CONSTANTS
 // ============================================================================
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be';
 
 // ============================================================================
 // GET USER'S REFERRAL CODE
@@ -109,7 +109,7 @@ export async function validateReferralCode(
       data: {
         valid: true,
         referrer_id: referrerId,
-        referrer_name: referrer?.full_name || 'Utilisateur EasyCo',
+        referrer_name: referrer?.full_name || 'Utilisateur Izzico',
       },
     };
   } catch (error) {
@@ -263,7 +263,7 @@ export async function checkPendingReferral(
       success: true,
       data: {
         hasReferrer: true,
-        referrerName: referrerData?.full_name || 'Utilisateur EasyCo',
+        referrerName: referrerData?.full_name || 'Utilisateur Izzico',
       },
     };
   } catch (error) {
@@ -336,13 +336,13 @@ export function generateShareMessage(
   const inviterName = userName || 'Un ami';
 
   return {
-    subject: `${inviterName} vous invite sur EasyCo!`,
-    body: `${inviterName} vous invite à rejoindre EasyCo, la plateforme de coliving en Belgique!
+    subject: `${inviterName} vous invite sur Izzico!`,
+    body: `${inviterName} vous invite à rejoindre Izzico, la plateforme de coliving en Belgique!
 
 Utilisez le code ${code} ou cliquez sur ce lien pour vous inscrire et bénéficier d'un mois gratuit:
 ${shareUrl}
 
-À bientôt sur EasyCo!`,
+À bientôt sur Izzico!`,
   };
 }
 
@@ -373,7 +373,7 @@ export function getFacebookShareUrl(shareUrl: string): string {
  * Generate Twitter/X share URL
  */
 export function getTwitterShareUrl(code: string, shareUrl: string): string {
-  const text = `Rejoignez EasyCo avec mon code ${code} et bénéficiez d'un mois gratuit!`;
+  const text = `Rejoignez Izzico avec mon code ${code} et bénéficiez d'un mois gratuit!`;
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
 }
 

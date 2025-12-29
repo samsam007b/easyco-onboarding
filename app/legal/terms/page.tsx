@@ -227,8 +227,8 @@ export default function TermsPage() {
             <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
               <p className="text-gray-700 mb-2">
                 <strong>{common.email}:</strong>{' '}
-                <a href="mailto:contact@easyco.be" className="text-[var(--easy-purple)] hover:underline">
-                  contact@easyco.be
+                <a href="mailto:contact@izzico.be" className="text-[var(--easy-purple)] hover:underline">
+                  contact@izzico.be
                 </a>
               </p>
               <p className="text-gray-700">
@@ -244,7 +244,7 @@ export default function TermsPage() {
             {common.lastUpdated}: <strong>Octobre 2025</strong>
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            EasyCo SPRL/BVBA
+            Izzico SPRL/BVBA
           </p>
         </div>
       </main>

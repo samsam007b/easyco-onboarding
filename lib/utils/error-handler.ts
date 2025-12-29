@@ -1,5 +1,5 @@
 /**
- * Unified Error Handling System for EasyCo
+ * Unified Error Handling System for Izzico
  *
  * This module provides centralized error handling with:
  * - Type-safe error codes
@@ -365,7 +365,7 @@ export const errorMessages = {
 export function getCurrentLanguage(): 'fr' | 'en' | 'nl' | 'de' {
   if (typeof window === 'undefined') return 'fr';
 
-  const savedLang = localStorage.getItem('easyco_language') as 'fr' | 'en' | 'nl' | 'de' | null;
+  const savedLang = localStorage.getItem('izzico_language') as 'fr' | 'en' | 'nl' | 'de' | null;
   return savedLang && ['fr', 'en', 'nl', 'de'].includes(savedLang) ? savedLang : 'fr';
 }
 

@@ -1,5 +1,5 @@
 /**
- * EASYCO ADVANCED ERROR TRACKING SYSTEM
+ * IZZICO ADVANCED ERROR TRACKING SYSTEM
  *
  * Système ultra-avancé de capture et analyse d'erreurs
  * Intégration avec Sentry + Base de données locale + Analytics

@@ -3,20 +3,20 @@ import { writeFileSync } from 'fs';
 
 // Lettres du logo avec leurs couleurs respectives
 const letters = [
-  { char: 'E', color: '#7B5FB8' },      // Owner - Mauve
-  { char: 'a', color: '#A67BB8' },      // Owner gradient
-  { char: 's', color: '#C98B9E' },      // Owner gradient rose
-  { char: 'y', color: '#E8865D' },      // Resident - Orange/Coral
-  { char: 'C', color: '#FF8C4B' },      // Resident gradient
+  { char: 'I', color: '#7B5FB8' },      // Owner - Mauve
+  { char: 'z', color: '#A67BB8' },      // Owner gradient
+  { char: 'z', color: '#C98B9E' },      // Owner gradient rose
+  { char: 'i', color: '#E8865D' },      // Resident - Orange/Coral
+  { char: 'c', color: '#FF8C4B' },      // Resident gradient
   { char: 'o', color: '#FFD080' },      // Searcher - Jaune doré
 ];
 
 // Tailles basées sur la HAUTEUR réelle du texte
 const sizes = [
-  { name: 'easyco-logo-small', height: 300 },      // 300px de haut
-  { name: 'easyco-logo-medium', height: 600 },     // 600px de haut
-  { name: 'easyco-logo-large', height: 1200 },     // 1200px de haut
-  { name: 'easyco-logo-xlarge', height: 2400 },    // 2400px de haut - très haute résolution
+  { name: 'izzico-logo-small', height: 300 },      // 300px de haut
+  { name: 'izzico-logo-medium', height: 600 },     // 600px de haut
+  { name: 'izzico-logo-large', height: 1200 },     // 1200px de haut
+  { name: 'izzico-logo-xlarge', height: 2400 },    // 2400px de haut - très haute résolution
 ];
 
 const outputDir = '/Users/samuelbaudon/easyco-onboarding/exported-logos';
@@ -118,7 +118,7 @@ function createLogo(targetHeight, outputName) {
   console.log(`✅ ${outputName}.png → ${finalWidth}×${finalHeight}px (${fileSizeKB} KB)`);
 }
 
-console.log('🎨 Generating HIGH-RESOLUTION EasyCo logos...\n');
+console.log('🎨 Generating HIGH-RESOLUTION Izzico logos...\n');
 
 sizes.forEach(({ name, height }) => {
   createLogo(height, name);

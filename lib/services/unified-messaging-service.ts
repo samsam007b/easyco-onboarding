@@ -510,7 +510,7 @@ export async function generateInvitationLink(
       // Table might not exist, generate a simple link
       const baseUrl = typeof window !== 'undefined'
         ? window.location.origin
-        : process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be';
+        : process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be';
 
       const link = `${baseUrl}/invite/${inviteType}/${propertyId}?ref=${encodeURIComponent(inviterName)}`;
       return { success: true, data: { link, code: propertyId.substring(0, 8) } };
@@ -518,7 +518,7 @@ export async function generateInvitationLink(
 
     const baseUrl = typeof window !== 'undefined'
       ? window.location.origin
-      : process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be';
+      : process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be';
 
     const link = `${baseUrl}/invite/${code}`;
 

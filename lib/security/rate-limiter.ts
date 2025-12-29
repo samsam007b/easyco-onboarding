@@ -33,7 +33,7 @@ function getRateLimiter(operation: string, limit: number, window: number): Ratel
       redis,
       limiter: Ratelimit.slidingWindow(limit, `${window} s`),
       analytics: true,
-      prefix: `@easyco/ratelimit/${operation}`,
+      prefix: `@izzico/ratelimit/${operation}`,
     });
     ratelimiters.set(key, limiter);
   }

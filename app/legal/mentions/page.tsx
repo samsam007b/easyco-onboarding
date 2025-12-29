@@ -54,7 +54,7 @@ export default function LegalMentionsPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {mentions.company.name}
                 </h3>
-                <p className="text-gray-700">EasyCo SPRL/BVBA</p>
+                <p className="text-gray-700">Izzico SPRL/BVBA</p>
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -107,7 +107,7 @@ export default function LegalMentionsPage() {
                   {mentions.contact.emailLabel}
                 </h3>
                 <a
-                  href="mailto:contact@easyco.be"
+                  href="mailto:contact@izzico.be"
                   className="text-[var(--easy-purple)] hover:underline text-lg font-medium"
                 >
                   {mentions.contact.emailValue}
@@ -118,7 +118,7 @@ export default function LegalMentionsPage() {
                   {mentions.contact.website}
                 </h3>
                 <a
-                  href="https://www.easyco.be"
+                  href="https://www.izzico.be"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[var(--easy-purple)] hover:underline text-lg font-medium"
@@ -214,7 +214,7 @@ export default function LegalMentionsPage() {
             {common.lastUpdated}: <strong>Octobre 2025</strong>
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            EasyCo SPRL/BVBA
+            Izzico SPRL/BVBA
           </p>
         </div>
       </main>

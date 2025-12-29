@@ -366,7 +366,7 @@ export function useSaveDataMode(): boolean {
     const saveDataHeader = connection?.saveData;
 
     // Check localStorage preference
-    const userPreference = localStorage.getItem('easyco_save_data') === 'true';
+    const userPreference = localStorage.getItem('izzico_save_data') === 'true';
 
     setSaveData(saveDataHeader || userPreference);
   }, []);

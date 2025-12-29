@@ -8,9 +8,9 @@
  * Can be overridden via environment variables for different environments
  */
 export const CONTACT = {
-  SUPPORT_EMAIL: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@easyco.be',
-  SALES_EMAIL: process.env.NEXT_PUBLIC_SALES_EMAIL || 'sales@easyco.be',
-  INFO_EMAIL: process.env.NEXT_PUBLIC_INFO_EMAIL || 'info@easyco.be',
+  SUPPORT_EMAIL: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@izzico.be',
+  SALES_EMAIL: process.env.NEXT_PUBLIC_SALES_EMAIL || 'sales@izzico.be',
+  INFO_EMAIL: process.env.NEXT_PUBLIC_INFO_EMAIL || 'info@izzico.be',
 } as const;
 
 /**
@@ -112,8 +112,8 @@ export const VALIDATION = {
  * Brand colors
  */
 export const BRAND_COLORS = {
-  PRIMARY: '#4A148C', // EasyCo Purple
-  ACCENT: '#FFD600', // EasyCo Yellow
+  PRIMARY: '#4A148C', // Izzico Purple
+  ACCENT: '#FFD600', // Izzico Yellow
 } as const;
 
 /**
@@ -132,7 +132,7 @@ export const FEATURES = {
  * External links
  */
 export const EXTERNAL_LINKS = {
-  FACEBOOK: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/easyco',
-  INSTAGRAM: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/easyco',
-  LINKEDIN: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com/company/easyco',
+  FACEBOOK: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/izzico',
+  INSTAGRAM: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/izzico',
+  LINKEDIN: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com/company/izzico',
 } as const;

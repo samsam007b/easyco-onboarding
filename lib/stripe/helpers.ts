@@ -72,22 +72,22 @@ export async function getOrCreateStripeCustomer(
 export function getSubscriptionInfo(plan: string) {
   const info: Record<string, { name: string; price: string; interval: string }> = {
     'owner_monthly': {
-      name: 'EASYCO Owner - Mensuel',
+      name: 'IZZICO Owner - Mensuel',
       price: '€15.99',
       interval: 'mois',
     },
     'owner_annual': {
-      name: 'EASYCO Owner - Annuel',
+      name: 'IZZICO Owner - Annuel',
       price: '€159.90',
       interval: 'an',
     },
     'resident_monthly': {
-      name: 'EASYCO Resident - Mensuel',
+      name: 'IZZICO Resident - Mensuel',
       price: '€7.99',
       interval: 'mois',
     },
     'resident_annual': {
-      name: 'EASYCO Resident - Annuel',
+      name: 'IZZICO Resident - Annuel',
       price: '€79.90',
       interval: 'an',
     },

@@ -20,9 +20,9 @@ export function getStripe(): Stripe {
       apiVersion: '2024-12-18.acacia' as Stripe.LatestApiVersion,
       typescript: true,
       appInfo: {
-        name: 'EASYCO Onboarding',
+        name: 'IZZICO Onboarding',
         version: '1.0.0',
-        url: 'https://easyco.be',
+        url: 'https://izzico.be',
       },
     });
   }

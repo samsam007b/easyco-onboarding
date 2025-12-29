@@ -1,5 +1,5 @@
 -- ============================================
--- EASYCO SECURITY MONITORING SYSTEM - COMPLETE
+-- IZZICO SECURITY MONITORING SYSTEM - COMPLETE
 -- Consolidated migration for all security tables
 -- ============================================
 

@@ -1,5 +1,5 @@
 /**
- * EASYCO ROUTE & ENDPOINT MONITORING
+ * IZZICO ROUTE & ENDPOINT MONITORING
  *
  * Système d'audit et monitoring des routes/endpoints
  * Tracking de performance, erreurs, et patterns d'utilisation

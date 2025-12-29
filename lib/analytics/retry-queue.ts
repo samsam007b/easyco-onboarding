@@ -27,7 +27,7 @@ class AnalyticsRetryQueue {
   private isProcessing = false;
   private maxRetries = 5;
   private baseDelay = 1000; // 1 second
-  private storageKey = 'easyco_analytics_queue';
+  private storageKey = 'izzico_analytics_queue';
 
   constructor() {
     if (typeof window !== 'undefined') {

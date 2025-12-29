@@ -104,7 +104,7 @@ export default function OwnersPage() {
       role: 'Propriétaire de 3 colocations',
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jean',
       quote:
-        'EasyCo a transformé ma façon de gérer mes biens. Je gagne 10h par semaine et mes revenus ont augmenté de 15%!',
+        'Izzico a transformé ma façon de gérer mes biens. Je gagne 10h par semaine et mes revenus ont augmenté de 15%!',
       rating: 5,
     },
     {
@@ -199,7 +199,7 @@ export default function OwnersPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Pourquoi choisir EasyCo?
+                Pourquoi choisir Izzico?
               </h2>
               <p className="text-xl text-gray-600">
                 Tout ce dont tu as besoin pour gérer tes colocations comme un pro
@@ -362,7 +362,7 @@ export default function OwnersPage() {
               Prêt à optimiser tes revenus locatifs?
             </h2>
             <p className="text-xl text-gray-800 mb-8">
-              Rejoins des centaines de propriétaires qui font confiance à EasyCo
+              Rejoins des centaines de propriétaires qui font confiance à Izzico
             </p>
             <Link href="/onboarding/owner/basic-info">
               <Button

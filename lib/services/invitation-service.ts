@@ -142,7 +142,7 @@ export function generateWhatsAppText(
   invitedRole: InvitedRole
 ): string {
   const roleText = invitedRole === 'owner' ? 'propriétaire' : 'colocataire';
-  return `Rejoins-nous sur EasyCo ! Je t'invite à devenir ${roleText} de "${propertyName}".
+  return `Rejoins-nous sur Izzico ! Je t'invite à devenir ${roleText} de "${propertyName}".
 
 Clique ici pour accepter l'invitation : ${inviteUrl}`;
 }
@@ -158,11 +158,11 @@ export function generateEmailContent(
 ): { subject: string; body: string } {
   const roleText = invitedRole === 'owner' ? 'propriétaire' : 'colocataire';
 
-  const subject = `${inviterName} t'invite à rejoindre ${propertyName} sur EasyCo`;
+  const subject = `${inviterName} t'invite à rejoindre ${propertyName} sur Izzico`;
 
   const body = `Salut !
 
-${inviterName} t'invite à devenir ${roleText} de "${propertyName}" sur EasyCo.
+${inviterName} t'invite à devenir ${roleText} de "${propertyName}" sur Izzico.
 
 Clique sur ce lien pour accepter l'invitation :
 ${inviteUrl}

@@ -149,7 +149,7 @@ export const toasts = {
   loginSuccess: (name?: string) =>
     showSuccessToast(`Welcome back${name ? ', ' + name : ''}!`),
   logoutSuccess: () => showInfoToast('Logged out', 'You have been logged out successfully.'),
-  signupSuccess: () => showSuccessToast('Account created!', 'Welcome to EasyCo!'),
+  signupSuccess: () => showSuccessToast('Account created!', 'Welcome to Izzico!'),
 
   // Errors
   networkError: () =>

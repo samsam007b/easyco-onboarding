@@ -1,4 +1,4 @@
--- Properties Table Schema for EasyCo
+-- Properties Table Schema for Izzico
 -- This table stores property listings created by Owners
 
 -- Create properties table

@@ -8,7 +8,7 @@ import { SecurityAuditLogs } from './security-audit-logs';
 import { NotificationHistory } from './notification-history';
 import { Error404List } from './error-404-list';
 import { SentryIssues } from './sentry-issues';
-import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle, ExternalLink } from 'lucide-react';
+import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle, ExternalLink, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -75,15 +75,23 @@ export function SecurityDashboardClient({
           </h1>
           <p className="text-slate-400 mt-1">Monitoring temps reel</p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
-          onClick={() => refresh()}
-        >
-          <RefreshCw className="w-4 h-4" />
-          Actualiser
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link href="/admin/dashboard/security/report">
+            <Button variant="outline" size="sm" className="gap-2">
+              <FileText className="w-4 h-4" />
+              Rapport d'Audit
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={() => refresh()}
+          >
+            <RefreshCw className="w-4 h-4" />
+            Actualiser
+          </Button>
+        </div>
       </div>
 
       {/* Real-time Stats */}

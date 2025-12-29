@@ -1,5 +1,5 @@
 /**
- * EASYCO INTELLIGENT ALERT SYSTEM
+ * IZZICO INTELLIGENT ALERT SYSTEM
  *
  * Système d'alertes intelligentes avec ML et prédictions
  * Détection d'anomalies et notifications multi-canal

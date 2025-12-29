@@ -309,7 +309,7 @@ export default function AdminLoginPage() {
             {step === 'setup-2fa' && <KeyRound className="w-8 h-8 text-white" />}
           </div>
           <CardTitle className="text-2xl font-bold text-white">
-            {step === 'credentials' && 'Administration EasyCo'}
+            {step === 'credentials' && 'Administration Izzico'}
             {step === '2fa' && 'Vérification 2FA'}
             {step === 'setup-2fa' && 'Configuration 2FA'}
           </CardTitle>
@@ -337,7 +337,7 @@ export default function AdminLoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@easyco.be"
+                  placeholder="admin@izzico.be"
                   required
                   disabled={isLoading}
                   className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-500 focus:border-purple-500 focus:ring-purple-500"

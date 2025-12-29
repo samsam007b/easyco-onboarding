@@ -84,7 +84,7 @@ export const messages = {
     imageUploadError: 'Could not upload image. Please try a smaller file (max 5MB).',
     imageTooLarge: 'Image is too large. Maximum size is 5MB.',
     invalidImageType: 'Invalid image type. Please upload JPG, PNG, or WebP.',
-    onboardingComplete: 'Welcome to EasyCo! Your profile is complete.',
+    onboardingComplete: 'Welcome to Izzico! Your profile is complete.',
     onboardingIncomplete: 'Please complete your profile to access all features.',
     verificationPending: 'Your verification is pending review.',
     verificationComplete: 'Your profile has been verified!',
@@ -129,7 +129,7 @@ export const messages = {
     unauthorized: 'You do not have permission to perform this action.',
     notFound: 'The requested item was not found.',
     rateLimitExceeded: 'Too many requests. Please wait a moment and try again.',
-    maintenanceMode: 'EasyCo is currently under maintenance. Please try again later.',
+    maintenanceMode: 'Izzico is currently under maintenance. Please try again later.',
   },
 
   // FORM VALIDATION

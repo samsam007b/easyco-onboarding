@@ -1,5 +1,5 @@
 /**
- * Canonical language set for EasyCo onboarding
+ * Canonical language set for Izzico onboarding
  * Based on top ~80 languages by total speakers (2024-2025 data)
  */
 

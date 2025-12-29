@@ -1,6 +1,6 @@
 # 🌱 Guide de Seed de Données de Test
 
-Ce dossier contient des scripts pour créer des données de test réalistes pour EasyCo.
+Ce dossier contient des scripts pour créer des données de test réalistes pour Izzico.
 
 ## 📦 Contenu
 
@@ -51,28 +51,28 @@ Tous avec le mot de passe : **`Demo123!`**
 
 | Nom | Email | Profil | Budget | Villes |
 |-----|-------|--------|--------|--------|
-| Sophie Laurent | sophie.laurent@demo.easyco.com | Marketing Manager, 28 ans | €600-900 | Ixelles, Saint-Gilles |
-| Ahmed El Mansouri | ahmed.elmansouri@demo.easyco.com | Étudiant ULB, 23 ans | €400-600 | Ixelles, Schaerbeek |
-| Emma Van Der Berg | emma.vanderberg@demo.easyco.com | Designer Freelance, 36 ans | €700-1000 | Forest, Uccle |
-| Lucas Dubois | lucas.dubois@demo.easyco.com | Comptable en couple, 32 ans | €900-1300 | Woluwe, Etterbeek |
-| Maria Santos | maria.santos@demo.easyco.com | EU Policy Advisor, 34 ans | €750-1100 | Centre, Ixelles |
+| Sophie Laurent | sophie.laurent@demo.izzico.com | Marketing Manager, 28 ans | €600-900 | Ixelles, Saint-Gilles |
+| Ahmed El Mansouri | ahmed.elmansouri@demo.izzico.com | Étudiant ULB, 23 ans | €400-600 | Ixelles, Schaerbeek |
+| Emma Van Der Berg | emma.vanderberg@demo.izzico.com | Designer Freelance, 36 ans | €700-1000 | Forest, Uccle |
+| Lucas Dubois | lucas.dubois@demo.izzico.com | Comptable en couple, 32 ans | €900-1300 | Woluwe, Etterbeek |
+| Maria Santos | maria.santos@demo.izzico.com | EU Policy Advisor, 34 ans | €750-1100 | Centre, Ixelles |
 
 ### Owners (Propriétaires)
 
 | Nom | Email | Expérience | Propriétés |
 |-----|-------|------------|------------|
-| Jean-Marc Petit | jeanmarc.petit@demo.easyco.com | 5 ans | Appt Ixelles |
-| Isabelle Moreau | isabelle.moreau@demo.easyco.com | 15 ans | Maisons multiples |
-| Thomas Janssens | thomas.janssens@demo.easyco.com | Débutant | Studio Schaerbeek |
-| Sophie Vermeulen | sophie.vermeulen@demo.easyco.com | 8 ans | Coliving Forest |
+| Jean-Marc Petit | jeanmarc.petit@demo.izzico.com | 5 ans | Appt Ixelles |
+| Isabelle Moreau | isabelle.moreau@demo.izzico.com | 15 ans | Maisons multiples |
+| Thomas Janssens | thomas.janssens@demo.izzico.com | Débutant | Studio Schaerbeek |
+| Sophie Vermeulen | sophie.vermeulen@demo.izzico.com | 8 ans | Coliving Forest |
 
 ### Residents (Colocataires)
 
 | Nom | Email | Occupation |
 |-----|-------|------------|
-| Pierre Lecomte | pierre.lecomte@demo.easyco.com | Ingénieur Civil |
-| Laura Gonzalez | laura.gonzalez@demo.easyco.com | Doctorante |
-| Maxime Dubois | maxime.dubois@demo.easyco.com | Dev Startup |
+| Pierre Lecomte | pierre.lecomte@demo.izzico.com | Ingénieur Civil |
+| Laura Gonzalez | laura.gonzalez@demo.izzico.com | Doctorante |
+| Maxime Dubois | maxime.dubois@demo.izzico.com | Dev Startup |
 
 ---
 
@@ -124,7 +124,7 @@ Toutes les images proviennent de [Unsplash](https://unsplash.com/) (libres de dr
 
 ### Tester le Flow Searcher
 ```
-1. Login avec: sophie.laurent@demo.easyco.com / Demo123!
+1. Login avec: sophie.laurent@demo.izzico.com / Demo123!
 2. Voir les propriétés disponibles
 3. Postuler pour une propriété
 4. Tester le matching
@@ -132,7 +132,7 @@ Toutes les images proviennent de [Unsplash](https://unsplash.com/) (libres de dr
 
 ### Tester le Flow Owner
 ```
-1. Login avec: jeanmarc.petit@demo.easyco.com / Demo123!
+1. Login avec: jeanmarc.petit@demo.izzico.com / Demo123!
 2. Voir ses propriétés
 3. Gérer les candidatures
 4. Ajouter une nouvelle propriété
@@ -140,7 +140,7 @@ Toutes les images proviennent de [Unsplash](https://unsplash.com/) (libres de dr
 
 ### Tester le Flow Resident
 ```
-1. Login avec: pierre.lecomte@demo.easyco.com / Demo123!
+1. Login avec: pierre.lecomte@demo.izzico.com / Demo123!
 2. Voir son profil de colocataire
 3. Rechercher des colocataires compatibles
 ```
@@ -155,14 +155,14 @@ Pour supprimer toutes les données de test :
 -- Supprimer les propriétés
 DELETE FROM properties WHERE owner_id IN (
   SELECT user_id FROM user_profiles
-  WHERE email LIKE '%@demo.easyco.com'
+  WHERE email LIKE '%@demo.izzico.com'
 );
 
 -- Supprimer les profils
-DELETE FROM user_profiles WHERE email LIKE '%@demo.easyco.com';
+DELETE FROM user_profiles WHERE email LIKE '%@demo.izzico.com';
 
 -- Supprimer les utilisateurs Auth (via Supabase Dashboard)
--- Authentication > Users > Filtrer par @demo.easyco.com > Delete
+-- Authentication > Users > Filtrer par @demo.izzico.com > Delete
 ```
 
 ---
@@ -180,7 +180,7 @@ Une fois les données créées, vous pouvez :
 
 ## 💡 Conseils
 
-- Les **emails finissent par @demo.easyco.com** pour faciliter l'identification
+- Les **emails finissent par @demo.izzico.com** pour faciliter l'identification
 - Le **mot de passe est identique** pour tous : `Demo123!`
 - Les **données sont réalistes** mais fictives
 - Les **images sont de vraies photos** (Unsplash)
@@ -224,4 +224,4 @@ Pour ajouter vos propres données :
 
 ---
 
-**Créé avec ❤️ pour faciliter le développement d'EasyCo**
+**Créé avec ❤️ pour faciliter le développement d'Izzico**

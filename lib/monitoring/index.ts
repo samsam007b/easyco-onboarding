@@ -1,5 +1,5 @@
 /**
- * EASYCO MONITORING SYSTEM - CENTRAL EXPORT
+ * IZZICO MONITORING SYSTEM - CENTRAL EXPORT
  *
  * Point d'entrée unique pour tous les systèmes de monitoring
  * Simplifie les imports et garantit l'initialisation correcte

@@ -48,8 +48,8 @@ export function InvitationCTA({
   const [copied, setCopied] = useState(false);
   const [customMessage, setCustomMessage] = useState(
     type === 'owner'
-      ? `Bonjour,\n\nJe vous invite à rejoindre Easyco pour faciliter nos échanges concernant la résidence.\n\nCordialement,\n${inviterName}`
-      : `Salut !\n\nJe t'invite à rejoindre notre résidence sur Easyco pour qu'on puisse discuter plus facilement entre colocataires.\n\nÀ bientôt,\n${inviterName}`
+      ? `Bonjour,\n\nJe vous invite à rejoindre Izzico pour faciliter nos échanges concernant la résidence.\n\nCordialement,\n${inviterName}`
+      : `Salut !\n\nJe t'invite à rejoindre notre résidence sur Izzico pour qu'on puisse discuter plus facilement entre colocataires.\n\nÀ bientôt,\n${inviterName}`
   );
 
   const handleGenerateLink = async () => {
@@ -83,7 +83,7 @@ export function InvitationCTA({
     if (inviteLink && navigator.share) {
       try {
         await navigator.share({
-          title: type === 'owner' ? 'Invitation propriétaire Easyco' : 'Invitation colocataire Easyco',
+          title: type === 'owner' ? 'Invitation propriétaire Izzico' : 'Invitation colocataire Izzico',
           text: customMessage,
           url: inviteLink,
         });
@@ -128,8 +128,8 @@ export function InvitationCTA({
           {/* Description */}
           <p className="text-gray-500 mb-6">
             {type === 'owner'
-              ? 'Votre propriétaire n\'est pas encore sur Easyco. Envoyez-lui une invitation pour pouvoir communiquer directement ici.'
-              : 'Vous êtes le premier résident sur Easyco ! Invitez vos colocataires pour créer votre communauté.'}
+              ? 'Votre propriétaire n\'est pas encore sur Izzico. Envoyez-lui une invitation pour pouvoir communiquer directement ici.'
+              : 'Vous êtes le premier résident sur Izzico ! Invitez vos colocataires pour créer votre communauté.'}
           </p>
 
           {/* Action */}
@@ -323,8 +323,8 @@ export function InvitationDialog({
           </DialogTitle>
           <DialogDescription>
             {type === 'owner'
-              ? 'Envoyez une invitation à votre propriétaire pour qu\'il puisse vous contacter via Easyco.'
-              : 'Partagez ce lien avec vos colocataires pour les inviter à rejoindre votre résidence sur Easyco.'}
+              ? 'Envoyez une invitation à votre propriétaire pour qu\'il puisse vous contacter via Izzico.'
+              : 'Partagez ce lien avec vos colocataires pour les inviter à rejoindre votre résidence sur Izzico.'}
           </DialogDescription>
         </DialogHeader>
 

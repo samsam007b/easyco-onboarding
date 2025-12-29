@@ -1,5 +1,5 @@
 /**
- * Language matching utilities for EasyCo onboarding
+ * Language matching utilities for Izzico onboarding
  * Implements intelligent multilingual matching using CLDR data
  */
 

@@ -35,7 +35,7 @@ $$ LANGUAGE plpgsql;
 INSERT INTO property_members (property_id, user_id, role, status, move_in_date)
 VALUES (
   get_property_id_by_title('Coliving Forest - Maison Communautaire'),
-  get_demo_user_id('pierre.lecomte@demo.easyco.com'),
+  get_demo_user_id('pierre.lecomte@demo.izzico.com'),
   'resident',
   'active',
   '2024-09-01'
@@ -45,7 +45,7 @@ VALUES (
 INSERT INTO property_members (property_id, user_id, role, status, move_in_date)
 VALUES (
   get_property_id_by_title('Coliving Forest - Maison Communautaire'),
-  get_demo_user_id('laura.gonzalez@demo.easyco.com'),
+  get_demo_user_id('laura.gonzalez@demo.izzico.com'),
   'resident',
   'active',
   '2024-10-01'
@@ -55,7 +55,7 @@ VALUES (
 INSERT INTO property_members (property_id, user_id, role, status, move_in_date)
 VALUES (
   get_property_id_by_title('Coliving Forest - Maison Communautaire'),
-  get_demo_user_id('maxime.dubois@demo.easyco.com'),
+  get_demo_user_id('maxime.dubois@demo.izzico.com'),
   'resident',
   'active',
   '2024-11-01'

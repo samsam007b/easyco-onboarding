@@ -41,20 +41,20 @@ export function OrganizationStructuredData() {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'EasyCo',
+    name: 'Izzico',
     description: 'Plateforme de colocation fiable et compatible en Belgique',
-    url: 'https://easyco.be',
-    logo: 'https://easyco.be/logo.png',
+    url: 'https://izzico.be',
+    logo: 'https://izzico.be/logo.png',
     sameAs: [
-      'https://www.facebook.com/EasyCoBE',
-      'https://www.instagram.com/easyco.be',
-      'https://twitter.com/EasyCoBE',
-      'https://www.linkedin.com/company/easyco-be',
+      'https://www.facebook.com/IzzicoBE',
+      'https://www.instagram.com/izzico.be',
+      'https://twitter.com/IzzicoBE',
+      'https://www.linkedin.com/company/izzico-be',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Support',
-      email: 'support@easyco.be',
+      email: 'support@izzico.be',
       availableLanguage: ['fr', 'en', 'nl', 'de'],
     },
     address: {
@@ -74,13 +74,13 @@ export function WebsiteStructuredData() {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'EasyCo',
-    url: 'https://easyco.be',
+    name: 'Izzico',
+    url: 'https://izzico.be',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://easyco.be/properties/search?q={search_term_string}',
+        urlTemplate: 'https://izzico.be/properties/search?q={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },

@@ -2,12 +2,12 @@
  * Dynamic Robots.txt Generator
  *
  * Generates robots.txt with sitemap reference.
- * Accessible at: https://easyco.be/robots.txt
+ * Accessible at: https://izzico.be/robots.txt
  */
 
 import { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://easyco.be';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://izzico.be';
 
 export default function robots(): MetadataRoute.Robots {
   return {

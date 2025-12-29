@@ -36,10 +36,10 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com/easyco', label: 'Facebook' },
-    { icon: Twitter, href: 'https://twitter.com/easyco', label: 'Twitter' },
-    { icon: Instagram, href: 'https://instagram.com/easyco', label: 'Instagram' },
-    { icon: Linkedin, href: 'https://linkedin.com/company/easyco', label: 'LinkedIn' },
+    { icon: Facebook, href: 'https://facebook.com/izzico', label: 'Facebook' },
+    { icon: Twitter, href: 'https://twitter.com/izzico', label: 'Twitter' },
+    { icon: Instagram, href: 'https://instagram.com/izzico', label: 'Instagram' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/izzico', label: 'LinkedIn' },
   ];
 
   return (
@@ -60,11 +60,11 @@ export default function Footer() {
                 className="w-10 h-10 rounded-lg flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
               >
-                <span className="text-white font-bold text-xl">E</span>
+                <span className="text-white font-bold text-xl">I</span>
               </div>
               <span className="text-2xl font-bold">
-                <span style={{ color: '#ad5684' }}>Easy</span>
-                <span style={{ color: '#ff9811' }}>Co</span>
+                <span style={{ color: '#ad5684' }}>Izzi</span>
+                <span style={{ color: '#ff9811' }}>co</span>
               </span>
             </div>
             <p className={`mb-4 leading-relaxed ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -79,13 +79,13 @@ export default function Footer() {
               <div className={`flex items-center gap-2 text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                 <Mail className={`w-4 h-4 ${resolvedTheme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`} />
                 <a
-                  href="mailto:contact@easyco.be"
+                  href="mailto:contact@izzico.be"
                   className="transition"
                   style={{ color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
                   onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                 >
-                  contact@easyco.be
+                  contact@izzico.be
                 </a>
               </div>
               <div className={`flex items-center gap-2 text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -233,7 +233,7 @@ export default function Footer() {
           style={{ borderTop: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}` }}
         >
           <p className={`text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-            © {currentYear} EasyCo. Tous droits réservés.
+            © {currentYear} Izzico. Tous droits réservés.
           </p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (

@@ -26,7 +26,7 @@ INSERT INTO user_profiles (
   is_smoker, has_pets, cleanliness_preference, sociability_level
 ) VALUES
 (
-  get_user_id_by_email('sophie.laurent@demo.easyco.com'),
+  get_user_id_by_email('sophie.laurent@demo.izzico.com'),
   'searcher', 'Sophie', 'Laurent',
   'Marketing Manager de 29 ans, sociable et organisée, cherche colocation sympa proche du centre.',
   '+32 485 12 34 56', 'French', 'employed', 'Marketing Manager',
@@ -34,7 +34,7 @@ INSERT INTO user_profiles (
   false, false, 'tidy', 'high'
 ),
 (
-  get_user_id_by_email('ahmed.elmansouri@demo.easyco.com'),
+  get_user_id_by_email('ahmed.elmansouri@demo.izzico.com'),
   'searcher', 'Ahmed', 'El Mansouri',
   'Étudiant ULB en économie, 23 ans, calme et studieux, cherche logement proche université.',
   '+32 485 23 45 67', 'Moroccan', 'student', 'Student',
@@ -42,7 +42,7 @@ INSERT INTO user_profiles (
   false, false, 'moderate', 'medium'
 ),
 (
-  get_user_id_by_email('emma.vanderberg@demo.easyco.com'),
+  get_user_id_by_email('emma.vanderberg@demo.izzico.com'),
   'searcher', 'Emma', 'Van Der Berg',
   'Designer freelance, 36 ans, créative et indépendante, cherche espace lumineux avec bureau.',
   '+32 485 34 56 78', 'Belgian', 'self-employed', 'Designer',
@@ -50,7 +50,7 @@ INSERT INTO user_profiles (
   false, true, 'tidy', 'medium'
 ),
 (
-  get_user_id_by_email('lucas.dubois@demo.easyco.com'),
+  get_user_id_by_email('lucas.dubois@demo.izzico.com'),
   'searcher', 'Lucas', 'Dubois',
   'Comptable en couple, 32 ans, calme et organisé, cherche appartement spacieux quartier résidentiel.',
   '+32 485 45 67 89', 'Belgian', 'employed', 'Accountant',
@@ -58,7 +58,7 @@ INSERT INTO user_profiles (
   false, false, 'spotless', 'low'
 ),
 (
-  get_user_id_by_email('maria.santos@demo.easyco.com'),
+  get_user_id_by_email('maria.santos@demo.izzico.com'),
   'searcher', 'Maria', 'Santos',
   'EU Policy Advisor, 34 ans, internationale et sociable, cherche colocation multiculturelle.',
   '+32 485 56 78 90', 'Portuguese', 'employed', 'Policy Advisor',
@@ -79,25 +79,25 @@ INSERT INTO user_profiles (
   has_property
 ) VALUES
 (
-  get_user_id_by_email('jeanmarc.petit@demo.easyco.com'),
+  get_user_id_by_email('jeanmarc.petit@demo.izzico.com'),
   'owner', 'Jean-Marc', 'Petit',
   'Propriétaire depuis 5 ans, bienveillant et réactif. Propose appartement rénové à Ixelles.',
   '+32 486 12 34 56', true
 ),
 (
-  get_user_id_by_email('isabelle.moreau@demo.easyco.com'),
+  get_user_id_by_email('isabelle.moreau@demo.izzico.com'),
   'owner', 'Isabelle', 'Moreau',
   'Investisseuse immobilière depuis 15 ans, gère plusieurs propriétés à Bruxelles avec professionnalisme.',
   '+32 486 23 45 67', true
 ),
 (
-  get_user_id_by_email('thomas.janssens@demo.easyco.com'),
+  get_user_id_by_email('thomas.janssens@demo.izzico.com'),
   'owner', 'Thomas', 'Janssens',
   'Premier investissement locatif, studio étudiant à Schaerbeek. Jeune propriétaire motivé.',
   '+32 486 34 56 78', true
 ),
 (
-  get_user_id_by_email('sophie.vermeulen@demo.easyco.com'),
+  get_user_id_by_email('sophie.vermeulen@demo.izzico.com'),
   'owner', 'Sophie', 'Vermeulen',
   'Spécialiste coliving depuis 8 ans, propose maison communautaire avec jardin à Forest.',
   '+32 486 45 67 89', true
@@ -117,21 +117,21 @@ INSERT INTO user_profiles (
   is_smoker, has_pets, cleanliness_preference, sociability_level
 ) VALUES
 (
-  get_user_id_by_email('pierre.lecomte@demo.easyco.com'),
+  get_user_id_by_email('pierre.lecomte@demo.izzico.com'),
   'resident', 'Pierre', 'Lecomte',
   'Ingénieur civil de 27 ans, calme et rangé, apprécie vie en colocation équilibrée.',
   '+32 487 12 34 56', 'Belgian', 'employed', 'Civil Engineer',
   false, false, 'tidy', 'medium'
 ),
 (
-  get_user_id_by_email('laura.gonzalez@demo.easyco.com'),
+  get_user_id_by_email('laura.gonzalez@demo.izzico.com'),
   'resident', 'Laura', 'Gonzalez',
   'Doctorante en biologie, 26 ans, studieuse et respectueuse, cherche environnement calme.',
   '+32 487 23 45 67', 'Spanish', 'student', 'PhD Student',
   false, false, 'spotless', 'low'
 ),
 (
-  get_user_id_by_email('maxime.dubois@demo.easyco.com'),
+  get_user_id_by_email('maxime.dubois@demo.izzico.com'),
   'resident', 'Maxime', 'Dubois',
   'Développeur en startup, 25 ans, sociable et tech-savvy, aime les colocations dynamiques.',
   '+32 487 34 56 78', 'Belgian', 'employed', 'Software Developer',
@@ -155,7 +155,7 @@ INSERT INTO properties (
   images, main_image, status, is_available
 ) VALUES
 (
-  get_user_id_by_email('jeanmarc.petit@demo.easyco.com'),
+  get_user_id_by_email('jeanmarc.petit@demo.izzico.com'),
   'Appartement 2 Chambres - Ixelles Flagey',
   'Magnifique appartement de 85m² au cœur du quartier Flagey. Rénové avec goût, parquet massif, cuisine équipée, grande luminosité. Proche trams 81, bus, commerces et vie culturelle animée.',
   'apartment',
@@ -169,7 +169,7 @@ INSERT INTO properties (
   'published', true
 ),
 (
-  get_user_id_by_email('thomas.janssens@demo.easyco.com'),
+  get_user_id_by_email('thomas.janssens@demo.izzico.com'),
   'Studio Schaerbeek - Quartier Diamant',
   'Studio fonctionnel de 35m² idéal étudiant. Meublé et équipé, kitchenette, salle de bain, Wi-Fi inclus. Proche métro Diamant, ULB, commerces. Quartier multiculturel et vivant.',
   'studio',
@@ -183,7 +183,7 @@ INSERT INTO properties (
   'published', true
 ),
 (
-  get_user_id_by_email('sophie.vermeulen@demo.easyco.com'),
+  get_user_id_by_email('sophie.vermeulen@demo.izzico.com'),
   'Coliving Forest - Maison Communautaire',
   'Magnifique maison de maître de 280m² transformée en coliving. 6 chambres privées avec espaces communs partagés : salon, cuisine, jardin 200m². Ambiance internationale et conviviale.',
   'coliving',
@@ -197,7 +197,7 @@ INSERT INTO properties (
   'published', true
 ),
 (
-  get_user_id_by_email('isabelle.moreau@demo.easyco.com'),
+  get_user_id_by_email('isabelle.moreau@demo.izzico.com'),
   'Appartement 3 Chambres - Woluwe Standing',
   'Spacieux 3 chambres de 120m² dans résidence sécurisée. Haut standing, terrasse 15m², parking, salle de gym. Quartier résidentiel calme proche Parc de Woluwe et transports.',
   'apartment',
@@ -211,7 +211,7 @@ INSERT INTO properties (
   'published', true
 ),
 (
-  get_user_id_by_email('isabelle.moreau@demo.easyco.com'),
+  get_user_id_by_email('isabelle.moreau@demo.izzico.com'),
   'Maison 4 Chambres - Saint-Gilles Parvis',
   'Belle maison bruxelloise typique de 150m² avec jardin 80m². 4 chambres, 2 SDB, parquet d''origine, cheminée. Quartier Parvis de Saint-Gilles, artistique et vivant.',
   'house',
@@ -240,7 +240,7 @@ SELECT
   string_agg(first_name || ' ' || last_name, ', ') as names
 FROM user_profiles
 WHERE user_id IN (
-  SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com'
+  SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com'
 )
 GROUP BY user_type;
 
@@ -253,7 +253,7 @@ SELECT
 FROM properties p
 JOIN user_profiles up ON p.owner_id = up.user_id
 WHERE up.user_id IN (
-  SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com'
+  SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com'
 )
 ORDER BY p.monthly_rent;
 
@@ -261,12 +261,12 @@ ORDER BY p.monthly_rent;
 SELECT
   'Profiles' as type, COUNT(*) as count
 FROM user_profiles
-WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com')
+WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com')
 UNION ALL
 SELECT
   'Properties' as type, COUNT(*) as count
 FROM properties
 WHERE owner_id IN (
   SELECT user_id FROM user_profiles
-  WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com')
+  WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com')
 );

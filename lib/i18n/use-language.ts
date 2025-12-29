@@ -20,7 +20,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
     if (typeof window !== 'undefined') {
-      const savedLang = localStorage.getItem('easyco_language') as Language;
+      const savedLang = localStorage.getItem('izzico_language') as Language;
       if (savedLang && ['fr', 'en', 'nl', 'de'].includes(savedLang)) {
         setLanguageState(savedLang);
       }
@@ -30,8 +30,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('easyco_language', lang);
-      document.cookie = `easyco_language=${lang}; path=/; max-age=31536000`;
+      localStorage.setItem('izzico_language', lang);
+      document.cookie = `izzico_language=${lang}; path=/; max-age=31536000`;
     }
   };
 

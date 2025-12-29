@@ -121,11 +121,11 @@ CREATE TRIGGER admins_updated_at
 -- NOTE: This will only work if a user with this email exists in auth.users
 INSERT INTO public.admins (email, role, created_by)
 SELECT
-  'samuel@easyco.be',
+  'samuel@izzico.be',
   'super_admin',
   id
 FROM auth.users
-WHERE email = 'samuel@easyco.be'
+WHERE email = 'samuel@izzico.be'
 ON CONFLICT (email) DO NOTHING;
 
 -- Add comment

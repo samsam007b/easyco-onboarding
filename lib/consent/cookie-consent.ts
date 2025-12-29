@@ -19,7 +19,7 @@ export interface CookieConsent {
   version: string; // Track consent policy version
 }
 
-const CONSENT_STORAGE_KEY = 'easyco_cookie_consent';
+const CONSENT_STORAGE_KEY = 'izzico_cookie_consent';
 const CONSENT_VERSION = '1.0'; // Increment when privacy policy changes
 
 /**

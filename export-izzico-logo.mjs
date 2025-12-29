@@ -3,20 +3,20 @@ import { writeFileSync } from 'fs';
 
 // Lettres du logo avec leurs couleurs respectives
 const letters = [
-  { char: 'E', color: '#7B5FB8' },      // Owner - Mauve
-  { char: 'a', color: '#A67BB8' },      // Owner gradient
-  { char: 's', color: '#C98B9E' },      // Owner gradient rose
-  { char: 'y', color: '#E8865D' },      // Resident - Orange/Coral
-  { char: 'C', color: '#FF8C4B' },      // Resident gradient
+  { char: 'I', color: '#7B5FB8' },      // Owner - Mauve
+  { char: 'z', color: '#A67BB8' },      // Owner gradient
+  { char: 'z', color: '#C98B9E' },      // Owner gradient rose
+  { char: 'i', color: '#E8865D' },      // Resident - Orange/Coral
+  { char: 'c', color: '#FF8C4B' },      // Resident gradient
   { char: 'o', color: '#FFD080' },      // Searcher - Jaune doré
 ];
 
 // Différentes tailles à exporter (basées sur la hauteur du texte)
 const sizes = [
-  { name: 'easyco-logo-256', fontSize: 256 },    // Petite
-  { name: 'easyco-logo-512', fontSize: 512 },    // Moyenne
-  { name: 'easyco-logo-1024', fontSize: 1024 },  // Grande
-  { name: 'easyco-logo-2048', fontSize: 2048 },  // Très grande pour impression
+  { name: 'izzico-logo-256', fontSize: 256 },    // Petite
+  { name: 'izzico-logo-512', fontSize: 512 },    // Moyenne
+  { name: 'izzico-logo-1024', fontSize: 1024 },  // Grande
+  { name: 'izzico-logo-2048', fontSize: 2048 },  // Très grande pour impression
 ];
 
 const outputDir = '/Users/samuelbaudon/easyco-onboarding/exported-logos';
@@ -83,13 +83,13 @@ function createLogo(fontSize, outputName) {
 }
 
 // Générer toutes les tailles
-console.log('🎨 Generating high-resolution EasyCo logos with tight crop...\n');
+console.log('🎨 Generating high-resolution Izzico logos with tight crop...\n');
 
 sizes.forEach(({ name, fontSize }) => {
   createLogo(fontSize, name);
 });
 
-console.log('\n🎉 All EasyCo logos have been exported to: exported-logos/');
+console.log('\n🎉 All Izzico logos have been exported to: exported-logos/');
 console.log('   ✓ Transparent backgrounds');
 console.log('   ✓ Tight crop (no wasted space)');
 console.log('   ✓ High resolution for print and web');

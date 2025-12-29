@@ -17,11 +17,11 @@ import { Metadata } from 'next';
 
 // Base configuration
 const SITE_CONFIG = {
-  name: 'EasyCo',
+  name: 'Izzico',
   description: 'Trouve ta coloc idéale à Bruxelles, Liège, Gand. Vérification d\'identité, matching intelligent, groupes pré-formés. Évite les arnaques.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://easyco.be',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://izzico.be',
   ogImage: '/og-image.jpg',
-  twitterHandle: '@EasyCoBE',
+  twitterHandle: '@IzzicoBE',
   locale: 'fr_BE',
   alternateLocales: ['en_US', 'nl_BE', 'de_DE'],
 };
@@ -49,9 +49,9 @@ export function generateDefaultMetadata(): Metadata {
       'verified roommates',
       'compatible coliving',
     ],
-    authors: [{ name: 'EasyCo Team' }],
-    creator: 'EasyCo',
-    publisher: 'EasyCo',
+    authors: [{ name: 'Izzico Team' }],
+    creator: 'Izzico',
+    publisher: 'Izzico',
     applicationName: SITE_CONFIG.name,
 
     // Open Graph
@@ -439,15 +439,15 @@ export function generateOrganizationStructuredData() {
     url: SITE_CONFIG.url,
     logo: `${SITE_CONFIG.url}/logo.png`,
     sameAs: [
-      'https://www.facebook.com/EasyCoBE',
-      'https://www.instagram.com/easyco.be',
-      'https://twitter.com/EasyCoBE',
-      'https://www.linkedin.com/company/easyco-be',
+      'https://www.facebook.com/IzzicoBE',
+      'https://www.instagram.com/izzico.be',
+      'https://twitter.com/IzzicoBE',
+      'https://www.linkedin.com/company/izzico-be',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Support',
-      email: 'support@easyco.be',
+      email: 'support@izzico.be',
       availableLanguage: ['fr', 'en', 'nl', 'de'],
     },
     address: {

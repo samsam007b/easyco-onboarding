@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   EasyCo Design System
+   Izzico Design System
    ============================================ */
 
 :root {
@@ -286,9 +286,9 @@ html {
   overscroll-behavior: contain;
 }
 
-/* Zone au-dessus de la page (overscroll top) avec logo EasyCo animé */
+/* Zone au-dessus de la page (overscroll top) avec logo Izzico animé */
 html::before {
-  content: 'EasyCo';
+  content: 'Izzico';
   position: fixed;
   top: -200vh;
   left: 0;
@@ -831,7 +831,7 @@ body.theme-resident ::selection {
   background: var(--gradient-owner-dark);
 }
 
-/* Text hover avec dégradé tricolore signature EasyCo */
+/* Text hover avec dégradé tricolore signature Izzico */
 .text-hover-gradient {
   transition: all 0.3s ease;
 }

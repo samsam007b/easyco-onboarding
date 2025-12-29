@@ -107,22 +107,22 @@ BEGIN
   RAISE NOTICE '👥 Creating Auth users...';
 
   -- Searchers
-  sophie_id := create_demo_user('sophie.laurent@demo.easyco.com');
-  ahmed_id := create_demo_user('ahmed.elmansouri@demo.easyco.com');
-  emma_id := create_demo_user('emma.vanderberg@demo.easyco.com');
-  lucas_id := create_demo_user('lucas.dubois@demo.easyco.com');
-  maria_id := create_demo_user('maria.santos@demo.easyco.com');
+  sophie_id := create_demo_user('sophie.laurent@demo.izzico.com');
+  ahmed_id := create_demo_user('ahmed.elmansouri@demo.izzico.com');
+  emma_id := create_demo_user('emma.vanderberg@demo.izzico.com');
+  lucas_id := create_demo_user('lucas.dubois@demo.izzico.com');
+  maria_id := create_demo_user('maria.santos@demo.izzico.com');
 
   -- Owners
-  jeanmarc_id := create_demo_user('jeanmarc.petit@demo.easyco.com');
-  isabelle_id := create_demo_user('isabelle.moreau@demo.easyco.com');
-  thomas_id := create_demo_user('thomas.janssens@demo.easyco.com');
-  sophie_v_id := create_demo_user('sophie.vermeulen@demo.easyco.com');
+  jeanmarc_id := create_demo_user('jeanmarc.petit@demo.izzico.com');
+  isabelle_id := create_demo_user('isabelle.moreau@demo.izzico.com');
+  thomas_id := create_demo_user('thomas.janssens@demo.izzico.com');
+  sophie_v_id := create_demo_user('sophie.vermeulen@demo.izzico.com');
 
   -- Residents
-  pierre_id := create_demo_user('pierre.lecomte@demo.easyco.com');
-  laura_id := create_demo_user('laura.gonzalez@demo.easyco.com');
-  maxime_id := create_demo_user('maxime.dubois@demo.easyco.com');
+  pierre_id := create_demo_user('pierre.lecomte@demo.izzico.com');
+  laura_id := create_demo_user('laura.gonzalez@demo.izzico.com');
+  maxime_id := create_demo_user('maxime.dubois@demo.izzico.com');
 
   RAISE NOTICE '✅ Auth users created';
 
@@ -327,7 +327,7 @@ SELECT
   '🔐 Auth Users' as type,
   COUNT(*) as count
 FROM auth.users
-WHERE email LIKE '%@demo.easyco.com';
+WHERE email LIKE '%@demo.izzico.com';
 
 -- Check profiles by type
 SELECT
@@ -336,7 +336,7 @@ SELECT
   string_agg(first_name || ' ' || last_name, ', ') as names
 FROM user_profiles
 WHERE user_id IN (
-  SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com'
+  SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com'
 )
 GROUP BY user_type
 ORDER BY user_type;
@@ -350,12 +350,12 @@ SELECT
 FROM properties p
 JOIN user_profiles up ON p.owner_id = up.user_id
 WHERE up.user_id IN (
-  SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com'
+  SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com'
 )
 ORDER BY p.monthly_rent;
 
 -- Final summary
 SELECT '✅ SEED COMPLETE!' as status,
-  (SELECT COUNT(*) FROM auth.users WHERE email LIKE '%@demo.easyco.com') as auth_users,
-  (SELECT COUNT(*) FROM user_profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com')) as profiles,
-  (SELECT COUNT(*) FROM properties WHERE owner_id IN (SELECT user_id FROM user_profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.easyco.com'))) as properties;
+  (SELECT COUNT(*) FROM auth.users WHERE email LIKE '%@demo.izzico.com') as auth_users,
+  (SELECT COUNT(*) FROM user_profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com')) as profiles,
+  (SELECT COUNT(*) FROM properties WHERE owner_id IN (SELECT user_id FROM user_profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE '%@demo.izzico.com'))) as properties;

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 /**
- * Reusable Zod Validation Schemas for EasyCo Platform
+ * Reusable Zod Validation Schemas for Izzico Platform
  */
 
 // ======================

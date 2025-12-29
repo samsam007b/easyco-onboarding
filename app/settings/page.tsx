@@ -451,7 +451,7 @@ export default function SettingsPage() {
           transition={{ delay: 0.5 }}
           className="mt-8 text-center"
         >
-          <p className="text-sm text-gray-500">Version 1.0.0 • EasyCo © 2024</p>
+          <p className="text-sm text-gray-500">Version 1.0.0 • Izzico © 2024</p>
         </motion.div>
       </div>
     </div>

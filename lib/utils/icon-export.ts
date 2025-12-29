@@ -185,7 +185,7 @@ async function generateGradientIconPNG(
   // Ajouter la définition du gradient
   const defs = document.createElementNS(svgNS, 'defs');
   const gradient = document.createElementNS(svgNS, 'linearGradient');
-  gradient.setAttribute('id', 'easyco-grad');
+  gradient.setAttribute('id', 'izzico-grad');
   gradient.setAttribute('x1', '0%');
   gradient.setAttribute('y1', '0%');
   gradient.setAttribute('x2', '100%');
@@ -234,7 +234,7 @@ async function generateGradientIconPNG(
           // Copier les paths dans notre SVG avec gradient
           const g = document.createElementNS(svgNS, 'g');
           g.setAttribute('transform', `translate(${padding}, ${padding})`);
-          g.setAttribute('stroke', 'url(#easyco-grad)');
+          g.setAttribute('stroke', 'url(#izzico-grad)');
           g.setAttribute('fill', 'none');
           g.setAttribute('stroke-width', '2');
           g.setAttribute('stroke-linecap', 'round');
@@ -417,7 +417,7 @@ export async function exportAllIcons(
   }
 
   // README
-  const readme = `# EasyCo Icons Export
+  const readme = `# Izzico Icons Export
 
 Generated on: ${new Date().toLocaleString('fr-FR', {
   dateStyle: 'full',
@@ -440,7 +440,7 @@ Chaque icône est disponible en 6 variantes, toutes sur fond TRANSPARENT :
 3. **icons-purple/** - Icônes violets (#9c5698) organisés par catégorie
 4. **icons-orange/** - Icônes oranges (#FF5722) organisés par catégorie
 5. **icons-yellow/** - Icônes jaunes (#FFB10B) organisés par catégorie
-6. **icons-gradient/** - Icônes avec dégradé EasyCo (violet → orange) organisés par catégorie
+6. **icons-gradient/** - Icônes avec dégradé Izzico (violet → orange) organisés par catégorie
 
 ET aussi :
 
@@ -463,7 +463,7 @@ ET aussi :
 - Compatible avec Canva et outils qui n'acceptent pas les sous-dossiers
 - Structure : all-icons-black/Home.png
 
-## Couleurs EasyCo
+## Couleurs Izzico
 
 - Violet : #9c5698
 - Orange : #FF5722
@@ -477,7 +477,7 @@ Tous les PNG ont un fond transparent et peuvent être utilisés sur n'importe qu
 ${errors.length > 0 ? `\n## Errors (${errors.length})\n\n${errors.slice(0, 10).map(err => `- ${err}`).join('\n')}${errors.length > 10 ? `\n... et ${errors.length - 10} autres` : ''}` : ''}
 
 ---
-EasyCo Design System ${new Date().getFullYear()}
+Izzico Design System ${new Date().getFullYear()}
 `;
 
   zip.file('README.txt', readme);

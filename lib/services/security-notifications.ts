@@ -1,5 +1,5 @@
 /**
- * EASYCO SECURITY NOTIFICATIONS SERVICE
+ * IZZICO SECURITY NOTIFICATIONS SERVICE
  *
  * Handles sending notifications for security events via:
  * - Email (via Resend or SMTP)
@@ -142,7 +142,7 @@ async function sendSlackNotification(event: SecurityEvent, webhookUrl: string): 
                   type: 'plain_text',
                   text: 'View Dashboard',
                 },
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be'}/admin/dashboard/security`,
+                url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be'}/admin/dashboard/security`,
               },
             ],
           },
@@ -197,7 +197,7 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
     <html>
       <head>
         <meta charset="utf-8">
-        <title>Security Alert - Easyco</title>
+        <title>Security Alert - Izzico</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: #1e293b; border-radius: 12px; overflow: hidden;">
@@ -219,7 +219,7 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
               </div>
             ` : ''}
             <div style="margin-top: 24px; text-align: center;">
-              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be'}/admin/dashboard/security"
+              <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be'}/admin/dashboard/security"
                  style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
                 View Security Dashboard
               </a>
@@ -227,7 +227,7 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
           </div>
           <div style="background: #0f172a; padding: 16px; text-align: center;">
             <p style="color: #64748b; font-size: 12px; margin: 0;">
-              This is an automated security notification from Easyco.
+              This is an automated security notification from Izzico.
               <br>Time: ${event.timestamp || new Date().toISOString()}
             </p>
           </div>

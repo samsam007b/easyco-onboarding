@@ -1,5 +1,5 @@
 /**
- * Role-based color configuration for EasyCo platform
+ * Role-based color configuration for Izzico platform
  * Defines the dominant color scheme for each user role
  */
 
