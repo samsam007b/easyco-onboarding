@@ -10,7 +10,7 @@ export default function MessagesRedirectPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    const redirectToRoleMessages = async () => {
+    const redirectToMessages = async () => {
       try {
         // Get current user
         const { data: { user } } = await supabase.auth.getUser();
@@ -21,37 +21,16 @@ export default function MessagesRedirectPage() {
           return;
         }
 
-        // Get user role
-        const { data: userData } = await supabase
-          .from('users')
-          .select('user_type')
-          .eq('id', user.id)
-          .single();
-
-        // Redirect based on role
-        switch (userData?.user_type) {
-          case 'searcher':
-            router.replace('/dashboard/searcher/messages');
-            break;
-          case 'owner':
-            router.replace('/dashboard/owner/messages');
-            break;
-          case 'resident':
-            // Residents use the hub messaging system
-            router.replace('/hub/messages');
-            break;
-          default:
-            // Fallback to searcher
-            router.replace('/dashboard/searcher/messages');
-        }
+        // Redirect all users to the unified messaging page
+        router.replace('/messages/unified');
       } catch (error) {
         console.error('Error redirecting to messages:', error);
-        // Fallback to searcher messages on error
-        router.replace('/dashboard/searcher/messages');
+        // Fallback to unified messages on error
+        router.replace('/messages/unified');
       }
     };
 
-    redirectToRoleMessages();
+    redirectToMessages();
   }, [router, supabase]);
 
   // Show loading state
