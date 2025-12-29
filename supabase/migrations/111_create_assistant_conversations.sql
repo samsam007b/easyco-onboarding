@@ -259,7 +259,7 @@ CREATE TRIGGER trigger_suggestion_votes
   EXECUTE FUNCTION update_suggestion_vote_counts();
 
 -- =====================================================
--- RLS POLICIES
+-- RLS POLICIES (idempotent - safe to re-run)
 -- =====================================================
 
 -- Enable RLS
@@ -268,6 +268,30 @@ ALTER TABLE assistant_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE assistant_page_analytics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE assistant_suggestions_backlog ENABLE ROW LEVEL SECURITY;
 ALTER TABLE suggestion_votes ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies first (makes migration idempotent)
+DROP POLICY IF EXISTS conv_select_own ON assistant_conversations;
+DROP POLICY IF EXISTS conv_insert_own ON assistant_conversations;
+DROP POLICY IF EXISTS conv_update_own ON assistant_conversations;
+DROP POLICY IF EXISTS conv_service_all ON assistant_conversations;
+DROP POLICY IF EXISTS conv_admin_all ON assistant_conversations;
+
+DROP POLICY IF EXISTS msg_select_own ON assistant_messages;
+DROP POLICY IF EXISTS msg_insert_own ON assistant_messages;
+DROP POLICY IF EXISTS msg_service_all ON assistant_messages;
+DROP POLICY IF EXISTS msg_admin_all ON assistant_messages;
+
+DROP POLICY IF EXISTS analytics_service_all ON assistant_page_analytics;
+DROP POLICY IF EXISTS analytics_admin_all ON assistant_page_analytics;
+
+DROP POLICY IF EXISTS suggestions_select_all ON assistant_suggestions_backlog;
+DROP POLICY IF EXISTS suggestions_insert ON assistant_suggestions_backlog;
+DROP POLICY IF EXISTS suggestions_service_all ON assistant_suggestions_backlog;
+DROP POLICY IF EXISTS suggestions_admin_all ON assistant_suggestions_backlog;
+
+DROP POLICY IF EXISTS votes_select_own ON suggestion_votes;
+DROP POLICY IF EXISTS votes_insert_own ON suggestion_votes;
+DROP POLICY IF EXISTS votes_delete_own ON suggestion_votes;
 
 -- Users can see their own conversations
 CREATE POLICY conv_select_own ON assistant_conversations
