@@ -13,6 +13,8 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import HubLayout from '@/components/hub/HubLayout';
 import ExpenseScanner, { type ScanResult } from '@/components/finances/ExpenseScanner';
 import SmartSplitter from '@/components/finances/SmartSplitter';
+import ExpenseDetailModal from '@/components/finances/ExpenseDetailModal';
+import ExpenseHistoryModal from '@/components/finances/ExpenseHistoryModal';
 import {
   DollarSign,
   TrendingUp,
@@ -27,6 +29,7 @@ import {
   Scan,
   Sparkles,
   X,
+  ChevronRight,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -52,6 +55,11 @@ export default function ModernFinancesPage() {
   const [createMode, setCreateMode] = useState<CreateMode>(null);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+
+  // New modal states
+  const [selectedExpense, setSelectedExpense] = useState<ExpenseWithDetails | null>(null);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [historyInitialView, setHistoryInitialView] = useState<'list' | 'calendar'>('list');
 
   useEffect(() => {
     loadData();
@@ -227,6 +235,34 @@ export default function ModernFinancesPage() {
     }
   };
 
+  // Handle marking a split as paid
+  const handleMarkAsPaid = async (expenseId: string, userId: string) => {
+    const result = await expenseService.markSplitAsPaid(expenseId, userId);
+    if (result.success) {
+      toast.success('Marqué comme payé !');
+      await loadData();
+      // Update the selected expense if it's still open
+      if (selectedExpense?.id === expenseId) {
+        const updatedExpenses = await expenseService.getPropertyExpenses(propertyId!, currentUserId!);
+        const updated = updatedExpenses.find((e) => e.id === expenseId);
+        if (updated) setSelectedExpense(updated);
+      }
+    } else {
+      toast.error('Erreur', { description: result.error });
+    }
+  };
+
+  // Open history modal with optional view mode
+  const openHistoryModal = (view: 'list' | 'calendar' = 'list') => {
+    setHistoryInitialView(view);
+    setShowHistoryModal(true);
+  };
+
+  // Handle expense click from history modal
+  const handleExpenseClickFromHistory = (expense: ExpenseWithDetails) => {
+    setSelectedExpense(expense);
+  };
+
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const yourShare = expenses.reduce((sum, exp) => sum + (exp.your_share || 0), 0);
   const totalBalance = balances.reduce((sum, bal) => sum + bal.amount, 0);
@@ -271,18 +307,32 @@ export default function ModernFinancesPage() {
             </div>
           </div>
 
-          <Button
-            onClick={handleExport}
-            variant="outline"
-            size="sm"
-            className="hidden md:flex rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#ee5736' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-          >
-            <Download className="w-4 h-4 mr-2" style={{ color: '#ee5736' }} />
-            Export PDF
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => openHistoryModal('calendar')}
+              variant="outline"
+              size="sm"
+              className="hidden md:flex rounded-full border-gray-200 hover:border-transparent"
+              style={{ color: '#ee5736' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+            >
+              <Calendar className="w-4 h-4 mr-2" style={{ color: '#ee5736' }} />
+              Calendrier
+            </Button>
+            <Button
+              onClick={handleExport}
+              variant="outline"
+              size="sm"
+              className="hidden md:flex rounded-full border-gray-200 hover:border-transparent"
+              style={{ color: '#ee5736' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+            >
+              <Download className="w-4 h-4 mr-2" style={{ color: '#ee5736' }} />
+              Export PDF
+            </Button>
+          </div>
         </div>
       </motion.div>
 
@@ -433,9 +483,16 @@ export default function ModernFinancesPage() {
           transition={{ delay: 0.5 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border border-gray-100"
         >
-          <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => openHistoryModal('list')}
+            className="w-full flex items-center justify-between mb-6 group"
+          >
             <h3 className="text-xl font-bold text-gray-900">Dépenses Récentes</h3>
-          </div>
+            <div className="flex items-center gap-2 text-sm font-medium text-[#ee5736] opacity-0 group-hover:opacity-100 transition-opacity">
+              <span>Voir tout</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </button>
 
           <div className="space-y-3">
             {expenses.length === 0 ? (
@@ -461,13 +518,14 @@ export default function ModernFinancesPage() {
               </div>
             ) : (
               expenses.slice(0, 5).map((expense, index) => (
-                <motion.div
+                <motion.button
                   key={expense.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.6 + index * 0.05 }}
                   whileHover={{ scale: 1.01, x: 4 }}
-                  className="group flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-[#fff5f3] rounded-2xl hover:shadow-md transition-all cursor-pointer border border-gray-100"
+                  onClick={() => setSelectedExpense(expense)}
+                  className="w-full group flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-[#fff5f3] rounded-2xl hover:shadow-md transition-all cursor-pointer border border-gray-100 text-left"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div
@@ -509,7 +567,7 @@ export default function ModernFinancesPage() {
                       €{expense.amount.toFixed(2)}
                     </p>
                   </div>
-                </motion.div>
+                </motion.button>
               ))
             )}
           </div>
@@ -636,6 +694,25 @@ export default function ModernFinancesPage() {
           </AnimatePresence>
         </DialogContent>
       </Dialog>
+
+      {/* Expense Detail Modal */}
+      <ExpenseDetailModal
+        expense={selectedExpense}
+        isOpen={selectedExpense !== null}
+        onClose={() => setSelectedExpense(null)}
+        onMarkAsPaid={handleMarkAsPaid}
+        currentUserId={currentUserId || undefined}
+      />
+
+      {/* Expense History Modal */}
+      <ExpenseHistoryModal
+        expenses={expenses}
+        isOpen={showHistoryModal}
+        onClose={() => setShowHistoryModal(false)}
+        onExpenseClick={handleExpenseClickFromHistory}
+        onExport={handleExport}
+        initialView={historyInitialView}
+      />
     </HubLayout>
   );
 }

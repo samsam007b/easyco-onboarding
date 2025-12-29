@@ -131,21 +131,18 @@ const SECURITY_CATEGORIES: SecurityCategory[] = [
       {
         id: 'auth-4',
         name: 'MFA (Authentification Multi-Facteurs)',
-        description: 'TOTP/SMS pour une couche de sécurité supplémentaire. Gratuit avec Supabase.',
-        status: 'not_started',
+        description: 'TOTP avec app authenticator via Supabase Auth. Interface utilisateur complète dans /settings/security.',
+        status: 'completed',
         isFree: true,
-        priority: 'high',
-        implementationTime: '2-4 heures',
-        documentation: 'https://supabase.com/docs/guides/auth/auth-mfa'
+        priority: 'high'
       },
       {
         id: 'auth-5',
         name: 'Session Timeout Configurable',
-        description: 'Déconnexion automatique après inactivité (configurable par rôle)',
-        status: 'in_progress',
+        description: 'Déconnexion automatique après inactivité. 30min utilisateurs, 15min admins. Configurable via env vars.',
+        status: 'completed',
         isFree: true,
-        priority: 'medium',
-        implementationTime: '1-2 heures'
+        priority: 'medium'
       },
       {
         id: 'auth-6',
@@ -243,12 +240,10 @@ const SECURITY_CATEGORIES: SecurityCategory[] = [
       {
         id: 'net-3',
         name: 'Vercel Firewall (WAF)',
-        description: 'Protection automatique contre les attaques web courantes (OWASP Top 10)',
-        status: 'in_progress',
+        description: 'Protection automatique contre les attaques web courantes (OWASP Top 10). Activé par défaut sur Vercel.',
+        status: 'completed',
         isFree: true,
-        priority: 'high',
-        implementationTime: 'Vérification configuration',
-        documentation: 'https://vercel.com/docs/security/vercel-firewall'
+        priority: 'high'
       },
       {
         id: 'net-4',
@@ -261,11 +256,10 @@ const SECURITY_CATEGORIES: SecurityCategory[] = [
       {
         id: 'net-5',
         name: 'IP Allowlisting Admin',
-        description: 'Restreindre l\'accès admin à des IPs spécifiques',
-        status: 'not_started',
+        description: 'Accès admin restreint aux IPs autorisées. Support CIDR, détection de patterns suspects (XSS, SQLi).',
+        status: 'completed',
         isFree: true,
-        priority: 'medium',
-        implementationTime: '2-4 heures'
+        priority: 'medium'
       },
       {
         id: 'net-6',

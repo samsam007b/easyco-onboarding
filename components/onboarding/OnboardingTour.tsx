@@ -120,27 +120,27 @@ export default function OnboardingTour({
     <AnimatePresence>
       {isActive && (
         <>
-          {/* Overlay with spotlight cutout */}
+          {/* Overlay with spotlight cutout - no click to skip, only explicit actions */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9998]"
+            className="fixed inset-0 z-[9998] pointer-events-none"
             style={{
               background: targetRect
                 ? `radial-gradient(ellipse ${targetRect.width + 40}px ${targetRect.height + 40}px at ${targetRect.left + targetRect.width / 2}px ${targetRect.top + targetRect.height / 2}px, transparent 0%, rgba(0, 0, 0, 0.75) 100%)`
                 : 'rgba(0, 0, 0, 0.75)',
             }}
-            onClick={onSkip}
           />
 
-          {/* Spotlight ring around target */}
+          {/* Clickable spotlight area - clicking advances the tour */}
           {targetRect && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="fixed z-[9999] pointer-events-none"
+              className="fixed z-[9999] cursor-pointer"
+              onClick={isLastStep ? onComplete : onNext}
               style={{
                 left: targetRect.left - 8,
                 top: targetRect.top - 8,
@@ -149,6 +149,7 @@ export default function OnboardingTour({
                 borderRadius: 16,
                 boxShadow: `0 0 0 4px ${colors.accent}, 0 0 20px ${colors.accent}40`,
               }}
+              title="Cliquez pour continuer"
             />
           )}
 

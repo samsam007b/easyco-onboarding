@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import MFASettings from '@/components/settings/MFASettings';
 
 export default function SecurityPage() {
   const router = useRouter();
@@ -237,6 +238,16 @@ export default function SecurityPage() {
               Modifier le mot de passe
             </Button>
           </form>
+        </motion.div>
+
+        {/* MFA Settings */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-6"
+        >
+          <MFASettings />
         </motion.div>
 
         {/* Account Info */}
