@@ -31,14 +31,27 @@ class ExpenseService {
     form: CreateExpenseForm,
     splitConfig: SplitConfig
   ): Promise<{ success: boolean; expense?: Expense; error?: string }> {
+    console.log('[Expense] 🚀 createExpense called with:', {
+      propertyId,
+      userId,
+      title: form.title,
+      amount: form.amount,
+      category: form.category,
+      date: form.date,
+      hasReceipt: !!form.receipt,
+      splitMethod: splitConfig.method,
+      splitsCount: splitConfig.splits.length,
+    });
+
     try {
       let receiptImageUrl: string | undefined;
       let ocrData: OCRData | undefined;
 
       // If receipt provided, upload and scan
       if (form.receipt) {
-        console.log('[Expense] 📤 Uploading receipt...');
+        console.log('[Expense] 📤 Uploading receipt...', form.receipt.name);
         const uploadResult = await this.uploadReceipt(propertyId, form.receipt);
+        console.log('[Expense] 📤 Upload result:', uploadResult);
 
         if (uploadResult.success && uploadResult.url) {
           receiptImageUrl = uploadResult.url;
@@ -46,6 +59,7 @@ class ExpenseService {
           // Scan receipt with OCR
           console.log('[Expense] 🔍 Scanning receipt with OCR...');
           const ocrResult = await ocrService.scanReceipt(form.receipt);
+          console.log('[Expense] 🔍 OCR result:', ocrResult.success);
 
           if (ocrResult.success && ocrResult.data) {
             ocrData = ocrResult.data;
@@ -64,32 +78,45 @@ class ExpenseService {
         }
       }
 
+      const expenseData = {
+        property_id: propertyId,
+        created_by: userId,
+        paid_by_id: userId,
+        title: form.title,
+        description: form.description || null,
+        amount: parseFloat(form.amount),
+        category: form.category,
+        date: form.date,
+        status: 'pending',
+        split_method: splitConfig.method,
+        receipt_image_url: receiptImageUrl,
+        ocr_data: ocrData ? JSON.stringify(ocrData) : null,
+      };
+
+      console.log('[Expense] 💾 Inserting expense into database:', expenseData);
+
       // Create expense
       const { data: expense, error: expenseError } = await this.supabase
         .from('expenses')
-        .insert({
-          property_id: propertyId,
-          created_by: userId,
-          paid_by_id: userId,
-          title: form.title,
-          description: form.description || null,
-          amount: parseFloat(form.amount),
-          category: form.category,
-          date: form.date,
-          status: 'pending',
-          split_method: splitConfig.method,
-          receipt_image_url: receiptImageUrl,
-          ocr_data: ocrData ? JSON.stringify(ocrData) : null,
-        })
+        .insert(expenseData)
         .select()
         .single();
 
-      if (expenseError) throw expenseError;
+      if (expenseError) {
+        console.error('[Expense] ❌ Supabase insert error:', expenseError);
+        throw expenseError;
+      }
 
-      console.log('[Expense] ✅ Expense created:', expense.id);
+      console.log('[Expense] ✅ Expense created successfully:', {
+        id: expense.id,
+        title: expense.title,
+        amount: expense.amount,
+      });
 
       // Create splits
+      console.log('[Expense] 👥 Creating splits...');
       await this.createSplits(expense.id, splitConfig);
+      console.log('[Expense] ✅ Splits created successfully');
 
       return { success: true, expense };
     } catch (error: any) {

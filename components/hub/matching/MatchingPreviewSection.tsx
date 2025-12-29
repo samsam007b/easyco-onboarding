@@ -1,12 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, Users, Heart, ArrowRight, MessageCircle } from 'lucide-react';
+import { Sparkles, Users, Heart, ArrowRight, MessageCircle, Search, UserPlus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import MockCardStack from './MockCardStack';
 import QuickActionsCard from './QuickActionsCard';
+import { shouldShowDemoData } from '@/lib/utils/admin-demo';
 
 // Couleurs Resident V1
 const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
@@ -17,6 +18,7 @@ interface MatchingPreviewSectionProps {
   candidateCount?: number;
   hasInvitations?: boolean;
   invitationCount?: number;
+  userEmail?: string | null;
 }
 
 export default function MatchingPreviewSection({
@@ -24,7 +26,9 @@ export default function MatchingPreviewSection({
   candidateCount = 147,
   hasInvitations = true,
   invitationCount = 3,
+  userEmail,
 }: MatchingPreviewSectionProps) {
+  const isAdminDemo = shouldShowDemoData(userEmail);
   const router = useRouter();
 
   return (
@@ -71,10 +75,36 @@ export default function MatchingPreviewSection({
             transition={{ delay: 0.2 }}
             className="space-y-6"
           >
-            {/* Mock Card Stack */}
-            <MockCardStack />
+            {/* Mock Card Stack - only for admin demo accounts */}
+            {isAdminDemo ? (
+              <MockCardStack />
+            ) : (
+              /* Empty state for regular users */
+              <div className="relative h-[400px] flex items-center justify-center">
+                <div className="w-[280px] rounded-3xl shadow-xl overflow-hidden bg-white p-8 text-center">
+                  <div
+                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+                    style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.15) 0%, rgba(255, 128, 23, 0.15) 100%)' }}
+                  >
+                    <UserPlus className="w-10 h-10" style={{ color: RESIDENT_PRIMARY }} />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Aucun match pour l&apos;instant</h3>
+                  <p className="text-gray-600 text-sm mb-6">
+                    Signale qu&apos;un coloc part bientôt pour commencer à recevoir des candidatures compatibles.
+                  </p>
+                  <Button
+                    onClick={() => router.push('/hub/departure')}
+                    className="rounded-full px-6"
+                    style={{ background: RESIDENT_GRADIENT }}
+                  >
+                    <UserPlus className="w-4 h-4 mr-2" />
+                    Signaler un départ
+                  </Button>
+                </div>
+              </div>
+            )}
 
-            {/* Stats Pills */}
+            {/* Stats Pills - show real or demo values */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white shadow-md border border-gray-100">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: RESIDENT_GRADIENT }}>
@@ -82,7 +112,7 @@ export default function MatchingPreviewSection({
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 font-medium">Candidats</p>
-                  <p className="text-lg font-bold text-gray-900">{candidateCount}+</p>
+                  <p className="text-lg font-bold text-gray-900">{isAdminDemo ? `${candidateCount}+` : '0'}</p>
                 </div>
               </div>
 
@@ -92,7 +122,7 @@ export default function MatchingPreviewSection({
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 font-medium">Matchs actifs</p>
-                  <p className="text-lg font-bold text-gray-900">{matchCount}</p>
+                  <p className="text-lg font-bold text-gray-900">{isAdminDemo ? matchCount : 0}</p>
                 </div>
               </div>
             </div>
@@ -109,6 +139,7 @@ export default function MatchingPreviewSection({
               matchCount={matchCount}
               hasInvitations={hasInvitations}
               invitationCount={invitationCount}
+              isAdminDemo={isAdminDemo}
             />
           </motion.div>
         </div>

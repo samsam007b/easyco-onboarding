@@ -21,6 +21,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import MatchingPreviewSection from '@/components/hub/matching/MatchingPreviewSection';
 import { InvitePopup } from '@/components/referral';
+import { shouldShowDemoData } from '@/lib/utils/admin-demo';
 
 interface Member {
   id: string;
@@ -35,46 +36,50 @@ interface Member {
   bio?: string;
 }
 
+// Mock members for admin demo accounts only
+const MOCK_MEMBERS: Member[] = [
+  {
+    id: 'demo-1',
+    name: 'Sarah Martin',
+    role: 'resident',
+    email: 'sarah.martin@email.com',
+    phone: '+33 6 12 34 56 78',
+    occupation: 'Designer UX/UI',
+    moveInDate: '2024-06-15',
+    interests: ['Yoga', 'Cuisine', 'Cinéma'],
+    bio: 'Passionnée de design et de bien-être, j\'adore partager des moments conviviaux autour d\'un bon repas.'
+  },
+  {
+    id: 'demo-2',
+    name: 'Marc Dubois',
+    role: 'resident',
+    email: 'marc.dubois@email.com',
+    phone: '+33 6 98 76 54 32',
+    occupation: 'Développeur Full-Stack',
+    moveInDate: '2024-05-01',
+    interests: ['Gaming', 'Musique', 'Sport'],
+    bio: 'Développeur le jour, gamer la nuit. Toujours partant pour une session de basket le weekend!'
+  },
+  {
+    id: 'demo-3',
+    name: 'Julie Leroy',
+    role: 'resident',
+    email: 'julie.leroy@email.com',
+    occupation: 'Étudiante en Médecine',
+    moveInDate: '2024-09-01',
+    interests: ['Lecture', 'Course à pied', 'Voyages'],
+    bio: 'Étudiante en médecine, je cherche un environnement calme pour étudier mais j\'adore les soirées jeux de société!'
+  }
+];
+
 export default function HubMembersPage() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
-  const [members, setMembers] = useState<Member[]>([
-    {
-      id: '1',
-      name: 'Sarah Martin',
-      role: 'resident',
-      email: 'sarah.martin@email.com',
-      phone: '+33 6 12 34 56 78',
-      occupation: 'Designer UX/UI',
-      moveInDate: '2024-06-15',
-      interests: ['Yoga', 'Cuisine', 'Cinéma'],
-      bio: 'Passionnée de design et de bien-être, j\'adore partager des moments conviviaux autour d\'un bon repas.'
-    },
-    {
-      id: '2',
-      name: 'Marc Dubois',
-      role: 'resident',
-      email: 'marc.dubois@email.com',
-      phone: '+33 6 98 76 54 32',
-      occupation: 'Développeur Full-Stack',
-      moveInDate: '2024-05-01',
-      interests: ['Gaming', 'Musique', 'Sport'],
-      bio: 'Développeur le jour, gamer la nuit. Toujours partant pour une session de basket le weekend!'
-    },
-    {
-      id: '3',
-      name: 'Julie Leroy',
-      role: 'resident',
-      email: 'julie.leroy@email.com',
-      occupation: 'Étudiante en Médecine',
-      moveInDate: '2024-09-01',
-      interests: ['Lecture', 'Course à pied', 'Voyages'],
-      bio: 'Étudiante en médecine, je cherche un environnement calme pour étudier mais j\'adore les soirées jeux de société!'
-    }
-  ]);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
     loadMembers();
@@ -87,6 +92,9 @@ export default function HubMembersPage() {
         router.push('/login');
         return;
       }
+
+      setUserEmail(user.email || null);
+      const isAdminDemo = shouldShowDemoData(user.email);
 
       // Load real members from database
       const { data: propertyMember } = await supabase
@@ -138,7 +146,19 @@ export default function HubMembersPage() {
             bio: undefined
           }));
           setMembers(realMembers);
+        } else if (isAdminDemo) {
+          // Show mock data for admin demo accounts when no real members
+          setMembers(MOCK_MEMBERS);
+        } else {
+          // Regular users see empty state
+          setMembers([]);
         }
+      } else if (isAdminDemo) {
+        // Admin demo with no property - show mock data
+        setMembers(MOCK_MEMBERS);
+      } else {
+        // Regular user with no property - empty state
+        setMembers([]);
       }
 
       setIsLoading(false);
@@ -339,6 +359,7 @@ export default function HubMembersPage() {
             candidateCount={147}
             hasInvitations={true}
             invitationCount={3}
+            userEmail={userEmail}
           />
         </div>
       </div>

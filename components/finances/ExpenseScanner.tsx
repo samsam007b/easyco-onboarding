@@ -294,7 +294,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             { icon: Scan, label: 'Scanner' },
             { icon: Edit3, label: 'Vérifier' },
             { icon: Package, label: 'Catégorie' },
-            { icon: Check, label: 'Confirmer' }
+            { icon: Users, label: 'Répartir' }
           ].map((step, index) => {
               const stepIndex = ['upload', 'review', 'category', 'confirm'].indexOf(
                 currentStep
@@ -756,7 +756,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 Récapitulatif
               </h2>
               <p className="text-gray-600">
-                Vérifiez avant de créer la dépense
+                Vérifiez avant de répartir la dépense
               </p>
             </div>
 
@@ -818,8 +818,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
-                <Check className="w-4 h-4 mr-2" />
-                Créer la dépense
+                <Users className="w-4 h-4 mr-2" />
+                Répartir entre colocs
               </Button>
             </div>
           </motion.div>

@@ -13,13 +13,19 @@ interface QuickActionsCardProps {
   matchCount?: number;
   hasInvitations?: boolean;
   invitationCount?: number;
+  isAdminDemo?: boolean;
 }
 
 export default function QuickActionsCard({
   matchCount = 23,
   hasInvitations = true,
   invitationCount = 3,
+  isAdminDemo = false,
 }: QuickActionsCardProps) {
+  // Only show mock values for admin demo accounts
+  const displayMatchCount = isAdminDemo ? matchCount : 0;
+  const displayHasInvitations = isAdminDemo ? hasInvitations : false;
+  const displayInvitationCount = isAdminDemo ? invitationCount : 0;
   const router = useRouter();
 
   return (
@@ -59,11 +65,11 @@ export default function QuickActionsCard({
           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         >
           <Heart className="w-4 h-4 mr-2" />
-          Mes matchs ({matchCount})
+          Mes matchs ({displayMatchCount})
         </Button>
 
-        {/* Invitations badge */}
-        {hasInvitations && (
+        {/* Invitations badge - only show for admin demo or when real invitations exist */}
+        {displayHasInvitations && displayInvitationCount > 0 && (
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -76,14 +82,14 @@ export default function QuickActionsCard({
               style={{ color: RESIDENT_PRIMARY }}
             >
               <Mail className="w-4 h-4 mr-2" />
-              {invitationCount} nouvelle{invitationCount > 1 ? 's' : ''} invitation{invitationCount > 1 ? 's' : ''}
+              {displayInvitationCount} nouvelle{displayInvitationCount > 1 ? 's' : ''} invitation{displayInvitationCount > 1 ? 's' : ''}
             </Button>
             {/* Notification badge */}
             <div
               className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg"
               style={{ background: RESIDENT_GRADIENT }}
             >
-              {invitationCount}
+              {displayInvitationCount}
             </div>
           </motion.div>
         )}

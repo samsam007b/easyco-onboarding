@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
+import { shouldShowDemoData } from '@/lib/utils/admin-demo';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -69,11 +70,30 @@ interface Activity {
   link?: string;
 }
 
+// Helper function to get relative time string
+function getRelativeTime(dateString: string | null): string {
+  if (!dateString) return 'Récemment';
+
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 60) return `Il y a ${diffMins} min`;
+  if (diffHours < 24) return `Il y a ${diffHours}h`;
+  if (diffDays === 1) return 'Hier';
+  if (diffDays < 7) return `Il y a ${diffDays} jours`;
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+}
+
 export default function ModernSearcherDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showCompletionDetails, setShowCompletionDetails] = useState(false);
   const [showSmartFilters, setShowSmartFilters] = useState(false);
   const [comparisonProperties, setComparisonProperties] = useState<any[]>([]);
@@ -90,9 +110,13 @@ export default function ModernSearcherDashboard() {
     viewsCount: 0,
   });
 
-  const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([
+  const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([]);
+  const [recentActivities, setRecentActivities] = useState<Activity[]>([]);
+
+  // Mock data for admin demo accounts only
+  const MOCK_SAVED_SEARCHES: SavedSearch[] = [
     {
-      id: '1',
+      id: 'demo-1',
       name: 'Bruxelles Centre',
       location: 'Bruxelles',
       priceRange: '€600-900',
@@ -101,18 +125,18 @@ export default function ModernSearcherDashboard() {
       lastUpdated: 'Il y a 2h',
     },
     {
-      id: '2',
+      id: 'demo-2',
       name: 'Liège Étudiant',
       location: 'Liège',
       priceRange: '€400-600',
       resultsCount: 8,
       lastUpdated: 'Hier',
     },
-  ]);
+  ];
 
-  const [recentActivities, setRecentActivities] = useState<Activity[]>([
+  const MOCK_RECENT_ACTIVITIES: Activity[] = [
     {
-      id: '1',
+      id: 'demo-1',
       icon: Home,
       iconBgColor: 'bg-green-100',
       title: 'Nouvelle propriété disponible',
@@ -121,7 +145,7 @@ export default function ModernSearcherDashboard() {
       link: '/properties/browse',
     },
     {
-      id: '2',
+      id: 'demo-2',
       icon: MessageCircle,
       iconBgColor: 'bg-blue-100',
       title: 'Nouveau message du propriétaire',
@@ -130,14 +154,14 @@ export default function ModernSearcherDashboard() {
       link: '/dashboard/searcher/messages',
     },
     {
-      id: '3',
+      id: 'demo-3',
       icon: Eye,
       iconBgColor: 'bg-purple-100',
       title: 'Ton profil a été consulté',
       subtitle: 'Par le propriétaire de "Studio Quartier Européen"',
       time: 'Hier',
     },
-  ]);
+  ];
 
   // Use matching hook to get top matches
   const {
@@ -175,6 +199,9 @@ export default function ModernSearcherDashboard() {
       }
 
       setUserId(user.id);
+      setUserEmail(user.email || null);
+
+      const isAdminDemo = shouldShowDemoData(user.email);
 
       // Load favorites count
       const { count: favCount } = await supabase
@@ -188,11 +215,39 @@ export default function ModernSearcherDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('applicant_id', user.id);
 
-      // Load saved searches count
-      const { count: searchesCount } = await supabase
+      // Load saved searches (full data for display)
+      const { data: savedSearchesData, count: searchesCount } = await supabase
         .from('saved_searches')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id);
+        .select('*', { count: 'exact' })
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(5);
+
+      // Set saved searches - real data for regular users, mock for admin demo
+      if (isAdminDemo && (!savedSearchesData || savedSearchesData.length === 0)) {
+        setSavedSearches(MOCK_SAVED_SEARCHES);
+        setRecentActivities(MOCK_RECENT_ACTIVITIES);
+      } else if (savedSearchesData && savedSearchesData.length > 0) {
+        // Transform real data to match our interface
+        const transformedSearches: SavedSearch[] = savedSearchesData.map((search: any) => ({
+          id: search.id,
+          name: search.name || search.location || 'Ma recherche',
+          location: search.location || search.city || 'Non spécifié',
+          priceRange: search.min_price && search.max_price
+            ? `€${search.min_price}-${search.max_price}`
+            : 'Tout budget',
+          moveInDate: search.move_in_date,
+          resultsCount: search.results_count || 0,
+          lastUpdated: getRelativeTime(search.updated_at || search.created_at),
+        }));
+        setSavedSearches(transformedSearches);
+        // For now, activities remain empty for regular users (no activity tracking yet)
+        setRecentActivities([]);
+      } else {
+        // No saved searches - show empty state (handled in render)
+        setSavedSearches([]);
+        setRecentActivities([]);
+      }
 
       // Load unread messages count using RPC function
       let unreadCount = 0;
@@ -586,53 +641,75 @@ export default function ModernSearcherDashboard() {
               </Button>
             </div>
 
-            <div className="space-y-3">
-              {savedSearches.map((search, index) => (
-                <motion.div
-                  key={search.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + index * 0.05 }}
-                  className="flex items-start justify-between p-4 bg-gray-50 rounded-xl hover:bg-purple-50 transition-colors cursor-pointer"
-                  onClick={() => router.push('/properties/browse')}
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <MapPin className="w-4 h-4 text-purple-600" />
-                      <p className="font-semibold text-gray-900">{search.name}</p>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-gray-600">
-                      <span className="flex items-center gap-1">
-                        <Euro className="w-3 h-3" />
-                        {search.priceRange}
-                      </span>
-                      {search.moveInDate && (
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(search.moveInDate).toLocaleDateString('fr-FR', {
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">{search.lastUpdated}</p>
-                  </div>
-                  <Badge variant="secondary" className="ml-2">
-                    {search.resultsCount}
-                  </Badge>
-                </motion.div>
-              ))}
-            </div>
+            {savedSearches.length > 0 ? (
+              <>
+                <div className="space-y-3">
+                  {savedSearches.map((search, index) => (
+                    <motion.div
+                      key={search.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 + index * 0.05 }}
+                      className="flex items-start justify-between p-4 bg-gray-50 rounded-xl hover:bg-purple-50 transition-colors cursor-pointer"
+                      onClick={() => router.push('/properties/browse')}
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <MapPin className="w-4 h-4 text-purple-600" />
+                          <p className="font-semibold text-gray-900">{search.name}</p>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-gray-600">
+                          <span className="flex items-center gap-1">
+                            <Euro className="w-3 h-3" />
+                            {search.priceRange}
+                          </span>
+                          {search.moveInDate && (
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {new Date(search.moveInDate).toLocaleDateString('fr-FR', {
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">{search.lastUpdated}</p>
+                      </div>
+                      <Badge variant="secondary" className="ml-2">
+                        {search.resultsCount}
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </div>
 
-            <Button
-              onClick={() => router.push('/dashboard/searcher/saved-searches')}
-              variant="outline"
-              className="w-full mt-4 rounded-full"
-            >
-              Voir toutes les recherches
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+                <Button
+                  onClick={() => router.push('/dashboard/searcher/saved-searches')}
+                  variant="outline"
+                  className="w-full mt-4 rounded-full"
+                >
+                  Voir toutes les recherches
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </>
+            ) : (
+              /* Empty state with CTA */
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-8 h-8 text-purple-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Aucune recherche sauvegardée</h4>
+                <p className="text-sm text-gray-500 mb-4">
+                  Sauvegarde tes critères de recherche pour être notifié des nouvelles propriétés qui correspondent à tes besoins.
+                </p>
+                <Button
+                  onClick={() => setShowSmartFilters(true)}
+                  className="rounded-full bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040]"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Créer ma première recherche
+                </Button>
+              </div>
+            )}
           </motion.div>
 
           {/* Recent Activity */}
@@ -647,44 +724,72 @@ export default function ModernSearcherDashboard() {
               Activité Récente
             </h3>
 
-            <div className="space-y-3">
-              {recentActivities.map((activity, index) => {
-                const Icon = activity.icon;
-                return (
-                  <motion.div
-                    key={activity.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 + index * 0.05 }}
-                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
-                    onClick={() => activity.link && router.push(activity.link)}
-                  >
-                    <div
-                      className={cn(
-                        'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
-                        activity.iconBgColor
-                      )}
-                    >
-                      <Icon className="w-5 h-5 text-gray-700" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 text-sm truncate">{activity.title}</p>
-                      <p className="text-xs text-gray-500 truncate">{activity.subtitle}</p>
-                    </div>
-                    <span className="text-xs text-gray-400 flex-shrink-0">{activity.time}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
+            {recentActivities.length > 0 ? (
+              <>
+                <div className="space-y-3">
+                  {recentActivities.map((activity, index) => {
+                    const Icon = activity.icon;
+                    return (
+                      <motion.div
+                        key={activity.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.8 + index * 0.05 }}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                        onClick={() => activity.link && router.push(activity.link)}
+                      >
+                        <div
+                          className={cn(
+                            'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
+                            activity.iconBgColor
+                          )}
+                        >
+                          <Icon className="w-5 h-5 text-gray-700" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 text-sm truncate">{activity.title}</p>
+                          <p className="text-xs text-gray-500 truncate">{activity.subtitle}</p>
+                        </div>
+                        <span className="text-xs text-gray-400 flex-shrink-0">{activity.time}</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
 
-            <Button
-              onClick={() => router.push('/dashboard/searcher/notifications')}
-              variant="outline"
-              className="w-full mt-4 rounded-full"
-            >
-              Voir toutes les notifications
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+                <Button
+                  onClick={() => router.push('/dashboard/searcher/notifications')}
+                  variant="outline"
+                  className="w-full mt-4 rounded-full"
+                >
+                  Voir toutes les notifications
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </>
+            ) : (
+              /* Empty state with tips */
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Bell className="w-8 h-8 text-purple-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Aucune activité récente</h4>
+                <p className="text-sm text-gray-500 mb-4">
+                  Tes notifications apparaîtront ici : nouveaux messages, propriétés correspondant à tes critères, et plus encore.
+                </p>
+                <div className="bg-purple-50 rounded-xl p-4 text-left">
+                  <p className="text-sm font-medium text-purple-900 mb-2">Conseils pour commencer :</p>
+                  <ul className="text-sm text-purple-700 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Target className="w-4 h-4 flex-shrink-0" />
+                      Complète ton profil pour améliorer tes matchs
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Search className="w-4 h-4 flex-shrink-0" />
+                      Sauvegarde une recherche pour recevoir des alertes
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
 

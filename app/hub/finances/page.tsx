@@ -28,6 +28,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -133,10 +134,27 @@ export default function ModernFinancesPage() {
 
   // Handle split completion and create expense
   const handleSplitComplete = async (splitConfig: SplitConfig) => {
+    console.log('[Finances] 🔵 handleSplitComplete called with:', {
+      method: splitConfig.method,
+      splitsCount: splitConfig.splits.length,
+      splits: splitConfig.splits.map(s => ({ user_id: s.user_id, amount: s.amount })),
+    });
+
     if (!currentUserId || !propertyId || !scanResult) {
+      console.error('[Finances] ❌ Missing data:', { currentUserId, propertyId, hasScanResult: !!scanResult });
       alert('Erreur: Données manquantes');
       return;
     }
+
+    console.log('[Finances] 📋 Creating expense with:', {
+      propertyId,
+      currentUserId,
+      title: scanResult.title,
+      amount: scanResult.amount,
+      category: scanResult.category,
+      date: scanResult.date,
+      hasReceipt: !!scanResult.receiptFile,
+    });
 
     setIsCreating(true);
 
@@ -155,17 +173,33 @@ export default function ModernFinancesPage() {
         splitConfig
       );
 
+      console.log('[Finances] 📤 expenseService.createExpense result:', result);
+
       if (result.success) {
-        console.log('✅ Expense created successfully');
+        console.log('✅ Expense created successfully:', result.expense?.id);
         setCreateMode(null);
         setScanResult(null);
         await loadData(); // Reload expenses
+        console.log('[Finances] ✅ Data reloaded, expenses count:', expenses.length);
+
+        // Show success toast
+        toast.success('Dépense créée avec succès ! 🎉', {
+          description: `${scanResult.title} - €${scanResult.amount.toFixed(2)}`,
+          duration: 5000,
+        });
       } else {
-        alert(`Erreur: ${result.error}`);
+        console.error('[Finances] ❌ Create expense failed:', result.error);
+        toast.error('Erreur lors de la création', {
+          description: result.error,
+          duration: 5000,
+        });
       }
     } catch (error: any) {
-      console.error('[Finances] Error creating expense:', error);
-      alert(`Erreur: ${error.message}`);
+      console.error('[Finances] ❌ Exception creating expense:', error);
+      toast.error('Erreur inattendue', {
+        description: error.message,
+        duration: 5000,
+      });
     } finally {
       setIsCreating(false);
     }
