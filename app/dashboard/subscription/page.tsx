@@ -31,6 +31,8 @@ import {
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import PlanSelectorModal from '@/components/subscriptions/PlanSelectorModal';
+import { useStripeCheckout, SubscriptionPlan } from '@/hooks/use-stripe-checkout';
+import { Loader2 } from 'lucide-react';
 
 interface SubscriptionStatus {
   subscription_id: string;
@@ -56,6 +58,7 @@ export default function SubscriptionPage() {
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [showPlanModal, setShowPlanModal] = useState(false);
+  const { startCheckout, isLoading: checkoutLoading, error: checkoutError } = useStripeCheckout();
 
   useEffect(() => {
     loadData();
@@ -106,6 +109,20 @@ export default function SubscriptionPage() {
 
   const handleAddPaymentMethod = () => {
     setShowPlanModal(true);
+  };
+
+  // Helper to get Stripe plan based on role and billing type
+  const getStripePlan = (billingType: 'monthly' | 'annual'): SubscriptionPlan => {
+    if (userRole === 'owner') {
+      return billingType === 'monthly' ? 'owner_monthly' : 'owner_annual';
+    }
+    // For resident/searcher, use resident plans
+    return billingType === 'monthly' ? 'resident_monthly' : 'resident_annual';
+  };
+
+  const handleSubscribe = (billingType: 'monthly' | 'annual') => {
+    const plan = getStripePlan(billingType);
+    startCheckout(plan);
   };
 
   const handleCancelSubscription = async () => {
@@ -312,12 +329,29 @@ export default function SubscriptionPage() {
             <motion.button
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/profile')}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
+              onClick={() => {
+                if (userRole) {
+                  handleSubscribe('annual');
+                } else {
+                  const pricingSection = document.getElementById('pricing-section');
+                  pricingSection?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              disabled={checkoutLoading}
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Gift className="w-5 h-5" />
-              Commencer l'essai gratuit
-              <ArrowRight className="w-5 h-5" />
+              {checkoutLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Redirection...
+                </>
+              ) : (
+                <>
+                  <Gift className="w-5 h-5" />
+                  Commencer l'essai gratuit
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
             </motion.button>
 
             <motion.button
@@ -486,14 +520,22 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/profile')}
-                  className={`w-full py-4 rounded-xl font-semibold transition-all border-2 ${
+                  onClick={() => handleSubscribe('monthly')}
+                  disabled={checkoutLoading}
+                  className={`w-full py-4 rounded-xl font-semibold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
                       ? 'border-purple-300 text-purple-700 bg-purple-50 hover:bg-purple-100'
                       : 'border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100'
                   }`}
                 >
-                  Choisir mensuel
+                  {checkoutLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirection...
+                    </span>
+                  ) : (
+                    'Choisir mensuel'
+                  )}
                 </motion.button>
               </motion.div>
 
@@ -583,14 +625,22 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/profile')}
-                  className={`w-full py-4 text-white rounded-xl font-semibold shadow-lg transition-all ${
+                  onClick={() => handleSubscribe('annual')}
+                  disabled={checkoutLoading}
+                  className={`w-full py-4 text-white rounded-xl font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
                       : 'bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30'
                   }`}
                 >
-                  Choisir annuel
+                  {checkoutLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirection...
+                    </span>
+                  ) : (
+                    'Choisir annuel'
+                  )}
                 </motion.button>
               </motion.div>
             </div>
@@ -652,10 +702,18 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/onboarding/owner')}
-                  className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all"
+                  onClick={() => startCheckout('owner_annual')}
+                  disabled={checkoutLoading}
+                  className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Devenir Owner
+                  {checkoutLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirection...
+                    </span>
+                  ) : (
+                    'Devenir Owner'
+                  )}
                 </motion.button>
               </motion.div>
 
@@ -708,13 +766,38 @@ export default function SubscriptionPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/onboarding/searcher')}
-                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all"
+                  onClick={() => startCheckout('resident_annual')}
+                  disabled={checkoutLoading}
+                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Devenir Resident
+                  {checkoutLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirection...
+                    </span>
+                  ) : (
+                    'Devenir Resident'
+                  )}
                 </motion.button>
               </motion.div>
             </div>
+          )}
+
+          {/* Checkout Error Message */}
+          {checkoutError && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 max-w-md mx-auto"
+            >
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-red-800 font-medium">Erreur de paiement</p>
+                  <p className="text-red-600 text-sm">{checkoutError}</p>
+                </div>
+              </div>
+            </motion.div>
           )}
         </div>
 
@@ -736,18 +819,35 @@ export default function SubscriptionPage() {
             <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/profile')}
-              className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/40 transition-all"
+              onClick={() => {
+                if (userRole) {
+                  // User has a role, start checkout with annual plan (best value)
+                  handleSubscribe('annual');
+                } else {
+                  // No role, scroll to pricing section to choose
+                  const pricingSection = document.getElementById('pricing-section');
+                  pricingSection?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              disabled={checkoutLoading}
+              className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="flex items-center gap-3">
-                <Sparkles className="w-6 h-6" />
-                Démarrer mon essai gratuit
-                <ArrowRight className="w-6 h-6" />
-              </span>
+              {checkoutLoading ? (
+                <span className="flex items-center gap-3">
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                  Redirection vers le paiement...
+                </span>
+              ) : (
+                <span className="flex items-center gap-3">
+                  <Sparkles className="w-6 h-6" />
+                  Démarrer mon essai gratuit
+                  <ArrowRight className="w-6 h-6" />
+                </span>
+              )}
             </motion.button>
 
             <p className="text-sm text-gray-500 mt-4">
-              Aucune carte bancaire requise • Annulation à tout moment
+              Paiement sécurisé via Stripe • Annulation à tout moment
             </p>
           </motion.div>
         </div>
