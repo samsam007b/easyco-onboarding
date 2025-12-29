@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import MatchingPreviewSection from '@/components/hub/matching/MatchingPreviewSection';
+import { InvitePopup } from '@/components/referral';
 
 interface Member {
   id: string;
@@ -39,6 +40,7 @@ export default function HubMembersPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
+  const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [members, setMembers] = useState<Member[]>([
     {
       id: '1',
@@ -185,6 +187,7 @@ export default function HubMembersPage() {
             </div>
 
             <Button
+              onClick={() => setShowInvitePopup(true)}
               className="rounded-full text-white font-medium hover:shadow-lg transition-all hover:scale-105"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
@@ -318,7 +321,11 @@ export default function HubMembersPage() {
             <p className="text-gray-600 mb-6">
               Invitez des personnes à rejoindre votre colocation
             </p>
-            <Button className="rounded-full text-white font-medium hover:shadow-lg transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+            <Button
+              onClick={() => setShowInvitePopup(true)}
+              className="rounded-full text-white font-medium hover:shadow-lg transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+            >
               <UserPlus className="w-4 h-4 mr-2" />
               Inviter des membres
             </Button>
@@ -335,6 +342,13 @@ export default function HubMembersPage() {
           />
         </div>
       </div>
+
+      {/* Invite Popup */}
+      <InvitePopup
+        isOpen={showInvitePopup}
+        onClose={() => setShowInvitePopup(false)}
+        showResidenceCodes={true}
+      />
     </div>
   );
 }

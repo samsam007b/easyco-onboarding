@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
-import { Home, Users, MapPin, Sparkles, Plus, UserPlus, Copy, X, Check, FileText, Vote } from 'lucide-react';
+import { Home, Users, MapPin, Sparkles, Plus, UserPlus, FileText, Vote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { InvitePopup } from '@/components/referral';
 
 interface PropertyInfo {
   id: string;
@@ -32,7 +33,6 @@ export default function ResidenceHeader() {
   const [completion, setCompletion] = useState<CompletionData>({ percentage: 0, nextSteps: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [showInviteModal, setShowInviteModal] = useState(false);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   useEffect(() => {
     loadPropertyInfo();
@@ -200,12 +200,6 @@ export default function ResidenceHeader() {
     setCompletion({ percentage, nextSteps });
   };
 
-  const copyToClipboard = (code: string, type: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(type);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
   if (isLoading || !propertyInfo) {
     return (
       <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-4 rounded-2xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse">
@@ -364,74 +358,17 @@ export default function ResidenceHeader() {
       )}
     </Card>
 
-    {/* Invite Modal */}
-    {showInviteModal && (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowInviteModal(false)}>
-        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Codes d'invitation</h3>
-            <button onClick={() => setShowInviteModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Invitation Code for Residents */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Code pour les colocataires
-            </label>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
-                {propertyInfo.invitationCode || 'N/A'}
-              </div>
-              <button
-                onClick={() => propertyInfo.invitationCode && copyToClipboard(propertyInfo.invitationCode, 'invitation')}
-                className="p-3 rounded-lg text-white transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-              >
-                {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Partagez ce code avec vos futurs colocataires
-            </p>
-          </div>
-
-          {/* Owner Code (only for creators) */}
-          {propertyInfo.isCreator && propertyInfo.ownerCode && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Code propriétaire
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 rounded-lg px-4 py-3 font-mono text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.2) 0%, rgba(255, 91, 33, 0.2) 50%, rgba(255, 128, 23, 0.2) 100%)', color: '#ee5736' }}>
-                  {propertyInfo.ownerCode}
-                </div>
-                <button
-                  onClick={() => copyToClipboard(propertyInfo.ownerCode!, 'owner')}
-                  className="p-3 rounded-lg text-white transition-all hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-                >
-                  {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Code réservé au propriétaire légal pour revendiquer la résidence
-              </p>
-            </div>
-          )}
-
-          <button
-            onClick={() => setShowInviteModal(false)}
-            className="w-full mt-4 py-3 text-white font-medium rounded-lg hover:shadow-lg transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-          >
-            Fermer
-          </button>
-        </div>
-      </div>
-    )}
+    {/* Invite Popup */}
+    <InvitePopup
+      isOpen={showInviteModal}
+      onClose={() => setShowInviteModal(false)}
+      showResidenceCodes={true}
+      propertyInfo={{
+        invitationCode: propertyInfo.invitationCode,
+        ownerCode: propertyInfo.ownerCode,
+        isCreator: propertyInfo.isCreator,
+      }}
+    />
     </>
   );
 }
