@@ -19,7 +19,7 @@ interface ConversationStat {
 
 export async function GET() {
   try {
-    // Verify admin access
+    // Verify admin access using RPC (same as layout)
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -27,14 +27,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single();
+    // Use is_admin RPC function (bypasses RLS)
+    const { data: isAdmin, error: adminError } = await supabase
+      .rpc('is_admin', { user_email: user.email });
 
-    if (!admin) {
+    if (adminError || !isAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

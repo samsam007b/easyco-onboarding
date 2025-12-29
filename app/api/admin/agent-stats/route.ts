@@ -72,7 +72,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const section = searchParams.get('section') || 'all';
 
-    // Verify admin access
+    // Verify admin access using RPC (same as layout)
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -80,13 +80,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single();
+    // Use is_admin RPC function (bypasses RLS)
+    const { data: isAdmin, error: adminError } = await supabase
+      .rpc('is_admin', { user_email: user.email });
 
-    if (!admin) {
+    if (adminError || !isAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

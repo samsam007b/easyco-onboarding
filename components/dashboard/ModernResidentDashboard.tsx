@@ -32,6 +32,7 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
+import { OnboardingTour, useOnboarding, OnboardingStep } from '@/components/onboarding';
 
 interface DashboardStats {
   rentStatus: {
@@ -133,6 +134,43 @@ export default function ModernResidentDashboard() {
       time: 'Hier'
     }
   ]);
+
+  // Onboarding steps for resident dashboard
+  const residentOnboardingSteps: OnboardingStep[] = [
+    {
+      id: 'welcome',
+      target: '[data-onboarding="kpi-cards"]',
+      title: 'Bienvenue dans ton Hub ! 🏠',
+      description: 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
+      position: 'bottom',
+    },
+    {
+      id: 'finances',
+      target: '[data-onboarding="finances-card"]',
+      title: 'Gère tes finances',
+      description: 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes colocs.',
+      position: 'bottom',
+    },
+    {
+      id: 'members',
+      target: '[data-onboarding="members-card"]',
+      title: 'Tes colocataires',
+      description: 'Retrouve tous les membres de ta coloc, invite de nouveaux colocs ou anticipe les départs.',
+      position: 'bottom',
+    },
+    {
+      id: 'tasks',
+      target: '[data-onboarding="tasks-section"]',
+      title: 'Organise la vie commune',
+      description: 'Planifie les tâches ménagères, les réunions et les échéances importantes de la coloc.',
+      position: 'right',
+    },
+  ];
+
+  const onboarding = useOnboarding({
+    tourId: 'resident-dashboard-tour',
+    steps: residentOnboardingSteps,
+  });
 
   useEffect(() => {
     loadDashboardData();
@@ -258,7 +296,8 @@ export default function ModernResidentDashboard() {
       gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
       bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       progress: rentPercentage,
-      importance: 'critical' // Loyer = très important
+      importance: 'critical', // Loyer = très important
+      onboardingId: undefined,
     },
     {
       title: 'Dépenses Partagées',
@@ -268,7 +307,8 @@ export default function ModernResidentDashboard() {
       gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
       bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/finances'),
-      importance: 'high' // Important mais pas critique
+      importance: 'high', // Important mais pas critique
+      onboardingId: 'finances-card',
     },
     {
       title: 'Ton Solde',
@@ -278,7 +318,8 @@ export default function ModernResidentDashboard() {
       gradientStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b981, #14b8a680)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
       bgStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b98120, #14b8a610)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/finances'),
-      importance: 'medium' // Informatif
+      importance: 'medium', // Informatif
+      onboardingId: undefined,
     },
     {
       title: 'Colocataires',
@@ -288,7 +329,8 @@ export default function ModernResidentDashboard() {
       gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
       bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
       action: () => router.push('/hub/members'),
-      importance: 'medium' // Informatif
+      importance: 'medium', // Informatif
+      onboardingId: 'members-card',
     },
   ];
 
@@ -443,7 +485,7 @@ export default function ModernResidentDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div data-onboarding="kpi-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {kpiCards.map((card, index) => {
           const Icon = card.icon;
 
@@ -454,6 +496,7 @@ export default function ModernResidentDashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               onClick={card.action}
+              data-onboarding={card.onboardingId}
               className={cn(
                 "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
                 "bg-white shadow-lg hover:shadow-xl",
@@ -520,6 +563,7 @@ export default function ModernResidentDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          data-onboarding="tasks-section"
           className="bg-white rounded-3xl shadow-lg p-6"
         >
           <div className="flex items-center justify-between mb-4">
@@ -661,6 +705,19 @@ export default function ModernResidentDashboard() {
       </motion.div>
       </div>
       </>
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        isActive={onboarding.isActive}
+        currentStep={onboarding.currentStep}
+        currentStepData={onboarding.currentStepData}
+        totalSteps={onboarding.totalSteps}
+        onNext={onboarding.nextStep}
+        onPrev={onboarding.prevStep}
+        onSkip={onboarding.skipTour}
+        onComplete={onboarding.endTour}
+        variant="resident"
+      />
     </div>
   );
 }

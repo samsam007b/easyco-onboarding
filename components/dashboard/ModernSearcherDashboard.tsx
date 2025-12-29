@@ -30,6 +30,7 @@ import {
   Trophy,
   Target
 } from 'lucide-react';
+import { OnboardingTour, useOnboarding, OnboardingStep } from '@/components/onboarding';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -170,6 +171,46 @@ export default function ModernSearcherDashboard() {
     loadPropertiesWithMatches,
     getTopMatches
   } = useMatching(userId || undefined);
+
+  // Onboarding steps for new users
+  const onboardingSteps: OnboardingStep[] = [
+    {
+      id: 'welcome',
+      target: '[data-onboarding="kpi-cards"]',
+      title: 'Bienvenue sur Easyco ! 🏠',
+      description: 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité : messages, favoris, matchs et candidatures.',
+      position: 'bottom',
+    },
+    {
+      id: 'profile',
+      target: '[data-onboarding="profile-completion"]',
+      title: 'Complète ton profil',
+      description: 'Un profil complet améliore tes chances de matcher avec les bonnes colocations. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
+      position: 'bottom',
+    },
+    {
+      id: 'browse',
+      target: '[data-onboarding="browse-button"]',
+      title: 'Explore les propriétés',
+      description: 'Parcours les colocations disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
+      position: 'bottom',
+    },
+    {
+      id: 'saved-searches',
+      target: '[data-onboarding="saved-searches"]',
+      title: 'Sauvegarde tes recherches',
+      description: 'Crée des alertes pour être notifié dès qu\'une nouvelle colocation correspond à tes critères. Plus besoin de chercher tous les jours !',
+      position: 'top',
+    },
+  ];
+
+  const onboarding = useOnboarding({
+    tourId: 'searcher-dashboard',
+    steps: onboardingSteps,
+    onComplete: () => {
+      logger.info('Onboarding completed');
+    },
+  });
 
   useEffect(() => {
     loadDashboardData();
@@ -417,6 +458,7 @@ export default function ModernSearcherDashboard() {
       {/* Profile Completion Widget */}
       {stats.profileCompletion < 100 && (
         <motion.div
+          data-onboarding="profile-completion"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -501,7 +543,7 @@ export default function ModernSearcherDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {/* KPI Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div data-onboarding="kpi-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {kpiCards.map((card, index) => {
             const Icon = card.icon;
 
@@ -620,6 +662,7 @@ export default function ModernSearcherDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Saved Searches */}
           <motion.div
+            data-onboarding="saved-searches"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -812,6 +855,7 @@ export default function ModernSearcherDashboard() {
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button
+                  data-onboarding="browse-button"
                   onClick={() => router.push('/properties/browse')}
                   className="bg-white text-purple-600 hover:bg-gray-100 rounded-full"
                 >
@@ -899,6 +943,19 @@ export default function ModernSearcherDashboard() {
           />
         )}
       </div>
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        isActive={onboarding.isActive}
+        currentStep={onboarding.currentStep}
+        currentStepData={onboarding.currentStepData}
+        totalSteps={onboarding.totalSteps}
+        onNext={onboarding.nextStep}
+        onPrev={onboarding.prevStep}
+        onSkip={onboarding.skipTour}
+        onComplete={onboarding.endTour}
+        variant="searcher"
+      />
     </>
   );
 }
