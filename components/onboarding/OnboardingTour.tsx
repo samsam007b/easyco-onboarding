@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { OnboardingStep } from '@/lib/hooks/useOnboarding';
 
 interface OnboardingTourProps {
@@ -52,10 +51,21 @@ export default function OnboardingTour({
 }: OnboardingTourProps) {
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   const colors = GRADIENTS[variant];
   const isLastStep = currentStep === totalSteps - 1;
+
+  // Track window size for SVG mask
+  useEffect(() => {
+    const updateSize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   // Find and highlight the target element
   useEffect(() => {
@@ -67,17 +77,20 @@ export default function OnboardingTour({
         const rect = element.getBoundingClientRect();
         setTargetRect(rect);
 
-        // Calculate tooltip position
+        // Calculate tooltip position with better viewport handling
         const tooltipWidth = 340;
-        const tooltipHeight = 220;
+        const tooltipHeight = 280; // More realistic height
         const padding = 20;
-        const arrowOffset = 16;
+        const arrowOffset = 20;
 
         let x = 0;
         let y = 0;
 
         const position = currentStepData.position || 'bottom';
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
 
+        // Calculate initial position
         switch (position) {
           case 'top':
             x = rect.left + rect.width / 2 - tooltipWidth / 2;
@@ -97,9 +110,29 @@ export default function OnboardingTour({
             break;
         }
 
-        // Keep tooltip within viewport
-        x = Math.max(padding, Math.min(x, window.innerWidth - tooltipWidth - padding));
-        y = Math.max(padding, Math.min(y, window.innerHeight - tooltipHeight - padding));
+        // Smart repositioning if tooltip would go outside viewport
+        // If bottom placement goes below viewport, try placing on the side or above
+        if (position === 'bottom' && y + tooltipHeight > viewportHeight - padding) {
+          // Try right side first
+          if (rect.right + arrowOffset + tooltipWidth < viewportWidth - padding) {
+            x = rect.right + arrowOffset;
+            y = rect.top + rect.height / 2 - tooltipHeight / 2;
+          }
+          // Then try left side
+          else if (rect.left - tooltipWidth - arrowOffset > padding) {
+            x = rect.left - tooltipWidth - arrowOffset;
+            y = rect.top + rect.height / 2 - tooltipHeight / 2;
+          }
+          // Finally try top
+          else if (rect.top - tooltipHeight - arrowOffset > padding) {
+            x = rect.left + rect.width / 2 - tooltipWidth / 2;
+            y = rect.top - tooltipHeight - arrowOffset;
+          }
+        }
+
+        // Keep tooltip within viewport bounds
+        x = Math.max(padding, Math.min(x, viewportWidth - tooltipWidth - padding));
+        y = Math.max(padding, Math.min(y, viewportHeight - tooltipHeight - padding));
 
         setTooltipPosition({ x, y });
 
@@ -124,6 +157,7 @@ export default function OnboardingTour({
 
   // Calculate spotlight dimensions with padding
   const spotlightPadding = 12;
+  const borderRadius = 20;
   const spotlightRect = targetRect ? {
     left: targetRect.left - spotlightPadding,
     top: targetRect.top - spotlightPadding,
@@ -137,55 +171,150 @@ export default function OnboardingTour({
     <AnimatePresence mode="wait">
       {isActive && (
         <>
-          {/* Light frosted glass overlay - everything is "blinded" by light */}
+          {/* SVG Mask overlay - creates a true transparent hole */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="fixed inset-0 z-[9997] pointer-events-none"
-            style={{
-              background: 'rgba(255, 255, 255, 0.85)',
-              backdropFilter: 'blur(12px) saturate(120%) brightness(1.1)',
-              WebkitBackdropFilter: 'blur(12px) saturate(120%) brightness(1.1)',
-            }}
-          />
+          >
+            <svg
+              width={windowSize.width}
+              height={windowSize.height}
+              className="absolute inset-0"
+            >
+              <defs>
+                {/* Define the mask - white = visible, black = hidden */}
+                <mask id="spotlight-mask">
+                  {/* Full white rectangle (shows the overlay everywhere) */}
+                  <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                  {/* Black rectangle where we want the cutout (hides overlay there) */}
+                  {spotlightRect && (
+                    <rect
+                      x={spotlightRect.left}
+                      y={spotlightRect.top}
+                      width={spotlightRect.width}
+                      height={spotlightRect.height}
+                      rx={borderRadius}
+                      ry={borderRadius}
+                      fill="black"
+                    />
+                  )}
+                </mask>
+                {/* Soft edge blur for the cutout */}
+                <filter id="soft-edge" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
+                </filter>
+              </defs>
+              {/* The white frosted overlay with the hole cut out */}
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+                fill="rgba(255, 255, 255, 0.92)"
+                mask="url(#spotlight-mask)"
+              />
+            </svg>
+            {/* Blur backdrop (separate to avoid SVG limitations) */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backdropFilter: spotlightRect
+                  ? 'none' // We'll handle blur per-region
+                  : 'blur(8px)',
+              }}
+            />
+          </motion.div>
 
-          {/* Subtle light diffraction effect - prismatic shimmer */}
+          {/* Four blur panels around the spotlight (to avoid blurring the spotlight content) */}
+          {spotlightRect && (
+            <>
+              {/* Top panel */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed z-[9996] pointer-events-none"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: spotlightRect.top,
+                  backdropFilter: 'blur(6px) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(6px) brightness(1.05)',
+                }}
+              />
+              {/* Bottom panel */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed z-[9996] pointer-events-none"
+                style={{
+                  left: 0,
+                  top: spotlightRect.top + spotlightRect.height,
+                  width: '100%',
+                  height: windowSize.height - (spotlightRect.top + spotlightRect.height),
+                  backdropFilter: 'blur(6px) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(6px) brightness(1.05)',
+                }}
+              />
+              {/* Left panel (middle section) */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed z-[9996] pointer-events-none"
+                style={{
+                  left: 0,
+                  top: spotlightRect.top,
+                  width: spotlightRect.left,
+                  height: spotlightRect.height,
+                  backdropFilter: 'blur(6px) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(6px) brightness(1.05)',
+                }}
+              />
+              {/* Right panel (middle section) */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed z-[9996] pointer-events-none"
+                style={{
+                  left: spotlightRect.left + spotlightRect.width,
+                  top: spotlightRect.top,
+                  width: windowSize.width - (spotlightRect.left + spotlightRect.width),
+                  height: spotlightRect.height,
+                  backdropFilter: 'blur(6px) brightness(1.05)',
+                  WebkitBackdropFilter: 'blur(6px) brightness(1.05)',
+                }}
+              />
+            </>
+          )}
+
+          {/* Subtle light diffraction effect */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
+            animate={{ opacity: 0.3 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="fixed inset-0 z-[9997] pointer-events-none"
             style={{
               background: `
-                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(255, 200, 150, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(255, 180, 120, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 60% at 50% 80%, rgba(255, 220, 180, 0.12) 0%, transparent 50%)
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(255, 200, 150, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(255, 180, 120, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 60% at 50% 80%, rgba(255, 220, 180, 0.1) 0%, transparent 50%)
               `,
             }}
           />
 
-          {/* Clear cutout - the "window" through the frosted glass */}
-          {spotlightRect && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-[9998] pointer-events-none"
-              style={{
-                background: `radial-gradient(ellipse ${spotlightRect.width + 40}px ${spotlightRect.height + 40}px at ${spotlightRect.centerX}px ${spotlightRect.centerY}px,
-                  transparent 0%,
-                  transparent 70%,
-                  rgba(255, 255, 255, 0.6) 85%,
-                  rgba(255, 255, 255, 0.95) 100%)`,
-              }}
-            />
-          )}
-
-          {/* Soft ambient glow around target - warm light effect */}
+          {/* Soft ambient glow around target */}
           {spotlightRect && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -194,13 +323,13 @@ export default function OnboardingTour({
               transition={{ duration: 0.4, delay: 0.1 }}
               className="fixed z-[9998] pointer-events-none"
               style={{
-                left: spotlightRect.left - 20,
-                top: spotlightRect.top - 20,
-                width: spotlightRect.width + 40,
-                height: spotlightRect.height + 40,
+                left: spotlightRect.left - 15,
+                top: spotlightRect.top - 15,
+                width: spotlightRect.width + 30,
+                height: spotlightRect.height + 30,
                 borderRadius: 28,
                 background: `radial-gradient(ellipse at center, ${colors.glowSoft} 0%, transparent 70%)`,
-                filter: 'blur(15px)',
+                filter: 'blur(12px)',
               }}
             />
           )}
@@ -211,7 +340,7 @@ export default function OnboardingTour({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{
                 opacity: [0.5, 0.8, 0.5],
-                scale: [1, 1.015, 1],
+                scale: [1, 1.01, 1],
               }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{
@@ -220,34 +349,34 @@ export default function OnboardingTour({
               }}
               className="fixed z-[9998] pointer-events-none"
               style={{
-                left: spotlightRect.left - 4,
-                top: spotlightRect.top - 4,
-                width: spotlightRect.width + 8,
-                height: spotlightRect.height + 8,
+                left: spotlightRect.left - 3,
+                top: spotlightRect.top - 3,
+                width: spotlightRect.width + 6,
+                height: spotlightRect.height + 6,
                 borderRadius: 22,
                 boxShadow: `
                   0 0 0 2px ${colors.glow},
-                  0 0 20px ${colors.glow},
-                  0 0 40px ${colors.glowSoft}
+                  0 0 15px ${colors.glow},
+                  0 0 30px ${colors.glowSoft}
                 `,
               }}
             />
           )}
 
-          {/* Main spotlight frame - clickable, card-like with elevation */}
+          {/* Main spotlight frame - clickable */}
           {spotlightRect && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
               transition={{
                 type: 'spring',
                 stiffness: 350,
                 damping: 28,
                 delay: 0.05
               }}
-              whileHover={{ scale: 1.008, y: -2 }}
-              whileTap={{ scale: 0.995 }}
+              whileHover={{ scale: 1.005 }}
+              whileTap={{ scale: 0.998 }}
               className="fixed z-[9999] cursor-pointer"
               onClick={isLastStep ? onComplete : onNext}
               style={{
@@ -255,24 +384,20 @@ export default function OnboardingTour({
                 top: spotlightRect.top,
                 width: spotlightRect.width,
                 height: spotlightRect.height,
-                borderRadius: 20,
-                background: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: borderRadius,
                 border: `2px solid ${colors.accent}`,
                 boxShadow: `
-                  0 8px 32px rgba(0, 0, 0, 0.08),
-                  0 16px 48px rgba(0, 0, 0, 0.06),
-                  0 2px 8px ${colors.glowSoft},
-                  inset 0 0 0 1px rgba(255, 255, 255, 0.5)
+                  0 4px 20px rgba(0, 0, 0, 0.06),
+                  0 8px 32px rgba(0, 0, 0, 0.04),
+                  0 1px 4px ${colors.glowSoft}
                 `,
               }}
               title="Cliquez pour continuer"
             >
-              {/* Shimmer animation across the frame */}
+              {/* Shimmer animation */}
               <motion.div
-                className="absolute inset-0 rounded-[18px] overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                className="absolute inset-0 overflow-hidden"
+                style={{ borderRadius: borderRadius - 2 }}
               >
                 <motion.div
                   className="absolute inset-0"
