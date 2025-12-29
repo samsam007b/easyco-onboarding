@@ -28,6 +28,10 @@ const PWAInstallPrompt = dynamic(() => import('@/components/PWAInstallPrompt').t
   ssr: false,
 })
 
+const ApiErrorTrackingProvider = dynamic(() => import('@/components/providers/api-error-tracking-provider').then(mod => ({ default: mod.ApiErrorTrackingProvider })), {
+  ssr: false,
+})
+
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
@@ -138,6 +142,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SkipLink />
         <Analytics />
         <WebVitalsReporter />
+        <ApiErrorTrackingProvider />
         <ClientProviders>
           <ErrorBoundary>
             {children}

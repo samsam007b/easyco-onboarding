@@ -34,6 +34,7 @@
     "@radix-ui/react-slider": "^1.1.2",
     "@radix-ui/react-switch": "^1.2.6",
     "@sentry/nextjs": "^10.22.0",
+    "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.45.4",
