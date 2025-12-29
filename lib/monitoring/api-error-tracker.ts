@@ -33,12 +33,22 @@ export function trackApiError(error: ApiError) {
   }
 
   // Report to Sentry
+  // Handle relative URLs by providing a base URL
+  let pathname = error.url;
+  try {
+    const base = typeof window !== 'undefined' ? window.location.origin : 'https://izzico.be';
+    pathname = new URL(error.url, base).pathname;
+  } catch {
+    // If URL parsing still fails, use the raw URL
+    pathname = error.url;
+  }
+
   Sentry.captureMessage(`API Error: ${error.status} ${error.method} ${error.url}`, {
     level: error.status >= 500 ? 'error' : 'warning',
     tags: {
       'api.status': error.status,
       'api.method': error.method,
-      'api.endpoint': new URL(error.url).pathname,
+      'api.endpoint': pathname,
     },
     extra: {
       url: error.url,
