@@ -139,6 +139,87 @@ export function sanitizeSearchQuery(query: string): string {
 }
 
 /**
+ * Trusted domains for embed codes (virtual tours, videos, etc.)
+ */
+const TRUSTED_EMBED_DOMAINS = [
+  'matterport.com',
+  'my.matterport.com',
+  'youtube.com',
+  'www.youtube.com',
+  'youtube-nocookie.com',
+  'www.youtube-nocookie.com',
+  'player.vimeo.com',
+  'vimeo.com',
+  'kuula.co',
+  'www.kuula.co',
+  'cloudpano.com',
+  'www.cloudpano.com',
+  '3dvista.com',
+  'www.3dvista.com',
+  'roundme.com',
+  'www.roundme.com',
+];
+
+/**
+ * Extract and validate iframe src URL from embed code
+ * Returns the URL if valid and from a trusted domain, null otherwise
+ */
+export function extractTrustedIframeSrc(embedCode: string): string | null {
+  if (!embedCode) return null;
+
+  // Parse the embed code to extract src attribute
+  const srcMatch = embedCode.match(/src\s*=\s*["']([^"']+)["']/i);
+  if (!srcMatch || !srcMatch[1]) return null;
+
+  const src = srcMatch[1];
+
+  try {
+    const url = new URL(src);
+
+    // Check if the domain is trusted
+    const hostname = url.hostname.toLowerCase();
+    const isTrusted = TRUSTED_EMBED_DOMAINS.some(
+      domain => hostname === domain || hostname.endsWith('.' + domain)
+    );
+
+    if (!isTrusted) {
+      console.warn(`[Security] Blocked untrusted embed domain: ${hostname}`);
+      return null;
+    }
+
+    // Only allow https
+    if (url.protocol !== 'https:') {
+      console.warn(`[Security] Blocked non-HTTPS embed URL: ${src}`);
+      return null;
+    }
+
+    return src;
+  } catch {
+    console.warn(`[Security] Invalid embed URL: ${src}`);
+    return null;
+  }
+}
+
+/**
+ * Sanitize embed code for virtual tours and videos
+ * Only allows iframe tags with specific safe attributes from trusted domains
+ *
+ * @param embedCode - The raw embed code (typically HTML with iframe)
+ * @returns Sanitized embed code or null if invalid/unsafe
+ */
+export function sanitizeEmbedCode(embedCode: string): string | null {
+  if (!embedCode) return null;
+
+  // Extract the iframe src from trusted domain
+  const trustedSrc = extractTrustedIframeSrc(embedCode);
+  if (!trustedSrc) return null;
+
+  // Instead of using dangerous raw HTML, return only the validated URL
+  // The component should construct a safe iframe with this URL
+  return trustedSrc;
+}
+
+/**
  * Validate and sanitize email address
  */
 export function sanitizeEmail(email: string): string {

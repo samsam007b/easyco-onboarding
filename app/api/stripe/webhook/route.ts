@@ -10,6 +10,7 @@ import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
+import { logger } from '@/lib/security/logger';
 
 // Initialize Supabase with service role (needed for webhook context)
 const supabase = createClient(
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
+    logger.security('Webhook signature verification failed', { error: err.message });
     return NextResponse.json(
       { error: `Webhook Error: ${err.message}` },
       { status: 400 }
@@ -81,13 +82,13 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        logger.info(`Unhandled Stripe event type: ${event.type}`);
     }
 
     return NextResponse.json({ received: true });
 
   } catch (error: any) {
-    console.error('Error processing webhook:', error);
+    logger.error('Error processing Stripe webhook', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { error: error.message || 'Webhook handler failed' },
       { status: 500 }
@@ -104,7 +105,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   const plan = session.metadata?.plan;
 
   if (!userId) {
-    console.error('No supabase_user_id in session metadata');
+    logger.warn('No supabase_user_id in session metadata', { sessionId: session.id });
     return;
   }
 
@@ -124,7 +125,7 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   const plan = subscription.metadata?.plan;
 
   if (!userId) {
-    console.error('No supabase_user_id in subscription metadata');
+    logger.warn('No supabase_user_id in subscription metadata', { subscriptionId: subscription.id });
     return;
   }
 
@@ -174,11 +175,11 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     .eq('user_id', userId);
 
   if (error) {
-    console.error('Error updating subscription:', error);
+    logger.error('Error updating subscription', error instanceof Error ? error : new Error(String(error)), { userId });
     throw error;
   }
 
-  console.log(`Subscription updated for user ${userId}: ${subscription.id}`);
+  logger.audit('subscription_updated', { userId, subscriptionId: subscription.id });
 }
 
 /**
@@ -189,7 +190,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const userId = subscription.metadata?.supabase_user_id;
 
   if (!userId) {
-    console.error('No supabase_user_id in subscription metadata');
+    logger.warn('No supabase_user_id in subscription metadata', { subscriptionId: subscription.id });
     return;
   }
 
@@ -203,11 +204,11 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     .eq('user_id', userId);
 
   if (error) {
-    console.error('Error cancelling subscription:', error);
+    logger.error('Error cancelling subscription', error instanceof Error ? error : new Error(String(error)), { userId });
     throw error;
   }
 
-  console.log(`Subscription cancelled for user ${userId}: ${subscription.id}`);
+  logger.audit('subscription_cancelled', { userId, subscriptionId: subscription.id });
 }
 
 /**
@@ -250,7 +251,7 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
   const userId = subscription.metadata?.supabase_user_id;
 
   if (!userId) {
-    console.error('No supabase_user_id in subscription metadata');
+    logger.warn('No supabase_user_id in subscription metadata', { subscriptionId });
     return;
   }
 
@@ -263,9 +264,9 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
     .eq('user_id', userId);
 
   if (error) {
-    console.error('Error updating subscription to past_due:', error);
+    logger.error('Error updating subscription to past_due', error instanceof Error ? error : new Error(String(error)), { userId });
     throw error;
   }
 
-  console.log(`Subscription marked as past_due for user ${userId}: ${subscriptionId}`);
+  logger.audit('subscription_past_due', { userId, subscriptionId });
 }

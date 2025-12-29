@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendAdminInvitationEmail } from '@/lib/emails/admin-invitation';
+import { logger } from '@/lib/security/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError) {
-      console.error('[AdminInvite] Insert error:', insertError);
+      logger.error('[AdminInvite] Insert error', insertError instanceof Error ? insertError : new Error(String(insertError)));
       return NextResponse.json(
         { error: 'Erreur lors de la creation de l\'invitation' },
         { status: 500 }
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!emailResult.success) {
-      console.error('[AdminInvite] Email send failed:', emailResult.error);
+      logger.warn('[AdminInvite] Email send failed', { error: emailResult.error });
       // Don't fail the request - invitation is created, email can be resent
     }
 
@@ -166,7 +167,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('[AdminInvite] Error:', error);
+    logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { error: 'Erreur interne' },
       { status: 500 }
@@ -229,7 +230,7 @@ export async function GET() {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('[AdminInvite] Fetch error:', error);
+      logger.error('[AdminInvite] Fetch error', error instanceof Error ? error : new Error(String(error)));
       return NextResponse.json(
         { error: 'Erreur lors de la recuperation des invitations' },
         { status: 500 }
@@ -256,7 +257,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('[AdminInvite] Error:', error);
+    logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { error: 'Erreur interne' },
       { status: 500 }
@@ -328,7 +329,7 @@ export async function DELETE(request: NextRequest) {
       .eq('id', invitationId);
 
     if (updateError) {
-      console.error('[AdminInvite] Cancel error:', updateError);
+      logger.error('[AdminInvite] Cancel error', updateError instanceof Error ? updateError : new Error(String(updateError)));
       return NextResponse.json(
         { error: 'Erreur lors de l\'annulation' },
         { status: 500 }
@@ -351,7 +352,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    console.error('[AdminInvite] Error:', error);
+    logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { error: 'Erreur interne' },
       { status: 500 }

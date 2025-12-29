@@ -294,6 +294,11 @@ interface LogRequestParams {
 
 /**
  * Log assistant request to database for analytics
+ * Uses log_agent_request RPC which atomically updates:
+ * - agent_request_logs (detailed logs)
+ * - agent_intent_stats (aggregated by intent)
+ * - agent_daily_stats (daily aggregates)
+ *
  * FIRE-AND-FORGET: Never blocks, never throws, silently fails if tables don't exist
  */
 function logRequestToDatabase(params: LogRequestParams): void {
@@ -302,23 +307,29 @@ function logRequestToDatabase(params: LogRequestParams): void {
     try {
       const supabase = await createClient();
 
-      const { error } = await supabase.from('agent_request_logs').insert({
-        user_message: params.userMessage.substring(0, 2000),
-        detected_intent: params.intent || 'unknown',
-        intent_confidence: params.confidence,
-        provider: params.provider,
-        response_time_ms: params.responseTimeMs,
-        tokens_used: params.tokensUsed,
-        estimated_cost: params.estimatedCost,
-        user_type: params.userType,
-        page_path: params.pagePath,
-        user_id: params.userId,
-        conversation_id: params.conversationId,
+      // Use the RPC function that atomically updates all stats tables
+      const { error } = await supabase.rpc('log_agent_request', {
+        p_conversation_id: params.conversationId || null,
+        p_message_id: null,
+        p_user_message: params.userMessage.substring(0, 2000),
+        p_detected_intent: params.intent || 'unknown',
+        p_intent_confidence: params.confidence || null,
+        p_provider: params.provider,
+        p_recommended_provider: null,
+        p_complexity_score: null,
+        p_complexity_reasons: null,
+        p_response_time_ms: params.responseTimeMs,
+        p_tokens_used: params.tokensUsed || null,
+        p_cost_estimate: params.estimatedCost || null,
+        p_user_type: params.userType || 'unknown',
+        p_is_authenticated: !!params.userId,
+        p_page_path: params.pagePath || null,
+        p_conversation_turn: null,
       });
 
       if (error) {
         // Silently log - don't crash anything
-        console.warn('[Assistant Analytics] Log skipped:', error.code);
+        console.warn('[Assistant Analytics] Log skipped:', error.code, error.message);
       }
     } catch {
       // Completely silent - tables may not exist yet

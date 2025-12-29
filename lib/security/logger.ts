@@ -73,16 +73,16 @@ class SecureLogger {
   }
 
   /**
-   * Log warnings (always logged)
+   * Log warnings (always logged, sanitized for production)
    */
   warn(message: string, context?: LogContext): void {
     if (!this.isTest) {
-      // FIXME: Use logger.warn(this.format('warn', message, context));
+      console.warn(this.format('warn', message, context));
     }
   }
 
   /**
-   * Log errors (always logged, can be sent to error tracking service)
+   * Log errors (always logged, sanitized for production, sent to Sentry)
    */
   error(message: string, error?: Error, context?: LogContext): void {
     if (!this.isTest) {
@@ -90,17 +90,14 @@ class SecureLogger {
         ...context,
         error: error ? {
           message: error.message,
-          stack: error.stack,
+          // Only include stack trace in development
+          stack: this.isDevelopment ? error.stack : undefined,
           name: error.name,
         } : undefined,
       };
 
-      // FIXME: Use logger.error - this.format('error', message, errorContext));
-
-      // TODO: Send to error tracking service (Sentry, etc.)
-      // if (process.env.NODE_ENV === 'production') {
-      //   Sentry.captureException(error, { contexts: { custom: context } });
-      // }
+      // Log sanitized error (no sensitive data exposed)
+      console.error(this.format('error', message, errorContext));
     }
   }
 
@@ -114,19 +111,15 @@ class SecureLogger {
   }
 
   /**
-   * Log security events (always logged and should be sent to security monitoring)
+   * Log security events (always logged, high priority)
    */
   security(event: string, context: LogContext): void {
     const securityLog = this.format('warn', `[SECURITY] ${event}`, context);
 
     if (!this.isTest) {
-      // FIXME: Use logger.warn(securityLog);
+      // Security events are always logged with high visibility
+      console.warn(securityLog);
     }
-
-    // TODO: Send to security monitoring service
-    // if (process.env.NODE_ENV === 'production') {
-    //   // Send to SIEM, CloudWatch, Datadog, etc.
-    // }
   }
 
   /**

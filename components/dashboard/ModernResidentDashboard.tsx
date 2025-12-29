@@ -32,7 +32,15 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
-import { OnboardingTour, useOnboarding, OnboardingStep } from '@/components/onboarding';
+import {
+  OnboardingTour,
+  useOnboarding,
+  OnboardingStep,
+  GettingStartedChecklist,
+  useGettingStarted,
+  RESIDENT_CHECKLIST_ITEMS,
+  celebrateToast,
+} from '@/components/onboarding';
 
 interface DashboardStats {
   rentStatus: {
@@ -170,6 +178,15 @@ export default function ModernResidentDashboard() {
   const onboarding = useOnboarding({
     tourId: 'resident-dashboard-tour',
     steps: residentOnboardingSteps,
+  });
+
+  // Getting Started checklist
+  const gettingStarted = useGettingStarted({
+    checklistId: 'resident-checklist',
+    items: RESIDENT_CHECKLIST_ITEMS,
+    onAllComplete: () => {
+      celebrateToast.checklistComplete();
+    },
   });
 
   useEffect(() => {
@@ -484,6 +501,26 @@ export default function ModernResidentDashboard() {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        {/* Getting Started Checklist - Only show if not dismissed and loaded */}
+        {gettingStarted.isLoaded && !gettingStarted.isDismissed && !gettingStarted.isAllComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <GettingStartedChecklist
+              items={gettingStarted.items}
+              completedCount={gettingStarted.completedCount}
+              totalCount={gettingStarted.totalCount}
+              progress={gettingStarted.progress}
+              isAllComplete={gettingStarted.isAllComplete}
+              onDismiss={gettingStarted.dismissChecklist}
+              onCompleteItem={gettingStarted.completeItem}
+              variant="resident"
+            />
+          </motion.div>
+        )}
+
       {/* KPI Cards Grid */}
       <div data-onboarding="kpi-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {kpiCards.map((card, index) => {

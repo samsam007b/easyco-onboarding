@@ -30,7 +30,15 @@ import {
   Trophy,
   Target
 } from 'lucide-react';
-import { OnboardingTour, useOnboarding, OnboardingStep } from '@/components/onboarding';
+import {
+  OnboardingTour,
+  useOnboarding,
+  OnboardingStep,
+  GettingStartedChecklist,
+  useGettingStarted,
+  SEARCHER_CHECKLIST_ITEMS,
+  celebrateToast,
+} from '@/components/onboarding';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -209,6 +217,15 @@ export default function ModernSearcherDashboard() {
     steps: onboardingSteps,
     onComplete: () => {
       logger.info('Onboarding completed');
+    },
+  });
+
+  // Getting Started checklist
+  const gettingStarted = useGettingStarted({
+    checklistId: 'searcher-checklist',
+    items: SEARCHER_CHECKLIST_ITEMS,
+    onAllComplete: () => {
+      celebrateToast.checklistComplete();
     },
   });
 
@@ -542,6 +559,26 @@ export default function ModernSearcherDashboard() {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        {/* Getting Started Checklist - Only show if not dismissed and loaded */}
+        {gettingStarted.isLoaded && !gettingStarted.isDismissed && !gettingStarted.isAllComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <GettingStartedChecklist
+              items={gettingStarted.items}
+              completedCount={gettingStarted.completedCount}
+              totalCount={gettingStarted.totalCount}
+              progress={gettingStarted.progress}
+              isAllComplete={gettingStarted.isAllComplete}
+              onDismiss={gettingStarted.dismissChecklist}
+              onCompleteItem={gettingStarted.completeItem}
+              variant="searcher"
+            />
+          </motion.div>
+        )}
+
         {/* KPI Cards Grid */}
         <div data-onboarding="kpi-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {kpiCards.map((card, index) => {

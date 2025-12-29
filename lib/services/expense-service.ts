@@ -213,7 +213,7 @@ class ExpenseService {
         `
         )
         .eq('property_id', propertyId)
-        .order('date', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(limit);
 
       if (error) throw error;

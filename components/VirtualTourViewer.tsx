@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Maximize, Play, Video } from 'lucide-react';
+import { Eye, Maximize, Play, Video, AlertTriangle } from 'lucide-react';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
+import { sanitizeEmbedCode } from '@/lib/security/sanitizer';
 
 interface VirtualTourViewerProps {
   tourInfo: VirtualTourInfo;
@@ -24,6 +25,13 @@ export default function VirtualTourViewer({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [viewStartTime, setViewStartTime] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // SECURITY: Sanitize embed code to extract only trusted iframe URLs
+  // This prevents XSS attacks from malicious embed codes
+  const sanitizedEmbedUrl = useMemo(() => {
+    if (!tourInfo.tour_embed_code) return null;
+    return sanitizeEmbedCode(tourInfo.tour_embed_code);
+  }, [tourInfo.tour_embed_code]);
 
   useEffect(() => {
     if (isPlaying && !viewStartTime) {
@@ -148,35 +156,51 @@ export default function VirtualTourViewer({
     );
   }
 
+  // Determine the iframe source URL (sanitized embed code takes priority)
+  const iframeSrc = sanitizedEmbedUrl || (tourInfo.virtual_tour_url ? getEmbedUrl() : null);
+  const embedWasBlocked = tourInfo.tour_embed_code && !sanitizedEmbedUrl;
+
   return (
     <Card className="relative overflow-hidden" ref={containerRef}>
       <CardContent className="p-0">
         {/* Tour Viewer */}
         <div className="relative" style={{ paddingBottom: '56.25%' }}>
-          {tourInfo.tour_embed_code ? (
-            <div
-              className="absolute inset-0"
-              dangerouslySetInnerHTML={{ __html: tourInfo.tour_embed_code }}
-            />
-          ) : tourInfo.virtual_tour_url ? (
+          {/* SECURITY FIX: Using sanitized iframe URL instead of raw HTML injection */}
+          {iframeSrc ? (
             <iframe
-              src={getEmbedUrl()}
+              src={iframeSrc}
               className="absolute inset-0 w-full h-full"
               allow="xr-spatial-tracking; gyroscope; accelerometer"
               allowFullScreen
               frameBorder="0"
+              title="Visite virtuelle"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
+          ) : embedWasBlocked ? (
+            // Show warning if embed code was blocked (untrusted domain)
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+              <div className="text-center p-6">
+                <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+                <p className="text-gray-700 font-medium">Visite virtuelle indisponible</p>
+                <p className="text-gray-500 text-sm mt-1">
+                  Le fournisseur de visite virtuelle n'est pas pris en charge
+                </p>
+              </div>
+            </div>
           ) : null}
 
           {/* Fullscreen Button */}
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handleFullscreen}
-            className="absolute bottom-4 right-4 z-10 shadow-lg bg-white"
-          >
-            <Maximize className="w-4 h-4" />
-          </Button>
+          {iframeSrc && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleFullscreen}
+              className="absolute bottom-4 right-4 z-10 shadow-lg bg-white"
+            >
+              <Maximize className="w-4 h-4" />
+            </Button>
+          )}
         </div>
 
         {/* Tour Info Banner */}
