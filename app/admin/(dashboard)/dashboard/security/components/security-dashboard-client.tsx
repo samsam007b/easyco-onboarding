@@ -8,7 +8,8 @@ import { SecurityAuditLogs } from './security-audit-logs';
 import { NotificationHistory } from './notification-history';
 import { Error404List } from './error-404-list';
 import { SentryIssues } from './sentry-issues';
-import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle } from 'lucide-react';
+import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -160,13 +161,17 @@ export function SecurityDashboardClient({
         </Card>
 
         {/* Real-time Alerts */}
-        <RealtimeAlerts alerts={activeAlerts} totalActive={stats.activeAlerts} />
+        <Link href="/admin/dashboard/security/alerts" className="block lg:col-span-2 hover:opacity-90 transition-opacity">
+          <RealtimeAlerts alerts={activeAlerts} totalActive={stats.activeAlerts} />
+        </Link>
       </div>
 
       {/* Errors + Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Real-time Errors */}
-        <RealtimeErrors errors={recentErrors} totalErrors={stats.totalErrors} />
+        <Link href="/admin/dashboard/security/errors" className="block hover:opacity-90 transition-opacity">
+          <RealtimeErrors errors={recentErrors} totalErrors={stats.totalErrors} />
+        </Link>
 
         {/* Performance */}
         <Card className="bg-slate-800/50 border-slate-700">
@@ -231,15 +236,21 @@ export function SecurityDashboardClient({
       </div>
 
       {/* Sentry Issues - Full width */}
-      <SentryIssues />
+      <Link href="/admin/dashboard/security/sentry" className="block hover:opacity-90 transition-opacity">
+        <SentryIssues />
+      </Link>
 
       {/* Notification History + 404 Errors */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Notification History */}
-        <NotificationHistory />
+        <Link href="/admin/dashboard/security/notifications" className="block hover:opacity-90 transition-opacity">
+          <NotificationHistory />
+        </Link>
 
         {/* 404 Errors */}
-        <Error404List />
+        <Link href="/admin/dashboard/security/404" className="block hover:opacity-90 transition-opacity">
+          <Error404List />
+        </Link>
       </div>
 
       {/* System Status + Audit Logs */}
@@ -277,7 +288,9 @@ export function SecurityDashboardClient({
         </Card>
 
         {/* Security Audit Logs */}
-        <SecurityAuditLogs maxLogs={8} />
+        <Link href="/admin/dashboard/security/audit" className="block hover:opacity-90 transition-opacity">
+          <SecurityAuditLogs maxLogs={8} />
+        </Link>
       </div>
     </div>
   );

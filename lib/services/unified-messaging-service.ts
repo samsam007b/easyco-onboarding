@@ -206,30 +206,30 @@ export async function getUserResidenceInfo(userId: string): Promise<{
       }
     }
 
-    // Get other residents with their profiles
+    // Get other residents (user_ids only)
     const { data: otherMembers } = await supabase
       .from('property_members')
-      .select(`
-        user_id,
-        user_profiles (
-          id,
-          first_name,
-          last_name,
-          profile_photo_url
-        )
-      `)
+      .select('user_id')
       .eq('property_id', membership.property_id)
       .eq('status', 'active')
       .neq('user_id', userId);
 
-    const residents = (otherMembers || []).map((m: any) => {
-      const profile = m.user_profiles;
-      return {
-        id: m.user_id,
-        name: profile ? [profile.first_name, profile.last_name].filter(Boolean).join(' ') || 'Résident' : 'Résident',
-        photo: profile?.profile_photo_url,
-      };
-    }).filter((r: any) => r.id);
+    // Fetch profiles for other residents
+    const residentUserIds = (otherMembers || []).map(m => m.user_id).filter(Boolean);
+    let residents: { id: string; name: string; photo?: string }[] = [];
+
+    if (residentUserIds.length > 0) {
+      const { data: residentProfiles } = await supabase
+        .from('user_profiles')
+        .select('id, first_name, last_name, profile_photo_url')
+        .in('id', residentUserIds);
+
+      residents = (residentProfiles || []).map((profile: any) => ({
+        id: profile.id,
+        name: [profile.first_name, profile.last_name].filter(Boolean).join(' ') || 'Résident',
+        photo: profile.profile_photo_url,
+      }));
+    }
 
     return {
       propertyId: property.id,
