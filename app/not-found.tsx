@@ -1,10 +1,35 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Home, Search, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
+  useEffect(() => {
+    // Log 404 error to the security dashboard
+    const log404Error = async () => {
+      try {
+        await fetch('/api/log/error', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: '404',
+            message: `Page not found: ${window.location.pathname}`,
+            route: window.location.pathname,
+            metadata: {
+              search: window.location.search,
+              referrer: document.referrer || 'direct',
+            },
+          }),
+        });
+      } catch (error) {
+        console.error('[NotFound] Failed to log 404 error:', error);
+      }
+    };
+
+    log404Error();
+  }, []);
   return (
     <div className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center overflow-y-auto p-4">
       <div className="max-w-2xl w-full mx-auto my-auto text-center">

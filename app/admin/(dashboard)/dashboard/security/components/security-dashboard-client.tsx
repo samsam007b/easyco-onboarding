@@ -5,6 +5,8 @@ import { RealtimeStats } from './realtime-stats';
 import { RealtimeAlerts } from './realtime-alerts';
 import { RealtimeErrors } from './realtime-errors';
 import { SecurityAuditLogs } from './security-audit-logs';
+import { NotificationHistory } from './notification-history';
+import { Error404List } from './error-404-list';
 import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -225,6 +227,15 @@ export function SecurityDashboardClient({
             )}
           </CardContent>
         </Card>
+      </div>
+
+      {/* Notification History + 404 Errors */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Notification History */}
+        <NotificationHistory />
+
+        {/* 404 Errors */}
+        <Error404List />
       </div>
 
       {/* System Status + Audit Logs */}

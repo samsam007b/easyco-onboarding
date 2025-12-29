@@ -11,7 +11,31 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // FIXME: Use logger.error('Global error:', error);
+    // Log the critical error to the security dashboard
+    const logError = async () => {
+      try {
+        await fetch('/api/log/error', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'runtime',
+            message: `[CRITICAL] ${error.message}`,
+            route: window.location.pathname,
+            stack: error.stack,
+            metadata: {
+              digest: error.digest,
+              name: error.name,
+              url: window.location.href,
+              global: true,
+            },
+          }),
+        });
+      } catch (logError) {
+        console.error('[GlobalError] Failed to log error:', logError);
+      }
+    };
+
+    logError();
   }, [error]);
 
   return (

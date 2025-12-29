@@ -12,8 +12,30 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    // FIXME: Use logger.error('Application error:', error);
+    // Log the error to the security dashboard
+    const logError = async () => {
+      try {
+        await fetch('/api/log/error', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'runtime',
+            message: error.message,
+            route: window.location.pathname,
+            stack: error.stack,
+            metadata: {
+              digest: error.digest,
+              name: error.name,
+              url: window.location.href,
+            },
+          }),
+        });
+      } catch (logError) {
+        console.error('[Error] Failed to log error:', logError);
+      }
+    };
+
+    logError();
   }, [error]);
 
   return (

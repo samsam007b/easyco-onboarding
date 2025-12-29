@@ -8,6 +8,7 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-server';
+import { getAdminClient } from '@/lib/auth/supabase-admin';
 
 // ============================================================================
 // TYPES
@@ -40,6 +41,36 @@ const SEVERITY_LEVELS = {
 };
 
 // ============================================================================
+// NOTIFICATION LOGGING
+// ============================================================================
+
+async function logNotification(
+  event: SecurityEvent,
+  channel: 'email' | 'slack' | 'in_app',
+  success: boolean,
+  recipients?: string[],
+  errorMessage?: string
+): Promise<void> {
+  try {
+    const adminClient = getAdminClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (adminClient as any).from('notification_logs').insert({
+      event_type: event.type,
+      event_title: event.title,
+      event_description: event.description,
+      severity: event.severity,
+      channel,
+      recipients: recipients || [],
+      success,
+      error_message: errorMessage,
+      metadata: event.metadata,
+    });
+  } catch (error) {
+    console.error('[SecurityNotifications] Failed to log notification:', error);
+  }
+}
+
+// ============================================================================
 // CONFIGURATION
 // ============================================================================
 
@@ -58,7 +89,7 @@ function getNotificationConfig(): NotificationConfig {
 // SLACK NOTIFICATIONS
 // ============================================================================
 
-async function sendSlackNotification(event: SecurityEvent, webhookUrl: string): Promise<boolean> {
+async function sendSlackNotification(event: SecurityEvent, webhookUrl: string): Promise<{ success: boolean; error?: string }> {
   const severityEmoji = {
     critical: ':rotating_light:',
     high: ':warning:',
@@ -128,14 +159,19 @@ async function sendSlackNotification(event: SecurityEvent, webhookUrl: string): 
     });
 
     if (!response.ok) {
-      console.error('[SecurityNotifications] Slack notification failed:', response.statusText);
-      return false;
+      const errorMsg = `Slack notification failed: ${response.statusText}`;
+      console.error('[SecurityNotifications]', errorMsg);
+      await logNotification(event, 'slack', false, undefined, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
-    return true;
+    await logNotification(event, 'slack', true);
+    return { success: true };
   } catch (error) {
+    const errorMsg = String(error);
     console.error('[SecurityNotifications] Slack notification error:', error);
-    return false;
+    await logNotification(event, 'slack', false, undefined, errorMsg);
+    return { success: false, error: errorMsg };
   }
 }
 
@@ -143,10 +179,10 @@ async function sendSlackNotification(event: SecurityEvent, webhookUrl: string): 
 // EMAIL NOTIFICATIONS
 // ============================================================================
 
-async function sendEmailNotification(event: SecurityEvent, recipients: string[]): Promise<boolean> {
+async function sendEmailNotification(event: SecurityEvent, recipients: string[]): Promise<{ success: boolean; error?: string }> {
   // Skip if no recipients
   if (recipients.length === 0) {
-    return true;
+    return { success: true };
   }
 
   const severityColors = {
@@ -222,22 +258,27 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
       const responseText = await response.text();
 
       if (!response.ok) {
+        const errorMsg = `Resend API error: ${responseText}`;
         console.error('[SecurityNotifications] Email notification failed:', responseText);
-        throw new Error(`Resend API error: ${responseText}`);
+        await logNotification(event, 'email', false, recipients, errorMsg);
+        return { success: false, error: errorMsg };
       }
 
       console.log('[SecurityNotifications] Email sent successfully:', responseText);
-      return true;
+      await logNotification(event, 'email', true, recipients);
+      return { success: true };
     } catch (error) {
+      const errorMsg = String(error);
       console.error('[SecurityNotifications] Email notification error:', error);
-      // Re-throw to propagate error to caller
-      throw error;
+      await logNotification(event, 'email', false, recipients, errorMsg);
+      return { success: false, error: errorMsg };
     }
   } else {
     // Log for development
     console.log('[SecurityNotifications] Email would be sent to:', recipients);
     console.log('[SecurityNotifications] Subject:', `[${event.severity.toUpperCase()}] Security ${event.type}: ${event.title}`);
-    return true;
+    await logNotification(event, 'email', true, recipients);
+    return { success: true };
   }
 }
 
@@ -245,17 +286,20 @@ async function sendEmailNotification(event: SecurityEvent, recipients: string[])
 // IN-APP NOTIFICATIONS
 // ============================================================================
 
-async function sendInAppNotification(event: SecurityEvent): Promise<boolean> {
+async function sendInAppNotification(event: SecurityEvent): Promise<{ success: boolean; error?: string }> {
   try {
-    const supabase = await createClient();
+    const adminClient = getAdminClient();
 
     // Get all admin users
-    const { data: admins } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (adminClient as any)
       .from('admins')
       .select('user_id');
 
+    const admins = data as { user_id: string }[] | null;
+
     if (!admins || admins.length === 0) {
-      return true;
+      return { success: true };
     }
 
     // Create notifications for all admins
@@ -272,17 +316,23 @@ async function sendInAppNotification(event: SecurityEvent): Promise<boolean> {
       },
     }));
 
-    const { error } = await supabase.from('notifications').insert(notifications);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (adminClient as any).from('notifications').insert(notifications);
 
     if (error) {
+      const errorMsg = error.message;
       console.error('[SecurityNotifications] In-app notification error:', error);
-      return false;
+      await logNotification(event, 'in_app', false, admins.map(a => a.user_id), errorMsg);
+      return { success: false, error: errorMsg };
     }
 
-    return true;
+    await logNotification(event, 'in_app', true, admins.map(a => a.user_id));
+    return { success: true };
   } catch (error) {
+    const errorMsg = String(error);
     console.error('[SecurityNotifications] In-app notification error:', error);
-    return false;
+    await logNotification(event, 'in_app', false, undefined, errorMsg);
+    return { success: false, error: errorMsg };
   }
 }
 
@@ -325,7 +375,10 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
   if (config.slackEnabled && config.slackWebhookUrl) {
     promises.push(
       sendSlackNotification(event, config.slackWebhookUrl)
-        .then((r) => { results.slack = r; })
+        .then((r) => {
+          results.slack = r.success;
+          if (r.error) errors.slack = r.error;
+        })
         .catch((e) => { errors.slack = String(e); })
     );
   }
@@ -334,7 +387,10 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
   if (config.emailEnabled && config.emailRecipients.length > 0) {
     promises.push(
       sendEmailNotification(event, config.emailRecipients)
-        .then((r) => { results.email = r; })
+        .then((r) => {
+          results.email = r.success;
+          if (r.error) errors.email = r.error;
+        })
         .catch((e) => { errors.email = String(e); })
     );
   }
@@ -343,7 +399,10 @@ export async function sendSecurityNotification(event: SecurityEvent): Promise<{
   if (config.inAppEnabled && (event.severity === 'critical' || event.severity === 'high')) {
     promises.push(
       sendInAppNotification(event)
-        .then((r) => { results.inApp = r; })
+        .then((r) => {
+          results.inApp = r.success;
+          if (r.error) errors.inApp = r.error;
+        })
         .catch((e) => { errors.inApp = String(e); })
     );
   }
