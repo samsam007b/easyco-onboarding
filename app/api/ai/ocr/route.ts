@@ -378,6 +378,9 @@ export async function POST(request: NextRequest) {
 
     console.log(`[API OCR] Available providers: Gemini=${!!geminiKey}, Together=${!!togetherKey}`);
 
+    let geminiError: string | null = null;
+    let togetherError: string | null = null;
+
     // Try Gemini first
     if (geminiKey && canUseProvider('gemini')) {
       console.log('[API OCR] Trying Gemini...');
@@ -388,9 +391,14 @@ export async function POST(request: NextRequest) {
         console.log('[API OCR] Gemini succeeded');
         return NextResponse.json(result);
       }
-      console.warn('[API OCR] Gemini failed:', result.error);
+      geminiError = result.error || 'Unknown Gemini error';
+      console.warn('[API OCR] Gemini failed:', geminiError);
     } else if (!geminiKey) {
+      geminiError = 'API key not configured';
       console.log('[API OCR] Gemini API key not configured');
+    } else {
+      geminiError = 'Daily limit reached';
+      console.log('[API OCR] Gemini daily limit reached');
     }
 
     // Try Together AI
@@ -403,9 +411,14 @@ export async function POST(request: NextRequest) {
         console.log('[API OCR] Together AI succeeded');
         return NextResponse.json(result);
       }
-      console.warn('[API OCR] Together AI failed:', result.error);
+      togetherError = result.error || 'Unknown Together error';
+      console.warn('[API OCR] Together AI failed:', togetherError);
     } else if (!togetherKey) {
+      togetherError = 'API key not configured';
       console.log('[API OCR] Together API key not configured');
+    } else {
+      togetherError = 'Daily limit reached';
+      console.log('[API OCR] Together daily limit reached');
     }
 
     // Return error if no providers available or all failed
@@ -414,6 +427,14 @@ export async function POST(request: NextRequest) {
       success: false,
       provider: 'none',
       error: 'All AI providers failed or unavailable. Use client-side Tesseract fallback.',
+      debug: {
+        geminiKeyPresent: !!geminiKey,
+        togetherKeyPresent: !!togetherKey,
+        geminiCanUse: canUseProvider('gemini'),
+        togetherCanUse: canUseProvider('together'),
+        geminiError,
+        togetherError,
+      },
       latencyMs: Date.now() - startTime,
     });
   } catch (error: any) {
