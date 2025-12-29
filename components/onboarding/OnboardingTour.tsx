@@ -26,18 +26,16 @@ const GRADIENTS = {
     bg: 'from-purple-500 via-purple-600 to-orange-500',
     accent: '#9D7EE5',
     accentLight: '#b794f6',
-    accentDark: '#7c5bc4',
-    glow: 'rgba(157, 126, 229, 0.5)',
-    glowSoft: 'rgba(157, 126, 229, 0.2)',
+    glow: 'rgba(157, 126, 229, 0.6)',
+    glowSoft: 'rgba(157, 126, 229, 0.25)',
   },
   resident: {
     primary: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
     bg: 'from-red-500 via-orange-500 to-orange-400',
     accent: '#ee5736',
     accentLight: '#ff7a5c',
-    accentDark: '#c4432a',
-    glow: 'rgba(238, 87, 54, 0.5)',
-    glowSoft: 'rgba(238, 87, 54, 0.15)',
+    glow: 'rgba(238, 87, 54, 0.6)',
+    glowSoft: 'rgba(238, 87, 54, 0.25)',
   },
 };
 
@@ -139,7 +137,7 @@ export default function OnboardingTour({
     <AnimatePresence mode="wait">
       {isActive && (
         <>
-          {/* Premium glassmorphism overlay with noise texture */}
+          {/* Light frosted glass overlay - everything is "blinded" by light */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -147,97 +145,109 @@ export default function OnboardingTour({
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="fixed inset-0 z-[9997] pointer-events-none"
             style={{
-              background: 'rgba(10, 10, 15, 0.7)',
-              backdropFilter: 'blur(8px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(8px) saturate(150%)',
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(12px) saturate(120%) brightness(1.1)',
+              WebkitBackdropFilter: 'blur(12px) saturate(120%) brightness(1.1)',
             }}
           />
 
-          {/* Spotlight cutout layer - creates the "hole" effect */}
+          {/* Subtle light diffraction effect - prismatic shimmer */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.4 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[9998] pointer-events-none"
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-[9997] pointer-events-none"
             style={{
-              background: spotlightRect
-                ? `radial-gradient(ellipse ${spotlightRect.width + 60}px ${spotlightRect.height + 60}px at ${spotlightRect.centerX}px ${spotlightRect.centerY}px,
-                    transparent 0%,
-                    transparent 60%,
-                    rgba(10, 10, 15, 0.3) 80%,
-                    rgba(10, 10, 15, 0.85) 100%)`
-                : 'transparent',
+              background: `
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(255, 200, 150, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(255, 180, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 60% at 50% 80%, rgba(255, 220, 180, 0.12) 0%, transparent 50%)
+              `,
             }}
           />
 
-          {/* Ambient glow behind target - soft depth effect */}
+          {/* Clear cutout - the "window" through the frosted glass */}
           {spotlightRect && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{
-                duration: 0.5,
-                ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.1
-              }}
-              className="fixed z-[9998] pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9998] pointer-events-none"
               style={{
-                left: spotlightRect.left - 30,
-                top: spotlightRect.top - 30,
-                width: spotlightRect.width + 60,
-                height: spotlightRect.height + 60,
-                borderRadius: 28,
-                background: `radial-gradient(ellipse at center, ${colors.glowSoft} 0%, transparent 70%)`,
-                filter: 'blur(20px)',
+                background: `radial-gradient(ellipse ${spotlightRect.width + 40}px ${spotlightRect.height + 40}px at ${spotlightRect.centerX}px ${spotlightRect.centerY}px,
+                  transparent 0%,
+                  transparent 70%,
+                  rgba(255, 255, 255, 0.6) 85%,
+                  rgba(255, 255, 255, 0.95) 100%)`,
               }}
             />
           )}
 
-          {/* Outer glow ring - pulsing animation */}
+          {/* Soft ambient glow around target - warm light effect */}
+          {spotlightRect && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="fixed z-[9998] pointer-events-none"
+              style={{
+                left: spotlightRect.left - 20,
+                top: spotlightRect.top - 20,
+                width: spotlightRect.width + 40,
+                height: spotlightRect.height + 40,
+                borderRadius: 28,
+                background: `radial-gradient(ellipse at center, ${colors.glowSoft} 0%, transparent 70%)`,
+                filter: 'blur(15px)',
+              }}
+            />
+          )}
+
+          {/* Outer pulsing glow ring */}
           {spotlightRect && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{
-                opacity: [0.4, 0.7, 0.4],
-                scale: [1, 1.02, 1],
+                opacity: [0.5, 0.8, 0.5],
+                scale: [1, 1.015, 1],
               }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{
-                opacity: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
-                scale: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+                opacity: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+                scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
               }}
               className="fixed z-[9998] pointer-events-none"
               style={{
-                left: spotlightRect.left - 6,
-                top: spotlightRect.top - 6,
-                width: spotlightRect.width + 12,
-                height: spotlightRect.height + 12,
+                left: spotlightRect.left - 4,
+                top: spotlightRect.top - 4,
+                width: spotlightRect.width + 8,
+                height: spotlightRect.height + 8,
                 borderRadius: 22,
                 boxShadow: `
                   0 0 0 2px ${colors.glow},
-                  0 0 30px ${colors.glow},
-                  0 0 60px ${colors.glowSoft}
+                  0 0 20px ${colors.glow},
+                  0 0 40px ${colors.glowSoft}
                 `,
               }}
             />
           )}
 
-          {/* Main spotlight ring - clickable with premium styling */}
+          {/* Main spotlight frame - clickable, card-like with elevation */}
           {spotlightRect && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{
                 type: 'spring',
-                stiffness: 300,
-                damping: 25,
+                stiffness: 350,
+                damping: 28,
                 delay: 0.05
               }}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+              whileHover={{ scale: 1.008, y: -2 }}
+              whileTap={{ scale: 0.995 }}
               className="fixed z-[9999] cursor-pointer"
               onClick={isLastStep ? onComplete : onNext}
               style={{
@@ -246,17 +256,18 @@ export default function OnboardingTour({
                 width: spotlightRect.width,
                 height: spotlightRect.height,
                 borderRadius: 20,
-                background: 'transparent',
-                border: `2.5px solid ${colors.accent}`,
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: `2px solid ${colors.accent}`,
                 boxShadow: `
-                  inset 0 0 20px ${colors.glowSoft},
-                  0 4px 20px rgba(0, 0, 0, 0.15),
-                  0 8px 40px rgba(0, 0, 0, 0.1)
+                  0 8px 32px rgba(0, 0, 0, 0.08),
+                  0 16px 48px rgba(0, 0, 0, 0.06),
+                  0 2px 8px ${colors.glowSoft},
+                  inset 0 0 0 1px rgba(255, 255, 255, 0.5)
                 `,
               }}
               title="Cliquez pour continuer"
             >
-              {/* Inner shimmer gradient overlay */}
+              {/* Shimmer animation across the frame */}
               <motion.div
                 className="absolute inset-0 rounded-[18px] overflow-hidden"
                 initial={{ opacity: 0 }}
@@ -266,18 +277,15 @@ export default function OnboardingTour({
                 <motion.div
                   className="absolute inset-0"
                   animate={{
-                    background: [
-                      `linear-gradient(120deg, transparent 0%, ${colors.glowSoft} 50%, transparent 100%)`,
-                      `linear-gradient(120deg, transparent 100%, ${colors.glowSoft} 150%, transparent 200%)`,
-                    ],
                     backgroundPosition: ['-200% 0', '200% 0'],
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 2.5,
                     repeat: Infinity,
                     ease: 'linear',
                   }}
                   style={{
+                    background: `linear-gradient(120deg, transparent 30%, ${colors.glowSoft} 50%, transparent 70%)`,
                     backgroundSize: '200% 100%',
                   }}
                 />
@@ -286,19 +294,19 @@ export default function OnboardingTour({
               {/* Corner accent dots */}
               <div
                 className="absolute -top-1 -left-1 w-2 h-2 rounded-full"
-                style={{ background: colors.accent, boxShadow: `0 0 8px ${colors.glow}` }}
+                style={{ background: colors.accent, boxShadow: `0 0 6px ${colors.glow}` }}
               />
               <div
                 className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
-                style={{ background: colors.accent, boxShadow: `0 0 8px ${colors.glow}` }}
+                style={{ background: colors.accent, boxShadow: `0 0 6px ${colors.glow}` }}
               />
               <div
                 className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full"
-                style={{ background: colors.accent, boxShadow: `0 0 8px ${colors.glow}` }}
+                style={{ background: colors.accent, boxShadow: `0 0 6px ${colors.glow}` }}
               />
               <div
                 className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full"
-                style={{ background: colors.accent, boxShadow: `0 0 8px ${colors.glow}` }}
+                style={{ background: colors.accent, boxShadow: `0 0 6px ${colors.glow}` }}
               />
             </motion.div>
           )}
@@ -306,9 +314,9 @@ export default function OnboardingTour({
           {/* Premium Tooltip */}
           <motion.div
             ref={tooltipRef}
-            initial={{ opacity: 0, y: 16, scale: 0.92 }}
+            initial={{ opacity: 0, y: 12, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.95 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{
               type: 'spring',
               stiffness: 400,
@@ -324,16 +332,16 @@ export default function OnboardingTour({
             <div
               className="relative overflow-hidden"
               style={{
-                background: 'rgba(255, 255, 255, 0.95)',
+                background: 'rgba(255, 255, 255, 0.98)',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                 borderRadius: 20,
                 boxShadow: `
-                  0 4px 6px rgba(0, 0, 0, 0.05),
-                  0 10px 20px rgba(0, 0, 0, 0.08),
-                  0 20px 40px rgba(0, 0, 0, 0.1),
-                  0 0 0 1px rgba(255, 255, 255, 0.5),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.8)
+                  0 4px 6px rgba(0, 0, 0, 0.04),
+                  0 10px 24px rgba(0, 0, 0, 0.08),
+                  0 20px 48px rgba(0, 0, 0, 0.08),
+                  0 0 0 1px rgba(255, 255, 255, 0.8),
+                  inset 0 1px 0 rgba(255, 255, 255, 1)
                 `,
               }}
             >
@@ -342,19 +350,19 @@ export default function OnboardingTour({
                 className="relative p-5 text-white overflow-hidden"
                 style={{ background: colors.primary }}
               >
-                {/* Subtle noise texture overlay */}
+                {/* Subtle noise texture */}
                 <div
-                  className="absolute inset-0 opacity-[0.03]"
+                  className="absolute inset-0 opacity-[0.04]"
                   style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
                   }}
                 />
 
-                {/* Shine effect */}
+                {/* Shine overlay */}
                 <div
-                  className="absolute inset-0 opacity-20"
+                  className="absolute inset-0 opacity-25"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, transparent 100%)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 40%, transparent 100%)',
                   }}
                 />
 
@@ -396,7 +404,7 @@ export default function OnboardingTour({
                       initial={false}
                       animate={{
                         width: i === currentStep ? 28 : 8,
-                        opacity: i <= currentStep ? 1 : 0.4,
+                        opacity: i <= currentStep ? 1 : 0.35,
                       }}
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       className="h-2 rounded-full"
