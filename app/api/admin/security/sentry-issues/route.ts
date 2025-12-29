@@ -2,9 +2,10 @@
  * SENTRY ISSUES API
  *
  * Fetches issues from Sentry for the security dashboard.
+ * Supports pagination, sorting, and filtering.
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 
@@ -24,7 +25,26 @@ interface SentryIssue {
   permalink: string;
 }
 
-export async function GET() {
+// Parse Link header for pagination cursors
+function parseLinkHeader(linkHeader: string | null): { next?: string; prev?: string } {
+  if (!linkHeader) return {};
+
+  const links: { next?: string; prev?: string } = {};
+  const parts = linkHeader.split(',');
+
+  for (const part of parts) {
+    const match = part.match(/<[^>]*[?&]cursor=([^>&]+)[^>]*>;\s*rel="(\w+)"/);
+    if (match) {
+      const [, cursor, rel] = match;
+      if (rel === 'next') links.next = cursor;
+      if (rel === 'previous') links.prev = cursor;
+    }
+  }
+
+  return links;
+}
+
+export async function GET(request: NextRequest) {
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -77,7 +97,31 @@ export async function GET() {
       });
     }
 
-    const apiUrl = `${sentryApiBase}/api/0/projects/${sentryOrg}/${sentryProject}/issues/?query=is:unresolved&statsPeriod=14d`;
+    // Parse query parameters
+    const searchParams = request.nextUrl.searchParams;
+    const cursor = searchParams.get('cursor') || '';
+    const status = searchParams.get('status') || 'unresolved'; // unresolved, resolved, ignored, or empty for all
+    const sort = searchParams.get('sort') || 'date'; // date, new, priority, freq, user
+    const limit = Math.min(Number(searchParams.get('limit')) || 25, 100);
+
+    // Build query string for Sentry API
+    const queryParts: string[] = [];
+    if (status && status !== 'all') {
+      queryParts.push(`is:${status}`);
+    }
+
+    // Build API URL with parameters
+    const apiParams = new URLSearchParams();
+    if (queryParts.length > 0) {
+      apiParams.set('query', queryParts.join(' '));
+    }
+    apiParams.set('sort', sort);
+    apiParams.set('limit', limit.toString());
+    if (cursor) {
+      apiParams.set('cursor', cursor);
+    }
+
+    const apiUrl = `${sentryApiBase}/api/0/projects/${sentryOrg}/${sentryProject}/issues/?${apiParams.toString()}`;
     console.log('[SentryIssues] Fetching from:', apiUrl);
 
     const response = await fetch(
@@ -139,7 +183,11 @@ export async function GET() {
 
     const rawIssues = await response.json();
 
-    // Map to our format
+    // Parse pagination from Link header
+    const linkHeader = response.headers.get('Link');
+    const pagination = parseLinkHeader(linkHeader);
+
+    // Map to our format - IMPORTANT: Convert count/userCount to numbers!
     const issues: SentryIssue[] = rawIssues.map((issue: any) => ({
       id: issue.id,
       shortId: issue.shortId,
@@ -147,16 +195,28 @@ export async function GET() {
       culprit: issue.culprit || '',
       level: issue.level,
       status: issue.status,
-      count: issue.count || 0,
-      userCount: issue.userCount || 0,
+      count: Number(issue.count) || 0,
+      userCount: Number(issue.userCount) || 0,
       firstSeen: issue.firstSeen,
       lastSeen: issue.lastSeen,
       permalink: issue.permalink,
     }));
 
+    // Calculate totals
+    const totalEvents = issues.reduce((sum, issue) => sum + issue.count, 0);
+    const totalUsers = issues.reduce((sum, issue) => sum + issue.userCount, 0);
+
     return NextResponse.json({
       issues,
       total: issues.length,
+      totalEvents,
+      totalUsers,
+      pagination: {
+        hasNext: !!pagination.next,
+        hasPrev: !!pagination.prev,
+        nextCursor: pagination.next || null,
+        prevCursor: pagination.prev || null,
+      },
     });
   } catch (error) {
     console.error('[SentryIssues] Error:', error);

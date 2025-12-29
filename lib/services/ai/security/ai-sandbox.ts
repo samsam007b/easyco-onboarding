@@ -38,19 +38,49 @@ export const AI_SECURITY_CONFIG = {
 };
 
 /**
- * Sanitize an image by stripping all metadata
- * This removes EXIF data (GPS location, device info, etc.)
+ * Maximum image dimension for AI processing
+ * Larger images are resized to fit within this limit
+ */
+const MAX_IMAGE_DIMENSION = 1600; // Reduces file size while maintaining quality
+
+/**
+ * Target image quality for compression (0-1)
+ * Lower = smaller file size, 0.75-0.85 is good for receipts
+ */
+const IMAGE_QUALITY = 0.80;
+
+/**
+ * Maximum base64 size after compression (in bytes)
+ * ~2.5MB to stay well under the 4MB API body limit
+ */
+const MAX_BASE64_SIZE = 2.5 * 1024 * 1024;
+
+/**
+ * Sanitize and compress an image
+ * - Strips all metadata (EXIF data: GPS location, device info, etc.)
+ * - Resizes large images to reduce file size
+ * - Compresses to fit within API body limits
  */
 export async function sanitizeImage(imageBase64: string, mimeType: string): Promise<string> {
-  // Create a canvas to strip metadata
   return new Promise((resolve, reject) => {
     const img = new Image();
 
     img.onload = () => {
-      // Create canvas with same dimensions
+      // Calculate new dimensions if image is too large
+      let width = img.width;
+      let height = img.height;
+
+      if (width > MAX_IMAGE_DIMENSION || height > MAX_IMAGE_DIMENSION) {
+        const ratio = Math.min(MAX_IMAGE_DIMENSION / width, MAX_IMAGE_DIMENSION / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+        console.log(`[AI Sandbox] 📐 Resizing image from ${img.width}x${img.height} to ${width}x${height}`);
+      }
+
+      // Create canvas with new dimensions
       const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = width;
+      canvas.height = height;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) {
@@ -59,13 +89,26 @@ export async function sanitizeImage(imageBase64: string, mimeType: string): Prom
       }
 
       // Draw image (this strips all metadata)
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, width, height);
 
-      // Convert back to base64 (clean, no metadata)
-      const cleanDataUrl = canvas.toDataURL(mimeType, 0.92);
-      const cleanBase64 = cleanDataUrl.split(',')[1];
+      // Try compression at different quality levels
+      let quality = IMAGE_QUALITY;
+      let cleanBase64 = '';
 
-      console.log('[AI Sandbox] 🔒 Image sanitized - metadata stripped');
+      do {
+        const cleanDataUrl = canvas.toDataURL('image/jpeg', quality);
+        cleanBase64 = cleanDataUrl.split(',')[1];
+
+        if (cleanBase64.length > MAX_BASE64_SIZE && quality > 0.5) {
+          quality -= 0.1;
+          console.log(`[AI Sandbox] 🔄 Recompressing at quality ${quality.toFixed(2)} (size: ${Math.round(cleanBase64.length / 1024)}KB)`);
+        } else {
+          break;
+        }
+      } while (quality > 0.5);
+
+      const finalSizeKB = Math.round(cleanBase64.length / 1024);
+      console.log(`[AI Sandbox] 🔒 Image sanitized - ${finalSizeKB}KB, quality: ${quality.toFixed(2)}`);
       resolve(cleanBase64);
     };
 

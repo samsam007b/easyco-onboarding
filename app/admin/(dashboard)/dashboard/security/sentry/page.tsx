@@ -12,13 +12,18 @@ import {
   Info,
   Users,
   Activity,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
+  Clock,
+  TrendingUp,
+  Hash,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
-import { toast } from 'sonner';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 interface SentryIssue {
@@ -39,8 +44,16 @@ interface SentryIssue {
   };
 }
 
+interface Pagination {
+  hasNext: boolean;
+  hasPrev: boolean;
+  nextCursor: string | null;
+  prevCursor: string | null;
+}
+
 type LevelFilter = 'all' | 'error' | 'warning' | 'info';
 type StatusFilter = 'all' | 'unresolved' | 'resolved' | 'ignored';
+type SortOption = 'date' | 'new' | 'freq' | 'user' | 'priority';
 
 export default function SentryPage() {
   const [issues, setIssues] = useState<SentryIssue[]>([]);
@@ -48,14 +61,24 @@ export default function SentryPage() {
   const [error, setError] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('unresolved');
+  const [sortOption, setSortOption] = useState<SortOption>('date');
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [currentCursor, setCurrentCursor] = useState<string | null>(null);
+  const [totalEvents, setTotalEvents] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [pageHistory, setPageHistory] = useState<string[]>([]);
 
-  const loadIssues = useCallback(async () => {
+  const loadIssues = useCallback(async (cursor?: string | null, direction?: 'next' | 'prev') => {
     setIsLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({
-        status: statusFilter === 'all' ? '' : statusFilter,
-      });
+      const params = new URLSearchParams();
+      params.set('status', statusFilter === 'all' ? '' : statusFilter);
+      params.set('sort', sortOption);
+      params.set('limit', '25');
+      if (cursor) {
+        params.set('cursor', cursor);
+      }
 
       const response = await fetch(`/api/admin/security/sentry-issues?${params}`);
       const data = await response.json();
@@ -65,6 +88,18 @@ export default function SentryPage() {
         setIssues([]);
       } else {
         setIssues(data.issues || []);
+        setTotalEvents(data.totalEvents || 0);
+        setTotalUsers(data.totalUsers || 0);
+        setPagination(data.pagination || null);
+
+        // Track page history for "back" navigation
+        if (direction === 'next' && currentCursor !== null) {
+          setPageHistory(prev => [...prev, currentCursor]);
+        } else if (direction === 'prev') {
+          setPageHistory(prev => prev.slice(0, -1));
+        }
+        setCurrentCursor(cursor || null);
+
         if (data.error) {
           setError(data.error);
         }
@@ -75,11 +110,30 @@ export default function SentryPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [statusFilter]);
+  }, [statusFilter, sortOption, currentCursor]);
 
   useEffect(() => {
+    // Reset pagination when filters change
+    setCurrentCursor(null);
+    setPageHistory([]);
     loadIssues();
-  }, [loadIssues]);
+  }, [statusFilter, sortOption]);
+
+  const handleNextPage = () => {
+    if (pagination?.nextCursor) {
+      loadIssues(pagination.nextCursor, 'next');
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (pageHistory.length > 0) {
+      const prevCursor = pageHistory[pageHistory.length - 1];
+      loadIssues(prevCursor || null, 'prev');
+    } else if (currentCursor) {
+      // Go back to first page
+      loadIssues(null, 'prev');
+    }
+  };
 
   const getLevelIcon = (level: string) => {
     switch (level) {
@@ -103,13 +157,17 @@ export default function SentryPage() {
     }
   };
 
-  // Filter by level
+  // Filter by level (client-side)
   const filteredIssues = levelFilter === 'all'
     ? issues
     : issues.filter(issue => issue.level === levelFilter);
 
-  const totalEvents = issues.reduce((sum, issue) => sum + issue.count, 0);
-  const totalUsers = issues.reduce((sum, issue) => sum + issue.userCount, 0);
+  // Format large numbers
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
+    return num.toString();
+  };
 
   const levelFilters: { key: LevelFilter; label: string }[] = [
     { key: 'all', label: 'Tous' },
@@ -124,6 +182,30 @@ export default function SentryPage() {
     { key: 'ignored', label: 'Ignorees' },
     { key: 'all', label: 'Toutes' },
   ];
+
+  const sortOptions: { key: SortOption; label: string; icon: typeof Clock }[] = [
+    { key: 'date', label: 'Derniere activite', icon: Clock },
+    { key: 'new', label: 'Plus recents', icon: Clock },
+    { key: 'freq', label: 'Plus frequents', icon: TrendingUp },
+    { key: 'user', label: 'Plus d\'utilisateurs', icon: Users },
+    { key: 'priority', label: 'Priorite', icon: AlertTriangle },
+  ];
+
+  // Group issues by culprit (page/route) for analytics
+  const issuesByCulprit = issues.reduce((acc, issue) => {
+    const culprit = issue.culprit || 'Unknown';
+    if (!acc[culprit]) {
+      acc[culprit] = { count: 0, events: 0, users: 0 };
+    }
+    acc[culprit].count++;
+    acc[culprit].events += issue.count;
+    acc[culprit].users += issue.userCount;
+    return acc;
+  }, {} as Record<string, { count: number; events: number; users: number }>);
+
+  const topCulprits = Object.entries(issuesByCulprit)
+    .sort((a, b) => b[1].events - a[1].events)
+    .slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -159,7 +241,7 @@ export default function SentryPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={loadIssues}
+            onClick={() => loadIssues()}
             disabled={isLoading}
             className="gap-2"
           >
@@ -173,10 +255,10 @@ export default function SentryPage() {
       <div className="grid grid-cols-3 gap-4">
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-purple-500/10">
+            <div className="p-3 rounded-lg bg-purple-500/10 shrink-0">
               <Bug className="w-6 h-6 text-purple-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm text-slate-400">Issues</p>
               <p className="text-2xl font-bold text-purple-400">{issues.length}</p>
             </div>
@@ -184,27 +266,57 @@ export default function SentryPage() {
         </Card>
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-orange-500/10">
+            <div className="p-3 rounded-lg bg-orange-500/10 shrink-0">
               <Activity className="w-6 h-6 text-orange-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm text-slate-400">Evenements</p>
-              <p className="text-2xl font-bold text-orange-400">{totalEvents}</p>
+              <p className="text-2xl font-bold text-orange-400 truncate" title={totalEvents.toLocaleString('fr-FR')}>
+                {formatNumber(totalEvents)}
+              </p>
             </div>
           </CardContent>
         </Card>
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-blue-500/10">
+            <div className="p-3 rounded-lg bg-blue-500/10 shrink-0">
               <Users className="w-6 h-6 text-blue-400" />
             </div>
-            <div>
-              <p className="text-sm text-slate-400">Utilisateurs affectes</p>
-              <p className="text-2xl font-bold text-blue-400">{totalUsers}</p>
+            <div className="min-w-0">
+              <p className="text-sm text-slate-400">Utilisateurs</p>
+              <p className="text-2xl font-bold text-blue-400 truncate" title={totalUsers.toLocaleString('fr-FR')}>
+                {formatNumber(totalUsers)}
+              </p>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Top affected pages */}
+      {topCulprits.length > 0 && (
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardContent className="p-4">
+            <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-orange-400" />
+              Pages les plus affectees
+            </h3>
+            <div className="space-y-2">
+              {topCulprits.map(([culprit, stats], index) => (
+                <div key={culprit} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="text-slate-500 w-4">{index + 1}.</span>
+                    <span className="text-slate-300 truncate" title={culprit}>{culprit}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-slate-400 shrink-0">
+                    <span>{stats.count} issues</span>
+                    <span>{formatNumber(stats.events)} evt</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Filters */}
       <Card className="bg-slate-800/50 border-slate-700">
@@ -254,6 +366,23 @@ export default function SentryPage() {
                   </Button>
                 ))}
               </div>
+            </div>
+
+            {/* Sort Options */}
+            <div className="flex items-center gap-2 ml-auto">
+              <ArrowUpDown className="w-4 h-4 text-slate-400" />
+              <span className="text-sm text-slate-400">Trier:</span>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value as SortOption)}
+                className="bg-slate-700 text-white text-xs rounded px-2 py-1 border border-slate-600 focus:outline-none focus:border-purple-500"
+              >
+                {sortOptions.map((opt) => (
+                  <option key={opt.key} value={opt.key}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </CardContent>
@@ -352,11 +481,42 @@ export default function SentryPage() {
         </CardContent>
       </Card>
 
+      {/* Pagination */}
+      {(pagination?.hasNext || currentCursor) && (
+        <div className="flex items-center justify-between">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrevPage}
+            disabled={isLoading || (!currentCursor && pageHistory.length === 0)}
+            className="gap-2"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Page precedente
+          </Button>
+
+          <span className="text-sm text-slate-400">
+            Page {pageHistory.length + 1}
+          </span>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNextPage}
+            disabled={isLoading || !pagination?.hasNext}
+            className="gap-2"
+          >
+            Page suivante
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+      )}
+
       {/* Sentry Link */}
       {issues.length > 0 && (
         <div className="text-center">
           <a
-            href="https://easyco-6g.sentry.io/issues/"
+            href="https://izzico-6g.sentry.io/issues/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 text-sm"

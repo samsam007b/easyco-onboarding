@@ -41,6 +41,7 @@ export default function InvitePage() {
   const [selectedRole, setSelectedRole] = useState<InvitedRole>('resident');
   const [inviteToken, setInviteToken] = useState<string | null>(null);
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
+  const [inviterName, setInviterName] = useState<string>('');
 
   useEffect(() => {
     loadPropertyInfo();
@@ -68,6 +69,19 @@ export default function InvitePage() {
       }
 
       setPropertyId(membership.property_id);
+
+      // Get current user's profile for inviter name
+      const { data: userProfile } = await supabase
+        .from('user_profiles')
+        .select('first_name, last_name')
+        .eq('id', user.id)
+        .single();
+
+      setInviterName(
+        userProfile?.first_name
+          ? `${userProfile.first_name}${userProfile.last_name ? ' ' + userProfile.last_name : ''}`
+          : 'Un colocataire'
+      );
 
       // Get property details
       const { data: property } = await supabase
@@ -103,10 +117,10 @@ export default function InvitePage() {
 
     setIsGenerating(true);
     try {
-      const response = await createInvitation({
-        property_id: propertyId,
-        invited_role: selectedRole
-      });
+      const response = await createInvitation(
+        propertyId,
+        selectedRole
+      );
 
       if (response.success && response.token) {
         setInviteToken(response.token);
@@ -142,7 +156,7 @@ export default function InvitePage() {
 
   const handleShareEmail = () => {
     if (inviteUrl) {
-      shareViaEmail(inviteUrl, propertyName, selectedRole);
+      shareViaEmail(inviteUrl, propertyName, inviterName, selectedRole);
     }
   };
 

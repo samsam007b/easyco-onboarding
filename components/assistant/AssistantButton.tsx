@@ -162,7 +162,7 @@ export default function AssistantButton() {
         transition={{ delay: 1, type: 'spring', stiffness: 200 }}
         onClick={() => setIsOpen(true)}
         className={cn(
-          'fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full shadow-lg',
+          'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg',
           'bg-gradient-to-br from-purple-600 to-indigo-600',
           'hover:from-purple-700 hover:to-indigo-700',
           'flex items-center justify-center',
@@ -196,7 +196,7 @@ export default function AssistantButton() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className={cn(
-              'fixed bottom-6 left-6 z-50',
+              'fixed bottom-6 right-6 z-50',
               'w-[380px] h-[600px] max-h-[80vh]',
               'bg-white rounded-2xl shadow-2xl',
               'flex flex-col overflow-hidden',
