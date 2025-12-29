@@ -98,7 +98,7 @@ export default function GettingStartedChecklist({
           <Trophy className="w-8 h-8 text-white" />
         </motion.div>
         <h3 className="text-lg font-bold text-gray-900 mb-1">
-          Bravo, tu es prêt(e) ! 🎉
+          Bravo, tu es prêt(e) !
         </h3>
         <p className="text-sm text-gray-600">
           Tu as complété toutes les étapes de démarrage.

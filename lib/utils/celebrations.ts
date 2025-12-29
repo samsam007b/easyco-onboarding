@@ -100,7 +100,6 @@ export function showToast(
       toast.success(message, {
         duration: duration || 5000,
         description,
-        icon: '🏆',
       });
       if (!withConfetti) {
         fireConfetti('sides');
@@ -123,7 +122,7 @@ export const celebrateToast = {
 
   // Profile completed
   profileComplete: () => {
-    showToast('achievement', 'Profil complété ! 🎉', {
+    showToast('achievement', 'Profil complété', {
       withConfetti: true,
       confettiType: 'sides',
       description: 'Tu es maintenant visible par les autres utilisateurs',
@@ -132,7 +131,7 @@ export const celebrateToast = {
 
   // First match
   firstMatch: () => {
-    showToast('achievement', 'Premier match ! 💜', {
+    showToast('achievement', 'Premier match', {
       withConfetti: true,
       confettiType: 'stars',
       description: 'Quelqu\'un est intéressé par ton profil',
@@ -141,7 +140,7 @@ export const celebrateToast = {
 
   // Application sent
   applicationSent: () => {
-    showToast('success', 'Candidature envoyée ✓', {
+    showToast('success', 'Candidature envoyée', {
       withConfetti: true,
       confettiType: 'burst',
       description: 'Les colocataires ont été notifiés',
@@ -150,24 +149,24 @@ export const celebrateToast = {
 
   // Message sent
   messageSent: () => {
-    toast.success('Message envoyé ✓');
+    toast.success('Message envoyé');
   },
 
   // Search saved
   searchSaved: () => {
-    showToast('success', 'Recherche sauvegardée ✓', {
+    showToast('success', 'Recherche sauvegardée', {
       description: 'Tu recevras des alertes pour les nouvelles colocs',
     });
   },
 
   // Favorite added
   favoriteAdded: (name?: string) => {
-    toast.success(name ? `${name} ajouté aux favoris ❤️` : 'Ajouté aux favoris ❤️');
+    toast.success(name ? `${name} ajouté aux favoris` : 'Ajouté aux favoris');
   },
 
   // Visit scheduled
   visitScheduled: () => {
-    showToast('success', 'Visite programmée ✓', {
+    showToast('success', 'Visite programmée', {
       withConfetti: true,
       description: 'Un rappel te sera envoyé avant la visite',
     });
@@ -175,7 +174,7 @@ export const celebrateToast = {
 
   // Welcome new user
   welcome: (firstName?: string) => {
-    const message = firstName ? `Bienvenue ${firstName} ! 👋` : 'Bienvenue ! 👋';
+    const message = firstName ? `Bienvenue ${firstName}` : 'Bienvenue';
     showToast('success', message, {
       withConfetti: true,
       confettiType: 'stars',
@@ -185,12 +184,12 @@ export const celebrateToast = {
 
   // Onboarding step completed
   stepComplete: (stepName: string) => {
-    toast.success(`${stepName} ✓`, { duration: 2000 });
+    toast.success(stepName, { duration: 2000 });
   },
 
   // All checklist items done
   checklistComplete: () => {
-    showToast('achievement', 'Toutes les étapes complétées ! 🚀', {
+    showToast('achievement', 'Toutes les étapes complétées', {
       withConfetti: true,
       confettiType: 'sides',
       description: 'Tu maîtrises maintenant l\'application',
