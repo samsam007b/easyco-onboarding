@@ -217,7 +217,7 @@ export function getSafestProvider(
   usage: Record<AIProvider, { used: number; limit: number }>
 ): AIProvider | null {
   // Providers in order of preference for vision
-  const visionProviders: AIProvider[] = ['gemini', 'together', 'tesseract'];
+  const visionProviders: AIProvider[] = ['gemini', 'vision+gemini', 'tesseract'];
 
   for (const provider of visionProviders) {
     const stats = usage[provider];

@@ -8,5 +8,4 @@ export * from './types';
 
 // Provider exports (for advanced usage)
 export { GeminiProvider } from './providers/gemini';
-export { TogetherProvider } from './providers/together';
 export { GroqProvider } from './providers/groq';

@@ -131,15 +131,18 @@ export default function AssistantButton() {
     transport: new DefaultChatTransport({
       api: '/api/assistant/chat',
     }),
-    onFinish: (message) => {
+    onFinish: (result) => {
       setHasNewMessage(true);
-      // Save assistant message
-      if (message.parts) {
-        const text = message.parts
-          .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
-          .map(part => part.text)
+      // Save assistant message - extract text from the message
+      const msg = result.message;
+      if ('parts' in msg && Array.isArray(msg.parts)) {
+        const text = msg.parts
+          .filter((part: any): part is { type: 'text'; text: string } => part.type === 'text')
+          .map((part: { type: 'text'; text: string }) => part.text)
           .join('');
         saveMessage(text, 'assistant');
+      } else if ('content' in msg && typeof msg.content === 'string') {
+        saveMessage(msg.content, 'assistant');
       }
       // Show feedback prompt after a few messages
       if (messages.length >= 3 && !feedbackSubmitted) {
