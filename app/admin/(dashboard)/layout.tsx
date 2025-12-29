@@ -43,14 +43,18 @@ export default async function AdminDashboardLayout({
   const { user, role } = await checkAdminAccess();
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <AdminSidebar userEmail={user.email || ''} userRole={role} />
-      <div className="lg:pl-72">
-        <AdminHeader userEmail={user.email || ''} userRole={role} />
-        <main className="p-6">
-          {children}
-        </main>
+    <>
+      {/* Prevent white flash on scroll bounce (macOS/iOS) */}
+      <style>{`html, body { background-color: #0f172a !important; }`}</style>
+      <div className="min-h-screen bg-slate-900">
+        <AdminSidebar userEmail={user.email || ''} userRole={role} />
+        <div className="lg:pl-72">
+          <AdminHeader userEmail={user.email || ''} userRole={role} />
+          <main className="p-6 pb-24">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

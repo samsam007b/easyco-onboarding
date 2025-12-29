@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useSecurityRealtime } from '@/lib/hooks/use-security-realtime';
 import { RealtimeStats } from './realtime-stats';
 import { RealtimeAlerts } from './realtime-alerts';
@@ -8,7 +9,9 @@ import { SecurityAuditLogs } from './security-audit-logs';
 import { NotificationHistory } from './notification-history';
 import { Error404List } from './error-404-list';
 import { SentryIssues } from './sentry-issues';
-import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle, ExternalLink, FileText } from 'lucide-react';
+import { SecurityMaturityDashboard } from './security-maturity-dashboard';
+import { RefreshCw, Shield, Lock, Zap, Server, Globe, Bug, Activity, AlertTriangle, ExternalLink, FileText, Layers, BarChart3 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -63,6 +66,7 @@ export function SecurityDashboardClient({
   initialRoutes,
 }: SecurityDashboardClientProps) {
   const { stats, recentErrors, activeAlerts, isConnected, refresh } = useSecurityRealtime(initialStats);
+  const [activeTab, setActiveTab] = useState('maturity');
 
   return (
     <div className="space-y-6">
@@ -73,7 +77,7 @@ export function SecurityDashboardClient({
             <Shield className="w-7 h-7 text-emerald-400" />
             Security Center
           </h1>
-          <p className="text-slate-400 mt-1">Monitoring temps reel</p>
+          <p className="text-slate-400 mt-1">Monitoring et maturité sécurité</p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/admin/dashboard/security/report">
@@ -94,8 +98,28 @@ export function SecurityDashboardClient({
         </div>
       </div>
 
-      {/* Real-time Stats */}
-      <RealtimeStats stats={stats} isConnected={isConnected} />
+      {/* Tab Navigation */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2 bg-slate-800/50">
+          <TabsTrigger value="maturity" className="gap-2 data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400">
+            <Layers className="w-4 h-4" />
+            Maturité 360°
+          </TabsTrigger>
+          <TabsTrigger value="monitoring" className="gap-2 data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
+            <BarChart3 className="w-4 h-4" />
+            Monitoring
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Maturity Dashboard Tab */}
+        <TabsContent value="maturity" className="mt-6">
+          <SecurityMaturityDashboard />
+        </TabsContent>
+
+        {/* Monitoring Tab */}
+        <TabsContent value="monitoring" className="mt-6 space-y-6">
+          {/* Real-time Stats */}
+          <RealtimeStats stats={stats} isConnected={isConnected} />
 
       {/* Score + Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -300,6 +324,8 @@ export function SecurityDashboardClient({
           <SecurityAuditLogs maxLogs={8} />
         </Link>
       </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
