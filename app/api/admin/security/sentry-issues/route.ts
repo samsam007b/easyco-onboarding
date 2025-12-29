@@ -77,7 +77,7 @@ export async function GET() {
       });
     }
 
-    const apiUrl = `${sentryApiBase}/api/0/projects/${sentryOrg}/${sentryProject}/issues/?query=is:unresolved&statsPeriod=30d`;
+    const apiUrl = `${sentryApiBase}/api/0/projects/${sentryOrg}/${sentryProject}/issues/?query=is:unresolved&statsPeriod=14d`;
     console.log('[SentryIssues] Fetching from:', apiUrl);
 
     const response = await fetch(
