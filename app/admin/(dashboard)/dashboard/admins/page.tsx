@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/auth/supabase-server';
+import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { redirect } from 'next/navigation';
 import {
   Shield,
@@ -28,9 +29,10 @@ async function checkSuperAdmin() {
 }
 
 async function getAdmins() {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS - user is already verified as super_admin
+  const adminClient = getAdminClient();
 
-  const { data: admins, error } = await supabase
+  const { data: admins, error } = await adminClient
     .from('admins')
     .select(`
       id,
