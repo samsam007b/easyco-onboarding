@@ -54,19 +54,34 @@ export async function GET() {
 
     // Fetch issues from Sentry API
     const sentryToken = process.env.SENTRY_AUTH_TOKEN_READ;
-    const sentryOrg = process.env.SENTRY_ORG || 'easyco-6g';
-    const sentryProject = process.env.SENTRY_PROJECT || 'easyco-onboarding';
+    const sentryOrg = process.env.SENTRY_ORG;
+    const sentryProject = process.env.SENTRY_PROJECT;
+    // Detect region from DSN (de.sentry.io = EU, sentry.io = US)
+    const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN || '';
+    const isEuRegion = sentryDsn.includes('.de.sentry.io');
+    const sentryApiBase = isEuRegion ? 'https://de.sentry.io' : 'https://sentry.io';
 
     if (!sentryToken) {
       return NextResponse.json({
         issues: [],
-        error: 'Sentry not configured',
+        error: 'SENTRY_AUTH_TOKEN_READ not configured',
         total: 0,
       });
     }
 
+    if (!sentryOrg || !sentryProject) {
+      return NextResponse.json({
+        issues: [],
+        error: 'SENTRY_ORG and SENTRY_PROJECT must be configured',
+        total: 0,
+      });
+    }
+
+    const apiUrl = `${sentryApiBase}/api/0/projects/${sentryOrg}/${sentryProject}/issues/?query=is:unresolved&statsPeriod=30d`;
+    console.log('[SentryIssues] Fetching from:', apiUrl);
+
     const response = await fetch(
-      `https://sentry.io/api/0/projects/${sentryOrg}/${sentryProject}/issues/?query=is:unresolved&statsPeriod=30d`,
+      apiUrl,
       {
         headers: {
           'Authorization': `Bearer ${sentryToken}`,
@@ -76,10 +91,34 @@ export async function GET() {
     );
 
     if (!response.ok) {
-      console.error('[SentryIssues] Sentry API error:', response.statusText);
+      const errorBody = await response.text();
+      console.error('[SentryIssues] Sentry API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: apiUrl,
+        body: errorBody,
+      });
+
+      // Provide more helpful error messages
+      let errorMessage = `Sentry API error: ${response.statusText}`;
+      if (response.status === 404) {
+        errorMessage = `Project not found. Verify SENTRY_ORG (${sentryOrg}) and SENTRY_PROJECT (${sentryProject}) are correct`;
+      } else if (response.status === 401) {
+        errorMessage = 'Invalid token. Check SENTRY_AUTH_TOKEN_READ permissions';
+      } else if (response.status === 403) {
+        errorMessage = 'Token does not have access to this project';
+      }
+
       return NextResponse.json({
         issues: [],
-        error: `Sentry API error: ${response.statusText}`,
+        error: errorMessage,
+        debug: {
+          apiUrl,
+          status: response.status,
+          org: sentryOrg,
+          project: sentryProject,
+          region: isEuRegion ? 'EU' : 'US',
+        },
         total: 0,
       });
     }

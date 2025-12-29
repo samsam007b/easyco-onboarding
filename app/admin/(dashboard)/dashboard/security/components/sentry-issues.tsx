@@ -26,6 +26,7 @@ export function SentryIssues() {
   const [issues, setIssues] = useState<SentryIssue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [debug, setDebug] = useState<{ org?: string; project?: string; region?: string; apiUrl?: string } | null>(null);
 
   const fetchIssues = async () => {
     setLoading(true);
@@ -35,9 +36,11 @@ export function SentryIssues() {
 
       if (data.error && !data.issues) {
         setError(data.error);
+        setDebug(data.debug || null);
       } else {
         setIssues(data.issues || []);
         setError(data.error || null);
+        setDebug(null);
       }
     } catch (err) {
       setError('Failed to fetch Sentry issues');
@@ -103,9 +106,19 @@ export function SentryIssues() {
           <div className="text-center py-8">
             <AlertTriangle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
             <p className="text-slate-400 text-sm">{error}</p>
-            <p className="text-slate-500 text-xs mt-1">
-              Configurez SENTRY_AUTH_TOKEN_READ dans .env
-            </p>
+            {debug && (
+              <div className="mt-3 text-left bg-slate-900/50 rounded p-3 text-xs font-mono">
+                <p className="text-slate-500">Debug info:</p>
+                <p className="text-slate-400">Org: {debug.org || 'not set'}</p>
+                <p className="text-slate-400">Project: {debug.project || 'not set'}</p>
+                <p className="text-slate-400">Region: {debug.region || 'unknown'}</p>
+              </div>
+            )}
+            {!debug && (
+              <p className="text-slate-500 text-xs mt-1">
+                Configurez SENTRY_AUTH_TOKEN_READ dans les variables d&apos;environnement
+              </p>
+            )}
           </div>
         ) : issues.length === 0 ? (
           <div className="text-center py-8">
@@ -161,7 +174,7 @@ export function SentryIssues() {
 
             {issues.length > 10 && (
               <a
-                href="https://easyco-6g.sentry.io/issues/"
+                href="https://izzico-6g.sentry.io/issues/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center text-purple-400 hover:text-purple-300 text-sm py-2"
