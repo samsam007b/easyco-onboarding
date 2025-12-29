@@ -41,8 +41,8 @@ interface SuggestedAction {
 const suggestedActions: SuggestedAction[] = [
   {
     icon: HelpCircle,
-    label: 'Comment \u00e7a marche ?',
-    prompt: 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalit\u00e9s principales.',
+    label: 'Comment ça marche ?',
+    prompt: 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalités principales.',
   },
   {
     icon: Search,
@@ -52,12 +52,12 @@ const suggestedActions: SuggestedAction[] = [
   {
     icon: Filter,
     label: 'Configurer mes filtres',
-    prompt: 'Aide-moi \u00e0 configurer mes filtres de recherche pour trouver le logement id\u00e9al.',
+    prompt: 'Aide-moi à configurer mes filtres de recherche pour trouver le logement idéal.',
   },
   {
     icon: Settings,
-    label: 'Param\u00e8tres',
-    prompt: 'Comment modifier mes param\u00e8tres de notification et de confidentialit\u00e9 ?',
+    label: 'Paramètres',
+    prompt: 'Comment modifier mes paramètres de notification et de confidentialité ?',
   },
 ];
 
@@ -65,19 +65,19 @@ const suggestedActions: SuggestedAction[] = [
 const feedbackPrompts = [
   {
     icon: Lightbulb,
-    label: 'Une id\u00e9e ?',
+    label: 'Une idée ?',
     type: 'suggestion' as const,
     color: 'from-amber-500 to-orange-500',
   },
   {
     icon: Bug,
-    label: 'Un probl\u00e8me ?',
+    label: 'Un problème ?',
     type: 'bug' as const,
     color: 'from-red-500 to-pink-500',
   },
   {
     icon: Zap,
-    label: 'Am\u00e9lioration ?',
+    label: 'Amélioration ?',
     type: 'improvement' as const,
     color: 'from-blue-500 to-cyan-500',
   },
@@ -327,7 +327,7 @@ export default function AssistantButton() {
                 <div>
                   <h3 className="text-white font-semibold">Assistant IzzIco</h3>
                   <p className="text-white/80 text-xs">
-                    {pathname ? `Page: ${pathname.split('/').pop() || 'accueil'}` : 'Je suis l\u00e0 pour vous aider'}
+                    {pathname ? `Page: ${pathname.split('/').pop() || 'accueil'}` : 'Je suis là pour vous aider'}
                   </p>
                 </div>
               </div>
@@ -352,12 +352,12 @@ export default function AssistantButton() {
                     <div className="flex-1">
                       <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm">
                         <p className="text-gray-800 text-sm">
-                          Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider \u00e0 :
+                          Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider à :
                         </p>
                         <ul className="mt-2 space-y-1 text-sm text-gray-600">
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Comprendre les fonctionnalit\u00e9s
+                            Comprendre les fonctionnalités
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
@@ -369,7 +369,7 @@ export default function AssistantButton() {
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Modifier vos param\u00e8tres
+                            Modifier vos paramètres
                           </li>
                         </ul>
                       </div>
@@ -381,7 +381,7 @@ export default function AssistantButton() {
                           <span className="text-xs font-medium">Votre avis compte !</span>
                         </div>
                         <p className="text-xs text-amber-600 mt-1">
-                          N'h\u00e9sitez pas \u00e0 me partager vos id\u00e9es d'am\u00e9lioration ou les fonctionnalit\u00e9s que vous aimeriez voir.
+                          N'hésitez pas à me partager vos idées d'amélioration ou les fonctionnalités que vous aimeriez voir.
                         </p>
                       </div>
                     </div>
@@ -407,7 +407,7 @@ export default function AssistantButton() {
                     className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl hover:from-amber-600 hover:to-orange-600 transition font-medium text-sm"
                   >
                     <MessageSquarePlus className="w-4 h-4" />
-                    Proposer une id\u00e9e ou am\u00e9lioration
+                    Proposer une idée ou amélioration
                   </button>
                 </div>
               )}
@@ -457,7 +457,7 @@ export default function AssistantButton() {
                   <div className="bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
-                      <span className="text-sm text-gray-500">R\u00e9flexion en cours...</span>
+                      <span className="text-sm text-gray-500">Réflexion en cours...</span>
                     </div>
                   </div>
                 </div>
@@ -472,7 +472,7 @@ export default function AssistantButton() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-5 h-5 text-purple-600" />
-                    <span className="font-medium text-gray-900">Action sugg\u00e9r\u00e9e</span>
+                    <span className="font-medium text-gray-900">Action suggérée</span>
                   </div>
                   <p className="text-sm text-gray-700 mb-3">{pendingAction.message}</p>
                   <div className="flex gap-2">
@@ -481,7 +481,7 @@ export default function AssistantButton() {
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition text-sm"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Ex\u00e9cuter
+                      Exécuter
                     </button>
                     <button
                       onClick={() => setPendingAction(null)}
@@ -502,7 +502,7 @@ export default function AssistantButton() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Heart className="w-5 h-5 text-pink-500" />
-                    <span className="font-medium text-gray-900">Votre avis nous int\u00e9resse !</span>
+                    <span className="font-medium text-gray-900">Votre avis nous intéresse !</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {feedbackPrompts.map((prompt, index) => (
@@ -541,7 +541,7 @@ export default function AssistantButton() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
                 >
-                  <p className="text-sm font-medium text-gray-900 mb-3">Comment \u00e9valuez-vous cette conversation ?</p>
+                  <p className="text-sm font-medium text-gray-900 mb-3">Comment évaluez-vous cette conversation ?</p>
                   <div className="flex justify-center gap-2 mb-3">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -598,14 +598,14 @@ export default function AssistantButton() {
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
                 >
                   <p className="text-sm font-medium text-gray-900 mb-3">
-                    Partagez votre id\u00e9e ou suggestion !
+                    Partagez votre idée ou suggestion !
                   </p>
 
                   {/* Category selector */}
                   <div className="flex flex-wrap gap-2 mb-3">
                     {[
-                      { value: 'new_feature', label: 'Nouvelle fonctionnalit\u00e9', icon: Sparkles },
-                      { value: 'improvement', label: 'Am\u00e9lioration', icon: Zap },
+                      { value: 'new_feature', label: 'Nouvelle fonctionnalité', icon: Sparkles },
+                      { value: 'improvement', label: 'Amélioration', icon: Zap },
                       { value: 'ui_ux', label: 'Design/UX', icon: Heart },
                       { value: 'other', label: 'Autre', icon: MessageCircle },
                     ].map((cat) => (
@@ -628,7 +628,7 @@ export default function AssistantButton() {
                   <textarea
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
-                    placeholder="D\u00e9crivez votre id\u00e9e en d\u00e9tail... Que souhaiteriez-vous voir dans l'application ?"
+                    placeholder="Décrivez votre idée en détail... Que souhaiteriez-vous voir dans l'application ?"
                     className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
                     rows={4}
                   />
@@ -668,7 +668,7 @@ export default function AssistantButton() {
                   </div>
                   <p className="font-medium text-green-800">Merci pour votre retour !</p>
                   <p className="text-sm text-green-600 mt-1">
-                    Votre avis nous aide \u00e0 am\u00e9liorer IzzIco.
+                    Votre avis nous aide à améliorer IzzIco.
                   </p>
                 </motion.div>
               )}
@@ -684,7 +684,7 @@ export default function AssistantButton() {
                   type="text"
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Posez votre question ou partagez une id\u00e9e..."
+                  placeholder="Posez votre question ou partagez une idée..."
                   className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
                   disabled={isLoading || feedbackMode !== 'none'}
                 />
@@ -710,12 +710,12 @@ export default function AssistantButton() {
                   className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition"
                 >
                   <Lightbulb className="w-3 h-3" />
-                  Une id\u00e9e d'am\u00e9lioration ?
+                  Une idée d'amélioration ?
                 </button>
               )}
 
               <p className="mt-2 text-xs text-gray-400 text-center">
-                Propuls\u00e9 par IA \u2022 Vos retours am\u00e9liorent IzzIco
+                Propulsé par IA • Vos retours améliorent IzzIco
               </p>
             </form>
           </motion.div>
