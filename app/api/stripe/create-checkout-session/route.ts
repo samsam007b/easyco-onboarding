@@ -41,28 +41,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user's email and full name
-    const { data: userData } = await supabase
-      .from('users')
-      .select('email, first_name, last_name')
-      .eq('id', user.id)
-      .single();
-
-    if (!userData?.email) {
+    // Get user's email from auth (always available)
+    const userEmail = user.email;
+    if (!userEmail) {
       return NextResponse.json(
         { error: 'User email not found' },
         { status: 400 }
       );
     }
 
+    // Get user's full name from user_profiles (optional)
+    const { data: profileData } = await supabase
+      .from('user_profiles')
+      .select('first_name, last_name')
+      .eq('user_id', user.id)
+      .single();
+
     // Get or create Stripe customer
-    const customerName = userData.first_name && userData.last_name
-      ? `${userData.first_name} ${userData.last_name}`
+    const customerName = profileData?.first_name && profileData?.last_name
+      ? `${profileData.first_name} ${profileData.last_name}`
       : undefined;
 
     const customerId = await getOrCreateStripeCustomer(
       user.id,
-      userData.email,
+      userEmail,
       customerName
     );
 
