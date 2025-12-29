@@ -176,12 +176,7 @@ export async function getUserResidenceInfo(userId: string): Promise<{
         properties (
           id,
           title,
-          owner_id,
-          users:owner_id (
-            id,
-            full_name,
-            avatar_url
-          )
+          owner_id
         )
       `)
       .eq('user_id', userId)
@@ -195,34 +190,52 @@ export async function getUserResidenceInfo(userId: string): Promise<{
     const property = (membership as any).properties;
     if (!property) return null;
 
-    // Get other residents
+    // Get owner info separately
+    let ownerName: string | null = null;
+    if (property.owner_id) {
+      const { data: ownerProfile } = await supabase
+        .from('user_profiles')
+        .select('first_name, last_name')
+        .eq('id', property.owner_id)
+        .single();
+
+      if (ownerProfile) {
+        ownerName = [ownerProfile.first_name, ownerProfile.last_name]
+          .filter(Boolean)
+          .join(' ') || null;
+      }
+    }
+
+    // Get other residents with their profiles
     const { data: otherMembers } = await supabase
       .from('property_members')
       .select(`
         user_id,
-        users:user_id (
+        user_profiles (
           id,
-          full_name,
-          avatar_url
+          first_name,
+          last_name,
+          profile_photo_url
         )
       `)
       .eq('property_id', membership.property_id)
       .eq('status', 'active')
       .neq('user_id', userId);
 
-    const residents = (otherMembers || []).map((m: any) => ({
-      id: m.users?.id,
-      name: m.users?.full_name || 'Résident',
-      photo: m.users?.avatar_url,
-    })).filter((r: any) => r.id);
-
-    const owner = property.users;
+    const residents = (otherMembers || []).map((m: any) => {
+      const profile = m.user_profiles;
+      return {
+        id: m.user_id,
+        name: profile ? [profile.first_name, profile.last_name].filter(Boolean).join(' ') || 'Résident' : 'Résident',
+        photo: profile?.profile_photo_url,
+      };
+    }).filter((r: any) => r.id);
 
     return {
       propertyId: property.id,
       propertyName: property.title || 'Ma Résidence',
       ownerId: property.owner_id,
-      ownerName: owner?.full_name || null,
+      ownerName,
       residents,
     };
   } catch (error) {
@@ -288,10 +301,7 @@ export async function getUnifiedConversations(
           id,
           content,
           created_at,
-          sender_id,
-          users:sender_id (
-            full_name
-          )
+          sender_id
         `)
         .eq('conversation_id', conv.id)
         .order('created_at', { ascending: false })
@@ -310,15 +320,7 @@ export async function getUnifiedConversations(
       // Get other participants for name/photo
       const { data: otherParticipants } = await supabase
         .from('conversation_participants')
-        .select(`
-          user_id,
-          users:user_id (
-            id,
-            full_name,
-            avatar_url,
-            user_type
-          )
-        `)
+        .select('user_id')
         .eq('conversation_id', conv.id)
         .neq('user_id', userId);
 
@@ -340,17 +342,29 @@ export async function getUnifiedConversations(
         isPinned = true;
         otherUserRole = 'owner';
       } else if (otherParticipants && otherParticipants.length === 1) {
-        // 1-to-1 conversation
-        const other = (otherParticipants[0] as any).users;
-        if (other) {
-          name = other.full_name || 'Utilisateur';
-          photo = other.avatar_url;
-          otherUserRole = getUserRole(other.user_type);
+        // 1-to-1 conversation - fetch user profile
+        const otherUserId = otherParticipants[0].user_id;
+        const { data: otherProfile } = await supabase
+          .from('user_profiles')
+          .select('id, first_name, last_name, profile_photo_url')
+          .eq('id', otherUserId)
+          .single();
+
+        const { data: otherUser } = await supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', otherUserId)
+          .single();
+
+        if (otherProfile) {
+          name = [otherProfile.first_name, otherProfile.last_name].filter(Boolean).join(' ') || 'Utilisateur';
+          photo = otherProfile.profile_photo_url ?? undefined;
+          otherUserRole = getUserRole(otherUser?.user_type);
 
           // Check if external (not from same residence)
           if (residenceInfo && userRole === 'resident') {
-            const isResident = residenceInfo.residents.some(r => r.id === other.id);
-            const isOwner = residenceInfo.ownerId === other.id;
+            const isResident = residenceInfo.residents.some(r => r.id === otherUserId);
+            const isOwner = residenceInfo.ownerId === otherUserId;
             isExternal = !isResident && !isOwner;
           }
         }
