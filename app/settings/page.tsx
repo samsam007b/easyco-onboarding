@@ -158,6 +158,15 @@ export default function SettingsPage() {
       category: 'account',
     },
     {
+      id: 'invitations',
+      title: 'Invitations',
+      description: 'Gerez vos invitations a rejoindre des colocations',
+      icon: Mail,
+      href: '/settings/invitations',
+      color: 'bg-amber-100',
+      category: 'account',
+    },
+    {
       id: 'notifications',
       title: 'Notifications',
       description: 'Configurer vos préférences',
@@ -361,6 +370,7 @@ export default function SettingsPage() {
                               section.id === 'invoices' ? 'text-emerald-600' :
                               section.id === 'devices' ? 'text-cyan-600' :
                               section.id === 'referrals' ? 'text-green-600' :
+                              section.id === 'invitations' ? 'text-amber-600' :
                               'text-gray-700'
                             )} />
                           </div>
