@@ -8,6 +8,8 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useRole } from '@/lib/role/role-context';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { InvitationAlert } from '@/components/invitation';
+import { getPendingInvitation, clearPendingInvitation, type PendingInvitationContext } from '@/types/invitation.types';
 
 export default function WelcomePage() {
   const router = useRouter();
@@ -17,9 +19,18 @@ export default function WelcomePage() {
   const { setActiveRole } = useRole();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [pendingInvitation, setPendingInvitation] = useState<PendingInvitationContext | null>(null);
 
   useEffect(() => {
     loadUser();
+  }, []);
+
+  // Check for pending invitation from sessionStorage
+  useEffect(() => {
+    const invitation = getPendingInvitation();
+    if (invitation) {
+      setPendingInvitation(invitation);
+    }
   }, []);
 
   const loadUser = async () => {
@@ -89,6 +100,12 @@ export default function WelcomePage() {
     router.push('/');
   };
 
+  const handleDismissInvitation = () => {
+    // User can still see the invitation in settings
+    // Just hide the alert for now
+    setPendingInvitation(null);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
@@ -142,10 +159,31 @@ export default function WelcomePage() {
     },
   ];
 
+  // Helper to check if this role is the invited role
+  const isInvitedRole = (roleId: string) => {
+    if (!pendingInvitation) return false;
+    return pendingInvitation.invitedRole === roleId;
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+      {/* Invitation Alert Banner */}
+      {pendingInvitation && (
+        <div className="fixed top-0 left-0 right-0 z-40">
+          <InvitationAlert
+            inviterName={pendingInvitation.inviter.name}
+            inviterAvatar={pendingInvitation.inviter.avatar_url}
+            invitedRole={pendingInvitation.invitedRole}
+            propertyTitle={pendingInvitation.property.title}
+            propertyAddress={pendingInvitation.property.address}
+            propertyCity={pendingInvitation.property.city}
+            onDismiss={handleDismissInvitation}
+          />
+        </div>
+      )}
+
       {/* Header */}
-      <header className="absolute top-0 right-0 p-6 z-50 flex items-center gap-4">
+      <header className={`absolute top-0 right-0 p-6 z-50 flex items-center gap-4 ${pendingInvitation ? 'mt-20' : ''}`}>
         <button
           onClick={() => router.push('/settings')}
           className="p-2 text-gray-600 hover:text-[var(--easy-purple)] transition rounded-lg hover:bg-white/50"
@@ -164,7 +202,7 @@ export default function WelcomePage() {
       </header>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center min-h-screen p-4 sm:p-6">
+      <div className={`flex items-center justify-center min-h-screen p-4 sm:p-6 ${pendingInvitation ? 'pt-24' : ''}`}>
         <div className="max-w-5xl w-full">
           {/* Welcome Message */}
           <div className="text-center mb-8 sm:mb-12 animate-fadeIn">
@@ -184,19 +222,21 @@ export default function WelcomePage() {
             {roleCards.map((card, index) => {
               const IconComponent = card.icon;
               const isDisabled = card.disabled;
+              const isInvited = isInvitedRole(card.id);
 
               return (
                 <div
                   key={card.id}
                   className={`
                     group relative bg-white rounded-3xl p-4 sm:p-8
-                    border-2 ${isDisabled ? 'border-gray-300' : card.borderColor}
+                    border-2 ${isDisabled ? 'border-gray-300' : isInvited ? 'border-green-400 ring-2 ring-green-200' : card.borderColor}
                     shadow-lg
                     transition-all duration-300
                     ${isDisabled
                       ? 'opacity-60 cursor-not-allowed'
                       : 'hover:shadow-2xl hover:scale-105 hover:-translate-y-2 cursor-pointer ' + card.bgHover
                     }
+                    ${isInvited ? 'scale-[1.02] shadow-xl' : ''}
                     animate-slideUp
                   `}
                   style={{
@@ -204,8 +244,14 @@ export default function WelcomePage() {
                   }}
                   onClick={() => !isDisabled && handleRoleSelect(card.id as any)}
                 >
+                  {/* Badge "Invité" for pre-selected role */}
+                  {isInvited && (
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-pulse">
+                      ✨ Invité
+                    </div>
+                  )}
                   {/* 🔴 CLOSED BETA: Badge "Bientôt" pour Searcher */}
-                  {isDisabled && (
+                  {isDisabled && !isInvited && (
                     <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-bounce">
                       🚀 Bientôt
                     </div>

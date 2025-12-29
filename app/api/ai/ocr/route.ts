@@ -10,6 +10,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { OCRResult, OCRLineItem, ExpenseCategory } from '@/lib/services/ai/types';
 
+// Route configuration for larger payloads (images can be large)
+export const maxDuration = 60; // 60 seconds timeout
+export const dynamic = 'force-dynamic';
+
 // API URLs
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 const GEMINI_MODEL = 'gemini-2.0-flash';
@@ -330,56 +334,97 @@ Rules:
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { imageBase64, mimeType } = body;
+  console.log('[API OCR] Request received');
+  const startTime = Date.now();
 
-    if (!imageBase64 || !mimeType) {
+  try {
+    // Parse request body with error handling
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError: any) {
+      console.error('[API OCR] Failed to parse request body:', parseError.message);
       return NextResponse.json(
-        { error: 'Missing imageBase64 or mimeType' },
+        {
+          success: false,
+          provider: 'none',
+          error: 'Invalid request body - could not parse JSON',
+          latencyMs: Date.now() - startTime,
+        },
         { status: 400 }
       );
     }
+
+    const { imageBase64, mimeType } = body;
+
+    if (!imageBase64 || !mimeType) {
+      console.warn('[API OCR] Missing required fields');
+      return NextResponse.json(
+        {
+          success: false,
+          provider: 'none',
+          error: 'Missing imageBase64 or mimeType',
+          latencyMs: Date.now() - startTime,
+        },
+        { status: 400 }
+      );
+    }
+
+    console.log(`[API OCR] Processing image: ${mimeType}, size: ${Math.round(imageBase64.length / 1024)}KB`);
 
     // Get API keys from SERVER environment variables (not NEXT_PUBLIC_)
     const geminiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY;
     const togetherKey = process.env.TOGETHER_API_KEY || process.env.NEXT_PUBLIC_TOGETHER_API_KEY;
 
+    console.log(`[API OCR] Available providers: Gemini=${!!geminiKey}, Together=${!!togetherKey}`);
+
     // Try Gemini first
     if (geminiKey && canUseProvider('gemini')) {
-      console.log('[API] Trying Gemini...');
+      console.log('[API OCR] Trying Gemini...');
       const result = await analyzeWithGemini(imageBase64, mimeType, geminiKey);
       trackUsage('gemini');
 
       if (result.success) {
+        console.log('[API OCR] Gemini succeeded');
         return NextResponse.json(result);
       }
-      console.warn('[API] Gemini failed, trying fallback...');
+      console.warn('[API OCR] Gemini failed:', result.error);
+    } else if (!geminiKey) {
+      console.log('[API OCR] Gemini API key not configured');
     }
 
     // Try Together AI
     if (togetherKey && canUseProvider('together')) {
-      console.log('[API] Trying Together AI...');
+      console.log('[API OCR] Trying Together AI...');
       const result = await analyzeWithTogether(imageBase64, mimeType, togetherKey);
       trackUsage('together');
 
       if (result.success) {
+        console.log('[API OCR] Together AI succeeded');
         return NextResponse.json(result);
       }
-      console.warn('[API] Together AI failed...');
+      console.warn('[API OCR] Together AI failed:', result.error);
+    } else if (!togetherKey) {
+      console.log('[API OCR] Together API key not configured');
     }
 
     // Return error if no providers available or all failed
+    console.warn('[API OCR] All providers failed or unavailable');
     return NextResponse.json({
       success: false,
       provider: 'none',
       error: 'All AI providers failed or unavailable. Use client-side Tesseract fallback.',
-      latencyMs: 0,
+      latencyMs: Date.now() - startTime,
     });
   } catch (error: any) {
-    console.error('[API] OCR error:', error);
+    console.error('[API OCR] Unexpected error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      {
+        success: false,
+        provider: 'none',
+        error: error.message || 'Internal server error',
+        latencyMs: Date.now() - startTime,
+      },
       { status: 500 }
     );
   }

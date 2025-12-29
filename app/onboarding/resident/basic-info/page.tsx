@@ -10,6 +10,8 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { LanguagesChipInput, type LanguageChip } from '@/components/LanguagesChipInput';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { InvitationModal } from '@/components/invitation';
+import { getPendingInvitation, type PendingInvitationContext } from '@/types/invitation.types';
 
 export default function ResidentBasicInfoPage() {
   const router = useRouter();
@@ -24,9 +26,19 @@ export default function ResidentBasicInfoPage() {
   const [nationality, setNationality] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [languages, setLanguages] = useState<LanguageChip[]>([]);
+  const [pendingInvitation, setPendingInvitation] = useState<PendingInvitationContext | null>(null);
+  const [showInvitationModal, setShowInvitationModal] = useState(false);
 
   useEffect(() => {
     loadExistingData();
+  }, []);
+
+  // Check for pending invitation from sessionStorage
+  useEffect(() => {
+    const invitation = getPendingInvitation();
+    if (invitation) {
+      setPendingInvitation(invitation);
+    }
   }, []);
 
   const loadExistingData = async () => {
@@ -125,6 +137,26 @@ export default function ResidentBasicInfoPage() {
       languages,
     });
 
+    // If there's a pending invitation, show confirmation modal
+    if (pendingInvitation) {
+      setShowInvitationModal(true);
+      return;
+    }
+
+    router.push('/onboarding/core/daily-life?role=resident');
+  };
+
+  const handleInvitationAccepted = () => {
+    setShowInvitationModal(false);
+    setPendingInvitation(null);
+    toast.success('Invitation acceptée ! Bienvenue dans la colocation.');
+    router.push('/onboarding/core/daily-life?role=resident');
+  };
+
+  const handleInvitationRefused = () => {
+    setShowInvitationModal(false);
+    setPendingInvitation(null);
+    toast.info('Invitation refusée. Vous pouvez la retrouver dans vos paramètres.');
     router.push('/onboarding/core/daily-life?role=resident');
   };
 
@@ -305,6 +337,23 @@ export default function ResidentBasicInfoPage() {
           </div>
         </div>
       </main>
+
+      {/* Invitation Confirmation Modal */}
+      {pendingInvitation && (
+        <InvitationModal
+          isOpen={showInvitationModal}
+          onClose={() => setShowInvitationModal(false)}
+          invitationId={pendingInvitation.invitationId}
+          inviterName={pendingInvitation.inviter.name}
+          inviterAvatar={pendingInvitation.inviter.avatar_url}
+          invitedRole={pendingInvitation.invitedRole}
+          propertyTitle={pendingInvitation.property.title}
+          propertyAddress={pendingInvitation.property.address}
+          propertyCity={pendingInvitation.property.city}
+          onAccepted={handleInvitationAccepted}
+          onRefused={handleInvitationRefused}
+        />
+      )}
     </div>
   );
 }

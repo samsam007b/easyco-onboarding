@@ -13,6 +13,8 @@ import {
   OnboardingInput,
   OnboardingButton,
 } from '@/components/onboarding';
+import { InvitationModal } from '@/components/invitation';
+import { getPendingInvitation, type PendingInvitationContext } from '@/types/invitation.types';
 
 export default function OwnerBasicInfo() {
   const router = useRouter();
@@ -25,9 +27,19 @@ export default function OwnerBasicInfo() {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [nationality, setNationality] = useState('');
+  const [pendingInvitation, setPendingInvitation] = useState<PendingInvitationContext | null>(null);
+  const [showInvitationModal, setShowInvitationModal] = useState(false);
 
   useEffect(() => {
     loadExistingData();
+  }, []);
+
+  // Check for pending invitation from sessionStorage
+  useEffect(() => {
+    const invitation = getPendingInvitation();
+    if (invitation) {
+      setPendingInvitation(invitation);
+    }
   }, []);
 
   const loadExistingData = async () => {
@@ -77,6 +89,27 @@ export default function OwnerBasicInfo() {
       phoneNumber,
       nationality,
     });
+
+    // If there's a pending invitation, show confirmation modal
+    if (pendingInvitation) {
+      setShowInvitationModal(true);
+      return;
+    }
+
+    router.push('/onboarding/owner/about');
+  };
+
+  const handleInvitationAccepted = () => {
+    setShowInvitationModal(false);
+    setPendingInvitation(null);
+    toast.success('Invitation acceptée ! Bienvenue dans la colocation.');
+    router.push('/onboarding/owner/about');
+  };
+
+  const handleInvitationRefused = () => {
+    setShowInvitationModal(false);
+    setPendingInvitation(null);
+    toast.info('Invitation refusée. Vous pouvez la retrouver dans vos paramètres.');
     router.push('/onboarding/owner/about');
   };
 
@@ -166,6 +199,23 @@ export default function OwnerBasicInfo() {
           {common.continue}
         </OnboardingButton>
       </div>
+
+      {/* Invitation Confirmation Modal */}
+      {pendingInvitation && (
+        <InvitationModal
+          isOpen={showInvitationModal}
+          onClose={() => setShowInvitationModal(false)}
+          invitationId={pendingInvitation.invitationId}
+          inviterName={pendingInvitation.inviter.name}
+          inviterAvatar={pendingInvitation.inviter.avatar_url}
+          invitedRole={pendingInvitation.invitedRole}
+          propertyTitle={pendingInvitation.property.title}
+          propertyAddress={pendingInvitation.property.address}
+          propertyCity={pendingInvitation.property.city}
+          onAccepted={handleInvitationAccepted}
+          onRefused={handleInvitationRefused}
+        />
+      )}
     </OnboardingLayout>
   );
 }
