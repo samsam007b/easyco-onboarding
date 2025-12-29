@@ -4,7 +4,8 @@
  * Hybrid architecture for cost-effective AI assistance:
  * - FAQ System (Layer 1) - Local, $0
  * - Groq Llama 8B (Layer 2) - Free tier, ultra-fast
- * - OpenAI GPT-4o-mini (Layer 3) - Paid fallback
+ * - Gemini Flash 2.0 (Layer 3) - Cheap, good quality
+ * - OpenAI GPT-4o-mini (Layer 4) - Last resort fallback
  */
 
 export {
@@ -15,6 +16,7 @@ export {
   analyzeComplexity,
   isGroqAvailable,
   isGroqConfigured,
+  isGeminiConfigured,
   isOpenAIConfigured,
   isAnyAIProviderConfigured,
   ASSISTANT_CONFIG,

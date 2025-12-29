@@ -1,18 +1,21 @@
 /**
  * HYBRID ASSISTANT SERVICE
  *
- * Architecture en 3 couches pour minimiser les coûts :
+ * Architecture en 4 couches pour minimiser les coûts :
  *
  * Layer 1: FAQ System (LOCAL) - 70% des queries - $0
  *          → Intent detection + réponses prédéfinies
  *
- * Layer 2: Groq Llama 8B - 28% des queries - ~$0
+ * Layer 2: Groq Llama 8B - 25% des queries - ~$0
  *          → 6000 req/jour gratuites, ultra-rapide
  *
- * Layer 3: OpenAI GPT-4o-mini - 2% des queries - $$
+ * Layer 3: Gemini Flash 2.0 - 4% des queries - $
+ *          → Moins cher qu'OpenAI, bonne qualité
+ *
+ * Layer 4: OpenAI GPT-4o-mini - 1% des queries - $$
  *          → Questions complexes, escalade manuelle
  *
- * Estimation coût: < $5/mois pour 5000 conversations
+ * Estimation coût: < $3/mois pour 5000 conversations
  */
 
 import {
@@ -43,21 +46,31 @@ export const ASSISTANT_CONFIG = {
     switchThreshold: 0.8, // Switch at 80% usage
   },
 
-  // Fallback AI (OpenAI - paid)
+  // Secondary AI (Gemini Flash - cheap)
+  secondary: {
+    provider: 'gemini' as const,
+    model: 'gemini-2.0-flash-exp',
+    triggerConditions: [
+      'groq_unavailable', // Groq limit reached or error
+    ],
+  },
+
+  // Fallback AI (OpenAI - paid, last resort)
   fallback: {
     provider: 'openai' as const,
     model: 'gpt-4o-mini',
     triggerConditions: [
       'user_escalation', // User explicitly asks for better AI
       'complexity_high', // Detected complex query
-      'groq_unavailable', // Groq limit reached
+      'gemini_unavailable', // Gemini error
     ],
   },
 
-  // Cost tracking
+  // Cost tracking (per 1M tokens)
   costs: {
-    groq: { input: 0.05, output: 0.08 }, // per 1M tokens
-    openai: { input: 0.15, output: 0.60 }, // per 1M tokens
+    groq: { input: 0.05, output: 0.08 },
+    gemini: { input: 0.075, output: 0.30 }, // Gemini Flash pricing
+    openai: { input: 0.15, output: 0.60 },
     avgTokensPerMessage: 500,
   },
 };
@@ -70,6 +83,7 @@ interface UsageStats {
   date: string;
   faq: { count: number; saved: number }; // saved = estimated $ saved
   groq: { count: number; tokens: number };
+  gemini: { count: number; tokens: number };
   openai: { count: number; tokens: number };
 }
 
@@ -77,6 +91,7 @@ const usageTracker: UsageStats = {
   date: new Date().toISOString().split('T')[0],
   faq: { count: 0, saved: 0 },
   groq: { count: 0, tokens: 0 },
+  gemini: { count: 0, tokens: 0 },
   openai: { count: 0, tokens: 0 },
 };
 
@@ -86,6 +101,7 @@ function resetIfNewDay() {
     usageTracker.date = today;
     usageTracker.faq = { count: 0, saved: 0 };
     usageTracker.groq = { count: 0, tokens: 0 };
+    usageTracker.gemini = { count: 0, tokens: 0 };
     usageTracker.openai = { count: 0, tokens: 0 };
   }
 }
@@ -96,6 +112,10 @@ export function getUsageStats(): UsageStats & { estimatedCost: number; savedCost
   const groqCost =
     (usageTracker.groq.tokens / 1_000_000) *
     (ASSISTANT_CONFIG.costs.groq.input + ASSISTANT_CONFIG.costs.groq.output) / 2;
+
+  const geminiCost =
+    (usageTracker.gemini.tokens / 1_000_000) *
+    (ASSISTANT_CONFIG.costs.gemini.input + ASSISTANT_CONFIG.costs.gemini.output) / 2;
 
   const openaiCost =
     (usageTracker.openai.tokens / 1_000_000) *
@@ -108,7 +128,7 @@ export function getUsageStats(): UsageStats & { estimatedCost: number; savedCost
 
   return {
     ...usageTracker,
-    estimatedCost: groqCost + openaiCost,
+    estimatedCost: groqCost + geminiCost + openaiCost,
     savedCost: faqSavedCost,
   };
 }
@@ -199,12 +219,10 @@ export function analyzeComplexity(
 // =====================================================
 
 /**
- * Check if any AI provider is configured (Groq or OpenAI)
+ * Check if any AI provider is configured (Groq, Gemini, or OpenAI)
  */
 export function isAnyAIProviderConfigured(): boolean {
-  const hasGroq = !!(process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY);
-  const hasOpenAI = !!process.env.OPENAI_API_KEY;
-  return hasGroq || hasOpenAI;
+  return isGroqConfigured() || isGeminiConfigured() || isOpenAIConfigured();
 }
 
 /**
@@ -212,6 +230,14 @@ export function isAnyAIProviderConfigured(): boolean {
  */
 export function isGroqConfigured(): boolean {
   return !!(process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY);
+}
+
+/**
+ * Check if Gemini is configured
+ * Supports both dedicated Gemini API key and Google Cloud API key
+ */
+export function isGeminiConfigured(): boolean {
+  return !!(process.env.GOOGLE_GEMINI_API_KEY || process.env.GOOGLE_CLOUD_API_KEY);
 }
 
 /**
@@ -237,7 +263,7 @@ export function isGroqAvailable(): boolean {
 export interface AssistantResponse {
   success: boolean;
   content: string;
-  provider: 'faq' | 'groq' | 'openai' | 'error';
+  provider: 'faq' | 'groq' | 'gemini' | 'openai' | 'error';
   intent?: Intent;
   confidence?: number;
   suggestedActions?: Array<{
@@ -400,7 +426,7 @@ function getFAQOnlyFallbackResponse(
 
 interface LogRequestParams {
   userMessage: string;
-  provider: 'faq' | 'groq' | 'openai' | 'error';
+  provider: 'faq' | 'groq' | 'gemini' | 'openai' | 'error';
   intent?: Intent;
   confidence?: number;
   responseTimeMs: number;
@@ -530,19 +556,80 @@ async function callGroq(
 }
 
 // =====================================================
+// GEMINI API CALL
+// =====================================================
+
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+
+async function callGemini(
+  messages: ChatMessage[],
+  systemPrompt: string = SYSTEM_PROMPT
+): Promise<{ success: boolean; content: string; tokens: number }> {
+  const apiKey = process.env.GOOGLE_GEMINI_API_KEY || process.env.GOOGLE_CLOUD_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('GOOGLE_GEMINI_API_KEY not configured');
+  }
+
+  // Convert chat messages to Gemini format
+  // Gemini uses 'user' and 'model' roles, and has a different structure
+  const geminiContents = messages.map(msg => ({
+    role: msg.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: msg.content }],
+  }));
+
+  // Add system instruction as the first user message if not empty
+  const requestBody = {
+    contents: geminiContents,
+    systemInstruction: {
+      parts: [{ text: systemPrompt }],
+    },
+    generationConfig: {
+      temperature: 0.7,
+      maxOutputTokens: 1024,
+      topP: 0.95,
+    },
+  };
+
+  const model = ASSISTANT_CONFIG.secondary.model;
+  const response = await fetch(`${GEMINI_API_URL}/${model}:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  const data = await response.json();
+
+  if (data.error) {
+    throw new Error(data.error.message || 'Gemini API error');
+  }
+
+  // Extract content from Gemini response
+  const content = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+  // Gemini returns token counts in usageMetadata
+  const tokens = (data.usageMetadata?.promptTokenCount || 0) +
+                 (data.usageMetadata?.candidatesTokenCount || 0);
+
+  return { success: true, content, tokens };
+}
+
+// =====================================================
 // MAIN ASSISTANT FUNCTION
 // =====================================================
 
 /**
  * Process a message through the hybrid assistant pipeline
  *
- * Flow: FAQ → Groq → OpenAI (fallback)
+ * Flow: FAQ → Groq → Gemini → OpenAI (fallback)
  */
 export async function processAssistantMessage(
   userMessage: string,
   conversationHistory: ChatMessage[] = [],
   options: {
-    forceProvider?: 'faq' | 'groq' | 'openai';
+    forceProvider?: 'faq' | 'groq' | 'gemini' | 'openai';
     userId?: string;
     userContext?: UserContext;
     pagePath?: string;
@@ -674,15 +761,73 @@ export async function processAssistantMessage(
       };
     } catch (error: any) {
       console.error('[Assistant] Groq error:', error.message);
+      // Fall through to Gemini
+    }
+  }
+
+  // =====================================================
+  // Layer 3: Gemini Flash (SECONDARY - $) - Cheaper than OpenAI
+  // =====================================================
+  if ((targetProvider === 'gemini' || !options.forceProvider) && isGeminiConfigured()) {
+    try {
+      console.log(`[Assistant] Using Gemini Flash (${usageTracker.gemini.count} calls today)`);
+
+      const messages: ChatMessage[] = [
+        ...conversationHistory,
+        { role: 'user', content: userMessage },
+      ];
+
+      const geminiResult = await callGemini(messages);
+
+      // Track usage
+      usageTracker.gemini.count++;
+      usageTracker.gemini.tokens += geminiResult.tokens;
+
+      const latencyMs = Date.now() - startTime;
+      const costEstimate =
+        (geminiResult.tokens / 1_000_000) *
+        (ASSISTANT_CONFIG.costs.gemini.input + ASSISTANT_CONFIG.costs.gemini.output) / 2;
+
+      // Detect intent for logging
+      const detectedIntent = detectIntent(userMessage);
+
+      // Log to database (non-blocking)
+      logRequestToDatabase({
+        userMessage,
+        provider: 'gemini',
+        intent: detectedIntent?.intent,
+        confidence: detectedIntent?.confidence,
+        responseTimeMs: latencyMs,
+        tokensUsed: geminiResult.tokens,
+        estimatedCost: costEstimate,
+        userType: context.userType,
+        pagePath: options.pagePath,
+        userId: options.userId || context.userId,
+        conversationId: options.conversationId,
+      });
+
+      return {
+        success: true,
+        content: geminiResult.content,
+        provider: 'gemini',
+        metadata: {
+          latencyMs,
+          tokensUsed: geminiResult.tokens,
+          costEstimate,
+          complexity: complexity.score,
+        },
+      };
+    } catch (error: any) {
+      console.error('[Assistant] Gemini error:', error.message);
       // Fall through to OpenAI
     }
   }
 
   // =====================================================
-  // Layer 3: OpenAI (FALLBACK - $$) - Only if configured
+  // Layer 4: OpenAI (LAST RESORT - $$) - Only if configured
   // =====================================================
-  if ((targetProvider === 'openai' || !isGroqAvailable()) && isOpenAIConfigured()) {
-    console.log('[Assistant] Using OpenAI fallback');
+  if ((targetProvider === 'openai' || !options.forceProvider) && isOpenAIConfigured()) {
+    console.log('[Assistant] Using OpenAI as last resort');
 
     const latencyMs = Date.now() - startTime;
     const detectedIntent = detectIntent(userMessage);
@@ -724,13 +869,14 @@ export async function processAssistantMessage(
   }
 
   // =====================================================
-  // Layer 4: FAQ-ONLY FALLBACK (No OpenAI available after Groq failed/skipped)
+  // Layer 5: FAQ-ONLY FALLBACK (All AI providers exhausted)
   // =====================================================
-  // This triggers if:
-  // - No AI providers are configured at all, OR
-  // - Groq failed/skipped AND OpenAI is not configured
-  if (!isOpenAIConfigured()) {
-    console.log('[Assistant] OpenAI not configured - FAQ-only fallback mode');
+  // This triggers when:
+  // - All AI providers failed (Groq error + Gemini error + OpenAI not configured)
+  // - Or no AI providers are configured at all
+  // At this point, we've tried all available providers and they all failed
+  {
+    console.log('[Assistant] All AI providers exhausted - FAQ-only fallback mode');
 
     const latencyMs = Date.now() - startTime;
     const detectedIntent = detectIntent(userMessage);
@@ -739,7 +885,7 @@ export async function processAssistantMessage(
     logRequestToDatabase({
       userMessage,
       provider: 'faq',
-      intent: detectedIntent?.intent || 'faq_fallback',
+      intent: detectedIntent?.intent || 'unknown',
       confidence: detectedIntent?.confidence,
       responseTimeMs: latencyMs,
       estimatedCost: 0,
@@ -774,35 +920,6 @@ export async function processAssistantMessage(
       },
     };
   }
-
-  // =====================================================
-  // Error fallback
-  // =====================================================
-  const errorLatencyMs = Date.now() - startTime;
-  const errorIntent = detectIntent(userMessage);
-
-  // Log error for analysis
-  logRequestToDatabase({
-    userMessage,
-    provider: 'error',
-    intent: errorIntent?.intent,
-    confidence: errorIntent?.confidence,
-    responseTimeMs: errorLatencyMs,
-    userType: context.userType,
-    pagePath: options.pagePath,
-    userId: options.userId || context.userId,
-    conversationId: options.conversationId,
-  });
-
-  return {
-    success: false,
-    content: "Désolé, je rencontre un problème technique. Veuillez réessayer dans quelques instants.",
-    provider: 'error',
-    metadata: {
-      latencyMs: errorLatencyMs,
-      complexity: complexity.score,
-    },
-  };
 }
 
 // =====================================================
