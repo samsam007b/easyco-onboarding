@@ -230,7 +230,7 @@ export default function SentryPage() {
         </div>
         <div className="flex items-center gap-2">
           <a
-            href="https://easyco-6g.sentry.io/issues/"
+            href="https://izzico-6g.sentry.io/issues/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-3 py-2 text-sm text-purple-400 hover:text-purple-300 transition-colors"

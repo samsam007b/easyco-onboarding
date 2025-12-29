@@ -209,7 +209,7 @@ export default function ResidentsPage() {
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
             >
-              EasyCo
+              Izzico
             </span>
           </motion.h2>
 

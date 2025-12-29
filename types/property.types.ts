@@ -1,4 +1,4 @@
-// Property Types for EasyCo Platform
+// Property Types for Izzico Platform
 
 export type PropertyType =
   | 'apartment'

@@ -47,7 +47,7 @@ export default function SafePropertyMap({
         defaultZoom={12}
         gestureHandling={'greedy'}
         disableDefaultUI={false}
-        mapId="easyco-properties-map"
+        mapId="izzico-properties-map"
       >
         {properties.map((property) => (
           <AdvancedMarker

@@ -62,7 +62,7 @@ ORDER BY r.price ASC;
 -- 5. Afficher l'URL complète de la propriété
 SELECT
   'URL de la propriété:' as info,
-  CONCAT('https://easyco-onboarding.vercel.app/properties/', id) as url,
+  CONCAT('https://izzico.be/properties/', id) as url,
   title as nom_propriete
 FROM properties
 WHERE title ILIKE '%Forest%' OR title ILIKE '%Coliving%'

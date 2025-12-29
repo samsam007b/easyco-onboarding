@@ -6,7 +6,7 @@ test.describe('User Login Flow', () => {
     await page.goto('/login');
 
     // Check page loaded
-    await expect(page).toHaveTitle(/EasyCo/);
+    await expect(page).toHaveTitle(/Izzico/);
 
     // Check form elements exist
     await expect(page.locator('[name="email"]')).toBeVisible();

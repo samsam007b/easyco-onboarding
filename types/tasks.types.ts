@@ -1,5 +1,5 @@
 /**
- * Task Types for EasyCo Resident Hub
+ * Task Types for Izzico Resident Hub
  * Includes: Tasks, Rotations, Exchanges, Availability
  */
 

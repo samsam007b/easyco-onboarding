@@ -58,7 +58,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     return NextResponse.json({
       valid: true,
       referrer_id: referrerId,
-      referrer_name: referrer?.full_name || 'Utilisateur EasyCo',
+      referrer_name: referrer?.full_name || 'Utilisateur Izzico',
     });
   } catch (error) {
     console.error('Error in /api/referral/validate:', error);

@@ -26,18 +26,18 @@ async function seedDataWithSQL() {
   console.log('👥 Getting Auth users...\n');
   
   const demoEmails = [
-    'sophie.laurent@demo.easyco.com',
-    'ahmed.elmansouri@demo.easyco.com',
-    'emma.vanderberg@demo.easyco.com',
-    'lucas.dubois@demo.easyco.com',
-    'maria.santos@demo.easyco.com',
-    'jeanmarc.petit@demo.easyco.com',
-    'isabelle.moreau@demo.easyco.com',
-    'thomas.janssens@demo.easyco.com',
-    'sophie.vermeulen@demo.easyco.com',
-    'pierre.lecomte@demo.easyco.com',
-    'laura.gonzalez@demo.easyco.com',
-    'maxime.dubois@demo.easyco.com',
+    'sophie.laurent@demo.izzico.com',
+    'ahmed.elmansouri@demo.izzico.com',
+    'emma.vanderberg@demo.izzico.com',
+    'lucas.dubois@demo.izzico.com',
+    'maria.santos@demo.izzico.com',
+    'jeanmarc.petit@demo.izzico.com',
+    'isabelle.moreau@demo.izzico.com',
+    'thomas.janssens@demo.izzico.com',
+    'sophie.vermeulen@demo.izzico.com',
+    'pierre.lecomte@demo.izzico.com',
+    'laura.gonzalez@demo.izzico.com',
+    'maxime.dubois@demo.izzico.com',
   ];
 
   const { data: allUsers } = await supabase.auth.admin.listUsers();
@@ -64,15 +64,15 @@ async function seedDataWithSQL() {
 -- Insert Searcher Profiles
 INSERT INTO user_profiles (user_id, email, first_name, last_name, user_type, profile_status, has_property, bio, phone, nationality, occupation, budget_min, budget_max, preferred_cities, move_in_date, smoking, pets, cleanliness_level, social_level, searcher_status)
 VALUES
-  ('${userMap.get('sophie.laurent@demo.easyco.com')}', 'sophie.laurent@demo.easyco.com', 'Sophie', 'Laurent', 'searcher', 'complete', false, 'Marketing Manager de 29 ans, sociable et organisée, cherche colocation sympa proche du centre.', '+32 485 12 34 56', 'French', 'Marketing Manager', 600, 900, ARRAY['Ixelles', 'Saint-Gilles', 'Etterbeek'], '2024-12-01', false, false, 8, 7, 'searching'),
+  ('${userMap.get('sophie.laurent@demo.izzico.com')}', 'sophie.laurent@demo.izzico.com', 'Sophie', 'Laurent', 'searcher', 'complete', false, 'Marketing Manager de 29 ans, sociable et organisée, cherche colocation sympa proche du centre.', '+32 485 12 34 56', 'French', 'Marketing Manager', 600, 900, ARRAY['Ixelles', 'Saint-Gilles', 'Etterbeek'], '2024-12-01', false, false, 8, 7, 'searching'),
   
-  ('${userMap.get('ahmed.elmansouri@demo.easyco.com')}', 'ahmed.elmansouri@demo.easyco.com', 'Ahmed', 'El Mansouri', 'searcher', 'complete', false, 'Étudiant ULB en économie, 23 ans, calme et studieux, cherche logement proche université.', '+32 485 23 45 67', 'Moroccan', 'Student', 400, 600, ARRAY['Ixelles', 'Schaerbeek', 'Etterbeek'], '2025-01-15', false, false, 7, 5, 'searching'),
+  ('${userMap.get('ahmed.elmansouri@demo.izzico.com')}', 'ahmed.elmansouri@demo.izzico.com', 'Ahmed', 'El Mansouri', 'searcher', 'complete', false, 'Étudiant ULB en économie, 23 ans, calme et studieux, cherche logement proche université.', '+32 485 23 45 67', 'Moroccan', 'Student', 400, 600, ARRAY['Ixelles', 'Schaerbeek', 'Etterbeek'], '2025-01-15', false, false, 7, 5, 'searching'),
   
-  ('${userMap.get('emma.vanderberg@demo.easyco.com')}', 'emma.vanderberg@demo.easyco.com', 'Emma', 'Van Der Berg', 'searcher', 'complete', false, 'Designer freelance, 36 ans, créative et indépendante, cherche espace lumineux avec bureau.', '+32 485 34 56 78', 'Belgian', 'Designer', 700, 1000, ARRAY['Forest', 'Uccle', 'Saint-Gilles'], '2024-11-15', false, true, 8, 6, 'searching'),
+  ('${userMap.get('emma.vanderberg@demo.izzico.com')}', 'emma.vanderberg@demo.izzico.com', 'Emma', 'Van Der Berg', 'searcher', 'complete', false, 'Designer freelance, 36 ans, créative et indépendante, cherche espace lumineux avec bureau.', '+32 485 34 56 78', 'Belgian', 'Designer', 700, 1000, ARRAY['Forest', 'Uccle', 'Saint-Gilles'], '2024-11-15', false, true, 8, 6, 'searching'),
   
-  ('${userMap.get('lucas.dubois@demo.easyco.com')}', 'lucas.dubois@demo.easyco.com', 'Lucas', 'Dubois', 'searcher', 'complete', false, 'Comptable en couple, 32 ans, calme et organisé, cherche appartement spacieux quartier résidentiel.', '+32 485 45 67 89', 'Belgian', 'Accountant', 900, 1300, ARRAY['Woluwe-Saint-Pierre', 'Etterbeek', 'Auderghem'], '2025-02-01', false, false, 9, 4, 'searching'),
+  ('${userMap.get('lucas.dubois@demo.izzico.com')}', 'lucas.dubois@demo.izzico.com', 'Lucas', 'Dubois', 'searcher', 'complete', false, 'Comptable en couple, 32 ans, calme et organisé, cherche appartement spacieux quartier résidentiel.', '+32 485 45 67 89', 'Belgian', 'Accountant', 900, 1300, ARRAY['Woluwe-Saint-Pierre', 'Etterbeek', 'Auderghem'], '2025-02-01', false, false, 9, 4, 'searching'),
   
-  ('${userMap.get('maria.santos@demo.easyco.com')}', 'maria.santos@demo.easyco.com', 'Maria', 'Santos', 'searcher', 'complete', false, 'EU Policy Advisor, 34 ans, internationale et sociable, cherche colocation multiculturelle.', '+32 485 56 78 90', 'Portuguese', 'Policy Advisor', 750, 1100, ARRAY['Centre', 'Ixelles', 'Etterbeek'], '2024-12-15', false, false, 8, 8, 'searching')
+  ('${userMap.get('maria.santos@demo.izzico.com')}', 'maria.santos@demo.izzico.com', 'Maria', 'Santos', 'searcher', 'complete', false, 'EU Policy Advisor, 34 ans, internationale et sociable, cherche colocation multiculturelle.', '+32 485 56 78 90', 'Portuguese', 'Policy Advisor', 750, 1100, ARRAY['Centre', 'Ixelles', 'Etterbeek'], '2024-12-15', false, false, 8, 8, 'searching')
 ON CONFLICT (user_id) DO UPDATE SET
   email = EXCLUDED.email,
   first_name = EXCLUDED.first_name,
@@ -82,13 +82,13 @@ ON CONFLICT (user_id) DO UPDATE SET
 -- Insert Owner Profiles  
 INSERT INTO user_profiles (user_id, email, first_name, last_name, user_type, profile_status, has_property, bio, phone, hosting_experience, owner_type)
 VALUES
-  ('${userMap.get('jeanmarc.petit@demo.easyco.com')}', 'jeanmarc.petit@demo.easyco.com', 'Jean-Marc', 'Petit', 'owner', 'complete', true, 'Propriétaire depuis 5 ans, bienveillant et réactif. Propose appartement rénové à Ixelles.', '+32 486 12 34 56', 'experienced', 'individual'),
+  ('${userMap.get('jeanmarc.petit@demo.izzico.com')}', 'jeanmarc.petit@demo.izzico.com', 'Jean-Marc', 'Petit', 'owner', 'complete', true, 'Propriétaire depuis 5 ans, bienveillant et réactif. Propose appartement rénové à Ixelles.', '+32 486 12 34 56', 'experienced', 'individual'),
   
-  ('${userMap.get('isabelle.moreau@demo.easyco.com')}', 'isabelle.moreau@demo.easyco.com', 'Isabelle', 'Moreau', 'owner', 'complete', true, 'Investisseuse immobilière depuis 15 ans, gère plusieurs propriétés à Bruxelles avec professionnalisme.', '+32 486 23 45 67', 'expert', 'professional'),
+  ('${userMap.get('isabelle.moreau@demo.izzico.com')}', 'isabelle.moreau@demo.izzico.com', 'Isabelle', 'Moreau', 'owner', 'complete', true, 'Investisseuse immobilière depuis 15 ans, gère plusieurs propriétés à Bruxelles avec professionnalisme.', '+32 486 23 45 67', 'expert', 'professional'),
   
-  ('${userMap.get('thomas.janssens@demo.easyco.com')}', 'thomas.janssens@demo.easyco.com', 'Thomas', 'Janssens', 'owner', 'complete', true, 'Premier investissement locatif, studio étudiant à Schaerbeek. Jeune propriétaire motivé.', '+32 486 34 56 78', 'beginner', 'individual'),
+  ('${userMap.get('thomas.janssens@demo.izzico.com')}', 'thomas.janssens@demo.izzico.com', 'Thomas', 'Janssens', 'owner', 'complete', true, 'Premier investissement locatif, studio étudiant à Schaerbeek. Jeune propriétaire motivé.', '+32 486 34 56 78', 'beginner', 'individual'),
   
-  ('${userMap.get('sophie.vermeulen@demo.easyco.com')}', 'sophie.vermeulen@demo.easyco.com', 'Sophie', 'Vermeulen', 'owner', 'complete', true, 'Spécialiste coliving depuis 8 ans, propose maison communautaire avec jardin à Forest.', '+32 486 45 67 89', 'experienced', 'coliving')
+  ('${userMap.get('sophie.vermeulen@demo.izzico.com')}', 'sophie.vermeulen@demo.izzico.com', 'Sophie', 'Vermeulen', 'owner', 'complete', true, 'Spécialiste coliving depuis 8 ans, propose maison communautaire avec jardin à Forest.', '+32 486 45 67 89', 'experienced', 'coliving')
 ON CONFLICT (user_id) DO UPDATE SET
   email = EXCLUDED.email,
   first_name = EXCLUDED.first_name,
@@ -98,11 +98,11 @@ ON CONFLICT (user_id) DO UPDATE SET
 -- Insert Resident Profiles
 INSERT INTO user_profiles (user_id, email, first_name, last_name, user_type, profile_status, has_property, bio, phone, nationality, occupation, smoking, pets, cleanliness_level, social_level)
 VALUES
-  ('${userMap.get('pierre.lecomte@demo.easyco.com')}', 'pierre.lecomte@demo.easyco.com', 'Pierre', 'Lecomte', 'resident', 'complete', false, 'Ingénieur civil de 27 ans, calme et rangé, apprécie vie en colocation équilibrée.', '+32 487 12 34 56', 'Belgian', 'Civil Engineer', false, false, 8, 6),
+  ('${userMap.get('pierre.lecomte@demo.izzico.com')}', 'pierre.lecomte@demo.izzico.com', 'Pierre', 'Lecomte', 'resident', 'complete', false, 'Ingénieur civil de 27 ans, calme et rangé, apprécie vie en colocation équilibrée.', '+32 487 12 34 56', 'Belgian', 'Civil Engineer', false, false, 8, 6),
   
-  ('${userMap.get('laura.gonzalez@demo.easyco.com')}', 'laura.gonzalez@demo.easyco.com', 'Laura', 'Gonzalez', 'resident', 'complete', false, 'Doctorante en biologie, 26 ans, studieuse et respectueuse, cherche environnement calme.', '+32 487 23 45 67', 'Spanish', 'PhD Student', false, false, 9, 4),
+  ('${userMap.get('laura.gonzalez@demo.izzico.com')}', 'laura.gonzalez@demo.izzico.com', 'Laura', 'Gonzalez', 'resident', 'complete', false, 'Doctorante en biologie, 26 ans, studieuse et respectueuse, cherche environnement calme.', '+32 487 23 45 67', 'Spanish', 'PhD Student', false, false, 9, 4),
   
-  ('${userMap.get('maxime.dubois@demo.easyco.com')}', 'maxime.dubois@demo.easyco.com', 'Maxime', 'Dubois', 'resident', 'complete', false, 'Développeur en startup, 25 ans, sociable et tech-savvy, aime les colocations dynamiques.', '+32 487 34 56 78', 'Belgian', 'Software Developer', false, false, 7, 9)
+  ('${userMap.get('maxime.dubois@demo.izzico.com')}', 'maxime.dubois@demo.izzico.com', 'Maxime', 'Dubois', 'resident', 'complete', false, 'Développeur en startup, 25 ans, sociable et tech-savvy, aime les colocations dynamiques.', '+32 487 34 56 78', 'Belgian', 'Software Developer', false, false, 7, 9)
 ON CONFLICT (user_id) DO UPDATE SET
   email = EXCLUDED.email,
   first_name = EXCLUDED.first_name,
@@ -132,7 +132,7 @@ ON CONFLICT (user_id) DO UPDATE SET
   const propertiesSQL = `
 INSERT INTO properties (owner_id, title, description, property_type, address, city, neighborhood, postal_code, country, latitude, longitude, bedrooms, bathrooms, surface_area, floor_number, furnished, monthly_rent, charges, deposit, available_from, minimum_stay_months, amenities, smoking_allowed, pets_allowed, couples_allowed, images, main_image, status, is_available)
 VALUES
-  ('${userMap.get('jeanmarc.petit@demo.easyco.com')}', 
+  ('${userMap.get('jeanmarc.petit@demo.izzico.com')}', 
    'Appartement 2 Chambres - Ixelles Flagey', 
    'Magnifique appartement de 85m² au cœur du quartier Flagey. Rénové avec goût, parquet massif, cuisine équipée, grande luminosité. Proche trams 81, bus, commerces et vie culturelle animée.',
    'apartment',
@@ -153,7 +153,7 @@ VALUES
    'https://images.unsplash.com/photo-1502672260066-6bc36a8baf37?w=800',
    'published', true),
    
-  ('${userMap.get('thomas.janssens@demo.easyco.com')}',
+  ('${userMap.get('thomas.janssens@demo.izzico.com')}',
    'Studio Schaerbeek - Quartier Diamant',
    'Studio fonctionnel de 35m² idéal étudiant. Meublé et équipé, kitchenette, salle de bain, Wi-Fi inclus. Proche métro Diamant, ULB, commerces. Quartier multiculturel et vivant.',
    'studio',
@@ -174,7 +174,7 @@ VALUES
    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
    'published', true),
    
-  ('${userMap.get('sophie.vermeulen@demo.easyco.com')}',
+  ('${userMap.get('sophie.vermeulen@demo.izzico.com')}',
    'Coliving Forest - Maison Communautaire',
    'Magnifique maison de maître de 280m² transformée en coliving. 6 chambres privées avec espaces communs partagés : salon, cuisine, jardin 200m². Ambiance internationale et conviviale.',
    'coliving',
@@ -195,7 +195,7 @@ VALUES
    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
    'published', true),
    
-  ('${userMap.get('isabelle.moreau@demo.easyco.com')}',
+  ('${userMap.get('isabelle.moreau@demo.izzico.com')}',
    'Appartement 3 Chambres - Woluwe Standing',
    'Spacieux 3 chambres de 120m² dans résidence sécurisée. Haut standing, terrasse 15m², parking, salle de gym. Quartier résidentiel calme proche Parc de Woluwe et transports.',
    'apartment',
@@ -216,7 +216,7 @@ VALUES
    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
    'published', true),
    
-  ('${userMap.get('isabelle.moreau@demo.easyco.com')}',
+  ('${userMap.get('isabelle.moreau@demo.izzico.com')}',
    'Maison 4 Chambres - Saint-Gilles Parvis',
    'Belle maison bruxelloise typique de 150m² avec jardin 80m². 4 chambres, 2 SDB, parquet d''origine, cheminée. Quartier Parvis de Saint-Gilles, artistique et vivant.',
    'house',

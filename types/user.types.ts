@@ -1,5 +1,5 @@
 /**
- * User Types and Interfaces for EasyCo Platform
+ * User Types and Interfaces for Izzico Platform
  */
 
 /**

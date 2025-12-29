@@ -1,4 +1,4 @@
-// Room and Pricing Types for EasyCo Platform
+// Room and Pricing Types for Izzico Platform
 
 import { PropertyRoomAesthetics } from './room-aesthetics.types';
 

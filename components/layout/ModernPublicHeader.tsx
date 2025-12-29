@@ -114,7 +114,7 @@ export default function ModernPublicHeader({
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo - Official EasyCo Logo */}
+          {/* Logo - Official Izzico Logo */}
           <Link
             href="/"
             className="flex items-center group"

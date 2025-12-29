@@ -27,7 +27,7 @@ export default function SafeSinglePropertyMap({
         defaultZoom={15}
         gestureHandling={'greedy'}
         disableDefaultUI={false}
-        mapId="easyco-single-property-map"
+        mapId="izzico-single-property-map"
       >
         <AdvancedMarker position={position}>
           {/* Custom marker */}

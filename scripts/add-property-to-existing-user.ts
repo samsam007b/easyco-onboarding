@@ -97,7 +97,7 @@ async function addPropertyToUser(email: string) {
     title: 'Appartement de Test - Ixelles (Mon Compte)',
     description: `Ceci est une propriété de test créée automatiquement pour ${email}.
 
-Belle appartement de 75m² au cœur d'Ixelles, idéal pour tester toutes les fonctionnalités de la plateforme EasyCo.
+Belle appartement de 75m² au cœur d'Ixelles, idéal pour tester toutes les fonctionnalités de la plateforme Izzico.
 
 Cette propriété a été créée pour vous permettre de :
 - Tester le dashboard propriétaire

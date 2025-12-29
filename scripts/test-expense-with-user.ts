@@ -13,7 +13,7 @@ async function testExpenseWithUser() {
 
   // Get a test user (you'll need to provide credentials)
   console.log('Utilisez cette URL pour tester manuellement :');
-  console.log('https://easyco-onboarding.vercel.app/hub/finances');
+  console.log('https://izzico.be/hub/finances');
   console.log('\n✅ Si vous pouvez créer une dépense sur cette page, tout fonctionne !');
   console.log('\nSi vous voyez toujours une erreur, vérifiez la console du navigateur pour les détails.');
 }

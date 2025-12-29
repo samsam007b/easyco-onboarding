@@ -46,7 +46,7 @@ async function checkAndCreateUser() {
   console.log('⚠️  No users found. Creating a demo user for seeding...\n');
 
   // Create a demo user
-  const demoEmail = `demo-owner-${Date.now()}@easyco.test`;
+  const demoEmail = `demo-owner-${Date.now()}@izzico.test`;
   const demoPassword = 'DemoPassword123!';
 
   const { data: authData, error: authError } = await supabase.auth.admin.createUser({

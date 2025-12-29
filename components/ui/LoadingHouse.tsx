@@ -33,8 +33,8 @@ export default function LoadingHouse({
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Gradient EasyCo signature */}
-          <linearGradient id="easycoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          {/* Gradient Izzico signature */}
+          <linearGradient id="izzicoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" style={{ stopColor: '#7B5FB8', stopOpacity: 1 }} />
             <stop offset="25%" style={{ stopColor: '#B576A8', stopOpacity: 1 }} />
             <stop offset="50%" style={{ stopColor: '#E87461', stopOpacity: 1 }} />
@@ -46,7 +46,7 @@ export default function LoadingHouse({
         {/* Ligne continue qui forme la maison avec porte */}
         <path
           d="M 20,50 L 50,20 L 80,50 L 80,85 L 65,85 L 65,65 L 35,65 L 35,85 L 20,85 Z"
-          stroke="url(#easycoGradient)"
+          stroke="url(#izzicoGradient)"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeLinejoin="round"

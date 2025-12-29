@@ -208,7 +208,7 @@ export default function OwnersPage() {
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: `linear-gradient(to right, ${OWNER_COLORS.gradient.start}, ${OWNER_COLORS.gradient.end})` }}
             >
-              EasyCo
+              Izzico
             </span>
           </motion.h2>
 
@@ -346,7 +346,7 @@ export default function OwnersPage() {
                   Prêt à maximiser tes revenus locatifs ?
                 </h3>
                 <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: OWNER_COLORS.light }}>
-                  Rejoins des centaines de propriétaires qui font confiance à EasyCo
+                  Rejoins des centaines de propriétaires qui font confiance à Izzico
                 </p>
                 <Link href="/signup">
                   <Button

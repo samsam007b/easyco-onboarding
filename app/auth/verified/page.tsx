@@ -34,7 +34,7 @@ function EmailVerifiedContent() {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
           <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">EASY</span>
+            <span className="text-[#4A148C]">IZZI</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
         </div>
@@ -55,7 +55,7 @@ function EmailVerifiedContent() {
 
           {/* Description */}
           <p className="text-gray-600 mb-6">
-            Your email address has been successfully verified. You now have full access to your EasyCo account.
+            Your email address has been successfully verified. You now have full access to your Izzico account.
           </p>
 
           {/* Countdown */}

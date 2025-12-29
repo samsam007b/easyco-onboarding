@@ -201,7 +201,7 @@ export default function FAQ() {
               {faq.contactSubtitle}
             </p>
             <a
-              href="mailto:hello@easyco.be"
+              href="mailto:hello@izzico.be"
               className="inline-block px-10 py-5 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg hover:brightness-110"
               style={{ background: `linear-gradient(to right, ${getGradient(ROLE_COLORS.searcher).start}, ${getGradient(ROLE_COLORS.searcher).end})` }}
             >

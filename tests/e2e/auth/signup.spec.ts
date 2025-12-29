@@ -6,7 +6,7 @@ test.describe('User Signup Flow', () => {
     await page.goto('/signup');
 
     // Check page loaded
-    await expect(page).toHaveTitle(/EasyCo/);
+    await expect(page).toHaveTitle(/Izzico/);
 
     // Check form elements exist
     await expect(page.locator('[name="email"]')).toBeVisible();
@@ -73,7 +73,7 @@ test.describe('User Signup Flow', () => {
   });
 
   test('should prevent duplicate email signup', async ({ page }) => {
-    const testEmail = 'existing-user@easyco-test.com';
+    const testEmail = 'existing-user@izzico-test.com';
 
     await page.goto('/signup');
 

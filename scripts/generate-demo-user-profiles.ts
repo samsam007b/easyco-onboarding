@@ -176,7 +176,7 @@ function removeAccents(str: string): string {
 }
 
 function generateEmail(firstName: string, lastName: string): string {
-  return `${removeAccents(firstName).toLowerCase()}.${removeAccents(lastName).toLowerCase()}@easycodemo.be`;
+  return `${removeAccents(firstName).toLowerCase()}.${removeAccents(lastName).toLowerCase()}@izzicodemo.be`;
 }
 
 function randomMoveInDate(): string {

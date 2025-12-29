@@ -1,5 +1,5 @@
 // ============================================================================
-// ONBOARDING TYPES - EasyCo Platform
+// ONBOARDING TYPES - Izzico Platform
 // ============================================================================
 
 export type UserType = 'searcher' | 'owner' | 'resident';

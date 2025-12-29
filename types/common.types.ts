@@ -1,5 +1,5 @@
 /**
- * Common Types and Interfaces for EasyCo Platform
+ * Common Types and Interfaces for Izzico Platform
  */
 
 /**

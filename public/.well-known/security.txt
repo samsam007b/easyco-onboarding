@@ -1,16 +1,16 @@
-Contact: security@easyco.be
+Contact: security@izzico.be
 Expires: 2026-10-28T00:00:00.000Z
 Preferred-Languages: en, fr
-Canonical: https://easyco.be/.well-known/security.txt
+Canonical: https://izzico.be/.well-known/security.txt
 
 # Security Policy
 
-Thank you for helping keep EasyCo and our users safe!
+Thank you for helping keep Izzico and our users safe!
 
 ## Reporting Security Issues
 
 If you discover a security vulnerability, please report it to us at:
-- Email: security@easyco.be
+- Email: security@izzico.be
 - Please do NOT file a public issue
 
 ## Our Commitment
@@ -41,4 +41,4 @@ We consider security research conducted consistent with this policy to be:
 - Exempt from DMCA takedown notices
 - Exempt from restrictions in our Terms of Service
 
-Thank you for helping us maintain the security of EasyCo!
+Thank you for helping us maintain the security of Izzico!

@@ -245,7 +245,7 @@ export default function ExplorerPage() {
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: `linear-gradient(to right, ${SEARCHER_COLORS.gradient.start}, ${SEARCHER_COLORS.gradient.end})` }}
             >
-              EasyCo
+              Izzico
             </span>
           </motion.h2>
 

@@ -2,7 +2,7 @@
 
 # Script pour construire l'application iOS
 
-echo "🚀 Construction de l'application EasyCo pour iOS..."
+echo "🚀 Construction de l'application Izzico pour iOS..."
 echo ""
 
 # Étape 1 : Build Next.js avec la config Capacitor

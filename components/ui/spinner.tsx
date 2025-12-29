@@ -20,7 +20,7 @@ export function Spinner({ size = 'md', className, variant = 'house' }: SpinnerPr
     lg: 60,
   };
 
-  // Use EasyCo house loader by default
+  // Use Izzico house loader by default
   if (variant === 'house') {
     return (
       <div className={cn('inline-flex items-center justify-center', className)} role="status">

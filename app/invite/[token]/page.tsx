@@ -207,7 +207,7 @@ export default function InvitePage() {
               </div>
 
               <p className="text-gray-600">
-                Pour accepter cette invitation, créez votre compte EasyCo ou connectez-vous.
+                Pour accepter cette invitation, créez votre compte Izzico ou connectez-vous.
               </p>
             </div>
 
@@ -221,7 +221,7 @@ export default function InvitePage() {
             </Button>
 
             <p className="text-center text-xs text-gray-500 mt-4">
-              En continuant, vous acceptez les conditions d'utilisation d'EasyCo
+              En continuant, vous acceptez les conditions d'utilisation d'Izzico
             </p>
           </div>
         </Card>

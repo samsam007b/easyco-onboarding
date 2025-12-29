@@ -25,7 +25,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 async function createDemoOwner() {
   console.log('🏠 Creating demo property owner...\n');
 
-  const demoEmail = `demo-owner-${Date.now()}@easyco.demo`;
+  const demoEmail = `demo-owner-${Date.now()}@izzico.demo`;
   const demoPassword = 'DemoOwner123!';
 
   try {

@@ -82,7 +82,7 @@ function generateEmail(firstName: string, lastName: string): string {
   // Remove accents from names for email
   const cleanFirstName = firstName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const cleanLastName = lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  return `${cleanFirstName}.${cleanLastName}@demo.easyco.be`;
+  return `${cleanFirstName}.${cleanLastName}@demo.izzico.be`;
 }
 
 async function generateDemoSearcher(index: number) {

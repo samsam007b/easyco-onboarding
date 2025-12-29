@@ -43,7 +43,7 @@ export default function SearcherIndex() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title={t('onboarding.searcherIndex.title') || 'Bienvenue sur EasyCo'}
+          title={t('onboarding.searcherIndex.title') || 'Bienvenue sur Izzico'}
           description={t('onboarding.searcherIndex.description') || 'Trouvez votre colocation idéale en quelques étapes'}
         />
       </div>

@@ -85,7 +85,7 @@ function createLanguageFile(lang) {
   let inTranslations = false;
   let braceDepth = 0;
 
-  output.push(`// ${lang.toUpperCase()} translations for EasyCo`);
+  output.push(`// ${lang.toUpperCase()} translations for Izzico`);
   output.push(`// Auto-generated from translations.ts`);
   output.push(`// This file is ${Math.round(7258 / 4)} lines (vs 7258 in the original)`);
   output.push('');

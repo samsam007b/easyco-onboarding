@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Add the invite URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://easyco.be';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://izzico.be';
     const inviteUrl = `${baseUrl}/invite/${result.token}`;
 
     return NextResponse.json({

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Script d'analyse de performance pour EasyCo Onboarding
+# Script d'analyse de performance pour Izzico Onboarding
 # Usage: ./scripts/analyze-performance.sh
 
 set -e
 
-echo "🔍 Analyse de Performance EasyCo Onboarding"
+echo "🔍 Analyse de Performance Izzico Onboarding"
 echo "=========================================="
 echo ""
 

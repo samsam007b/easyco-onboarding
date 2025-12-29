@@ -42,7 +42,7 @@ describe('Cookie Consent Management', () => {
       });
 
       expect(localStorage.setItem).toHaveBeenCalledWith(
-        'easyco_cookie_consent',
+        'izzico_cookie_consent',
         expect.any(String)
       );
     });
@@ -223,7 +223,7 @@ describe('Cookie Consent Management', () => {
     it('should remove consent from localStorage', () => {
       clearConsent();
 
-      expect(localStorage.removeItem).toHaveBeenCalledWith('easyco_cookie_consent');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('izzico_cookie_consent');
     });
   });
 

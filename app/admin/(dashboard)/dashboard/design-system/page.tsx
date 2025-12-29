@@ -408,7 +408,7 @@ function GradientSignatureEditor() {
 
   // Charger la configuration sauvegardée au démarrage
   useEffect(() => {
-    const savedConfig = localStorage.getItem('easyco-gradient-config');
+    const savedConfig = localStorage.getItem('izzico-gradient-config');
     if (savedConfig) {
       try {
         const config = JSON.parse(savedConfig);
@@ -527,7 +527,7 @@ function GradientSignatureEditor() {
     setSavedSearcherDominant(DEFAULT_VALUES.searcher.dominant);
 
     // Supprimer la config sauvegardée
-    localStorage.removeItem('easyco-gradient-config');
+    localStorage.removeItem('izzico-gradient-config');
 
     setSaveMessage('Configuration réinitialisée aux valeurs par défaut');
     setTimeout(() => setSaveMessage(null), 3000);
@@ -576,7 +576,7 @@ function GradientSignatureEditor() {
     };
 
     // Sauvegarder dans localStorage
-    localStorage.setItem('easyco-gradient-config', JSON.stringify(config));
+    localStorage.setItem('izzico-gradient-config', JSON.stringify(config));
 
     // Simuler un delai pour le feedback
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -1679,7 +1679,7 @@ function IconsSection() {
       );
 
       const date = new Date().toISOString().split('T')[0];
-      downloadBlob(blob, `easyco-icons-${date}.zip`);
+      downloadBlob(blob, `izzico-icons-${date}.zip`);
     } catch (error) {
       console.error('Export failed:', error);
       alert('Erreur lors de l\'export des icônes. Consultez la console pour plus de détails.');
@@ -1720,7 +1720,7 @@ function IconsSection() {
             <h4 className="font-semibold text-white">Sur fond blanc</h4>
             <div className="bg-white rounded-xl p-8 flex items-center justify-center border-2 border-slate-200">
               <img
-                src="/logos/easyco-logo-final.png"
+                src="/logos/izzico-logo-final.png"
                 alt="Nouveau Logo IzzIco 2025 - Fond blanc"
                 className="w-full max-w-md"
               />
@@ -1732,7 +1732,7 @@ function IconsSection() {
             <h4 className="font-semibold text-white">Sur fond sombre</h4>
             <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center border-2 border-slate-700">
               <img
-                src="/logos/easyco-logo-final.png"
+                src="/logos/izzico-logo-final.png"
                 alt="Nouveau Logo IzzIco 2025 - Fond sombre"
                 className="w-full max-w-md"
               />
@@ -1744,7 +1744,7 @@ function IconsSection() {
             <h4 className="font-semibold text-white">Sur gradient</h4>
             <div className="bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 rounded-xl p-8 flex items-center justify-center">
               <img
-                src="/logos/easyco-logo-final.png"
+                src="/logos/izzico-logo-final.png"
                 alt="Nouveau Logo IzzIco 2025 - Gradient"
                 className="w-full max-w-md"
               />
@@ -1780,7 +1780,7 @@ function IconsSection() {
                 <code>{`<IzzicoLogo variant="text-full" size="lg" />`}</code>
               </div>
               <div className="bg-slate-900 rounded p-2 font-mono text-xs text-slate-400">
-                src: /logos/easyco-logo-final.png
+                src: /logos/izzico-logo-final.png
               </div>
               <p className="text-slate-300">
                 Component: <code className="bg-slate-900 px-2 py-1 rounded">components/ui/IzzicoLogo.tsx</code>
@@ -3298,7 +3298,7 @@ function InputsSection() {
             <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
             <input
               type="email"
-              placeholder="admin@easyco.be"
+              placeholder="admin@izzico.be"
               className="w-full px-4 py-2 rounded-lg bg-slate-700 border border-slate-600 text-white placeholder:text-slate-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
             />
           </div>
@@ -3861,7 +3861,7 @@ function PropertyCardsSection() {
             <span className="px-2 py-1 bg-gradient-to-r from-orange-500 to-purple-500 text-white text-xs font-bold rounded">V3.D</span>
             Gradient Signature
           </h4>
-          <span className="text-xs text-slate-500">EasyCo signature</span>
+          <span className="text-xs text-slate-500">Izzico signature</span>
         </div>
 
         <div className="bg-gray-50 rounded-xl p-6">
@@ -3939,7 +3939,7 @@ function PropertyCardsSection() {
 
         <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
           <p className="text-xs text-purple-400">
-            <strong>CTA:</strong> Gradient signature EasyCo (orange → purple) - identite forte
+            <strong>CTA:</strong> Gradient signature Izzico (orange → purple) - identite forte
           </p>
         </div>
       </div>
@@ -4073,7 +4073,7 @@ function PropertyCardsSection() {
                 <td className="py-2 px-3 font-medium bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">V3.D</td>
                 <td className="text-center py-2 px-3">Gradient signature</td>
                 <td className="text-center py-2 px-3">Purple (fond gradient)</td>
-                <td className="text-center py-2 px-3">Signature EasyCo</td>
+                <td className="text-center py-2 px-3">Signature Izzico</td>
               </tr>
               <tr>
                 <td className="py-2 px-3 font-medium text-white/80">V3.E</td>
@@ -4797,7 +4797,7 @@ function GradientUsageSection() {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)' }}><span className="text-white font-bold text-lg">E</span></div>
-                <span className="text-white font-semibold">EasyCo</span>
+                <span className="text-white font-semibold">Izzico</span>
               </div>
               <p className="text-xs text-slate-500 mt-2">Rappel de marque</p>
             </div>

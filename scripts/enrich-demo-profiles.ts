@@ -10,7 +10,7 @@ const supabase = createClient(
 // Enhanced profile data with complete onboarding info
 const enrichedData = [
   {
-    email: 'marie.lefevre@easycodemo.be',
+    email: 'marie.lefevre@izzicodemo.be',
     languages: ['Français', 'Anglais'],
     interests: ['Design', 'Plantes', 'Décoration', 'Art'],
     hobbies: ['Jardinage', 'DIY', 'Photographie'],
@@ -37,7 +37,7 @@ const enrichedData = [
     event_interest: 'high'
   },
   {
-    email: 'thomas.dubois@easycodemo.be',
+    email: 'thomas.dubois@izzicodemo.be',
     languages: ['Français', 'Anglais', 'Néerlandais'],
     interests: ['Tech', 'Gaming', 'Cinéma', 'Musique'],
     hobbies: ['Jeux vidéo', 'Programmation', 'Séries'],
@@ -64,7 +64,7 @@ const enrichedData = [
     event_interest: 'low'
   },
   {
-    email: 'amelie.martin@easycodemo.be',
+    email: 'amelie.martin@izzicodemo.be',
     languages: ['Français', 'Anglais'],
     interests: ['Médecine', 'Sciences', 'Lecture', 'Yoga'],
     hobbies: ['Lecture', 'Yoga', 'Running'],
@@ -91,7 +91,7 @@ const enrichedData = [
     event_interest: 'medium'
   },
   {
-    email: 'lucas.bernard@easycodemo.be',
+    email: 'lucas.bernard@izzicodemo.be',
     languages: ['Français', 'Anglais', 'Espagnol'],
     interests: ['Business', 'Voyages', 'Sport', 'Networking'],
     hobbies: ['Running', 'Golf', 'Lecture business'],
@@ -118,7 +118,7 @@ const enrichedData = [
     event_interest: 'low'
   },
   {
-    email: 'clara.petit@easycodemo.be',
+    email: 'clara.petit@izzicodemo.be',
     languages: ['Français', 'Italien', 'Anglais'],
     interests: ['Architecture', 'Cuisine', 'Art', 'Décoration'],
     hobbies: ['Cuisine', 'Peinture', 'Marchés vintage'],

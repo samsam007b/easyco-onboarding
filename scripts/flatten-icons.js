@@ -15,7 +15,7 @@ const sourceDir = process.argv[2];
 
 if (!sourceDir) {
   console.error('❌ Usage: node scripts/flatten-icons.js <chemin-vers-dossier-icons>');
-  console.error('   Exemple: node scripts/flatten-icons.js ~/Downloads/easyco-icons-2025-12-06');
+  console.error('   Exemple: node scripts/flatten-icons.js ~/Downloads/izzico-icons-2025-12-06');
   process.exit(1);
 }
 

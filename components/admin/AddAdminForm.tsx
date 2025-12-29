@@ -94,7 +94,7 @@ export default function AddAdminForm() {
           <div>
             <CardTitle className="text-white">Ajouter un administrateur</CardTitle>
             <CardDescription className="text-slate-400">
-              L'utilisateur doit avoir un compte EasyCo existant
+              L'utilisateur doit avoir un compte Izzico existant
             </CardDescription>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function AddAdminForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@easyco.be"
+                placeholder="admin@izzico.be"
                 required
                 disabled={isLoading}
                 className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-500"

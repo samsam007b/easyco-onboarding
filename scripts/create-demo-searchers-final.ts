@@ -32,7 +32,7 @@ const demoProfiles = [
 ];
 
 async function createProfile(profile: typeof demoProfiles[0], index: number) {
-  const email = `${profile.firstName.toLowerCase()}.${profile.lastName.toLowerCase()}@demo.easyco.be`;
+  const email = `${profile.firstName.toLowerCase()}.${profile.lastName.toLowerCase()}@demo.izzico.be`;
   console.log(`\n[${index + 1}/20] Creating ${profile.firstName} ${profile.lastName}...`);
 
   try {

@@ -109,7 +109,7 @@ export function InvitePopup({
   const shareResidenceViaWhatsApp = () => {
     if (!residenceData?.invitationCode) return;
     const propertyName = residenceData.propertyName || 'notre colocation';
-    const text = `Rejoins ${propertyName} sur EasyCo ! Utilise ce code pour nous rejoindre : ${residenceData.invitationCode}\n\nInscris-toi ici : https://easyco-onboarding.vercel.app/onboarding/resident/property-setup`;
+    const text = `Rejoins ${propertyName} sur Izzico ! Utilise ce code pour nous rejoindre : ${residenceData.invitationCode}\n\nInscris-toi ici : https://izzico.be/onboarding/resident/property-setup`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -117,7 +117,7 @@ export function InvitePopup({
     if (!residenceData?.invitationCode) return;
     const propertyName = residenceData.propertyName || 'notre colocation';
     const subject = `Rejoins-nous sur ${propertyName}`;
-    const body = `Salut !\n\nJe t'invite à rejoindre ${propertyName} sur EasyCo.\n\nUtilise ce code d'invitation : ${residenceData.invitationCode}\n\n1. Va sur https://easyco-onboarding.vercel.app/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nOn gagne tous les deux des mois gratuits quand tu t'inscris !\n\nÀ bientôt !`;
+    const body = `Salut !\n\nJe t'invite à rejoindre ${propertyName} sur Izzico.\n\nUtilise ce code d'invitation : ${residenceData.invitationCode}\n\n1. Va sur https://izzico.be/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nOn gagne tous les deux des mois gratuits quand tu t'inscris !\n\nÀ bientôt !`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 

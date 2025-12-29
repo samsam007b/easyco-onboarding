@@ -9,7 +9,7 @@ test.describe('Authentication', () => {
     await page.goto('/');
 
     // Check that homepage loads
-    await expect(page).toHaveTitle(/EasyCo|Onboarding/i);
+    await expect(page).toHaveTitle(/Izzico|Onboarding/i);
 
     // Check for key elements
     const heading = page.locator('h1').or(page.locator('[class*="hero"]'));

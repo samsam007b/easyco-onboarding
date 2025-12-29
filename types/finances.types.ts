@@ -1,5 +1,5 @@
 /**
- * Finance Types for EasyCo Resident Hub
+ * Finance Types for Izzico Resident Hub
  * Includes: Expenses, Rent Payments, Balances, OCR Data
  */
 

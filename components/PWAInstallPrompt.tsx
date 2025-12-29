@@ -114,11 +114,11 @@ export function PWAInstallPrompt() {
 
             <div className="flex-1">
               <h3 className="font-bold text-lg mb-1">
-                Installer EasyCo
+                Installer Izzico
               </h3>
               <p className="text-sm text-white/90 mb-4">
                 {isIOS
-                  ? "Ajoute EasyCo à ton écran d'accueil pour un accès rapide et une expérience optimale."
+                  ? "Ajoute Izzico à ton écran d'accueil pour un accès rapide et une expérience optimale."
                   : "Installe l'application pour un accès rapide et des notifications en temps réel."}
               </p>
 

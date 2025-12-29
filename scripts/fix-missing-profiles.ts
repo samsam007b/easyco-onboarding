@@ -10,7 +10,7 @@ const supabase = createClient(
 // Missing profiles that failed due to constraint
 const missingProfiles = [
   {
-    email: 'clara.petit@easycodemo.be',
+    email: 'clara.petit@izzicodemo.be',
     firstName: 'Clara', lastName: 'Petit',
     bio: 'Architecte d\'intérieur, 27 ans. Aime cuisiner et recevoir. Recherche coloc dynamique.',
     occupation_status: 'employed', field: 'Architect', budgetMin: 650, budgetMax: 900,
@@ -19,7 +19,7 @@ const missingProfiles = [
     petTolerance: true, smokingTolerance: false, photo: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80'
   },
   {
-    email: 'lea.moreau@easycodemo.be',
+    email: 'lea.moreau@izzicodemo.be',
     firstName: 'Lea', lastName: 'Moreau',
     bio: 'Chef de projet marketing, 28 ans. Énergique et sociale. Adore organiser des soirées.',
     occupation_status: 'employed', field: 'Marketing Manager', budgetMin: 750, budgetMax: 1000,
@@ -28,7 +28,7 @@ const missingProfiles = [
     petTolerance: true, smokingTolerance: false, photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80'
   },
   {
-    email: 'sarah.michel@easycodemo.be',
+    email: 'sarah.michel@izzicodemo.be',
     firstName: 'Sarah', lastName: 'Michel',
     bio: 'Journaliste indépendante, 27 ans. Curieuse et bavarde. Adore les débats intellectuels.',
     occupation_status: 'freelance', field: 'Journalist', budgetMin: 600, budgetMax: 800,

@@ -1,6 +1,6 @@
 {
-  "name": "EasyCo - Plateforme de Coliving",
-  "short_name": "EasyCo",
+  "name": "Izzico - Plateforme de Coliving",
+  "short_name": "Izzico",
   "description": "Trouve ton logement idéal et tes futurs colocataires avec notre algorithme de matching intelligent",
   "start_url": "/",
   "display": "standalone",

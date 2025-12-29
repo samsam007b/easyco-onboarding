@@ -19,7 +19,7 @@ async function debugRoommateMatching() {
 
   // Get user by email (use first searcher in demo)
   const { data: { users } } = await supabase.auth.admin.listUsers();
-  const authUser = users.find(u => u.email?.includes('easycodemo.be'));
+  const authUser = users.find(u => u.email?.includes('izzicodemo.be'));
 
   if (!authUser) {
     console.log('❌ No demo user found');

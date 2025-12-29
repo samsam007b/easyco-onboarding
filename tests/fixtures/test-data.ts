@@ -4,17 +4,17 @@
 
 export const testUsers = {
   searcher: {
-    email: 'test-searcher@easyco-test.com',
+    email: 'test-searcher@izzico-test.com',
     password: 'SecurePass123!',
     fullName: 'Test Searcher',
   },
   owner: {
-    email: 'test-owner@easyco-test.com',
+    email: 'test-owner@izzico-test.com',
     password: 'SecurePass123!',
     fullName: 'Test Owner',
   },
   resident: {
-    email: 'test-resident@easyco-test.com',
+    email: 'test-resident@izzico-test.com',
     password: 'SecurePass123!',
     fullName: 'Test Resident',
   },
@@ -72,7 +72,7 @@ export const testOnboardingData = {
  */
 export function generateTestEmail(role: 'searcher' | 'owner' | 'resident'): string {
   const timestamp = Date.now();
-  return `test-${role}-${timestamp}@easyco-test.com`;
+  return `test-${role}-${timestamp}@izzico-test.com`;
 }
 
 /**

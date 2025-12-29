@@ -13,7 +13,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const THEME_STORAGE_KEY = 'easyco-theme';
+const THEME_STORAGE_KEY = 'izzico-theme';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Force light mode - dark mode disabled

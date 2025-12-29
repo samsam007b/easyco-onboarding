@@ -46,16 +46,16 @@ interface Settings {
 }
 
 const defaultSettings: Settings = {
-  app_name: 'EasyCo',
-  site_url: 'https://easyco.be',
-  support_email: 'support@easyco.be',
+  app_name: 'Izzico',
+  site_url: 'https://izzico.be',
+  support_email: 'support@izzico.be',
   default_language: 'fr',
   email_notifications: true,
   push_notifications: true,
   weekly_summary: false,
   admin_alerts: true,
-  email_from: 'EasyCo <noreply@easyco.be>',
-  email_reply_to: 'support@easyco.be',
+  email_from: 'Izzico <noreply@izzico.be>',
+  email_reply_to: 'support@izzico.be',
   require_2fa: true,
   audit_logs: true,
   session_timeout: '60',

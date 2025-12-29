@@ -32,7 +32,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 const demoUsers = {
   searchers: [
     {
-      email: 'sophie.laurent@demo.easyco.com',
+      email: 'sophie.laurent@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Sophie',
       lastName: 'Laurent',
@@ -54,7 +54,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'ahmed.elmansouri@demo.easyco.com',
+      email: 'ahmed.elmansouri@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Ahmed',
       lastName: 'El Mansouri',
@@ -76,7 +76,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'emma.vanderberg@demo.easyco.com',
+      email: 'emma.vanderberg@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Emma',
       lastName: 'Van Der Berg',
@@ -98,7 +98,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'lucas.dubois@demo.easyco.com',
+      email: 'lucas.dubois@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Lucas',
       lastName: 'Dubois',
@@ -120,7 +120,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'maria.santos@demo.easyco.com',
+      email: 'maria.santos@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Maria',
       lastName: 'Santos',
@@ -144,7 +144,7 @@ const demoUsers = {
   ],
   owners: [
     {
-      email: 'jeanmarc.petit@demo.easyco.com',
+      email: 'jeanmarc.petit@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Jean-Marc',
       lastName: 'Petit',
@@ -159,7 +159,7 @@ const demoUsers = {
       propertyType: 'apartment',
     },
     {
-      email: 'isabelle.moreau@demo.easyco.com',
+      email: 'isabelle.moreau@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Isabelle',
       lastName: 'Moreau',
@@ -174,7 +174,7 @@ const demoUsers = {
       propertyType: 'house',
     },
     {
-      email: 'thomas.janssens@demo.easyco.com',
+      email: 'thomas.janssens@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Thomas',
       lastName: 'Janssens',
@@ -189,7 +189,7 @@ const demoUsers = {
       propertyType: 'studio',
     },
     {
-      email: 'sophie.vermeulen@demo.easyco.com',
+      email: 'sophie.vermeulen@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Sophie',
       lastName: 'Vermeulen',
@@ -206,7 +206,7 @@ const demoUsers = {
   ],
   residents: [
     {
-      email: 'pierre.lecomte@demo.easyco.com',
+      email: 'pierre.lecomte@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Pierre',
       lastName: 'Lecomte',
@@ -225,7 +225,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'laura.gonzalez@demo.easyco.com',
+      email: 'laura.gonzalez@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Laura',
       lastName: 'Gonzalez',
@@ -244,7 +244,7 @@ const demoUsers = {
       },
     },
     {
-      email: 'maxime.dubois@demo.easyco.com',
+      email: 'maxime.dubois@demo.izzico.com',
       password: 'Demo123!',
       firstName: 'Maxime',
       lastName: 'Dubois',
@@ -287,7 +287,7 @@ const properties = [
       'https://images.unsplash.com/photo-1502672260066-6bc36a8baf37?w=800',
       'https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=800',
     ],
-    ownerEmail: 'jeanmarc.petit@demo.easyco.com',
+    ownerEmail: 'jeanmarc.petit@demo.izzico.com',
   },
   {
     title: 'Studio moderne tout équipé - Schaerbeek',
@@ -309,7 +309,7 @@ const properties = [
       'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
       'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800',
     ],
-    ownerEmail: 'thomas.janssens@demo.easyco.com',
+    ownerEmail: 'thomas.janssens@demo.izzico.com',
   },
   {
     title: 'Coliving dans maison de maître avec jardin - Forest',
@@ -331,7 +331,7 @@ const properties = [
       'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
     ],
-    ownerEmail: 'sophie.vermeulen@demo.easyco.com',
+    ownerEmail: 'sophie.vermeulen@demo.izzico.com',
   },
   {
     title: 'Appartement de standing 3 chambres - Woluwe',
@@ -353,7 +353,7 @@ const properties = [
       'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800',
       'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800',
     ],
-    ownerEmail: 'isabelle.moreau@demo.easyco.com',
+    ownerEmail: 'isabelle.moreau@demo.izzico.com',
   },
   {
     title: 'Maison de caractère 4 chambres avec jardin - Saint-Gilles',
@@ -375,7 +375,7 @@ const properties = [
       'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
       'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
     ],
-    ownerEmail: 'isabelle.moreau@demo.easyco.com',
+    ownerEmail: 'isabelle.moreau@demo.izzico.com',
   },
 ];
 
