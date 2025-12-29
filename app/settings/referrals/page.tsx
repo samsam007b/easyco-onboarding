@@ -141,7 +141,7 @@ export default function ReferralsSettingsPage() {
               <span className="text-sm font-medium text-gray-600">Invitations</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {stats?.totalReferrals || 0}
+              {stats?.total_referrals || 0}
             </p>
           </div>
 
@@ -153,7 +153,7 @@ export default function ReferralsSettingsPage() {
               <span className="text-sm font-medium text-gray-600">Réussies</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {stats?.successfulReferrals || 0}
+              {stats?.successful_referrals || 0}
             </p>
           </div>
 
@@ -165,7 +165,7 @@ export default function ReferralsSettingsPage() {
               <span className="text-sm font-medium text-gray-600">Mois gagnés</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {stats?.creditsEarned || 0}
+              {stats?.credits_earned || 0}
             </p>
           </div>
         </motion.div>
@@ -181,7 +181,7 @@ export default function ReferralsSettingsPage() {
             {stats && (
               <ReferralCodeCard
                 code={stats.code}
-                shareUrl={stats.shareUrl}
+                shareUrl={stats.share_url}
               />
             )}
           </motion.div>
