@@ -70,6 +70,7 @@ export function useAssistantConversation() {
   }, []);
 
   // Start a new conversation
+  // Note: Fails silently if assistant_conversations table doesn't exist
   const startConversation = useCallback(async () => {
     if (conversation.id) return conversation.id;
 
@@ -86,6 +87,12 @@ export function useAssistantConversation() {
         }),
       });
 
+      // Silently handle errors (table may not exist in production)
+      if (!response.ok) {
+        console.debug('[Assistant] Conversation tracking unavailable');
+        return null;
+      }
+
       const data = await response.json();
       if (data.conversation) {
         setConversation(prev => ({
@@ -96,27 +103,20 @@ export function useAssistantConversation() {
         return data.conversation.id;
       }
     } catch (error) {
-      console.error('Failed to start conversation:', error);
+      // Silently fail - conversation tracking is optional
+      console.debug('[Assistant] Conversation tracking unavailable:', error);
     }
     return null;
   }, [conversation.id, conversation.sessionId, pathname]);
 
-  // Save a message
+  // Save a message (fire-and-forget, non-blocking)
+  // Fails silently if tracking is unavailable
   const saveMessage = useCallback(async (
     content: string,
     role: 'user' | 'assistant',
     toolCalls?: any,
     toolResults?: any
   ) => {
-    let convId = conversation.id;
-
-    // Start conversation if not started
-    if (!convId) {
-      convId = await startConversation();
-    }
-
-    if (!convId) return;
-
     // Calculate response time for assistant messages
     let responseTimeMs: number | undefined;
     if (role === 'user') {
@@ -125,29 +125,55 @@ export function useAssistantConversation() {
       responseTimeMs = Date.now() - messageStartTime.current;
     }
 
-    try {
-      await fetch('/api/assistant/conversation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'message',
-          conversationId: convId,
-          message: content,
-          role,
-          currentPage: pathname,
-          toolCalls,
-          toolResults,
-          responseTimeMs,
-        }),
-      });
-    } catch (error) {
-      console.error('Failed to save message:', error);
-    }
+    // Fire-and-forget: don't await, don't block the UI
+    // This ensures the chat works even if tracking fails
+    const doSave = async () => {
+      let convId = conversation.id;
+
+      // Try to start conversation if not started
+      if (!convId) {
+        convId = await startConversation();
+      }
+
+      // If no conversation ID, tracking is unavailable - skip silently
+      if (!convId) return;
+
+      try {
+        await fetch('/api/assistant/conversation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'message',
+            conversationId: convId,
+            message: content,
+            role,
+            currentPage: pathname,
+            toolCalls,
+            toolResults,
+            responseTimeMs,
+          }),
+        });
+      } catch {
+        // Silently fail - tracking is optional
+      }
+    };
+
+    // Execute in background without blocking
+    doSave();
   }, [conversation.id, pathname, startConversation]);
 
-  // End conversation
+  // End conversation (fire-and-forget)
   const endConversation = useCallback(async () => {
-    if (!conversation.id) return;
+    if (!conversation.id) {
+      // Reset state even if no conversation tracked
+      setConversation(prev => ({
+        ...prev,
+        id: null,
+        isActive: false,
+      }));
+      setFeedbackSubmitted(false);
+      return;
+    }
 
     try {
       await fetch('/api/assistant/conversation', {
@@ -158,24 +184,32 @@ export function useAssistantConversation() {
           conversationId: conversation.id,
         }),
       });
-
-      setConversation(prev => ({
-        ...prev,
-        id: null,
-        isActive: false,
-      }));
-      setFeedbackSubmitted(false);
-    } catch (error) {
-      console.error('Failed to end conversation:', error);
+    } catch {
+      // Silently fail - tracking is optional
     }
+
+    // Always reset state
+    setConversation(prev => ({
+      ...prev,
+      id: null,
+      isActive: false,
+    }));
+    setFeedbackSubmitted(false);
   }, [conversation.id]);
 
   // Submit feedback
+  // Returns true to show success UI even if tracking fails
   const submitFeedback = useCallback(async (feedback: FeedbackData) => {
-    if (!conversation.id) return false;
+    // Mark as submitted immediately for better UX
+    setFeedbackSubmitted(true);
+
+    if (!conversation.id) {
+      // No tracking available, but still show success
+      return true;
+    }
 
     try {
-      const response = await fetch('/api/assistant/conversation', {
+      await fetch('/api/assistant/conversation', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -186,29 +220,26 @@ export function useAssistantConversation() {
           currentPage: pathname,
         }),
       });
-
-      if (response.ok) {
-        setFeedbackSubmitted(true);
-        return true;
-      }
-    } catch (error) {
-      console.error('Failed to submit feedback:', error);
+    } catch {
+      // Silently fail - feedback submission UI still works
     }
-    return false;
+    return true;
   }, [conversation.id, pathname]);
 
   // Submit suggestion
+  // Returns true to show success UI even if tracking fails
   const submitSuggestion = useCallback(async (suggestion: SuggestionData) => {
-    // Start conversation if not started
+    // Try to start conversation if not started
     let convId = conversation.id;
     if (!convId) {
       convId = await startConversation();
     }
 
-    if (!convId) return false;
+    // Even if no tracking, return true for good UX
+    if (!convId) return true;
 
     try {
-      const response = await fetch('/api/assistant/conversation', {
+      await fetch('/api/assistant/conversation', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -219,12 +250,10 @@ export function useAssistantConversation() {
           currentPage: pathname,
         }),
       });
-
-      return response.ok;
-    } catch (error) {
-      console.error('Failed to submit suggestion:', error);
+    } catch {
+      // Silently fail - suggestion UI still works
     }
-    return false;
+    return true;
   }, [conversation.id, pathname, startConversation]);
 
   return {

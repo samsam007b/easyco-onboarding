@@ -466,6 +466,70 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
 // MAIN API HANDLER
 // =====================================================
 
+/**
+ * Create an error response as a valid stream
+ * This ensures the client can properly handle errors
+ */
+function createErrorStreamResponse(errorMessage: string) {
+  const encoder = new TextEncoder();
+
+  const stream = new ReadableStream({
+    start(controller) {
+      // Send error as a text message so the user sees it
+      const data = {
+        type: 'text-delta',
+        textDelta: `⚠️ ${errorMessage}\n\nVeuillez réessayer ou contacter le support si le problème persiste.`,
+      };
+      controller.enqueue(encoder.encode(`0:${JSON.stringify(data)}\n`));
+
+      // Send finish message
+      const finishData = {
+        type: 'finish',
+        finishReason: 'stop',
+        usage: { promptTokens: 0, completionTokens: 0 },
+        metadata: { provider: 'error' },
+      };
+      controller.enqueue(encoder.encode(`d:${JSON.stringify(finishData)}\n`));
+
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+      'X-Assistant-Provider': 'error',
+    },
+  });
+}
+
+/**
+ * Safely extract text content from a message
+ */
+function extractMessageContent(message: any): string {
+  if (typeof message.content === 'string') {
+    return message.content;
+  }
+  if (Array.isArray(message.content)) {
+    return message.content
+      .filter((part: any) => part.type === 'text' || part.text)
+      .map((part: any) => part.text || part.content || '')
+      .join('');
+  }
+  if (message.parts && Array.isArray(message.parts)) {
+    return message.parts
+      .filter((part: any) => part.type === 'text')
+      .map((part: any) => part.text || '')
+      .join('');
+  }
+  if (typeof message.text === 'string') {
+    return message.text;
+  }
+  return '';
+}
+
 export async function POST(req: Request) {
   const startTime = Date.now();
 
@@ -478,24 +542,27 @@ export async function POST(req: Request) {
       .pop();
 
     if (!lastUserMessage) {
-      return new Response(JSON.stringify({ error: 'No user message provided' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return createErrorStreamResponse('Aucun message reçu. Veuillez réessayer.');
+    }
+
+    // Safely extract content
+    const userMessageContent = extractMessageContent(lastUserMessage);
+    if (!userMessageContent.trim()) {
+      return createErrorStreamResponse('Message vide. Veuillez saisir une question.');
     }
 
     // Build personalized user context (fetches from Supabase)
     const userContext = await buildUserContext();
 
-    // Convert to our ChatMessage format
+    // Convert to our ChatMessage format - safely extract content
     const conversationHistory: ChatMessage[] = messages.slice(0, -1).map((m: any) => ({
       role: m.role as 'user' | 'assistant',
-      content: typeof m.content === 'string' ? m.content : m.content[0]?.text || '',
+      content: extractMessageContent(m),
     }));
 
     // Process through hybrid pipeline with user context for personalization
     const result = await processAssistantMessage(
-      lastUserMessage.content,
+      userMessageContent,
       conversationHistory,
       { forceProvider, userContext }
     );
@@ -543,7 +610,7 @@ export async function POST(req: Request) {
       // Stream Groq response
       const chatMessages: ChatMessage[] = [
         ...conversationHistory,
-        { role: 'user', content: lastUserMessage.content },
+        { role: 'user', content: userMessageContent },
       ];
 
       return createGroqStreamResponse(chatMessages, {
@@ -556,37 +623,47 @@ export async function POST(req: Request) {
     // =====================================================
     console.log('[Assistant API] Using OpenAI fallback');
 
-    const openaiResult = streamText({
-      model: openai('gpt-4o-mini'),
-      system: SYSTEM_PROMPT,
-      messages,
-      tools: assistantTools,
-    });
+    // Check if OpenAI API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('[Assistant API] OPENAI_API_KEY not configured');
+      return createErrorStreamResponse(
+        "L'assistant est temporairement indisponible. Veuillez réessayer plus tard."
+      );
+    }
 
-    // Add custom headers to the response
-    const response = openaiResult.toTextStreamResponse();
+    try {
+      const openaiResult = streamText({
+        model: openai('gpt-4o-mini'),
+        system: SYSTEM_PROMPT,
+        messages,
+        tools: assistantTools,
+      });
 
-    // Clone response to add headers
-    const headers = new Headers(response.headers);
-    headers.set('X-Assistant-Provider', 'openai');
-    headers.set('X-Assistant-Fallback', 'true');
+      // Add custom headers to the response
+      const response = openaiResult.toTextStreamResponse();
 
-    return new Response(response.body, {
-      status: response.status,
-      headers,
-    });
+      // Clone response to add headers
+      const headers = new Headers(response.headers);
+      headers.set('X-Assistant-Provider', 'openai');
+      headers.set('X-Assistant-Fallback', 'true');
+
+      return new Response(response.body, {
+        status: response.status,
+        headers,
+      });
+    } catch (openaiError: any) {
+      console.error('[Assistant API] OpenAI error:', openaiError);
+      return createErrorStreamResponse(
+        "L'assistant est temporairement indisponible. Veuillez réessayer plus tard."
+      );
+    }
   } catch (error: any) {
     console.error('[Assistant API] Error:', error);
 
-    return new Response(
-      JSON.stringify({
-        error: error.message || 'Internal server error',
-        provider: 'error',
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
+    // Return a streaming error response so the client can handle it properly
+    // This prevents the "undefined is not an object" error from useChat
+    return createErrorStreamResponse(
+      "Désolé, je rencontre un problème technique. Veuillez réessayer."
     );
   }
 }

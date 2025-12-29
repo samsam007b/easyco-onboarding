@@ -207,16 +207,19 @@ export default function AssistantButton() {
   };
 
   const handleSuggestedAction = async (prompt: string) => {
-    // Save user message
-    await saveMessage(prompt, 'user');
+    // Prevent double-click while loading
+    if (isLoading) return;
+
+    // Save user message (fire-and-forget, non-blocking)
+    saveMessage(prompt, 'user');
     sendMessage({ text: prompt });
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim()) {
-      // Save user message
-      await saveMessage(input.trim(), 'user');
+    if (input.trim() && !isLoading) {
+      // Save user message (fire-and-forget, non-blocking)
+      saveMessage(input.trim(), 'user');
       sendMessage({ text: input });
       setInput('');
     }
@@ -393,9 +396,18 @@ export default function AssistantButton() {
                       <button
                         key={index}
                         onClick={() => handleSuggestedAction(action.prompt)}
-                        className="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition text-left group"
+                        disabled={isLoading}
+                        className={cn(
+                          'flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-200 transition text-left group',
+                          isLoading
+                            ? 'opacity-50 cursor-not-allowed'
+                            : 'hover:border-purple-300 hover:bg-purple-50'
+                        )}
                       >
-                        <action.icon className="w-4 h-4 text-purple-600 group-hover:scale-110 transition" />
+                        <action.icon className={cn(
+                          'w-4 h-4 text-purple-600 transition',
+                          !isLoading && 'group-hover:scale-110'
+                        )} />
                         <span className="text-xs text-gray-700 font-medium">{action.label}</span>
                       </button>
                     ))}
@@ -404,7 +416,13 @@ export default function AssistantButton() {
                   {/* Quick suggestion button */}
                   <button
                     onClick={() => setFeedbackMode('suggestion')}
-                    className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl hover:from-amber-600 hover:to-orange-600 transition font-medium text-sm"
+                    disabled={isLoading}
+                    className={cn(
+                      'w-full flex items-center justify-center gap-2 p-3 rounded-xl transition font-medium text-sm',
+                      isLoading
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
+                    )}
                   >
                     <MessageSquarePlus className="w-4 h-4" />
                     Proposer une idée ou amélioration
