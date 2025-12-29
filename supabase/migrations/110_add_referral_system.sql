@@ -1,5 +1,5 @@
 -- =====================================================
--- REFERRAL SYSTEM FOR EASYCO
+-- REFERRAL SYSTEM FOR IZZICO
 -- =====================================================
 -- Each user gets a unique referral code
 -- Rewards: Invite resident = 2 months (inviter) + 1 month (invited)
@@ -14,7 +14,7 @@
 CREATE TABLE IF NOT EXISTS referral_codes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
-  code VARCHAR(8) NOT NULL UNIQUE, -- Format: "EASY7KM2"
+  code VARCHAR(8) NOT NULL UNIQUE, -- Format: "IZZI7KM2"
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -113,7 +113,7 @@ END $$;
 
 -- =====================================================
 -- FUNCTION: Generate unique referral code
--- Format: "EASY" + 4 alphanumeric chars = 8 chars total
+-- Format: "IZZI" + 4 alphanumeric chars = 8 chars total
 -- =====================================================
 CREATE OR REPLACE FUNCTION generate_referral_code()
 RETURNS TEXT AS $$
@@ -123,8 +123,8 @@ DECLARE
   v_exists BOOLEAN;
 BEGIN
   LOOP
-    -- Generate code: EASY + 4 random chars
-    v_code := 'EASY' ||
+    -- Generate code: IZZI + 4 random chars
+    v_code := 'IZZI' ||
       substring(v_chars FROM floor(random() * length(v_chars) + 1)::int FOR 1) ||
       substring(v_chars FROM floor(random() * length(v_chars) + 1)::int FOR 1) ||
       substring(v_chars FROM floor(random() * length(v_chars) + 1)::int FOR 1) ||
@@ -454,7 +454,7 @@ BEGIN
 
   RETURN jsonb_build_object(
     'code', v_code,
-    'share_url', 'https://easyco.be/signup?ref=' || v_code,
+    'share_url', 'https://izzico.be/signup?ref=' || v_code,
     'total_referrals', (SELECT COUNT(*) FROM referrals WHERE referrer_id = p_user_id),
     'successful_referrals', COALESCE(v_stats.successful, 0),
     'pending_referrals', (SELECT COUNT(*) FROM referrals WHERE referrer_id = p_user_id AND status = 'pending'),

@@ -381,7 +381,7 @@ export default function SettingsPage() {
                                 ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200'
                                 : 'bg-orange-100 text-orange-700 border-orange-200'
                             )}>
-                              {section.badge === 'Premium' && '✨ '}{section.badge}
+                              {section.badge}
                             </span>
                           )}
                         </div>

@@ -111,8 +111,11 @@ export default function ReferralsSettingsPage() {
 
             <div className="text-center">
               <div className="inline-flex items-center gap-3 mb-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-gray-200 bg-gradient-to-br from-green-100 to-emerald-100">
-                  <Gift className="w-8 h-8 text-green-600" />
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm"
+                   style={{
+                     background: 'linear-gradient(135deg, #22C55E 0%, #10B981 50%, #059669 100%)'
+                   }}>
+                  <Gift className="w-8 h-8 text-white" />
                 </div>
               </div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">Parrainage</h1>
@@ -207,8 +210,11 @@ export default function ReferralsSettingsPage() {
         >
           <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-                <Gift className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                   style={{
+                     background: 'linear-gradient(135deg, #22C55E 0%, #10B981 50%, #059669 100%)'
+                   }}>
+                <Gift className="w-5 h-5 text-white" />
               </div>
               Comment ça marche ?
             </h2>

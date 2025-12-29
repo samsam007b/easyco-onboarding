@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.easyco.app',
-  appName: 'EasyCo',
+  appId: 'com.izzico.app',
+  appName: 'Izzico',
   webDir: 'out',
   server: {
     androidScheme: 'https',
@@ -14,7 +14,7 @@ const config: CapacitorConfig = {
   },
   ios: {
     contentInset: 'always',
-    scheme: 'EasyCo',
+    scheme: 'Izzico',
     allowsLinkPreview: true,
     scrollEnabled: true
   },

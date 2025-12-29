@@ -49,7 +49,7 @@ function AuthContent() {
       setMode('signup');
     }
 
-    // Get referral code from URL (e.g., /auth?mode=signup&ref=EASY7KM2)
+    // Get referral code from URL (e.g., /auth?mode=signup&ref=IZZI7KM2)
     const refCode = searchParams?.get('ref');
     if (refCode) {
       setReferralCode(refCode.toUpperCase());
@@ -456,7 +456,7 @@ function AuthContent() {
                           type="text"
                           value={referralCode}
                           onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-                          placeholder="Ex: EASY7KM2"
+                          placeholder="Ex: IZZI7KM2"
                           className={`pl-12 pr-12 uppercase ${
                             referralCodeStatus === 'valid'
                               ? 'border-green-500 focus:ring-green-500'

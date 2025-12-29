@@ -14,7 +14,7 @@ export default function Footer() {
 
           {/* About */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">EasyCo</h3>
+            <h3 className="text-white font-bold text-lg mb-4">Izzico</h3>
             <p className="text-sm text-gray-400 leading-relaxed">
               {footer.tagline}
             </p>
@@ -79,8 +79,8 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">{footer.contact.title}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="mailto:hello@easyco.be" className="hover:text-white transition">
-                  hello@easyco.be
+                <a href="mailto:hello@izzico.be" className="hover:text-white transition">
+                  hello@izzico.be
                 </a>
               </li>
               <li>
@@ -99,13 +99,13 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} EasyCo SPRL. {footer.rights}
+              © {new Date().getFullYear()} Izzico SPRL. {footer.rights}
             </p>
 
             {/* Social Links */}
             <div className="flex gap-6">
               <a
-                href="https://facebook.com/easyco"
+                href="https://facebook.com/izzico"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition"
@@ -116,7 +116,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://instagram.com/easyco.be"
+                href="https://instagram.com/izzico.be"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition"
@@ -127,7 +127,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/company/easyco"
+                href="https://linkedin.com/company/izzico"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition"

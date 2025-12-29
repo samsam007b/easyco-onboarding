@@ -18,7 +18,7 @@ export type ReferredUserType = 'owner' | 'resident';
 export interface ReferralCode {
   id: string;
   user_id: string;
-  code: string; // Format: "EASY7KM2"
+  code: string; // Format: "IZZI7KM2"
   is_active: boolean;
   created_at: string;
   updated_at: string;

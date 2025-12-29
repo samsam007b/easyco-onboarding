@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { Search, Home as HomeIcon, Key, ArrowRight, Settings, LogOut } from 'lucide-react';
+import { Search, Home as HomeIcon, Key, ArrowRight, Settings, LogOut, Sparkles, Rocket, User } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useRole } from '@/lib/role/role-context';
@@ -117,26 +117,24 @@ export default function WelcomePage() {
     );
   }
 
-  // 🔴 CLOSED BETA: Searcher disabled
+  // CLOSED BETA: Searcher disabled
   const searcherAvailable = false;
 
   const roleCards = [
     {
       id: 'searcher',
       icon: Search,
-      emoji: '🔍',
       title: welcome.searcher?.title || 'Je cherche un logement',
       description: welcome.searcher?.description || 'Trouvez votre colocation idéale',
       color: 'var(--easy-yellow)',
       gradient: 'from-yellow-50 to-yellow-100',
       borderColor: 'border-yellow-300 hover:border-yellow-400',
       bgHover: 'hover:bg-yellow-50',
-      disabled: !searcherAvailable, // 🔴 CLOSED BETA
+      disabled: !searcherAvailable, // CLOSED BETA
     },
     {
       id: 'owner',
       icon: HomeIcon,
-      emoji: '🏠',
       title: welcome.owner?.title || 'Je loue mon bien',
       description: welcome.owner?.description || 'Gérez vos propriétés et trouvez des locataires',
       color: 'var(--easy-purple)',
@@ -148,7 +146,6 @@ export default function WelcomePage() {
     {
       id: 'resident',
       icon: Key,
-      emoji: '🔑',
       title: welcome.resident?.title || 'Je suis déjà résident',
       description: welcome.resident?.description || 'Accédez à votre communauté de coliving',
       color: 'var(--easy-orange)',
@@ -206,8 +203,11 @@ export default function WelcomePage() {
         <div className="max-w-5xl w-full">
           {/* Welcome Message */}
           <div className="text-center mb-8 sm:mb-12 animate-fadeIn">
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg mb-4 sm:mb-6">
-              <span className="text-3xl sm:text-4xl">👋</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-lg mb-4 sm:mb-6"
+                 style={{
+                   background: 'linear-gradient(135deg, var(--easy-purple) 0%, #9333EA 100%)'
+                 }}>
+              <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[var(--easy-purple)] mb-2 sm:mb-3">
               {welcome.greeting || 'Bonjour'}, {user?.full_name}!
@@ -246,14 +246,16 @@ export default function WelcomePage() {
                 >
                   {/* Badge "Invité" for pre-selected role */}
                   {isInvited && (
-                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-pulse">
-                      ✨ Invité
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-pulse flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Invité
                     </div>
                   )}
-                  {/* 🔴 CLOSED BETA: Badge "Bientôt" pour Searcher */}
+                  {/* CLOSED BETA: Badge "Bientôt" pour Searcher */}
                   {isDisabled && !isInvited && (
-                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-bounce">
-                      🚀 Bientôt
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg z-10 animate-bounce flex items-center gap-1">
+                      <Rocket className="w-3.5 h-3.5" />
+                      Bientôt
                     </div>
                   )}
 
@@ -279,11 +281,11 @@ export default function WelcomePage() {
                     {card.description}
                   </p>
 
-                  {/* 🔴 CLOSED BETA: Message explicatif pour Searcher */}
+                  {/* CLOSED BETA: Message explicatif pour Searcher */}
                   {isDisabled && (
                     <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <p className="text-xs sm:text-sm text-yellow-800 font-medium text-center">
-                        Cette fonctionnalité arrive très prochainement ! 🎉
+                        Cette fonctionnalité arrive très prochainement !
                       </p>
                     </div>
                   )}

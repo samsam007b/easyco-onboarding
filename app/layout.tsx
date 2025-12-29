@@ -41,21 +41,21 @@ const AssistantButton = dynamic(() => import('@/components/assistant/AssistantBu
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
 
 export const metadata: Metadata = {
-  title: "EasyCo — Colocation fiable et compatible en Belgique",
+  title: "Izzico — Colocation fiable et compatible en Belgique",
   description: "Trouve ta coloc idéale à Bruxelles, Liège, Gand. Vérification d'identité, matching intelligent, groupes pré-formés. Évite les arnaques.",
   keywords: ['colocation Bruxelles', 'coliving Belgique', 'coloc Liège', 'coloc Gand', 'appartement partagé', 'kot étudiant', 'roommate Brussels', 'shared apartment Belgium'],
 
   // Open Graph (Facebook, LinkedIn, WhatsApp)
   openGraph: {
-    title: 'EasyCo — Trouve ta coloc fiable et compatible',
+    title: 'Izzico — Trouve ta coloc fiable et compatible',
     description: 'Évite les arnaques. Matching intelligent basé sur ton lifestyle. Rejoins des groupes pré-formés.',
-    url: 'https://easyco.be',
-    siteName: 'EasyCo',
+    url: 'https://izzico.be',
+    siteName: 'Izzico',
     images: [{
-      url: 'https://easyco.be/og-image.jpg',
+      url: 'https://izzico.be/og-image.jpg',
       width: 1200,
       height: 630,
-      alt: 'EasyCo - Plateforme de colocation fiable en Belgique',
+      alt: 'Izzico - Plateforme de colocation fiable en Belgique',
     }],
     locale: 'fr_BE',
     type: 'website',
@@ -65,10 +65,10 @@ export const metadata: Metadata = {
   // Twitter Cards
   twitter: {
     card: 'summary_large_image',
-    title: 'EasyCo — Colocation fiable en Belgique',
+    title: 'Izzico — Colocation fiable en Belgique',
     description: 'Vérification ID, matching intelligent, zéro arnaque. Trouve ta coloc compatible en 3 étapes.',
-    images: ['https://easyco.be/twitter-card.jpg'],
-    creator: '@EasyCoBE',
+    images: ['https://izzico.be/twitter-card.jpg'],
+    creator: '@IzzicoBE',
   },
 
   // Additional SEO
@@ -85,18 +85,18 @@ export const metadata: Metadata = {
 
   // Canonical URL
   alternates: {
-    canonical: 'https://easyco.be',
+    canonical: 'https://izzico.be',
     languages: {
-      'fr-BE': 'https://easyco.be',
-      'en': 'https://easyco.be/en',
-      'nl-BE': 'https://easyco.be/nl',
-      'de': 'https://easyco.be/de',
+      'fr-BE': 'https://izzico.be',
+      'en': 'https://izzico.be/en',
+      'nl-BE': 'https://izzico.be/nl',
+      'de': 'https://izzico.be/de',
     },
   },
 
   // App metadata
-  applicationName: 'EasyCo',
-  authors: [{ name: 'EasyCo Team' }],
+  applicationName: 'Izzico',
+  authors: [{ name: 'Izzico Team' }],
   generator: 'Next.js',
   category: 'Real Estate',
 
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'EasyCo',
+    title: 'Izzico',
   },
   formatDetection: {
     telephone: false,
@@ -127,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="EasyCo" />
+        <meta name="apple-mobile-web-app-title" content="Izzico" />
 
         {/* Apple Touch Icons */}
         <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
