@@ -87,13 +87,13 @@ export function useAssistantConversation() {
         }),
       });
 
-      // Silently handle errors (table may not exist in production)
-      if (!response.ok) {
-        console.debug('[Assistant] Conversation tracking unavailable');
+      const data = await response.json();
+
+      // Handle skipped responses (tracking unavailable but not an error)
+      if (data.skipped) {
         return null;
       }
 
-      const data = await response.json();
       if (data.conversation) {
         setConversation(prev => ({
           ...prev,
@@ -104,7 +104,6 @@ export function useAssistantConversation() {
       }
     } catch (error) {
       // Silently fail - conversation tracking is optional
-      console.debug('[Assistant] Conversation tracking unavailable:', error);
     }
     return null;
   }, [conversation.id, conversation.sessionId, pathname]);
