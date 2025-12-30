@@ -2,12 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
-import { Home, Users, MapPin, Sparkles, Plus, UserPlus, FileText, Vote } from 'lucide-react';
+import { Home, Users, MapPin, Sparkles, Plus, UserPlus, FileText, Vote, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { InvitePopup } from '@/components/referral';
+
+// V2 Fun Design Colors
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
+const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.25)';
+const RESIDENT_PRIMARY = '#ee5736';
 
 interface PropertyInfo {
   id: string;
@@ -202,173 +208,212 @@ export default function ResidenceHeader() {
 
   if (isLoading || !propertyInfo) {
     return (
-      <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] p-4 rounded-2xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse">
-        <div className="h-16 bg-white/20 rounded-xl"></div>
+      <div
+        className="relative overflow-hidden p-6 rounded-3xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse"
+        style={{
+          background: RESIDENT_GRADIENT,
+          boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+        }}
+      >
+        <div className="h-20 bg-white/20 rounded-2xl" />
       </div>
     );
   }
 
   const isComplete = completion.percentage >= 100;
 
+  // Quick action buttons config
+  const quickActions = [
+    { icon: Plus, label: 'Dépense', onClick: () => router.push('/hub/finances') },
+    { icon: FileText, label: 'Documents', onClick: () => router.push('/hub/documents') },
+    { icon: Vote, label: 'Règles', onClick: () => router.push('/hub/rules') },
+    { icon: UserPlus, label: 'Inviter', onClick: () => setShowInviteModal(true) },
+  ];
+
   return (
     <>
-    <Card className="p-6 rounded-2xl mx-2 sm:mx-6 lg:mx-8 border-none shadow-lg mb-6" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        {/* Left: Property Info */}
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0">
-            <Home className="w-6 h-6 text-white" />
-          </div>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden p-6 rounded-3xl mx-2 sm:mx-6 lg:mx-8 mb-6"
+        style={{
+          background: RESIDENT_GRADIENT,
+          boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+        }}
+      >
+        {/* Decorative circles */}
+        <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-white/10" />
+        <div className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full bg-white/10" />
+        <div className="absolute right-1/4 -bottom-8 w-24 h-24 rounded-full bg-white/5" />
 
-          <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-bold text-white mb-1 truncate">
-              {propertyInfo.title}
-            </h2>
+        <div className="relative z-10">
+          {/* Main content row */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            {/* Left: Property Info */}
+            <div className="flex items-start gap-4">
+              <motion.div
+                whileHover={{ rotate: 5 }}
+                className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0"
+              >
+                <Home className="w-7 h-7 text-white" />
+              </motion.div>
 
-            <div className="flex flex-wrap items-center gap-3 text-sm">
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" style={{ color: '#ffffff' }} />
-                <span style={{ color: '#ffffff', fontWeight: 500 }}>{propertyInfo.city}</span>
-              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-2xl font-black text-white mb-1.5 truncate">
+                  {propertyInfo.title}
+                </h2>
 
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" style={{ color: '#ffffff' }} />
-                <span style={{ color: '#ffffff', fontWeight: 500 }}>{propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}</span>
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1.5 rounded-full">
+                    <MapPin className="w-4 h-4 text-white" />
+                    <span className="text-white font-medium text-sm">{propertyInfo.city}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1.5 rounded-full">
+                    <Users className="w-4 h-4 text-white" />
+                    <span className="text-white font-medium text-sm">
+                      {propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Right: Quick Actions */}
-        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
-          <Button
-            onClick={() => router.push('/hub/finances')}
-            size="sm"
-            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-            variant="outline"
-          >
-            <Plus className="w-4 h-4 mr-1" />
-            Dépense
-          </Button>
-
-          <Button
-            onClick={() => router.push('/hub/documents')}
-            size="sm"
-            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-            variant="outline"
-          >
-            <FileText className="w-4 h-4 mr-1" />
-            Documents
-          </Button>
-
-          <Button
-            onClick={() => router.push('/hub/rules')}
-            size="sm"
-            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-            variant="outline"
-          >
-            <Vote className="w-4 h-4 mr-1" />
-            Règles
-          </Button>
-
-          <Button
-            onClick={() => setShowInviteModal(true)}
-            size="sm"
-            className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur"
-            variant="outline"
-          >
-            <UserPlus className="w-4 h-4 mr-1" />
-            Inviter
-          </Button>
-        </div>
-      </div>
-
-      {/* Progress Section */}
-      {!isComplete && completion.nextSteps.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4" style={{ color: '#ffffff' }} />
-              <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '0.875rem' }}>
-                Complétez votre résidence
-              </span>
+            {/* Right: Quick Actions */}
+            <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+              {quickActions.map((action, index) => {
+                const Icon = action.icon;
+                return (
+                  <motion.div key={index} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      onClick={action.onClick}
+                      size="sm"
+                      className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur rounded-xl font-semibold"
+                      variant="outline"
+                    >
+                      <Icon className="w-4 h-4 mr-1.5" />
+                      {action.label}
+                    </Button>
+                  </motion.div>
+                );
+              })}
             </div>
-            <span style={{ color: '#ffffff', fontWeight: 700, fontSize: '1rem' }}>
-              {completion.percentage}%
-            </span>
           </div>
 
-          <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/20 mb-3">
-            <div
-              className="h-full transition-all"
-              style={{
-                width: `${completion.percentage}%`,
-                background: 'linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
-              }}
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {completion.nextSteps.slice(0, 3).map((step, index) => {
-              const handleStepClick = (stepText: string) => {
-                if (stepText.includes('Inviter')) {
-                  setShowInviteModal(true);
-                } else if (stepText.includes('photo')) {
-                  router.push('/settings/residence-profile');
-                } else if (stepText.includes('dépense')) {
-                  router.push('/hub/finances');
-                }
-              };
-
-              const isClickable = step.includes('Inviter') || step.includes('photo') || step.includes('dépense');
-
-              return isClickable ? (
-                <button
-                  key={index}
-                  onClick={() => handleStepClick(step)}
-                  className="bg-white/20 backdrop-blur px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors cursor-pointer"
-                  style={{ color: '#ffffff', fontWeight: 500, fontSize: '0.75rem' }}
-                >
-                  {step}
-                </button>
-              ) : (
-                <span
-                  key={index}
-                  className="bg-white/20 backdrop-blur px-3 py-1 rounded-full"
-                  style={{ color: '#ffffff', fontWeight: 500, fontSize: '0.75rem' }}
-                >
-                  {step}
+          {/* Progress Section */}
+          {!isComplete && completion.nextSteps.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-5 pt-5 border-t border-white/20"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  >
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </motion.div>
+                  <span className="text-white font-bold">
+                    Complétez votre résidence
+                  </span>
+                </div>
+                <span className="text-white font-black text-xl">
+                  {completion.percentage}%
                 </span>
-              );
-            })}
-          </div>
-        </div>
-      )}
+              </div>
 
-      {/* Celebration for completion */}
-      {isComplete && (
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <div className="flex items-center gap-2 text-white">
-            <Sparkles className="w-5 h-5 animate-pulse" />
-            <span className="font-medium">
-              🎉 Félicitations ! Votre résidence est complète !
-            </span>
-          </div>
-        </div>
-      )}
-    </Card>
+              {/* Progress bar */}
+              <div className="relative h-3 w-full overflow-hidden rounded-full bg-white/20 mb-4">
+                <motion.div
+                  className="h-full rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${completion.percentage}%` }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  style={{
+                    background: 'linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 100%)'
+                  }}
+                />
+              </div>
 
-    {/* Invite Popup */}
-    <InvitePopup
-      isOpen={showInviteModal}
-      onClose={() => setShowInviteModal(false)}
-      showResidenceCodes={true}
-      propertyInfo={{
-        invitationCode: propertyInfo.invitationCode,
-        ownerCode: propertyInfo.ownerCode,
-        isCreator: propertyInfo.isCreator,
-      }}
-    />
+              {/* Next steps */}
+              <div className="flex flex-wrap gap-2">
+                {completion.nextSteps.slice(0, 3).map((step, index) => {
+                  const handleStepClick = (stepText: string) => {
+                    if (stepText.includes('Inviter')) {
+                      setShowInviteModal(true);
+                    } else if (stepText.includes('photo')) {
+                      router.push('/settings/residence-profile');
+                    } else if (stepText.includes('dépense')) {
+                      router.push('/hub/finances');
+                    } else if (stepText.includes('tâches')) {
+                      router.push('/hub/tasks');
+                    }
+                  };
+
+                  const isClickable = step.includes('Inviter') || step.includes('photo') || step.includes('dépense') || step.includes('tâches');
+
+                  return isClickable ? (
+                    <motion.button
+                      key={index}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleStepClick(step)}
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2"
+                    >
+                      <span className="text-white font-semibold text-sm">{step}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    </motion.button>
+                  ) : (
+                    <span
+                      key={index}
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl text-white font-semibold text-sm"
+                    >
+                      {step}
+                    </span>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Celebration for completion */}
+          {isComplete && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mt-5 pt-5 border-t border-white/20"
+            >
+              <div className="flex items-center gap-3 bg-white/20 backdrop-blur rounded-2xl p-4">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center"
+                >
+                  <Sparkles className="w-5 h-5 text-white" />
+                </motion.div>
+                <span className="text-white font-bold text-lg">
+                  🎉 Félicitations ! Votre résidence est complète !
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Invite Popup */}
+      <InvitePopup
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        showResidenceCodes={true}
+        propertyInfo={{
+          invitationCode: propertyInfo.invitationCode,
+          ownerCode: propertyInfo.ownerCode,
+          isCreator: propertyInfo.isCreator,
+        }}
+      />
     </>
   );
 }

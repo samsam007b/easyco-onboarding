@@ -19,6 +19,8 @@ import {
   UserCheck,
   Trophy,
   Rocket,
+  ArrowRight,
+  Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -48,18 +50,19 @@ interface GettingStartedChecklistProps {
   variant?: 'searcher' | 'resident';
 }
 
+// V2 Fun Design Colors
 const GRADIENTS = {
   searcher: {
     primary: 'linear-gradient(135deg, #9c5698 0%, #9D7EE5 50%, #FFA040 100%)',
-    bg: 'from-purple-500 via-purple-600 to-orange-500',
-    light: 'from-purple-50 to-orange-50',
+    bg: 'linear-gradient(135deg, #faf5ff 0%, #fef3c7 100%)',
     accent: '#9D7EE5',
+    shadow: 'rgba(157, 126, 229, 0.25)',
   },
   resident: {
     primary: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-    bg: 'from-red-500 via-orange-500 to-orange-400',
-    light: 'from-orange-50 to-amber-50',
-    accent: '#ff5b21',
+    bg: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
+    accent: '#ee5736',
+    shadow: 'rgba(238, 87, 54, 0.25)',
   },
 };
 
@@ -76,33 +79,60 @@ export default function GettingStartedChecklist({
   const [isExpanded, setIsExpanded] = useState(true);
   const colors = GRADIENTS[variant];
 
-  // Don't render if all complete and dismissed
+  // Completion celebration state
   if (isAllComplete) {
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={cn(
-          'rounded-2xl p-6 text-center bg-gradient-to-br',
-          colors.light,
-          'border border-gray-100'
-        )}
+        className="relative overflow-hidden rounded-3xl p-8 text-center"
+        style={{
+          background: colors.bg,
+          boxShadow: `0 20px 60px ${colors.shadow}`,
+        }}
       >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring' }}
-          className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+        {/* Decorative circles */}
+        <div
+          className="absolute -right-12 -top-12 w-40 h-40 rounded-full opacity-30"
           style={{ background: colors.primary }}
-        >
-          <Trophy className="w-8 h-8 text-white" />
-        </motion.div>
-        <h3 className="text-lg font-bold text-gray-900 mb-1">
-          Bravo, tu es prêt(e) !
-        </h3>
-        <p className="text-sm text-gray-600">
-          Tu as complété toutes les étapes de démarrage.
-        </p>
+        />
+        <div
+          className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-20"
+          style={{ background: colors.primary }}
+        />
+
+        <div className="relative z-10">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            className="w-20 h-20 mx-auto mb-5 rounded-2xl flex items-center justify-center"
+            style={{
+              background: colors.primary,
+              boxShadow: `0 12px 32px ${colors.shadow}`,
+            }}
+          >
+            <Trophy className="w-10 h-10 text-white" />
+          </motion.div>
+
+          <motion.h3
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-2xl font-black text-gray-900 mb-2"
+          >
+            Bravo, tu es prêt(e) ! 🎉
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-gray-600 leading-relaxed"
+          >
+            Tu as complété toutes les étapes de démarrage.
+          </motion.p>
+        </div>
       </motion.div>
     );
   }
@@ -111,52 +141,69 @@ export default function GettingStartedChecklist({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+      className="relative overflow-hidden rounded-3xl bg-white"
+      style={{
+        boxShadow: `0 20px 60px ${colors.shadow}`,
+      }}
     >
-      {/* Header */}
+      {/* Header with gradient */}
       <div
-        className="p-4 text-white cursor-pointer"
+        className="relative overflow-hidden p-5 text-white cursor-pointer"
         style={{ background: colors.primary }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Rocket className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-sm">Bien démarrer</h3>
-              <p className="text-xs opacity-90">
-                {completedCount}/{totalCount} étapes complétées
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDismiss();
-              }}
-              className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            {isExpanded ? (
-              <ChevronUp className="w-5 h-5" />
-            ) : (
-              <ChevronDown className="w-5 h-5" />
-            )}
-          </div>
-        </div>
+        {/* Decorative circles in header */}
+        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10" />
+        <div className="absolute -left-4 -bottom-4 w-20 h-20 rounded-full bg-white/10" />
 
-        {/* Progress bar */}
-        <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-white rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          />
+        <div className="relative z-10">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center"
+              >
+                <Rocket className="w-6 h-6" />
+              </motion.div>
+              <div>
+                <h3 className="font-bold text-lg">Bien démarrer</h3>
+                <p className="text-sm opacity-90">
+                  {completedCount}/{totalCount} étapes complétées
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDismiss();
+                }}
+                className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </motion.button>
+              <motion.div
+                animate={{ rotate: isExpanded ? 0 : 180 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronUp className="w-6 h-6" />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="mt-4 h-2.5 bg-white/20 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-white rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            />
+          </div>
         </div>
       </div>
 
@@ -167,47 +214,63 @@ export default function GettingStartedChecklist({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="p-3 space-y-1">
+            <div className="p-4 space-y-2">
               {items.map((item, index) => {
                 const IconComponent = ICONS[item.icon] || Circle;
                 return (
                   <motion.div
                     key={item.id}
-                    initial={{ opacity: 0, x: -10 }}
+                    initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
+                    whileHover={!item.isCompleted ? { scale: 1.01, x: 4 } : {}}
                     className={cn(
-                      'flex items-center gap-3 p-3 rounded-xl transition-all',
+                      'relative overflow-hidden flex items-center gap-4 p-4 rounded-2xl transition-all',
                       item.isCompleted
                         ? 'bg-gray-50'
                         : 'hover:bg-gray-50 cursor-pointer'
                     )}
                     onClick={() => !item.isCompleted && onCompleteItem?.(item.id)}
                   >
-                    {/* Checkbox */}
-                    <div
+                    {/* Decorative circle for incomplete items */}
+                    {!item.isCompleted && (
+                      <div
+                        className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-10"
+                        style={{ background: colors.primary }}
+                      />
+                    )}
+
+                    {/* Checkbox / Icon */}
+                    <motion.div
+                      whileHover={!item.isCompleted ? { rotate: 5 } : {}}
                       className={cn(
-                        'w-8 h-8 rounded-full flex items-center justify-center transition-all flex-shrink-0',
+                        'relative z-10 w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0',
                         item.isCompleted
                           ? 'text-white'
-                          : 'bg-gray-100 text-gray-400'
+                          : 'text-gray-400'
                       )}
-                      style={item.isCompleted ? { background: colors.primary } : {}}
+                      style={
+                        item.isCompleted
+                          ? { background: colors.primary }
+                          : { background: colors.bg }
+                      }
                     >
                       {item.isCompleted ? (
                         <CheckCircle2 className="w-5 h-5" />
                       ) : (
-                        <IconComponent className="w-4 h-4" />
+                        <div style={{ color: colors.accent }}>
+                          <IconComponent className="w-5 h-5" />
+                        </div>
                       )}
-                    </div>
+                    </motion.div>
 
                     {/* Content */}
-                    <div className="flex-1 min-w-0">
+                    <div className="relative z-10 flex-1 min-w-0">
                       <p
                         className={cn(
-                          'text-sm font-medium',
+                          'font-semibold',
                           item.isCompleted
                             ? 'text-gray-400 line-through'
                             : 'text-gray-900'
@@ -216,7 +279,7 @@ export default function GettingStartedChecklist({
                         {item.title}
                       </p>
                       {!item.isCompleted && (
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-sm text-gray-500 truncate mt-0.5">
                           {item.description}
                         </p>
                       )}
@@ -224,28 +287,38 @@ export default function GettingStartedChecklist({
 
                     {/* Action button */}
                     {!item.isCompleted && item.action && (
-                      <div onClick={(e) => e.stopPropagation()}>
+                      <div className="relative z-10" onClick={(e) => e.stopPropagation()}>
                         {item.action.href ? (
                           <Link href={item.action.href}>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="text-xs rounded-full h-7 px-3"
-                              style={{ borderColor: colors.accent, color: colors.accent }}
-                            >
-                              {item.action.label}
-                            </Button>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                              <Button
+                                size="sm"
+                                className="rounded-xl h-9 px-4 text-sm font-semibold text-white border-none"
+                                style={{
+                                  background: colors.primary,
+                                  boxShadow: `0 4px 12px ${colors.shadow}`,
+                                }}
+                              >
+                                {item.action.label}
+                                <ArrowRight className="w-4 h-4 ml-1" />
+                              </Button>
+                            </motion.div>
                           </Link>
                         ) : (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-xs rounded-full h-7 px-3"
-                            onClick={item.action.onClick}
-                            style={{ borderColor: colors.accent, color: colors.accent }}
-                          >
-                            {item.action.label}
-                          </Button>
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              size="sm"
+                              className="rounded-xl h-9 px-4 text-sm font-semibold text-white border-none"
+                              onClick={item.action.onClick}
+                              style={{
+                                background: colors.primary,
+                                boxShadow: `0 4px 12px ${colors.shadow}`,
+                              }}
+                            >
+                              {item.action.label}
+                              <ArrowRight className="w-4 h-4 ml-1" />
+                            </Button>
+                          </motion.div>
                         )}
                       </div>
                     )}
@@ -255,15 +328,34 @@ export default function GettingStartedChecklist({
             </div>
 
             {/* Motivation message */}
-            <div className="px-4 pb-4">
-              <div className={cn('p-3 rounded-xl bg-gradient-to-r text-center', colors.light)}>
-                <div className="flex items-center justify-center gap-2 text-sm">
-                  <Sparkles className="w-4 h-4" style={{ color: colors.accent }} />
-                  <span className="text-gray-600">
-                    Plus que <strong style={{ color: colors.accent }}>{totalCount - completedCount}</strong> étape{totalCount - completedCount > 1 ? 's' : ''} !
+            <div className="px-4 pb-5">
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="relative overflow-hidden p-4 rounded-2xl text-center"
+                style={{ background: colors.bg }}
+              >
+                {/* Decorative circle */}
+                <div
+                  className="absolute -right-6 -top-6 w-20 h-20 rounded-full opacity-20"
+                  style={{ background: colors.primary }}
+                />
+
+                <div className="relative z-10 flex items-center justify-center gap-2">
+                  <motion.div
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  >
+                    <Sparkles className="w-5 h-5" style={{ color: colors.accent }} />
+                  </motion.div>
+                  <span className="text-gray-700 font-medium">
+                    Plus que{' '}
+                    <span className="font-bold" style={{ color: colors.accent }}>
+                      {totalCount - completedCount}
+                    </span>{' '}
+                    étape{totalCount - completedCount > 1 ? 's' : ''} !
                   </span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
