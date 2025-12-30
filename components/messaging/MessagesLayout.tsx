@@ -2,9 +2,34 @@
 
 import { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, ArrowLeft } from 'lucide-react';
+import { MessageCircle, ArrowLeft, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+// V2 Fun Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};
 
 interface MessagesLayoutProps {
   // Sidebar content (conversation list)
@@ -32,6 +57,8 @@ const variantStyles = {
     accentLight: 'from-searcher-50 to-searcher-100',
     border: 'border-searcher-200',
     text: 'text-searcher-600',
+    shadow: 'rgba(74, 144, 226, 0.35)',
+    emoji: '💬',
   },
   owner: {
     gradient: 'from-purple-50/30 via-white to-indigo-50/30',
@@ -39,13 +66,17 @@ const variantStyles = {
     accentLight: 'from-purple-50 to-indigo-50',
     border: 'border-purple-200',
     text: 'text-purple-600',
+    shadow: 'rgba(124, 58, 237, 0.35)',
+    emoji: '🏠',
   },
   hub: {
     gradient: 'from-orange-50/30 via-white to-orange-50/30',
-    accent: 'bg-gradient-to-br from-orange-500 to-red-500',
+    accent: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
     accentLight: 'from-orange-50 to-red-50',
     border: 'border-orange-200',
     text: 'text-orange-600',
+    shadow: 'rgba(238, 87, 54, 0.35)',
+    emoji: '💬',
   },
 };
 
@@ -127,23 +158,80 @@ interface DefaultEmptyStateProps {
 }
 
 function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
+  const isHub = variant === 'hub';
+
   return (
-    <div className="text-center p-8">
-      <div
-        className={cn(
-          'w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg',
-          styles.accent
-        )}
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="text-center p-8"
+    >
+      {/* Animated icon with glow */}
+      <motion.div
+        variants={itemVariants}
+        whileHover={{ scale: 1.05, rotate: 3 }}
+        className="relative mx-auto mb-6"
       >
-        <MessageCircle className="w-12 h-12 text-white" />
-      </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">
-        Sélectionnez une conversation
-      </h3>
-      <p className="text-gray-500 max-w-sm mx-auto">
+        {/* Glow rings */}
+        <motion.div
+          className="absolute inset-0 rounded-3xl opacity-30"
+          style={{
+            background: isHub
+              ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+              : styles.accent,
+            filter: 'blur(20px)',
+          }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+        />
+
+        {/* Main icon container */}
+        <div
+          className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
+          style={{
+            background: isHub
+              ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+              : undefined,
+            boxShadow: `0 8px 24px ${styles.shadow}`,
+          }}
+        >
+          <MessageCircle className="w-12 h-12 text-white" />
+
+          {/* Shine effect */}
+          <motion.div
+            className="absolute inset-0 rounded-3xl bg-white/20"
+            animate={{ opacity: [0, 0.3, 0] }}
+            transition={{ repeat: Infinity, duration: 2.5 }}
+          />
+        </div>
+
+        {/* Floating sparkles */}
+        <motion.div
+          className="absolute -top-2 -right-2"
+          animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+        >
+          <Sparkles className="w-6 h-6 text-amber-400" />
+        </motion.div>
+      </motion.div>
+
+      {/* Title with emoji */}
+      <motion.h3
+        variants={itemVariants}
+        className="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
+      >
+        <span>Sélectionnez une conversation</span>
+        <span className="text-lg">{styles.emoji}</span>
+      </motion.h3>
+
+      <motion.p
+        variants={itemVariants}
+        className="text-gray-500 max-w-sm mx-auto"
+      >
         Choisissez une conversation dans la liste pour commencer à discuter
-      </p>
-    </div>
+      </motion.p>
+    </motion.div>
   );
 }
 
@@ -156,14 +244,19 @@ export function MobileBackButton({
   className?: string;
 }) {
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={onBack}
-      className={cn('md:hidden rounded-full hover:bg-gray-100', className)}
-      aria-label="Retour"
-    >
-      <ArrowLeft className="h-5 w-5" />
-    </Button>
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onBack}
+        className={cn(
+          'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10',
+          className
+        )}
+        aria-label="Retour"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </Button>
+    </motion.div>
   );
 }

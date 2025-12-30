@@ -1,5 +1,5 @@
 /**
- * Modern Tasks Page with Smart Rotations
+ * Modern Tasks Page with Smart Rotations - V2 Fun Design
  * Complete task management with automatic rotations
  */
 
@@ -20,7 +20,33 @@ import {
   Users,
   AlertCircle,
   Check,
+  Sparkles,
 } from 'lucide-react';
+
+// V2 Fun Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -195,82 +221,167 @@ export default function ModernTasksPage() {
 
   return (
     <HubLayout>
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      {/* Header - V2 Fun Design */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+        className="mb-8"
+      >
         <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-3">
-            <div
-              className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg grain-medium"
-              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+          <div className="flex items-center gap-4">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+              }}
             >
               <CheckCircle2 className="w-7 h-7 text-white relative z-10" />
-            </div>
+              <motion.div
+                className="absolute inset-0 bg-white/20"
+                animate={{ opacity: [0, 0.3, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              />
+            </motion.div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Tâches Ménagères</h1>
-              <p className="text-gray-600">Organisation et rotations automatiques</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                Tâches Ménagères
+                <span className="text-2xl">✅</span>
+              </h1>
+              <p className="text-gray-600 flex items-center gap-2">
+                <RotateCw className="w-4 h-4 text-orange-500" />
+                Organisation et rotations automatiques
+              </p>
             </div>
           </div>
 
-          <Button
-            onClick={() => setShowCreateModal(true)}
-            className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Nouvelle tâche
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
+              style={{
+                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                boxShadow: '0 4px 16px rgba(238, 87, 54, 0.4)',
+              }}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nouvelle tâche
+            </Button>
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      {/* Stats Cards - V2 Fun */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+      >
         {[
-          { label: 'Mes tâches', value: myTasks.length, icon: Users, gradient: 'from-[#d9574f] to-[#ff5b21]' },
-          { label: 'En attente', value: pendingTasks.length, icon: Clock, gradient: 'from-[#ff5b21] to-[#ff8017]' },
-          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, gradient: 'from-[#d9574f] via-[#ff5b21] to-[#ff8017]' },
-          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, gradient: 'from-[#ee5736] to-[#ff6e1c]' },
-        ].map((stat, index) => {
+          { label: 'Mes tâches', value: myTasks.length, icon: Users, emoji: '👤', gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
+          { label: 'En attente', value: pendingTasks.length, icon: Clock, emoji: '⏰', gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
+          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, emoji: '✨', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', shadow: 'rgba(16, 185, 129, 0.35)' },
+          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, emoji: '⚠️', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.35)' },
+        ].map((stat) => {
           const Icon = stat.icon;
           return (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * (index + 1) }}
-              className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer border-2 border-transparent hover:border-orange-100"
+              style={{
+                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+              }}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br", stat.gradient)}>
+              <div className="flex items-center gap-3 mb-3">
+                <motion.div
+                  whileHover={{ rotate: 10 }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center shadow-md"
+                  style={{
+                    background: stat.gradient,
+                    boxShadow: `0 4px 12px ${stat.shadow}`,
+                  }}
+                >
                   <Icon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-sm font-semibold text-gray-600">{stat.label}</h3>
+                </motion.div>
+                <h3 className="text-sm font-bold text-gray-600 flex items-center gap-1">
+                  {stat.emoji} {stat.label}
+                </h3>
               </div>
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              <p
+                className="text-3xl font-bold"
+                style={{
+                  background: stat.gradient,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                {stat.value}
+              </p>
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
-      {/* Tasks List */}
+      {/* Tasks List - V2 Fun */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-white rounded-3xl shadow-lg p-6"
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 25, delay: 0.3 }}
+        className="bg-white rounded-3xl shadow-lg p-6 border-2 border-transparent"
+        style={{
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+        }}
       >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Toutes les tâches</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          📋 Toutes les tâches
+          <Badge
+            className="text-xs border-none text-white font-bold ml-2"
+            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+          >
+            {pendingTasks.length}
+          </Badge>
+        </h3>
 
-        <div className="space-y-3">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-3"
+        >
           {pendingTasks.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
-                <CheckCircle2 className="w-8 h-8" style={{ color: '#ee5736' }} />
-              </div>
-              <p className="font-semibold text-gray-900 mb-2">Aucune tâche en attente</p>
-              <p className="text-sm text-gray-500">Tout est fait ! 🎉</p>
-            </div>
+            <motion.div
+              variants={itemVariants}
+              className="text-center py-12"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                style={{
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  boxShadow: '0 8px 24px rgba(16, 185, 129, 0.35)',
+                }}
+              >
+                <CheckCircle2 className="w-10 h-10 text-white" />
+                <motion.div
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                >
+                  <Sparkles className="w-5 h-5 text-amber-400" />
+                </motion.div>
+              </motion.div>
+              <p className="font-bold text-gray-900 mb-2 text-lg">Aucune tâche en attente</p>
+              <p className="text-sm text-gray-500">Tout est fait ! 🎉✨</p>
+            </motion.div>
           ) : (
-            pendingTasks.map((task, index) => {
+            pendingTasks.map((task) => {
               const category = CATEGORY_OPTIONS.find((c) => c.value === task.category);
               const priority = PRIORITY_OPTIONS.find((p) => p.value === task.priority);
               const isMyTask = task.assigned_to === currentUserId;
@@ -278,33 +389,51 @@ export default function ModernTasksPage() {
               return (
                 <motion.div
                   key={task.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 + index * 0.05 }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.01, x: 4 }}
+                  whileTap={{ scale: 0.99 }}
                   className={cn(
                     'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
                     isMyTask
-                      ? 'border-gray-200 hover:shadow-md'
-                      : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                      ? 'border-orange-200 hover:shadow-lg'
+                      : 'bg-gray-50/50 border-gray-200 hover:border-gray-300'
                   )}
-                  style={isMyTask ? { background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)' } : undefined}
+                  style={isMyTask ? {
+                    background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
+                    boxShadow: '0 4px 16px rgba(238, 87, 54, 0.1)',
+                  } : undefined}
                 >
                   <div className="flex items-center gap-4 flex-1">
-                    <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-2xl', category?.color)}>
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm', category?.color)}
+                    >
                       {category?.emoji}
-                    </div>
+                    </motion.div>
 
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-gray-900">{task.title}</h4>
+                        <h4 className="font-bold text-gray-900">{task.title}</h4>
                         {task.has_rotation && (
-                          <Badge className="text-xs border-none text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                          <Badge
+                            className="text-xs border-none text-white font-semibold shadow-sm"
+                            style={{
+                              background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                              boxShadow: '0 2px 8px rgba(124, 58, 237, 0.3)',
+                            }}
+                          >
                             <RotateCw className="w-3 h-3 mr-1" />
                             Rotation
                           </Badge>
                         )}
                         {task.is_overdue && (
-                          <Badge className="bg-red-100 text-red-700 text-xs border-red-200">
+                          <Badge
+                            className="text-xs text-white border-none font-semibold shadow-sm"
+                            style={{
+                              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
+                            }}
+                          >
                             <AlertCircle className="w-3 h-3 mr-1" />
                             En retard
                           </Badge>
@@ -321,54 +450,67 @@ export default function ModernTasksPage() {
                             <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
                             {new Date(task.due_date).toLocaleDateString('fr-FR')}
                             {task.days_until_due !== undefined && (
-                              <span className={cn(task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500')}>
+                              <span className={cn(
+                                'font-semibold',
+                                task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500'
+                              )}>
                                 (J{task.days_until_due > 0 ? `-${task.days_until_due}` : task.days_until_due})
                               </span>
                             )}
                           </span>
                         )}
-                        <Badge className={priority?.color}>{priority?.label}</Badge>
+                        <Badge className={cn(priority?.color, 'font-semibold')}>{priority?.label}</Badge>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     {isMyTask && (
-                      <Button
-                        onClick={() => {
-                          setSelectedTask(task);
-                          setShowCompleteModal(true);
-                        }}
-                        size="sm"
-                        className="cta-resident rounded-full"
-                      >
-                        <Check className="w-4 h-4 mr-1" />
-                        Terminer
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          onClick={() => {
+                            setSelectedTask(task);
+                            setShowCompleteModal(true);
+                          }}
+                          size="sm"
+                          className="rounded-full text-white font-semibold shadow-md"
+                          style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                          }}
+                        >
+                          <Check className="w-4 h-4 mr-1" />
+                          Terminer
+                        </Button>
+                      </motion.div>
                     )}
                     {task.has_rotation && (
-                      <Button
-                        onClick={() => handleRotateTask(task.id)}
-                        size="sm"
-                        variant="outline"
-                        className="rounded-full"
-                      >
-                        <RotateCw className="w-4 h-4" />
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.1, rotate: 180 }} whileTap={{ scale: 0.9 }}>
+                        <Button
+                          onClick={() => handleRotateTask(task.id)}
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50"
+                        >
+                          <RotateCw className="w-4 h-4" />
+                        </Button>
+                      </motion.div>
                     )}
                   </div>
                 </motion.div>
               );
             })
           )}
-        </div>
+        </motion.div>
       </motion.div>
 
-      {/* Create Task Modal */}
+      {/* Create Task Modal - V2 Fun */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg rounded-3xl border-2 border-orange-100">
           <DialogHeader>
-            <DialogTitle>Nouvelle tâche</DialogTitle>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              ➕ Nouvelle tâche
+            </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -458,51 +600,73 @@ export default function ModernTasksPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Complete Task Modal */}
+      {/* Complete Task Modal - V2 Fun */}
       <Dialog open={showCompleteModal} onOpenChange={setShowCompleteModal}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg rounded-3xl border-2 border-emerald-100">
           <DialogHeader>
-            <DialogTitle>Terminer la tâche</DialogTitle>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              ✅ Terminer la tâche
+            </DialogTitle>
           </DialogHeader>
 
           {selectedTask && (
             <div className="space-y-4">
-              <div className="bg-gray-50 rounded-xl p-4">
-                <h4 className="font-semibold text-gray-900">{selectedTask.title}</h4>
-                {selectedTask.description && (
-                  <p className="text-sm text-gray-600 mt-1">{selectedTask.description}</p>
-                )}
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl p-4 border-2 border-emerald-100"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(236,253,245,1) 0%, rgba(255,255,255,1) 100%)',
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                    }}
+                  >
+                    <CheckCircle2 className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">{selectedTask.title}</h4>
+                    {selectedTask.description && (
+                      <p className="text-sm text-gray-600">{selectedTask.description}</p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
 
               <div>
-                <Label>Notes de complétion</Label>
+                <Label className="font-semibold text-gray-700">📝 Notes de complétion</Label>
                 <Textarea
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
                   placeholder="Comment ça s'est passé ? (optionnel)"
-                  className="rounded-xl"
+                  className="rounded-xl mt-2 border-2 border-gray-200 focus:border-emerald-300"
                 />
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 pt-2">
                 <Button
                   variant="outline"
                   onClick={() => setShowCompleteModal(false)}
-                  className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                  style={{ color: '#ee5736' }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  className="flex-1 rounded-full border-2 border-gray-200 hover:border-gray-300 font-semibold"
                 >
                   Annuler
                 </Button>
                 <Button
                   onClick={handleCompleteTask}
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                  className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
+                  style={{
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
+                  }}
                 >
                   <Check className="w-4 h-4 mr-2" />
-                  {isSubmitting ? 'Finalisation...' : 'Marquer comme terminée'}
+                  {isSubmitting ? 'Finalisation...' : 'Terminer 🎉'}
                 </Button>
               </div>
             </div>

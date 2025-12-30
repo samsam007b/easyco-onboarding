@@ -26,6 +26,31 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+// V2 Fun Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -10, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};
+
 // Role icon mapping
 const RoleIcon = ({ role, className }: { role: UserRole; className?: string }) => {
   const iconClass = cn('w-4 h-4', className);
@@ -76,35 +101,69 @@ export function UnifiedConversationList({
 
   return (
     <div className="flex flex-col h-full bg-gray-50/50">
-      {/* Header */}
-      <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-orange-50/80 to-red-50/80">
+      {/* Header - V2 Fun Design */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+        className="p-4 border-b border-gray-100"
+        style={{
+          background: 'linear-gradient(180deg, rgba(255,245,243,1) 0%, rgba(255,255,255,0) 100%)',
+        }}
+      >
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-sm">
-            <MessageCircle className="w-5 h-5 text-white" />
-          </div>
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+            }}
+          >
+            <MessageCircle className="w-6 h-6 text-white" />
+            <motion.div
+              className="absolute inset-0 rounded-2xl bg-white/20"
+              animate={{ opacity: [0, 0.3, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            />
+          </motion.div>
           <div>
-            <h2 className="font-bold text-gray-900">Messages</h2>
-            <p className="text-xs text-gray-500">
-              {pinnedConversations.length + conversations.length} conversation
-              {pinnedConversations.length + conversations.length > 1 ? 's' : ''}
+            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              Messages
+              <span className="text-base">💬</span>
+            </h2>
+            <p className="text-xs text-gray-500 flex items-center gap-2">
+              <Badge
+                className="text-xs border-none text-white font-bold"
+                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+              >
+                {pinnedConversations.length + conversations.length}
+              </Badge>
+              conversation{pinnedConversations.length + conversations.length > 1 ? 's' : ''}
             </p>
           </div>
         </div>
 
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        {/* Search - Enhanced */}
+        <motion.div
+          whileFocus={{ scale: 1.01 }}
+          className="relative"
+        >
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Rechercher..."
+            placeholder="🔍 Rechercher une conversation..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-2 rounded-xl border-gray-200 bg-white shadow-sm text-sm"
+            className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange-300 bg-white shadow-sm text-sm"
+            style={{
+              background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
+            }}
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Invitation Banner */}
+      {/* Invitation Banner - V2 Fun */}
       <AnimatePresence>
         {showInvitationBanner && (
           <motion.div
@@ -113,44 +172,67 @@ export function UnifiedConversationList({
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-3 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200">
-              <div className="flex items-start gap-2">
-                <Sparkles className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+            <motion.div
+              initial={{ x: -20 }}
+              animate={{ x: 0 }}
+              transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+              className="p-4 border-b border-amber-200"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 237, 213, 0.8) 0%, rgba(254, 243, 199, 0.8) 100%)',
+              }}
+            >
+              <div className="flex items-start gap-3">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-5 h-5 text-amber-500" />
+                </motion.div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-amber-800">
+                  <p className="text-sm font-semibold text-amber-800 flex items-center gap-2">
                     {missingInvitations.needsOwner && missingInvitations.needsResidents
-                      ? 'Invitez votre propriétaire et vos colocataires'
+                      ? '✨ Invitez votre propriétaire et vos colocataires'
                       : missingInvitations.needsOwner
-                      ? 'Invitez votre propriétaire'
-                      : 'Invitez vos colocataires'}
+                      ? '🏠 Invitez votre propriétaire'
+                      : '👥 Invitez vos colocataires'}
                   </p>
-                  <div className="flex gap-2 mt-2">
+                  <div className="flex gap-2 mt-3">
                     {missingInvitations.needsOwner && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onInviteClick?.('owner')}
-                        className="h-7 text-xs rounded-full border-amber-300 text-amber-700 hover:bg-amber-100"
-                      >
-                        <Key className="w-3 h-3 mr-1" />
-                        Propriétaire
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          size="sm"
+                          onClick={() => onInviteClick?.('owner')}
+                          className="h-8 text-xs rounded-full text-white font-semibold shadow-md"
+                          style={{
+                            background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)',
+                          }}
+                        >
+                          <Key className="w-3 h-3 mr-1" />
+                          Propriétaire
+                        </Button>
+                      </motion.div>
                     )}
                     {missingInvitations.needsResidents && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onInviteClick?.('resident')}
-                        className="h-7 text-xs rounded-full border-amber-300 text-amber-700 hover:bg-amber-100"
-                      >
-                        <UserPlus className="w-3 h-3 mr-1" />
-                        Colocataires
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          size="sm"
+                          onClick={() => onInviteClick?.('resident')}
+                          className="h-8 text-xs rounded-full text-white font-semibold shadow-md"
+                          style={{
+                            background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                            boxShadow: '0 4px 12px rgba(238, 87, 54, 0.3)',
+                          }}
+                        >
+                          <UserPlus className="w-3 h-3 mr-1" />
+                          Colocataires
+                        </Button>
+                      </motion.div>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -159,20 +241,30 @@ export function UnifiedConversationList({
       <div className="flex-1 overflow-y-auto">
         {/* Pinned Section */}
         {filteredPinned.length > 0 && (
-          <div className="px-2 py-3">
-            <div className="flex items-center gap-2 px-2 mb-2">
-              <Pin className="w-3 h-3 text-orange-500" />
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Épinglées
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="px-3 py-4"
+          >
+            <div className="flex items-center gap-2 px-2 mb-3">
+              <motion.div
+                animate={{ rotate: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              >
+                <Pin className="w-4 h-4 text-orange-500" />
+              </motion.div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                📌 Épinglées
               </span>
             </div>
-            <div className="space-y-1">
-              {filteredPinned.map((conv, index) => (
+            <div className="space-y-2">
+              {filteredPinned.map((conv) => (
                 <motion.div
                   key={conv.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <ConversationItem
                     conversation={conv}
@@ -184,27 +276,32 @@ export function UnifiedConversationList({
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Regular Conversations */}
         {filteredConversations.length > 0 && (
-          <div className="px-2 py-3">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="px-3 py-4"
+          >
             {filteredPinned.length > 0 && (
-              <div className="flex items-center gap-2 px-2 mb-2">
-                <MessageCircle className="w-3 h-3 text-gray-400" />
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Conversations
+              <div className="flex items-center gap-2 px-2 mb-3">
+                <MessageCircle className="w-4 h-4 text-gray-400" />
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                  💬 Conversations
                 </span>
               </div>
             )}
-            <div className="space-y-1">
-              {filteredConversations.map((conv, index) => (
+            <div className="space-y-2">
+              {filteredConversations.map((conv) => (
                 <motion.div
                   key={conv.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (filteredPinned.length + index) * 0.03 }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <ConversationItem
                     conversation={conv}
@@ -215,24 +312,65 @@ export function UnifiedConversationList({
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
-        {/* Empty State */}
+        {/* Empty State - V2 Fun */}
         {filteredPinned.length === 0 && filteredConversations.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4 shadow-md">
-              <MessageCircle className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {searchQuery ? 'Aucun résultat' : 'Aucune conversation'}
-            </h3>
-            <p className="text-sm text-gray-500 max-w-xs">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-center justify-center h-full p-8 text-center"
+          >
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, rotate: 3 }}
+              className="relative mb-6"
+            >
+              {/* Glow */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl opacity-40"
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  filter: 'blur(15px)',
+                }}
+                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                transition={{ repeat: Infinity, duration: 3 }}
+              />
+              <div
+                className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                }}
+              >
+                <MessageCircle className="w-10 h-10 text-white" />
+              </div>
+              <motion.div
+                className="absolute -top-1 -right-1"
+                animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
+                <Sparkles className="w-5 h-5 text-amber-400" />
+              </motion.div>
+            </motion.div>
+
+            <motion.h3
+              variants={itemVariants}
+              className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2"
+            >
+              {searchQuery ? '🔍 Aucun résultat' : '💬 Aucune conversation'}
+            </motion.h3>
+            <motion.p
+              variants={itemVariants}
+              className="text-sm text-gray-500 max-w-xs"
+            >
               {searchQuery
                 ? 'Essayez avec d\'autres termes de recherche'
                 : 'Vos conversations apparaîtront ici'}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         )}
       </div>
     </div>
@@ -278,18 +416,30 @@ function ConversationItem({
     return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
   };
 
-  // Get conversation icon for special types
+  // Get conversation icon for special types - V2 Fun styling
   const getConversationIcon = () => {
     if (conversation.type === 'residence_group') {
       return (
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-sm">
+        <div
+          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+          }}
+        >
           <Users className="w-6 h-6 text-white" />
         </div>
       );
     }
     if (conversation.type === 'residence_owner') {
       return (
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-sm">
+        <div
+          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.35)',
+          }}
+        >
           <Key className="w-6 h-6 text-white" />
         </div>
       );
@@ -303,14 +453,23 @@ function ConversationItem({
     <button
       onClick={onClick}
       className={cn(
-        'w-full p-3 flex items-center gap-3 rounded-xl transition-all duration-200',
+        'w-full p-3 flex items-center gap-3 rounded-2xl transition-all duration-200',
         'hover:bg-white active:scale-[0.99]',
         isSelected
-          ? 'bg-gradient-to-r from-orange-50 to-red-50 border-l-4 border-l-orange-500 shadow-sm'
-          : 'bg-transparent',
-        hasUnread && !isSelected && 'bg-white shadow-sm',
+          ? 'bg-white shadow-md border-2'
+          : 'bg-transparent border-2 border-transparent hover:border-orange-100',
+        hasUnread && !isSelected && 'bg-white shadow-sm border-2 border-orange-100',
         conversation.isVirtual && 'opacity-80'
       )}
+      style={
+        isSelected
+          ? {
+              background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
+              borderColor: 'rgba(255, 91, 33, 0.3)',
+              boxShadow: '0 4px 12px rgba(238, 87, 54, 0.15)',
+            }
+          : undefined
+      }
     >
       {/* Avatar */}
       <div className="relative flex-shrink-0">
@@ -427,7 +586,13 @@ function ConversationItem({
           )}
 
           {hasUnread && (
-            <Badge className="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-semibold min-w-[20px] justify-center">
+            <Badge
+              className="text-white text-xs px-2.5 py-1 rounded-full flex-shrink-0 font-bold min-w-[22px] justify-center border-none shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                boxShadow: '0 2px 8px rgba(238, 87, 54, 0.4)',
+              }}
+            >
               {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
             </Badge>
           )}
