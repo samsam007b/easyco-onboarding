@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
@@ -39,6 +39,12 @@ import {
   celebrateToast,
 } from '@/components/onboarding';
 
+// V2 Fun Design Colors
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+const RESIDENT_PRIMARY = '#ee5736';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
+const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.15)';
+
 interface DashboardStats {
   rentStatus: {
     paid: number;
@@ -65,12 +71,13 @@ interface Activity {
   id: string;
   icon: any;
   iconBgColor: string;
+  iconColor: string;
   title: string;
   subtitle: string;
   time: string;
 }
 
-export default function ModernResidentDashboard() {
+const ModernResidentDashboard = memo(function ModernResidentDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
@@ -80,8 +87,8 @@ export default function ModernResidentDashboard() {
   const [memberCount, setMemberCount] = useState(1);
   const [stats, setStats] = useState<DashboardStats>({
     rentStatus: {
-      paid: 850,
-      total: 1000,
+      paid: 1062,
+      total: 1250,
       dueDate: '2024-11-05'
     },
     sharedExpenses: 125,
@@ -115,7 +122,8 @@ export default function ModernResidentDashboard() {
     {
       id: '1',
       icon: DollarSign,
-      iconBgColor: 'bg-green-100',
+      iconBgColor: 'rgba(16, 185, 129, 0.1)',
+      iconColor: '#10b981',
       title: 'Sarah a payé les courses',
       subtitle: '€45.50',
       time: 'Il y a 2h'
@@ -123,7 +131,8 @@ export default function ModernResidentDashboard() {
     {
       id: '2',
       icon: MessageCircle,
-      iconBgColor: 'bg-blue-100',
+      iconBgColor: 'rgba(59, 130, 246, 0.1)',
+      iconColor: '#3b82f6',
       title: 'Nouveau message de Marc',
       subtitle: 'Groupe "Ma Coloc"',
       time: 'Il y a 4h'
@@ -131,7 +140,8 @@ export default function ModernResidentDashboard() {
     {
       id: '3',
       icon: Check,
-      iconBgColor: 'bg-orange-100',
+      iconBgColor: 'rgba(16, 185, 129, 0.1)',
+      iconColor: '#10b981',
       title: 'Tâche complétée',
       subtitle: 'Nettoyage salle de bain',
       time: 'Hier'
@@ -273,16 +283,17 @@ export default function ModernResidentDashboard() {
 
   const rentPercentage = (stats.rentStatus.paid / stats.rentStatus.total) * 100;
 
+  // V2 Fun KPI Cards Configuration
   const kpiCards = [
     {
       title: 'Loyer du Mois',
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
       subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       icon: Home,
-      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
-      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
+      iconGradient: RESIDENT_GRADIENT,
+      bgGradient: CARD_BG_GRADIENT,
+      shadowColor: ACCENT_SHADOW,
       progress: rentPercentage,
-      importance: 'critical', // Loyer = très important
       onboardingId: undefined,
     },
     {
@@ -290,10 +301,10 @@ export default function ModernResidentDashboard() {
       value: `€${stats.sharedExpenses}`,
       subtitle: 'À répartir',
       icon: DollarSign,
-      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
-      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
+      iconGradient: RESIDENT_GRADIENT,
+      bgGradient: CARD_BG_GRADIENT,
+      shadowColor: ACCENT_SHADOW,
       action: () => router.push('/hub/finances'),
-      importance: 'high', // Important mais pas critique
       onboardingId: 'finances-card',
     },
     {
@@ -301,10 +312,10 @@ export default function ModernResidentDashboard() {
       value: stats.yourBalance > 0 ? `+€${stats.yourBalance}` : `-€${Math.abs(stats.yourBalance)}`,
       subtitle: stats.yourBalance > 0 ? 'On te doit' : 'Tu dois',
       icon: TrendingUp,
-      gradientStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b981, #14b8a680)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
-      bgStyle: stats.yourBalance > 0 ? { background: 'linear-gradient(to bottom right, #10b98120, #14b8a610)' } : { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
+      iconGradient: stats.yourBalance > 0 ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)' : RESIDENT_GRADIENT,
+      bgGradient: stats.yourBalance > 0 ? 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)' : CARD_BG_GRADIENT,
+      shadowColor: stats.yourBalance > 0 ? 'rgba(16, 185, 129, 0.15)' : ACCENT_SHADOW,
       action: () => router.push('/hub/finances'),
-      importance: 'medium', // Informatif
       onboardingId: undefined,
     },
     {
@@ -312,13 +323,27 @@ export default function ModernResidentDashboard() {
       value: stats.roommatesCount,
       subtitle: 'Membres actifs',
       icon: Users,
-      gradientStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' },
-      bgStyle: { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)', opacity: 0.1 },
+      iconGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+      bgGradient: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+      shadowColor: 'rgba(139, 92, 246, 0.15)',
       action: () => router.push('/hub/members'),
-      importance: 'medium', // Informatif
       onboardingId: 'members-card',
     },
   ];
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   if (isLoading) {
     return (
@@ -339,15 +364,15 @@ export default function ModernResidentDashboard() {
       {/* Glassmorphism background with resident orange gradient */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#d9574f]/20 via-[#ff5b21]/15 to-[#ff8017]/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#d9574f]/10 via-[#ff5b21]/8 to-[#ff8017]/5" />
 
         {/* Animated gradient blobs */}
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-[#d9574f]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#ff5b21]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#ff8017]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-[#d9574f]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#ff5b21]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#ff8017]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
 
         {/* Glass effect overlay */}
-        <div className="absolute inset-0 backdrop-blur-3xl bg-white/40" />
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/50" />
       </div>
 
       {/* Residence Header at the top */}
@@ -361,15 +386,15 @@ export default function ModernResidentDashboard() {
       )}
 
       {/* Content */}
-      <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-6"
+      >
         {/* Getting Started Checklist - Only show if not dismissed and loaded */}
         {gettingStarted.isLoaded && !gettingStarted.isDismissed && !gettingStarted.isAllComplete && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
+          <motion.div variants={itemVariants} className="mb-6">
             <GettingStartedChecklist
               items={gettingStarted.items}
               completedCount={gettingStarted.completedCount}
@@ -383,227 +408,293 @@ export default function ModernResidentDashboard() {
           </motion.div>
         )}
 
-      {/* KPI Cards Grid */}
-      <div data-onboarding="kpi-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {kpiCards.map((card, index) => {
-          const Icon = card.icon;
-
-          return (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              onClick={card.action}
-              data-onboarding={card.onboardingId}
-              className={cn(
-                "relative overflow-hidden rounded-3xl p-6 cursor-pointer transition-all hover:scale-105",
-                "bg-white shadow-lg hover:shadow-xl",
-                card.action && "hover:ring-2"
-              )}
-              style={card.action ? { '--tw-ring-color': '#ee5736' } as React.CSSProperties : undefined}
-            >
-              {/* Gradient Background */}
-              <div
-                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
-                style={card.bgStyle}
-              />
-
-              <div className="relative z-10">
-                {/* Icon with grain texture based on importance */}
-                <div
-                  className={cn(
-                    "relative w-12 h-12 rounded-2xl flex items-center justify-center mb-4 overflow-hidden shadow-sm border border-gray-200",
-                    card.importance === 'critical' && "grain-medium",
-                    card.importance === 'high' && "grain-subtle"
-                  )}
-                  style={card.gradientStyle}
-                >
-                  <Icon className="w-6 h-6 text-white relative z-10" />
-                </div>
-
-                {/* Title */}
-                <h3 className="text-sm font-medium text-gray-600 mb-2">
-                  {card.title}
-                </h3>
-
-                {/* Value */}
-                <p className="text-2xl font-bold text-gray-900 mb-2">
-                  {card.value}
-                </p>
-
-                {/* Subtitle or Progress */}
-                {card.progress !== undefined ? (
-                  <>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                      <div
-                        className="h-full rounded-full transition-all"
-                        style={{
-                          width: `${card.progress}%`,
-                          background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
-                        }}
-                      />
-                    </div>
-                    <p className="text-xs text-gray-500">{card.subtitle}</p>
-                  </>
-                ) : (
-                  <p className="text-sm text-gray-500">{card.subtitle}</p>
-                )}
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Upcoming Tasks */}
+        {/* KPI Cards Grid - V2 Fun Style */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          data-onboarding="tasks-section"
-          className="bg-white rounded-3xl shadow-lg p-6"
+          data-onboarding="kpi-cards"
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
-                <Clock className="w-5 h-5 text-white" />
-              </div>
-              Tâches à Venir
-            </h3>
-            <Button
-              onClick={() => router.push('/hub/tasks')}
-              variant="ghost"
-              size="sm"
-              className="rounded-full"
-            >
-              Tout voir
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Button>
-          </div>
+          {kpiCards.map((card, index) => {
+            const Icon = card.icon;
 
-          <div className="space-y-3">
-            {upcomingTasks.map((task, index) => (
+            return (
               <motion.div
-                key={task.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + index * 0.05 }}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl transition-colors cursor-pointer"
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#f9fafb'}
+                key={card.title}
+                variants={itemVariants}
+                whileHover={{ scale: 1.03, y: -6 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={card.action}
+                data-onboarding={card.onboardingId}
+                className={cn(
+                  "relative overflow-hidden rounded-2xl p-5 cursor-pointer transition-all",
+                  "bg-white"
+                )}
+                style={{
+                  boxShadow: `0 12px 32px ${card.shadowColor}`,
+                }}
               >
-                <div className="flex items-center gap-3">
-                  <div className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center",
-                    task.priority === 'high' && "bg-red-100",
-                    task.priority === 'medium' && "bg-yellow-100",
-                    task.priority === 'low' && "bg-green-100"
-                  )}>
-                    <Clock className={cn(
-                      "w-5 h-5",
-                      task.priority === 'high' && "text-red-600",
-                      task.priority === 'medium' && "text-yellow-600",
-                      task.priority === 'low' && "text-green-600"
-                    )} />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{task.title}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(task.dueDate).toLocaleDateString('fr-FR', {
-                        day: 'numeric',
-                        month: 'short'
-                      })}
-                    </p>
-                  </div>
+                {/* Decorative circle */}
+                <div
+                  className="absolute -right-8 -top-8 w-28 h-28 rounded-full opacity-30"
+                  style={{ background: card.iconGradient }}
+                />
+
+                <div className="relative z-10">
+                  {/* Icon */}
+                  <motion.div
+                    whileHover={{ rotate: 5 }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: card.iconGradient }}
+                  >
+                    <Icon className="w-6 h-6 text-white" />
+                  </motion.div>
+
+                  {/* Title */}
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">
+                    {card.title}
+                  </h3>
+
+                  {/* Value */}
+                  <p className="text-2xl font-black text-gray-900 mb-2">
+                    {card.value}
+                  </p>
+
+                  {/* Subtitle or Progress */}
+                  {card.progress !== undefined ? (
+                    <>
+                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${card.progress}%` }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                          className="h-full rounded-full"
+                          style={{ background: RESIDENT_GRADIENT }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500">{card.subtitle}</p>
+                    </>
+                  ) : (
+                    <p className="text-sm text-gray-500">{card.subtitle}</p>
+                  )}
                 </div>
-                <Badge variant={task.priority === 'high' ? 'error' : 'default'}>
-                  {task.priority === 'high' ? 'Urgent' : task.priority === 'medium' ? 'Moyen' : 'Bas'}
-                </Badge>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
+        </motion.div>
 
-          <Button
-            onClick={() => router.push('/hub/tasks')}
-            variant="outline"
-            className="w-full mt-4 rounded-full"
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Upcoming Tasks - V2 Fun Style */}
+          <motion.div
+            variants={itemVariants}
+            data-onboarding="tasks-section"
+            className="relative overflow-hidden bg-white rounded-2xl p-6"
+            style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Ajouter une tâche
-          </Button>
-        </motion.div>
+            {/* Decorative circle */}
+            <div
+              className="absolute -right-12 -top-12 w-36 h-36 rounded-full opacity-20"
+              style={{ background: RESIDENT_GRADIENT }}
+            />
 
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-white rounded-3xl shadow-lg p-6"
-        >
-          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            Activité Récente
-          </h3>
-
-          <div className="space-y-3">
-            {recentActivities.map((activity, index) => {
-              const Icon = activity.icon;
-              return (
-                <motion.div
-                  key={activity.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + index * 0.05 }}
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+                  <motion.div
+                    whileHover={{ rotate: 5 }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: RESIDENT_GRADIENT }}
+                  >
+                    <Clock className="w-5 h-5 text-white" />
+                  </motion.div>
+                  Tâches à Venir
+                </h3>
+                <Button
+                  onClick={() => router.push('/hub/tasks')}
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full font-medium"
+                  style={{ color: RESIDENT_PRIMARY }}
                 >
-                  <div className={cn("w-10 h-10 rounded-full flex items-center justify-center", activity.iconBgColor)}>
-                    <Icon className="w-5 h-5 text-gray-700" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900 text-sm">{activity.title}</p>
-                    <p className="text-xs text-gray-500">{activity.subtitle}</p>
-                  </div>
-                  <span className="text-xs text-gray-400">{activity.time}</span>
+                  Tout voir
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {upcomingTasks.map((task, index) => (
+                  <motion.div
+                    key={task.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.08 }}
+                    whileHover={{ x: 4, backgroundColor: 'rgba(238, 87, 54, 0.04)' }}
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl transition-all cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center",
+                        task.priority === 'high' && "bg-red-50",
+                        task.priority === 'medium' && "bg-amber-50",
+                        task.priority === 'low' && "bg-emerald-50"
+                      )}>
+                        <Clock className={cn(
+                          "w-5 h-5",
+                          task.priority === 'high' && "text-red-500",
+                          task.priority === 'medium' && "text-amber-500",
+                          task.priority === 'low' && "text-emerald-500"
+                        )} />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{task.title}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(task.dueDate).toLocaleDateString('fr-FR', {
+                            day: 'numeric',
+                            month: 'short'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge
+                      className="border-none font-medium"
+                      style={{
+                        background: task.priority === 'high' ? 'rgba(239, 68, 68, 0.1)' : task.priority === 'medium' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                        color: task.priority === 'high' ? '#ef4444' : task.priority === 'medium' ? '#f59e0b' : '#10b981',
+                      }}
+                    >
+                      {task.priority === 'high' ? 'Urgent' : task.priority === 'medium' ? 'Moyen' : 'Bas'}
+                    </Badge>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+                <Button
+                  onClick={() => router.push('/hub/tasks')}
+                  variant="outline"
+                  className="w-full mt-4 rounded-xl border-2 py-5 font-semibold"
+                  style={{
+                    borderColor: `${RESIDENT_PRIMARY}30`,
+                    color: RESIDENT_PRIMARY,
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Ajouter une tâche
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Recent Activity - V2 Fun Style */}
+          <motion.div
+            variants={itemVariants}
+            className="relative overflow-hidden bg-white rounded-2xl p-6"
+            style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
+          >
+            {/* Decorative circle */}
+            <div
+              className="absolute -left-12 -bottom-12 w-36 h-36 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}
+            />
+
+            <div className="relative z-10">
+              <h3 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-3">
+                <motion.div
+                  whileHover={{ rotate: 5 }}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: RESIDENT_GRADIENT }}
+                >
+                  <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-              );
-            })}
+                Activité Récente
+              </h3>
+
+              <div className="space-y-3">
+                {recentActivities.map((activity, index) => {
+                  const Icon = activity.icon;
+                  return (
+                    <motion.div
+                      key={activity.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      whileHover={{ x: 4 }}
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: activity.iconBgColor }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color: activity.iconColor }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm truncate">{activity.title}</p>
+                        <p className="text-xs text-gray-500">{activity.subtitle}</p>
+                      </div>
+                      <span className="text-xs text-gray-400 whitespace-nowrap">{activity.time}</span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Community Happiness - V2 Fun Style */}
+        <motion.div
+          variants={itemVariants}
+          whileHover={{ scale: 1.01 }}
+          className="relative overflow-hidden bg-white rounded-2xl p-6"
+          style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
+        >
+          {/* Decorative gradient background */}
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{ background: CARD_BG_GRADIENT }}
+          />
+
+          {/* Decorative circles */}
+          <div
+            className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20"
+            style={{ background: RESIDENT_GRADIENT }}
+          />
+          <div
+            className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-15"
+            style={{ background: 'linear-gradient(135deg, #ff8017 0%, #ff5b21 100%)' }}
+          />
+
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ background: RESIDENT_GRADIENT }}
+              >
+                <Heart className="w-6 h-6 text-white" />
+              </motion.div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  Bonheur de la Coloc
+                </h3>
+                <p className="text-gray-500 text-sm">Basé sur l'activité et les interactions</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <motion.p
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200 }}
+                className="text-5xl font-black"
+                style={{ color: RESIDENT_PRIMARY }}
+              >
+                {stats.communityHappiness}%
+              </motion.p>
+              <p className="text-gray-500 text-sm mt-1 font-medium">Excellent!</p>
+            </div>
           </div>
         </motion.div>
-      </div>
-
-      {/* Community Happiness */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 relative overflow-hidden"
-      >
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(217, 87, 79, 0.12) 0%, transparent 50%, rgba(255, 128, 23, 0.06) 100%)' }} />
-        <div className="relative flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-bold mb-1 flex items-center gap-2 text-gray-900">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-              >
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              Bonheur de la Coloc
-            </h3>
-            <p className="text-gray-600 text-sm ml-12">Basé sur l'activité et les interactions</p>
-          </div>
-          <div className="text-right">
-            <p className="text-5xl font-bold text-gray-900">{stats.communityHappiness}%</p>
-            <p className="text-gray-600 text-sm mt-1">Excellent!</p>
-          </div>
-        </div>
       </motion.div>
-      </div>
-      </>
 
       {/* Onboarding Tour */}
       <OnboardingTour
@@ -619,4 +710,6 @@ export default function ModernResidentDashboard() {
       />
     </div>
   );
-}
+});
+
+export default ModernResidentDashboard;
