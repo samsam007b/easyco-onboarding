@@ -305,7 +305,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   if (ctx.userType === 'searcher' && ctx.matchesCount && ctx.matchesCount >= 5) {
     return {
       message: `🎯 ${ctx.matchesCount} matchs compatibles vous attendent !`,
-      action: { label: 'Voir les matchs', value: '/search?tab=matches' }
+      action: { label: 'Voir les matchs', value: '/matching/properties' }
     };
   }
 
@@ -1596,7 +1596,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       confidence: 0.90,
       suggestedActions: ctx.userType === 'resident'
         ? [{ type: 'navigate', label: 'Mon hub', value: '/hub' }]
-        : [{ type: 'navigate', label: 'Rechercher', value: '/search' }],
+        : [{ type: 'navigate', label: 'Rechercher', value: '/matching/properties' }],
     };
   },
 
@@ -1644,7 +1644,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.90,
       suggestedActions: [
-        { type: 'navigate', label: 'Voir mes matchs', value: '/search?tab=matches' },
+        { type: 'navigate', label: 'Voir mes matchs', value: '/matching/properties' },
         { type: 'navigate', label: 'Améliorer mon profil', value: '/profile/edit' },
       ],
     };
@@ -1737,7 +1737,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.90,
       suggestedActions: [
-        { type: 'navigate', label: 'Rechercher', value: '/search' },
+        { type: 'navigate', label: 'Rechercher', value: '/matching/properties' },
         { type: 'navigate', label: 'Mes favoris', value: '/favorites' },
       ],
     };
@@ -1779,7 +1779,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       confidence: 0.90,
       suggestedActions: ctx.userType === 'resident'
         ? [{ type: 'navigate', label: 'Mes finances', value: '/hub/finances' }]
-        : [{ type: 'navigate', label: 'Rechercher une coloc', value: '/search' }],
+        : [{ type: 'navigate', label: 'Rechercher une coloc', value: '/matching/properties' }],
     };
   },
 
@@ -1878,7 +1878,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response += `• \`/hub/tasks\` - Tâches ménage\n`;
     } else {
       response += `(Chercheur) :**\n`;
-      response += `• \`/search\` - Rechercher\n`;
+      response += `• \`/matching/properties\` - Rechercher\n`;
       response += `• \`/favorites\` - Mes favoris\n`;
       response += `• \`/applications\` - Mes candidatures\n`;
     }
@@ -2107,7 +2107,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       confidence: 0.85,
       suggestedActions: ctx.userType === 'owner'
         ? [{ type: 'navigate', label: 'Gérer mes disponibilités', value: '/properties/calendar' }]
-        : [{ type: 'navigate', label: 'Rechercher des logements', value: '/search' }],
+        : [{ type: 'navigate', label: 'Rechercher des logements', value: '/matching/properties' }],
     };
   },
 

@@ -171,8 +171,8 @@ export function AssistantActionProvider({ children }: { children: ReactNode }) {
       // Store filters to be applied on the search page
       setPendingFilters(action.filters);
 
-      // Navigate to search page if not already there
-      const targetPath = action.navigateTo || '/search';
+      // Navigate to matching/properties page if not already there
+      const targetPath = action.navigateTo || '/matching/properties';
       if (pathname !== targetPath) {
         router.push(targetPath);
       }

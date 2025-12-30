@@ -42,7 +42,7 @@ export interface SetFiltersAction {
     amenities?: string[];
     moveInDate?: string;
   };
-  navigateTo?: string; // Usually /search
+  navigateTo?: string; // Usually /matching/properties
 }
 
 export interface OpenModalAction {
@@ -297,9 +297,10 @@ export const NAVIGATION_PATHS = {
   properties: { path: '/properties', description: 'Mes propriétés' },
   add_property: { path: '/properties/new', description: 'Ajouter une propriété' },
 
-  // Search
-  search: { path: '/search', description: 'Rechercher une colocation' },
-  browse: { path: '/browse', description: 'Parcourir les annonces' },
+  // Search / Matching
+  search: { path: '/matching/properties', description: 'Rechercher une colocation' },
+  browse: { path: '/matching/swipe', description: 'Parcourir les annonces (swipe)' },
+  matching: { path: '/matching/properties', description: 'Voir mes matchs' },
 
   // Messaging
   messages: { path: '/messages', description: 'Messagerie' },

@@ -363,7 +363,7 @@ Pages disponibles:
 - /hub/finances : Gestion des finances
 - /properties : Mes propriétés
 - /properties/new : Ajouter une propriété
-- /search : Rechercher une colocation
+- /matching/properties : Rechercher une colocation
 - /messages : Messagerie
 - /profile : Mon profil
 - /settings : Paramètres
@@ -464,7 +464,7 @@ function getFAQOnlyFallbackResponse(
       message: `Notre système de matching analyse vos préférences et votre personnalité pour vous proposer des colocations compatibles.\n\nPour améliorer vos résultats :\n1. Complétez votre profil de personnalité\n2. Définissez vos critères de recherche\n3. Parcourez les annonces suggérées`,
       suggestedActions: [
         { type: 'navigate', label: 'Mon profil', value: '/profile' },
-        { type: 'navigate', label: 'Rechercher', value: '/search' },
+        { type: 'navigate', label: 'Rechercher', value: '/matching/properties' },
       ],
     },
     finances: {
@@ -477,7 +477,7 @@ function getFAQOnlyFallbackResponse(
     search: {
       message: `Pour trouver votre colocation idéale :\n\n1. Utilisez les filtres (ville, budget, type)\n2. Consultez les profils compatibles\n3. Envoyez une demande de contact\n\nN'oubliez pas de compléter votre profil pour de meilleures suggestions !`,
       suggestedActions: [
-        { type: 'navigate', label: 'Rechercher', value: '/search' },
+        { type: 'navigate', label: 'Rechercher', value: '/matching/properties' },
         { type: 'navigate', label: 'Mon profil', value: '/profile' },
       ],
     },
@@ -514,7 +514,7 @@ function getFAQOnlyFallbackResponse(
     message: `Bonjour${userName} ! Je suis l'assistant IzzIco en mode FAQ.\n\nJe peux vous aider avec :\n• **Navigation** sur la plateforme\n• **Questions fréquentes** sur les tarifs et fonctionnalités\n• **Aide** pour trouver une page\n\nPour une question spécifique, essayez de reformuler ou consultez notre centre d'aide.`,
     suggestedActions: [
       { type: 'navigate', label: 'Centre d\'aide', value: '/help' },
-      { type: 'navigate', label: 'Rechercher', value: '/search' },
+      { type: 'navigate', label: 'Rechercher', value: '/matching/properties' },
       { type: 'contact', label: 'Contacter le support', value: 'support@izzico.be' },
     ],
   };
