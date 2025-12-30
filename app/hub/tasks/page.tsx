@@ -228,37 +228,30 @@ export default function ModernTasksPage() {
 
   return (
     <HubLayout>
-      {/* Header - V2 Fun Design */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
-        className="mb-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="space-y-6"
       >
-        <div className="flex items-center justify-between mb-2">
+        {/* Header - Matching Finance Style */}
+        <motion.div variants={itemVariants} className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
                 boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
               }}
             >
-              <CheckCircle2 className="w-7 h-7 text-white relative z-10" />
-              <motion.div
-                className="absolute inset-0 bg-white/20"
-                animate={{ opacity: [0, 0.3, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-              />
+              <CheckCircle2 className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Tâches Ménagères
-              </h1>
-              <p className="text-gray-600 flex items-center gap-2">
-                <RotateCw className="w-4 h-4 text-orange-500" />
-                Organisation et rotations automatiques
+              <h1 className="text-2xl font-bold text-gray-900">Tâches</h1>
+              <p className="text-sm text-gray-500">
+                {pendingTasks.length} en attente • {myTasks.length} pour moi
               </p>
             </div>
           </div>
@@ -266,95 +259,146 @@ export default function ModernTasksPage() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
+              size="sm"
+              className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                boxShadow: '0 4px 16px rgba(238, 87, 54, 0.4)',
+                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
+                boxShadow: '0 4px 14px rgba(238, 87, 54, 0.4)',
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Nouvelle tâche
             </Button>
           </motion.div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Stats Cards - V2 Fun */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
-      >
-        {[
-          { label: 'Mes tâches', value: myTasks.length, icon: Users, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
-          { label: 'En attente', value: pendingTasks.length, icon: Clock, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
-          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', shadow: 'rgba(16, 185, 129, 0.35)' },
-          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.35)' },
-        ].map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <motion.div
-              key={stat.label}
-              variants={itemVariants}
-              whileHover={{ scale: 1.03, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer border-2 border-transparent hover:border-orange-100"
-              style={{
-                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-              }}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <motion.div
-                  whileHover={{ rotate: 10 }}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shadow-md"
-                  style={{
-                    background: stat.gradient,
-                    boxShadow: `0 4px 12px ${stat.shadow}`,
-                  }}
-                >
-                  <Icon className="w-5 h-5 text-white" />
-                </motion.div>
-                <h3 className="text-sm font-bold text-gray-600">
-                  {stat.label}
-                </h3>
-              </div>
-              <p
-                className="text-3xl font-bold"
-                style={{
-                  background: stat.gradient,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                {stat.value}
-              </p>
-            </motion.div>
-          );
-        })}
-      </motion.div>
-
-      {/* Tasks List - V2 Fun */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring' as const, stiffness: 300, damping: 25, delay: 0.3 }}
-        className="bg-white rounded-3xl shadow-lg p-6 border-2 border-transparent"
-        style={{
-          boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-        }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-          <ClipboardList className="w-5 h-5" style={{ color: '#ee5736' }} />
-          Toutes les tâches
-          <Badge
-            className="text-xs border-none text-white font-bold ml-2"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+        {/* Stats Cards - Matching Finance Style */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* My Tasks Card - Orange Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
+              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+            }}
           >
-            {pendingTasks.length}
-          </Badge>
-        </h3>
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-orange-700">Mes tâches</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+              >
+                <Users className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{myTasks.length}</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">à faire</p>
+          </motion.div>
+
+          {/* Pending Card - Purple Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-purple-700">En attente</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+              >
+                <Clock className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{pendingTasks.length}</p>
+            <p className="text-xs text-purple-600 font-medium mt-2">tâche{pendingTasks.length !== 1 ? 's' : ''}</p>
+          </motion.div>
+
+          {/* Completed Card - Green Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+              boxShadow: '0 8px 24px rgba(34, 197, 94, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-green-700">Terminées</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+              >
+                <CheckCircle2 className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{completedTasks.length}</p>
+            <p className="text-xs text-green-600 font-medium mt-2">complétée{completedTasks.length !== 1 ? 's' : ''}</p>
+          </motion.div>
+
+          {/* Overdue Card - Red Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+              boxShadow: '0 8px 24px rgba(239, 68, 68, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-red-700">En retard</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
+              >
+                <AlertCircle className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{overdueTasks.length}</p>
+            <p className="text-xs text-red-600 font-medium mt-2">urgente{overdueTasks.length !== 1 ? 's' : ''}</p>
+          </motion.div>
+        </motion.div>
+
+        {/* Tasks List - Matching Finance Style */}
+        <motion.div
+          variants={itemVariants}
+          whileHover={{ y: -4 }}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-orange-400"
+          style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
+        >
+          <div className="flex items-center gap-3 p-4 border-b border-gray-100">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+            >
+              <ClipboardList className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="text-base font-bold text-gray-900">Toutes les tâches</h3>
+            <Badge
+              className="text-xs px-2 py-0.5 font-bold border-none"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)', color: 'white' }}
+            >
+              {pendingTasks.length}
+            </Badge>
+          </div>
+
+          <div className="p-4">
 
         <motion.div
           variants={containerVariants}
