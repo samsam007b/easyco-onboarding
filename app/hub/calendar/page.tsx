@@ -26,6 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import HubLayout from '@/components/hub/HubLayout';
 
 // V2 Fun Animation variants
 const containerVariants = {
@@ -291,125 +292,135 @@ export default function HubCalendarPage() {
   const upcomingEvents = events.filter((e) => new Date(e.date) >= today);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/50 via-white to-orange-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header - V2 Fun Design */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
-          className="mb-8"
-        >
-          <Button
-            onClick={() => router.back()}
-            variant="ghost"
-            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10 font-semibold"
-          >
-            ← Retour au hub
-          </Button>
+    <HubLayout>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="space-y-6"
+      >
+        {/* Header - Matching Finance Style */}
+        <motion.div variants={itemVariants} className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
+                boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+              }}
+            >
+              <CalendarIcon className="w-6 h-6 text-white" />
+            </motion.div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Calendrier</h1>
+              <p className="text-sm text-gray-500">
+                {events.length} événement{events.length !== 1 ? 's' : ''} • {MONTHS[currentDate.getMonth()]}
+              </p>
+            </div>
+          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
-                style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                  boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
-                }}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={handleCreateEvent}
+              size="sm"
+              className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
+                boxShadow: '0 4px 14px rgba(238, 87, 54, 0.4)',
+              }}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nouvel événement
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        {/* Stats Cards - Matching Finance Style */}
+        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4">
+          {/* Today Card - Orange Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
+              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-orange-700">Aujourd'hui</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
               >
-                <CalendarIcon className="w-7 h-7 text-white relative z-10" />
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  animate={{ opacity: [0, 0.3, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                />
-              </motion.div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Calendrier Partagé
-                </h1>
-                <p className="text-gray-600 flex items-center gap-2">
-                  <PartyPopper className="w-4 h-4 text-orange-500" />
-                  Planifiez et coordonnez vos événements
-                </p>
+                <CalendarIcon className="w-4 h-4 text-white" />
               </div>
             </div>
+            <p className="text-2xl font-bold text-gray-900">{todayEvents.length}</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">événement{todayEvents.length !== 1 ? 's' : ''}</p>
+          </motion.div>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={handleCreateEvent}
-                className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
-                style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                  boxShadow: '0 4px 16px rgba(238, 87, 54, 0.4)',
-                }}
+          {/* This Month Card - Purple Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-purple-700">Ce mois</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Nouvel événement
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Stats Cards - V2 Fun */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
-        >
-          {[
-            { label: "Aujourd'hui", value: todayEvents.length, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
-            { label: 'Ce mois', value: events.length, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
-            { label: 'À venir', value: upcomingEvents.length, gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)' },
-          ].map((stat) => (
-            <motion.div
-              key={stat.label}
-              variants={itemVariants}
-              whileHover={{ scale: 1.03, y: -4 }}
-              className="bg-white rounded-2xl shadow-lg p-5 cursor-pointer border-2 border-transparent hover:border-orange-100"
-              style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-bold text-gray-600">
-                    {stat.label}
-                  </p>
-                  <p
-                    className="text-3xl font-bold mt-1"
-                    style={{
-                      background: stat.gradient,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
-                    {stat.value}
-                  </p>
-                </div>
-                <motion.div
-                  whileHover={{ rotate: 10 }}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shadow-md"
-                  style={{
-                    background: stat.gradient,
-                    boxShadow: `0 4px 12px ${stat.shadow}`,
-                  }}
-                >
-                  <CalendarIcon className="w-5 h-5 text-white" />
-                </motion.div>
+                <PartyPopper className="w-4 h-4 text-white" />
               </div>
-            </motion.div>
-          ))}
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{events.length}</p>
+            <p className="text-xs text-purple-600 font-medium mt-2">événement{events.length !== 1 ? 's' : ''}</p>
+          </motion.div>
+
+          {/* Upcoming Card - Green Gradient */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+              boxShadow: '0 8px 24px rgba(34, 197, 94, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-green-700">À venir</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+              >
+                <Clock className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{upcomingEvents.length}</p>
+            <p className="text-xs text-green-600 font-medium mt-2">événement{upcomingEvents.length !== 1 ? 's' : ''}</p>
+          </motion.div>
         </motion.div>
 
-        {/* Calendar Header - V2 Fun */}
+        {/* Calendar Grid - Matching Finance Style */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, type: 'spring' as const, stiffness: 300, damping: 25 }}
-          className="bg-white rounded-3xl shadow-lg p-6 mb-6 border-2 border-transparent"
-          style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
+          variants={itemVariants}
+          whileHover={{ y: -4 }}
+          className="bg-white rounded-2xl shadow-lg p-6 border-2 border-orange-100"
+          style={{ boxShadow: '0 12px 32px rgba(238, 87, 54, 0.08)' }}
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -561,30 +572,35 @@ export default function HubCalendarPage() {
           </motion.div>
         </motion.div>
 
-        {/* Upcoming Events - V2 Fun */}
+        {/* Upcoming Events - Matching Finance Style */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, type: 'spring' as const, stiffness: 300, damping: 25 }}
-          className="bg-white rounded-3xl shadow-lg p-6 border-2 border-transparent"
-          style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
+          variants={itemVariants}
+          whileHover={{ y: -4 }}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-purple-400"
+          style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <PartyPopper className="w-5 h-5" style={{ color: '#ee5736' }} />
-            Événements à venir
+          <div className="flex items-center gap-3 p-4 border-b border-gray-100">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+            >
+              <PartyPopper className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="text-base font-bold text-gray-900">Événements à venir</h3>
             <Badge
-              className="text-xs border-none text-white font-bold ml-2"
-              style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)' }}
+              className="text-xs px-2 py-0.5 font-bold border-none"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)', color: 'white' }}
             >
               {events.length}
             </Badge>
-          </h3>
+          </div>
 
+          <div className="p-3">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-3"
+            className="space-y-2"
           >
             {events.length === 0 ? (
               <motion.div variants={itemVariants} className="text-center py-12">
@@ -694,8 +710,9 @@ export default function HubCalendarPage() {
                 ))
             )}
           </motion.div>
+          </div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Event Modal */}
       {currentPropertyId && (
@@ -710,6 +727,6 @@ export default function HubCalendarPage() {
           propertyId={currentPropertyId}
         />
       )}
-    </div>
+    </HubLayout>
   );
 }
