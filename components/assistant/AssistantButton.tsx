@@ -262,13 +262,21 @@ export default function AssistantButton() {
     }
   };
 
-  // Helper function to extract text from message parts
-  const getMessageText = (message: typeof messages[0]) => {
-    if (!message.parts) return '';
-    return message.parts
-      .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
-      .map(part => part.text)
-      .join('');
+  // Helper function to extract text from message
+  // Handles both AI SDK v6 format (content string) and legacy format (parts array)
+  const getMessageText = (message: typeof messages[0]): string => {
+    // AI SDK v6: content is a string directly
+    if ('content' in message && typeof message.content === 'string') {
+      return message.content;
+    }
+    // Legacy format: parts array
+    if (message.parts && Array.isArray(message.parts)) {
+      return message.parts
+        .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
+        .map(part => part.text)
+        .join('');
+    }
+    return '';
   };
 
   return (
