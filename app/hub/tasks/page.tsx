@@ -398,160 +398,161 @@ export default function ModernTasksPage() {
             </Badge>
           </div>
 
-          <div className="p-4">
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-3"
-        >
-          {pendingTasks.length === 0 ? (
+          <div className="p-3">
             <motion.div
-              variants={itemVariants}
-              className="text-center py-12"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-2"
             >
-              <motion.div
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  boxShadow: '0 8px 24px rgba(16, 185, 129, 0.35)',
-                }}
-              >
-                <CheckCircle2 className="w-10 h-10 text-white" />
+              {pendingTasks.length === 0 ? (
                 <motion.div
-                  className="absolute -top-1 -right-1"
-                  animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                >
-                  <Sparkles className="w-5 h-5 text-amber-400" />
-                </motion.div>
-              </motion.div>
-              <p className="font-bold text-gray-900 mb-2 text-lg">Aucune tâche en attente</p>
-              <p className="text-sm text-gray-500">Tout est fait !</p>
-            </motion.div>
-          ) : (
-            pendingTasks.map((task) => {
-              const category = CATEGORY_OPTIONS.find((c) => c.value === task.category);
-              const priority = PRIORITY_OPTIONS.find((p) => p.value === task.priority);
-              const isMyTask = task.assigned_to === currentUserId;
-
-              return (
-                <motion.div
-                  key={task.id}
                   variants={itemVariants}
-                  whileHover={{ scale: 1.01, x: 4 }}
-                  whileTap={{ scale: 0.99 }}
-                  className={cn(
-                    'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
-                    isMyTask
-                      ? 'border-orange-200 hover:shadow-lg'
-                      : 'bg-gray-50/50 border-gray-200 hover:border-gray-300'
-                  )}
-                  style={isMyTask ? {
-                    background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
-                    boxShadow: '0 4px 16px rgba(238, 87, 54, 0.1)',
-                  } : undefined}
+                  className="text-center py-12"
                 >
-                  <div className="flex items-center gap-4 flex-1">
+                  <motion.div
+                    whileHover={{ scale: 1.05, rotate: 5 }}
+                    className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                      boxShadow: '0 8px 24px rgba(16, 185, 129, 0.35)',
+                    }}
+                  >
+                    <CheckCircle2 className="w-10 h-10 text-white" />
                     <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      className={cn('w-12 h-12 rounded-xl flex items-center justify-center shadow-sm', category?.color)}
+                      className="absolute -top-1 -right-1"
+                      animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      {category?.icon && <category.icon className="w-6 h-6" />}
+                      <Sparkles className="w-5 h-5 text-amber-400" />
                     </motion.div>
+                  </motion.div>
+                  <p className="font-bold text-gray-900 mb-2 text-lg">Aucune tâche en attente</p>
+                  <p className="text-sm text-gray-500">Tout est fait !</p>
+                </motion.div>
+              ) : (
+                pendingTasks.map((task) => {
+                  const category = CATEGORY_OPTIONS.find((c) => c.value === task.category);
+                  const priority = PRIORITY_OPTIONS.find((p) => p.value === task.priority);
+                  const isMyTask = task.assigned_to === currentUserId;
 
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-gray-900">{task.title}</h4>
-                        {task.has_rotation && (
-                          <Badge
-                            className="text-xs border-none text-white font-semibold shadow-sm"
-                            style={{
-                              background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
-                              boxShadow: '0 2px 8px rgba(124, 58, 237, 0.3)',
-                            }}
-                          >
-                            <RotateCw className="w-3 h-3 mr-1" />
-                            Rotation
-                          </Badge>
-                        )}
-                        {task.is_overdue && (
-                          <Badge
-                            className="text-xs text-white border-none font-semibold shadow-sm"
-                            style={{
-                              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
-                            }}
-                          >
-                            <AlertCircle className="w-3 h-3 mr-1" />
-                            En retard
-                          </Badge>
-                        )}
-                      </div>
+                  return (
+                    <motion.div
+                      key={task.id}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.01, x: 4 }}
+                      whileTap={{ scale: 0.99 }}
+                      className={cn(
+                        'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
+                        isMyTask
+                          ? 'border-orange-200 hover:shadow-lg'
+                          : 'bg-gray-50/50 border-gray-200 hover:border-gray-300'
+                      )}
+                      style={isMyTask ? {
+                        background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
+                        boxShadow: '0 4px 16px rgba(238, 87, 54, 0.1)',
+                      } : undefined}
+                    >
+                      <div className="flex items-center gap-4 flex-1">
+                        <motion.div
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          className={cn('w-12 h-12 rounded-xl flex items-center justify-center shadow-sm', category?.color)}
+                        >
+                          {category?.icon && <category.icon className="w-6 h-6" />}
+                        </motion.div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
-                          {task.assigned_to_name}
-                        </span>
-                        {task.due_date && (
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
-                            {new Date(task.due_date).toLocaleDateString('fr-FR')}
-                            {task.days_until_due !== undefined && (
-                              <span className={cn(
-                                'font-semibold',
-                                task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500'
-                              )}>
-                                (J{task.days_until_due > 0 ? `-${task.days_until_due}` : task.days_until_due})
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-gray-900">{task.title}</h4>
+                            {task.has_rotation && (
+                              <Badge
+                                className="text-xs border-none text-white font-semibold shadow-sm"
+                                style={{
+                                  background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                                  boxShadow: '0 2px 8px rgba(124, 58, 237, 0.3)',
+                                }}
+                              >
+                                <RotateCw className="w-3 h-3 mr-1" />
+                                Rotation
+                              </Badge>
+                            )}
+                            {task.is_overdue && (
+                              <Badge
+                                className="text-xs text-white border-none font-semibold shadow-sm"
+                                style={{
+                                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                  boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
+                                }}
+                              >
+                                <AlertCircle className="w-3 h-3 mr-1" />
+                                En retard
+                              </Badge>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <span className="flex items-center gap-1">
+                              <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                              {task.assigned_to_name}
+                            </span>
+                            {task.due_date && (
+                              <span className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
+                                {new Date(task.due_date).toLocaleDateString('fr-FR')}
+                                {task.days_until_due !== undefined && (
+                                  <span className={cn(
+                                    'font-semibold',
+                                    task.days_until_due < 3 ? 'text-red-600' : 'text-gray-500'
+                                  )}>
+                                    (J{task.days_until_due > 0 ? `-${task.days_until_due}` : task.days_until_due})
+                                  </span>
+                                )}
                               </span>
                             )}
-                          </span>
-                        )}
-                        <Badge className={cn(priority?.color, 'font-semibold')}>{priority?.label}</Badge>
+                            <Badge className={cn(priority?.color, 'font-semibold')}>{priority?.label}</Badge>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    {isMyTask && (
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button
-                          onClick={() => {
-                            setSelectedTask(task);
-                            setShowCompleteModal(true);
-                          }}
-                          size="sm"
-                          className="rounded-full text-white font-semibold shadow-md"
-                          style={{
-                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
-                          }}
-                        >
-                          <Check className="w-4 h-4 mr-1" />
-                          Terminer
-                        </Button>
-                      </motion.div>
-                    )}
-                    {task.has_rotation && (
-                      <motion.div whileHover={{ scale: 1.1, rotate: 180 }} whileTap={{ scale: 0.9 }}>
-                        <Button
-                          onClick={() => handleRotateTask(task.id)}
-                          size="sm"
-                          variant="outline"
-                          className="rounded-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50"
-                        >
-                          <RotateCw className="w-4 h-4" />
-                        </Button>
-                      </motion.div>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })
-          )}
+                      <div className="flex items-center gap-2">
+                        {isMyTask && (
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              onClick={() => {
+                                setSelectedTask(task);
+                                setShowCompleteModal(true);
+                              }}
+                              size="sm"
+                              className="rounded-full text-white font-semibold shadow-md"
+                              style={{
+                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                              }}
+                            >
+                              <Check className="w-4 h-4 mr-1" />
+                              Terminer
+                            </Button>
+                          </motion.div>
+                        )}
+                        {task.has_rotation && (
+                          <motion.div whileHover={{ scale: 1.1, rotate: 180 }} whileTap={{ scale: 0.9 }}>
+                            <Button
+                              onClick={() => handleRotateTask(task.id)}
+                              size="sm"
+                              variant="outline"
+                              className="rounded-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50"
+                            >
+                              <RotateCw className="w-4 h-4" />
+                            </Button>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })
+              )}
+            </motion.div>
+          </div>
         </motion.div>
       </motion.div>
 

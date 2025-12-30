@@ -76,7 +76,12 @@ const getPerformanceStats = unstable_cache(
       .select('total_requests, avg_response_time_ms, error_count')
       .eq('date', today);
 
-    const routes = routeData || [];
+    interface RouteAnalyticsRow {
+      total_requests: number | null;
+      avg_response_time_ms: number | null;
+      error_count: number | null;
+    }
+    const routes = (routeData || []) as RouteAnalyticsRow[];
     const totalRequests = routes.reduce((sum, r) => sum + (r.total_requests || 0), 0);
     const totalErrors = routes.reduce((sum, r) => sum + (r.error_count || 0), 0);
     const avgResponseTime = routes.length > 0
@@ -130,13 +135,24 @@ const getTopAPIEndpoints = unstable_cache(
       .order('total_requests', { ascending: false })
       .limit(10);
 
-    return (data || []).map(d => ({
+    interface RouteAnalyticsFullRow {
+      route: string;
+      method: string | null;
+      avg_response_time_ms: number | null;
+      total_requests: number | null;
+      error_count: number | null;
+    }
+    const routes = (data || []) as RouteAnalyticsFullRow[];
+
+    return routes.map(d => ({
       route: d.route,
       method: d.method || 'GET',
       avgResponseTime: Math.round(d.avg_response_time_ms || 0),
       p95ResponseTime: Math.round((d.avg_response_time_ms || 0) * 1.5), // Estimate
       requestCount: d.total_requests || 0,
-      errorRate: d.total_requests > 0 ? Math.round((d.error_count / d.total_requests) * 100 * 100) / 100 : 0,
+      errorRate: d.total_requests && d.total_requests > 0
+        ? Math.round(((d.error_count || 0) / d.total_requests) * 100 * 100) / 100
+        : 0,
     }));
   },
   ['api-endpoints'],

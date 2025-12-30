@@ -515,7 +515,7 @@ export function PerformanceMaturityDashboard() {
                             )}>
                               {item.name}
                             </span>
-                            <Badge variant="outline" className={getPriorityColor(item.priority)}>
+                            <Badge variant="secondary" className={getPriorityColor(item.priority)}>
                               {item.priority}
                             </Badge>
                             {item.isFree && (

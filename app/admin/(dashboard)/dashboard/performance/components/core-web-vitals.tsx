@@ -218,7 +218,7 @@ export function CoreWebVitals({ webVitals, compact = false }: CoreWebVitalsProps
                         <span className="text-2xl font-bold text-white">
                           {formatValue(key, data.value)}
                         </span>
-                        <Badge variant="outline" className={getRatingColor(data.rating)}>
+                        <Badge variant="secondary" className={getRatingColor(data.rating)}>
                           {data.rating === 'good' ? 'Bon' : data.rating === 'needs-improvement' ? 'À améliorer' : 'Mauvais'}
                         </Badge>
                       </div>

@@ -32,6 +32,7 @@ interface AdminSidebarProps {
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Security Center', href: '/admin/dashboard/security', icon: ShieldAlert, highlight: true },
+  { name: 'Performance', href: '/admin/dashboard/performance', icon: Activity, highlight: true },
   { name: 'Agent Analytics', href: '/admin/dashboard/agent', icon: Brain, highlight: true },
   { name: 'Assistant IA', href: '/admin/dashboard/assistant', icon: Bot },
   { name: 'Feedback & Suggestions', href: '/admin/dashboard/feedback', icon: Lightbulb },

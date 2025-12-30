@@ -93,7 +93,7 @@ export function APIPerformance({ endpoints, compact = false }: APIPerformancePro
             {endpoints.slice(0, 5).map((endpoint, idx) => (
               <div key={idx} className="flex items-center justify-between">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <Badge variant="outline" className={`${getMethodColor(endpoint.method)} text-xs px-1.5`}>
+                  <Badge variant="secondary" className={`${getMethodColor(endpoint.method)} text-xs px-1.5`}>
                     {endpoint.method}
                   </Badge>
                   <span className="text-sm text-slate-300 truncate">{endpoint.route}</span>
@@ -223,7 +223,7 @@ export function APIPerformance({ endpoints, compact = false }: APIPerformancePro
                   className="grid grid-cols-12 gap-4 px-3 py-3 rounded-lg hover:bg-slate-700/30 transition-colors items-center"
                 >
                   <div className="col-span-5 flex items-center gap-2 min-w-0">
-                    <Badge variant="outline" className={`${getMethodColor(endpoint.method)} text-xs shrink-0`}>
+                    <Badge variant="secondary" className={`${getMethodColor(endpoint.method)} text-xs shrink-0`}>
                       {endpoint.method}
                     </Badge>
                     <span className="text-sm text-white truncate font-mono">{endpoint.route}</span>
@@ -281,7 +281,7 @@ export function APIPerformance({ endpoints, compact = false }: APIPerformancePro
               {slowEndpoints.map((endpoint, idx) => (
                 <div key={idx} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline" className={getMethodColor(endpoint.method)}>
+                    <Badge variant="secondary" className={getMethodColor(endpoint.method)}>
                       {endpoint.method}
                     </Badge>
                     <span className="text-sm text-white font-mono">{endpoint.route}</span>
