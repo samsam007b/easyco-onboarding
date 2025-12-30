@@ -379,28 +379,21 @@ const assistantTools = {
 
 /**
  * Create a streaming response for FAQ answers
+ * Uses AI SDK v6 Data Stream Protocol format
  */
 function createFAQStreamResponse(content: string, metadata: any) {
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
     async start(controller) {
-      // Send the content as a single chunk (FAQ responses are instant)
-      const data = {
-        type: 'text-delta',
-        textDelta: content,
-      };
-      controller.enqueue(encoder.encode(`0:${JSON.stringify(data)}\n`));
+      // AI SDK v6 format: 0: followed by JSON-encoded string for text
+      controller.enqueue(encoder.encode(`0:${JSON.stringify(content)}\n`));
 
       // Send finish message with metadata
+      // AI SDK v6 format: d: for finish data
       const finishData = {
-        type: 'finish',
         finishReason: 'stop',
         usage: { promptTokens: 0, completionTokens: 0 },
-        metadata: {
-          provider: 'faq',
-          ...metadata,
-        },
       };
       controller.enqueue(encoder.encode(`d:${JSON.stringify(finishData)}\n`));
 
@@ -410,10 +403,10 @@ function createFAQStreamResponse(content: string, metadata: any) {
 
   return new Response(stream, {
     headers: {
-      'Content-Type': 'text/event-stream',
+      'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
-      'X-Assistant-Provider': 'faq',
+      'X-Assistant-Provider': metadata?.provider || 'faq',
       'X-Assistant-Cost': '0',
     },
   });
@@ -421,6 +414,7 @@ function createFAQStreamResponse(content: string, metadata: any) {
 
 /**
  * Create a streaming response from Groq
+ * Uses AI SDK v6 Data Stream Protocol format
  */
 async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) {
   const encoder = new TextEncoder();
@@ -432,22 +426,15 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
 
         for await (const chunk of streamGroqResponse(messages)) {
           fullContent += chunk;
-          const data = {
-            type: 'text-delta',
-            textDelta: chunk,
-          };
-          controller.enqueue(encoder.encode(`0:${JSON.stringify(data)}\n`));
+          // AI SDK v6 format: 0: followed by JSON-encoded string for text
+          controller.enqueue(encoder.encode(`0:${JSON.stringify(chunk)}\n`));
         }
 
         // Send finish message
+        // AI SDK v6 format: d: for finish data
         const finishData = {
-          type: 'finish',
           finishReason: 'stop',
           usage: { promptTokens: 0, completionTokens: fullContent.length / 4 },
-          metadata: {
-            provider: 'groq',
-            ...metadata,
-          },
         };
         controller.enqueue(encoder.encode(`d:${JSON.stringify(finishData)}\n`));
 
@@ -455,12 +442,9 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
       } catch (error: any) {
         console.error('[Groq Stream] Error:', error);
 
-        // Send error message
-        const errorData = {
-          type: 'error',
-          error: error.message,
-        };
-        controller.enqueue(encoder.encode(`e:${JSON.stringify(errorData)}\n`));
+        // AI SDK v6 format: 3: for error messages
+        const errorData = { message: error.message };
+        controller.enqueue(encoder.encode(`3:${JSON.stringify(errorData)}\n`));
         controller.close();
       }
     },
@@ -468,7 +452,7 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
 
   return new Response(stream, {
     headers: {
-      'Content-Type': 'text/event-stream',
+      'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
       'X-Assistant-Provider': 'groq',
@@ -482,26 +466,22 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
 
 /**
  * Create an error response as a valid stream
- * This ensures the client can properly handle errors
+ * Uses AI SDK v6 Data Stream Protocol format
  */
 function createErrorStreamResponse(errorMessage: string) {
   const encoder = new TextEncoder();
+  const userFriendlyMessage = `⚠️ ${errorMessage}\n\nVeuillez réessayer ou contacter le support si le problème persiste.`;
 
   const stream = new ReadableStream({
     start(controller) {
-      // Send error as a text message so the user sees it
-      const data = {
-        type: 'text-delta',
-        textDelta: `⚠️ ${errorMessage}\n\nVeuillez réessayer ou contacter le support si le problème persiste.`,
-      };
-      controller.enqueue(encoder.encode(`0:${JSON.stringify(data)}\n`));
+      // AI SDK v6 format: 0: for text content
+      controller.enqueue(encoder.encode(`0:${JSON.stringify(userFriendlyMessage)}\n`));
 
       // Send finish message
+      // AI SDK v6 format: d: for finish data
       const finishData = {
-        type: 'finish',
         finishReason: 'stop',
         usage: { promptTokens: 0, completionTokens: 0 },
-        metadata: { provider: 'error' },
       };
       controller.enqueue(encoder.encode(`d:${JSON.stringify(finishData)}\n`));
 
@@ -511,7 +491,7 @@ function createErrorStreamResponse(errorMessage: string) {
 
   return new Response(stream, {
     headers: {
-      'Content-Type': 'text/event-stream',
+      'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
       'X-Assistant-Provider': 'error',
