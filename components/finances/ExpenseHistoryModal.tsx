@@ -27,6 +27,13 @@ import {
   DollarSign,
   Sparkles,
   Receipt,
+  Home,
+  Lightbulb,
+  ShoppingCart,
+  Brush,
+  Wrench,
+  Wifi,
+  Package,
 } from 'lucide-react';
 import ExpenseListByPeriod from './ExpenseListByPeriod';
 import ExpenseCalendarView from './ExpenseCalendarView';
@@ -51,14 +58,14 @@ const categoryLabels: Record<string, string> = {
   other: 'Autre',
 };
 
-const categoryEmojis: Record<string, string> = {
-  rent: '🏠',
-  utilities: '💡',
-  groceries: '🛒',
-  cleaning: '🧹',
-  maintenance: '🔧',
-  internet: '📶',
-  other: '📦',
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  rent: Home,
+  utilities: Lightbulb,
+  groceries: ShoppingCart,
+  cleaning: Brush,
+  maintenance: Wrench,
+  internet: Wifi,
+  other: Package,
 };
 
 const allCategories: ExpenseCategory[] = [

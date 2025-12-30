@@ -10,10 +10,17 @@ import {
   Send,
   RefreshCw,
   Shield,
+  Clock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+
+// =============================================================================
+// FEATURE FLAG - Set to true when Twilio is configured
+// =============================================================================
+
+const PHONE_VERIFICATION_ENABLED = false;
 
 // =============================================================================
 // TYPES
@@ -284,6 +291,54 @@ export default function PhoneVerificationSettings({
     setError(null);
     setMaskedPhone('');
   };
+
+  // =========================================================================
+  // COMING SOON STATE
+  // =========================================================================
+
+  if (!PHONE_VERIFICATION_ENABLED) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 text-gray-400">
+            <Phone className="w-5 h-5" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900">Vérification du téléphone</h3>
+            <p className="text-sm text-gray-500">
+              Confirmez votre numéro par SMS
+            </p>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">
+            <Clock className="w-4 h-4" />
+            Prochainement
+          </div>
+        </div>
+
+        {/* Coming Soon Content */}
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Send className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-700 font-medium mb-1">
+                Cette fonctionnalité arrive bientôt
+              </p>
+              <p className="text-xs text-gray-500">
+                Vous pourrez bientôt vérifier votre numéro de téléphone par SMS pour renforcer la sécurité de votre compte et obtenir un badge de confiance supplémentaire.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // ACTIVE STATE (when feature is enabled)
+  // =========================================================================
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6">

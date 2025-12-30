@@ -1,7 +1,7 @@
 /**
  * Expense List By Period - Fun & Colorful Design
  * Groups expenses by time period (today, this week, this month, older)
- * With animated cards, colorful gradients, and emojis
+ * With animated cards, colorful gradients, and Lucide icons
  */
 
 'use client';
@@ -17,6 +17,18 @@ import {
   ChevronRight,
   Sparkles,
   Receipt,
+  Home,
+  Lightbulb,
+  ShoppingCart,
+  Brush,
+  Wrench,
+  Wifi,
+  Package,
+  Star,
+  ClipboardList,
+  Rewind,
+  BookOpen,
+  User,
 } from 'lucide-react';
 import type { ExpenseWithDetails } from '@/types/finances.types';
 
@@ -44,14 +56,14 @@ const categoryLabels: Record<string, string> = {
   other: 'Autre',
 };
 
-const categoryEmojis: Record<string, string> = {
-  rent: '🏠',
-  utilities: '💡',
-  groceries: '🛒',
-  cleaning: '🧹',
-  maintenance: '🔧',
-  internet: '📶',
-  other: '📦',
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  rent: Home,
+  utilities: Lightbulb,
+  groceries: ShoppingCart,
+  cleaning: Brush,
+  maintenance: Wrench,
+  internet: Wifi,
+  other: Package,
 };
 
 const categoryGradients: Record<string, { gradient: string; shadow: string }> = {
@@ -85,13 +97,13 @@ const categoryGradients: Record<string, { gradient: string; shadow: string }> = 
   },
 };
 
-const periodEmojis: Record<string, string> = {
-  today: '🌟',
-  thisWeek: '📅',
-  thisMonth: '🗓️',
-  lastMonth: '⏪',
-  older: '📚',
-  all: '✨',
+const periodIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  today: Star,
+  thisWeek: Calendar,
+  thisMonth: ClipboardList,
+  lastMonth: Rewind,
+  older: BookOpen,
+  all: Sparkles,
 };
 
 // Animation variants
@@ -309,7 +321,7 @@ export default function ExpenseListByPeriod({
       className="space-y-8"
     >
       {groupedExpenses.map((group, groupIndex) => {
-        const periodEmoji = periodEmojis[group.label] || '📋';
+        const PeriodIcon = periodIcons[group.label] || ClipboardList;
 
         return (
           <motion.div
@@ -325,7 +337,7 @@ export default function ExpenseListByPeriod({
                 className="flex items-center justify-between mb-4"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">{periodEmoji}</span>
+                  <PeriodIcon className="w-5 h-5 text-gray-500" />
                   <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider">
                     {group.labelFr}
                   </h4>
@@ -358,7 +370,7 @@ export default function ExpenseListByPeriod({
             >
               {group.expenses.map((expense) => {
                 const catGradient = categoryGradients[expense.category] || categoryGradients.other;
-                const catEmoji = categoryEmojis[expense.category] || '📦';
+                const CatIcon = categoryIcons[expense.category] || Package;
 
                 return (
                   <motion.button
@@ -400,7 +412,7 @@ export default function ExpenseListByPeriod({
                             boxShadow: `0 8px 20px ${catGradient.shadow}`,
                           }}
                         >
-                          <span className="text-2xl">{catEmoji}</span>
+                          <CatIcon className="w-7 h-7 text-white" />
                         </div>
                         {/* OCR indicator badge */}
                         {expense.receipt_image_url && (
@@ -420,7 +432,10 @@ export default function ExpenseListByPeriod({
                       <div className="flex-1 min-w-0">
                         <p className="font-bold text-gray-900 truncate text-base">{expense.title}</p>
                         <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
-                          <span className="truncate">👤 {expense.paid_by_name}</span>
+                          <span className="truncate flex items-center gap-1">
+                            <User className="w-3.5 h-3.5" />
+                            {expense.paid_by_name}
+                          </span>
                           <span className="text-gray-300">•</span>
                           <span className="flex items-center gap-1 flex-shrink-0">
                             <Calendar className="w-3.5 h-3.5" />
@@ -432,21 +447,23 @@ export default function ExpenseListByPeriod({
                         </p>
                         <div className="mt-2 flex items-center gap-2 flex-wrap">
                           <Badge
-                            className="text-xs font-semibold border-none text-white px-2.5 py-1"
+                            className="text-xs font-semibold border-none text-white px-2.5 py-1 flex items-center gap-1"
                             style={{
                               background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
                             }}
                           >
-                            💰 Ta part: €{(expense.your_share || 0).toFixed(2)}
+                            <DollarSign className="w-3 h-3" />
+                            Ta part: €{(expense.your_share || 0).toFixed(2)}
                           </Badge>
                           <Badge
-                            className="text-xs border-none px-2.5 py-1"
+                            className="text-xs border-none px-2.5 py-1 flex items-center gap-1"
                             style={{
                               background: `${catGradient.shadow.replace('0.4', '0.15')}`,
                               color: catGradient.shadow.replace('rgba', 'rgb').replace(', 0.4)', ')'),
                             }}
                           >
-                            {catEmoji} {categoryLabels[expense.category] || expense.category}
+                            <CatIcon className="w-3 h-3" />
+                            {categoryLabels[expense.category] || expense.category}
                           </Badge>
                         </div>
                       </div>

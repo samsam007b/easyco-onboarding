@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import NextLink from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { exportAllIcons, downloadBlob } from '@/lib/utils/icon-export';
 import {
@@ -166,6 +167,7 @@ import {
   Trophy,
   PartyPopper,
   Code,
+  History,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -215,13 +217,32 @@ export default function AdminDesignSystemPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 flex items-center justify-center">
-          <Sparkles className="w-6 h-6 text-white" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Design System</h1>
+            <p className="text-sm text-slate-400">Documentation visuelle des composants IzzIco</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-white">Design System</h1>
-          <p className="text-sm text-slate-400">Documentation visuelle des composants IzzIco</p>
+        {/* Quick Links to Sub-pages */}
+        <div className="flex gap-2">
+          <NextLink
+            href="/admin/dashboard/design-system/design-history"
+            className="flex items-center gap-2 px-3 py-2 bg-amber-600/20 hover:bg-amber-600/30 border border-amber-600/30 rounded-lg text-amber-400 text-sm font-medium transition-colors"
+          >
+            <History className="w-4 h-4" />
+            Historique
+          </NextLink>
+          <NextLink
+            href="/admin/dashboard/design-system/landing-audit"
+            className="flex items-center gap-2 px-3 py-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-600/30 rounded-lg text-purple-400 text-sm font-medium transition-colors"
+          >
+            <Search className="w-4 h-4" />
+            Audit Landing
+          </NextLink>
         </div>
       </div>
 

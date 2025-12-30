@@ -21,6 +21,13 @@ import {
   AlertCircle,
   Check,
   Sparkles,
+  Brush,
+  ShoppingCart,
+  Wrench,
+  ClipboardList,
+  Package,
+  FileText,
+  PenLine,
 } from 'lucide-react';
 
 // V2 Fun Animation variants
@@ -58,11 +65,11 @@ import { taskService } from '@/lib/services/task-service';
 import type { TaskWithDetails, CreateTaskForm, CompleteTaskForm } from '@/types/tasks.types';
 
 const CATEGORY_OPTIONS = [
-  { value: 'cleaning', label: 'Nettoyage', emoji: '🧹', color: 'bg-blue-100 text-blue-700' },
-  { value: 'groceries', label: 'Courses', emoji: '🛒', color: 'bg-green-100 text-green-700' },
-  { value: 'maintenance', label: 'Entretien', emoji: '🔧', color: 'bg-yellow-100 text-yellow-700' },
-  { value: 'admin', label: 'Administratif', emoji: '📋', color: 'bg-purple-100 text-purple-700' },
-  { value: 'other', label: 'Autre', emoji: '📦', color: 'bg-gray-100 text-gray-700' },
+  { value: 'cleaning', label: 'Nettoyage', icon: Brush, color: 'bg-blue-100 text-blue-700' },
+  { value: 'groceries', label: 'Courses', icon: ShoppingCart, color: 'bg-green-100 text-green-700' },
+  { value: 'maintenance', label: 'Entretien', icon: Wrench, color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'admin', label: 'Administratif', icon: ClipboardList, color: 'bg-purple-100 text-purple-700' },
+  { value: 'other', label: 'Autre', icon: Package, color: 'bg-gray-100 text-gray-700' },
 ];
 
 const PRIORITY_OPTIONS = [
@@ -196,7 +203,7 @@ export default function ModernTasksPage() {
       const result = await taskService.rotateTask(taskId);
 
       if (result.success) {
-        alert(`✅ Tâche assignée à ${result.new_assignee_name}`);
+        alert(`Tâche assignée à ${result.new_assignee_name}`);
         await loadData();
       } else {
         alert(`Erreur: ${result.message}`);
@@ -246,9 +253,8 @@ export default function ModernTasksPage() {
               />
             </motion.div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                 Tâches Ménagères
-                <span className="text-2xl">✅</span>
               </h1>
               <p className="text-gray-600 flex items-center gap-2">
                 <RotateCw className="w-4 h-4 text-orange-500" />
@@ -281,10 +287,10 @@ export default function ModernTasksPage() {
         className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
       >
         {[
-          { label: 'Mes tâches', value: myTasks.length, icon: Users, emoji: '👤', gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
-          { label: 'En attente', value: pendingTasks.length, icon: Clock, emoji: '⏰', gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
-          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, emoji: '✨', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', shadow: 'rgba(16, 185, 129, 0.35)' },
-          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, emoji: '⚠️', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.35)' },
+          { label: 'Mes tâches', value: myTasks.length, icon: Users, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
+          { label: 'En attente', value: pendingTasks.length, icon: Clock, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
+          { label: 'Terminées', value: completedTasks.length, icon: CheckCircle2, gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', shadow: 'rgba(16, 185, 129, 0.35)' },
+          { label: 'En retard', value: overdueTasks.length, icon: AlertCircle, gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.35)' },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
@@ -309,8 +315,8 @@ export default function ModernTasksPage() {
                 >
                   <Icon className="w-5 h-5 text-white" />
                 </motion.div>
-                <h3 className="text-sm font-bold text-gray-600 flex items-center gap-1">
-                  {stat.emoji} {stat.label}
+                <h3 className="text-sm font-bold text-gray-600">
+                  {stat.label}
                 </h3>
               </div>
               <p
@@ -340,7 +346,8 @@ export default function ModernTasksPage() {
         }}
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-          📋 Toutes les tâches
+          <ClipboardList className="w-5 h-5" style={{ color: '#ee5736' }} />
+          Toutes les tâches
           <Badge
             className="text-xs border-none text-white font-bold ml-2"
             style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
@@ -378,7 +385,7 @@ export default function ModernTasksPage() {
                 </motion.div>
               </motion.div>
               <p className="font-bold text-gray-900 mb-2 text-lg">Aucune tâche en attente</p>
-              <p className="text-sm text-gray-500">Tout est fait ! 🎉✨</p>
+              <p className="text-sm text-gray-500">Tout est fait !</p>
             </motion.div>
           ) : (
             pendingTasks.map((task) => {
@@ -406,9 +413,9 @@ export default function ModernTasksPage() {
                   <div className="flex items-center gap-4 flex-1">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
-                      className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm', category?.color)}
+                      className={cn('w-12 h-12 rounded-xl flex items-center justify-center shadow-sm', category?.color)}
                     >
-                      {category?.emoji}
+                      {category?.icon && <category.icon className="w-6 h-6" />}
                     </motion.div>
 
                     <div className="flex-1">
@@ -509,7 +516,8 @@ export default function ModernTasksPage() {
         <DialogContent className="max-w-lg rounded-3xl border-2 border-orange-100">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              ➕ Nouvelle tâche
+              <Plus className="w-5 h-5" style={{ color: '#ee5736' }} />
+              Nouvelle tâche
             </DialogTitle>
           </DialogHeader>
 
@@ -544,7 +552,7 @@ export default function ModernTasksPage() {
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat.value} value={cat.value}>
-                      {cat.emoji} {cat.label}
+                      {cat.label}
                     </option>
                   ))}
                 </select>
@@ -605,7 +613,8 @@ export default function ModernTasksPage() {
         <DialogContent className="max-w-lg rounded-3xl border-2 border-emerald-100">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              ✅ Terminer la tâche
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              Terminer la tâche
             </DialogTitle>
           </DialogHeader>
 
@@ -639,7 +648,10 @@ export default function ModernTasksPage() {
               </motion.div>
 
               <div>
-                <Label className="font-semibold text-gray-700">📝 Notes de complétion</Label>
+                <Label className="font-semibold text-gray-700 flex items-center gap-2">
+                  <PenLine className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  Notes de complétion
+                </Label>
                 <Textarea
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
@@ -666,7 +678,7 @@ export default function ModernTasksPage() {
                   }}
                 >
                   <Check className="w-4 h-4 mr-2" />
-                  {isSubmitting ? 'Finalisation...' : 'Terminer 🎉'}
+                  {isSubmitting ? 'Finalisation...' : 'Terminer'}
                 </Button>
               </div>
             </div>

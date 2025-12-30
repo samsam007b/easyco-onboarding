@@ -112,12 +112,15 @@ interface UserProfile {
   verification_status?: string | null
 }
 
-// 🔴 CLOSED BETA: Searcher disabled
-const USER_TYPES = [
-  { value: 'searcher', label: 'Searcher (looking for a place)', disabled: true }, // 🔴 CLOSED BETA
+// Super admin emails that can access searcher features during closed beta
+const SUPER_ADMIN_EMAILS = ['baudonsamuel@gmail.com', 'sam7777jones@gmail.com'];
+
+// 🔴 CLOSED BETA: Searcher disabled for regular users
+const getUserTypes = (isSuperAdmin: boolean) => [
+  { value: 'searcher', label: 'Searcher (looking for a place)', disabled: !isSuperAdmin }, // Available for super admins
   { value: 'owner', label: 'Owner (have properties to rent)', disabled: false },
   { value: 'resident', label: 'Resident (currently renting)', disabled: false },
-]
+];
 
 type TabType = 'profile' | 'settings'
 
@@ -161,6 +164,9 @@ export default function ProfilePage() {
   // Refresh state
   const [isRefreshing, setIsRefreshing] = useState(false)
 
+  // Super admin state
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+
   const supabase = createClient()
 
   // Fetch user data
@@ -188,6 +194,10 @@ export default function ProfilePage() {
       setUserData(data)
       setFullName(data.full_name || '')
       setSelectedUserType(data.user_type)
+
+      // Check if user is super admin (can access searcher during closed beta)
+      const userEmail = user.email?.toLowerCase() || '';
+      setIsSuperAdmin(SUPER_ADMIN_EMAILS.includes(userEmail));
 
       // Fetch user profile data - fetch ALL fields for profile completion calculation
       const { data: profileData } = await supabase
@@ -259,8 +269,8 @@ export default function ProfilePage() {
   const handleConfirmRoleSwitch = async () => {
     if (!userData) return
 
-    // 🔴 CLOSED BETA: Block switch to Searcher
-    if (selectedUserType === 'searcher') {
+    // 🔴 CLOSED BETA: Block switch to Searcher (except for super admins)
+    if (selectedUserType === 'searcher' && !isSuperAdmin) {
       toast.error('La fonction Chercheur arrive très prochainement !', {
         description: 'Consultez /coming-soon/searcher pour plus d\'informations'
       })
@@ -1390,7 +1400,7 @@ export default function ProfilePage() {
                         <Select
                           value={selectedUserType}
                           onChange={(e) => setSelectedUserType(e.target.value)}
-                          options={USER_TYPES}
+                          options={getUserTypes(isSuperAdmin)}
                           className="flex-1"
                           disabled={isChangingUserType}
                         />

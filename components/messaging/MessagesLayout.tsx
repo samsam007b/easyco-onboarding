@@ -58,7 +58,6 @@ const variantStyles = {
     border: 'border-searcher-200',
     text: 'text-searcher-600',
     shadow: 'rgba(74, 144, 226, 0.35)',
-    emoji: '💬',
   },
   owner: {
     gradient: 'from-purple-50/30 via-white to-indigo-50/30',
@@ -67,7 +66,6 @@ const variantStyles = {
     border: 'border-purple-200',
     text: 'text-purple-600',
     shadow: 'rgba(124, 58, 237, 0.35)',
-    emoji: '🏠',
   },
   hub: {
     gradient: 'from-orange-50/30 via-white to-orange-50/30',
@@ -76,7 +74,6 @@ const variantStyles = {
     border: 'border-orange-200',
     text: 'text-orange-600',
     shadow: 'rgba(238, 87, 54, 0.35)',
-    emoji: '💬',
   },
 };
 
@@ -216,13 +213,12 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
         </motion.div>
       </motion.div>
 
-      {/* Title with emoji */}
+      {/* Title */}
       <motion.h3
         variants={itemVariants}
-        className="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
+        className="text-xl font-bold text-gray-900 mb-2"
       >
-        <span>Sélectionnez une conversation</span>
-        <span className="text-lg">{styles.emoji}</span>
+        Sélectionnez une conversation
       </motion.h3>
 
       <motion.p

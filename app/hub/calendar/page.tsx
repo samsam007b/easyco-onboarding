@@ -326,9 +326,8 @@ export default function HubCalendarPage() {
                 />
               </motion.div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                   Calendrier Partagé
-                  <span className="text-2xl">📅</span>
                 </h1>
                 <p className="text-gray-600 flex items-center gap-2">
                   <PartyPopper className="w-4 h-4 text-orange-500" />
@@ -361,9 +360,9 @@ export default function HubCalendarPage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         >
           {[
-            { label: "Aujourd'hui", value: todayEvents.length, emoji: '🎯', gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
-            { label: 'Ce mois', value: events.length, emoji: '📆', gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
-            { label: 'À venir', value: upcomingEvents.length, emoji: '🚀', gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)' },
+            { label: "Aujourd'hui", value: todayEvents.length, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)' },
+            { label: 'Ce mois', value: events.length, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)' },
+            { label: 'À venir', value: upcomingEvents.length, gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)' },
           ].map((stat) => (
             <motion.div
               key={stat.label}
@@ -374,8 +373,8 @@ export default function HubCalendarPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-gray-600 flex items-center gap-1">
-                    {stat.emoji} {stat.label}
+                  <p className="text-sm font-bold text-gray-600">
+                    {stat.label}
                   </p>
                   <p
                     className="text-3xl font-bold mt-1"
@@ -571,7 +570,8 @@ export default function HubCalendarPage() {
           style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
         >
           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            🎉 Événements à venir
+            <PartyPopper className="w-5 h-5" style={{ color: '#ee5736' }} />
+            Événements à venir
             <Badge
               className="text-xs border-none text-white font-bold ml-2"
               style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)' }}
@@ -606,7 +606,7 @@ export default function HubCalendarPage() {
                   </motion.div>
                 </motion.div>
                 <p className="font-bold text-gray-900 mb-2 text-lg">Aucun événement prévu</p>
-                <p className="text-sm text-gray-500">Créez votre premier événement ! 🚀</p>
+                <p className="text-sm text-gray-500">Créez votre premier événement !</p>
               </motion.div>
             ) : (
               events

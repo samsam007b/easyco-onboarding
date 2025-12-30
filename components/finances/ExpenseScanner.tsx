@@ -30,6 +30,12 @@ import {
   Plus,
   Receipt,
   ImagePlus,
+  Bot,
+  FileText,
+  PenLine,
+  PartyPopper,
+  AlertTriangle,
+  Tag,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -61,7 +67,6 @@ const CATEGORY_OPTIONS: Array<{
   label: string;
   icon: any;
   color: string;
-  emoji: string;
   gradient: string;
   shadow: string;
 }> = [
@@ -70,7 +75,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Courses',
     icon: ShoppingCart,
     color: 'from-green-500 to-emerald-600',
-    emoji: '🛒',
     gradient: 'linear-gradient(135deg, #22c55e 0%, #059669 100%)',
     shadow: 'rgba(34, 197, 94, 0.4)',
   },
@@ -79,7 +83,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Factures',
     icon: Zap,
     color: 'from-yellow-500 to-orange-600',
-    emoji: '💡',
     gradient: 'linear-gradient(135deg, #eab308 0%, #ea580c 100%)',
     shadow: 'rgba(234, 179, 8, 0.4)',
   },
@@ -88,7 +91,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Ménage',
     icon: SparklesIcon,
     color: 'from-blue-500 to-cyan-600',
-    emoji: '🧹',
     gradient: 'linear-gradient(135deg, #3b82f6 0%, #0891b2 100%)',
     shadow: 'rgba(59, 130, 246, 0.4)',
   },
@@ -97,7 +99,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Internet',
     icon: Wifi,
     color: 'from-purple-500 to-indigo-600',
-    emoji: '📶',
     gradient: 'linear-gradient(135deg, #a855f7 0%, #4f46e5 100%)',
     shadow: 'rgba(168, 85, 247, 0.4)',
   },
@@ -106,7 +107,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Entretien',
     icon: Wrench,
     color: 'from-gray-500 to-slate-600',
-    emoji: '🔧',
     gradient: 'linear-gradient(135deg, #6b7280 0%, #475569 100%)',
     shadow: 'rgba(107, 114, 128, 0.4)',
   },
@@ -115,7 +115,6 @@ const CATEGORY_OPTIONS: Array<{
     label: 'Autre',
     icon: Package,
     color: 'from-pink-500 to-rose-600',
-    emoji: '📦',
     gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
     shadow: 'rgba(236, 72, 153, 0.4)',
   },
@@ -346,12 +345,12 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
     }
   };
 
-  // Step configuration with emojis
+  // Step configuration with icons
   const steps = [
-    { icon: Scan, label: 'Scanner', emoji: '📸' },
-    { icon: Edit3, label: 'Vérifier', emoji: '✏️' },
-    { icon: Package, label: 'Catégorie', emoji: '🏷️' },
-    { icon: Users, label: 'Répartir', emoji: '👥' },
+    { icon: Scan, label: 'Scanner' },
+    { icon: Edit3, label: 'Vérifier' },
+    { icon: Package, label: 'Catégorie' },
+    { icon: Users, label: 'Répartir' },
   ];
 
   const stepIndex = ['upload', 'scanning', 'review', 'category', 'confirm'].indexOf(currentStep);
@@ -394,11 +393,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                       : undefined
                   }
                 >
-                  {isActive ? (
-                    <span className="text-lg">{step.emoji}</span>
-                  ) : (
-                    <StepIcon className="w-5 h-5" />
-                  )}
+                  <StepIcon className="w-5 h-5" />
                   {isCurrent && (
                     <motion.div
                       className="absolute inset-0 rounded-2xl"
@@ -464,10 +459,11 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Scannez votre ticket
-                <span className="text-xl">📸</span>
+                <Camera className="w-5 h-5 inline-block ml-1" style={{ color: '#ee5736' }} />
               </h2>
-              <p className="text-gray-600">
-                L'IA analyse automatiquement vos reçus ✨
+              <p className="text-gray-600 flex items-center justify-center gap-1">
+                L'IA analyse automatiquement vos reçus
+                <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
 
@@ -510,7 +506,10 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   >
                     <Camera className="w-16 h-16 mb-4 mx-auto drop-shadow-lg" />
                   </motion.div>
-                  <h3 className="text-xl font-bold mb-1">📷 Prendre une photo</h3>
+                  <h3 className="text-xl font-bold mb-1 flex items-center justify-center gap-2">
+                    <Camera className="w-5 h-5" />
+                    Prendre une photo
+                  </h3>
                   <p className="text-sm text-white/80">
                     Ouvrir la caméra
                   </p>
@@ -542,7 +541,10 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   >
                     <ImagePlus className="w-16 h-16 mb-4 mx-auto drop-shadow-lg" />
                   </motion.div>
-                  <h3 className="text-xl font-bold mb-1">🖼️ Choisir un fichier</h3>
+                  <h3 className="text-xl font-bold mb-1 flex items-center justify-center gap-2">
+                    <ImagePlus className="w-5 h-5" />
+                    Choisir un fichier
+                  </h3>
                   <p className="text-sm text-white/80">
                     Depuis la galerie
                   </p>
@@ -627,11 +629,12 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               transition={{ repeat: Infinity, duration: 2 }}
               className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
             >
-              <span>🤖</span>
+              <Sparkles className="w-6 h-6" style={{ color: '#ee5736' }} />
               Analyse IA en cours...
             </motion.h2>
-            <p className="text-gray-600 mb-6">
-              Notre IA lit votre ticket comme un pro ! ✨
+            <p className="text-gray-600 mb-6 flex items-center justify-center gap-1">
+              Notre IA lit votre ticket comme un pro
+              <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
             </p>
 
             {/* Progress bar animation */}
@@ -667,16 +670,17 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               className="flex flex-wrap items-center justify-center gap-2"
             >
               {[
-                { name: 'Google Gemini', emoji: '🤖', color: 'bg-blue-50 text-blue-600 border-blue-200' },
-                { name: 'Llama Vision', emoji: '🦙', color: 'bg-purple-50 text-purple-600 border-purple-200' },
-                { name: 'Tesseract', emoji: '📝', color: 'bg-gray-50 text-gray-600 border-gray-200' },
+                { name: 'Google Gemini', icon: Bot, color: 'bg-blue-50 text-blue-600 border-blue-200' },
+                { name: 'Llama Vision', icon: Sparkles, color: 'bg-purple-50 text-purple-600 border-purple-200' },
+                { name: 'Tesseract', icon: FileText, color: 'bg-gray-50 text-gray-600 border-gray-200' },
               ].map((provider) => (
                 <motion.span
                   key={provider.name}
                   variants={itemVariants}
-                  className={cn('px-3 py-1.5 rounded-full text-xs font-medium border', provider.color)}
+                  className={cn('px-3 py-1.5 rounded-full text-xs font-medium border flex items-center gap-1.5', provider.color)}
                 >
-                  {provider.emoji} {provider.name}
+                  <provider.icon className="w-3.5 h-3.5" />
+                  {provider.name}
                 </motion.span>
               ))}
             </motion.div>
@@ -700,7 +704,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Vérifiez les informations
-                <span className="text-xl">✏️</span>
+                <PenLine className="w-5 h-5" style={{ color: '#ee5736' }} />
               </h2>
               <div className="text-gray-600">
                 {ocrData && ocrData.confidence > 0.5 ? (
@@ -716,25 +720,29 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                       >
                         <Sparkles className="w-5 h-5" />
                       </motion.div>
-                      <span>Données extraites automatiquement ! 🎉</span>
+                      <span className="flex items-center gap-1">
+                        Données extraites automatiquement
+                        <PartyPopper className="w-4 h-4" />
+                      </span>
                     </span>
                     <div className="flex items-center gap-2 text-xs">
                       {aiProvider && (
                         <Badge
                           className={cn(
-                            "text-xs font-semibold border",
+                            "text-xs font-semibold border flex items-center gap-1",
                             aiProvider === 'gemini' && "bg-blue-50 text-blue-700 border-blue-200",
                             aiProvider === 'together' && "bg-purple-50 text-purple-700 border-purple-200",
                             aiProvider === 'tesseract' && "bg-gray-50 text-gray-700 border-gray-200"
                           )}
                         >
-                          {aiProvider === 'gemini' && '🤖 Google Gemini'}
-                          {aiProvider === 'together' && '🦙 Llama Vision'}
-                          {aiProvider === 'tesseract' && '📝 Tesseract'}
+                          {aiProvider === 'gemini' && <><Bot className="w-3 h-3" /> Google Gemini</>}
+                          {aiProvider === 'together' && <><Sparkles className="w-3 h-3" /> Llama Vision</>}
+                          {aiProvider === 'tesseract' && <><FileText className="w-3 h-3" /> Tesseract</>}
                         </Badge>
                       )}
-                      <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold">
-                        ✓ {Math.round((ocrData.confidence || 0) * 100)}% confiance
+                      <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold flex items-center gap-1">
+                        <Check className="w-3 h-3" />
+                        {Math.round((ocrData.confidence || 0) * 100)}% confiance
                       </Badge>
                     </div>
                   </motion.div>
@@ -750,7 +758,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl p-4 flex items-center gap-3"
               >
-                <span className="text-2xl">⚠️</span>
+                <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0" />
                 <p className="text-sm text-yellow-800 font-medium">{scanError}</p>
               </motion.div>
             )}
@@ -765,10 +773,11 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               >
                 <div className="absolute top-3 left-3 z-10">
                   <Badge
-                    className="text-xs font-bold text-white border-none"
+                    className="text-xs font-bold text-white border-none flex items-center gap-1"
                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
                   >
-                    📷 Ticket scanné
+                    <Camera className="w-3 h-3" />
+                    Ticket scanné
                   </Badge>
                 </div>
                 <img
@@ -788,7 +797,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             >
               <motion.div variants={itemVariants}>
                 <Label htmlFor="title" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                  🏷️ Titre *
+                  <Tag className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  Titre *
                 </Label>
                 <Input
                   id="title"
@@ -801,7 +811,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
 
               <motion.div variants={itemVariants}>
                 <Label htmlFor="amount" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                  💰 Montant (€) *
+                  <DollarSign className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  Montant (€) *
                 </Label>
                 <Input
                   id="amount"
@@ -818,7 +829,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               <div className="grid grid-cols-2 gap-4">
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="date" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                    📅 Date
+                    <Edit3 className="w-4 h-4" style={{ color: '#ee5736' }} />
+                    Date
                   </Label>
                   <Input
                     id="date"
@@ -831,7 +843,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
 
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="description" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                    📝 Description
+                    <FileText className="w-4 h-4" style={{ color: '#ee5736' }} />
+                    Description
                   </Label>
                   <Input
                     id="description"
@@ -862,8 +875,9 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   >
                     <ShoppingCart className="w-4 h-4 text-white" />
                   </motion.div>
-                  <h3 className="text-sm font-bold text-gray-800">
-                    🛒 Articles ({lineItems.length})
+                  <h3 className="text-sm font-bold text-gray-800 flex items-center gap-1">
+                    <ShoppingCart className="w-4 h-4" />
+                    Articles ({lineItems.length})
                   </h3>
                 </div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -933,7 +947,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                 </div>
               ) : (
                 <div className="text-center py-6">
-                  <span className="text-3xl mb-2 block">📦</span>
+                  <Package className="w-10 h-10 mx-auto mb-2 text-blue-400" />
                   <p className="text-sm text-blue-600 font-medium">
                     Aucun article détecté
                   </p>
@@ -1006,10 +1020,11 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Choisissez une catégorie
-                <span className="text-xl">🏷️</span>
+                <Tag className="w-5 h-5" style={{ color: '#ee5736' }} />
               </h2>
-              <p className="text-gray-600">
-                Organisez vos dépenses par type ✨
+              <p className="text-gray-600 flex items-center justify-center gap-1">
+                Organisez vos dépenses par type
+                <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
 
@@ -1047,8 +1062,9 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                     <motion.div
                       animate={isSelected ? { y: [0, -5, 0] } : {}}
                       transition={{ repeat: Infinity, duration: 2 }}
+                      className="mb-2"
                     >
-                      <span className="text-4xl block mb-2">{cat.emoji}</span>
+                      <CategoryIcon className={cn("w-10 h-10 mx-auto", isSelected ? "text-white" : "text-gray-600")} />
                     </motion.div>
                     <div className={cn(
                       "text-sm font-bold",
@@ -1127,15 +1143,16 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               <motion.div
                 animate={{ rotate: [0, 5, -5, 0] }}
                 transition={{ repeat: Infinity, duration: 3 }}
-                className="text-5xl mb-3"
+                className="mb-3"
               >
-                🎉
+                <PartyPopper className="w-12 h-12 mx-auto" style={{ color: '#ee5736' }} />
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Récapitulatif
               </h2>
-              <p className="text-gray-600">
-                Tout est prêt ! Vérifiez et partagez 👥
+              <p className="text-gray-600 flex items-center justify-center gap-1">
+                Tout est prêt ! Vérifiez et partagez
+                <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
 
@@ -1160,7 +1177,10 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
                 }}
               >
-                <p className="text-sm text-white/80 font-medium mb-1">💰 Montant total</p>
+                <p className="text-sm text-white/80 font-medium mb-1 flex items-center justify-center gap-1">
+                  <DollarSign className="w-4 h-4" />
+                  Montant total
+                </p>
                 <motion.p
                   animate={{ scale: [1, 1.02, 1] }}
                   transition={{ repeat: Infinity, duration: 2 }}
@@ -1174,14 +1194,16 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-gray-100">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    🏷️ Titre
+                    <Tag className="w-4 h-4" />
+                    Titre
                   </span>
                   <span className="text-base font-bold text-gray-900">{title}</span>
                 </div>
 
                 <div className="flex items-center justify-between py-2 border-b border-gray-100">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    📅 Date
+                    <Edit3 className="w-4 h-4" />
+                    Date
                   </span>
                   <span className="font-semibold text-gray-900">
                     {new Date(date).toLocaleDateString('fr-FR', {
@@ -1194,21 +1216,25 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
 
                 <div className="flex items-center justify-between py-2">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    🏷️ Catégorie
+                    <Tag className="w-4 h-4" />
+                    Catégorie
                   </span>
                   {(() => {
                     const selectedCat = CATEGORY_OPTIONS.find((c) => c.value === category);
-                    return selectedCat ? (
+                    if (!selectedCat) return null;
+                    const SelectedCatIcon = selectedCat.icon;
+                    return (
                       <Badge
-                        className="text-white font-bold border-none px-3 py-1"
+                        className="text-white font-bold border-none px-3 py-1 flex items-center gap-1.5"
                         style={{
                           background: selectedCat.gradient,
                           boxShadow: `0 4px 12px ${selectedCat.shadow}`,
                         }}
                       >
-                        {selectedCat.emoji} {selectedCat.label}
+                        <SelectedCatIcon className="w-4 h-4" />
+                        {selectedCat.label}
                       </Badge>
-                    ) : null;
+                    );
                   })()}
                 </div>
               </div>
@@ -1216,7 +1242,8 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               {description && (
                 <div className="pt-4 border-t border-gray-200">
                   <span className="text-sm font-medium text-gray-500 block mb-2 flex items-center gap-2">
-                    📝 Description
+                    <FileText className="w-4 h-4" />
+                    Description
                   </span>
                   <p className="text-sm text-gray-700 bg-white rounded-xl p-3 border border-gray-100">
                     {description}
@@ -1227,12 +1254,14 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               {/* Receipt indicator */}
               {selectedFile && (
                 <div className="flex items-center gap-2 pt-2">
-                  <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold">
-                    ✓ Ticket joint
+                  <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    Ticket joint
                   </Badge>
                   {ocrData && (
-                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold">
-                      🤖 OCR analysé
+                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold flex items-center gap-1">
+                      <Bot className="w-3 h-3" />
+                      OCR analysé
                     </Badge>
                   )}
                 </div>

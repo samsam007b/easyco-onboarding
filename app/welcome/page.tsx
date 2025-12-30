@@ -11,6 +11,9 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import { InvitationAlert } from '@/components/invitation';
 import { getPendingInvitation, clearPendingInvitation, type PendingInvitationContext } from '@/types/invitation.types';
 
+// Super admin emails that can access searcher features during closed beta
+const SUPER_ADMIN_EMAILS = ['baudonsamuel@gmail.com', 'sam7777jones@gmail.com'];
+
 export default function WelcomePage() {
   const router = useRouter();
   const supabase = createClient();
@@ -20,6 +23,7 @@ export default function WelcomePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [pendingInvitation, setPendingInvitation] = useState<PendingInvitationContext | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   useEffect(() => {
     loadUser();
@@ -62,6 +66,11 @@ export default function WelcomePage() {
         router.push(`/onboarding/${userData.user_type}/basic-info`);
         return;
       }
+
+      // Check if user is super admin (can access searcher during closed beta)
+      const userEmail = authUser.email?.toLowerCase() || '';
+      const isSuperAdminUser = SUPER_ADMIN_EMAILS.includes(userEmail);
+      setIsSuperAdmin(isSuperAdminUser);
 
       // Otherwise, show welcome page for role selection (new users)
       setUser({
@@ -117,8 +126,8 @@ export default function WelcomePage() {
     );
   }
 
-  // CLOSED BETA: Searcher disabled
-  const searcherAvailable = false;
+  // CLOSED BETA: Searcher disabled for regular users, but available for super admins
+  const searcherAvailable = isSuperAdmin;
 
   const roleCards = [
     {

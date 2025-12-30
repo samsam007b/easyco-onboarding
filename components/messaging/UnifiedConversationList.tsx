@@ -128,9 +128,8 @@ export function UnifiedConversationList({
             />
           </motion.div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-gray-900">
               Messages
-              <span className="text-base">💬</span>
             </h2>
             <p className="text-xs text-gray-500 flex items-center gap-2">
               <Badge
@@ -152,7 +151,7 @@ export function UnifiedConversationList({
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="🔍 Rechercher une conversation..."
+            placeholder="Rechercher une conversation..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange-300 bg-white shadow-sm text-sm"
@@ -189,12 +188,12 @@ export function UnifiedConversationList({
                   <Sparkles className="w-5 h-5 text-amber-500" />
                 </motion.div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-amber-800 flex items-center gap-2">
+                  <p className="text-sm font-semibold text-amber-800">
                     {missingInvitations.needsOwner && missingInvitations.needsResidents
-                      ? '✨ Invitez votre propriétaire et vos colocataires'
+                      ? 'Invitez votre propriétaire et vos colocataires'
                       : missingInvitations.needsOwner
-                      ? '🏠 Invitez votre propriétaire'
-                      : '👥 Invitez vos colocataires'}
+                      ? 'Invitez votre propriétaire'
+                      : 'Invitez vos colocataires'}
                   </p>
                   <div className="flex gap-2 mt-3">
                     {missingInvitations.needsOwner && (
@@ -254,8 +253,8 @@ export function UnifiedConversationList({
               >
                 <Pin className="w-4 h-4 text-orange-500" />
               </motion.div>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
-                📌 Épinglées
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                Épinglées
               </span>
             </div>
             <div className="space-y-2">
@@ -290,8 +289,8 @@ export function UnifiedConversationList({
             {filteredPinned.length > 0 && (
               <div className="flex items-center gap-2 px-2 mb-3">
                 <MessageCircle className="w-4 h-4 text-gray-400" />
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
-                  💬 Conversations
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Conversations
                 </span>
               </div>
             )}
@@ -360,7 +359,17 @@ export function UnifiedConversationList({
               variants={itemVariants}
               className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2"
             >
-              {searchQuery ? '🔍 Aucun résultat' : '💬 Aucune conversation'}
+              {searchQuery ? (
+                <>
+                  <Search className="w-5 h-5 text-gray-400" />
+                  Aucun résultat
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="w-5 h-5 text-gray-400" />
+                  Aucune conversation
+                </>
+              )}
             </motion.h3>
             <motion.p
               variants={itemVariants}

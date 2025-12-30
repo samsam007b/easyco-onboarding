@@ -13,11 +13,18 @@ import {
   Globe,
   BadgeCheck,
   Info,
+  Clock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+
+// =============================================================================
+// FEATURE FLAG - Set to true when ITSME is configured
+// =============================================================================
+
+const ITSME_VERIFICATION_ENABLED = false;
 
 // =============================================================================
 // TYPES
@@ -135,6 +142,67 @@ export default function ItsmeVerificationSettings({
       return dateStr;
     }
   };
+
+  // =========================================================================
+  // COMING SOON STATE
+  // =========================================================================
+
+  if (!ITSME_VERIFICATION_ENABLED) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 text-gray-400">
+            <BadgeCheck className="w-5 h-5" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900">Vérification d'identité ITSME</h3>
+            <p className="text-sm text-gray-500">
+              Vérifiez votre identité avec l'app ITSME
+            </p>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">
+            <Clock className="w-4 h-4" />
+            Prochainement
+          </div>
+        </div>
+
+        {/* Coming Soon Content */}
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-5">
+          <div className="flex justify-center mb-4">
+            <ItsmeLogo className="w-28 h-auto opacity-60" />
+          </div>
+          <p className="text-sm text-gray-700 text-center mb-2">
+            <strong>ITSME</strong> est l'identité numérique belge officielle.
+          </p>
+          <p className="text-xs text-gray-500 text-center">
+            Bientôt, vous pourrez vérifier votre identité en quelques secondes avec l'app ITSME
+            pour obtenir un badge de confiance premium sur votre profil.
+          </p>
+        </div>
+
+        {/* Benefits preview */}
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
+            <Shield className="w-4 h-4 text-gray-400" />
+            <span className="text-xs text-gray-500">Sécurisé</span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
+            <User className="w-4 h-4 text-gray-400" />
+            <span className="text-xs text-gray-500">Badge vérifié</span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
+            <Globe className="w-4 h-4 text-gray-400" />
+            <span className="text-xs text-gray-500">Confiance</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // ACTIVE STATE (when ITSME is configured)
+  // =========================================================================
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6">

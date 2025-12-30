@@ -251,9 +251,8 @@ export default function HubMembersPage() {
                 />
               </motion.div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                   Membres de la Coloc
-                  <span className="text-2xl">👥</span>
                 </h1>
                 <p className="text-gray-600 flex items-center gap-2">
                   <Home className="w-4 h-4 text-orange-500" />
@@ -293,9 +292,9 @@ export default function HubMembersPage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         >
           {[
-            { label: 'Total', value: members.length, emoji: '👥', gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)', icon: Users },
-            { label: 'Résidents', value: residentsCount, emoji: '🏠', gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)', icon: Home },
-            { label: 'Propriétaires', value: ownersCount, emoji: '👑', gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)', icon: Crown },
+            { label: 'Total', value: members.length, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)', icon: Users },
+            { label: 'Résidents', value: residentsCount, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)', icon: Home },
+            { label: 'Propriétaires', value: ownersCount, gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)', icon: Crown },
           ].map((stat) => {
             const Icon = stat.icon;
             return (
@@ -308,8 +307,8 @@ export default function HubMembersPage() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-gray-600 flex items-center gap-1">
-                      {stat.emoji} {stat.label}
+                    <p className="text-sm font-bold text-gray-600">
+                      {stat.label}
                     </p>
                     <p
                       className="text-3xl font-bold mt-1"
@@ -387,7 +386,7 @@ export default function HubMembersPage() {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold">{member.name}</h3>
                     <Badge
-                      className="mt-1 border-none font-semibold"
+                      className="mt-1 border-none font-semibold flex items-center gap-1"
                       style={{
                         background: member.role === 'owner'
                           ? 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)'
@@ -395,7 +394,11 @@ export default function HubMembersPage() {
                         color: 'white',
                       }}
                     >
-                      {member.role === 'owner' ? '👑 Propriétaire' : '🏠 Résident'}
+                      {member.role === 'owner' ? (
+                        <><Crown className="w-3 h-3" /> Propriétaire</>
+                      ) : (
+                        <><Home className="w-3 h-3" /> Résident</>
+                      )}
                     </Badge>
                   </div>
                 </div>
@@ -544,7 +547,7 @@ export default function HubMembersPage() {
               Aucun colocataire pour le moment
             </h3>
             <p className="text-gray-500 mb-6">
-              Invitez des personnes à rejoindre votre colocation ! 🏠
+              Invitez des personnes à rejoindre votre colocation !
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
