@@ -625,11 +625,13 @@ const INTENT_PATTERNS: IntentPattern[] = [
   {
     intent: 'help',
     patterns: [
-      /(aide|help|besoin|problème)/i,
-      /(comment|qu'est-ce|c'est quoi)/i,
-      /ne (comprends|sais|trouve) pas/i,
+      /(aide|help|besoin d'aide)/i, // Explicit help requests
+      /(j'ai (besoin|un problème)|peux-tu m'aider)/i, // Need help
+      /ne (comprends|sais|trouve) pas/i, // Confusion
+      /^(qu'est-ce que|c'est quoi) (?!izzico)/i, // "c'est quoi X" (but not "c'est quoi izzico")
+      /comment (faire|puis-je|je peux)/i, // "comment faire X" (action-oriented help)
     ],
-    keywords: ['aide', 'help', 'comment', 'problème', 'question'],
+    keywords: ['aide', 'help', 'problème', 'question', 'besoin'],
     priority: 40,
   },
 
@@ -826,12 +828,15 @@ const INTENT_PATTERNS: IntentPattern[] = [
   {
     intent: 'how_it_works',
     patterns: [
-      /(comment (ça|cela) (marche|fonctionne))/i,
+      /(comment (ça|cela)? ?(marche|fonctionne))/i, // "comment ça fonctionne" or "comment fonctionne"
+      /comment fonctionne (izzico|l'app|la plateforme|le site)/i, // "comment fonctionne izzico"
       /(expliquer?|comprendre).*(fonctionnement|système)/i,
       /c'est quoi (izzico|le concept)/i,
+      /izzico.*(marche|fonctionne)/i, // "izzico fonctionne comment"
+      /(fonctionnalités? (principales?|clés?))/i, // "fonctionnalités principales"
     ],
-    keywords: ['comment', 'marche', 'fonctionne', 'concept', 'principe', 'expliquer'],
-    priority: 44,
+    keywords: ['comment', 'marche', 'fonctionne', 'concept', 'principe', 'expliquer', 'fonctionnalité'],
+    priority: 48, // Higher than help (40) to take precedence
   },
 
   // Trust & Safety

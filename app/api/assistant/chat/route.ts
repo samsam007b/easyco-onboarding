@@ -1,13 +1,14 @@
 /**
  * HYBRID AI ASSISTANT CHAT API
  *
- * Architecture en 3 couches pour minimiser les coûts :
+ * Architecture en 4 couches pour minimiser les coûts :
  *
  * Layer 1: FAQ System (LOCAL) - ~70% des queries - $0
- * Layer 2: Groq Llama 8B - ~28% des queries - ~$0 (free tier)
- * Layer 3: OpenAI GPT-4o-mini - ~2% des queries - $$ (fallback)
+ * Layer 2: Groq Llama 8B - ~25% des queries - ~$0 (free tier)
+ * Layer 3: Gemini Flash 2.0 - ~4% des queries - $ (cheap)
+ * Layer 4: OpenAI GPT-4o-mini - ~1% des queries - $$ (last resort)
  *
- * Estimation: < $5/mois pour 5000 conversations
+ * Estimation: < $3/mois pour 5000 conversations
  */
 
 import { openai } from '@ai-sdk/openai';
@@ -684,15 +685,52 @@ export async function POST(req: Request) {
     }
 
     // =====================================================
-    // Layer 3: OpenAI Fallback (via Vercel AI SDK)
+    // Layer 3: Gemini Response
     // =====================================================
+    if (result.provider === 'gemini' && result.success) {
+      console.log(`[Assistant API] Gemini response: ${result.content.substring(0, 50)}...`);
+      return createFAQStreamResponse(result.content, {
+        provider: 'gemini',
+        tokensUsed: result.metadata.tokensUsed,
+        costEstimate: result.metadata.costEstimate,
+        latencyMs: result.metadata.latencyMs,
+      });
+    }
+
+    // =====================================================
+    // Layer 4: OpenAI Fallback (via Vercel AI SDK)
+    // =====================================================
+
+    // Only use OpenAI if the service explicitly requested it
+    if (result.provider !== 'openai' || result.content !== '__USE_OPENAI__') {
+      // If we get here with an unexpected provider, log it and return the content as-is
+      console.warn(`[Assistant API] Unexpected provider state: ${result.provider}, success: ${result.success}, content length: ${result.content?.length || 0}`);
+
+      // If we have content from the service, return it
+      if (result.success && result.content && result.content !== '__USE_OPENAI__') {
+        console.log(`[Assistant API] Returning content from ${result.provider}`);
+        return createFAQStreamResponse(result.content, {
+          provider: result.provider,
+          latencyMs: result.metadata.latencyMs,
+        });
+      }
+    }
+
     console.log('[Assistant API] Using OpenAI fallback');
 
     // Check if OpenAI API key is configured
     if (!process.env.OPENAI_API_KEY) {
       console.error('[Assistant API] OPENAI_API_KEY not configured');
-      return createErrorStreamResponse(
-        "L'assistant est temporairement indisponible. Veuillez réessayer plus tard."
+
+      // Return a helpful fallback message instead of an error
+      return createFAQStreamResponse(
+        "Je suis l'assistant IzzIco en mode FAQ.\n\n" +
+        "Je peux vous aider avec les questions courantes sur :\n" +
+        "• Les **tarifs** et abonnements\n" +
+        "• La **navigation** sur la plateforme\n" +
+        "• Les **fonctionnalités** principales\n\n" +
+        "Pour des questions plus complexes, n'hésitez pas à contacter notre support.",
+        { provider: 'faq', latencyMs: Date.now() - startTime }
       );
     }
 
