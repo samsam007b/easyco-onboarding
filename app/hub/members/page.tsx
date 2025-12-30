@@ -237,33 +237,21 @@ export default function HubMembersPage() {
             <div className="flex items-center gap-4">
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
-                className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
                   boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
                 }}
               >
-                <Users className="w-7 h-7 text-white relative z-10" />
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  animate={{ opacity: [0, 0.3, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                />
+                <Users className="w-6 h-6 text-white" />
               </motion.div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Membres de la Coloc
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Membres
                 </h1>
-                <p className="text-gray-600 flex items-center gap-2">
-                  <Home className="w-4 h-4 text-orange-500" />
-                  {currentProperty?.title || 'Votre résidence'}
-                  <Badge
-                    className="text-xs border-none text-white font-bold ml-1"
-                    style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
-                  >
-                    {members.length}
-                  </Badge>
-                  colocataire{members.length !== 1 ? 's' : ''}
+                <p className="text-sm text-gray-500">
+                  {currentProperty?.title || 'Votre résidence'} • {members.length} membre{members.length !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>
@@ -284,58 +272,107 @@ export default function HubMembersPage() {
           </div>
         </motion.div>
 
-        {/* Stats Cards - V2 Fun */}
+        {/* Stats Cards - V2 Fun Colorful */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+          className="grid grid-cols-3 gap-4 mb-8"
         >
-          {[
-            { label: 'Total', value: members.length, gradient: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)', shadow: 'rgba(217, 87, 79, 0.35)', icon: Users },
-            { label: 'Résidents', value: residentsCount, gradient: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)', shadow: 'rgba(255, 91, 33, 0.35)', icon: Home },
-            { label: 'Propriétaires', value: ownersCount, gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)', shadow: 'rgba(124, 58, 237, 0.35)', icon: Crown },
-          ].map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -4 }}
-                className="bg-white rounded-2xl shadow-lg p-5 cursor-pointer border-2 border-transparent hover:border-orange-100"
-                style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+          {/* Total Card - Orange Gradient */}
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
+              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-orange-700">Total</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-gray-600">
-                      {stat.label}
-                    </p>
-                    <p
-                      className="text-3xl font-bold mt-1"
-                      style={{
-                        background: stat.gradient,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
-                      }}
-                    >
-                      {stat.value}
-                    </p>
-                  </div>
-                  <motion.div
-                    whileHover={{ rotate: 10 }}
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shadow-md"
-                    style={{
-                      background: stat.gradient,
-                      boxShadow: `0 4px 12px ${stat.shadow}`,
-                    }}
-                  >
-                    <Icon className="w-5 h-5 text-white" />
-                  </motion.div>
-                </div>
-              </motion.div>
-            );
-          })}
+                <Users className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{members.length}</p>
+            <p className="text-xs text-orange-600 font-medium mt-1">
+              membre{members.length !== 1 ? 's' : ''} actif{members.length !== 1 ? 's' : ''}
+            </p>
+          </motion.div>
+
+          {/* Residents Card - Purple Gradient */}
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-purple-700">Résidents</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+              >
+                <Home className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{residentsCount}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <div className="flex-1 h-1.5 bg-purple-100 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${members.length > 0 ? (residentsCount / members.length) * 100 : 0}%` }}
+                  transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
+                  className="h-full rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #8b5cf6, #a78bfa)' }}
+                />
+              </div>
+              <span className="text-xs text-purple-600 font-bold">
+                {members.length > 0 ? Math.round((residentsCount / members.length) * 100) : 0}%
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Owners Card - Amber Gradient */}
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+              boxShadow: '0 8px 24px rgba(245, 158, 11, 0.15)',
+            }}
+          >
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-amber-700">Propriétaires</span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
+              >
+                <Crown className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{ownersCount}</p>
+            <p className="text-xs text-amber-600 font-medium mt-1">
+              {ownersCount > 0 ? 'gestion active' : 'aucun propriétaire'}
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Members Grid - V2 Fun */}
