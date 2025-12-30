@@ -8,9 +8,11 @@ Last updated: 2025-12-30T00:00:00Z
 
 ## Active Agents
 
-| Agent ID | Task | Started | Claimed Files |
-|----------|------|---------|---------------|
-| *none* | - | - | - |
+> **TTL Rule**: Claims expire after 4 hours. Stale claims (no activity for 2h) can be overridden.
+
+| Agent ID | Task | Started | Last Active | Claimed Files |
+|----------|------|---------|-------------|---------------|
+| *none* | - | - | - | - |
 
 ---
 

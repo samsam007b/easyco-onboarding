@@ -179,6 +179,39 @@ When you complete a task that affects others:
 - CI/CD configurations
 - Other agents' claimed files
 
+## ⏰ Claim TTL (Time-To-Live)
+
+Claims have expiration rules to prevent abandoned locks:
+
+| Status | Threshold | Action |
+|--------|-----------|--------|
+| **Active** | < 2 hours | Normal - claim is valid |
+| **Stale** | 2-4 hours | Warning - can be overridden if urgent |
+| **Expired** | > 4 hours | Auto-invalidated - claim can be taken |
+
+### Keeping Claims Fresh
+
+Update your `Last Active` timestamp regularly:
+```markdown
+| agent-xxxx-0000 | Task | 2025-01-15T10:00:00 | 2025-01-15T12:30:00 | files... |
+```
+
+### Overriding Stale Claims
+
+If you need a file claimed by a stale agent (2h+ inactive):
+
+1. **Check their last activity** - are they really gone?
+2. **Add a note** in the Agent Notes section
+3. **Update the claim** to your agent ID
+4. **Document the override** for when they return
+
+### Running Cleanup
+
+To check for stale claims, run:
+```bash
+.claude/hooks/team-cleanup.sh
+```
+
 ## 🔄 Session Lifecycle
 
 ### Starting a Session
@@ -186,9 +219,10 @@ When you complete a task that affects others:
 ```
 1. Read .claude/team-registry.md
 2. Generate your Agent ID
-3. Add your entry to "Active Agents"
-4. List initial files you expect to modify
-5. Begin work
+3. Add your entry to "Active Agents" with current timestamp
+4. Set "Last Active" to current time
+5. List initial files you expect to modify
+6. Begin work
 ```
 
 ### During Work
@@ -196,8 +230,9 @@ When you complete a task that affects others:
 ```
 1. Before editing a file → Check registry
 2. After completing a file → Update your claimed list if needed
-3. If blocked by another agent → Add note to registry
-4. Regular status updates → Keep your entry current
+3. Update "Last Active" every 30-60 minutes
+4. If blocked by another agent → Add note to registry
+5. Regular status updates → Keep your entry current
 ```
 
 ### Ending a Session
