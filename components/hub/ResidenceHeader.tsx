@@ -314,13 +314,13 @@ export default function ResidenceHeader() {
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                   >
-                    <Sparkles className="w-5 h-5" style={{ color: '#ffffff' }} />
+                    <Sparkles className="w-5 h-5 [color:white!important]" />
                   </motion.div>
-                  <span className="font-bold" style={{ color: '#ffffff' }}>
+                  <span className="font-bold [color:white!important]">
                     Complétez votre résidence
                   </span>
                 </div>
-                <span className="font-black text-xl" style={{ color: '#ffffff' }}>
+                <span className="font-black text-xl [color:white!important]">
                   {completion.percentage}%
                 </span>
               </div>
@@ -361,16 +361,15 @@ export default function ResidenceHeader() {
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleStepClick(step)}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2"
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2 [color:white!important]"
                     >
-                      <span className="font-semibold text-sm" style={{ color: '#ffffff' }}>{step}</span>
-                      <ArrowRight className="w-3.5 h-3.5" style={{ color: '#ffffff' }} />
+                      <span className="font-semibold text-sm [color:white!important]">{step}</span>
+                      <ArrowRight className="w-3.5 h-3.5 [color:white!important]" />
                     </motion.button>
                   ) : (
                     <span
                       key={index}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm"
-                      style={{ color: '#ffffff' }}
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm [color:white!important]"
                     >
                       {step}
                     </span>
