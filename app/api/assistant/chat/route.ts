@@ -342,31 +342,43 @@ function generateMessageId(): string {
 }
 
 /**
- * Create a manual SSE stream with the exact format @ai-sdk/react expects
- * Format: Server-Sent Events with JSON chunks
+ * Create a manual SSE stream with the exact format @ai-sdk/react v3 expects
+ * AI SDK v6 UIMessageStream Protocol:
+ * - text-start: begins a text part (requires id)
+ * - text-delta: streams text content (requires id and delta)
+ * - text-end: ends a text part (requires id)
+ * - start: begins a message (requires messageId)
+ * - finish: ends the stream (requires finishReason)
  */
 function createManualSSEResponse(
   content: string | AsyncIterable<string>,
   metadata: { provider?: string; cost?: string } = {}
 ): Response {
   const messageId = generateMessageId();
+  const textPartId = `text_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
     async start(controller) {
-      // Send start chunk
+      // Send message start
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'start', messageId })}\n\n`));
 
-      // Send text content
+      // Send text-start to begin text part
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text-start', id: textPartId })}\n\n`));
+
+      // Send text content as text-delta chunks
       if (typeof content === 'string') {
-        // Single text chunk for static content
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text', text: content })}\n\n`));
+        // Single text-delta chunk for static content
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text-delta', id: textPartId, delta: content })}\n\n`));
       } else {
-        // Stream text chunks for async content
+        // Stream text-delta chunks for async content
         for await (const chunk of content) {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text', text: chunk })}\n\n`));
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text-delta', id: textPartId, delta: chunk })}\n\n`));
         }
       }
+
+      // Send text-end to close text part
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text-end', id: textPartId })}\n\n`));
 
       // Send finish chunk
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'finish', finishReason: 'stop' })}\n\n`));
