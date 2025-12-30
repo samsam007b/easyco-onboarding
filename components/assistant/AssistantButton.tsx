@@ -127,18 +127,11 @@ export default function AssistantButton() {
     messages,
     sendMessage,
     status,
-    error,
   } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/assistant/chat',
     }),
-    onError: (err) => {
-      console.error('[Assistant] useChat error:', err);
-    },
     onFinish: (result) => {
-      console.log('[Assistant] onFinish called:', result);
-      console.log('[Assistant] onFinish message:', JSON.stringify(result.message, null, 2));
-      console.log('[Assistant] onFinish messages count:', result.messages?.length);
       setHasNewMessage(true);
       // Save assistant message - extract text from the message
       const msg = result.message;
@@ -169,13 +162,6 @@ export default function AssistantButton() {
   });
 
   const isLoading = status === 'submitted' || status === 'streaming';
-
-  // Debug logging
-  useEffect(() => {
-    console.log('[Assistant] messages changed:', messages);
-    console.log('[Assistant] status:', status);
-    if (error) console.error('[Assistant] error state:', error);
-  }, [messages, status, error]);
 
   // Execute pending navigation action
   const executeAction = () => {
@@ -224,29 +210,17 @@ export default function AssistantButton() {
     // Prevent double-click while loading
     if (isLoading) return;
 
-    console.log('[Assistant] handleSuggestedAction called with:', prompt);
     // Save user message (fire-and-forget, non-blocking)
     saveMessage(prompt, 'user');
-    try {
-      await sendMessage({ text: prompt });
-      console.log('[Assistant] sendMessage completed');
-    } catch (err) {
-      console.error('[Assistant] sendMessage error:', err);
-    }
+    await sendMessage({ text: prompt });
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && !isLoading) {
-      console.log('[Assistant] handleFormSubmit called with:', input);
       // Save user message (fire-and-forget, non-blocking)
       saveMessage(input.trim(), 'user');
-      try {
-        await sendMessage({ text: input });
-        console.log('[Assistant] sendMessage completed from form');
-      } catch (err) {
-        console.error('[Assistant] sendMessage form error:', err);
-      }
+      await sendMessage({ text: input });
       setInput('');
     }
   };
@@ -291,23 +265,17 @@ export default function AssistantButton() {
   // Helper function to extract text from message
   // Handles both AI SDK v6 format (content string) and legacy format (parts array)
   const getMessageText = (message: typeof messages[0]): string => {
-    console.log('[Assistant] getMessageText input:', JSON.stringify(message, null, 2));
-
     // AI SDK v6: content is a string directly
     if ('content' in message && typeof message.content === 'string') {
-      console.log('[Assistant] Using content string:', message.content);
       return message.content;
     }
     // Legacy format: parts array
     if (message.parts && Array.isArray(message.parts)) {
-      const text = message.parts
+      return message.parts
         .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
         .map(part => part.text)
         .join('');
-      console.log('[Assistant] Using parts array, extracted:', text);
-      return text;
     }
-    console.log('[Assistant] No text found in message');
     return '';
   };
 
