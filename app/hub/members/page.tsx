@@ -438,16 +438,14 @@ export default function HubMembersPage() {
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-bold text-gray-900 truncate">{member.name}</h3>
                       <Badge
-                        className="mt-1 text-xs font-semibold border-none text-white flex items-center gap-1 w-fit"
+                        className="mt-1 text-xs font-semibold border-none w-fit"
+                        icon={isOwner ? <Crown className="w-3 h-3" /> : <Home className="w-3 h-3" />}
                         style={{
                           background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                          color: 'white',
                         }}
                       >
-                        {isOwner ? (
-                          <><Crown className="w-3 h-3" /> Propriétaire</>
-                        ) : (
-                          <><Home className="w-3 h-3" /> Résident</>
-                        )}
+                        {isOwner ? 'Propriétaire' : 'Résident'}
                       </Badge>
                     </div>
                   </div>
