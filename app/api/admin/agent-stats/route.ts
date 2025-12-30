@@ -115,7 +115,7 @@ export async function GET(request: Request) {
 
       const { data: dailyStats } = await supabase
         .from('agent_daily_stats')
-        .select('*')
+        .select('stat_date, total_requests, faq_requests, groq_requests, openai_requests, total_tokens, total_cost, owner_requests, resident_requests, searcher_requests')
         .gte('stat_date', thirtyDaysAgo.toISOString().split('T')[0])
         .order('stat_date', { ascending: false });
 
@@ -288,7 +288,7 @@ export async function GET(request: Request) {
     if (section === 'all' || section === 'topics') {
       const { data: topics } = await supabase
         .from('agent_topic_clusters')
-        .select('*')
+        .select('id, cluster_name, keywords, message_count, sample_messages, created_at, updated_at')
         .order('message_count', { ascending: false })
         .limit(10);
 

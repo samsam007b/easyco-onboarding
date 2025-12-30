@@ -137,6 +137,8 @@ export default function AssistantButton() {
     },
     onFinish: (result) => {
       console.log('[Assistant] onFinish called:', result);
+      console.log('[Assistant] onFinish message:', JSON.stringify(result.message, null, 2));
+      console.log('[Assistant] onFinish messages count:', result.messages?.length);
       setHasNewMessage(true);
       // Save assistant message - extract text from the message
       const msg = result.message;

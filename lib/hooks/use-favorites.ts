@@ -27,7 +27,7 @@ export function useFavorites(userId?: string) {
     try {
       const { data, error } = await supabase
         .from('favorites')
-        .select('*')
+        .select('id, user_id, property_id, created_at')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 

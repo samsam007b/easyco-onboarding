@@ -71,6 +71,29 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       return null;
     }
 
+    // Optimistic update - add to local state immediately
+    const optimisticId = `temp-${Date.now()}`;
+    const optimisticFavorite: FavoriteWithDetails = {
+      favorite_id: optimisticId,
+      property_id: params.property_id,
+      user_id: user.id,
+      priority: params.priority || 3,
+      notes: params.notes || null,
+      created_at: new Date().toISOString(),
+      // Property details will be loaded on next full refresh
+      title: '',
+      price: 0,
+      city: '',
+      neighborhood: null,
+      bedrooms: 0,
+      bathrooms: 0,
+      images: [],
+      status: 'available',
+    };
+
+    setFavorites(prev => [optimisticFavorite, ...prev]);
+    setFavoritesCount(prev => prev + 1);
+
     try {
       const { data, error } = await supabase
         .from('user_favorites')
@@ -79,15 +102,25 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           ...params,
           priority: params.priority || 3,
         })
-        .select()
+        .select('id, user_id, property_id, priority, notes, created_at')
         .single();
 
       if (error) throw error;
 
-      await loadFavorites();
+      // Replace optimistic entry with real data (will get full details on next load)
+      setFavorites(prev => prev.map(f =>
+        f.favorite_id === optimisticId
+          ? { ...f, favorite_id: data.id }
+          : f
+      ));
+
       toast.success('Propriété ajoutée aux favoris');
       return data;
     } catch (error: any) {
+      // Rollback optimistic update on error
+      setFavorites(prev => prev.filter(f => f.favorite_id !== optimisticId));
+      setFavoritesCount(prev => prev - 1);
+
       // Check for unique constraint violation
       if (error?.code === '23505') {
         toast.info('Cette propriété est déjà dans vos favoris');
@@ -105,6 +138,16 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   ): Promise<boolean> => {
     if (!user) return false;
 
+    // Store original state for rollback
+    const originalFavorites = [...favorites];
+
+    // Optimistic update
+    setFavorites(prev => prev.map(f =>
+      f.favorite_id === favoriteId
+        ? { ...f, ...params }
+        : f
+    ));
+
     try {
       const { error } = await supabase
         .from('user_favorites')
@@ -114,10 +157,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      await loadFavorites();
       toast.success('Favori mis à jour');
       return true;
     } catch (error) {
+      // Rollback on error
+      setFavorites(originalFavorites);
       console.error('Error updating favorite:', error);
       toast.error('Erreur lors de la mise à jour');
       return false;
@@ -126,6 +170,14 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const removeFavorite = async (favoriteId: string): Promise<boolean> => {
     if (!user) return false;
+
+    // Store original state for rollback
+    const originalFavorites = [...favorites];
+    const originalCount = favoritesCount;
+
+    // Optimistic update - remove immediately
+    setFavorites(prev => prev.filter(f => f.favorite_id !== favoriteId));
+    setFavoritesCount(prev => prev - 1);
 
     try {
       const { error } = await supabase
@@ -136,10 +188,12 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      await loadFavorites();
       toast.success('Propriété retirée des favoris');
       return true;
     } catch (error) {
+      // Rollback on error
+      setFavorites(originalFavorites);
+      setFavoritesCount(originalCount);
       console.error('Error removing favorite:', error);
       toast.error('Erreur lors de la suppression');
       return false;
@@ -169,32 +223,43 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     if (!user) return;
 
     try {
+      // Step 1: Load all comparisons (1 query)
       const { data, error } = await supabase
         .from('property_comparisons')
-        .select('*')
+        .select('id, name, property_ids, created_at, updated_at, is_active')
         .eq('user_id', user.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      if (!data || data.length === 0) {
+        setComparisons([]);
+        return;
+      }
 
-      // Load property details for each comparison
-      const comparisonsWithProperties = await Promise.all(
-        (data || []).map(async (comparison) => {
-          if (comparison.property_ids && comparison.property_ids.length > 0) {
-            const { data: properties } = await supabase
-              .from('properties')
-              .select('*')
-              .in('id', comparison.property_ids);
+      // Step 2: Collect ALL unique property IDs across all comparisons
+      const allPropertyIds = [...new Set(
+        data.flatMap(comparison => comparison.property_ids || [])
+      )];
 
-            return {
-              ...comparison,
-              properties: properties || [],
-            };
-          }
-          return { ...comparison, properties: [] };
-        })
-      );
+      // Step 3: Single batch query for all properties (1 query instead of N)
+      let propertiesMap = new Map<string, any>();
+      if (allPropertyIds.length > 0) {
+        const { data: properties } = await supabase
+          .from('properties')
+          .select('id, title, price, city, neighborhood, bedrooms, bathrooms, images, status')
+          .in('id', allPropertyIds);
+
+        propertiesMap = new Map((properties || []).map(p => [p.id, p]));
+      }
+
+      // Step 4: Enrich comparisons with property data (no additional queries)
+      const comparisonsWithProperties = data.map(comparison => ({
+        ...comparison,
+        properties: (comparison.property_ids || [])
+          .map((id: string) => propertiesMap.get(id))
+          .filter(Boolean),
+      }));
 
       setComparisons(comparisonsWithProperties);
     } catch (error) {

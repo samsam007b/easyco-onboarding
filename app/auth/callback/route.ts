@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     // Get or create user record in our custom users table
     let { data: userData, error: userError } = await supabase
       .from('users')
-      .select('*')
+      .select('id, email, user_type, full_name, avatar_url, email_verified, onboarding_completed')
       .eq('id', user.id)
       .single()
 
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
       // Try fetching again
       const { data: retryData, error: retryError } = await supabase
         .from('users')
-        .select('*')
+        .select('id, email, user_type, full_name, avatar_url, email_verified, onboarding_completed')
         .eq('id', user.id)
         .single()
 
@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
         // Refresh userData
         const { data: refreshedData } = await supabase
           .from('users')
-          .select('*')
+          .select('id, email, user_type, full_name, avatar_url, email_verified, onboarding_completed')
           .eq('id', user.id)
           .single()
 

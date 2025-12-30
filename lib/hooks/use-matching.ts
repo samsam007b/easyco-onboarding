@@ -49,7 +49,7 @@ export function useMatching(userId?: string) {
     try {
       const { data: profile, error } = await supabase
         .from('user_profiles')
-        .select('*')
+        .select('user_id, min_budget, max_budget, preferred_cities, preferred_neighborhoods, cleanliness_level, noise_tolerance, guest_frequency, smoking, pets, min_bedrooms, min_bathrooms, furnished_preference, wants_balcony, wants_parking, desired_move_in_date, desired_lease_duration_months, age_range_min, age_range_max')
         .eq('user_id', userId)
         .single();
 
@@ -95,7 +95,7 @@ export function useMatching(userId?: string) {
       try {
         let query = supabase
           .from('properties')
-          .select('*')
+          .select('id, title, price, city, neighborhood, address, bedrooms, bathrooms, furnished, balcony, parking, available_from, min_lease_duration_months, max_lease_duration_months, smoking_allowed, pets_allowed, images, description, status, created_at')
           .eq('status', 'active')
           .order('created_at', { ascending: false });
 
