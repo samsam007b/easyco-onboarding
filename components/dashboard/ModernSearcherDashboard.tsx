@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
@@ -97,7 +97,7 @@ function getRelativeTime(dateString: string | null): string {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 }
 
-export default function ModernSearcherDashboard() {
+const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
@@ -995,4 +995,6 @@ export default function ModernSearcherDashboard() {
       />
     </>
   );
-}
+});
+
+export default ModernSearcherDashboard;

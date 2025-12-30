@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -74,7 +74,7 @@ interface UnifiedConversationListProps {
   currentUserId?: string;
 }
 
-export function UnifiedConversationList({
+export const UnifiedConversationList = memo(function UnifiedConversationList({
   state,
   selectedConversationId,
   onSelectConversation,
@@ -384,7 +384,7 @@ export function UnifiedConversationList({
       </div>
     </div>
   );
-}
+});
 
 // Individual conversation item component
 interface ConversationItemProps {
@@ -621,5 +621,3 @@ function ConversationItem({
     </button>
   );
 }
-
-export default UnifiedConversationList;

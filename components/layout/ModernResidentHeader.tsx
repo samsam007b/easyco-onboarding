@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -58,7 +58,7 @@ const flagComponents = {
   de: GermanyFlag,
 };
 
-export default function ModernResidentHeader({
+const ModernResidentHeader = memo(function ModernResidentHeader({
   profile,
   stats = {}
 }: ModernResidentHeaderProps) {
@@ -704,4 +704,6 @@ export default function ModernResidentHeader({
 
     </header>
   );
-}
+});
+
+export default ModernResidentHeader;

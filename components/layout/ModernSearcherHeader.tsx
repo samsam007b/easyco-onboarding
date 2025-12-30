@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -48,7 +48,7 @@ interface ModernSearcherHeaderProps {
   };
 }
 
-export default function ModernSearcherHeader({
+const ModernSearcherHeader = memo(function ModernSearcherHeader({
   profile,
   stats = {}
 }: ModernSearcherHeaderProps) {
@@ -593,4 +593,6 @@ export default function ModernSearcherHeader({
       </div>
     </header>
   );
-}
+});
+
+export default ModernSearcherHeader;

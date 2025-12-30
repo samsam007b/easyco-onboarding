@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Camera,
@@ -165,7 +165,7 @@ interface LineItem {
   total_price: number;
 }
 
-export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerProps) {
+const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerProps) {
   const [currentStep, setCurrentStep] = useState<ScanStep>('upload');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -1300,4 +1300,6 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
       </AnimatePresence>
     </div>
   );
-}
+});
+
+export default ExpenseScanner;

@@ -109,8 +109,87 @@ const getPerformanceStats = unstable_cache(
 
 const getWebVitalsData = unstable_cache(
   async (): Promise<WebVitalsData> => {
-    // Default values based on typical good performance
-    // These will be populated by real data once web-vitals reporting is enhanced
+    const supabase = getAdminClient();
+
+    // Try to get real data from the get_web_vitals_summary function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: summaryData, error } = await (supabase as any)
+      .rpc('get_web_vitals_summary', { days_back: 7 });
+
+    // If we have real data, use it
+    if (!error && summaryData && summaryData.length > 0) {
+      interface WebVitalsSummaryRow {
+        metric_name: string;
+        current_p75: number | null;
+        rating: string | null;
+      }
+      const rows = summaryData as WebVitalsSummaryRow[];
+
+      const findMetric = (name: string) => {
+        const row = rows.find(r => r.metric_name === name);
+        if (row && row.current_p75 !== null) {
+          return {
+            value: Number(row.current_p75),
+            rating: (row.rating || 'good') as 'good' | 'needs-improvement' | 'poor',
+          };
+        }
+        return null;
+      };
+
+      // Use real data if available, otherwise fall back to defaults
+      return {
+        cls: findMetric('CLS') || { value: 0.05, rating: getRating('CLS', 0.05) },
+        inp: findMetric('INP') || { value: 150, rating: getRating('INP', 150) },
+        fcp: findMetric('FCP') || { value: 1200, rating: getRating('FCP', 1200) },
+        lcp: findMetric('LCP') || { value: 2000, rating: getRating('LCP', 2000) },
+        ttfb: findMetric('TTFB') || { value: 600, rating: getRating('TTFB', 600) },
+      };
+    }
+
+    // Fallback to recent raw metrics if RPC doesn't exist or returns empty
+    const { data: rawMetrics } = await supabase
+      .from('web_vitals_metrics')
+      .select('metric_name, metric_value, rating')
+      .gte('recorded_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+      .order('recorded_at', { ascending: false })
+      .limit(500);
+
+    if (rawMetrics && rawMetrics.length > 0) {
+      interface RawMetricRow {
+        metric_name: string;
+        metric_value: number;
+        rating: string;
+      }
+      const rows = rawMetrics as RawMetricRow[];
+
+      // Calculate p75 for each metric
+      const getP75 = (metricName: string) => {
+        const values = rows
+          .filter(r => r.metric_name === metricName)
+          .map(r => Number(r.metric_value))
+          .sort((a, b) => a - b);
+
+        if (values.length === 0) return null;
+
+        const p75Index = Math.floor(values.length * 0.75);
+        const p75Value = values[p75Index] || values[values.length - 1];
+
+        return {
+          value: p75Value,
+          rating: getRating(metricName, p75Value),
+        };
+      };
+
+      return {
+        cls: getP75('CLS') || { value: 0.05, rating: getRating('CLS', 0.05) },
+        inp: getP75('INP') || { value: 150, rating: getRating('INP', 150) },
+        fcp: getP75('FCP') || { value: 1200, rating: getRating('FCP', 1200) },
+        lcp: getP75('LCP') || { value: 2000, rating: getRating('LCP', 2000) },
+        ttfb: getP75('TTFB') || { value: 600, rating: getRating('TTFB', 600) },
+      };
+    }
+
+    // Default values if no data available
     return {
       cls: { value: 0.05, rating: getRating('CLS', 0.05) },
       inp: { value: 150, rating: getRating('INP', 150) },

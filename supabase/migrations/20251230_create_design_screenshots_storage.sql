@@ -32,6 +32,7 @@ CREATE POLICY "Public access to design screenshots"
   USING (bucket_id = 'design-screenshots');
 
 -- Policy: Only admins can upload design screenshots
+-- IMPORTANT: Uses public.is_admin() SECURITY DEFINER function to avoid RLS recursion
 DROP POLICY IF EXISTS "Admins can upload design screenshots" ON storage.objects;
 CREATE POLICY "Admins can upload design screenshots"
   ON storage.objects
@@ -39,10 +40,7 @@ CREATE POLICY "Admins can upload design screenshots"
   WITH CHECK (
     bucket_id = 'design-screenshots'
     AND auth.role() = 'authenticated'
-    AND EXISTS (
-      SELECT 1 FROM public.admins
-      WHERE email = auth.jwt()->>'email'
-    )
+    AND public.is_admin(auth.jwt()->>'email')
   );
 
 -- Policy: Only admins can update design screenshots
@@ -53,18 +51,12 @@ CREATE POLICY "Admins can update design screenshots"
   USING (
     bucket_id = 'design-screenshots'
     AND auth.role() = 'authenticated'
-    AND EXISTS (
-      SELECT 1 FROM public.admins
-      WHERE email = auth.jwt()->>'email'
-    )
+    AND public.is_admin(auth.jwt()->>'email')
   )
   WITH CHECK (
     bucket_id = 'design-screenshots'
     AND auth.role() = 'authenticated'
-    AND EXISTS (
-      SELECT 1 FROM public.admins
-      WHERE email = auth.jwt()->>'email'
-    )
+    AND public.is_admin(auth.jwt()->>'email')
   );
 
 -- Policy: Only admins can delete design screenshots
@@ -75,10 +67,7 @@ CREATE POLICY "Admins can delete design screenshots"
   USING (
     bucket_id = 'design-screenshots'
     AND auth.role() = 'authenticated'
-    AND EXISTS (
-      SELECT 1 FROM public.admins
-      WHERE email = auth.jwt()->>'email'
-    )
+    AND public.is_admin(auth.jwt()->>'email')
   );
 
 -- ============================================

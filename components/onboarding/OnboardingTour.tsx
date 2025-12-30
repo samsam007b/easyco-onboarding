@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ const GRADIENTS = {
   },
 };
 
-export default function OnboardingTour({
+const OnboardingTour = memo(function OnboardingTour({
   isActive,
   currentStep,
   currentStepData,
@@ -599,4 +599,6 @@ export default function OnboardingTour({
       )}
     </AnimatePresence>
   );
-}
+});
+
+export default OnboardingTour;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -52,7 +52,7 @@ interface ModernOwnerHeaderProps {
   };
 }
 
-export default function ModernOwnerHeader({
+const ModernOwnerHeader = memo(function ModernOwnerHeader({
   profile,
   stats = {}
 }: ModernOwnerHeaderProps) {
@@ -690,4 +690,6 @@ export default function ModernOwnerHeader({
       )}
     </header>
   );
-}
+});
+
+export default ModernOwnerHeader;
