@@ -76,19 +76,18 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     const optimisticFavorite: FavoriteWithDetails = {
       favorite_id: optimisticId,
       property_id: params.property_id,
-      user_id: user.id,
       priority: params.priority || 3,
-      notes: params.notes || null,
+      user_notes: params.user_notes || undefined,
       created_at: new Date().toISOString(),
+      visited: false,
       // Property details will be loaded on next full refresh
-      title: '',
-      price: 0,
-      city: '',
-      neighborhood: null,
+      property_title: '',
+      monthly_rent: 0,
+      property_city: undefined,
+      property_neighborhood: undefined,
       bedrooms: 0,
-      bathrooms: 0,
-      images: [],
-      status: 'available',
+      main_image: undefined,
+      available_from: undefined,
     };
 
     setFavorites(prev => [optimisticFavorite, ...prev]);
@@ -102,7 +101,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           ...params,
           priority: params.priority || 3,
         })
-        .select('id, user_id, property_id, priority, notes, created_at')
+        .select('id, user_id, property_id, priority, user_notes, is_active, visited, created_at, updated_at')
         .single();
 
       if (error) throw error;
@@ -115,7 +114,18 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       ));
 
       toast.success('Propriété ajoutée aux favoris');
-      return data;
+      // Type assertion needed because Supabase infers from insert, not select
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        property_id: data.property_id,
+        user_notes: data.user_notes,
+        priority: data.priority,
+        is_active: data.is_active,
+        visited: data.visited,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      } as UserFavorite;
     } catch (error: any) {
       // Rollback optimistic update on error
       setFavorites(prev => prev.filter(f => f.favorite_id !== optimisticId));
@@ -226,7 +236,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       // Step 1: Load all comparisons (1 query)
       const { data, error } = await supabase
         .from('property_comparisons')
-        .select('id, name, property_ids, created_at, updated_at, is_active')
+        .select('id, user_id, name, property_ids, created_at, updated_at, is_active')
         .eq('user_id', user.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -254,7 +264,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       }
 
       // Step 4: Enrich comparisons with property data (no additional queries)
-      const comparisonsWithProperties = data.map(comparison => ({
+      const comparisonsWithProperties: PropertyComparison[] = data.map(comparison => ({
         ...comparison,
         properties: (comparison.property_ids || [])
           .map((id: string) => propertiesMap.get(id))
