@@ -36,6 +36,11 @@ const AssistantButton = dynamic(() => import('@/components/assistant/AssistantBu
   ssr: false,
 })
 
+const AssistantActionProvider = dynamic(
+  () => import('@/lib/assistant').then(mod => ({ default: mod.AssistantActionProvider })),
+  { ssr: false }
+)
+
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
@@ -154,7 +159,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Toaster position="top-right" />
             <CookieConsentBanner />
             <PWAInstallPrompt />
-            <AssistantButton />
+            <AssistantActionProvider>
+              <AssistantButton />
+            </AssistantActionProvider>
             <DevTools />
           </ClientProviders>
         </ApiErrorTrackingProvider>

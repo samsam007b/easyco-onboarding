@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -31,6 +31,12 @@ import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { cn } from '@/lib/utils';
 import { useAssistantConversation } from '@/hooks/useAssistantConversation';
+import {
+  parseActionsFromResponse,
+  useOptionalAssistantActions,
+  type AssistantAction,
+  type ActionResult,
+} from '@/lib/assistant';
 
 interface SuggestedAction {
   icon: React.ElementType;
@@ -96,7 +102,8 @@ interface ToolResult {
 type FeedbackMode = 'none' | 'rating' | 'suggestion' | 'thanks';
 type SuggestionCategory = 'ui_ux' | 'new_feature' | 'improvement' | 'integration' | 'performance' | 'other';
 
-export default function AssistantButton() {
+// OPTIMIZED: Wrapped with React.memo to prevent unnecessary re-renders
+const AssistantButton = memo(function AssistantButton() {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -105,6 +112,11 @@ export default function AssistantButton() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Action system (optional - works even if provider not present)
+  const actionContext = useOptionalAssistantActions();
+  const [pendingAssistantActions, setPendingAssistantActions] = useState<AssistantAction[]>([]);
+  const [executedActions, setExecutedActions] = useState<ActionResult[]>([]);
 
   // Feedback state
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('none');
@@ -131,19 +143,49 @@ export default function AssistantButton() {
     transport: new DefaultChatTransport({
       api: '/api/assistant/chat',
     }),
-    onFinish: (result) => {
+    onFinish: async (result) => {
       setHasNewMessage(true);
       // Save assistant message - extract text from the message
       const msg = result.message;
+      let rawText = '';
       if ('parts' in msg && Array.isArray(msg.parts)) {
-        const text = msg.parts
+        rawText = msg.parts
           .filter((part: any): part is { type: 'text'; text: string } => part.type === 'text')
           .map((part: { type: 'text'; text: string }) => part.text)
           .join('');
-        saveMessage(text, 'assistant');
       } else if ('content' in msg && typeof msg.content === 'string') {
-        saveMessage(msg.content, 'assistant');
+        rawText = msg.content;
       }
+
+      // Parse actions from response
+      const { cleanedText, actions } = parseActionsFromResponse(rawText);
+
+      // Save cleaned text (without action markers)
+      saveMessage(cleanedText, 'assistant');
+
+      // Execute actions if action context is available
+      if (actions.length > 0 && actionContext) {
+        console.log('[AssistantButton] Parsed actions:', actions);
+        setPendingAssistantActions(actions);
+
+        // Execute actions with slight delay for UX
+        setTimeout(async () => {
+          try {
+            const results = await actionContext.executeActions(actions);
+            setExecutedActions(results);
+            console.log('[AssistantButton] Action results:', results);
+
+            // Clear pending after execution
+            setTimeout(() => {
+              setPendingAssistantActions([]);
+              setExecutedActions([]);
+            }, 3000);
+          } catch (error) {
+            console.error('[AssistantButton] Action execution error:', error);
+          }
+        }, 500);
+      }
+
       // Show feedback prompt after a few messages
       if (messages.length >= 3 && !feedbackSubmitted) {
         setTimeout(() => setShowFeedbackPrompt(true), 2000);
@@ -264,19 +306,28 @@ export default function AssistantButton() {
 
   // Helper function to extract text from message
   // Handles both AI SDK v6 format (content string) and legacy format (parts array)
+  // Also removes action markers from displayed text
   const getMessageText = (message: typeof messages[0]): string => {
+    let rawText = '';
     // AI SDK v6: content is a string directly
     if ('content' in message && typeof message.content === 'string') {
-      return message.content;
+      rawText = message.content;
     }
     // Legacy format: parts array
-    if (message.parts && Array.isArray(message.parts)) {
-      return message.parts
+    else if (message.parts && Array.isArray(message.parts)) {
+      rawText = message.parts
         .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
         .map(part => part.text)
         .join('');
     }
-    return '';
+
+    // For assistant messages, parse out action markers
+    if (message.role === 'assistant' && rawText) {
+      const { cleanedText } = parseActionsFromResponse(rawText);
+      return cleanedText;
+    }
+
+    return rawText;
   };
 
   return (
@@ -489,7 +540,45 @@ export default function AssistantButton() {
                 </div>
               )}
 
-              {/* Pending Action Card */}
+              {/* Action Execution Feedback */}
+              {(pendingAssistantActions.length > 0 || executedActions.length > 0) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-3 border border-indigo-200"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm font-medium text-indigo-900">
+                      {executedActions.length > 0 ? 'Actions effectuées' : 'Actions en cours...'}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    {pendingAssistantActions.map((action, index) => {
+                      const result = executedActions[index];
+                      return (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 text-xs text-indigo-700"
+                        >
+                          {result ? (
+                            result.success ? (
+                              <CheckCircle2 className="w-3 h-3 text-green-600" />
+                            ) : (
+                              <X className="w-3 h-3 text-red-500" />
+                            )
+                          ) : (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          )}
+                          <span>{result?.message || `${action.type}...`}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pending Action Card (legacy tool-based actions) */}
               {pendingAction && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -749,4 +838,6 @@ export default function AssistantButton() {
       </AnimatePresence>
     </>
   );
-}
+});
+
+export default AssistantButton;

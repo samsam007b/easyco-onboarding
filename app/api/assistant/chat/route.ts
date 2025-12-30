@@ -548,6 +548,7 @@ export async function POST(req: Request) {
     );
 
     console.log(`[Assistant API] Provider: ${result.provider}, Latency: ${result.metadata.latencyMs}ms`);
+    console.log(`[Assistant API] Response preview: "${result.content?.substring(0, 100)}..."`);
 
     // =====================================================
     // Layer 1: FAQ Response

@@ -1914,3 +1914,119 @@ span:not(.pac-matched) {
 .pac-item .pac-icon-marker {
   display: none !important;
 }
+
+/* ============================================
+   AI Assistant Highlight System
+   Used when the assistant highlights UI elements
+   to guide users through the interface
+   ============================================ */
+
+/* Main highlight animation */
+@keyframes assistantHighlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+@keyframes assistantHighlightGlow {
+  0%, 100% {
+    outline-offset: 0px;
+  }
+  50% {
+    outline-offset: 4px;
+  }
+}
+
+.assistant-highlight {
+  position: relative;
+  z-index: 50;
+  outline: 3px solid rgba(139, 92, 246, 0.8) !important;
+  outline-offset: 2px;
+  border-radius: 8px;
+  animation:
+    assistantHighlightPulse 2s ease-in-out infinite,
+    assistantHighlightGlow 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+/* Subtle background overlay for highlighted elements */
+.assistant-highlight::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+  border-radius: 12px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Dark mode adjustments */
+.dark .assistant-highlight {
+  outline-color: rgba(167, 139, 250, 0.9);
+}
+
+.dark .assistant-highlight::before {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+}
+
+/* Tooltip that appears above highlighted elements */
+.assistant-highlight-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow:
+    0 4px 12px rgba(124, 58, 237, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 51;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.assistant-highlight-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #6366f1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Section highlight (for scrollToSection with highlight) */
+.assistant-section-highlight {
+  position: relative;
+  animation: assistantSectionFlash 0.5s ease-out;
+}
+
+@keyframes assistantSectionFlash {
+  0% {
+    background-color: rgba(139, 92, 246, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}

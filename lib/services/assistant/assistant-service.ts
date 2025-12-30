@@ -160,24 +160,39 @@ export function analyzeComplexity(
     reasons.push('long_message');
   }
 
-  // Multiple questions
+  // Multiple questions (by question marks)
   const questionMarks = (message.match(/\?/g) || []).length;
   if (questionMarks > 2) {
     score += 0.2;
     reasons.push('multiple_questions');
   }
 
-  // Technical terms
-  const technicalTerms = /api|bug|erreur|problème technique|code|debug|crash/i;
+  // Multi-topic detection (using connectors like "et", "aussi", "également")
+  // Pattern: "combien ça coûte et comment marche le matching et aussi le parrainage"
+  const multiTopicConnectors = message.match(/\b(et aussi|et comment|et quoi|et où|et quand|et pourquoi|également|en plus)\b/gi) || [];
+  if (multiTopicConnectors.length >= 2) {
+    score += 0.25;
+    reasons.push('multi_topic');
+  }
+
+  // Advice/tips requests - needs AI for quality response
+  const adviceTerms = /\b(conseil|astuce|recommand|tip|peux-tu|pouvez-vous|comment (bien|mieux|optimiser|améliorer|réussir|rédiger))\b/i;
+  if (adviceTerms.test(message)) {
+    score += 0.2;
+    reasons.push('advice_request');
+  }
+
+  // Technical terms - weight increased to ensure AI handles technical issues
+  const technicalTerms = /api|bug|erreur|problème technique|code|debug|crash|ne (fonctionne|marche) (pas|plus)|essayé plusieurs fois/i;
   if (technicalTerms.test(message)) {
-    score += 0.15;
+    score += 0.25;
     reasons.push('technical_content');
   }
 
-  // Comparison requests
-  const comparisonTerms = /comparer|différence|versus|vs|plutôt|mieux/i;
+  // Comparison requests - weight increased for nuanced comparisons
+  const comparisonTerms = /comparer|différence|versus|vs|plutôt|mieux|avantages?.*(inconvénients?)?|pour et contre/i;
   if (comparisonTerms.test(message)) {
-    score += 0.15;
+    score += 0.25;
     reasons.push('comparison_request');
   }
 
@@ -192,6 +207,29 @@ export function analyzeComplexity(
   if (escalationTerms.test(message)) {
     score += 0.3;
     reasons.push('escalation_request');
+  }
+
+  // ACTION REQUESTS - User wants to PERFORM an action, not get information
+  // These MUST go to AI to emit proper actions, never to FAQ
+  const actionRequestTerms = /\b(amène|emmène|am[eè]ne|va\s+(?:à|vers|sur)|navigue|redirige|ouvre|affiche|montre|configure|lance|démarre|active|désactive)\s*(moi|nous)?\s*(à|vers|sur|la|le|les|mes|une?)?/i;
+  const actionMatch = actionRequestTerms.test(message);
+  console.log(`[Complexity] Action request check: "${message.substring(0, 60)}..." => match=${actionMatch}`);
+
+  if (actionMatch) {
+    score += 0.3; // Force to AI tier
+    reasons.push('action_request');
+    console.log('[Complexity] ✅ ACTION REQUEST DETECTED - score now:', score, '- bypassing FAQ');
+  }
+
+  // Also detect imperative navigation commands
+  const imperativeNavigation = /\b(page|section)\s+(des?\s+)?(finances|messages|paramètres|profil|recherche|propriétés)/i;
+  if (imperativeNavigation.test(message) && !reasons.includes('action_request')) {
+    // Only add if combined with action-like verbs in the same message
+    if (/\b(am[eè]ne|emmène|va|montre|ouvre)\b/i.test(message)) {
+      score += 0.3;
+      reasons.push('action_request');
+      console.log('[Complexity] ✅ NAVIGATION REQUEST DETECTED - score now:', score);
+    }
   }
 
   // Determine recommended provider
@@ -292,8 +330,9 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 
 ## Ton rôle
 - Aider les utilisateurs à comprendre et utiliser l'application
-- Répondre de manière concise et utile
-- Proposer des actions concrètes quand c'est pertinent
+- Guider vers les bonnes pages et fonctionnalités
+- Faciliter la découverte de l'application
+- **IMPORTANT: Tu peux effectuer des actions dans l'app (navigation, filtres, modals)**
 
 ## À propos d'IzzIco
 - Plateforme connectant propriétaires et chercheurs de colocation
@@ -310,20 +349,81 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 - Trial gratuit : 3 mois (owners), 6 mois (residents)
 - Parrainage : jusqu'à 24 mois gratuits
 
-## Navigation principale
+## ⚡ ACTIONS DISPONIBLES
+
+Tu peux effectuer des actions dans l'app en utilisant ce format EXACT :
+[ACTION:type:{"key":"value"}]
+
+### navigate - Naviguer vers une page
+[ACTION:navigate:{"path":"/hub/finances","description":"Page des finances"}]
+
+Pages disponibles:
 - /hub : Dashboard résident
 - /dashboard/owner : Dashboard propriétaire
+- /hub/finances : Gestion des finances
 - /properties : Mes propriétés
-- /search : Rechercher
+- /properties/new : Ajouter une propriété
+- /search : Rechercher une colocation
 - /messages : Messagerie
+- /profile : Mon profil
 - /settings : Paramètres
+- /settings/notifications : Notifications
+- /settings/subscription : Abonnement
+- /referral : Programme de parrainage
+- /help : Centre d'aide
+
+### setFilters - Configurer les filtres de recherche
+[ACTION:setFilters:{"filters":{"city":"Bruxelles","maxBudget":600}}]
+
+Filtres disponibles: city, minBudget, maxBudget, roomType (private/shared/studio)
+
+### openModal - Ouvrir un formulaire (vide)
+[ACTION:openModal:{"modal":"addExpense"}]
+
+Modals disponibles:
+- addExpense : Ajouter une dépense (navigue vers /hub/finances)
+- addProperty : Ajouter une propriété
+- referralShare : Partager son code de parrainage
+- feedback : Donner un feedback
+
+### highlightElement - Mettre en évidence un élément
+[ACTION:highlightElement:{"selector":"add-expense-button","message":"Cliquez ici pour ajouter une dépense"}]
+
+### scrollToSection - Défiler vers une section
+[ACTION:scrollToSection:{"section":"expenses-list","highlight":true}]
+
+### startTour - Lancer un tour guidé
+[ACTION:startTour:{"tour":"finances"}]
+
+Tours: onboarding, dashboard, search, finances, messaging, properties, settings, matching, referral
+
+### copyToClipboard - Copier du texte
+[ACTION:copyToClipboard:{"text":"CODE123","label":"Code de parrainage"}]
+
+## Règles d'utilisation des actions
+
+1. **Toujours expliquer** ce que tu fais AVANT l'action
+2. **Après une action**, explique comment l'utilisateur peut le faire lui-même la prochaine fois
+3. **Une action par message** en général, sauf si elles sont liées
+4. **L'action doit être sur sa propre ligne**
+5. **Ne crée, modifie ou supprime JAMAIS de données** (pas d'ajout de dépense, pas d'envoi de message)
+
+## Exemple de réponse avec action
+
+"Je vais vous amener à la page des finances pour que vous puissiez ajouter votre dépense.
+
+[ACTION:navigate:{"path":"/hub/finances","description":"Page des finances"}]
+
+Une fois sur la page, vous verrez le bouton **+ Ajouter** en haut à droite. C'est là que vous pourrez saisir vos dépenses à l'avenir ! 💡"
 
 ## Règles de réponse
 1. Réponds TOUJOURS en français
-2. Sois concis mais complet
+2. Sois concis mais utile
 3. Utilise des emojis avec modération
 4. Si tu ne sais pas, dis-le honnêtement
-5. Propose des actions concrètes (navigation, filtres)`;
+5. **Utilise les actions quand l'utilisateur veut faire quelque chose**
+6. Après chaque action, montre comment faire soi-même`;
+
 
 // =====================================================
 // FAQ-ONLY FALLBACK RESPONSES
@@ -642,22 +742,50 @@ export async function processAssistantMessage(
   // Use provided context or default
   const context = options.userContext || DEFAULT_USER_CONTEXT;
 
-  console.log(`[Assistant] Processing message: "${userMessage.substring(0, 50)}..."`);
+  console.log(`\n[Assistant] ======== NEW REQUEST ========`);
+  console.log(`[Assistant] Message: "${userMessage}"`);
   if (context.firstName) {
     console.log(`[Assistant] User context: ${context.firstName} (${context.userType})`);
   }
 
+  // Edge case: empty or very short messages - handle gracefully
+  const trimmedMessage = userMessage.trim();
+  if (trimmedMessage.length < 2) {
+    console.log(`[Assistant] Edge case: message too short (${trimmedMessage.length} chars)`);
+    return {
+      success: true,
+      content: "👋 Bonjour ! Comment puis-je vous aider ? N'hésitez pas à me poser une question sur IzzIco.",
+      provider: 'faq',
+      metadata: {
+        latencyMs: Date.now() - startTime,
+        costEstimate: 0,
+        complexity: 0,
+      },
+    };
+  }
+
   // Analyze complexity with user context
   const complexity = analyzeComplexity(userMessage, conversationHistory.length, context);
-  console.log(`[Assistant] Complexity: ${(complexity.score * 100).toFixed(0)}%, Provider: ${complexity.recommendedProvider}`);
+  console.log(`[Assistant] Complexity: ${(complexity.score * 100).toFixed(0)}%, Reasons: [${complexity.reasons.join(', ')}], Provider: ${complexity.recommendedProvider}`);
 
   // Force provider if specified
   const targetProvider = options.forceProvider || complexity.recommendedProvider;
 
   // =====================================================
   // Layer 1: FAQ (LOCAL - $0) - PERSONALIZED
+  // Only use FAQ if:
+  // 1. Complexity analysis recommends it (score < 0.2 AND FAQ has a match)
+  // 2. No escalation request is detected
+  // 3. No forced provider that's different
   // =====================================================
-  if (targetProvider === 'faq' || (!options.forceProvider && conversationHistory.length === 0)) {
+  const shouldTryFAQ = targetProvider === 'faq' &&
+                       !complexity.reasons.includes('escalation_request') &&
+                       complexity.score < 0.2;
+
+  console.log(`[Assistant] FAQ decision: targetProvider=${targetProvider}, score=${complexity.score.toFixed(2)}, shouldTryFAQ=${shouldTryFAQ}`);
+  console.log(`[Assistant] Reasons: [${complexity.reasons.join(', ')}]`);
+
+  if (shouldTryFAQ) {
     // Pass user context for personalized responses
     const faqResponse = tryFAQAnswer(userMessage, ASSISTANT_CONFIG.faq.minConfidence, context);
 
@@ -712,7 +840,7 @@ export async function processAssistantMessage(
   // =====================================================
   if ((targetProvider === 'groq' || !options.forceProvider) && isGroqAvailable()) {
     try {
-      console.log(`[Assistant] Using Groq (${usageTracker.groq.count}/${ASSISTANT_CONFIG.primary.dailyLimit})`);
+      console.log(`[Assistant] ✅ FAQ BYPASSED - Using Groq AI (${usageTracker.groq.count}/${ASSISTANT_CONFIG.primary.dailyLimit})`);
 
       const messages: ChatMessage[] = [
         ...conversationHistory,
@@ -720,6 +848,14 @@ export async function processAssistantMessage(
       ];
 
       const groqResult = await callGroq(messages);
+      console.log(`[Assistant] Groq response (first 200 chars): "${groqResult.content.substring(0, 200)}..."`);
+
+      // Check if response contains actions
+      if (groqResult.content.includes('[ACTION:')) {
+        console.log(`[Assistant] ✅ ACTION DETECTED in Groq response!`);
+      } else {
+        console.log(`[Assistant] ⚠️ No [ACTION:] found in Groq response`);
+      }
 
       // Track usage
       usageTracker.groq.count++;
@@ -770,7 +906,7 @@ export async function processAssistantMessage(
   // =====================================================
   if ((targetProvider === 'gemini' || !options.forceProvider) && isGeminiConfigured()) {
     try {
-      console.log(`[Assistant] Using Gemini Flash (${usageTracker.gemini.count} calls today)`);
+      console.log(`[Assistant] ✅ Using Gemini Flash (${usageTracker.gemini.count} calls today)`);
 
       const messages: ChatMessage[] = [
         ...conversationHistory,
@@ -778,6 +914,14 @@ export async function processAssistantMessage(
       ];
 
       const geminiResult = await callGemini(messages);
+      console.log(`[Assistant] Gemini response (first 200 chars): "${geminiResult.content.substring(0, 200)}..."`);
+
+      // Check if response contains actions
+      if (geminiResult.content.includes('[ACTION:')) {
+        console.log(`[Assistant] ✅ ACTION DETECTED in Gemini response!`);
+      } else {
+        console.log(`[Assistant] ⚠️ No [ACTION:] found in Gemini response`);
+      }
 
       // Track usage
       usageTracker.gemini.count++;
