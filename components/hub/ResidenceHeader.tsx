@@ -8,12 +8,13 @@ import { logger } from '@/lib/utils/logger';
 import { Home, Users, MapPin, Sparkles, Plus, UserPlus, FileText, Vote, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { InvitePopup } from '@/components/referral';
+import { useLanguage } from '@/lib/i18n/use-language';
 
-// Premium Muted Design Colors - Warm Slate/Taupe palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #5a524b 0%, #6d645c 50%, #80766e 100%)';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #f9f7f5 0%, #f0ece8 100%)';
-const ACCENT_SHADOW = 'rgba(90, 82, 75, 0.20)';
-const RESIDENT_PRIMARY = '#6d645c';
+// Premium Soft Coral/Terracotta palette - warm but not aggressive
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #b87d6a 0%, #c9907d 50%, #daa390 100%)';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fdf8f6 0%, #f8efe9 100%)';
+const ACCENT_SHADOW = 'rgba(184, 125, 106, 0.20)';
+const RESIDENT_PRIMARY = '#c9907d';
 
 interface PropertyInfo {
   id: string;
@@ -35,6 +36,9 @@ interface CompletionData {
 export default function ResidenceHeader() {
   const router = useRouter();
   const supabase = createClient();
+  const { getSection } = useLanguage();
+  const hub = getSection('hub')?.residenceHeader;
+
   const [propertyInfo, setPropertyInfo] = useState<PropertyInfo | null>(null);
   const [completion, setCompletion] = useState<CompletionData>({ percentage: 0, nextSteps: [] });
   const [isLoading, setIsLoading] = useState(true);
@@ -164,14 +168,14 @@ export default function ResidenceHeader() {
     if (memberCount >= 2) {
       percentage += 20;
     } else {
-      nextSteps.push('Inviter des colocataires');
+      nextSteps.push(hub?.stepInviteRoommates || 'Inviter des colocataires');
     }
 
     // Check if photo added (15%)
     if (hasPhoto) {
       percentage += 15;
     } else {
-      nextSteps.push('Ajouter une photo de la résidence');
+      nextSteps.push(hub?.stepAddPhoto || 'Ajouter une photo de la résidence');
     }
 
     // Check expenses (30% total)
@@ -185,10 +189,12 @@ export default function ResidenceHeader() {
       if (expenseCount >= 3) {
         percentage += 15; // 3+ expenses
       } else {
-        nextSteps.push(`Ajouter ${3 - expenseCount} dépenses de plus`);
+        const remaining = 3 - expenseCount;
+        const addMoreText = hub?.stepAddMoreExpenses || 'Ajouter {count} dépenses de plus';
+        nextSteps.push(addMoreText.replace('{count}', remaining.toString()));
       }
     } else {
-      nextSteps.push('Créer votre première dépense');
+      nextSteps.push(hub?.stepCreateFirstExpense || 'Créer votre première dépense');
     }
 
     // Check tasks (15%)
@@ -200,7 +206,7 @@ export default function ResidenceHeader() {
     if (taskCount && taskCount >= 1) {
       percentage += 15;
     } else {
-      nextSteps.push('Configurer des tâches');
+      nextSteps.push(hub?.stepSetupTasks || 'Configurer des tâches');
     }
 
     setCompletion({ percentage, nextSteps });
@@ -224,10 +230,10 @@ export default function ResidenceHeader() {
 
   // Quick action buttons config
   const quickActions = [
-    { icon: Plus, label: 'Dépense', onClick: () => router.push('/hub/finances') },
-    { icon: FileText, label: 'Documents', onClick: () => router.push('/hub/documents') },
-    { icon: Vote, label: 'Règles', onClick: () => router.push('/hub/rules') },
-    { icon: UserPlus, label: 'Inviter', onClick: () => setShowInviteModal(true) },
+    { icon: Plus, label: hub?.actionExpense || 'Dépense', onClick: () => router.push('/hub/finances') },
+    { icon: FileText, label: hub?.actionDocuments || 'Documents', onClick: () => router.push('/hub/documents') },
+    { icon: Vote, label: hub?.actionRules || 'Règles', onClick: () => router.push('/hub/rules') },
+    { icon: UserPlus, label: hub?.actionInvite || 'Inviter', onClick: () => setShowInviteModal(true) },
   ];
 
   return (
@@ -272,7 +278,7 @@ export default function ResidenceHeader() {
                   <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1.5 rounded-full">
                     <Users className="w-4 h-4 text-white" />
                     <span className="text-white font-medium text-sm">
-                      {propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocataires' : 'colocataire'}
+                      {propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? (hub?.roommates || 'colocataires') : (hub?.roommate || 'colocataire')}
                     </span>
                   </div>
                 </div>
@@ -317,7 +323,7 @@ export default function ResidenceHeader() {
                     <Sparkles className="w-5 h-5 text-white" />
                   </motion.div>
                   <span className="font-bold text-white">
-                    Complétez votre résidence
+                    {hub?.completeResidence || 'Complétez votre résidence'}
                   </span>
                 </div>
                 <span className="font-black text-xl text-white">
@@ -395,7 +401,7 @@ export default function ResidenceHeader() {
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
                 <span className="text-white font-bold text-lg">
-                  🎉 Félicitations ! Votre résidence est complète !
+                  🎉 {hub?.congratulations || 'Félicitations ! Votre résidence est complète !'}
                 </span>
               </div>
             </motion.div>
