@@ -84,8 +84,9 @@ async function buildUserContext(): Promise<UserContext> {
     const isResident = profile.user_type === 'resident';
 
     // Build all parallel queries
+    // Using PromiseLike as PostgrestBuilder is thenable but not a full Promise
     type QueryResult = { data?: unknown; count?: number | null };
-    const queries: Promise<QueryResult>[] = [
+    const queries: PromiseLike<QueryResult>[] = [
       // Always fetch (indices 0-3)
       supabase.from('subscriptions').select('status, trial_end_date, current_period_end').eq('user_id', user.id).single(),
       supabase.from('referrals').select('id').eq('referrer_id', user.id),
