@@ -1,12 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, MapPin, Briefcase } from 'lucide-react';
+import { Sparkles, MapPin, Briefcase, Star, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
+// V2 Fun Design Colors
 const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
 const RESIDENT_PRIMARY = '#ee5736';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
+const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.25)';
 
 // Mock profiles data
 const MOCK_PROFILES = [
@@ -16,8 +19,9 @@ const MOCK_PROFILES = [
     score: 92,
     city: 'Paris 11ème',
     occupation: 'Designer',
-    image: null, // Will use gradient fallback
+    image: null,
     initials: 'ML',
+    trait: '🎨 Créative',
   },
   {
     name: 'Thomas B.',
@@ -27,6 +31,7 @@ const MOCK_PROFILES = [
     occupation: 'Développeur',
     image: null,
     initials: 'TB',
+    trait: '💻 Tech-savvy',
   },
   {
     name: 'Sophie M.',
@@ -36,6 +41,7 @@ const MOCK_PROFILES = [
     occupation: 'Étudiante',
     image: null,
     initials: 'SM',
+    trait: '📚 Studieuse',
   },
 ];
 
@@ -44,24 +50,27 @@ export default function MockCardStack() {
 
   return (
     <div
-      className="relative h-[400px] flex items-center justify-center"
+      className="relative h-[380px] flex items-center justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Stack of 3 cards */}
       {MOCK_PROFILES.map((profile, index) => {
         // Calculate positions for stack and fan effect
-        const stackOffset = index * 8;
-        const fanRotation = isHovered ? (index - 1) * 8 : 0;
-        const fanTranslateX = isHovered ? (index - 1) * 40 : 0;
+        const stackOffset = index * 10;
+        const fanRotation = isHovered ? (index - 1) * 10 : (index - 1) * 2;
+        const fanTranslateX = isHovered ? (index - 1) * 50 : 0;
         const zIndex = 3 - index;
 
         return (
           <motion.div
             key={index}
-            className="absolute w-[280px] rounded-3xl shadow-2xl overflow-hidden bg-white cursor-pointer"
-            style={{ zIndex }}
-            initial={{ y: stackOffset, rotate: 0, x: 0 }}
+            className="absolute w-[260px] rounded-3xl overflow-hidden bg-white cursor-pointer"
+            style={{
+              zIndex,
+              boxShadow: index === 0 ? `0 20px 50px ${ACCENT_SHADOW}` : '0 8px 24px rgba(0,0,0,0.1)',
+            }}
+            initial={{ y: stackOffset, rotate: fanRotation, x: 0 }}
             animate={{
               y: stackOffset,
               rotate: fanRotation,
@@ -77,7 +86,7 @@ export default function MockCardStack() {
             {/* Card Content */}
             <div className="relative">
               {/* Profile Image / Gradient */}
-              <div className="relative h-[200px] overflow-hidden">
+              <div className="relative h-[180px] overflow-hidden">
                 {profile.image ? (
                   <Image
                     src={profile.image}
@@ -90,54 +99,62 @@ export default function MockCardStack() {
                     className="w-full h-full flex items-center justify-center"
                     style={{ background: RESIDENT_GRADIENT }}
                   >
-                    <div className="text-7xl font-bold text-white opacity-30">
+                    <motion.div
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-6xl font-black text-white opacity-40"
+                    >
                       {profile.initials}
-                    </div>
+                    </motion.div>
                   </div>
                 )}
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
 
                 {/* Compatibility Badge */}
-                <div className="absolute top-4 right-4 z-10">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="absolute top-3 right-3 z-10"
+                >
                   <div
-                    className="px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
-                    style={{ background: RESIDENT_GRADIENT }}
+                    className="px-3 py-2 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/40"
+                    style={{ background: 'rgba(255,255,255,0.95)' }}
                   >
-                    <div className="flex items-center gap-2">
-                      <Sparkles
-                        className="w-4 h-4 text-white"
-                        strokeWidth={2.5}
-                        fill={profile.score >= 80 ? '#fff' : 'none'}
+                    <div className="flex items-center gap-1.5">
+                      <Star
+                        className="w-4 h-4"
+                        style={{ color: RESIDENT_PRIMARY }}
+                        fill={profile.score >= 80 ? RESIDENT_PRIMARY : 'none'}
                       />
                       <div className="text-center">
-                        <p className="text-2xl font-black text-white leading-none">
+                        <p
+                          className="text-xl font-black leading-none"
+                          style={{ color: RESIDENT_PRIMARY }}
+                        >
                           {profile.score}%
-                        </p>
-                        <p className="text-[10px] font-bold text-white/90 uppercase tracking-wide">
-                          Match
                         </p>
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Name & Basic Info */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-xl font-bold text-white mb-1">
+                <div className="absolute bottom-3 left-3 right-3">
+                  <h3 className="text-lg font-bold text-white mb-0.5">
                     {profile.name}
-                    <span className="text-lg font-normal ml-2 text-white/90">
-                      {profile.age} ans
+                    <span className="text-base font-medium ml-1.5 text-white/90">
+                      {profile.age}
                     </span>
                   </h3>
-                  <div className="flex items-center gap-3 text-white/90 text-sm">
-                    <div className="flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-2 text-white/90 text-xs">
+                    <div className="flex items-center gap-1">
+                      <Briefcase className="w-3 h-3" />
                       <span>{profile.occupation}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5" />
+                    <span>•</span>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
                       <span>{profile.city}</span>
                     </div>
                   </div>
@@ -146,28 +163,52 @@ export default function MockCardStack() {
 
               {/* Quick Info */}
               <div className="p-4 bg-white">
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
-                    <p className="text-xs text-gray-500 font-medium">Budget</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <div
+                    className="flex-1 rounded-xl px-3 py-2"
+                    style={{ background: CARD_BG_GRADIENT }}
+                  >
+                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Budget</p>
                     <p className="text-sm font-bold text-gray-900">600-800€</p>
                   </div>
-                  <div className="flex-1 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
-                    <p className="text-xs text-gray-500 font-medium">Propreté</p>
+                  <div
+                    className="flex-1 rounded-xl px-3 py-2"
+                    style={{ background: 'rgba(59, 130, 246, 0.08)' }}
+                  >
+                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Style</p>
                     <p className="text-sm font-bold text-gray-900">Ordonné</p>
                   </div>
+                </div>
+
+                {/* Trait Badge */}
+                <div
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                  style={{
+                    background: CARD_BG_GRADIENT,
+                    color: RESIDENT_PRIMARY,
+                  }}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  {profile.trait}
                 </div>
               </div>
 
               {/* Blur Overlay for stacked cards */}
               {index > 0 && (
                 <motion.div
-                  className="absolute inset-0 backdrop-blur-sm bg-white/10 flex items-center justify-center"
+                  className="absolute inset-0 backdrop-blur-sm bg-white/20 flex items-center justify-center"
                   animate={{ opacity: isHovered ? 0 : 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg">
+                  <div
+                    className="px-5 py-2.5 rounded-full shadow-xl"
+                    style={{
+                      background: 'white',
+                      boxShadow: `0 8px 24px ${ACCENT_SHADOW}`,
+                    }}
+                  >
                     <p className="text-sm font-bold" style={{ color: RESIDENT_PRIMARY }}>
-                      +{MOCK_PROFILES.length - index - 1} profils à découvrir
+                      +{MOCK_PROFILES.length - 1} profils
                     </p>
                   </div>
                 </motion.div>
@@ -177,17 +218,56 @@ export default function MockCardStack() {
         );
       })}
 
-      {/* Call to Action overlay on first card */}
+      {/* Action buttons overlay */}
       <motion.div
-        className="absolute inset-0 flex items-end justify-center pb-8 pointer-events-none z-10"
-        initial={{ opacity: 0 }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Reject Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl"
+          style={{ boxShadow: '0 8px 24px rgba(239, 68, 68, 0.2)' }}
+        >
+          <X className="w-6 h-6 text-red-500" />
+        </motion.button>
+
+        {/* Like Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
+          style={{
+            background: RESIDENT_GRADIENT,
+            boxShadow: `0 8px 24px ${ACCENT_SHADOW}`,
+          }}
+        >
+          <Heart className="w-7 h-7 text-white" fill="white" />
+        </motion.button>
+      </motion.div>
+
+      {/* Swipe hint */}
+      <motion.div
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
+        initial={{ opacity: 1 }}
         animate={{ opacity: isHovered ? 0 : 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="bg-white/95 backdrop-blur-md px-6 py-3 rounded-full shadow-xl border-2" style={{ borderColor: RESIDENT_PRIMARY }}>
+        <div
+          className="px-5 py-2.5 rounded-full shadow-xl bg-white"
+          style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+        >
           <p className="text-sm font-bold flex items-center gap-2" style={{ color: RESIDENT_PRIMARY }}>
             <span>Swipe pour découvrir</span>
-            <span className="text-lg">→</span>
+            <motion.span
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.span>
           </p>
         </div>
       </motion.div>
