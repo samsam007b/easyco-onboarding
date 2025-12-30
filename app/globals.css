@@ -1831,13 +1831,13 @@ html.dark::before {
   color: #d9a0b3 !important;
 }
 
-/* Unmatched text */
-span:not(.pac-matched) {
+/* Unmatched text - ONLY inside pac-container to avoid affecting other spans */
+.pac-container span:not(.pac-matched) {
   color: #666666 !important;
   font-weight: 400 !important;
 }
 
-.dark span:not(.pac-matched) {
+.dark .pac-container span:not(.pac-matched) {
   color: #a1a1aa !important;
 }
 

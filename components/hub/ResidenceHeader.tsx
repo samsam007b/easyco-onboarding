@@ -314,13 +314,13 @@ export default function ResidenceHeader() {
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                   >
-                    <Sparkles className="w-5 h-5 [color:white!important]" />
+                    <Sparkles className="w-5 h-5 text-white" />
                   </motion.div>
-                  <span className="font-bold [color:white!important]">
+                  <span className="font-bold text-white">
                     Complétez votre résidence
                   </span>
                 </div>
-                <span className="font-black text-xl [color:white!important]">
+                <span className="font-black text-xl text-white">
                   {completion.percentage}%
                 </span>
               </div>
@@ -361,15 +361,15 @@ export default function ResidenceHeader() {
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleStepClick(step)}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2 [color:white!important]"
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2 text-white"
                     >
-                      <span className="font-semibold text-sm [color:white!important]">{step}</span>
-                      <ArrowRight className="w-3.5 h-3.5 [color:white!important]" />
+                      <span className="font-semibold text-sm">{step}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </motion.button>
                   ) : (
                     <span
                       key={index}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm [color:white!important]"
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm text-white"
                     >
                       {step}
                     </span>
