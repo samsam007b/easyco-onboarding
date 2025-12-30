@@ -314,13 +314,13 @@ export default function ResidenceHeader() {
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                   >
-                    <Sparkles className="w-5 h-5 text-white" />
+                    <Sparkles className="w-5 h-5" style={{ color: '#ffffff' }} />
                   </motion.div>
-                  <span className="text-white font-bold">
+                  <span className="font-bold" style={{ color: '#ffffff' }}>
                     Complétez votre résidence
                   </span>
                 </div>
-                <span className="text-white font-black text-xl">
+                <span className="font-black text-xl" style={{ color: '#ffffff' }}>
                   {completion.percentage}%
                 </span>
               </div>
@@ -363,13 +363,14 @@ export default function ResidenceHeader() {
                       onClick={() => handleStepClick(step)}
                       className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2"
                     >
-                      <span className="text-white font-semibold text-sm">{step}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                      <span className="font-semibold text-sm" style={{ color: '#ffffff' }}>{step}</span>
+                      <ArrowRight className="w-3.5 h-3.5" style={{ color: '#ffffff' }} />
                     </motion.button>
                   ) : (
                     <span
                       key={index}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl text-white font-semibold text-sm"
+                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm"
+                      style={{ color: '#ffffff' }}
                     >
                       {step}
                     </span>
