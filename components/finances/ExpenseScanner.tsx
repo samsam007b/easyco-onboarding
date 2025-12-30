@@ -1,6 +1,7 @@
 /**
- * ExpenseScanner - Modern UI for scanning receipts with OCR
+ * ExpenseScanner - Fun & Colorful UI for scanning receipts with OCR
  * Flow: Upload Image → OCR Scan → Review → Split → Create
+ * Matches the new colorful finances page design
  */
 
 'use client';
@@ -27,6 +28,8 @@ import {
   Wrench,
   Package,
   Plus,
+  Receipt,
+  ImagePlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,44 +61,102 @@ const CATEGORY_OPTIONS: Array<{
   label: string;
   icon: any;
   color: string;
+  emoji: string;
+  gradient: string;
+  shadow: string;
 }> = [
   {
     value: 'groceries',
     label: 'Courses',
     icon: ShoppingCart,
     color: 'from-green-500 to-emerald-600',
+    emoji: '🛒',
+    gradient: 'linear-gradient(135deg, #22c55e 0%, #059669 100%)',
+    shadow: 'rgba(34, 197, 94, 0.4)',
   },
   {
     value: 'utilities',
     label: 'Factures',
     icon: Zap,
     color: 'from-yellow-500 to-orange-600',
+    emoji: '💡',
+    gradient: 'linear-gradient(135deg, #eab308 0%, #ea580c 100%)',
+    shadow: 'rgba(234, 179, 8, 0.4)',
   },
   {
     value: 'cleaning',
     label: 'Ménage',
     icon: SparklesIcon,
     color: 'from-blue-500 to-cyan-600',
+    emoji: '🧹',
+    gradient: 'linear-gradient(135deg, #3b82f6 0%, #0891b2 100%)',
+    shadow: 'rgba(59, 130, 246, 0.4)',
   },
   {
     value: 'internet',
     label: 'Internet',
     icon: Wifi,
     color: 'from-purple-500 to-indigo-600',
+    emoji: '📶',
+    gradient: 'linear-gradient(135deg, #a855f7 0%, #4f46e5 100%)',
+    shadow: 'rgba(168, 85, 247, 0.4)',
   },
   {
     value: 'maintenance',
     label: 'Entretien',
     icon: Wrench,
     color: 'from-gray-500 to-slate-600',
+    emoji: '🔧',
+    gradient: 'linear-gradient(135deg, #6b7280 0%, #475569 100%)',
+    shadow: 'rgba(107, 114, 128, 0.4)',
   },
   {
     value: 'other',
     label: 'Autre',
     icon: Package,
     color: 'from-pink-500 to-rose-600',
+    emoji: '📦',
+    gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
+    shadow: 'rgba(236, 72, 153, 0.4)',
   },
 ];
+
+// Animation variants for fun effects
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};
+
+const pulseVariants = {
+  pulse: {
+    scale: [1, 1.05, 1],
+    opacity: [0.7, 1, 0.7],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+};
 
 interface LineItem {
   id: string;
@@ -285,50 +346,93 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
     }
   };
 
+  // Step configuration with emojis
+  const steps = [
+    { icon: Scan, label: 'Scanner', emoji: '📸' },
+    { icon: Edit3, label: 'Vérifier', emoji: '✏️' },
+    { icon: Package, label: 'Catégorie', emoji: '🏷️' },
+    { icon: Users, label: 'Répartir', emoji: '👥' },
+  ];
+
+  const stepIndex = ['upload', 'scanning', 'review', 'category', 'confirm'].indexOf(currentStep);
+  const progressIndex = currentStep === 'scanning' ? 0 : stepIndex === 2 ? 1 : stepIndex === 3 ? 2 : stepIndex === 4 ? 3 : stepIndex;
+
   return (
     <div className="relative max-w-2xl mx-auto">
-      {/* Progress Indicator */}
-      <div className="mb-8">
+      {/* Fun Progress Indicator */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+        className="mb-8"
+      >
         <div className="flex items-center justify-between mb-4">
-          {[
-            { icon: Scan, label: 'Scanner' },
-            { icon: Edit3, label: 'Vérifier' },
-            { icon: Package, label: 'Catégorie' },
-            { icon: Users, label: 'Répartir' }
-          ].map((step, index) => {
-              const stepIndex = ['upload', 'review', 'category', 'confirm'].indexOf(
-                currentStep
-              );
-              const isActive = index <= stepIndex;
-              const StepIcon = step.icon;
-              return (
-                <div key={index} className="flex items-center">
-                  <div
-                    className={cn(
-                      'flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold transition-all',
-                      isActive
-                        ? 'text-white shadow-lg'
-                        : 'bg-gray-200 text-gray-400'
-                    )}
-                    style={isActive ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' } : undefined}
-                  >
+          {steps.map((step, index) => {
+            const isActive = index <= progressIndex;
+            const isCurrent = index === progressIndex;
+            const StepIcon = step.icon;
+            return (
+              <div key={index} className="flex items-center">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  animate={isCurrent ? { scale: [1, 1.05, 1] } : {}}
+                  transition={isCurrent ? { repeat: Infinity, duration: 2 } : {}}
+                  className={cn(
+                    'relative flex items-center justify-center w-12 h-12 rounded-2xl text-sm font-bold transition-all',
+                    isActive
+                      ? 'text-white'
+                      : 'bg-gray-100 text-gray-400 border-2 border-gray-200'
+                  )}
+                  style={
+                    isActive
+                      ? {
+                          background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                          boxShadow: isCurrent
+                            ? '0 8px 20px rgba(238, 87, 54, 0.4)'
+                            : '0 4px 12px rgba(238, 87, 54, 0.25)',
+                        }
+                      : undefined
+                  }
+                >
+                  {isActive ? (
+                    <span className="text-lg">{step.emoji}</span>
+                  ) : (
                     <StepIcon className="w-5 h-5" />
-                  </div>
-                  {index < 3 && (
-                    <div
-                      className={cn(
-                        'w-12 h-1 mx-2',
-                        isActive ? '' : 'bg-gray-200'
-                      )}
-                      style={isActive ? { background: '#ee5736' } : undefined}
+                  )}
+                  {isCurrent && (
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl"
+                      animate={{ opacity: [0, 0.3, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                      style={{ background: 'rgba(255,255,255,0.5)' }}
                     />
                   )}
-                </div>
-              );
-            }
-          )}
+                </motion.div>
+                {index < 3 && (
+                  <div className="relative w-10 md:w-16 h-1.5 mx-1.5 md:mx-2.5 rounded-full overflow-hidden bg-gray-200">
+                    <motion.div
+                      initial={{ width: '0%' }}
+                      animate={{ width: isActive ? '100%' : '0%' }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                      className="absolute inset-y-0 left-0 rounded-full"
+                      style={{ background: 'linear-gradient(90deg, #d9574f 0%, #ff5b21 100%)' }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
-      </div>
+        {/* Step label */}
+        <motion.p
+          key={progressIndex}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center text-sm font-semibold text-gray-500"
+        >
+          Étape {progressIndex + 1}/4 • {steps[progressIndex]?.label}
+        </motion.p>
+      </motion.div>
 
       <AnimatePresence mode="wait">
         {/* STEP 1: Upload */}
@@ -338,16 +442,34 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
             className="space-y-6"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {/* Fun Header */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="text-center mb-8"
+            >
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-4"
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  boxShadow: '0 12px 30px rgba(238, 87, 54, 0.35)',
+                }}
+              >
+                <Receipt className="w-10 h-10 text-white" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Scannez votre ticket
+                <span className="text-xl">📸</span>
               </h2>
               <p className="text-gray-600">
-                Prenez une photo ou uploadez un fichier
+                L'IA analyse automatiquement vos reçus ✨
               </p>
-            </div>
+            </motion.div>
 
             <input
               ref={fileInputRef}
@@ -363,113 +485,244 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
               }}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Camera Button */}
-              <button
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              {/* Camera Button - Fun Animated Card */}
+              <motion.button
+                variants={itemVariants}
+                whileHover={{ scale: 1.03, y: -4 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all hover:shadow-2xl hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  boxShadow: '0 12px 30px rgba(238, 87, 54, 0.35)',
+                }}
               >
                 <div className="relative z-10">
-                  <Camera className="w-16 h-16 mb-4 mx-auto" />
-                  <h3 className="text-lg font-bold mb-1">Prendre une photo</h3>
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                  >
+                    <Camera className="w-16 h-16 mb-4 mx-auto drop-shadow-lg" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-1">📷 Prendre une photo</h3>
                   <p className="text-sm text-white/80">
                     Ouvrir la caméra
                   </p>
                 </div>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{ opacity: [0, 0.2, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  style={{ background: 'radial-gradient(circle at center, white 0%, transparent 70%)' }}
+                />
+              </motion.button>
 
-              {/* Upload Button */}
-              <button
+              {/* Upload Button - Fun Animated Card */}
+              <motion.button
+                variants={itemVariants}
+                whileHover={{ scale: 1.03, y: -4 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white transition-all hover:shadow-2xl hover:scale-105"
+                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)',
+                  boxShadow: '0 12px 30px rgba(124, 58, 237, 0.35)',
+                }}
               >
                 <div className="relative z-10">
-                  <Upload className="w-16 h-16 mb-4 mx-auto" />
-                  <h3 className="text-lg font-bold mb-1">Choisir un fichier</h3>
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut', delay: 0.5 }}
+                  >
+                    <ImagePlus className="w-16 h-16 mb-4 mx-auto drop-shadow-lg" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-1">🖼️ Choisir un fichier</h3>
                   <p className="text-sm text-white/80">
                     Depuis la galerie
                   </p>
                 </div>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
-            </div>
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{ opacity: [0, 0.2, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, delay: 1 }}
+                  style={{ background: 'radial-gradient(circle at center, white 0%, transparent 70%)' }}
+                />
+              </motion.button>
+            </motion.div>
 
-            <Button
-              variant="outline"
-              onClick={onCancel}
-              className="w-full rounded-full border-gray-200 hover:border-transparent"
-              style={{ color: '#ee5736' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              Annuler
-            </Button>
+              <Button
+                variant="outline"
+                onClick={onCancel}
+                className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                style={{ color: '#ee5736' }}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Annuler
+              </Button>
+            </motion.div>
           </motion.div>
         )}
 
-        {/* STEP 2: Scanning */}
+        {/* STEP 2: Scanning - Fun AI Animation */}
         {currentStep === 'scanning' && (
           <motion.div
             key="scanning"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="text-center py-16"
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+            className="text-center py-12"
           >
-            <div className="relative w-32 h-32 mx-auto mb-8">
-              <Sparkles className="w-full h-full animate-pulse" style={{ color: '#ee5736' }} />
-              <div className="absolute inset-0 rounded-full blur-2xl animate-pulse" style={{ background: 'rgba(238, 87, 54, 0.2)' }} />
+            {/* Animated AI Icon with multiple layers */}
+            <div className="relative w-40 h-40 mx-auto mb-8">
+              {/* Outer pulse ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
+                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                style={{ background: 'linear-gradient(135deg, rgba(238, 87, 54, 0.3) 0%, rgba(255, 128, 23, 0.2) 100%)' }}
+              />
+              {/* Middle pulse ring */}
+              <motion.div
+                className="absolute inset-4 rounded-full"
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut', delay: 0.3 }}
+                style={{ background: 'linear-gradient(135deg, rgba(238, 87, 54, 0.4) 0%, rgba(255, 91, 33, 0.3) 100%)' }}
+              />
+              {/* Core animated icon */}
+              <motion.div
+                className="absolute inset-8 rounded-3xl flex items-center justify-center"
+                animate={{
+                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  boxShadow: '0 12px 40px rgba(238, 87, 54, 0.5)',
+                }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
+                >
+                  <Sparkles className="w-12 h-12 text-white" />
+                </motion.div>
+              </motion.div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+
+            <motion.h2
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
+            >
+              <span>🤖</span>
               Analyse IA en cours...
-            </h2>
-            <p className="text-gray-600 mb-4">
-              Intelligence artificielle en action
+            </motion.h2>
+            <p className="text-gray-600 mb-6">
+              Notre IA lit votre ticket comme un pro ! ✨
             </p>
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Loader2 className="w-5 h-5 animate-spin" style={{ color: '#ee5736' }} />
+
+            {/* Progress bar animation */}
+            <div className="max-w-xs mx-auto mb-6">
+              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full"
+                  initial={{ width: '0%' }}
+                  animate={{ width: ['0%', '70%', '90%', '100%'] }}
+                  transition={{ duration: 4, times: [0, 0.5, 0.8, 1], ease: 'easeOut' }}
+                  style={{ background: 'linear-gradient(90deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 mb-5">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+              >
+                <Loader2 className="w-5 h-5" style={{ color: '#ee5736' }} />
+              </motion.div>
               <span className="text-sm text-gray-500">
                 Extraction des données du ticket
               </span>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400">
-              <span className="px-2 py-1 bg-gray-100 rounded-full">Google Gemini</span>
-              <span className="px-2 py-1 bg-gray-100 rounded-full">Llama Vision</span>
-              <span className="px-2 py-1 bg-gray-100 rounded-full">Tesseract</span>
-            </div>
+
+            {/* AI Provider badges - animated */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-wrap items-center justify-center gap-2"
+            >
+              {[
+                { name: 'Google Gemini', emoji: '🤖', color: 'bg-blue-50 text-blue-600 border-blue-200' },
+                { name: 'Llama Vision', emoji: '🦙', color: 'bg-purple-50 text-purple-600 border-purple-200' },
+                { name: 'Tesseract', emoji: '📝', color: 'bg-gray-50 text-gray-600 border-gray-200' },
+              ].map((provider) => (
+                <motion.span
+                  key={provider.name}
+                  variants={itemVariants}
+                  className={cn('px-3 py-1.5 rounded-full text-xs font-medium border', provider.color)}
+                >
+                  {provider.emoji} {provider.name}
+                </motion.span>
+              ))}
+            </motion.div>
           </motion.div>
         )}
 
-        {/* STEP 3: Review */}
+        {/* STEP 3: Review - Enhanced Form */}
         {currentStep === 'review' && (
           <motion.div
             key="review"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
             className="space-y-6"
           >
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center mb-6"
+            >
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Vérifiez les informations
+                <span className="text-xl">✏️</span>
               </h2>
-              <p className="text-gray-600">
+              <div className="text-gray-600">
                 {ocrData && ocrData.confidence > 0.5 ? (
-                  <span className="flex flex-col items-center gap-2">
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-green-600" />
-                      <span>
-                        Données extraites automatiquement
-                      </span>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center gap-2"
+                  >
+                    <span className="flex items-center gap-2 text-green-600 font-medium">
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                      >
+                        <Sparkles className="w-5 h-5" />
+                      </motion.div>
+                      <span>Données extraites automatiquement ! 🎉</span>
                     </span>
-                    <span className="flex items-center gap-2 text-xs">
+                    <div className="flex items-center gap-2 text-xs">
                       {aiProvider && (
                         <Badge
-                          variant="secondary"
                           className={cn(
-                            "text-xs",
+                            "text-xs font-semibold border",
                             aiProvider === 'gemini' && "bg-blue-50 text-blue-700 border-blue-200",
                             aiProvider === 'together' && "bg-purple-50 text-purple-700 border-purple-200",
                             aiProvider === 'tesseract' && "bg-gray-50 text-gray-700 border-gray-200"
@@ -477,55 +730,78 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                         >
                           {aiProvider === 'gemini' && '🤖 Google Gemini'}
                           {aiProvider === 'together' && '🦙 Llama Vision'}
-                          {aiProvider === 'tesseract' && '📝 Tesseract (local)'}
+                          {aiProvider === 'tesseract' && '📝 Tesseract'}
                         </Badge>
                       )}
-                      <span className="text-gray-400">
-                        Confiance: {Math.round((ocrData.confidence || 0) * 100)}%
-                      </span>
-                    </span>
-                  </span>
+                      <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold">
+                        ✓ {Math.round((ocrData.confidence || 0) * 100)}% confiance
+                      </Badge>
+                    </div>
+                  </motion.div>
                 ) : (
-                  'Saisissez les détails manuellement'
+                  <span>Saisissez les détails manuellement</span>
                 )}
-              </p>
-            </div>
+              </div>
+            </motion.div>
 
             {scanError && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                <p className="text-sm text-yellow-800">{scanError}</p>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl p-4 flex items-center gap-3"
+              >
+                <span className="text-2xl">⚠️</span>
+                <p className="text-sm text-yellow-800 font-medium">{scanError}</p>
+              </motion.div>
             )}
 
-            {/* Preview Image */}
+            {/* Preview Image - Enhanced */}
             {previewUrl && (
-              <div className="relative rounded-2xl overflow-hidden border-2 border-gray-200">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-md"
+                style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
+              >
+                <div className="absolute top-3 left-3 z-10">
+                  <Badge
+                    className="text-xs font-bold text-white border-none"
+                    style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                  >
+                    📷 Ticket scanné
+                  </Badge>
+                </div>
                 <img
                   src={previewUrl}
                   alt="Receipt preview"
-                  className="w-full max-h-64 object-contain bg-gray-50"
+                  className="w-full max-h-64 object-contain bg-gradient-to-br from-gray-50 to-gray-100"
                 />
-              </div>
+              </motion.div>
             )}
 
-            {/* Form Fields */}
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="title" className="text-sm font-semibold mb-2 block">
-                  Titre *
+            {/* Form Fields - Enhanced styling */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-4"
+            >
+              <motion.div variants={itemVariants}>
+                <Label htmlFor="title" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
+                  🏷️ Titre *
                 </Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ex: Courses de la semaine"
-                  className="rounded-xl"
+                  className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5 text-base"
                 />
-              </div>
+              </motion.div>
 
-              <div>
-                <Label htmlFor="amount" className="text-sm font-semibold mb-2 block">
-                  Montant (€) *
+              <motion.div variants={itemVariants}>
+                <Label htmlFor="amount" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
+                  💰 Montant (€) *
                 </Label>
                 <Input
                   id="amount"
@@ -534,62 +810,87 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="rounded-xl text-xl font-bold"
+                  className="rounded-xl border-2 border-gray-200 focus:border-orange-300 text-2xl font-bold py-6"
+                  style={{ color: '#ee5736' }}
                 />
-              </div>
+              </motion.div>
 
-              <div>
-                <Label htmlFor="date" className="text-sm font-semibold mb-2 block">
-                  Date
-                </Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="rounded-xl"
-                />
-              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <motion.div variants={itemVariants}>
+                  <Label htmlFor="date" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
+                    📅 Date
+                  </Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5"
+                  />
+                </motion.div>
 
-              <div>
-                <Label htmlFor="description" className="text-sm font-semibold mb-2 block">
-                  Description
-                </Label>
-                <Input
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Détails (optionnel)"
-                  className="rounded-xl"
-                />
+                <motion.div variants={itemVariants}>
+                  <Label htmlFor="description" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
+                    📝 Description
+                  </Label>
+                  <Input
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Optionnel"
+                    className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5"
+                  />
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Editable Line Items */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4">
+            {/* Editable Line Items - Enhanced */}
+            <motion.div
+              variants={itemVariants}
+              className="rounded-2xl p-4 border-2"
+              style={{
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%)',
+                borderColor: 'rgba(59, 130, 246, 0.2)',
+              }}
+            >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-sm font-bold text-blue-900">
-                    Articles ({lineItems.length})
+                  <motion.div
+                    whileHover={{ rotate: 10 }}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' }}
+                  >
+                    <ShoppingCart className="w-4 h-4 text-white" />
+                  </motion.div>
+                  <h3 className="text-sm font-bold text-gray-800">
+                    🛒 Articles ({lineItems.length})
                   </h3>
                 </div>
-                <Button
-                  onClick={addLineItem}
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-                >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Ajouter
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    onClick={addLineItem}
+                    size="sm"
+                    className="rounded-full text-white font-semibold"
+                    style={{
+                      background: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
+                      boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                    }}
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Ajouter
+                  </Button>
+                </motion.div>
               </div>
 
               {lineItems.length > 0 ? (
                 <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {lineItems.map((item) => (
-                    <div
+                  {lineItems.map((item, index) => (
+                    <motion.div
                       key={item.id}
-                      className="bg-white rounded-lg p-3 space-y-2"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="bg-white rounded-xl p-3 space-y-2 border border-gray-100 shadow-sm"
                     >
                       <div className="flex items-start gap-2">
                         <div className="flex-1 space-y-2">
@@ -597,7 +898,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                             value={item.name}
                             onChange={(e) => updateLineItem(item.id, 'name', e.target.value)}
                             placeholder="Nom de l'article"
-                            className="text-sm"
+                            className="text-sm rounded-lg border-gray-200"
                           />
                           <div className="grid grid-cols-2 gap-2">
                             <Input
@@ -606,221 +907,364 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                               onChange={(e) => updateLineItem(item.id, 'quantity', parseFloat(e.target.value) || 1)}
                               placeholder="Qté"
                               min="1"
-                              className="text-sm"
+                              className="text-sm rounded-lg border-gray-200"
                             />
                             <Input
                               type="number"
                               step="0.01"
                               value={item.total_price}
                               onChange={(e) => updateLineItem(item.id, 'total_price', parseFloat(e.target.value) || 0)}
-                              placeholder="Prix"
-                              className="text-sm"
+                              placeholder="Prix €"
+                              className="text-sm rounded-lg border-gray-200 font-semibold"
                             />
                           </div>
                         </div>
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => removeLineItem(item.id)}
-                          className="text-red-500 hover:text-red-700 p-1"
+                          className="text-red-400 hover:text-red-600 p-1.5 rounded-full hover:bg-red-50 transition-colors"
                         >
                           <X className="w-4 h-4" />
-                        </button>
+                        </motion.button>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-blue-600 text-center py-4">
-                  Aucun article. Cliquez sur "Ajouter" pour en ajouter.
-                </p>
+                <div className="text-center py-6">
+                  <span className="text-3xl mb-2 block">📦</span>
+                  <p className="text-sm text-blue-600 font-medium">
+                    Aucun article détecté
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Cliquez sur "Ajouter" pour en ajouter manuellement
+                  </p>
+                </div>
               )}
 
               {lineItems.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-blue-200 flex items-center justify-between">
-                  <span className="text-sm font-medium text-blue-900">Total calculé:</span>
-                  <span className="text-lg font-bold text-blue-700">
+                <div className="mt-3 pt-3 border-t border-blue-200/50 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-gray-600">Total calculé:</span>
+                  <span
+                    className="text-xl font-bold"
+                    style={{ color: '#3b82f6' }}
+                  >
                     {calculateTotalFromItems().toFixed(2)}€
                   </span>
                 </div>
               )}
-            </div>
+            </motion.div>
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  cleanup();
-                  setCurrentStep('upload');
-                }}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ee5736' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour
-              </Button>
-              <Button
-                onClick={handleReviewNext}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-              >
-                Suivant
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 pt-2">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    cleanup();
+                    setCurrentStep('upload');
+                  }}
+                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  style={{ color: '#ee5736' }}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Retour
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={handleReviewNext}
+                  className="w-full rounded-2xl text-white border-none py-6 font-semibold transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                    boxShadow: '0 8px 20px rgba(238, 87, 54, 0.35)',
+                  }}
+                >
+                  Suivant
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}
 
-        {/* STEP 4: Category Selection */}
+        {/* STEP 4: Category Selection - Fun Colorful Cards */}
         {currentStep === 'category' && (
           <motion.div
             key="category"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
             className="space-y-6"
           >
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center mb-6"
+            >
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 Choisissez une catégorie
+                <span className="text-xl">🏷️</span>
               </h2>
               <p className="text-gray-600">
-                Cela aide à organiser vos dépenses
+                Organisez vos dépenses par type ✨
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-2 md:grid-cols-3 gap-4"
+            >
               {CATEGORY_OPTIONS.map((cat) => {
                 const CategoryIcon = cat.icon;
+                const isSelected = category === cat.value;
                 return (
-                <button
-                  key={cat.value}
-                  onClick={() => setCategory(cat.value)}
-                  className={cn(
-                    'group relative overflow-hidden rounded-2xl p-6 text-center transition-all',
-                    'border-2',
-                    category === cat.value
-                      ? 'shadow-lg scale-105 bg-orange-50'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
-                  )}
-                  style={category === cat.value ? { borderColor: '#ee5736' } : undefined}
-                >
-                  <CategoryIcon className={cn("w-12 h-12 mb-2 mx-auto", category === cat.value ? "text-[#ee5736]" : "text-gray-500")} />
-                  <div className="text-sm font-semibold text-gray-900">
-                    {cat.label}
-                  </div>
-                  {category === cat.value && (
-                    <div className="absolute top-2 right-2">
-                      <Check className="w-5 h-5" style={{ color: '#ee5736' }} />
+                  <motion.button
+                    key={cat.value}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setCategory(cat.value)}
+                    className={cn(
+                      'group relative overflow-hidden rounded-2xl p-6 text-center transition-all border-2',
+                      isSelected
+                        ? 'text-white border-transparent'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    )}
+                    style={
+                      isSelected
+                        ? {
+                            background: cat.gradient,
+                            boxShadow: `0 12px 24px ${cat.shadow}`,
+                          }
+                        : {}
+                    }
+                  >
+                    <motion.div
+                      animate={isSelected ? { y: [0, -5, 0] } : {}}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                    >
+                      <span className="text-4xl block mb-2">{cat.emoji}</span>
+                    </motion.div>
+                    <div className={cn(
+                      "text-sm font-bold",
+                      isSelected ? "text-white" : "text-gray-700"
+                    )}>
+                      {cat.label}
                     </div>
-                  )}
-                </button>
-              )})}
-            </div>
+                    {isSelected && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/30 flex items-center justify-center"
+                      >
+                        <Check className="w-4 h-4 text-white" />
+                      </motion.div>
+                    )}
+                    {/* Shine effect on selected */}
+                    {isSelected && (
+                      <motion.div
+                        className="absolute inset-0"
+                        animate={{ opacity: [0, 0.2, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        style={{ background: 'linear-gradient(45deg, transparent 30%, white 50%, transparent 70%)' }}
+                      />
+                    )}
+                  </motion.button>
+                );
+              })}
+            </motion.div>
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setCurrentStep('review')}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ee5736' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour
-              </Button>
-              <Button
-                onClick={() => setCurrentStep('confirm')}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-              >
-                Suivant
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 pt-2">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentStep('review')}
+                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  style={{ color: '#ee5736' }}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Retour
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={() => setCurrentStep('confirm')}
+                  className="w-full rounded-2xl text-white border-none py-6 font-semibold transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                    boxShadow: '0 8px 20px rgba(238, 87, 54, 0.35)',
+                  }}
+                >
+                  Suivant
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}
 
-        {/* STEP 5: Confirm */}
+        {/* STEP 5: Confirm - Celebratory Summary */}
         {currentStep === 'confirm' && (
           <motion.div
             key="confirm"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
             className="space-y-6"
           >
-            <div className="text-center mb-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center mb-6"
+            >
+              <motion.div
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ repeat: Infinity, duration: 3 }}
+                className="text-5xl mb-3"
+              >
+                🎉
+              </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Récapitulatif
               </h2>
               <p className="text-gray-600">
-                Vérifiez avant de répartir la dépense
+                Tout est prêt ! Vérifiez et partagez 👥
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Titre</span>
-                <span className="text-lg font-bold text-gray-900">{title}</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Montant</span>
-                <span className="text-3xl font-bold text-resident-600">
+            {/* Summary Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-3xl p-6 space-y-5 border-2"
+              style={{
+                background: 'linear-gradient(135deg, rgba(238, 87, 54, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)',
+                borderColor: 'rgba(238, 87, 54, 0.15)',
+              }}
+            >
+              {/* Amount - Big and Bold */}
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                className="text-center py-4 rounded-2xl"
+                style={{
+                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                }}
+              >
+                <p className="text-sm text-white/80 font-medium mb-1">💰 Montant total</p>
+                <motion.p
+                  animate={{ scale: [1, 1.02, 1] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  className="text-4xl font-bold text-white"
+                >
                   €{parseFloat(amount).toFixed(2)}
-                </span>
-              </div>
+                </motion.p>
+              </motion.div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Catégorie</span>
-                <Badge className="bg-orange-50 border-orange-200 flex items-center gap-1" style={{ color: '#ee5736' }}>
+              {/* Details Grid */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                  <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    🏷️ Titre
+                  </span>
+                  <span className="text-base font-bold text-gray-900">{title}</span>
+                </div>
+
+                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                  <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    📅 Date
+                  </span>
+                  <span className="font-semibold text-gray-900">
+                    {new Date(date).toLocaleDateString('fr-FR', {
+                      weekday: 'short',
+                      day: 'numeric',
+                      month: 'long',
+                    })}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    🏷️ Catégorie
+                  </span>
                   {(() => {
-                    const SelectedCategoryIcon = CATEGORY_OPTIONS.find((c) => c.value === category)?.icon;
-                    return SelectedCategoryIcon ? <SelectedCategoryIcon className="w-4 h-4" /> : null;
+                    const selectedCat = CATEGORY_OPTIONS.find((c) => c.value === category);
+                    return selectedCat ? (
+                      <Badge
+                        className="text-white font-bold border-none px-3 py-1"
+                        style={{
+                          background: selectedCat.gradient,
+                          boxShadow: `0 4px 12px ${selectedCat.shadow}`,
+                        }}
+                      >
+                        {selectedCat.emoji} {selectedCat.label}
+                      </Badge>
+                    ) : null;
                   })()}
-                  {CATEGORY_OPTIONS.find((c) => c.value === category)?.label}
-                </Badge>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Date</span>
-                <span className="font-medium text-gray-900">
-                  {new Date(date).toLocaleDateString('fr-FR')}
-                </span>
+                </div>
               </div>
 
               {description && (
                 <div className="pt-4 border-t border-gray-200">
-                  <span className="text-sm font-medium text-gray-600 block mb-2">
-                    Description
+                  <span className="text-sm font-medium text-gray-500 block mb-2 flex items-center gap-2">
+                    📝 Description
                   </span>
-                  <p className="text-sm text-gray-700">{description}</p>
+                  <p className="text-sm text-gray-700 bg-white rounded-xl p-3 border border-gray-100">
+                    {description}
+                  </p>
                 </div>
               )}
-            </div>
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setCurrentStep('category')}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ee5736' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour
-              </Button>
-              <Button
-                onClick={handleConfirm}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
-              >
-                <Users className="w-4 h-4 mr-2" />
-                Répartir entre colocs
-              </Button>
+              {/* Receipt indicator */}
+              {selectedFile && (
+                <div className="flex items-center gap-2 pt-2">
+                  <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold">
+                    ✓ Ticket joint
+                  </Badge>
+                  {ocrData && (
+                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold">
+                      🤖 OCR analysé
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 pt-2">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentStep('category')}
+                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  style={{ color: '#ee5736' }}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Retour
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={handleConfirm}
+                  className="w-full rounded-2xl text-white border-none py-6 font-bold text-base transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                    boxShadow: '0 8px 24px rgba(34, 197, 94, 0.4)',
+                  }}
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Répartir entre colocs 🎯
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}

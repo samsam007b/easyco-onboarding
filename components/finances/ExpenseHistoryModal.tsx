@@ -1,5 +1,5 @@
 /**
- * Expense History Modal
+ * Expense History Modal - Fun & Colorful Design
  * Full expense history with search, filters, and calendar view toggle
  */
 
@@ -25,6 +25,8 @@ import {
   Download,
   ChevronDown,
   DollarSign,
+  Sparkles,
+  Receipt,
 } from 'lucide-react';
 import ExpenseListByPeriod from './ExpenseListByPeriod';
 import ExpenseCalendarView from './ExpenseCalendarView';
@@ -49,6 +51,16 @@ const categoryLabels: Record<string, string> = {
   other: 'Autre',
 };
 
+const categoryEmojis: Record<string, string> = {
+  rent: '🏠',
+  utilities: '💡',
+  groceries: '🛒',
+  cleaning: '🧹',
+  maintenance: '🔧',
+  internet: '📶',
+  other: '📦',
+};
+
 const allCategories: ExpenseCategory[] = [
   'rent',
   'utilities',
@@ -58,6 +70,31 @@ const allCategories: ExpenseCategory[] = [
   'internet',
   'other',
 ];
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};
 
 export default function ExpenseHistoryModal({
   expenses,
@@ -100,124 +137,188 @@ export default function ExpenseHistoryModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0 bg-gradient-to-br from-white via-orange-50/30 to-white">
         <DialogTitle className="sr-only">Historique des dépenses</DialogTitle>
 
         <div className="flex flex-col h-[90vh]">
-          {/* Header */}
-          <div className="flex-shrink-0 p-6 pb-4 border-b border-gray-100">
+          {/* Header - Fun gradient background */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
+            className="flex-shrink-0 p-6 pb-4"
+            style={{
+              background: 'linear-gradient(180deg, rgba(255,245,243,1) 0%, rgba(255,255,255,0) 100%)',
+            }}
+          >
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-md"
+              <div className="flex items-center gap-4">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                    boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
                   }}
                 >
-                  <DollarSign className="w-6 h-6 text-white" />
-                </div>
+                  <Receipt className="w-7 h-7 text-white" />
+                  <motion.div
+                    className="absolute inset-0 bg-white/20"
+                    animate={{ opacity: [0, 0.3, 0] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                  />
+                </motion.div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">Historique des dépenses</h2>
-                  <p className="text-sm text-gray-500">
-                    {filteredExpenses.length} dépense{filteredExpenses.length !== 1 ? 's' : ''} •{' '}
-                    Total: €{totalAmount.toFixed(2)}
+                  <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    Historique des dépenses
+                    <span className="text-lg">💰</span>
+                  </h2>
+                  <p className="text-sm text-gray-500 flex items-center gap-2">
+                    <Badge
+                      className="text-xs border-none text-white font-bold"
+                      style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                    >
+                      {filteredExpenses.length}
+                    </Badge>
+                    dépense{filteredExpenses.length !== 1 ? 's' : ''} • Total:{' '}
+                    <span className="font-bold text-gray-900">€{totalAmount.toFixed(2)}</span>
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                {/* View Toggle */}
-                <div className="flex items-center bg-gray-100 rounded-full p-1">
-                  <button
+              <div className="flex items-center gap-3">
+                {/* View Toggle - Colorful pill */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="flex items-center p-1.5 rounded-full shadow-md"
+                  style={{
+                    background: 'linear-gradient(135deg, #f8f9fa 0%, #fff 100%)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08), inset 0 1px 2px rgba(255,255,255,0.8)',
+                  }}
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setViewMode('list')}
                     className={cn(
-                      'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all',
+                      'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all',
                       viewMode === 'list'
-                        ? 'bg-white shadow-sm text-gray-900'
+                        ? 'text-white shadow-md'
                         : 'text-gray-500 hover:text-gray-700'
                     )}
+                    style={
+                      viewMode === 'list'
+                        ? {
+                            background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                            boxShadow: '0 4px 12px rgba(238, 87, 54, 0.4)',
+                          }
+                        : {}
+                    }
                   >
                     <List className="w-4 h-4" />
                     Liste
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setViewMode('calendar')}
                     className={cn(
-                      'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all',
+                      'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all',
                       viewMode === 'calendar'
-                        ? 'bg-white shadow-sm text-gray-900'
+                        ? 'text-white shadow-md'
                         : 'text-gray-500 hover:text-gray-700'
                     )}
+                    style={
+                      viewMode === 'calendar'
+                        ? {
+                            background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.4)',
+                          }
+                        : {}
+                    }
                   >
                     <CalendarIcon className="w-4 h-4" />
                     Calendrier
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
 
-                {/* Export */}
+                {/* Export Button */}
                 {onExport && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={onExport}
-                    className="rounded-full"
-                  >
-                    <Download className="w-4 h-4 mr-1" />
-                    PDF
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={onExport}
+                      className="rounded-full border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 font-semibold shadow-sm"
+                    >
+                      <Download className="w-4 h-4 mr-1.5" />
+                      PDF
+                    </Button>
+                  </motion.div>
                 )}
 
-                {/* Close */}
-                <button
+                {/* Close Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={onClose}
-                  className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+                  className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors shadow-sm"
                 >
                   <X className="w-5 h-5" />
-                </button>
+                </motion.button>
               </div>
             </div>
 
-            {/* Search & Filters */}
+            {/* Search & Filters - Enhanced styling */}
             <div className="flex items-center gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <motion.div
+                whileFocus={{ scale: 1.01 }}
+                className="relative flex-1"
+              >
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <Input
-                  placeholder="Rechercher une dépense..."
+                  placeholder="🔍 Rechercher une dépense..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 rounded-full border-gray-200"
+                  className="pl-12 py-6 rounded-2xl border-2 border-gray-200 focus:border-orange-300 text-base shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
+                  }}
                 />
-              </div>
+              </motion.div>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowFilters(!showFilters)}
-                className={cn(
-                  'rounded-full',
-                  selectedCategory !== 'all' && 'border-[#ee5736] text-[#ee5736]'
-                )}
-              >
-                <Filter className="w-4 h-4 mr-1" />
-                Filtres
-                {selectedCategory !== 'all' && (
-                  <Badge
-                    className="ml-1.5 text-xs text-white border-none"
-                    style={{ background: '#ee5736' }}
-                  >
-                    1
-                  </Badge>
-                )}
-                <ChevronDown
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowFilters(!showFilters)}
                   className={cn(
-                    'w-4 h-4 ml-1 transition-transform',
-                    showFilters && 'rotate-180'
+                    'rounded-2xl px-5 py-6 border-2 font-semibold shadow-sm transition-all',
+                    selectedCategory !== 'all'
+                      ? 'border-orange-300 text-orange-600 bg-orange-50'
+                      : 'border-gray-200 hover:border-gray-300'
                   )}
-                />
-              </Button>
+                >
+                  <Filter className="w-5 h-5 mr-2" />
+                  Filtres
+                  {selectedCategory !== 'all' && (
+                    <Badge
+                      className="ml-2 text-xs text-white border-none animate-pulse"
+                      style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                    >
+                      1
+                    </Badge>
+                  )}
+                  <ChevronDown
+                    className={cn(
+                      'w-4 h-4 ml-1 transition-transform duration-300',
+                      showFilters && 'rotate-180'
+                    )}
+                  />
+                </Button>
+              </motion.div>
             </div>
 
-            {/* Filter Panel */}
+            {/* Filter Panel - Colorful category pills */}
             <AnimatePresence>
               {showFilters && (
                 <motion.div
@@ -226,62 +327,81 @@ export default function ExpenseHistoryModal({
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-4">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="pt-5"
+                  >
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
                       Catégorie
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <button
+                      <motion.button
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setSelectedCategory('all')}
                         className={cn(
-                          'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
+                          'px-4 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm',
                           selectedCategory === 'all'
                             ? 'text-white'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'
                         )}
                         style={
                           selectedCategory === 'all'
-                            ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }
+                            ? {
+                                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                                boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
+                              }
                             : {}
                         }
                       >
-                        Toutes
-                      </button>
+                        ✨ Toutes
+                      </motion.button>
                       {allCategories.map((cat) => (
-                        <button
+                        <motion.button
                           key={cat}
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => setSelectedCategory(cat)}
                           className={cn(
-                            'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
+                            'px-4 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm',
                             selectedCategory === cat
                               ? 'text-white'
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'
                           )}
                           style={
                             selectedCategory === cat
-                              ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }
+                              ? {
+                                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                                  boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
+                                }
                               : {}
                           }
                         >
-                          {categoryLabels[cat]}
-                        </button>
+                          {categoryEmojis[cat]} {categoryLabels[cat]}
+                        </motion.button>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6">
+          {/* Content - Animated list/calendar */}
+          <div className="flex-1 overflow-y-auto p-6 pt-2">
             <AnimatePresence mode="wait">
               {viewMode === 'list' ? (
                 <motion.div
                   key="list"
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
+                  exit={{ opacity: 0, x: 30 }}
+                  transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
                 >
                   <ExpenseListByPeriod
                     expenses={filteredExpenses}
@@ -292,15 +412,15 @@ export default function ExpenseHistoryModal({
               ) : (
                 <motion.div
                   key="calendar"
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
                 >
                   <ExpenseCalendarView
                     expenses={filteredExpenses}
                     onExpenseClick={onExpenseClick}
                     onDayClick={(date, dayExpenses) => {
-                      // Could show a popover or filter to that day
                       if (dayExpenses.length === 1) {
                         onExpenseClick(dayExpenses[0]);
                       }
