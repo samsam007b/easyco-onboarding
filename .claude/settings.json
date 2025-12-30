@@ -7,6 +7,10 @@
           {
             "type": "command",
             "command": "if echo \"$TOOL_INPUT\" | grep -qE '(git\\s+(commit|push)|git\\s+.*--amend)'; then /Users/samuelbaudon/easyco-onboarding/.claude/hooks/scan-secrets.sh; else echo '{\"status\": \"continue\"}'; fi"
+          },
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/team-git-guard.sh"
           }
         ]
       }
@@ -17,6 +21,10 @@
           {
             "type": "command",
             "command": "/Users/samuelbaudon/.claude/plugins/cache/claude-code-plugins/project-sync/1.0.0/hooks-handlers/session-start.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/team-session-start.sh"
           }
         ]
       }

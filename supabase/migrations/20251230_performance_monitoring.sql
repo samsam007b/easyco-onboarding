@@ -268,7 +268,6 @@ CREATE POLICY "Admins can read web_vitals_metrics"
     EXISTS (
       SELECT 1 FROM admins
       WHERE email = auth.jwt()->>'email'
-      AND is_active = true
     )
   );
 
@@ -279,7 +278,6 @@ CREATE POLICY "Admins can read web_vitals_daily"
     EXISTS (
       SELECT 1 FROM admins
       WHERE email = auth.jwt()->>'email'
-      AND is_active = true
     )
   );
 
@@ -290,7 +288,6 @@ CREATE POLICY "Admins can read api_performance_metrics"
     EXISTS (
       SELECT 1 FROM admins
       WHERE email = auth.jwt()->>'email'
-      AND is_active = true
     )
   );
 
@@ -301,7 +298,6 @@ CREATE POLICY "Admins can read api_performance_daily"
     EXISTS (
       SELECT 1 FROM admins
       WHERE email = auth.jwt()->>'email'
-      AND is_active = true
     )
   );
 
@@ -312,7 +308,6 @@ CREATE POLICY "Admins can read performance_score_history"
     EXISTS (
       SELECT 1 FROM admins
       WHERE email = auth.jwt()->>'email'
-      AND is_active = true
     )
   );
 
