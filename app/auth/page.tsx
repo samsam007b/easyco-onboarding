@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import HoneypotField from '@/components/security/HoneypotField';
+import { validateHoneypotAndTiming } from '@/lib/security/honeypot';
 
 type AuthMode = 'login' | 'signup';
 
@@ -39,6 +41,12 @@ function AuthContent() {
   const [referralCodeStatus, setReferralCodeStatus] = useState<'idle' | 'validating' | 'valid' | 'invalid'>('idle');
   const [referrerName, setReferrerName] = useState<string | null>(null);
   const [showReferralInput, setShowReferralInput] = useState(false);
+
+  // Honeypot for bot protection
+  const [formLoadTime, setFormLoadTime] = useState(0);
+  const handleFormLoadTime = useCallback((timestamp: number) => {
+    setFormLoadTime(timestamp);
+  }, []);
 
   const supabase = createClient();
 
@@ -216,6 +224,21 @@ function AuthContent() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Bot protection - validate honeypot
+    const honeypotInput = document.getElementById('hp_website') as HTMLInputElement;
+    const honeypotValue = honeypotInput?.value || '';
+    const botCheck = validateHoneypotAndTiming(honeypotValue, formLoadTime);
+
+    if (botCheck.isBot) {
+      // Silently reject bot submissions - don't give feedback
+      console.warn('[Security] Bot submission blocked:', botCheck.reason);
+      // Show generic success to avoid giving bots feedback
+      toast.success(t('auth.signup.success.accountCreated'), {
+        description: t('auth.signup.success.checkEmail'),
+      });
+      return;
+    }
 
     // Validation
     if (!fullName.trim()) {
@@ -413,6 +436,9 @@ function AuthContent() {
 
             {/* Email/Password Form */}
             <form onSubmit={mode === 'login' ? handleLogin : handleSignup} className="space-y-4">
+              {/* Honeypot for bot detection */}
+              <HoneypotField onLoadTime={handleFormLoadTime} />
+
               {/* Full Name (Signup only) */}
               {mode === 'signup' && (
                 <div>

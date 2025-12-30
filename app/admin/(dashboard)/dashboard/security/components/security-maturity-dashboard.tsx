@@ -224,7 +224,7 @@ const SECURITY_CATEGORIES: SecurityCategory[] = [
       {
         id: 'net-1',
         name: 'Rate Limiting avec Circuit Breaker',
-        description: 'Protection contre les attaques par force brute avec fallback in-memory',
+        description: 'Protection contre les attaques par force brute avec fallback in-memory. Appliqué sur auth, API assistant (30 req/min), et routes sensibles.',
         status: 'completed',
         isFree: true,
         priority: 'critical'
@@ -232,10 +232,18 @@ const SECURITY_CATEGORIES: SecurityCategory[] = [
       {
         id: 'net-2',
         name: 'Headers de sécurité HTTP',
-        description: 'CSP, X-Frame-Options, X-Content-Type-Options, HSTS',
+        description: 'CSP renforcé (object-src none, upgrade-insecure-requests), HSTS, X-Frame-Options DENY, Permissions-Policy',
         status: 'completed',
         isFree: true,
         priority: 'high'
+      },
+      {
+        id: 'net-7',
+        name: 'Protection Honeypot Anti-Bot',
+        description: 'Champs honeypot cachés + validation timing sur formulaires d\'inscription. Bloque les bots automatisés.',
+        status: 'completed',
+        isFree: true,
+        priority: 'medium'
       },
       {
         id: 'net-3',

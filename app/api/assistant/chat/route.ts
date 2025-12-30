@@ -22,6 +22,19 @@ import {
   type ChatMessage,
 } from '@/lib/services/assistant';
 import { type UserContext, DEFAULT_USER_CONTEXT } from '@/lib/services/assistant/faq-system';
+import { checkRateLimit, getClientIdentifier } from '@/lib/security/rate-limiter';
+
+// =====================================================
+// RATE LIMIT CONFIG FOR ASSISTANT
+// =====================================================
+const ASSISTANT_RATE_LIMITS = {
+  // Per user: 30 messages per minute
+  perUser: { limit: 30, window: 60 },
+  // Per IP (unauthenticated): 10 messages per minute
+  perIP: { limit: 10, window: 60 },
+  // Burst protection: 5 messages per 5 seconds
+  burst: { limit: 5, window: 5 },
+};
 
 // =====================================================
 // USER CONTEXT BUILDER
@@ -534,6 +547,41 @@ export async function POST(req: Request) {
   const startTime = Date.now();
 
   try {
+    // =====================================================
+    // RATE LIMITING
+    // =====================================================
+    const clientIP = getClientIdentifier(req);
+
+    // Check burst rate limit first (prevents spam)
+    const burstCheck = await checkRateLimit(
+      clientIP,
+      'assistant-burst',
+      ASSISTANT_RATE_LIMITS.burst.limit,
+      ASSISTANT_RATE_LIMITS.burst.window
+    );
+
+    if (!burstCheck.success) {
+      console.log(`[Assistant API] Burst rate limit exceeded for ${clientIP}`);
+      return createErrorStreamResponse(
+        'Veuillez patienter quelques secondes avant de renvoyer un message.'
+      );
+    }
+
+    // Check per-IP rate limit
+    const ipCheck = await checkRateLimit(
+      clientIP,
+      'assistant-ip',
+      ASSISTANT_RATE_LIMITS.perIP.limit,
+      ASSISTANT_RATE_LIMITS.perIP.window
+    );
+
+    if (!ipCheck.success) {
+      console.log(`[Assistant API] IP rate limit exceeded for ${clientIP}`);
+      return createErrorStreamResponse(
+        'Vous avez atteint la limite de messages. Veuillez réessayer dans une minute.'
+      );
+    }
+
     const { messages, forceProvider } = await req.json();
 
     // Extract last user message
@@ -553,6 +601,23 @@ export async function POST(req: Request) {
 
     // Build personalized user context (fetches from Supabase)
     const userContext = await buildUserContext();
+
+    // Check per-user rate limit (stricter for authenticated users)
+    if (userContext.userId) {
+      const userCheck = await checkRateLimit(
+        userContext.userId,
+        'assistant-user',
+        ASSISTANT_RATE_LIMITS.perUser.limit,
+        ASSISTANT_RATE_LIMITS.perUser.window
+      );
+
+      if (!userCheck.success) {
+        console.log(`[Assistant API] User rate limit exceeded for ${userContext.userId}`);
+        return createErrorStreamResponse(
+          'Vous avez atteint la limite de messages. Veuillez réessayer dans une minute.'
+        );
+      }
+    }
 
     // Convert to our ChatMessage format - safely extract content
     const conversationHistory: ChatMessage[] = messages.slice(0, -1).map((m: any) => ({
