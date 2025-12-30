@@ -375,184 +375,199 @@ export default function HubMembersPage() {
           </motion.div>
         </motion.div>
 
-        {/* Members Grid - V2 Fun */}
+        {/* Members Grid - V2 Fun Redesigned */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {members.map((member) => (
-            <motion.div
-              key={member.id}
-              variants={itemVariants}
-              whileHover={{ scale: 1.02, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden border-2 border-transparent hover:border-orange-100 cursor-pointer"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
-            >
-              {/* Member Header */}
-              <div
-                className="p-6 text-white relative overflow-hidden"
+          {members.map((member) => {
+            const isOwner = member.role === 'owner';
+            const cardGradient = isOwner
+              ? { bg: '#f5f3ff', bgEnd: '#ede9fe', accent: '#8b5cf6', accentEnd: '#a78bfa', shadow: 'rgba(139, 92, 246, 0.2)' }
+              : { bg: '#fff5f3', bgEnd: '#ffe8e0', accent: '#ee5736', accentEnd: '#ff8017', shadow: 'rgba(238, 87, 54, 0.2)' };
+
+            return (
+              <motion.div
+                key={member.id}
+                variants={itemVariants}
+                whileHover={{ scale: 1.02, y: -6 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative overflow-hidden rounded-2xl cursor-pointer"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  background: `linear-gradient(135deg, ${cardGradient.bg} 0%, ${cardGradient.bgEnd} 100%)`,
+                  boxShadow: `0 12px 32px ${cardGradient.shadow}`,
                 }}
               >
-                {/* Shine effect */}
-                <motion.div
-                  className="absolute inset-0 bg-white/10"
-                  animate={{ opacity: [0, 0.2, 0] }}
-                  transition={{ repeat: Infinity, duration: 3 }}
+                {/* Decorative circle */}
+                <div
+                  className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-20"
+                  style={{ background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})` }}
                 />
-                <div className="flex items-center gap-4 mb-4 relative z-10">
-                  {member.avatar ? (
-                    <motion.img
-                      whileHover={{ scale: 1.1 }}
-                      src={member.avatar}
-                      alt={member.name}
-                      className="w-16 h-16 rounded-full border-4 border-white/30 object-cover shadow-lg"
-                    />
-                  ) : (
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      className="w-16 h-16 rounded-full border-4 border-white/30 bg-white/20 flex items-center justify-center text-2xl font-bold shadow-lg"
-                    >
-                      {member.name.charAt(0)}
-                    </motion.div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold">{member.name}</h3>
-                    <Badge
-                      className="mt-1 border-none font-semibold flex items-center gap-1"
-                      style={{
-                        background: member.role === 'owner'
-                          ? 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)'
-                          : 'rgba(255,255,255,0.25)',
-                        color: 'white',
-                      }}
-                    >
-                      {member.role === 'owner' ? (
-                        <><Crown className="w-3 h-3" /> Propriétaire</>
+
+                {/* Card Content */}
+                <div className="relative z-10 p-5">
+                  {/* Header with Avatar */}
+                  <div className="flex items-start gap-4 mb-4">
+                    {/* Avatar */}
+                    <motion.div whileHover={{ scale: 1.05 }} className="relative">
+                      {member.avatar ? (
+                        <img
+                          src={member.avatar}
+                          alt={member.name}
+                          className="w-14 h-14 rounded-xl object-cover shadow-lg"
+                          style={{ boxShadow: `0 4px 12px ${cardGradient.shadow}` }}
+                        />
                       ) : (
-                        <><Home className="w-3 h-3" /> Résident</>
-                      )}
-                    </Badge>
-                  </div>
-                </div>
-
-                {member.bio && (
-                  <p
-                    className="text-sm line-clamp-2 relative z-10"
-                    style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                  >
-                    {member.bio}
-                  </p>
-                )}
-              </div>
-
-              {/* Member Details */}
-              <div className="p-6">
-                {/* Contact Info */}
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center gap-3 text-sm">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center"
-                      style={{ background: 'rgba(238, 87, 54, 0.1)' }}
-                    >
-                      <Mail className="w-4 h-4" style={{ color: '#ee5736' }} />
-                    </div>
-                    <span className="text-gray-700 font-medium">{member.email}</span>
-                  </div>
-
-                  {member.phone && (
-                    <div className="flex items-center gap-3 text-sm">
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
-                        style={{ background: 'rgba(238, 87, 54, 0.1)' }}
-                      >
-                        <Phone className="w-4 h-4" style={{ color: '#ee5736' }} />
-                      </div>
-                      <span className="text-gray-700 font-medium">{member.phone}</span>
-                    </div>
-                  )}
-
-                  {member.occupation && (
-                    <div className="flex items-center gap-3 text-sm">
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
-                        style={{ background: 'rgba(238, 87, 54, 0.1)' }}
-                      >
-                        <Briefcase className="w-4 h-4" style={{ color: '#ee5736' }} />
-                      </div>
-                      <span className="text-gray-700 font-medium">{member.occupation}</span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center"
-                      style={{ background: 'rgba(238, 87, 54, 0.1)' }}
-                    >
-                      <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
-                    </div>
-                    <span className="text-gray-700 font-medium">
-                      Depuis{' '}
-                      {new Date(member.moveInDate).toLocaleDateString('fr-FR', {
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Interests */}
-                {member.interests && member.interests.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3" /> Centres d'intérêt
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {member.interests.map((interest, idx) => (
-                        <Badge
-                          key={idx}
-                          className="border-none bg-orange-100 text-orange-700 text-xs font-semibold"
+                        <div
+                          className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg"
+                          style={{
+                            background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                            boxShadow: `0 4px 12px ${cardGradient.shadow}`,
+                          }}
                         >
-                          {interest}
-                        </Badge>
-                      ))}
+                          {member.name.charAt(0)}
+                        </div>
+                      )}
+                      {/* Online indicator */}
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white" />
+                    </motion.div>
+
+                    {/* Name & Role */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-bold text-gray-900 truncate">{member.name}</h3>
+                      <Badge
+                        className="mt-1 text-xs font-semibold border-none text-white flex items-center gap-1 w-fit"
+                        style={{
+                          background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                        }}
+                      >
+                        {isOwner ? (
+                          <><Crown className="w-3 h-3" /> Propriétaire</>
+                        ) : (
+                          <><Home className="w-3 h-3" /> Résident</>
+                        )}
+                      </Badge>
                     </div>
                   </div>
-                )}
 
-                {/* Actions */}
-                <div className="flex gap-2 pt-4 border-t border-gray-100">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                    <Button
-                      onClick={() => router.push('/messages')}
-                      className="w-full rounded-full text-white font-semibold hover:shadow-lg transition-all border-none"
-                      size="sm"
-                      style={{
-                        background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                        boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
-                      }}
-                    >
-                      <MessageCircle className="w-4 h-4 mr-2" />
-                      Message
-                    </Button>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-full border-2 border-pink-200 text-pink-500 hover:bg-pink-50 hover:border-pink-300"
-                    >
-                      <Heart className="w-4 h-4" />
-                    </Button>
-                  </motion.div>
+                  {/* Bio */}
+                  {member.bio && (
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-4 leading-relaxed">
+                      {member.bio}
+                    </p>
+                  )}
+
+                  {/* Contact Info - Compact Grid */}
+                  <div className="space-y-2.5 mb-4">
+                    <div className="flex items-center gap-2.5 text-sm">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center"
+                        style={{ background: `${cardGradient.accent}15` }}
+                      >
+                        <Mail className="w-3.5 h-3.5" style={{ color: cardGradient.accent }} />
+                      </div>
+                      <span className="text-gray-700 font-medium truncate text-sm">{member.email}</span>
+                    </div>
+
+                    {member.phone && (
+                      <div className="flex items-center gap-2.5 text-sm">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center"
+                          style={{ background: 'rgba(34, 197, 94, 0.1)' }}
+                        >
+                          <Phone className="w-3.5 h-3.5 text-emerald-500" />
+                        </div>
+                        <span className="text-gray-700 font-medium text-sm">{member.phone}</span>
+                      </div>
+                    )}
+
+                    {member.occupation && (
+                      <div className="flex items-center gap-2.5 text-sm">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center"
+                          style={{ background: 'rgba(59, 130, 246, 0.1)' }}
+                        >
+                          <Briefcase className="w-3.5 h-3.5 text-blue-500" />
+                        </div>
+                        <span className="text-gray-700 font-medium text-sm">{member.occupation}</span>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2.5 text-sm">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center"
+                        style={{ background: 'rgba(168, 85, 247, 0.1)' }}
+                      >
+                        <Calendar className="w-3.5 h-3.5 text-purple-500" />
+                      </div>
+                      <span className="text-gray-700 font-medium text-sm">
+                        Depuis{' '}
+                        {new Date(member.moveInDate).toLocaleDateString('fr-FR', {
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Interests */}
+                  {member.interests && member.interests.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" style={{ color: cardGradient.accent }} /> Centres d'intérêt
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {member.interests.map((interest, idx) => (
+                          <Badge
+                            key={idx}
+                            className="text-xs font-medium border-none px-2 py-0.5"
+                            style={{
+                              background: `${cardGradient.accent}15`,
+                              color: cardGradient.accent,
+                            }}
+                          >
+                            {interest}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex gap-2 pt-3 border-t border-gray-200/50">
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push('/messages');
+                        }}
+                        className="w-full h-9 rounded-xl text-white font-semibold text-sm shadow-md"
+                        style={{
+                          background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                          boxShadow: `0 4px 12px ${cardGradient.shadow}`,
+                        }}
+                      >
+                        <MessageCircle className="w-4 h-4 mr-1.5" />
+                        Message
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => e.stopPropagation()}
+                        className="h-9 w-9 rounded-xl bg-white/80 hover:bg-white text-pink-500 hover:text-pink-600 shadow-sm"
+                      >
+                        <Heart className="w-4 h-4" />
+                      </Button>
+                    </motion.div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* Empty State - V2 Fun */}
