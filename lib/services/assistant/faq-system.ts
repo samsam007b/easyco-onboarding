@@ -405,11 +405,13 @@ function getReferralEncouragement(ctx: UserContext): string {
 
 const INTENT_PATTERNS: IntentPattern[] = [
   // Greeting (highest priority for UX)
+  // Note: Uses \s* after ^ to handle emojis at the start (emojis are stripped, leaving spaces)
   {
     intent: 'greeting',
     patterns: [
-      /^(salut|bonjour|hello|hi|hey|coucou|bonsoir)/i,
-      /^(ca va|ça va|comment ça va|comment vas-tu)/i,
+      /^[\s\p{Emoji}]*(salut|bonjour|hello|hi|hey|coucou|bonsoir)/iu,
+      /^[\s\p{Emoji}]*(ca va|ça va|comment ça va|comment vas-tu)/iu,
+      /(salut|bonjour|hello|hi|hey|coucou)[\s!?.]*$/i, // Greeting at end of message
     ],
     keywords: ['salut', 'bonjour', 'hello', 'hi', 'hey', 'coucou'],
     priority: 100,
@@ -703,17 +705,19 @@ const INTENT_PATTERNS: IntentPattern[] = [
     priority: 55,
   },
 
-  // Support/Contact
+  // Support/Contact - HIGH PRIORITY for escalation detection
   {
     intent: 'support',
     patterns: [
       /(support|contact|contacter|équipe|service client)/i,
-      /(parler|écrire).*(humain|quelqu'un|support)/i,
-      /(pas|ne).*(résolu|aidé|compris)/i,
+      /(parler|écrire).*(humain|quelqu'un|personne|agent|support)/i,
+      /(pas|ne).*(résolu|aidé|compris|comprend|fonctionne)/i,
       /escalader|réclamation/i,
+      /(chatbot|bot|robot|ia|assistant).*(ne|pas).*(compren|résou|aide)/i,
+      /(besoin|vouloir|voudrais).*(humain|aide|vraie|réel)/i,
     ],
-    keywords: ['support', 'contact', 'équipe', 'humain', 'aide', 'réclamation', 'problème'],
-    priority: 45,
+    keywords: ['support', 'contact', 'équipe', 'humain', 'aide', 'réclamation', 'problème', 'escalade', 'agent'],
+    priority: 68, // Higher than messaging (65) to catch escalation requests
   },
 
   // Tips/Advice
@@ -1977,7 +1981,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.90,
       suggestedActions: [
-        { type: 'navigate', label: 'Gérer mes notifications', value: '/settings/notifications' },
+        { type: 'navigate', label: 'Gérer mes notifications', value: '/dashboard/settings/preferences' },
       ],
     };
   },

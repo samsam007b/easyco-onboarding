@@ -367,7 +367,7 @@ Pages disponibles:
 - /messages : Messagerie
 - /profile : Mon profil
 - /settings : Paramètres
-- /settings/notifications : Notifications
+- /dashboard/settings/preferences : Notifications et alertes
 - /settings/subscription : Abonnement
 - /referral : Programme de parrainage
 - /help : Centre d'aide
@@ -492,7 +492,7 @@ function getFAQOnlyFallbackResponse(
       message: `La messagerie IzzIco vous permet de communiquer en toute sécurité avec les autres utilisateurs.\n\nVous recevrez une notification pour chaque nouveau message.`,
       suggestedActions: [
         { type: 'navigate', label: 'Mes messages', value: '/messages' },
-        { type: 'navigate', label: 'Notifications', value: '/settings/notifications' },
+        { type: 'navigate', label: 'Notifications', value: '/dashboard/settings/preferences' },
       ],
     },
     property: {

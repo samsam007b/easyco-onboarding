@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -21,15 +21,18 @@ import {
   Star,
   Lightbulb,
   ThumbsUp,
+  ThumbsDown,
   MessageSquarePlus,
   ChevronDown,
   Bug,
   Zap,
   Heart,
+  Check,
 } from 'lucide-react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { useAssistantConversation } from '@/hooks/useAssistantConversation';
 import {
   parseActionsFromResponse,
@@ -43,51 +46,6 @@ interface SuggestedAction {
   label: string;
   prompt: string;
 }
-
-const suggestedActions: SuggestedAction[] = [
-  {
-    icon: HelpCircle,
-    label: 'Comment ça marche ?',
-    prompt: 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalités principales.',
-  },
-  {
-    icon: Search,
-    label: 'Trouver une coloc',
-    prompt: 'Comment puis-je trouver une colocation qui me correspond ?',
-  },
-  {
-    icon: Filter,
-    label: 'Configurer mes filtres',
-    prompt: 'Aide-moi à configurer mes filtres de recherche pour trouver le logement idéal.',
-  },
-  {
-    icon: Settings,
-    label: 'Paramètres',
-    prompt: 'Comment modifier mes paramètres de notification et de confidentialité ?',
-  },
-];
-
-// Feedback prompts shown after conversations
-const feedbackPrompts = [
-  {
-    icon: Lightbulb,
-    label: 'Une idée ?',
-    type: 'suggestion' as const,
-    color: 'from-amber-500 to-orange-500',
-  },
-  {
-    icon: Bug,
-    label: 'Un problème ?',
-    type: 'bug' as const,
-    color: 'from-red-500 to-pink-500',
-  },
-  {
-    icon: Zap,
-    label: 'Amélioration ?',
-    type: 'improvement' as const,
-    color: 'from-blue-500 to-cyan-500',
-  },
-];
 
 // Tool result action handler
 interface ToolResult {
@@ -106,12 +64,69 @@ type SuggestionCategory = 'ui_ux' | 'new_feature' | 'improvement' | 'integration
 const AssistantButton = memo(function AssistantButton() {
   const router = useRouter();
   const pathname = usePathname();
+  const { getSection } = useLanguage();
+  const assistant = getSection('assistant');
+
+  // Dynamic suggested actions based on language
+  const localSuggestedActions: SuggestedAction[] = [
+    {
+      icon: HelpCircle,
+      label: assistant?.suggestedActions?.howItWorks || 'Comment ça marche ?',
+      prompt: assistant?.suggestedActions?.howItWorksPrompt || 'Comment fonctionne IzzIco ? Explique-moi les fonctionnalités principales.',
+    },
+    {
+      icon: Search,
+      label: assistant?.suggestedActions?.findRoommate || 'Trouver une coloc',
+      prompt: assistant?.suggestedActions?.findRoommatePrompt || 'Comment puis-je trouver une colocation qui me correspond ?',
+    },
+    {
+      icon: Filter,
+      label: assistant?.suggestedActions?.configureFilters || 'Configurer mes filtres',
+      prompt: assistant?.suggestedActions?.configureFiltersPrompt || 'Aide-moi à configurer mes filtres de recherche pour trouver le logement idéal.',
+    },
+    {
+      icon: Settings,
+      label: assistant?.suggestedActions?.settings || 'Paramètres',
+      prompt: assistant?.suggestedActions?.settingsPrompt || 'Comment modifier mes paramètres de notification et de confidentialité ?',
+    },
+  ];
+
+  // Dynamic feedback prompts based on language
+  const localFeedbackPrompts = [
+    {
+      icon: Lightbulb,
+      label: assistant?.feedbackPrompts?.idea || 'Une idée ?',
+      type: 'suggestion' as const,
+      color: 'from-amber-500 to-orange-500',
+    },
+    {
+      icon: Bug,
+      label: assistant?.feedbackPrompts?.problem || 'Un problème ?',
+      type: 'bug' as const,
+      color: 'from-red-500 to-pink-500',
+    },
+    {
+      icon: Zap,
+      label: assistant?.feedbackPrompts?.improvement || 'Amélioration ?',
+      type: 'improvement' as const,
+      color: 'from-blue-500 to-cyan-500',
+    },
+  ];
+
   const [isOpen, setIsOpen] = useState(false);
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [pendingAction, setPendingAction] = useState<ToolResult | null>(null);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Inline satisfaction rating state - tracks which message IDs have been rated
+  const [ratedMessages, setRatedMessages] = useState<Set<string>>(new Set());
+  const [ratingSubmitting, setRatingSubmitting] = useState<string | null>(null);
+
+  // Persistence key for localStorage
+  const STORAGE_KEY = 'assistant_state';
+  const isInitialized = useRef(false);
 
   // Action system (optional - works even if provider not present)
   const actionContext = useOptionalAssistantActions();
@@ -168,6 +183,20 @@ const AssistantButton = memo(function AssistantButton() {
         console.log('[AssistantButton] Parsed actions:', actions);
         setPendingAssistantActions(actions);
 
+        // Check if any action involves navigation - if so, ensure we persist open state
+        const hasNavigateAction = actions.some(a => a.type === 'navigate');
+        if (hasNavigateAction) {
+          // Pre-save open state before navigation
+          try {
+            const state = {
+              isOpen: true,
+              ratedMessages: [],
+              timestamp: Date.now(),
+            };
+            localStorage.setItem('assistant_state', JSON.stringify(state));
+          } catch {}
+        }
+
         // Execute actions with slight delay for UX
         setTimeout(async () => {
           try {
@@ -197,7 +226,7 @@ const AssistantButton = memo(function AssistantButton() {
         setPendingAction({
           action: 'navigate',
           path: args.path,
-          message: `Naviguer vers ${args.description}`,
+          message: `${assistant?.navigateTo || 'Naviguer vers'} ${args.description}`,
         });
       }
     },
@@ -205,11 +234,92 @@ const AssistantButton = memo(function AssistantButton() {
 
   const isLoading = status === 'submitted' || status === 'streaming';
 
-  // Execute pending navigation action
+  // =====================================================
+  // PERSISTENCE: Restore and save conversation state
+  // =====================================================
+
+  // Restore state from localStorage on mount
+  useEffect(() => {
+    if (isInitialized.current) return;
+    isInitialized.current = true;
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const state = JSON.parse(stored);
+        // Only restore if state is recent (less than 30 minutes old)
+        const thirtyMinutes = 30 * 60 * 1000;
+        if (state.timestamp && Date.now() - state.timestamp < thirtyMinutes) {
+          if (state.isOpen) {
+            setIsOpen(true);
+          }
+          if (state.ratedMessages) {
+            setRatedMessages(new Set(state.ratedMessages));
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('[AssistantButton] Failed to restore state:', error);
+    }
+  }, []);
+
+  // Save state to localStorage whenever relevant state changes
+  useEffect(() => {
+    if (!isInitialized.current) return;
+
+    try {
+      const state = {
+        isOpen,
+        ratedMessages: Array.from(ratedMessages),
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.warn('[AssistantButton] Failed to save state:', error);
+    }
+  }, [isOpen, ratedMessages]);
+
+  // =====================================================
+  // INLINE SATISFACTION RATING
+  // =====================================================
+
+  const handleInlineRating = useCallback(async (messageId: string, isHelpful: boolean) => {
+    if (ratedMessages.has(messageId)) return;
+
+    setRatingSubmitting(messageId);
+
+    try {
+      // Submit feedback via the tracking API
+      await submitFeedback({
+        rating: isHelpful ? 5 : 1,
+        text: isHelpful ? 'Réponse utile (pouce levé)' : 'Réponse non satisfaisante (pouce baissé)',
+        type: isHelpful ? 'praise' : 'complaint',
+      });
+
+      // Mark message as rated
+      setRatedMessages(prev => new Set(prev).add(messageId));
+    } catch (error) {
+      console.warn('[AssistantButton] Failed to submit inline rating:', error);
+    } finally {
+      setRatingSubmitting(null);
+    }
+  }, [ratedMessages, submitFeedback]);
+
+  // Execute pending navigation action - KEEP ASSISTANT OPEN
   const executeAction = () => {
     if (pendingAction?.action === 'navigate' && pendingAction.path) {
+      // Save current state before navigation so it persists
+      try {
+        const state = {
+          isOpen: true, // Keep open after navigation
+          ratedMessages: Array.from(ratedMessages),
+          timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch {}
+
       router.push(pendingAction.path);
-      setIsOpen(false);
+      // DON'T close the assistant - keep it open for continuity
       setPendingAction(null);
     }
   };
@@ -246,6 +356,12 @@ const AssistantButton = memo(function AssistantButton() {
     setRating(0);
     setFeedbackText('');
     setShowFeedbackPrompt(false);
+
+    // Clear persistence state when user explicitly closes
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      setRatedMessages(new Set());
+    } catch {}
   };
 
   const handleSuggestedAction = async (prompt: string) => {
@@ -347,7 +463,7 @@ const AssistantButton = memo(function AssistantButton() {
           'focus:outline-none focus:ring-4 focus:ring-purple-300',
           isOpen && 'hidden'
         )}
-        aria-label="Ouvrir l'assistant IzzIco"
+        aria-label={assistant?.openAssistant || "Ouvrir l'assistant IzzIco"}
       >
         <MessageCircle className="w-6 h-6 text-white" />
 
@@ -387,16 +503,16 @@ const AssistantButton = memo(function AssistantButton() {
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">Assistant IzzIco</h3>
+                  <h3 className="text-white font-semibold">{assistant?.title || 'Assistant IzzIco'}</h3>
                   <p className="text-white/80 text-xs">
-                    {pathname ? `Page: ${pathname.split('/').pop() || 'accueil'}` : 'Je suis là pour vous aider'}
+                    {pathname ? `${assistant?.page || 'Page'}: ${pathname.split('/').pop() || assistant?.home || 'accueil'}` : assistant?.hereToHelp || 'Je suis là pour vous aider'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={handleClose}
                 className="p-2 hover:bg-white/20 rounded-full transition"
-                aria-label="Fermer l'assistant"
+                aria-label={assistant?.closeAssistant || "Fermer l'assistant"}
               >
                 <X className="w-5 h-5 text-white" />
               </button>
@@ -414,24 +530,24 @@ const AssistantButton = memo(function AssistantButton() {
                     <div className="flex-1">
                       <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm">
                         <p className="text-gray-800 text-sm">
-                          Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider à :
+                          {assistant?.welcome?.greeting || "Bonjour ! Je suis l'assistant IzzIco. Je peux vous aider à :"}
                         </p>
                         <ul className="mt-2 space-y-1 text-sm text-gray-600">
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Comprendre les fonctionnalités
+                            {assistant?.welcome?.helpItem1 || 'Comprendre les fonctionnalités'}
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Configurer vos filtres de recherche
+                            {assistant?.welcome?.helpItem2 || 'Configurer vos filtres de recherche'}
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Naviguer dans l'application
+                            {assistant?.welcome?.helpItem3 || "Naviguer dans l'application"}
                           </li>
                           <li className="flex items-center gap-2">
                             <ArrowRight className="w-3 h-3 text-purple-500" />
-                            Modifier vos paramètres
+                            {assistant?.welcome?.helpItem4 || 'Modifier vos paramètres'}
                           </li>
                         </ul>
                       </div>
@@ -440,10 +556,10 @@ const AssistantButton = memo(function AssistantButton() {
                       <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
                         <div className="flex items-center gap-2 text-amber-700">
                           <Lightbulb className="w-4 h-4" />
-                          <span className="text-xs font-medium">Votre avis compte !</span>
+                          <span className="text-xs font-medium">{assistant?.welcome?.opinionMatters || 'Votre avis compte !'}</span>
                         </div>
                         <p className="text-xs text-amber-600 mt-1">
-                          N'hésitez pas à me partager vos idées d'amélioration ou les fonctionnalités que vous aimeriez voir.
+                          {assistant?.welcome?.shareIdeas || "N'hésitez pas à me partager vos idées d'amélioration ou les fonctionnalités que vous aimeriez voir."}
                         </p>
                       </div>
                     </div>
@@ -451,7 +567,7 @@ const AssistantButton = memo(function AssistantButton() {
 
                   {/* Suggested Actions */}
                   <div className="grid grid-cols-2 gap-2">
-                    {suggestedActions.map((action, index) => (
+                    {localSuggestedActions.map((action, index) => (
                       <button
                         key={index}
                         onClick={() => handleSuggestedAction(action.prompt)}
@@ -484,46 +600,98 @@ const AssistantButton = memo(function AssistantButton() {
                     )}
                   >
                     <MessageSquarePlus className="w-4 h-4" />
-                    Proposer une idée ou amélioration
+                    {assistant?.proposeIdea || 'Proposer une idée ou amélioration'}
                   </button>
                 </div>
               )}
 
               {/* Chat Messages */}
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    'flex gap-3',
-                    message.role === 'user' && 'flex-row-reverse'
-                  )}
-                >
-                  <div
-                    className={cn(
-                      'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                      message.role === 'user'
-                        ? 'bg-gradient-to-br from-orange-500 to-amber-500'
-                        : 'bg-gradient-to-br from-purple-500 to-indigo-500'
-                    )}
-                  >
-                    {message.role === 'user' ? (
-                      <User className="w-4 h-4 text-white" />
-                    ) : (
-                      <Bot className="w-4 h-4 text-white" />
+              {messages.map((message, index) => {
+                const messageId = message.id || `msg-${index}`;
+                const isAssistant = message.role === 'assistant';
+                const isRated = ratedMessages.has(messageId);
+                const isSubmitting = ratingSubmitting === messageId;
+
+                return (
+                  <div key={messageId} className="space-y-2">
+                    <div
+                      className={cn(
+                        'flex gap-3',
+                        message.role === 'user' && 'flex-row-reverse'
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
+                          message.role === 'user'
+                            ? 'bg-gradient-to-br from-orange-500 to-amber-500'
+                            : 'bg-gradient-to-br from-purple-500 to-indigo-500'
+                        )}
+                      >
+                        {message.role === 'user' ? (
+                          <User className="w-4 h-4 text-white" />
+                        ) : (
+                          <Bot className="w-4 h-4 text-white" />
+                        )}
+                      </div>
+                      <div
+                        className={cn(
+                          'max-w-[80%] rounded-2xl p-3 shadow-sm',
+                          message.role === 'user'
+                            ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-tr-sm'
+                            : 'bg-white text-gray-800 rounded-tl-sm'
+                        )}
+                      >
+                        <p className="text-sm whitespace-pre-wrap">{getMessageText(message)}</p>
+                      </div>
+                    </div>
+
+                    {/* Inline satisfaction rating for assistant messages */}
+                    {isAssistant && !isLoading && (
+                      <div className="flex items-center gap-2 ml-11">
+                        {isRated ? (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex items-center gap-1 text-xs text-green-600"
+                          >
+                            <Check className="w-3 h-3" />
+                            <span>{assistant?.feedback?.thankYou || 'Merci !'}</span>
+                          </motion.div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-gray-400 mr-1">
+                              {assistant?.feedback?.wasHelpful || 'Utile ?'}
+                            </span>
+                            <button
+                              onClick={() => handleInlineRating(messageId, true)}
+                              disabled={isSubmitting}
+                              className={cn(
+                                'p-1.5 rounded-full transition hover:bg-green-50',
+                                isSubmitting && 'opacity-50 cursor-not-allowed'
+                              )}
+                              aria-label={assistant?.feedback?.helpful || 'Utile'}
+                            >
+                              <ThumbsUp className="w-3.5 h-3.5 text-gray-400 hover:text-green-600" />
+                            </button>
+                            <button
+                              onClick={() => handleInlineRating(messageId, false)}
+                              disabled={isSubmitting}
+                              className={cn(
+                                'p-1.5 rounded-full transition hover:bg-red-50',
+                                isSubmitting && 'opacity-50 cursor-not-allowed'
+                              )}
+                              aria-label={assistant?.feedback?.notHelpful || 'Pas utile'}
+                            >
+                              <ThumbsDown className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
-                  <div
-                    className={cn(
-                      'max-w-[80%] rounded-2xl p-3 shadow-sm',
-                      message.role === 'user'
-                        ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-tr-sm'
-                        : 'bg-white text-gray-800 rounded-tl-sm'
-                    )}
-                  >
-                    <p className="text-sm whitespace-pre-wrap">{getMessageText(message)}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Loading indicator */}
               {isLoading && (
@@ -534,7 +702,7 @@ const AssistantButton = memo(function AssistantButton() {
                   <div className="bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
-                      <span className="text-sm text-gray-500">Réflexion en cours...</span>
+                      <span className="text-sm text-gray-500">{assistant?.thinking || 'Réflexion en cours...'}</span>
                     </div>
                   </div>
                 </div>
@@ -550,7 +718,7 @@ const AssistantButton = memo(function AssistantButton() {
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="w-4 h-4 text-indigo-600" />
                     <span className="text-sm font-medium text-indigo-900">
-                      {executedActions.length > 0 ? 'Actions effectuées' : 'Actions en cours...'}
+                      {executedActions.length > 0 ? (assistant?.actionsCompleted || 'Actions effectuées') : (assistant?.actionsInProgress || 'Actions en cours...')}
                     </span>
                   </div>
                   <div className="space-y-1">
@@ -587,7 +755,7 @@ const AssistantButton = memo(function AssistantButton() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-5 h-5 text-purple-600" />
-                    <span className="font-medium text-gray-900">Action suggérée</span>
+                    <span className="font-medium text-gray-900">{assistant?.suggestedAction || 'Action suggérée'}</span>
                   </div>
                   <p className="text-sm text-gray-700 mb-3">{pendingAction.message}</p>
                   <div className="flex gap-2">
@@ -596,13 +764,13 @@ const AssistantButton = memo(function AssistantButton() {
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition text-sm"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Exécuter
+                      {assistant?.execute || 'Exécuter'}
                     </button>
                     <button
                       onClick={() => setPendingAction(null)}
                       className="px-4 py-2 bg-white text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition text-sm border border-gray-200"
                     >
-                      Ignorer
+                      {assistant?.ignore || 'Ignorer'}
                     </button>
                   </div>
                 </motion.div>
@@ -617,10 +785,10 @@ const AssistantButton = memo(function AssistantButton() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Heart className="w-5 h-5 text-pink-500" />
-                    <span className="font-medium text-gray-900">Votre avis nous intéresse !</span>
+                    <span className="font-medium text-gray-900">{assistant?.feedback?.weCareAboutYourOpinion || 'Votre avis nous intéresse !'}</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
-                    {feedbackPrompts.map((prompt, index) => (
+                    {localFeedbackPrompts.map((prompt, index) => (
                       <button
                         key={index}
                         onClick={() => {
@@ -656,7 +824,7 @@ const AssistantButton = memo(function AssistantButton() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
                 >
-                  <p className="text-sm font-medium text-gray-900 mb-3">Comment évaluez-vous cette conversation ?</p>
+                  <p className="text-sm font-medium text-gray-900 mb-3">{assistant?.feedback?.rateConversation || 'Comment évaluez-vous cette conversation ?'}</p>
                   <div className="flex justify-center gap-2 mb-3">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -678,7 +846,7 @@ const AssistantButton = memo(function AssistantButton() {
                   <textarea
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
-                    placeholder="Un commentaire ? (optionnel)"
+                    placeholder={assistant?.feedback?.commentOptional || 'Un commentaire ? (optionnel)'}
                     className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
                     rows={2}
                   />
@@ -693,13 +861,13 @@ const AssistantButton = memo(function AssistantButton() {
                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       )}
                     >
-                      Envoyer
+                      {assistant?.feedback?.send || 'Envoyer'}
                     </button>
                     <button
                       onClick={() => setFeedbackMode('none')}
                       className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm transition"
                     >
-                      Annuler
+                      {assistant?.feedback?.cancel || 'Annuler'}
                     </button>
                   </div>
                 </motion.div>
@@ -713,16 +881,16 @@ const AssistantButton = memo(function AssistantButton() {
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
                 >
                   <p className="text-sm font-medium text-gray-900 mb-3">
-                    Partagez votre idée ou suggestion !
+                    {assistant?.suggestion?.shareIdea || 'Partagez votre idée ou suggestion !'}
                   </p>
 
                   {/* Category selector */}
                   <div className="flex flex-wrap gap-2 mb-3">
                     {[
-                      { value: 'new_feature', label: 'Nouvelle fonctionnalité', icon: Sparkles },
-                      { value: 'improvement', label: 'Amélioration', icon: Zap },
-                      { value: 'ui_ux', label: 'Design/UX', icon: Heart },
-                      { value: 'other', label: 'Autre', icon: MessageCircle },
+                      { value: 'new_feature', label: assistant?.suggestion?.newFeature || 'Nouvelle fonctionnalité', icon: Sparkles },
+                      { value: 'improvement', label: assistant?.suggestion?.improvementLabel || 'Amélioration', icon: Zap },
+                      { value: 'ui_ux', label: assistant?.suggestion?.designUx || 'Design/UX', icon: Heart },
+                      { value: 'other', label: assistant?.suggestion?.other || 'Autre', icon: MessageCircle },
                     ].map((cat) => (
                       <button
                         key={cat.value}
@@ -743,7 +911,7 @@ const AssistantButton = memo(function AssistantButton() {
                   <textarea
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
-                    placeholder="Décrivez votre idée en détail... Que souhaiteriez-vous voir dans l'application ?"
+                    placeholder={assistant?.suggestion?.placeholder || "Décrivez votre idée en détail... Que souhaiteriez-vous voir dans l'application ?"}
                     className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
                     rows={4}
                   />
@@ -759,13 +927,13 @@ const AssistantButton = memo(function AssistantButton() {
                       )}
                     >
                       <Send className="w-4 h-4" />
-                      Envoyer ma suggestion
+                      {assistant?.suggestion?.sendSuggestion || 'Envoyer ma suggestion'}
                     </button>
                     <button
                       onClick={() => setFeedbackMode('none')}
                       className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm transition"
                     >
-                      Annuler
+                      {assistant?.feedback?.cancel || 'Annuler'}
                     </button>
                   </div>
                 </motion.div>
@@ -781,9 +949,9 @@ const AssistantButton = memo(function AssistantButton() {
                   <div className="w-12 h-12 mx-auto bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-3">
                     <ThumbsUp className="w-6 h-6 text-white" />
                   </div>
-                  <p className="font-medium text-green-800">Merci pour votre retour !</p>
+                  <p className="font-medium text-green-800">{assistant?.thanks?.title || 'Merci pour votre retour !'}</p>
                   <p className="text-sm text-green-600 mt-1">
-                    Votre avis nous aide à améliorer IzzIco.
+                    {assistant?.thanks?.description || 'Votre avis nous aide à améliorer IzzIco.'}
                   </p>
                 </motion.div>
               )}
@@ -799,7 +967,7 @@ const AssistantButton = memo(function AssistantButton() {
                   type="text"
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Posez votre question ou partagez une idée..."
+                  placeholder={assistant?.inputPlaceholder || 'Posez votre question ou partagez une idée...'}
                   className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
                   disabled={isLoading || feedbackMode !== 'none'}
                 />
@@ -812,7 +980,7 @@ const AssistantButton = memo(function AssistantButton() {
                       ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   )}
-                  aria-label="Envoyer"
+                  aria-label={assistant?.feedback?.send || 'Envoyer'}
                 >
                   <Send className="w-5 h-5" />
                 </button>
@@ -825,12 +993,12 @@ const AssistantButton = memo(function AssistantButton() {
                   className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition"
                 >
                   <Lightbulb className="w-3 h-3" />
-                  Une idée d'amélioration ?
+                  {assistant?.improvementIdea || "Une idée d'amélioration ?"}
                 </button>
               )}
 
               <p className="mt-2 text-xs text-gray-400 text-center">
-                Propulsé par IA • Vos retours améliorent IzzIco
+                {assistant?.footer || 'Propulsé par IA • Vos retours améliorent IzzIco'}
               </p>
             </form>
           </motion.div>

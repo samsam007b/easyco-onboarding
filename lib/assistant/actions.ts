@@ -307,7 +307,7 @@ export const NAVIGATION_PATHS = {
   // Profile & Settings
   profile: { path: '/profile', description: 'Mon profil' },
   settings: { path: '/settings', description: 'Paramètres' },
-  settings_notifications: { path: '/settings/notifications', description: 'Paramètres de notification' },
+  settings_notifications: { path: '/dashboard/settings/preferences', description: 'Paramètres de notification et alertes' },
   settings_subscription: { path: '/settings/subscription', description: 'Mon abonnement' },
   settings_security: { path: '/settings/security', description: 'Sécurité du compte' },
 

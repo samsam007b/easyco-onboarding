@@ -300,7 +300,7 @@ const assistantTools = {
     inputSchema: settingsSchema,
     execute: async ({ setting, action }) => {
       const settingPaths: Record<string, string> = {
-        notifications: '/settings/notifications',
+        notifications: '/dashboard/settings/preferences',
         privacy: '/settings/privacy',
         language: '/settings/language',
         theme: '/settings',
