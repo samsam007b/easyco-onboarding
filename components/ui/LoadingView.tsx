@@ -1,6 +1,7 @@
 'use client'
 
 import LoadingHouse from './LoadingHouse'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 interface LoadingViewProps {
   message?: string
@@ -9,10 +10,13 @@ interface LoadingViewProps {
 }
 
 export default function LoadingView({
-  message = 'Chargement...',
+  message,
   size = 'lg',
   fullScreen = false
 }: LoadingViewProps) {
+  const { getSection } = useLanguage();
+  const common = getSection('common');
+  const displayMessage = message ?? (common?.loading || 'Chargement...');
   const sizes = {
     sm: 40,
     md: 60,
@@ -27,8 +31,8 @@ export default function LoadingView({
     <div className={containerClass}>
       <div className="text-center">
         <LoadingHouse size={sizes[size]} className="mx-auto mb-6" />
-        {message && (
-          <p className="text-lg text-gray-600 animate-pulse">{message}</p>
+        {displayMessage && (
+          <p className="text-lg text-gray-600 animate-pulse">{displayMessage}</p>
         )}
       </div>
     </div>

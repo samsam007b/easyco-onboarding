@@ -40,6 +40,7 @@ import {
 import type { Property } from '@/types/property.types';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -55,6 +56,8 @@ interface DashboardStats {
 export default function ModernOwnerDashboard() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const owner = getSection('dashboard')?.owner;
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
@@ -138,11 +141,11 @@ export default function ModernOwnerDashboard() {
 
   // Generate real revenue data from properties
   const generateRevenueData = () => {
-    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const monthKeys = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] as const;
     const baseRevenue = stats.totalRevenue;
 
-    return months.map((month, index) => ({
-      month,
+    return monthKeys.map((key) => ({
+      month: owner?.months?.[key] || key.charAt(0).toUpperCase() + key.slice(1),
       revenue: Math.floor(baseRevenue * (0.7 + Math.random() * 0.4)),
       expenses: Math.floor(baseRevenue * (0.2 + Math.random() * 0.15)),
     }));
@@ -160,7 +163,7 @@ export default function ModernOwnerDashboard() {
 
   const kpiCards = [
     {
-      title: 'Revenus Mensuels',
+      title: owner?.monthlyRevenue || 'Revenus Mensuels',
       value: `€${stats.totalRevenue.toLocaleString()}`,
       change: stats.revenueChange,
       icon: DollarSign,
@@ -168,15 +171,15 @@ export default function ModernOwnerDashboard() {
       bg: 'from-emerald-50/50 to-emerald-50/30',
     },
     {
-      title: 'Propriétés',
+      title: owner?.properties || 'Propriétés',
       value: stats.totalProperties,
-      subtitle: `${stats.publishedProperties} publiées`,
+      subtitle: `${stats.publishedProperties} ${owner?.published || 'publiées'}`,
       icon: Building2,
       gradient: 'from-purple-200/70 to-indigo-200/70',
       bg: 'from-purple-50/50 to-indigo-50/30',
     },
     {
-      title: 'Taux d\'Occupation',
+      title: owner?.occupationRate || 'Taux d\'Occupation',
       value: `${stats.occupation}%`,
       change: stats.occupationChange,
       icon: TrendingUp,
@@ -184,9 +187,9 @@ export default function ModernOwnerDashboard() {
       bg: 'from-blue-50/50 to-cyan-50/30',
     },
     {
-      title: 'Candidatures',
+      title: owner?.applications || 'Candidatures',
       value: stats.pendingApplications,
-      subtitle: 'En attente',
+      subtitle: owner?.pending || 'En attente',
       icon: Users,
       gradient: 'from-amber-100 to-yellow-200/70',
       bg: 'from-amber-50/50 to-yellow-50/30',
@@ -201,8 +204,8 @@ export default function ModernOwnerDashboard() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement du dashboard...</h3>
-          <p className="text-gray-600">Préparation de vos données</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{owner?.loadingDashboard || 'Chargement du dashboard...'}</h3>
+          <p className="text-gray-600">{owner?.preparingData || 'Préparation de vos données'}</p>
         </div>
       </div>
     );
@@ -221,10 +224,10 @@ export default function ModernOwnerDashboard() {
         className="mb-10"
       >
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-          Tableau de bord
+          {owner?.dashboardTitle || 'Tableau de bord'}
         </h1>
         <p className="text-gray-600 text-lg">
-          Vue d'ensemble de votre portefeuille immobilier
+          {owner?.portfolioOverview || 'Vue d\'ensemble de votre portefeuille immobilier'}
         </p>
       </motion.div>
 
@@ -281,7 +284,7 @@ export default function ModernOwnerDashboard() {
                       <TrendingDown className="w-4 h-4" />
                     )}
                     <span>{isPositive ? '+' : ''}{card.change}%</span>
-                    <span className="text-gray-500">vs mois dernier</span>
+                    <span className="text-gray-500">{owner?.vsLastMonth || 'vs mois dernier'}</span>
                   </div>
                 ) : card.subtitle ? (
                   <p className="text-sm text-gray-500">{card.subtitle}</p>
@@ -306,9 +309,9 @@ export default function ModernOwnerDashboard() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                 <TrendingUp className="w-4 h-4 text-gray-700" />
               </div>
-              Évolution Revenus & Dépenses
+              {owner?.revenueExpensesChart || 'Évolution Revenus & Dépenses'}
             </h3>
-            <p className="text-sm text-gray-500 mb-6">12 derniers mois</p>
+            <p className="text-sm text-gray-500 mb-6">{owner?.last12Months || '12 derniers mois'}</p>
 
             <ResponsiveContainer width="100%" height={280}>
               <LineChart data={revenueData}>
@@ -332,7 +335,7 @@ export default function ModernOwnerDashboard() {
                   strokeWidth={3}
                   dot={{ fill: '#10b981', r: 4 }}
                   activeDot={{ r: 6 }}
-                  name="Revenus"
+                  name={owner?.revenue || 'Revenus'}
                 />
                 <Line
                   type="monotone"
@@ -341,7 +344,7 @@ export default function ModernOwnerDashboard() {
                   strokeWidth={3}
                   dot={{ fill: '#ef4444', r: 4 }}
                   activeDot={{ r: 6 }}
-                  name="Dépenses"
+                  name={owner?.expenses || 'Dépenses'}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -359,9 +362,9 @@ export default function ModernOwnerDashboard() {
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                   <Building2 className="w-4 h-4 text-gray-700" />
                 </div>
-                Taux d'Occupation
+                {owner?.occupationRate || 'Taux d\'Occupation'}
               </h3>
-              <p className="text-sm text-gray-500 mb-6">Par propriété</p>
+              <p className="text-sm text-gray-500 mb-6">{owner?.byProperty || 'Par propriété'}</p>
 
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={occupationData}>
@@ -376,7 +379,7 @@ export default function ModernOwnerDashboard() {
                       borderRadius: '12px',
                       padding: '12px',
                     }}
-                    formatter={(value: number) => [`${value}%`, 'Occupation']}
+                    formatter={(value: number) => [`${value}%`, owner?.occupation || 'Occupation']}
                   />
                   <Bar
                     dataKey="occupation"
@@ -409,10 +412,10 @@ export default function ModernOwnerDashboard() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                 <Building2 className="w-4 h-4 text-gray-700" />
               </div>
-              Mes Propriétés
+              {owner?.myProperties || 'Mes Propriétés'}
             </h3>
             <p className="text-sm text-gray-500 mt-1">
-              {properties.length} propriété{properties.length > 1 ? 's' : ''} au total
+              {properties.length} {properties.length > 1 ? (owner?.propertiesTotal || 'propriétés au total') : (owner?.propertyTotal || 'propriété au total')}
             </p>
           </div>
 
@@ -421,7 +424,7 @@ export default function ModernOwnerDashboard() {
             className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 shadow-sm hover:shadow-md"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Ajouter
+            {owner?.add || 'Ajouter'}
           </Button>
         </div>
 
@@ -432,17 +435,17 @@ export default function ModernOwnerDashboard() {
                 <Building2 className="w-10 h-10 text-gray-700" />
               </div>
               <h4 className="text-2xl font-bold text-gray-900 mb-3">
-                Commencez votre aventure immobilière
+                {owner?.startRealEstateAdventure || 'Commencez votre aventure immobilière'}
               </h4>
               <p className="text-gray-600 mb-8 max-w-md mx-auto text-lg">
-                Ajoutez votre première propriété et commencez à gérer votre portefeuille en toute simplicité
+                {owner?.addFirstPropertyDescription || 'Ajoutez votre première propriété et commencez à gérer votre portefeuille en toute simplicité'}
               </p>
               <Button
                 onClick={() => router.push('/properties/add')}
                 className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 font-semibold px-8 py-6 text-lg shadow-sm hover:shadow-md transition-all hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
-                Ajouter ma première propriété
+                {owner?.addMyFirstProperty || 'Ajouter ma première propriété'}
               </Button>
             </div>
           </div>
@@ -510,7 +513,7 @@ export default function ModernOwnerDashboard() {
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                   <div>
-                    <p className="text-xs text-gray-500">Loyer mensuel</p>
+                    <p className="text-xs text-gray-500">{owner?.monthlyRent || 'Loyer mensuel'}</p>
                     <p className="text-lg font-bold text-purple-900">
                       €{property.monthly_rent?.toLocaleString()}
                     </p>
@@ -529,7 +532,7 @@ export default function ModernOwnerDashboard() {
               onClick={() => router.push('/dashboard/owner/properties')}
               className="rounded-full"
             >
-              Voir toutes les propriétés
+              {owner?.viewAllProperties || 'Voir toutes les propriétés'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>

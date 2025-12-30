@@ -13,6 +13,7 @@ import {
   getRatingLabel,
   getDesignStyleIcon,
 } from '@/types/room-aesthetics.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface RoomAestheticsDropdownProps {
   aesthetics?: PropertyRoomAesthetics;
@@ -25,6 +26,9 @@ export default function RoomAestheticsDropdown({
   isOpen,
   onToggle,
 }: RoomAestheticsDropdownProps) {
+  const { getSection } = useLanguage();
+  const roomAesthetics = getSection('property')?.roomAesthetics;
+
   if (!aesthetics) return null;
 
   const hasAnyData =
@@ -48,7 +52,7 @@ export default function RoomAestheticsDropdown({
       >
         <div className="flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
-          <span className="font-medium">Détails & Ambiance</span>
+          <span className="font-medium">{roomAesthetics?.detailsAmbiance || 'Détails & Ambiance'}</span>
         </div>
         <ChevronDown
           className={cn(
@@ -67,13 +71,13 @@ export default function RoomAestheticsDropdown({
               <Sun className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Lumière naturelle</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.naturalLight || 'Lumière naturelle'}</span>
                   <RatingBadge rating={aesthetics.natural_light_rating} />
                 </div>
                 {aesthetics.sun_exposure && (
                   <p className="text-gray-600">
                     {SUN_EXPOSURE_LABELS[aesthetics.sun_exposure]}
-                    {aesthetics.sun_hours_per_day && ` • ${aesthetics.sun_hours_per_day}h/jour`}
+                    {aesthetics.sun_hours_per_day && ` • ${aesthetics.sun_hours_per_day}${roomAesthetics?.hoursPerDay || 'h/jour'}`}
                   </p>
                 )}
               </div>
@@ -86,7 +90,7 @@ export default function RoomAestheticsDropdown({
               <Thermometer className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Chauffage</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.heating || 'Chauffage'}</span>
                   {aesthetics.heating_quality_rating && (
                     <RatingBadge rating={aesthetics.heating_quality_rating} />
                   )}
@@ -94,7 +98,7 @@ export default function RoomAestheticsDropdown({
                 <p className="text-gray-600">{HEATING_TYPE_LABELS[aesthetics.heating_type]}</p>
                 {aesthetics.has_individual_temperature_control && (
                   <p className="text-green-600 text-[11px] mt-0.5">
-                    ✓ Contrôle individuel de température
+                    ✓ {roomAesthetics?.individualTempControl || 'Contrôle individuel de température'}
                   </p>
                 )}
               </div>
@@ -107,7 +111,7 @@ export default function RoomAestheticsDropdown({
               <Palette className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Style de décoration</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.decorationStyle || 'Style de décoration'}</span>
                   {aesthetics.design_quality_rating && (
                     <RatingBadge rating={aesthetics.design_quality_rating} />
                   )}
@@ -118,7 +122,7 @@ export default function RoomAestheticsDropdown({
                 </p>
                 {aesthetics.color_palette && aesthetics.color_palette.length > 0 && (
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className="text-gray-500">Couleurs:</span>
+                    <span className="text-gray-500">{roomAesthetics?.colors || 'Couleurs'}:</span>
                     {aesthetics.color_palette.slice(0, 5).map((color, i) => (
                       <div
                         key={i}
@@ -138,7 +142,7 @@ export default function RoomAestheticsDropdown({
             <div className="flex items-start gap-2">
               <Sparkles className="w-4 h-4 text-pink-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <span className="font-medium text-gray-700">Ambiance: </span>
+                <span className="font-medium text-gray-700">{roomAesthetics?.ambiance || 'Ambiance'}: </span>
                 <span className="text-gray-600">
                   {ROOM_ATMOSPHERE_LABELS[aesthetics.room_atmosphere]}
                 </span>
@@ -152,7 +156,7 @@ export default function RoomAestheticsDropdown({
               <Bed className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Mobilier</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.furniture || 'Mobilier'}</span>
                   {aesthetics.furniture_quality_rating && (
                     <RatingBadge rating={aesthetics.furniture_quality_rating} />
                   )}
@@ -162,10 +166,10 @@ export default function RoomAestheticsDropdown({
                   {aesthetics.furniture_condition && (
                     <span className="text-gray-500">
                       {' '}
-                      • {aesthetics.furniture_condition === 'new' ? 'Neuf' :
-                         aesthetics.furniture_condition === 'excellent' ? 'Excellent état' :
-                         aesthetics.furniture_condition === 'good' ? 'Bon état' :
-                         aesthetics.furniture_condition === 'fair' ? 'État correct' : 'À remplacer'}
+                      • {aesthetics.furniture_condition === 'new' ? (roomAesthetics?.conditionNew || 'Neuf') :
+                         aesthetics.furniture_condition === 'excellent' ? (roomAesthetics?.conditionExcellent || 'Excellent état') :
+                         aesthetics.furniture_condition === 'good' ? (roomAesthetics?.conditionGood || 'Bon état') :
+                         aesthetics.furniture_condition === 'fair' ? (roomAesthetics?.conditionFair || 'État correct') : (roomAesthetics?.conditionNeedsReplacement || 'À remplacer')}
                     </span>
                   )}
                 </p>
@@ -179,12 +183,12 @@ export default function RoomAestheticsDropdown({
               <Wind className="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Qualité de l'air</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.airQuality || 'Qualité de l\'air'}</span>
                   <RatingBadge rating={aesthetics.air_quality_rating} />
                 </div>
                 {aesthetics.ventilation_type && (
                   <p className="text-gray-600 capitalize">
-                    Ventilation {aesthetics.ventilation_type.replace('_', ' ')}
+                    {roomAesthetics?.ventilation || 'Ventilation'} {aesthetics.ventilation_type.replace('_', ' ')}
                   </p>
                 )}
               </div>
@@ -197,11 +201,11 @@ export default function RoomAestheticsDropdown({
               <Volume2 className="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-medium text-gray-700">Isolation phonique</span>
+                  <span className="font-medium text-gray-700">{roomAesthetics?.noiseInsulation || 'Isolation phonique'}</span>
                   <RatingBadge rating={aesthetics.noise_insulation_rating} />
                 </div>
                 {aesthetics.is_soundproof && (
-                  <p className="text-green-600 text-[11px]">✓ Insonorisé</p>
+                  <p className="text-green-600 text-[11px]">✓ {roomAesthetics?.soundproof || 'Insonorisé'}</p>
                 )}
               </div>
             </div>
@@ -213,26 +217,26 @@ export default function RoomAestheticsDropdown({
             aesthetics.has_mood_lighting ||
             aesthetics.has_smart_home_features) && (
             <div className="pt-2 border-t border-gray-200">
-              <p className="font-medium text-gray-700 mb-1.5">Caractéristiques spéciales</p>
+              <p className="font-medium text-gray-700 mb-1.5">{roomAesthetics?.specialFeatures || 'Caractéristiques spéciales'}</p>
               <div className="flex flex-wrap gap-1.5">
                 {aesthetics.has_plants && (
                   <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-[11px]">
-                    🌿 Plantes
+                    🌿 {roomAesthetics?.plants || 'Plantes'}
                   </span>
                 )}
                 {aesthetics.has_artwork && (
                   <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-[11px]">
-                    🖼️ Œuvres d'art
+                    🖼️ {roomAesthetics?.artwork || 'Œuvres d\'art'}
                   </span>
                 )}
                 {aesthetics.has_mood_lighting && (
                   <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-[11px]">
-                    💡 Éclairage d'ambiance
+                    💡 {roomAesthetics?.moodLighting || 'Éclairage d\'ambiance'}
                   </span>
                 )}
                 {aesthetics.has_smart_home_features && (
                   <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-[11px]">
-                    🏠 Domotique
+                    🏠 {roomAesthetics?.smartHome || 'Domotique'}
                   </span>
                 )}
               </div>
@@ -242,14 +246,14 @@ export default function RoomAestheticsDropdown({
           {/* Flooring Info */}
           {aesthetics.flooring_type && (
             <div className="text-[11px] text-gray-500 pt-1 border-t border-gray-200">
-              Sol: {aesthetics.flooring_type === 'hardwood' ? 'Parquet' :
-                    aesthetics.flooring_type === 'laminate' ? 'Stratifié' :
-                    aesthetics.flooring_type === 'tile' ? 'Carrelage' :
-                    aesthetics.flooring_type === 'carpet' ? 'Moquette' :
-                    aesthetics.flooring_type === 'vinyl' ? 'Vinyle' :
-                    aesthetics.flooring_type === 'concrete' ? 'Béton' :
-                    aesthetics.flooring_type === 'marble' ? 'Marbre' : 'Parquet'}
-              {aesthetics.ceiling_height_cm && ` • Hauteur: ${(aesthetics.ceiling_height_cm / 100).toFixed(1)}m`}
+              {roomAesthetics?.floor || 'Sol'}: {aesthetics.flooring_type === 'hardwood' ? (roomAesthetics?.floorHardwood || 'Parquet') :
+                    aesthetics.flooring_type === 'laminate' ? (roomAesthetics?.floorLaminate || 'Stratifié') :
+                    aesthetics.flooring_type === 'tile' ? (roomAesthetics?.floorTile || 'Carrelage') :
+                    aesthetics.flooring_type === 'carpet' ? (roomAesthetics?.floorCarpet || 'Moquette') :
+                    aesthetics.flooring_type === 'vinyl' ? (roomAesthetics?.floorVinyl || 'Vinyle') :
+                    aesthetics.flooring_type === 'concrete' ? (roomAesthetics?.floorConcrete || 'Béton') :
+                    aesthetics.flooring_type === 'marble' ? (roomAesthetics?.floorMarble || 'Marbre') : (roomAesthetics?.floorHardwood || 'Parquet')}
+              {aesthetics.ceiling_height_cm && ` • ${roomAesthetics?.height || 'Hauteur'}: ${(aesthetics.ceiling_height_cm / 100).toFixed(1)}m`}
             </div>
           )}
         </div>

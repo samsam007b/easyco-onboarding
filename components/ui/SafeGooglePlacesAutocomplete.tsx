@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface SafeGooglePlacesAutocompleteProps {
   onPlaceSelect?: (place: google.maps.places.PlaceResult) => void;
@@ -15,12 +16,15 @@ interface SafeGooglePlacesAutocompleteProps {
 
 export default function SafeGooglePlacesAutocomplete({
   onPlaceSelect,
-  placeholder = 'Ville, quartier...',
+  placeholder,
   className = '',
   inputClassName = '',
   iconClassName = '',
   defaultValue = ''
 }: SafeGooglePlacesAutocompleteProps) {
+  const { getSection } = useLanguage();
+  const common = getSection('common');
+  const defaultPlaceholder = placeholder ?? (common?.cityNeighborhood || 'Ville, quartier...');
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
 
@@ -65,7 +69,7 @@ export default function SafeGooglePlacesAutocomplete({
         <input
           ref={inputRef}
           type="text"
-          placeholder={!placesLibrary ? 'Chargement...' : placeholder}
+          placeholder={!placesLibrary ? (common?.loading || 'Chargement...') : defaultPlaceholder}
           defaultValue={defaultValue}
           className={inputClassName}
           disabled={!placesLibrary}

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { MapPin } from 'lucide-react';
 import { useGoogleMaps } from '@/lib/hooks/use-google-maps';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface GooglePlacesAutocompleteProps {
   onPlaceSelect?: (place: google.maps.places.PlaceResult) => void;
@@ -15,12 +16,15 @@ interface GooglePlacesAutocompleteProps {
 
 export default function GooglePlacesAutocomplete({
   onPlaceSelect,
-  placeholder = 'Ville, quartier...',
+  placeholder,
   className = '',
   inputClassName = '',
   iconClassName = '',
   defaultValue = ''
 }: GooglePlacesAutocompleteProps) {
+  const { getSection } = useLanguage();
+  const common = getSection('common');
+  const defaultPlaceholder = placeholder ?? (common?.cityNeighborhood || 'Ville, quartier...');
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { loaded, google: googleMaps, error } = useGoogleMaps();
@@ -63,9 +67,9 @@ export default function GooglePlacesAutocomplete({
 
   // Determine placeholder text based on loading state
   const getPlaceholder = () => {
-    if (error) return 'Erreur de chargement';
-    if (!loaded) return 'Chargement...';
-    return placeholder;
+    if (error) return common?.loadingError || 'Erreur de chargement';
+    if (!loaded) return common?.loading || 'Chargement...';
+    return defaultPlaceholder;
   };
 
   return (

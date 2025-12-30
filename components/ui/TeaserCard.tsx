@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface TeaserCardProps {
   /** If true, content is blurred and overlay shown */
@@ -42,13 +43,17 @@ interface TeaserCardProps {
 export function TeaserCard({
   isLocked,
   blurLevel = 2,
-  ctaText = 'Créer un compte pour débloquer',
+  ctaText,
   ctaHref,
   onCtaClick,
   children,
   badge,
   className = ''
 }: TeaserCardProps) {
+  const { getSection } = useLanguage();
+  const teaser = getSection('teaser');
+  const defaultCtaText = ctaText ?? (teaser?.createAccountToUnlock || 'Créer un compte pour débloquer');
+
   // If not locked, just show children
   if (!isLocked) {
     return <>{children}</>;
@@ -85,7 +90,7 @@ export function TeaserCard({
 
         {/* CTA Text */}
         <p className="text-sm sm:text-base text-center text-gray-700 mb-4 px-4 max-w-md font-medium">
-          {ctaText}
+          {defaultCtaText}
         </p>
 
         {/* CTA Button */}
@@ -94,14 +99,14 @@ export function TeaserCard({
             href={ctaHref}
             className="px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
-            Créer un compte gratuit
+            {teaser?.createFreeAccount || 'Créer un compte gratuit'}
           </Link>
         ) : onCtaClick ? (
           <button
             onClick={onCtaClick}
             className="px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
-            Débloquer
+            {teaser?.unlock || 'Débloquer'}
           </button>
         ) : null}
 
@@ -111,7 +116,7 @@ export function TeaserCard({
             href="/auth"
             className="mt-3 text-sm text-gray-600 hover:text-purple-600 transition underline"
           >
-            J'ai déjà un compte
+            {teaser?.alreadyHaveAccount || "J'ai déjà un compte"}
           </Link>
         )}
       </div>
@@ -124,11 +129,15 @@ export function TeaserCard({
  */
 export function TeaserCardCompact({
   isLocked,
-  ctaText = 'Connexion requise',
+  ctaText,
   ctaHref = '/auth',
   children,
   className = ''
 }: Pick<TeaserCardProps, 'isLocked' | 'ctaText' | 'ctaHref' | 'children' | 'className'>) {
+  const { getSection } = useLanguage();
+  const teaser = getSection('teaser');
+  const defaultCtaText = ctaText ?? (teaser?.loginRequired || 'Connexion requise');
+
   if (!isLocked) return <>{children}</>;
 
   return (
@@ -142,7 +151,7 @@ export function TeaserCardCompact({
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition"
         >
           <Lock className="w-4 h-4" />
-          {ctaText}
+          {defaultCtaText}
         </Link>
       </div>
     </div>
@@ -155,8 +164,8 @@ export function TeaserCardCompact({
 export function TeaserModal({
   isOpen,
   onClose,
-  title = 'Fonctionnalité Premium',
-  description = 'Créer un compte gratuit pour débloquer cette fonctionnalité',
+  title,
+  description,
   ctaHref = '/auth/signup',
   children
 }: {
@@ -167,6 +176,12 @@ export function TeaserModal({
   ctaHref?: string;
   children?: ReactNode;
 }) {
+  const { getSection } = useLanguage();
+  const teaser = getSection('teaser');
+  const common = getSection('common');
+  const defaultTitle = title ?? (teaser?.premiumFeature || 'Fonctionnalité Premium');
+  const defaultDescription = description ?? (teaser?.createAccountToUnlockFeature || 'Créer un compte gratuit pour débloquer cette fonctionnalité');
+
   if (!isOpen) return null;
 
   return (
@@ -182,7 +197,7 @@ export function TeaserModal({
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
-          aria-label="Fermer"
+          aria-label={common?.close || 'Fermer'}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -196,12 +211,12 @@ export function TeaserModal({
 
         {/* Title */}
         <h3 className="text-2xl font-bold text-gray-900 text-center mb-2">
-          {title}
+          {defaultTitle}
         </h3>
 
         {/* Description */}
         <p className="text-gray-600 text-center mb-6">
-          {description}
+          {defaultDescription}
         </p>
 
         {/* Custom content */}
@@ -213,13 +228,13 @@ export function TeaserModal({
             href={ctaHref}
             className="w-full px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition text-center"
           >
-            Créer mon compte gratuit
+            {teaser?.createMyFreeAccount || 'Créer mon compte gratuit'}
           </Link>
           <Link
             href="/auth"
             className="w-full px-6 py-3 border-2 border-purple-200 text-gray-700 font-semibold rounded-full hover:bg-purple-50 transition text-center"
           >
-            J'ai déjà un compte
+            {teaser?.alreadyHaveAccount || "J'ai déjà un compte"}
           </Link>
         </div>
       </div>

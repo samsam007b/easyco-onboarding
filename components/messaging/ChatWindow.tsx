@@ -11,6 +11,7 @@ import { MessageImage } from './MessageImage';
 import { useMessageSound } from '@/lib/hooks/use-message-sound';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,6 +92,17 @@ export function ChatWindow({
   const previousMessagesLengthRef = useRef(messages.length);
   const { playSound } = useMessageSound();
   const styles = variantStyles[variant];
+  const { language, getSection } = useLanguage();
+  const messaging = getSection('messaging');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
 
   // Auto-scroll to bottom when new messages arrive and play sound for incoming messages
   useEffect(() => {
@@ -158,7 +170,7 @@ export function ChatWindow({
   };
 
   // Group messages by date
-  const groupedMessages = groupMessagesByDate(messages);
+  const groupedMessages = groupMessagesByDate(messages, locale, messaging);
 
   return (
     <div className="flex flex-col h-full bg-white">
@@ -171,7 +183,7 @@ export function ChatWindow({
               size="icon"
               onClick={onBack}
               className="md:hidden rounded-full hover:bg-white/50"
-              aria-label="Retour"
+              aria-label={messaging?.back || "Retour"}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -205,7 +217,7 @@ export function ChatWindow({
                   className={cn('text-xs font-medium', styles.typing)}
                 >
                   <span className="inline-flex items-center gap-1">
-                    est en train d'écrire
+                    {messaging?.isTyping || "est en train d'écrire"}
                     <span className="flex gap-0.5">
                       <span className="w-1 h-1 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
                       <span className="w-1 h-1 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -220,7 +232,7 @@ export function ChatWindow({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/50" aria-label="Plus d'options">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/50" aria-label={messaging?.moreOptions || "Plus d'options"}>
               <MoreVertical className="h-5 w-5 text-gray-600" />
             </Button>
           </DropdownMenuTrigger>
@@ -228,13 +240,13 @@ export function ChatWindow({
             {onArchive && (
               <DropdownMenuItem onClick={onArchive} className="cursor-pointer">
                 <Archive className="h-4 w-4 mr-2" />
-                Archiver
+                {messaging?.archive || "Archiver"}
               </DropdownMenuItem>
             )}
             {onDelete && (
               <DropdownMenuItem onClick={onDelete} className="text-red-600 cursor-pointer">
                 <Trash2 className="h-4 w-4 mr-2" />
-                Supprimer
+                {messaging?.delete || "Supprimer"}
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
@@ -278,6 +290,7 @@ export function ChatWindow({
                     otherUserName={otherUserName}
                     variant={variant}
                     styles={styles}
+                    messaging={messaging}
                   />
                 );
               })}
@@ -314,7 +327,7 @@ export function ChatWindow({
               value={messageInput}
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="Écrivez votre message..."
+              placeholder={messaging?.placeholder || "Écrivez votre message..."}
               className="min-h-[48px] max-h-32 resize-none rounded-2xl border-gray-200 bg-gray-50 focus:bg-white focus:border-gray-300 transition-colors"
               rows={1}
             />
@@ -345,6 +358,7 @@ interface MessageBubbleProps {
   otherUserName: string;
   variant: 'searcher' | 'owner' | 'hub';
   styles: typeof variantStyles.searcher;
+  messaging: Record<string, string> | undefined;
 }
 
 function MessageBubble({
@@ -356,6 +370,7 @@ function MessageBubble({
   otherUserName,
   variant,
   styles,
+  messaging,
 }: MessageBubbleProps) {
   // Check if message is deleted
   if (
@@ -419,7 +434,7 @@ function MessageBubble({
           )}
 
           {message.edited && (
-            <span className="text-xs opacity-70 italic ml-2">(modifié)</span>
+            <span className="text-xs opacity-70 italic ml-2">({messaging?.edited || "modifié"})</span>
           )}
         </div>
 
@@ -446,7 +461,11 @@ function MessageBubble({
 }
 
 // Helper function to group messages by date
-function groupMessagesByDate(messages: Message[]): Record<string, Message[]> {
+function groupMessagesByDate(
+  messages: Message[],
+  locale: string = 'fr-FR',
+  messaging?: Record<string, string>
+): Record<string, Message[]> {
   const grouped: Record<string, Message[]> = {};
 
   messages.forEach((message) => {
@@ -457,11 +476,11 @@ function groupMessagesByDate(messages: Message[]): Record<string, Message[]> {
 
     let dateKey: string;
     if (date.toDateString() === today.toDateString()) {
-      dateKey = "Aujourd'hui";
+      dateKey = messaging?.today || "Aujourd'hui";
     } else if (date.toDateString() === yesterday.toDateString()) {
-      dateKey = 'Hier';
+      dateKey = messaging?.yesterday || 'Hier';
     } else {
-      dateKey = date.toLocaleDateString('fr-FR', {
+      dateKey = date.toLocaleDateString(locale, {
         day: 'numeric',
         month: 'long',
         year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,

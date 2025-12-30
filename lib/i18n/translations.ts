@@ -6432,6 +6432,329 @@ export const translations = {
         nl: 'Locatie niet ingesteld',
         de: 'Standort nicht festgelegt',
       },
+      // ModernSearcherDashboard translations
+      hiUser: {
+        fr: 'Salut,',
+        en: 'Hi,',
+        nl: 'Hallo,',
+        de: 'Hallo,',
+      },
+      configureSearch: {
+        fr: 'Configure ta recherche',
+        en: 'Configure your search',
+        nl: 'Configureer je zoekopdracht',
+        de: 'Konfiguriere deine Suche',
+      },
+      groups: {
+        fr: 'Groupes',
+        en: 'Groups',
+        nl: 'Groepen',
+        de: 'Gruppen',
+      },
+      messages: {
+        fr: 'Messages',
+        en: 'Messages',
+        nl: 'Berichten',
+        de: 'Nachrichten',
+      },
+      profileLabel: {
+        fr: 'Profil',
+        en: 'Profile',
+        nl: 'Profiel',
+        de: 'Profil',
+      },
+      unread: {
+        fr: 'Non lus',
+        en: 'Unread',
+        nl: 'Ongelezen',
+        de: 'Ungelesen',
+      },
+      allRead: {
+        fr: 'Tous lus',
+        en: 'All read',
+        nl: 'Alles gelezen',
+        de: 'Alle gelesen',
+      },
+      savedProperties: {
+        fr: 'Propriétés sauvegardées',
+        en: 'Saved properties',
+        nl: 'Opgeslagen eigenschappen',
+        de: 'Gespeicherte Immobilien',
+      },
+      topMatches: {
+        fr: 'Top Matchs',
+        en: 'Top Matches',
+        nl: 'Beste Matches',
+        de: 'Top-Matches',
+      },
+      compatibilityOver70: {
+        fr: 'Compatibilité > 70%',
+        en: 'Compatibility > 70%',
+        nl: 'Compatibiliteit > 70%',
+        de: 'Kompatibilität > 70%',
+      },
+      applications: {
+        fr: 'Candidatures',
+        en: 'Applications',
+        nl: 'Aanvragen',
+        de: 'Bewerbungen',
+      },
+      pending: {
+        fr: 'En attente',
+        en: 'Pending',
+        nl: 'In afwachting',
+        de: 'Ausstehend',
+      },
+      profileCompletionTitle: {
+        fr: 'Complétion du profil',
+        en: 'Profile completion',
+        nl: 'Profiel voltooiing',
+        de: 'Profilvervollständigung',
+      },
+      profileExcellent: {
+        fr: 'Excellent ! Profil presque complet',
+        en: 'Excellent! Profile almost complete',
+        nl: 'Uitstekend! Profiel bijna compleet',
+        de: 'Ausgezeichnet! Profil fast vollständig',
+      },
+      completeProfileForBetterMatches: {
+        fr: 'Complète ton profil pour de meilleurs matchs',
+        en: 'Complete your profile for better matches',
+        nl: 'Voltooi je profiel voor betere matches',
+        de: 'Vervollständige dein Profil für bessere Matches',
+      },
+      completeMyProfile: {
+        fr: 'Compléter mon profil',
+        en: 'Complete my profile',
+        nl: 'Mijn profiel voltooien',
+        de: 'Mein Profil vervollständigen',
+      },
+      topMatchesTitle: {
+        fr: 'Top Matchs',
+        en: 'Top Matches',
+        nl: 'Beste Matches',
+        de: 'Top-Matches',
+      },
+      viewAllMatches: {
+        fr: 'Voir tous les matchs',
+        en: 'View all matches',
+        nl: 'Bekijk alle matches',
+        de: 'Alle Matches anzeigen',
+      },
+      noTopMatchesYet: {
+        fr: 'Pas encore de top matchs',
+        en: 'No top matches yet',
+        nl: 'Nog geen top matches',
+        de: 'Noch keine Top-Matches',
+      },
+      completeProfileForMatches: {
+        fr: 'Complète ton profil pour découvrir les colocations qui te correspondent le mieux !',
+        en: 'Complete your profile to discover flatshares that match you best!',
+        nl: 'Voltooi je profiel om flatshares te ontdekken die het beste bij je passen!',
+        de: 'Vervollständige dein Profil, um WGs zu entdecken, die am besten zu dir passen!',
+      },
+      savedSearches: {
+        fr: 'Recherches Sauvegardées',
+        en: 'Saved Searches',
+        nl: 'Opgeslagen Zoekopdrachten',
+        de: 'Gespeicherte Suchen',
+      },
+      seeAll: {
+        fr: 'Voir tout',
+        en: 'See all',
+        nl: 'Alles zien',
+        de: 'Alle anzeigen',
+      },
+      newSearch: {
+        fr: 'Nouvelle recherche',
+        en: 'New search',
+        nl: 'Nieuwe zoekopdracht',
+        de: 'Neue Suche',
+      },
+      noSavedSearches: {
+        fr: 'Aucune recherche sauvegardée',
+        en: 'No saved searches',
+        nl: 'Geen opgeslagen zoekopdrachten',
+        de: 'Keine gespeicherten Suchen',
+      },
+      setUpAlert: {
+        fr: 'Configurez une alerte pour être notifié des nouvelles propriétés correspondant à vos critères.',
+        en: 'Set up an alert to be notified of new properties matching your criteria.',
+        nl: 'Stel een melding in om op de hoogte te worden gehouden van nieuwe eigenschappen die aan je criteria voldoen.',
+        de: 'Richte eine Benachrichtigung ein, um über neue Immobilien informiert zu werden, die deinen Kriterien entsprechen.',
+      },
+      recentActivity: {
+        fr: 'Activité Récente',
+        en: 'Recent Activity',
+        nl: 'Recente Activiteit',
+        de: 'Letzte Aktivität',
+      },
+      viewAll: {
+        fr: 'Voir tout',
+        en: 'View all',
+        nl: 'Alles bekijken',
+        de: 'Alle anzeigen',
+      },
+      noRecentActivity: {
+        fr: 'Aucune activité récente',
+        en: 'No recent activity',
+        nl: 'Geen recente activiteit',
+        de: 'Keine aktuelle Aktivität',
+      },
+      notificationsWillAppear: {
+        fr: 'Tes notifications apparaîtront ici : nouveaux messages, propriétés correspondant à tes critères, et plus encore.',
+        en: 'Your notifications will appear here: new messages, properties matching your criteria, and more.',
+        nl: 'Je meldingen verschijnen hier: nieuwe berichten, eigenschappen die aan je criteria voldoen, en meer.',
+        de: 'Deine Benachrichtigungen erscheinen hier: neue Nachrichten, Immobilien die deinen Kriterien entsprechen, und mehr.',
+      },
+      tipsToStart: {
+        fr: 'Conseils pour commencer :',
+        en: 'Tips to get started:',
+        nl: 'Tips om te beginnen:',
+        de: 'Tipps zum Starten:',
+      },
+      tipCompleteProfile: {
+        fr: 'Complète ton profil pour améliorer tes matchs',
+        en: 'Complete your profile to improve your matches',
+        nl: 'Voltooi je profiel om je matches te verbeteren',
+        de: 'Vervollständige dein Profil, um deine Matches zu verbessern',
+      },
+      tipSaveSearch: {
+        fr: 'Sauvegarde une recherche pour recevoir des alertes',
+        en: 'Save a search to receive alerts',
+        nl: 'Sla een zoekopdracht op om meldingen te ontvangen',
+        de: 'Speichere eine Suche, um Benachrichtigungen zu erhalten',
+      },
+      continueSearch: {
+        fr: 'Continue ta recherche',
+        en: 'Continue your search',
+        nl: 'Ga verder met zoeken',
+        de: 'Setze deine Suche fort',
+      },
+      discoverMoreProperties: {
+        fr: 'Découvre plus de propriétés qui correspondent à tes critères et augmente tes chances de trouver le lieu idéal',
+        en: 'Discover more properties that match your criteria and increase your chances of finding the ideal place',
+        nl: 'Ontdek meer eigenschappen die aan je criteria voldoen en vergroot je kansen om de ideale plek te vinden',
+        de: 'Entdecke mehr Immobilien, die deinen Kriterien entsprechen, und erhöhe deine Chancen, den idealen Ort zu finden',
+      },
+      exploreProperties: {
+        fr: 'Explorer les propriétés',
+        en: 'Explore properties',
+        nl: 'Eigenschappen verkennen',
+        de: 'Immobilien erkunden',
+      },
+      smartFilters: {
+        fr: 'Filtres intelligents',
+        en: 'Smart filters',
+        nl: 'Slimme filters',
+        de: 'Intelligente Filter',
+      },
+      searches: {
+        fr: 'Recherches',
+        en: 'Searches',
+        nl: 'Zoekopdrachten',
+        de: 'Suchen',
+      },
+      compare: {
+        fr: 'Comparer',
+        en: 'Compare',
+        nl: 'Vergelijken',
+        de: 'Vergleichen',
+      },
+      maxCompareWarning: {
+        fr: 'Vous pouvez comparer jusqu\'à 4 propriétés maximum',
+        en: 'You can compare up to 4 properties maximum',
+        nl: 'Je kunt maximaal 4 eigenschappen vergelijken',
+        de: 'Sie können maximal 4 Immobilien vergleichen',
+      },
+      recently: {
+        fr: 'Récemment',
+        en: 'Recently',
+        nl: 'Recent',
+        de: 'Kürzlich',
+      },
+      minutesAgo: {
+        fr: 'Il y a {count} min',
+        en: '{count} min ago',
+        nl: '{count} min geleden',
+        de: 'vor {count} Min.',
+      },
+      hoursAgo: {
+        fr: 'Il y a {count}h',
+        en: '{count}h ago',
+        nl: '{count}u geleden',
+        de: 'vor {count}h',
+      },
+      yesterday: {
+        fr: 'Hier',
+        en: 'Yesterday',
+        nl: 'Gisteren',
+        de: 'Gestern',
+      },
+      daysAgo: {
+        fr: 'Il y a {count}j',
+        en: '{count}d ago',
+        nl: '{count}d geleden',
+        de: 'vor {count}T',
+      },
+      onboarding: {
+        welcome: {
+          title: {
+            fr: 'Bienvenue sur Easyco ! 🏠',
+            en: 'Welcome to Easyco! 🏠',
+            nl: 'Welkom bij Easyco! 🏠',
+            de: 'Willkommen bei Easyco! 🏠',
+          },
+          description: {
+            fr: 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité : messages, favoris, matchs et candidatures.',
+            en: 'Here is your dashboard. You\'ll find a summary of your activity: messages, favorites, matches, and applications.',
+            nl: 'Hier is je dashboard. Je vindt een overzicht van je activiteit: berichten, favorieten, matches en aanvragen.',
+            de: 'Hier ist dein Dashboard. Du findest eine Zusammenfassung deiner Aktivitäten: Nachrichten, Favoriten, Matches und Bewerbungen.',
+          },
+        },
+        profile: {
+          title: {
+            fr: 'Complète ton profil',
+            en: 'Complete your profile',
+            nl: 'Voltooi je profiel',
+            de: 'Vervollständige dein Profil',
+          },
+          description: {
+            fr: 'Un profil complet améliore tes chances de matcher avec les bonnes colocations. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
+            en: 'A complete profile improves your chances of matching with the right flatshares. The more info you provide, the better your matches!',
+            nl: 'Een compleet profiel vergroot je kansen om te matchen met de juiste flatshares. Hoe meer info je geeft, hoe beter je matches!',
+            de: 'Ein vollständiges Profil verbessert deine Chancen, mit den richtigen WGs zu matchen. Je mehr Infos du angibst, desto besser deine Matches!',
+          },
+        },
+        browse: {
+          title: {
+            fr: 'Explore les propriétés',
+            en: 'Explore properties',
+            nl: 'Verken eigenschappen',
+            de: 'Erkunde Immobilien',
+          },
+          description: {
+            fr: 'Parcours les colocations disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
+            en: 'Browse available flatshares and find the one that suits you. You can filter by city, budget, and move-in date.',
+            nl: 'Blader door beschikbare flatshares en vind degene die bij je past. Je kunt filteren op stad, budget en verhuisdatum.',
+            de: 'Durchstöbere verfügbare WGs und finde die, die zu dir passt. Du kannst nach Stadt, Budget und Einzugsdatum filtern.',
+          },
+        },
+        savedSearches: {
+          title: {
+            fr: 'Sauvegarde tes recherches',
+            en: 'Save your searches',
+            nl: 'Bewaar je zoekopdrachten',
+            de: 'Speichere deine Suchen',
+          },
+          description: {
+            fr: 'Crée des alertes pour être notifié dès qu\'une nouvelle colocation correspond à tes critères. Plus besoin de chercher tous les jours !',
+            en: 'Create alerts to be notified when a new flatshare matches your criteria. No need to search every day!',
+            nl: 'Maak meldingen aan om op de hoogte te worden gehouden wanneer een nieuwe flatshare aan je criteria voldoet. Niet meer elke dag zoeken!',
+            de: 'Erstelle Benachrichtigungen, um informiert zu werden, wenn eine neue WG deinen Kriterien entspricht. Nicht mehr jeden Tag suchen!',
+          },
+        },
+      },
     },
 
     // Owner Dashboard
@@ -6764,6 +7087,1379 @@ export const translations = {
         nl: 'Chat met anderen',
         de: 'Chatten Sie mit anderen',
       },
+      // ModernResidentDashboard translations
+      loadingHub: {
+        fr: 'Chargement du hub...',
+        en: 'Loading hub...',
+        nl: 'Hub laden...',
+        de: 'Hub wird geladen...',
+      },
+      monthlyRent: {
+        fr: 'Loyer du Mois',
+        en: 'Monthly Rent',
+        nl: 'Maandhuur',
+        de: 'Monatsmiete',
+      },
+      dueDate: {
+        fr: 'Échéance',
+        en: 'Due',
+        nl: 'Vervaldatum',
+        de: 'Fällig',
+      },
+      sharedExpenses: {
+        fr: 'Dépenses Partagées',
+        en: 'Shared Expenses',
+        nl: 'Gedeelde Kosten',
+        de: 'Geteilte Ausgaben',
+      },
+      toSplit: {
+        fr: 'À répartir',
+        en: 'To split',
+        nl: 'Te splitsen',
+        de: 'Aufzuteilen',
+      },
+      yourBalance: {
+        fr: 'Ton Solde',
+        en: 'Your Balance',
+        nl: 'Jouw Saldo',
+        de: 'Dein Kontostand',
+      },
+      owedToYou: {
+        fr: 'On te doit',
+        en: 'Owed to you',
+        nl: 'Je krijgt',
+        de: 'Dir geschuldet',
+      },
+      youOwe: {
+        fr: 'Tu dois',
+        en: 'You owe',
+        nl: 'Je bent schuldig',
+        de: 'Du schuldest',
+      },
+      roommates: {
+        fr: 'Colocataires',
+        en: 'Roommates',
+        nl: 'Huisgenoten',
+        de: 'Mitbewohner',
+      },
+      activeMembers: {
+        fr: 'Membres actifs',
+        en: 'Active members',
+        nl: 'Actieve leden',
+        de: 'Aktive Mitglieder',
+      },
+      upcomingTasks: {
+        fr: 'Tâches à Venir',
+        en: 'Upcoming Tasks',
+        nl: 'Aankomende Taken',
+        de: 'Kommende Aufgaben',
+      },
+      viewAll: {
+        fr: 'Tout voir',
+        en: 'View all',
+        nl: 'Alles bekijken',
+        de: 'Alle anzeigen',
+      },
+      priorityUrgent: {
+        fr: 'Urgent',
+        en: 'Urgent',
+        nl: 'Dringend',
+        de: 'Dringend',
+      },
+      priorityMedium: {
+        fr: 'Moyen',
+        en: 'Medium',
+        nl: 'Gemiddeld',
+        de: 'Mittel',
+      },
+      priorityLow: {
+        fr: 'Bas',
+        en: 'Low',
+        nl: 'Laag',
+        de: 'Niedrig',
+      },
+      addTask: {
+        fr: 'Ajouter une tâche',
+        en: 'Add a task',
+        nl: 'Taak toevoegen',
+        de: 'Aufgabe hinzufügen',
+      },
+      recentActivity: {
+        fr: 'Activité Récente',
+        en: 'Recent Activity',
+        nl: 'Recente Activiteit',
+        de: 'Letzte Aktivität',
+      },
+      communityHappiness: {
+        fr: 'Bonheur de la Coloc',
+        en: 'Community Happiness',
+        nl: 'Huisgenoten Geluk',
+        de: 'Gemeinschaftsglück',
+      },
+      happinessSubtitle: {
+        fr: 'Basé sur l\'activité et les interactions',
+        en: 'Based on activity and interactions',
+        nl: 'Gebaseerd op activiteit en interacties',
+        de: 'Basierend auf Aktivität und Interaktionen',
+      },
+      excellent: {
+        fr: 'Excellent!',
+        en: 'Excellent!',
+        nl: 'Uitstekend!',
+        de: 'Ausgezeichnet!',
+      },
+      onboarding: {
+        welcome: {
+          title: {
+            fr: 'Bienvenue dans ton Hub ! 🏠',
+            en: 'Welcome to your Hub! 🏠',
+            nl: 'Welkom in je Hub! 🏠',
+            de: 'Willkommen in deinem Hub! 🏠',
+          },
+          description: {
+            fr: 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
+            en: 'Here you\'ll find an overview of your flatshare: rent, shared expenses, and balance with your roommates.',
+            nl: 'Hier vind je een overzicht van je flatshare: huur, gedeelde kosten en saldo met je huisgenoten.',
+            de: 'Hier findest du eine Übersicht deiner WG: Miete, geteilte Ausgaben und Saldo mit deinen Mitbewohnern.',
+          },
+        },
+        finances: {
+          title: {
+            fr: 'Gère tes finances',
+            en: 'Manage your finances',
+            nl: 'Beheer je financiën',
+            de: 'Verwalte deine Finanzen',
+          },
+          description: {
+            fr: 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes colocs.',
+            en: 'Click here to see shared expense details and balance accounts with your roommates.',
+            nl: 'Klik hier om gedeelde kostendetails te zien en rekeningen met je huisgenoten te vereffenen.',
+            de: 'Klicke hier, um geteilte Ausgabendetails zu sehen und die Konten mit deinen Mitbewohnern auszugleichen.',
+          },
+        },
+        members: {
+          title: {
+            fr: 'Tes colocataires',
+            en: 'Your roommates',
+            nl: 'Je huisgenoten',
+            de: 'Deine Mitbewohner',
+          },
+          description: {
+            fr: 'Retrouve tous les membres de ta coloc, invite de nouveaux colocs ou anticipe les départs.',
+            en: 'Find all members of your flatshare, invite new roommates, or plan departures.',
+            nl: 'Vind alle leden van je flatshare, nodig nieuwe huisgenoten uit of plan vertrek.',
+            de: 'Finde alle Mitglieder deiner WG, lade neue Mitbewohner ein oder plane Auszüge.',
+          },
+        },
+        tasks: {
+          title: {
+            fr: 'Organise la vie commune',
+            en: 'Organize shared living',
+            nl: 'Organiseer het samenleven',
+            de: 'Organisiere das Zusammenleben',
+          },
+          description: {
+            fr: 'Planifie les tâches ménagères, les réunions et les échéances importantes de la coloc.',
+            en: 'Plan household tasks, meetings, and important deadlines for the flatshare.',
+            nl: 'Plan huishoudelijke taken, vergaderingen en belangrijke deadlines voor de flatshare.',
+            de: 'Plane Haushaltsaufgaben, Meetings und wichtige Fristen für die WG.',
+          },
+        },
+      },
+    },
+
+    // Hub Residence Header
+    hub: {
+      residenceHeader: {
+        // Quick actions
+        actionExpense: {
+          fr: 'Dépense',
+          en: 'Expense',
+          nl: 'Uitgave',
+          de: 'Ausgabe',
+        },
+        actionDocuments: {
+          fr: 'Documents',
+          en: 'Documents',
+          nl: 'Documenten',
+          de: 'Dokumente',
+        },
+        actionRules: {
+          fr: 'Règles',
+          en: 'Rules',
+          nl: 'Regels',
+          de: 'Regeln',
+        },
+        actionInvite: {
+          fr: 'Inviter',
+          en: 'Invite',
+          nl: 'Uitnodigen',
+          de: 'Einladen',
+        },
+        // Member count
+        roommate: {
+          fr: 'colocataire',
+          en: 'roommate',
+          nl: 'huisgenoot',
+          de: 'Mitbewohner',
+        },
+        roommates: {
+          fr: 'colocataires',
+          en: 'roommates',
+          nl: 'huisgenoten',
+          de: 'Mitbewohner',
+        },
+        // Completion steps
+        stepInviteRoommates: {
+          fr: 'Inviter des colocataires',
+          en: 'Invite roommates',
+          nl: 'Nodig huisgenoten uit',
+          de: 'Lade Mitbewohner ein',
+        },
+        stepAddPhoto: {
+          fr: 'Ajouter une photo de la résidence',
+          en: 'Add a photo of the residence',
+          nl: 'Voeg een foto van de residentie toe',
+          de: 'Füge ein Foto der Residenz hinzu',
+        },
+        stepAddMoreExpenses: {
+          fr: 'Ajouter {count} dépenses de plus',
+          en: 'Add {count} more expenses',
+          nl: 'Voeg nog {count} uitgaven toe',
+          de: 'Füge {count} weitere Ausgaben hinzu',
+        },
+        stepCreateFirstExpense: {
+          fr: 'Créer votre première dépense',
+          en: 'Create your first expense',
+          nl: 'Maak je eerste uitgave aan',
+          de: 'Erstelle deine erste Ausgabe',
+        },
+        stepSetupTasks: {
+          fr: 'Configurer des tâches',
+          en: 'Set up tasks',
+          nl: 'Taken instellen',
+          de: 'Aufgaben einrichten',
+        },
+        // Progress section
+        completeResidence: {
+          fr: 'Complétez votre résidence',
+          en: 'Complete your residence',
+          nl: 'Voltooi je residentie',
+          de: 'Vervollständige deine Residenz',
+        },
+        congratulations: {
+          fr: 'Félicitations ! Votre résidence est complète !',
+          en: 'Congratulations! Your residence is complete!',
+          nl: 'Gefeliciteerd! Je residentie is compleet!',
+          de: 'Herzlichen Glückwunsch! Deine Residenz ist vollständig!',
+        },
+      },
+    },
+
+    // Matching Section
+    matching: {
+      cardPile: {
+        like: {
+          fr: 'LIKE',
+          en: 'LIKE',
+          nl: 'LIKE',
+          de: 'LIKE',
+        },
+        nope: {
+          fr: 'NOPE',
+          en: 'NOPE',
+          nl: 'NOPE',
+          de: 'NOPE',
+        },
+        profile: {
+          fr: 'profil',
+          en: 'profile',
+          nl: 'profiel',
+          de: 'Profil',
+        },
+        profiles: {
+          fr: 'profils',
+          en: 'profiles',
+          nl: 'profielen',
+          de: 'Profile',
+        },
+        empty: {
+          fr: 'Vide',
+          en: 'Empty',
+          nl: 'Leeg',
+          de: 'Leer',
+        },
+        undo: {
+          fr: 'Annuler',
+          en: 'Undo',
+          nl: 'Ongedaan maken',
+          de: 'Rückgängig',
+        },
+      },
+    },
+
+    // Messaging Section
+    messaging: {
+      back: {
+        fr: 'Retour',
+        en: 'Back',
+        nl: 'Terug',
+        de: 'Zurück',
+      },
+      isTyping: {
+        fr: 'est en train d\'écrire',
+        en: 'is typing',
+        nl: 'is aan het typen',
+        de: 'schreibt',
+      },
+      moreOptions: {
+        fr: 'Plus d\'options',
+        en: 'More options',
+        nl: 'Meer opties',
+        de: 'Mehr Optionen',
+      },
+      archive: {
+        fr: 'Archiver',
+        en: 'Archive',
+        nl: 'Archiveren',
+        de: 'Archivieren',
+      },
+      delete: {
+        fr: 'Supprimer',
+        en: 'Delete',
+        nl: 'Verwijderen',
+        de: 'Löschen',
+      },
+      placeholder: {
+        fr: 'Écrivez votre message...',
+        en: 'Write your message...',
+        nl: 'Schrijf je bericht...',
+        de: 'Schreibe deine Nachricht...',
+      },
+      edited: {
+        fr: 'modifié',
+        en: 'edited',
+        nl: 'bewerkt',
+        de: 'bearbeitet',
+      },
+      today: {
+        fr: 'Aujourd\'hui',
+        en: 'Today',
+        nl: 'Vandaag',
+        de: 'Heute',
+      },
+      yesterday: {
+        fr: 'Hier',
+        en: 'Yesterday',
+        nl: 'Gisteren',
+        de: 'Gestern',
+      },
+      searchPlaceholder: {
+        fr: 'Rechercher une conversation...',
+        en: 'Search a conversation...',
+        nl: 'Zoek een gesprek...',
+        de: 'Suche eine Konversation...',
+      },
+      noArchivedConversations: {
+        fr: 'Aucune conversation archivée',
+        en: 'No archived conversations',
+        nl: 'Geen gearchiveerde gesprekken',
+        de: 'Keine archivierten Konversationen',
+      },
+      noConversations: {
+        fr: 'Aucune conversation',
+        en: 'No conversations',
+        nl: 'Geen gesprekken',
+        de: 'Keine Konversationen',
+      },
+      archivedWillAppear: {
+        fr: 'Les conversations archivées apparaîtront ici',
+        en: 'Archived conversations will appear here',
+        nl: 'Gearchiveerde gesprekken verschijnen hier',
+        de: 'Archivierte Konversationen erscheinen hier',
+      },
+      conversationsWillAppear: {
+        fr: 'Vos conversations apparaîtront ici',
+        en: 'Your conversations will appear here',
+        nl: 'Je gesprekken verschijnen hier',
+        de: 'Deine Konversationen erscheinen hier',
+      },
+      online: {
+        fr: 'En ligne',
+        en: 'Online',
+        nl: 'Online',
+        de: 'Online',
+      },
+      noMessagesYet: {
+        fr: 'Pas encore de messages',
+        en: 'No messages yet',
+        nl: 'Nog geen berichten',
+        de: 'Noch keine Nachrichten',
+      },
+    },
+
+    // Unified Messaging (UnifiedConversationList)
+    unifiedMessaging: {
+      title: {
+        fr: 'Messages',
+        en: 'Messages',
+        nl: 'Berichten',
+        de: 'Nachrichten',
+      },
+      conversation: {
+        fr: 'conversation',
+        en: 'conversation',
+        nl: 'gesprek',
+        de: 'Konversation',
+      },
+      conversations: {
+        fr: 'conversations',
+        en: 'conversations',
+        nl: 'gesprekken',
+        de: 'Konversationen',
+      },
+      searchPlaceholder: {
+        fr: 'Rechercher une conversation...',
+        en: 'Search a conversation...',
+        nl: 'Zoek een gesprek...',
+        de: 'Suche eine Konversation...',
+      },
+      inviteBoth: {
+        fr: 'Invitez votre propriétaire et vos colocataires',
+        en: 'Invite your landlord and roommates',
+        nl: 'Nodig je verhuurder en huisgenoten uit',
+        de: 'Laden Sie Ihren Vermieter und Mitbewohner ein',
+      },
+      inviteOwner: {
+        fr: 'Invitez votre propriétaire',
+        en: 'Invite your landlord',
+        nl: 'Nodig je verhuurder uit',
+        de: 'Laden Sie Ihren Vermieter ein',
+      },
+      inviteRoommates: {
+        fr: 'Invitez vos colocataires',
+        en: 'Invite your roommates',
+        nl: 'Nodig je huisgenoten uit',
+        de: 'Laden Sie Ihre Mitbewohner ein',
+      },
+      ownerButton: {
+        fr: 'Propriétaire',
+        en: 'Landlord',
+        nl: 'Verhuurder',
+        de: 'Vermieter',
+      },
+      roommatesButton: {
+        fr: 'Colocataires',
+        en: 'Roommates',
+        nl: 'Huisgenoten',
+        de: 'Mitbewohner',
+      },
+      pinned: {
+        fr: 'Épinglées',
+        en: 'Pinned',
+        nl: 'Vastgezet',
+        de: 'Angeheftet',
+      },
+      conversationsHeader: {
+        fr: 'Conversations',
+        en: 'Conversations',
+        nl: 'Gesprekken',
+        de: 'Konversationen',
+      },
+      noResults: {
+        fr: 'Aucun résultat',
+        en: 'No results',
+        nl: 'Geen resultaten',
+        de: 'Keine Ergebnisse',
+      },
+      noConversations: {
+        fr: 'Aucune conversation',
+        en: 'No conversations',
+        nl: 'Geen gesprekken',
+        de: 'Keine Konversationen',
+      },
+      tryOtherTerms: {
+        fr: 'Essayez avec d\'autres termes de recherche',
+        en: 'Try with other search terms',
+        nl: 'Probeer andere zoektermen',
+        de: 'Versuchen Sie andere Suchbegriffe',
+      },
+      conversationsWillAppear: {
+        fr: 'Vos conversations apparaîtront ici',
+        en: 'Your conversations will appear here',
+        nl: 'Je gesprekken verschijnen hier',
+        de: 'Deine Konversationen erscheinen hier',
+      },
+      now: {
+        fr: 'maintenant',
+        en: 'now',
+        nl: 'nu',
+        de: 'jetzt',
+      },
+      minShort: {
+        fr: 'min',
+        en: 'min',
+        nl: 'min',
+        de: 'min',
+      },
+      hourShort: {
+        fr: 'h',
+        en: 'h',
+        nl: 'u',
+        de: 'h',
+      },
+      yesterday: {
+        fr: 'Hier',
+        en: 'Yesterday',
+        nl: 'Gisteren',
+        de: 'Gestern',
+      },
+      dayShort: {
+        fr: 'j',
+        en: 'd',
+        nl: 'd',
+        de: 'T',
+      },
+    },
+
+    // Expense Scanner Component
+    expenseScanner: {
+      // Step labels
+      stepScan: {
+        fr: 'Scanner',
+        en: 'Scan',
+        nl: 'Scannen',
+        de: 'Scannen',
+      },
+      stepVerify: {
+        fr: 'Vérifier',
+        en: 'Verify',
+        nl: 'Controleren',
+        de: 'Überprüfen',
+      },
+      stepCategory: {
+        fr: 'Catégorie',
+        en: 'Category',
+        nl: 'Categorie',
+        de: 'Kategorie',
+      },
+      stepSplit: {
+        fr: 'Répartir',
+        en: 'Split',
+        nl: 'Verdelen',
+        de: 'Aufteilen',
+      },
+      stepOf: {
+        fr: 'Étape {current}/4 •',
+        en: 'Step {current}/4 •',
+        nl: 'Stap {current}/4 •',
+        de: 'Schritt {current}/4 •',
+      },
+      // Upload step
+      scanTitle: {
+        fr: 'Scannez votre ticket',
+        en: 'Scan your receipt',
+        nl: 'Scan je kassabon',
+        de: 'Scannen Sie Ihren Beleg',
+      },
+      scanDescription: {
+        fr: "L'IA analyse automatiquement vos reçus",
+        en: 'AI automatically analyzes your receipts',
+        nl: 'AI analyseert automatisch je bonnen',
+        de: 'KI analysiert automatisch Ihre Belege',
+      },
+      takePhoto: {
+        fr: 'Prendre une photo',
+        en: 'Take a photo',
+        nl: 'Foto maken',
+        de: 'Foto aufnehmen',
+      },
+      openCamera: {
+        fr: 'Ouvrir la caméra',
+        en: 'Open camera',
+        nl: 'Camera openen',
+        de: 'Kamera öffnen',
+      },
+      chooseFile: {
+        fr: 'Choisir un fichier',
+        en: 'Choose a file',
+        nl: 'Kies een bestand',
+        de: 'Datei auswählen',
+      },
+      fromGallery: {
+        fr: 'Depuis la galerie',
+        en: 'From gallery',
+        nl: 'Uit galerie',
+        de: 'Aus der Galerie',
+      },
+      cancel: {
+        fr: 'Annuler',
+        en: 'Cancel',
+        nl: 'Annuleren',
+        de: 'Abbrechen',
+      },
+      // Scanning step
+      aiAnalysisInProgress: {
+        fr: 'Analyse IA en cours...',
+        en: 'AI analysis in progress...',
+        nl: 'AI-analyse bezig...',
+        de: 'KI-Analyse läuft...',
+      },
+      aiReadingReceipt: {
+        fr: 'Notre IA lit votre ticket comme un pro',
+        en: 'Our AI reads your receipt like a pro',
+        nl: 'Onze AI leest je bon als een pro',
+        de: 'Unsere KI liest Ihren Beleg wie ein Profi',
+      },
+      extractingData: {
+        fr: 'Extraction des données du ticket',
+        en: 'Extracting receipt data',
+        nl: 'Gegevens van bon extraheren',
+        de: 'Belegdaten werden extrahiert',
+      },
+      // Review step
+      verifyInfo: {
+        fr: 'Vérifiez les informations',
+        en: 'Verify the information',
+        nl: 'Controleer de informatie',
+        de: 'Überprüfen Sie die Informationen',
+      },
+      dataExtracted: {
+        fr: 'Données extraites automatiquement',
+        en: 'Data extracted automatically',
+        nl: 'Gegevens automatisch geëxtraheerd',
+        de: 'Daten automatisch extrahiert',
+      },
+      enterManually: {
+        fr: 'Saisissez les détails manuellement',
+        en: 'Enter details manually',
+        nl: 'Voer details handmatig in',
+        de: 'Geben Sie Details manuell ein',
+      },
+      scannedReceipt: {
+        fr: 'Ticket scanné',
+        en: 'Scanned receipt',
+        nl: 'Gescande bon',
+        de: 'Gescannter Beleg',
+      },
+      title: {
+        fr: 'Titre *',
+        en: 'Title *',
+        nl: 'Titel *',
+        de: 'Titel *',
+      },
+      titlePlaceholder: {
+        fr: 'Ex: Courses de la semaine',
+        en: 'E.g.: Weekly groceries',
+        nl: 'Bijv.: Wekelijkse boodschappen',
+        de: 'Z.B.: Wöchentlicher Einkauf',
+      },
+      amount: {
+        fr: 'Montant (€) *',
+        en: 'Amount (€) *',
+        nl: 'Bedrag (€) *',
+        de: 'Betrag (€) *',
+      },
+      date: {
+        fr: 'Date',
+        en: 'Date',
+        nl: 'Datum',
+        de: 'Datum',
+      },
+      description: {
+        fr: 'Description',
+        en: 'Description',
+        nl: 'Beschrijving',
+        de: 'Beschreibung',
+      },
+      optional: {
+        fr: 'Optionnel',
+        en: 'Optional',
+        nl: 'Optioneel',
+        de: 'Optional',
+      },
+      articles: {
+        fr: 'Articles',
+        en: 'Items',
+        nl: 'Artikelen',
+        de: 'Artikel',
+      },
+      addArticle: {
+        fr: 'Ajouter',
+        en: 'Add',
+        nl: 'Toevoegen',
+        de: 'Hinzufügen',
+      },
+      articleName: {
+        fr: "Nom de l'article",
+        en: 'Item name',
+        nl: 'Artikelnaam',
+        de: 'Artikelname',
+      },
+      noArticlesDetected: {
+        fr: 'Aucun article détecté',
+        en: 'No items detected',
+        nl: 'Geen artikelen gedetecteerd',
+        de: 'Keine Artikel erkannt',
+      },
+      clickToAddManually: {
+        fr: 'Cliquez sur "Ajouter" pour en ajouter manuellement',
+        en: 'Click "Add" to add items manually',
+        nl: 'Klik op "Toevoegen" om handmatig toe te voegen',
+        de: 'Klicken Sie auf "Hinzufügen", um manuell hinzuzufügen',
+      },
+      calculatedTotal: {
+        fr: 'Total calculé:',
+        en: 'Calculated total:',
+        nl: 'Berekend totaal:',
+        de: 'Berechnetes Total:',
+      },
+      back: {
+        fr: 'Retour',
+        en: 'Back',
+        nl: 'Terug',
+        de: 'Zurück',
+      },
+      next: {
+        fr: 'Suivant',
+        en: 'Next',
+        nl: 'Volgende',
+        de: 'Weiter',
+      },
+      // Category step
+      chooseCategory: {
+        fr: 'Choisissez une catégorie',
+        en: 'Choose a category',
+        nl: 'Kies een categorie',
+        de: 'Wählen Sie eine Kategorie',
+      },
+      organizeExpenses: {
+        fr: 'Organisez vos dépenses par type',
+        en: 'Organize your expenses by type',
+        nl: 'Organiseer je uitgaven per type',
+        de: 'Organisieren Sie Ihre Ausgaben nach Typ',
+      },
+      // Confirm step
+      summary: {
+        fr: 'Récapitulatif',
+        en: 'Summary',
+        nl: 'Samenvatting',
+        de: 'Zusammenfassung',
+      },
+      readyToShare: {
+        fr: 'Tout est prêt ! Vérifiez et partagez',
+        en: 'All ready! Verify and share',
+        nl: 'Alles klaar! Controleer en deel',
+        de: 'Alles bereit! Überprüfen und teilen',
+      },
+      totalAmount: {
+        fr: 'Montant total',
+        en: 'Total amount',
+        nl: 'Totaalbedrag',
+        de: 'Gesamtbetrag',
+      },
+      category: {
+        fr: 'Catégorie',
+        en: 'Category',
+        nl: 'Categorie',
+        de: 'Kategorie',
+      },
+      receiptAttached: {
+        fr: 'Ticket joint',
+        en: 'Receipt attached',
+        nl: 'Bon bijgevoegd',
+        de: 'Beleg angehängt',
+      },
+      ocrAnalyzed: {
+        fr: 'OCR analysé',
+        en: 'OCR analyzed',
+        nl: 'OCR geanalyseerd',
+        de: 'OCR analysiert',
+      },
+      splitWithRoommates: {
+        fr: 'Répartir entre colocs',
+        en: 'Split with roommates',
+        nl: 'Verdelen met huisgenoten',
+        de: 'Mit Mitbewohnern teilen',
+      },
+      confidence: {
+        fr: 'confiance',
+        en: 'confidence',
+        nl: 'betrouwbaarheid',
+        de: 'Vertrauen',
+      },
+      // Category labels
+      catRent: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      catGroceries: {
+        fr: 'Courses',
+        en: 'Groceries',
+        nl: 'Boodschappen',
+        de: 'Einkäufe',
+      },
+      catUtilities: {
+        fr: 'Factures',
+        en: 'Utilities',
+        nl: 'Rekeningen',
+        de: 'Rechnungen',
+      },
+      catCleaning: {
+        fr: 'Ménage',
+        en: 'Cleaning',
+        nl: 'Schoonmaak',
+        de: 'Reinigung',
+      },
+      catInternet: {
+        fr: 'Internet',
+        en: 'Internet',
+        nl: 'Internet',
+        de: 'Internet',
+      },
+      catMaintenance: {
+        fr: 'Entretien',
+        en: 'Maintenance',
+        nl: 'Onderhoud',
+        de: 'Instandhaltung',
+      },
+      catOther: {
+        fr: 'Autre',
+        en: 'Other',
+        nl: 'Anders',
+        de: 'Sonstiges',
+      },
+      // Errors and alerts
+      scanFailed: {
+        fr: 'Échec du scan',
+        en: 'Scan failed',
+        nl: 'Scan mislukt',
+        de: 'Scan fehlgeschlagen',
+      },
+      scanErrorManualEntry: {
+        fr: 'Erreur lors du scan. Vous pouvez saisir manuellement.',
+        en: 'Scan error. You can enter manually.',
+        nl: 'Scanfout. Je kunt handmatig invoeren.',
+        de: 'Scan-Fehler. Sie können manuell eingeben.',
+      },
+      pleaseEnterValidAmount: {
+        fr: 'Veuillez saisir un montant valide',
+        en: 'Please enter a valid amount',
+        nl: 'Voer een geldig bedrag in',
+        de: 'Bitte geben Sie einen gültigen Betrag ein',
+      },
+      pleaseEnterTitle: {
+        fr: 'Veuillez saisir un titre',
+        en: 'Please enter a title',
+        nl: 'Voer een titel in',
+        de: 'Bitte geben Sie einen Titel ein',
+      },
+    },
+
+    // Expense List By Period Component
+    expenseList: {
+      // Period labels
+      today: {
+        fr: "Aujourd'hui",
+        en: 'Today',
+        nl: 'Vandaag',
+        de: 'Heute',
+      },
+      thisWeek: {
+        fr: 'Cette semaine',
+        en: 'This week',
+        nl: 'Deze week',
+        de: 'Diese Woche',
+      },
+      thisMonth: {
+        fr: 'Ce mois',
+        en: 'This month',
+        nl: 'Deze maand',
+        de: 'Diesen Monat',
+      },
+      older: {
+        fr: 'Plus ancien',
+        en: 'Older',
+        nl: 'Ouder',
+        de: 'Älter',
+      },
+      allExpenses: {
+        fr: 'Toutes les dépenses',
+        en: 'All expenses',
+        nl: 'Alle uitgaven',
+        de: 'Alle Ausgaben',
+      },
+      expense: {
+        fr: 'dépense',
+        en: 'expense',
+        nl: 'uitgave',
+        de: 'Ausgabe',
+      },
+      expenses: {
+        fr: 'dépenses',
+        en: 'expenses',
+        nl: 'uitgaven',
+        de: 'Ausgaben',
+      },
+      // Empty state
+      noExpenses: {
+        fr: 'Aucune dépense',
+        en: 'No expenses',
+        nl: 'Geen uitgaven',
+        de: 'Keine Ausgaben',
+      },
+      scanFirstReceipt: {
+        fr: 'Scannez votre premier ticket pour commencer !',
+        en: 'Scan your first receipt to get started!',
+        nl: 'Scan je eerste bon om te beginnen!',
+        de: 'Scannen Sie Ihren ersten Beleg, um zu beginnen!',
+      },
+      // Expense card
+      yourShare: {
+        fr: 'Ta part:',
+        en: 'Your share:',
+        nl: 'Jouw deel:',
+        de: 'Dein Anteil:',
+      },
+      // Category labels (shared with expenseScanner)
+      catRent: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      catUtilities: {
+        fr: 'Charges',
+        en: 'Utilities',
+        nl: 'Rekeningen',
+        de: 'Nebenkosten',
+      },
+      catGroceries: {
+        fr: 'Courses',
+        en: 'Groceries',
+        nl: 'Boodschappen',
+        de: 'Einkäufe',
+      },
+      catCleaning: {
+        fr: 'Ménage',
+        en: 'Cleaning',
+        nl: 'Schoonmaak',
+        de: 'Reinigung',
+      },
+      catMaintenance: {
+        fr: 'Entretien',
+        en: 'Maintenance',
+        nl: 'Onderhoud',
+        de: 'Instandhaltung',
+      },
+      catInternet: {
+        fr: 'Internet',
+        en: 'Internet',
+        nl: 'Internet',
+        de: 'Internet',
+      },
+      catOther: {
+        fr: 'Autre',
+        en: 'Other',
+        nl: 'Anders',
+        de: 'Sonstiges',
+      },
+      // Relative date labels
+      yesterday: {
+        fr: 'Hier',
+        en: 'Yesterday',
+        nl: 'Gisteren',
+        de: 'Gestern',
+      },
+      daysAgo: {
+        fr: 'Il y a {days}j',
+        en: '{days}d ago',
+        nl: '{days}d geleden',
+        de: 'vor {days}T',
+      },
+      // Additional empty states
+      scanReceipt: {
+        fr: 'Scannez un ticket pour commencer',
+        en: 'Scan a receipt to get started',
+        nl: 'Scan een bon om te beginnen',
+        de: 'Scannen Sie einen Beleg, um zu beginnen',
+      },
+      expensesWillAppearHere: {
+        fr: 'Vos dépenses apparaîtront ici',
+        en: 'Your expenses will appear here',
+        nl: 'Uw uitgaven verschijnen hier',
+        de: 'Ihre Ausgaben werden hier angezeigt',
+      },
+    },
+
+    // Expense Detail Modal
+    expenseDetail: {
+      // Dialog title
+      expenseDetails: {
+        fr: 'Détails de la dépense',
+        en: 'Expense details',
+        nl: 'Uitgavedetails',
+        de: 'Ausgabendetails',
+      },
+      // Amount
+      totalAmount: {
+        fr: 'Montant total',
+        en: 'Total amount',
+        nl: 'Totaalbedrag',
+        de: 'Gesamtbetrag',
+      },
+      // Metadata
+      paidBy: {
+        fr: 'Payé par',
+        en: 'Paid by',
+        nl: 'Betaald door',
+        de: 'Bezahlt von',
+      },
+      date: {
+        fr: 'Date',
+        en: 'Date',
+        nl: 'Datum',
+        de: 'Datum',
+      },
+      description: {
+        fr: 'Description',
+        en: 'Description',
+        nl: 'Beschrijving',
+        de: 'Beschreibung',
+      },
+      // Receipt
+      receiptPhoto: {
+        fr: 'Photo du ticket',
+        en: 'Receipt photo',
+        nl: 'Foto van bon',
+        de: 'Belegfoto',
+      },
+      clickToView: {
+        fr: 'Cliquez pour voir',
+        en: 'Click to view',
+        nl: 'Klik om te bekijken',
+        de: 'Klicken zum Anzeigen',
+      },
+      receiptAlt: {
+        fr: 'Ticket de caisse',
+        en: 'Receipt',
+        nl: 'Kassabon',
+        de: 'Kassenbon',
+      },
+      // OCR Data
+      ocrData: {
+        fr: 'Données OCR extraites',
+        en: 'Extracted OCR data',
+        nl: 'Geëxtraheerde OCR-gegevens',
+        de: 'Extrahierte OCR-Daten',
+      },
+      confidence: {
+        fr: 'Confiance:',
+        en: 'Confidence:',
+        nl: 'Betrouwbaarheid:',
+        de: 'Vertrauen:',
+      },
+      merchant: {
+        fr: 'Commerce',
+        en: 'Merchant',
+        nl: 'Winkel',
+        de: 'Händler',
+      },
+      detectedTotal: {
+        fr: 'Total détecté',
+        en: 'Detected total',
+        nl: 'Gedetecteerd totaal',
+        de: 'Erkannter Betrag',
+      },
+      detectedItems: {
+        fr: 'Articles détectés',
+        en: 'Detected items',
+        nl: 'Gedetecteerde artikelen',
+        de: 'Erkannte Artikel',
+      },
+      // Splits
+      splitTitle: {
+        fr: 'Répartition',
+        en: 'Split',
+        nl: 'Verdeling',
+        de: 'Aufteilung',
+      },
+      people: {
+        fr: 'personnes',
+        en: 'people',
+        nl: 'personen',
+        de: 'Personen',
+      },
+      you: {
+        fr: 'Toi',
+        en: 'You',
+        nl: 'Jij',
+        de: 'Du',
+      },
+      roommate: {
+        fr: 'Colocataire',
+        en: 'Roommate',
+        nl: 'Huisgenoot',
+        de: 'Mitbewohner',
+      },
+      hasPaid: {
+        fr: 'A payé',
+        en: 'Has paid',
+        nl: 'Heeft betaald',
+        de: 'Hat bezahlt',
+      },
+      reimbursed: {
+        fr: 'Remboursé',
+        en: 'Reimbursed',
+        nl: 'Terugbetaald',
+        de: 'Erstattet',
+      },
+      owes: {
+        fr: 'Doit',
+        en: 'Owes',
+        nl: 'Moet',
+        de: 'Schuldet',
+      },
+      markPaid: {
+        fr: 'Marquer payé',
+        en: 'Mark as paid',
+        nl: 'Markeer als betaald',
+        de: 'Als bezahlt markieren',
+      },
+      // Category labels (shared)
+      catRent: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      catUtilities: {
+        fr: 'Charges',
+        en: 'Utilities',
+        nl: 'Rekeningen',
+        de: 'Nebenkosten',
+      },
+      catGroceries: {
+        fr: 'Courses',
+        en: 'Groceries',
+        nl: 'Boodschappen',
+        de: 'Einkäufe',
+      },
+      catCleaning: {
+        fr: 'Ménage',
+        en: 'Cleaning',
+        nl: 'Schoonmaak',
+        de: 'Reinigung',
+      },
+      catMaintenance: {
+        fr: 'Entretien',
+        en: 'Maintenance',
+        nl: 'Onderhoud',
+        de: 'Instandhaltung',
+      },
+      catInternet: {
+        fr: 'Internet',
+        en: 'Internet',
+        nl: 'Internet',
+        de: 'Internet',
+      },
+      catOther: {
+        fr: 'Autre',
+        en: 'Other',
+        nl: 'Anders',
+        de: 'Sonstiges',
+      },
+    },
+
+    // Expense Charts
+    expenseCharts: {
+      thisWeek: {
+        fr: 'cette semaine',
+        en: 'this week',
+        nl: 'deze week',
+        de: 'diese Woche',
+      },
+      thisMonth: {
+        fr: 'ce mois',
+        en: 'this month',
+        nl: 'deze maand',
+        de: 'diesen Monat',
+      },
+      thisYear: {
+        fr: 'cette année',
+        en: 'this year',
+        nl: 'dit jaar',
+        de: 'dieses Jahr',
+      },
+      total: {
+        fr: 'Total',
+        en: 'Total',
+        nl: 'Totaal',
+        de: 'Gesamt',
+      },
+      weekPrefix: {
+        fr: 'Sem',
+        en: 'Week',
+        nl: 'Week',
+        de: 'Woche',
+      },
+      noData: {
+        fr: 'Aucune donnée',
+        en: 'No data',
+        nl: 'Geen gegevens',
+        de: 'Keine Daten',
+      },
+      othersCount: {
+        fr: '+{count} autres',
+        en: '+{count} others',
+        nl: '+{count} anderen',
+        de: '+{count} andere',
+      },
+      // Category labels for charts
+      catRent: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      catUtilities: {
+        fr: 'Charges',
+        en: 'Utilities',
+        nl: 'Nutsvoorzieningen',
+        de: 'Nebenkosten',
+      },
+      catGroceries: {
+        fr: 'Courses',
+        en: 'Groceries',
+        nl: 'Boodschappen',
+        de: 'Lebensmittel',
+      },
+      catCleaning: {
+        fr: 'Ménage',
+        en: 'Cleaning',
+        nl: 'Schoonmaak',
+        de: 'Reinigung',
+      },
+      catMaintenance: {
+        fr: 'Entretien',
+        en: 'Maintenance',
+        nl: 'Onderhoud',
+        de: 'Instandhaltung',
+      },
+      catInternet: {
+        fr: 'Internet',
+        en: 'Internet',
+        nl: 'Internet',
+        de: 'Internet',
+      },
+      catOther: {
+        fr: 'Autre',
+        en: 'Other',
+        nl: 'Anders',
+        de: 'Sonstiges',
+      },
+    },
+
+    // Expense Calendar View
+    expenseCalendar: {
+      // Month names
+      january: { fr: 'Janvier', en: 'January', nl: 'Januari', de: 'Januar' },
+      february: { fr: 'Février', en: 'February', nl: 'Februari', de: 'Februar' },
+      march: { fr: 'Mars', en: 'March', nl: 'Maart', de: 'März' },
+      april: { fr: 'Avril', en: 'April', nl: 'April', de: 'April' },
+      may: { fr: 'Mai', en: 'May', nl: 'Mei', de: 'Mai' },
+      june: { fr: 'Juin', en: 'June', nl: 'Juni', de: 'Juni' },
+      july: { fr: 'Juillet', en: 'July', nl: 'Juli', de: 'Juli' },
+      august: { fr: 'Août', en: 'August', nl: 'Augustus', de: 'August' },
+      september: { fr: 'Septembre', en: 'September', nl: 'September', de: 'September' },
+      october: { fr: 'Octobre', en: 'October', nl: 'Oktober', de: 'Oktober' },
+      november: { fr: 'Novembre', en: 'November', nl: 'November', de: 'November' },
+      december: { fr: 'Décembre', en: 'December', nl: 'December', de: 'Dezember' },
+      // Day abbreviations
+      mon: { fr: 'Lun', en: 'Mon', nl: 'Ma', de: 'Mo' },
+      tue: { fr: 'Mar', en: 'Tue', nl: 'Di', de: 'Di' },
+      wed: { fr: 'Mer', en: 'Wed', nl: 'Wo', de: 'Mi' },
+      thu: { fr: 'Jeu', en: 'Thu', nl: 'Do', de: 'Do' },
+      fri: { fr: 'Ven', en: 'Fri', nl: 'Vr', de: 'Fr' },
+      sat: { fr: 'Sam', en: 'Sat', nl: 'Za', de: 'Sa' },
+      sun: { fr: 'Dim', en: 'Sun', nl: 'Zo', de: 'So' },
+      // UI labels
+      monthTotal: { fr: 'Total du mois', en: 'Month total', nl: 'Maand totaal', de: 'Monatssumme' },
+      today: { fr: "Aujourd'hui", en: 'Today', nl: 'Vandaag', de: 'Heute' },
+      totalExpenses: { fr: 'Dépenses totales', en: 'Total expenses', nl: 'Totale uitgaven', de: 'Gesamtausgaben' },
+      thisMonth: { fr: 'Ce mois', en: 'This month', nl: 'Deze maand', de: 'Diesen Monat' },
+      daysWithExpenses: { fr: 'Jours avec dépenses', en: 'Days with expenses', nl: 'Dagen met uitgaven', de: 'Tage mit Ausgaben' },
+      averagePerExpense: { fr: 'Moyenne/dépense', en: 'Avg/expense', nl: 'Gem/uitgave', de: 'Durchschn./Ausgabe' },
+      // Category labels
+      catRent: { fr: 'Loyer', en: 'Rent', nl: 'Huur', de: 'Miete' },
+      catUtilities: { fr: 'Charges', en: 'Utilities', nl: 'Nutsvoorzieningen', de: 'Nebenkosten' },
+      catGroceries: { fr: 'Courses', en: 'Groceries', nl: 'Boodschappen', de: 'Lebensmittel' },
+      catCleaning: { fr: 'Ménage', en: 'Cleaning', nl: 'Schoonmaak', de: 'Reinigung' },
+      catMaintenance: { fr: 'Entretien', en: 'Maintenance', nl: 'Onderhoud', de: 'Instandhaltung' },
+      catInternet: { fr: 'Internet', en: 'Internet', nl: 'Internet', de: 'Internet' },
+      catOther: { fr: 'Autre', en: 'Other', nl: 'Anders', de: 'Sonstiges' },
+    },
+
+    // Smart Splitter
+    smartSplitter: {
+      // Header
+      title: { fr: 'Partager la dépense', en: 'Split the expense', nl: 'Verdeel de uitgave', de: 'Ausgabe aufteilen' },
+      subtitle: { fr: '€{amount} à répartir entre {count} personnes', en: '€{amount} to split between {count} people', nl: '€{amount} te verdelen tussen {count} mensen', de: '€{amount} aufzuteilen zwischen {count} Personen' },
+      // Split methods
+      equal: { fr: 'Égal', en: 'Equal', nl: 'Gelijk', de: 'Gleich' },
+      equalDescription: { fr: 'Diviser en parts égales', en: 'Split equally', nl: 'Gelijk verdelen', de: 'Gleichmäßig aufteilen' },
+      custom: { fr: 'Personnalisé', en: 'Custom', nl: 'Aangepast', de: 'Benutzerdefiniert' },
+      customDescription: { fr: 'Montants spécifiques', en: 'Specific amounts', nl: 'Specifieke bedragen', de: 'Spezifische Beträge' },
+      percentage: { fr: 'Pourcentage', en: 'Percentage', nl: 'Percentage', de: 'Prozentsatz' },
+      percentageDescription: { fr: 'Répartition en %', en: 'Distribution by %', nl: 'Verdeling per %', de: 'Aufteilung in %' },
+      // Allocation labels
+      equalShare: { fr: 'Part égale', en: 'Equal share', nl: 'Gelijk deel', de: 'Gleicher Anteil' },
+      // Validation
+      correctDistribution: { fr: 'Répartition correcte', en: 'Correct distribution', nl: 'Correcte verdeling', de: 'Korrekte Verteilung' },
+      incompleteDistribution: { fr: 'Répartition incomplète', en: 'Incomplete distribution', nl: 'Onvolledige verdeling', de: 'Unvollständige Verteilung' },
+      totalDistributed: { fr: 'Total réparti:', en: 'Total distributed:', nl: 'Totaal verdeeld:', de: 'Verteilt insgesamt:' },
+      remaining: { fr: 'Restant:', en: 'Remaining:', nl: 'Resterend:', de: 'Verbleibend:' },
+      total: { fr: 'Total:', en: 'Total:', nl: 'Totaal:', de: 'Gesamt:' },
+      autoDistribute: { fr: 'Distribuer automatiquement', en: 'Auto-distribute', nl: 'Automatisch verdelen', de: 'Automatisch verteilen' },
+      // Actions
+      back: { fr: 'Retour', en: 'Back', nl: 'Terug', de: 'Zurück' },
+      confirmSplit: { fr: 'Confirmer le partage', en: 'Confirm split', nl: 'Verdeling bevestigen', de: 'Aufteilung bestätigen' },
+    },
+
+    // Residence Finance Overview
+    financeOverview: {
+      you: { fr: 'Toi', en: 'You', nl: 'Jij', de: 'Du' },
+      totalResidence: { fr: 'Total résidence', en: 'Total residence', nl: 'Totaal woning', de: 'Gesamt Unterkunft' },
+      expensesCount: { fr: '{count} dépenses', en: '{count} expenses', nl: '{count} uitgaven', de: '{count} Ausgaben' },
+      thisMonth: { fr: 'Ce mois', en: 'This month', nl: 'Deze maand', de: 'Diesen Monat' },
+      yourShareThisMonth: { fr: 'Ta part ce mois', en: 'Your share this month', nl: 'Jouw deel deze maand', de: 'Dein Anteil diesen Monat' },
+      yourBalance: { fr: 'Ton solde', en: 'Your balance', nl: 'Jouw saldo', de: 'Dein Saldo' },
+      youAreOwed: { fr: 'On te doit', en: 'You are owed', nl: 'Men is je schuldig', de: 'Man schuldet dir' },
+      youOwe: { fr: 'Tu dois', en: 'You owe', nl: 'Je bent schuldig', de: 'Du schuldest' },
+      contributions: { fr: 'Contributions', en: 'Contributions', nl: 'Bijdragen', de: 'Beiträge' },
+    },
+
+    // Expense History Modal
+    expenseHistory: {
+      title: { fr: 'Historique des dépenses', en: 'Expense History', nl: 'Uitgavenhistorie', de: 'Ausgabenverlauf' },
+      expenseCount: { fr: '{count} dépense{plural}', en: '{count} expense{plural}', nl: '{count} uitgave{plural}', de: '{count} Ausgabe{plural}' },
+      total: { fr: 'Total', en: 'Total', nl: 'Totaal', de: 'Gesamt' },
+      list: { fr: 'Liste', en: 'List', nl: 'Lijst', de: 'Liste' },
+      calendar: { fr: 'Calendrier', en: 'Calendar', nl: 'Kalender', de: 'Kalender' },
+      searchPlaceholder: { fr: 'Rechercher une dépense...', en: 'Search an expense...', nl: 'Zoek een uitgave...', de: 'Ausgabe suchen...' },
+      filters: { fr: 'Filtres', en: 'Filters', nl: 'Filters', de: 'Filter' },
+      category: { fr: 'Catégorie', en: 'Category', nl: 'Categorie', de: 'Kategorie' },
+      all: { fr: 'Toutes', en: 'All', nl: 'Alle', de: 'Alle' },
+      // Category labels
+      catRent: { fr: 'Loyer', en: 'Rent', nl: 'Huur', de: 'Miete' },
+      catUtilities: { fr: 'Charges', en: 'Utilities', nl: 'Nutsvoorzieningen', de: 'Nebenkosten' },
+      catGroceries: { fr: 'Courses', en: 'Groceries', nl: 'Boodschappen', de: 'Lebensmittel' },
+      catCleaning: { fr: 'Ménage', en: 'Cleaning', nl: 'Schoonmaak', de: 'Reinigung' },
+      catMaintenance: { fr: 'Entretien', en: 'Maintenance', nl: 'Onderhoud', de: 'Instandhaltung' },
+      catInternet: { fr: 'Internet', en: 'Internet', nl: 'Internet', de: 'Internet' },
+      catOther: { fr: 'Autre', en: 'Other', nl: 'Anders', de: 'Sonstiges' },
     },
 
     // Profiles Management Page

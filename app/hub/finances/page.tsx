@@ -11,6 +11,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import HubLayout from '@/components/hub/HubLayout';
+import { useLanguage } from '@/lib/i18n/use-language';
 import ExpenseScanner, { type ScanResult } from '@/components/finances/ExpenseScanner';
 import SmartSplitter from '@/components/finances/SmartSplitter';
 import ExpenseDetailModal from '@/components/finances/ExpenseDetailModal';
@@ -73,6 +74,8 @@ const itemVariants = {
 export default function ModernFinancesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const hub = getSection('hub');
 
   const [isLoading, setIsLoading] = useState(true);
   const [expenses, setExpenses] = useState<ExpenseWithDetails[]>([]);
@@ -248,7 +251,7 @@ export default function ModernFinancesPage() {
           className="text-center"
         >
           <LoadingHouse size={60} />
-          <p className="text-sm text-gray-500 mt-3">Chargement...</p>
+          <p className="text-sm text-gray-500 mt-3">{hub.finances?.loading || 'Chargement...'}</p>
         </motion.div>
       </div>
     );
@@ -277,9 +280,9 @@ export default function ModernFinancesPage() {
               <Wallet className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Finances</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{hub.finances?.title || 'Finances'}</h1>
               <p className="text-sm text-gray-500">
-                {expenses.length} dépense{expenses.length !== 1 ? 's' : ''} • €{totalExpenses.toFixed(0)} total
+                {expenses.length} {expenses.length !== 1 ? (hub.finances?.expensesPlural || 'dépenses') : (hub.finances?.expenseSingular || 'dépense')} • €{totalExpenses.toFixed(0)} {hub.finances?.total || 'total'}
               </p>
             </div>
           </div>
@@ -293,7 +296,7 @@ export default function ModernFinancesPage() {
                 className="h-9 text-sm rounded-xl border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-medium shadow-sm"
               >
                 <Calendar className="w-4 h-4 mr-2" />
-                Calendrier
+                {hub.finances?.calendar || 'Calendrier'}
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -318,7 +321,7 @@ export default function ModernFinancesPage() {
                 }}
               >
                 <Scan className="w-4 h-4 mr-2" />
-                Scanner
+                {hub.finances?.scan || 'Scanner'}
                 <Sparkles className="w-3.5 h-3.5 ml-1.5 text-yellow-200" />
               </Button>
             </motion.div>
@@ -340,7 +343,7 @@ export default function ModernFinancesPage() {
               style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">Total</span>
+              <span className="text-sm font-medium text-orange-700">{hub.finances?.stats?.total || 'Total'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
@@ -351,7 +354,7 @@ export default function ModernFinancesPage() {
             <p className="text-2xl font-bold text-gray-900">€{totalExpenses.toFixed(0)}</p>
             <div className="flex items-center gap-2 mt-2">
               <MiniSparkline expenses={expenses} days={7} />
-              <span className="text-xs text-orange-600 font-medium">7 derniers jours</span>
+              <span className="text-xs text-orange-600 font-medium">{hub.finances?.stats?.lastDays || '7 derniers jours'}</span>
             </div>
           </motion.div>
 
@@ -368,7 +371,7 @@ export default function ModernFinancesPage() {
               style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">Ta part</span>
+              <span className="text-sm font-medium text-purple-700">{hub.finances?.stats?.yourShare || 'Ta part'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
@@ -416,7 +419,7 @@ export default function ModernFinancesPage() {
             />
             <div className="flex items-center justify-between mb-2">
               <span className={cn('text-sm font-medium', totalBalance >= 0 ? 'text-green-700' : 'text-red-700')}>
-                Solde
+                {hub.finances?.stats?.balance || 'Solde'}
               </span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
@@ -437,7 +440,7 @@ export default function ModernFinancesPage() {
               {totalBalance >= 0 ? '+' : ''}€{Math.abs(totalBalance).toFixed(0)}
             </p>
             <p className={cn('text-xs font-medium mt-2', totalBalance >= 0 ? 'text-green-600' : 'text-red-600')}>
-              {totalBalance >= 0 ? '💰 On te doit' : '💸 Tu dois'}
+              {totalBalance >= 0 ? `💰 ${hub.finances?.stats?.youAreOwed || 'On te doit'}` : `💸 ${hub.finances?.stats?.youOwe || 'Tu dois'}`}
             </p>
           </motion.div>
         </motion.div>
@@ -456,7 +459,7 @@ export default function ModernFinancesPage() {
               >
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-base font-bold text-gray-900">Progression</h3>
+              <h3 className="text-base font-bold text-gray-900">{hub.finances?.charts?.progression || 'Progression'}</h3>
             </div>
             <ExpenseProgressChart expenses={expenses} period="month" />
           </motion.div>
@@ -473,7 +476,7 @@ export default function ModernFinancesPage() {
               >
                 <PieChart className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-base font-bold text-gray-900">Par catégorie</h3>
+              <h3 className="text-base font-bold text-gray-900">{hub.finances?.charts?.byCategory || 'Par catégorie'}</h3>
             </div>
             <CategoryBreakdownChart expenses={expenses} />
           </motion.div>
@@ -518,7 +521,7 @@ export default function ModernFinancesPage() {
                 >
                   <Receipt className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Dépenses récentes</h3>
+                <h3 className="text-base font-bold text-gray-900">{hub.finances?.recentExpenses || 'Dépenses récentes'}</h3>
                 <Badge
                   className="text-xs px-2 py-0.5 font-bold border-none"
                   style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)', color: 'white' }}
@@ -530,7 +533,7 @@ export default function ModernFinancesPage() {
                 className="flex items-center gap-1 text-sm text-gray-400 group-hover:text-orange-500 transition-colors"
                 whileHover={{ x: 4 }}
               >
-                <span className="font-medium">Tout voir</span>
+                <span className="font-medium">{hub.finances?.viewAll || 'Tout voir'}</span>
                 <ChevronRight className="w-4 h-4" />
               </motion.div>
             </button>
@@ -557,7 +560,7 @@ export default function ModernFinancesPage() {
               >
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-base font-bold text-gray-900">Soldes entre colocs</h3>
+              <h3 className="text-base font-bold text-gray-900">{hub.finances?.balancesBetweenRoommates || 'Soldes entre colocs'}</h3>
             </div>
 
             <div className="p-3">
@@ -575,8 +578,8 @@ export default function ModernFinancesPage() {
                   >
                     <Check className="w-7 h-7 text-white" />
                   </motion.div>
-                  <p className="text-base font-bold text-gray-900">Tout est réglé ! 🎉</p>
-                  <p className="text-sm text-gray-500">Aucun solde en attente</p>
+                  <p className="text-base font-bold text-gray-900">{hub.finances?.emptyBalance?.title || 'Tout est réglé !'} 🎉</p>
+                  <p className="text-sm text-gray-500">{hub.finances?.emptyBalance?.description || 'Aucun solde en attente'}</p>
                 </motion.div>
               ) : (
                 <div className="space-y-2">
@@ -608,7 +611,7 @@ export default function ModernFinancesPage() {
                         <div>
                           <p className="text-sm font-semibold text-gray-900">{balance.userName}</p>
                           <p className="text-xs text-gray-500">
-                            {balance.amount >= 0 ? '💰 Te doit' : '💸 Tu lui dois'}
+                            {balance.amount >= 0 ? `💰 ${hub.finances?.owesYou || 'Te doit'}` : `💸 ${hub.finances?.youOweThem || 'Tu lui dois'}`}
                           </p>
                         </div>
                       </div>
@@ -654,7 +657,7 @@ export default function ModernFinancesPage() {
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogTitle className="sr-only">
-            {createMode === 'scanner' ? 'Scanner un ticket' : 'Répartir la dépense'}
+            {createMode === 'scanner' ? (hub.finances?.modal?.scanTitle || 'Scanner un ticket') : (hub.finances?.modal?.splitTitle || 'Répartir la dépense')}
           </DialogTitle>
           <AnimatePresence mode="wait">
             {createMode === 'scanner' && (
@@ -668,7 +671,7 @@ export default function ModernFinancesPage() {
                 {isCreating ? (
                   <div className="text-center py-16">
                     <LoadingHouse size={48} />
-                    <p className="text-sm text-gray-500 mt-3">Création de la dépense...</p>
+                    <p className="text-sm text-gray-500 mt-3">{hub.finances?.modal?.creating || 'Création de la dépense...'}</p>
                   </div>
                 ) : (
                   <SmartSplitter

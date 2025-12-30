@@ -273,6 +273,34 @@ To check for stale claims, run:
 | Read others' code for context | Modify others' claimed files |
 | Document breaking changes | Change APIs silently |
 
+## 🔐 Registry Atomicity
+
+The registry file can have race conditions if two agents edit simultaneously.
+
+### Safe Registry Update Pattern
+
+```
+1. Read the full registry content
+2. Parse and validate current state
+3. Make your single change (add/update your entry only)
+4. Write back immediately
+5. Do NOT hold the file open while doing other work
+```
+
+### If You See Corrupted Registry
+
+1. **Do not overwrite** - you might lose another agent's work
+2. **Backup current state**: `cp .claude/team-registry.md .claude/team-registry.backup`
+3. **Document in Conflict Log** section
+4. **Notify human** to resolve
+
+### Conflict Prevention
+
+- Edit ONLY your own row
+- Never delete another agent's row
+- Always read fresh before writing
+- Keep edits minimal and fast
+
 ## 🆘 Emergency Protocol
 
 If you suspect you've caused a conflict:

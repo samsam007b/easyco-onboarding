@@ -11,6 +11,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import HubLayout from '@/components/hub/HubLayout';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   CheckCircle2,
   Clock,
@@ -82,6 +83,8 @@ const PRIORITY_OPTIONS = [
 export default function ModernTasksPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const hub = getSection('hub');
 
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState<TaskWithDetails[]>([]);
@@ -249,9 +252,9 @@ export default function ModernTasksPage() {
               <CheckCircle2 className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Tâches</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{hub.tasks?.title || 'Tâches'}</h1>
               <p className="text-sm text-gray-500">
-                {pendingTasks.length} en attente • {myTasks.length} pour moi
+                {pendingTasks.length} {hub.tasks?.pending || 'en attente'} • {myTasks.length} {hub.tasks?.forMe || 'pour moi'}
               </p>
             </div>
           </div>
@@ -267,7 +270,7 @@ export default function ModernTasksPage() {
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Nouvelle tâche
+              {hub.tasks?.newTask || 'Nouvelle tâche'}
             </Button>
           </motion.div>
         </motion.div>
@@ -287,7 +290,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">Mes tâches</span>
+              <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'Mes tâches'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
@@ -296,7 +299,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{myTasks.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-2">à faire</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">{hub.tasks?.stats?.toDo || 'à faire'}</p>
           </motion.div>
 
           {/* Pending Card - Purple Gradient */}
@@ -312,7 +315,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">En attente</span>
+              <span className="text-sm font-medium text-purple-700">{hub.tasks?.stats?.pendingLabel || 'En attente'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
@@ -321,7 +324,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{pendingTasks.length}</p>
-            <p className="text-xs text-purple-600 font-medium mt-2">tâche{pendingTasks.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-purple-600 font-medium mt-2">{pendingTasks.length !== 1 ? (hub.tasks?.stats?.tasksPlural || 'tâches') : (hub.tasks?.stats?.taskSingular || 'tâche')}</p>
           </motion.div>
 
           {/* Completed Card - Green Gradient */}
@@ -337,7 +340,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-green-700">Terminées</span>
+              <span className="text-sm font-medium text-green-700">{hub.tasks?.stats?.completed || 'Terminées'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
@@ -346,7 +349,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{completedTasks.length}</p>
-            <p className="text-xs text-green-600 font-medium mt-2">complétée{completedTasks.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-green-600 font-medium mt-2">{completedTasks.length !== 1 ? (hub.tasks?.stats?.completedPlural || 'complétées') : (hub.tasks?.stats?.completedSingular || 'complétée')}</p>
           </motion.div>
 
           {/* Overdue Card - Red Gradient */}
@@ -362,7 +365,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-red-700">En retard</span>
+              <span className="text-sm font-medium text-red-700">{hub.tasks?.stats?.overdue || 'En retard'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
@@ -371,7 +374,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{overdueTasks.length}</p>
-            <p className="text-xs text-red-600 font-medium mt-2">urgente{overdueTasks.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-red-600 font-medium mt-2">{overdueTasks.length !== 1 ? (hub.tasks?.stats?.urgentPlural || 'urgentes') : (hub.tasks?.stats?.urgentSingular || 'urgente')}</p>
           </motion.div>
         </motion.div>
 
@@ -389,7 +392,7 @@ export default function ModernTasksPage() {
             >
               <ClipboardList className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-base font-bold text-gray-900">Toutes les tâches</h3>
+            <h3 className="text-base font-bold text-gray-900">{hub.tasks?.allTasks || 'Toutes les tâches'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
               style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)', color: 'white' }}
@@ -427,8 +430,8 @@ export default function ModernTasksPage() {
                       <Sparkles className="w-5 h-5 text-amber-400" />
                     </motion.div>
                   </motion.div>
-                  <p className="font-bold text-gray-900 mb-2 text-lg">Aucune tâche en attente</p>
-                  <p className="text-sm text-gray-500">Tout est fait !</p>
+                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en attente'}</p>
+                  <p className="text-sm text-gray-500">{hub.tasks?.emptyState?.description || 'Tout est fait !'}</p>
                 </motion.div>
               ) : (
                 pendingTasks.map((task) => {
@@ -473,7 +476,7 @@ export default function ModernTasksPage() {
                                 }}
                               >
                                 <RotateCw className="w-3 h-3 mr-1" />
-                                Rotation
+                                {hub.tasks?.rotation || 'Rotation'}
                               </Badge>
                             )}
                             {task.is_overdue && (
@@ -485,7 +488,7 @@ export default function ModernTasksPage() {
                                 }}
                               >
                                 <AlertCircle className="w-3 h-3 mr-1" />
-                                En retard
+                                {hub.tasks?.overdue || 'En retard'}
                               </Badge>
                             )}
                           </div>
@@ -498,7 +501,7 @@ export default function ModernTasksPage() {
                             {task.due_date && (
                               <span className="flex items-center gap-1">
                                 <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
-                                {new Date(task.due_date).toLocaleDateString('fr-FR')}
+                                {new Date(task.due_date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-GB')}
                                 {task.days_until_due !== undefined && (
                                   <span className={cn(
                                     'font-semibold',
@@ -530,7 +533,7 @@ export default function ModernTasksPage() {
                               }}
                             >
                               <Check className="w-4 h-4 mr-1" />
-                              Terminer
+                              {hub.tasks?.complete || 'Terminer'}
                             </Button>
                           </motion.div>
                         )}
@@ -562,34 +565,34 @@ export default function ModernTasksPage() {
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <Plus className="w-5 h-5" style={{ color: '#ee5736' }} />
-              Nouvelle tâche
+              {hub.tasks?.modal?.newTask || 'Nouvelle tâche'}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div>
-              <Label>Titre *</Label>
+              <Label>{hub.tasks?.modal?.titleLabel || 'Titre'} *</Label>
               <Input
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                placeholder="Ex: Nettoyer la cuisine"
+                placeholder={hub.tasks?.modal?.titlePlaceholder || 'Ex: Nettoyer la cuisine'}
                 className="rounded-xl"
               />
             </div>
 
             <div>
-              <Label>Description</Label>
+              <Label>{hub.tasks?.modal?.descriptionLabel || 'Description'}</Label>
               <Textarea
                 value={createForm.description}
                 onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                placeholder="Détails (optionnel)"
+                placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Détails (optionnel)'}
                 className="rounded-xl"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Catégorie</Label>
+                <Label>{hub.tasks?.modal?.categoryLabel || 'Catégorie'}</Label>
                 <select
                   value={createForm.category}
                   onChange={(e) => setCreateForm({ ...createForm, category: e.target.value as any })}
@@ -597,14 +600,14 @@ export default function ModernTasksPage() {
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat.value} value={cat.value}>
-                      {cat.label}
+                      {hub.tasks?.categories?.[cat.value] || cat.label}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <Label>Priorité</Label>
+                <Label>{hub.tasks?.modal?.priorityLabel || 'Priorité'}</Label>
                 <select
                   value={createForm.priority}
                   onChange={(e) => setCreateForm({ ...createForm, priority: e.target.value as any })}
@@ -612,7 +615,7 @@ export default function ModernTasksPage() {
                 >
                   {PRIORITY_OPTIONS.map((pri) => (
                     <option key={pri.value} value={pri.value}>
-                      {pri.label}
+                      {hub.tasks?.priorities?.[pri.value] || pri.label}
                     </option>
                   ))}
                 </select>
@@ -620,7 +623,7 @@ export default function ModernTasksPage() {
             </div>
 
             <div>
-              <Label>Date d'échéance</Label>
+              <Label>{hub.tasks?.modal?.dueDateLabel || 'Date d\'échéance'}</Label>
               <Input
                 type="date"
                 value={createForm.due_date}
@@ -638,7 +641,7 @@ export default function ModernTasksPage() {
                 onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
-                Annuler
+                {hub.tasks?.modal?.cancel || 'Annuler'}
               </Button>
               <Button
                 onClick={handleCreateTask}
@@ -646,7 +649,7 @@ export default function ModernTasksPage() {
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
-                {isSubmitting ? 'Création...' : 'Créer'}
+                {isSubmitting ? (hub.tasks?.modal?.creating || 'Création...') : (hub.tasks?.modal?.create || 'Créer')}
               </Button>
             </div>
           </div>
@@ -659,7 +662,7 @@ export default function ModernTasksPage() {
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              Terminer la tâche
+              {hub.tasks?.completeModal?.title || 'Terminer la tâche'}
             </DialogTitle>
           </DialogHeader>
 
@@ -695,12 +698,12 @@ export default function ModernTasksPage() {
               <div>
                 <Label className="font-semibold text-gray-700 flex items-center gap-2">
                   <PenLine className="w-4 h-4" style={{ color: '#ee5736' }} />
-                  Notes de complétion
+                  {hub.tasks?.completeModal?.notesLabel || 'Notes de complétion'}
                 </Label>
                 <Textarea
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
-                  placeholder="Comment ça s'est passé ? (optionnel)"
+                  placeholder={hub.tasks?.completeModal?.notesPlaceholder || 'Comment ça s\'est passé ? (optionnel)'}
                   className="rounded-xl mt-2 border-2 border-gray-200 focus:border-emerald-300"
                 />
               </div>
@@ -711,7 +714,7 @@ export default function ModernTasksPage() {
                   onClick={() => setShowCompleteModal(false)}
                   className="flex-1 rounded-full border-2 border-gray-200 hover:border-gray-300 font-semibold"
                 >
-                  Annuler
+                  {hub.tasks?.modal?.cancel || 'Annuler'}
                 </Button>
                 <Button
                   onClick={handleCompleteTask}
@@ -723,7 +726,7 @@ export default function ModernTasksPage() {
                   }}
                 >
                   <Check className="w-4 h-4 mr-2" />
-                  {isSubmitting ? 'Finalisation...' : 'Terminer'}
+                  {isSubmitting ? (hub.tasks?.completeModal?.completing || 'Finalisation...') : (hub.tasks?.complete || 'Terminer')}
                 </Button>
               </div>
             </div>

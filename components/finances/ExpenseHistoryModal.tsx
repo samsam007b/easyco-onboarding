@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   X,
   Search,
@@ -48,15 +49,6 @@ interface ExpenseHistoryModalProps {
   initialView?: 'list' | 'calendar';
 }
 
-const categoryLabels: Record<string, string> = {
-  rent: 'Loyer',
-  utilities: 'Charges',
-  groceries: 'Courses',
-  cleaning: 'Ménage',
-  maintenance: 'Entretien',
-  internet: 'Internet',
-  other: 'Autre',
-};
 
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   rent: Home,
@@ -111,6 +103,23 @@ export default function ExpenseHistoryModal({
   onExport,
   initialView = 'list',
 }: ExpenseHistoryModalProps) {
+  const { getSection } = useLanguage();
+  const history = getSection('expenseHistory');
+
+  // Helper to get translated category label
+  const getCategoryLabel = (category: string): string => {
+    const categoryMap: Record<string, string> = {
+      rent: history?.catRent || 'Loyer',
+      utilities: history?.catUtilities || 'Charges',
+      groceries: history?.catGroceries || 'Courses',
+      cleaning: history?.catCleaning || 'Ménage',
+      maintenance: history?.catMaintenance || 'Entretien',
+      internet: history?.catInternet || 'Internet',
+      other: history?.catOther || 'Autre',
+    };
+    return categoryMap[category] || category;
+  };
+
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>(initialView);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | 'all'>('all');
@@ -145,7 +154,7 @@ export default function ExpenseHistoryModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0 bg-gradient-to-br from-white via-orange-50/30 to-white">
-        <DialogTitle className="sr-only">Historique des dépenses</DialogTitle>
+        <DialogTitle className="sr-only">{history?.title || 'Historique des dépenses'}</DialogTitle>
 
         <div className="flex flex-col h-[90vh]">
           {/* Header - Fun gradient background */}
@@ -177,7 +186,7 @@ export default function ExpenseHistoryModal({
                 </motion.div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    Historique des dépenses
+                    {history?.title || 'Historique des dépenses'}
                     <DollarSign className="w-5 h-5" style={{ color: '#ee5736' }} />
                   </h2>
                   <p className="text-sm text-gray-500 flex items-center gap-2">
@@ -187,7 +196,9 @@ export default function ExpenseHistoryModal({
                     >
                       {filteredExpenses.length}
                     </Badge>
-                    dépense{filteredExpenses.length !== 1 ? 's' : ''} • Total:{' '}
+                    {(history?.expenseCount || '{count} dépense{plural}')
+                      .replace('{count}', '')
+                      .replace('{plural}', filteredExpenses.length !== 1 ? 's' : '')} • {history?.total || 'Total'}:{' '}
                     <span className="font-bold text-gray-900">€{totalAmount.toFixed(2)}</span>
                   </p>
                 </div>
@@ -223,7 +234,7 @@ export default function ExpenseHistoryModal({
                     }
                   >
                     <List className="w-4 h-4" />
-                    Liste
+                    {history?.list || 'Liste'}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -245,7 +256,7 @@ export default function ExpenseHistoryModal({
                     }
                   >
                     <CalendarIcon className="w-4 h-4" />
-                    Calendrier
+                    {history?.calendar || 'Calendrier'}
                   </motion.button>
                 </motion.div>
 
@@ -284,7 +295,7 @@ export default function ExpenseHistoryModal({
               >
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <Input
-                  placeholder="Rechercher une dépense..."
+                  placeholder={history?.searchPlaceholder || 'Rechercher une dépense...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-12 py-6 rounded-2xl border-2 border-gray-200 focus:border-orange-300 text-base shadow-sm"
@@ -306,7 +317,7 @@ export default function ExpenseHistoryModal({
                   )}
                 >
                   <Filter className="w-5 h-5 mr-2" />
-                  Filtres
+                  {history?.filters || 'Filtres'}
                   {selectedCategory !== 'all' && (
                     <Badge
                       className="ml-2 text-xs text-white border-none animate-pulse"
@@ -342,7 +353,7 @@ export default function ExpenseHistoryModal({
                   >
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
-                      Catégorie
+                      {history?.category || 'Catégorie'}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       <motion.button
@@ -366,7 +377,7 @@ export default function ExpenseHistoryModal({
                         }
                       >
                         <Sparkles className="w-4 h-4 mr-1" />
-                        Toutes
+                        {history?.all || 'Toutes'}
                       </motion.button>
                       {allCategories.map((cat) => {
                         const CatIcon = categoryIcons[cat] || Package;
@@ -393,7 +404,7 @@ export default function ExpenseHistoryModal({
                             }
                           >
                             <CatIcon className="w-4 h-4" />
-                            {categoryLabels[cat]}
+                            {getCategoryLabel(cat)}
                           </motion.button>
                         );
                       })}

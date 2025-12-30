@@ -60,66 +60,6 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   const [isAnimatingReload, setIsAnimatingReload] = useState(false);
   const [isCardExpanded, setIsCardExpanded] = useState(false);
 
-  // Load swipe history from database on mount
-  useEffect(() => {
-    const loadSwipeHistory = async () => {
-      if (!userId) return;
-
-      try {
-        // Get recent swipes with user profiles
-        const { data: swipes, error } = await supabase
-          .from('user_swipes')
-          .select('swiped_id, action, created_at')
-          .eq('swiper_id', userId)
-          .eq('context', 'searcher_matching')
-          .order('created_at', { ascending: false })
-          .limit(10);
-
-        if (error) throw error;
-
-        if (swipes && swipes.length > 0) {
-          // Get profiles for these users
-          const userIds = swipes.map(s => s.swiped_id);
-          const { data: profiles, error: profilesError } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .in('user_id', userIds);
-
-          if (profilesError) throw profilesError;
-
-          // Map to liked and passed arrays
-          const liked: UserWithCompatibility[] = [];
-          const passed: UserWithCompatibility[] = [];
-
-          swipes.forEach((swipe) => {
-            const profile = profiles?.find(p => p.user_id === swipe.swiped_id);
-            if (profile) {
-              const userProfile: UserWithCompatibility = {
-                user_id: swipe.swiped_id,
-                first_name: profile.first_name || 'Unknown',
-                last_name: profile.last_name || '',
-                profile_photo_url: profile.profile_photo_url,
-              };
-
-              if (swipe.action === 'like') {
-                liked.unshift(userProfile); // Add to beginning (oldest first)
-              } else {
-                passed.unshift(userProfile);
-              }
-            }
-          });
-
-          setLikedProfiles(liked.slice(-5));
-          setPassedProfiles(passed.slice(-5));
-        }
-      } catch (error) {
-        console.error('Failed to load swipe history:', error);
-      }
-    };
-
-    loadSwipeHistory();
-  }, [userId, supabase]);
-
   // Advanced filters state
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFiltersState>({
     priceRange: { min: 0, max: 5000 },
@@ -152,38 +92,107 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
   // User favorites
   const [userFavorites, setUserFavorites] = useState<Set<string>>(new Set());
 
+  // OPTIMIZED: Combined and parallelized initial data loading
+  // Loads swipe history and favorites simultaneously on mount
   useEffect(() => {
-    const loadFavorites = async () => {
-      const { data } = await supabase
-        .from('favorites')
-        .select('property_id')
-        .eq('user_id', userId);
+    if (!userId) return;
 
-      if (data) {
-        setUserFavorites(new Set(data.map(f => f.property_id)));
+    const loadInitialData = async () => {
+      // Run both queries in parallel
+      const [swipesResult, favoritesResult] = await Promise.all([
+        // Load swipe history
+        supabase
+          .from('user_swipes')
+          .select('swiped_id, action, created_at')
+          .eq('swiper_id', userId)
+          .eq('context', 'searcher_matching')
+          .order('created_at', { ascending: false })
+          .limit(10),
+        // Load favorites
+        supabase
+          .from('favorites')
+          .select('property_id')
+          .eq('user_id', userId),
+      ]);
+
+      // Process favorites
+      if (favoritesResult.data) {
+        setUserFavorites(new Set(favoritesResult.data.map(f => f.property_id)));
+      }
+
+      // Process swipe history
+      const { data: swipes, error: swipesError } = swipesResult;
+      if (swipesError || !swipes || swipes.length === 0) return;
+
+      try {
+        // Get profiles for swiped users
+        const userIds = swipes.map(s => s.swiped_id);
+        const { data: profiles, error: profilesError } = await supabase
+          .from('user_profiles')
+          .select('user_id, first_name, last_name, profile_photo_url')
+          .in('user_id', userIds);
+
+        if (profilesError) throw profilesError;
+
+        // Map to liked and passed arrays
+        const liked: UserWithCompatibility[] = [];
+        const passed: UserWithCompatibility[] = [];
+
+        swipes.forEach((swipe) => {
+          const profile = profiles?.find(p => p.user_id === swipe.swiped_id);
+          if (profile) {
+            const userProfile: UserWithCompatibility = {
+              user_id: swipe.swiped_id,
+              first_name: profile.first_name || 'Unknown',
+              last_name: profile.last_name || '',
+              profile_photo_url: profile.profile_photo_url,
+            };
+
+            if (swipe.action === 'like') {
+              liked.unshift(userProfile);
+            } else {
+              passed.unshift(userProfile);
+            }
+          }
+        });
+
+        setLikedProfiles(liked.slice(-5));
+        setPassedProfiles(passed.slice(-5));
+      } catch (error) {
+        console.error('Failed to load swipe profiles:', error);
       }
     };
-    loadFavorites();
+
+    loadInitialData();
   }, [userId, supabase]);
 
   // Fetch searcher profile for property matching
-  // FIXED: Now reads from user_matching_profiles (onboarding QUICK data)
-  // with fallback to user_profiles for backward compatibility
+  // OPTIMIZED: Now fetches both tables in parallel for faster loading
+  // Uses user_matching_profiles (onboarding QUICK data) with fallback to user_profiles
   const { data: searcherProfile } = useQuery<PropertySearcherProfile | null>({
     queryKey: ['searcherProfile', userId],
     queryFn: async () => {
-      // Try user_matching_profiles first (QUICK onboarding)
-      const { data: matchingData, error: matchingError } = await supabase
-        .from('user_matching_profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
+      // OPTIMIZED: Fetch both tables in parallel
+      const [matchingResult, profileResult] = await Promise.all([
+        supabase
+          .from('user_matching_profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .single(),
+        supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .single(),
+      ]);
 
+      const { data: matchingData } = matchingResult;
+      const { data: profileData } = profileResult;
+
+      // Prefer user_matching_profiles (QUICK onboarding) if available
       if (matchingData) {
-        console.log('✅ Found user_matching_profiles data:', matchingData);
-
         // Convert user_matching_profiles to PropertySearcherProfile format
-        const profile = {
+        return {
           user_id: matchingData.user_id,
           first_name: matchingData.first_name || '',
           last_name: matchingData.last_name || '',
@@ -207,55 +216,38 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           wake_up_time: matchingData.wake_up_time,
           sleep_time: matchingData.sleep_time,
         };
-
-        console.log('🔄 Converted searcher profile from user_matching_profiles:', profile);
-        return profile;
       }
 
       // Fallback to user_profiles for backward compatibility
-      console.log('⚠️ No user_matching_profiles found, trying user_profiles...');
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-
-      if (error || !data) {
-        console.log('❌ No user profile found in either table:', error);
+      if (!profileData) {
         return null;
       }
 
-      console.log('✅ User profile data from user_profiles (fallback):', data);
-
       // Convert user_profiles to PropertySearcherProfile format
-      // Try both possible column names (min_budget vs budget_min)
-      const profile = {
-        user_id: data.user_id,
-        first_name: data.first_name || '',
-        last_name: data.last_name || '',
-        date_of_birth: data.date_of_birth,
-        gender: data.gender,
-        min_budget: data.min_budget || data.budget_min,
-        max_budget: data.max_budget || data.budget_max,
-        preferred_neighborhoods: data.preferred_neighborhoods || (data.preferred_neighborhood ? [data.preferred_neighborhood] : []),
-        preferred_property_type: data.preferred_property_type || [],
-        min_bedrooms: data.min_bedrooms,
-        furnished_required: data.furnished_required,
-        required_amenities: data.required_amenities || [],
-        preferred_amenities: data.preferred_amenities || [],
-        cleanliness_level: data.cleanliness_level,
-        social_energy: data.social_energy,
-        smoking: data.smoking || data.is_smoker,
-        pets: data.pets || data.has_pets,
-        smoking_tolerance: data.smoking_tolerance,
-        pets_tolerance: data.pets_tolerance,
-        core_values: data.core_values || [],
-        wake_up_time: data.wake_up_time,
-        sleep_time: data.sleep_time,
+      return {
+        user_id: profileData.user_id,
+        first_name: profileData.first_name || '',
+        last_name: profileData.last_name || '',
+        date_of_birth: profileData.date_of_birth,
+        gender: profileData.gender,
+        min_budget: profileData.min_budget || profileData.budget_min,
+        max_budget: profileData.max_budget || profileData.budget_max,
+        preferred_neighborhoods: profileData.preferred_neighborhoods || (profileData.preferred_neighborhood ? [profileData.preferred_neighborhood] : []),
+        preferred_property_type: profileData.preferred_property_type || [],
+        min_bedrooms: profileData.min_bedrooms,
+        furnished_required: profileData.furnished_required,
+        required_amenities: profileData.required_amenities || [],
+        preferred_amenities: profileData.preferred_amenities || [],
+        cleanliness_level: profileData.cleanliness_level,
+        social_energy: profileData.social_energy,
+        smoking: profileData.smoking || profileData.is_smoker,
+        pets: profileData.pets || profileData.has_pets,
+        smoking_tolerance: profileData.smoking_tolerance,
+        pets_tolerance: profileData.pets_tolerance,
+        core_values: profileData.core_values || [],
+        wake_up_time: profileData.wake_up_time,
+        sleep_time: profileData.sleep_time,
       };
-
-      console.log('🔄 Converted searcher profile from user_profiles:', profile);
-      return profile;
     },
     enabled: !!userId,
   });

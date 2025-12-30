@@ -48,6 +48,7 @@ import SmartFilters from '@/components/optimized/SmartFilters';
 import PropertyComparison from '@/components/optimized/PropertyComparison';
 import EnhancedSkeleton from '@/components/optimized/EnhancedSkeleton';
 import { useMatching } from '@/lib/hooks/use-matching';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface DashboardStats {
   favoritesCount: number;
@@ -79,9 +80,21 @@ interface Activity {
   link?: string;
 }
 
-// Helper function to get relative time string
-function getRelativeTime(dateString: string | null): string {
-  if (!dateString) return 'Récemment';
+// Helper function to get relative time string (with translations support)
+interface RelativeTimeTranslations {
+  recently?: string;
+  minutesAgo?: string;
+  hoursAgo?: string;
+  yesterday?: string;
+  daysAgo?: string;
+}
+
+function getRelativeTime(
+  dateString: string | null,
+  translations?: RelativeTimeTranslations,
+  locale: string = 'fr-FR'
+): string {
+  if (!dateString) return translations?.recently || 'Récemment';
 
   const date = new Date(dateString);
   const now = new Date();
@@ -90,16 +103,27 @@ function getRelativeTime(dateString: string | null): string {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 60) return `Il y a ${diffMins} min`;
-  if (diffHours < 24) return `Il y a ${diffHours}h`;
-  if (diffDays === 1) return 'Hier';
-  if (diffDays < 7) return `Il y a ${diffDays} jours`;
-  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+  if (diffMins < 60) {
+    const template = translations?.minutesAgo || 'Il y a {count} min';
+    return template.replace('{count}', String(diffMins));
+  }
+  if (diffHours < 24) {
+    const template = translations?.hoursAgo || 'Il y a {count}h';
+    return template.replace('{count}', String(diffHours));
+  }
+  if (diffDays === 1) return translations?.yesterday || 'Hier';
+  if (diffDays < 7) {
+    const template = translations?.daysAgo || 'Il y a {count} jours';
+    return template.replace('{count}', String(diffDays));
+  }
+  return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
 }
 
 const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const searcher = getSection('dashboard')?.searcher;
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -185,29 +209,29 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
     {
       id: 'welcome',
       target: '[data-onboarding="kpi-cards"]',
-      title: 'Bienvenue sur Easyco ! 🏠',
-      description: 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité : messages, favoris, matchs et candidatures.',
+      title: searcher?.onboarding?.welcome?.title || 'Bienvenue sur Easyco ! 🏠',
+      description: searcher?.onboarding?.welcome?.description || 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité : messages, favoris, matchs et candidatures.',
       position: 'bottom',
     },
     {
       id: 'profile',
       target: '[data-onboarding="profile-completion"]',
-      title: 'Complète ton profil',
-      description: 'Un profil complet améliore tes chances de matcher avec les bonnes colocations. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
+      title: searcher?.onboarding?.profile?.title || 'Complète ton profil',
+      description: searcher?.onboarding?.profile?.description || 'Un profil complet améliore tes chances de matcher avec les bonnes colocations. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
       position: 'bottom',
     },
     {
       id: 'browse',
       target: '[data-onboarding="browse-button"]',
-      title: 'Explore les propriétés',
-      description: 'Parcours les colocations disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
+      title: searcher?.onboarding?.browse?.title || 'Explore les propriétés',
+      description: searcher?.onboarding?.browse?.description || 'Parcours les colocations disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
       position: 'bottom',
     },
     {
       id: 'saved-searches',
       target: '[data-onboarding="saved-searches"]',
-      title: 'Sauvegarde tes recherches',
-      description: 'Crée des alertes pour être notifié dès qu\'une nouvelle colocation correspond à tes critères. Plus besoin de chercher tous les jours !',
+      title: searcher?.onboarding?.savedSearches?.title || 'Sauvegarde tes recherches',
+      description: searcher?.onboarding?.savedSearches?.description || 'Crée des alertes pour être notifié dès qu\'une nouvelle colocation correspond à tes critères. Plus besoin de chercher tous les jours !',
       position: 'top',
     },
   ];
@@ -412,7 +436,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
 
   const handleAddToComparison = (property: any) => {
     if (comparisonProperties.length >= 4) {
-      alert('Vous pouvez comparer jusqu\'à 4 propriétés maximum');
+      alert(searcher?.maxCompareWarning || 'Vous pouvez comparer jusqu\'à 4 propriétés maximum');
       return;
     }
     if (!comparisonProperties.find(p => p.id === property.id)) {
@@ -426,36 +450,36 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
 
   const kpiCards = [
     {
-      title: 'Messages',
+      title: searcher?.messages || 'Messages',
       value: stats.unreadMessages,
-      subtitle: stats.unreadMessages > 0 ? 'Non lus' : 'Tous lus',
+      subtitle: stats.unreadMessages > 0 ? (searcher?.unread || 'Non lus') : (searcher?.allRead || 'Tous lus'),
       icon: MessageCircle,
       gradient: 'from-[#9c5698] to-[#9D7EE5]',
       bg: 'from-purple-50 to-purple-100/50',
       action: () => router.push('/dashboard/searcher/messages'),
     },
     {
-      title: 'Favoris',
+      title: searcher?.favorites || 'Favoris',
       value: stats.favoritesCount,
-      subtitle: 'Propriétés sauvegardées',
+      subtitle: searcher?.savedProperties || 'Propriétés sauvegardées',
       icon: Bookmark,
       gradient: 'from-[#FFA040] to-[#FFB85C]',
       bg: 'from-orange-50 to-orange-100/50',
       action: () => router.push('/dashboard/searcher/favorites'),
     },
     {
-      title: 'Top Matchs',
+      title: searcher?.topMatches || 'Top Matchs',
       value: stats.topMatchesCount,
-      subtitle: 'Compatibilité > 70%',
+      subtitle: searcher?.compatibilityOver70 || 'Compatibilité > 70%',
       icon: Heart,
       gradient: 'from-[#FF5722] to-[#FF8C5C]',
       bg: 'from-orange-50 to-orange-100/50',
       action: () => router.push('/dashboard/searcher/groups'),
     },
     {
-      title: 'Candidatures',
+      title: searcher?.applications || 'Candidatures',
       value: stats.applicationsCount,
-      subtitle: 'En attente',
+      subtitle: searcher?.pending || 'En attente',
       icon: FileText,
       gradient: 'from-[#FFB10B] to-[#FFE082]',
       bg: 'from-yellow-50 to-yellow-100/50',
@@ -518,11 +542,11 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
               </div>
 
               <div className="text-left">
-                <h3 className="text-sm font-semibold text-gray-900">Complétion du profil</h3>
+                <h3 className="text-sm font-semibold text-gray-900">{searcher?.profileCompletionTitle || 'Complétion du profil'}</h3>
                 <p className="text-xs text-gray-600">
                   {stats.profileCompletion >= 80
-                    ? 'Excellent ! Profil presque complet'
-                    : 'Complète ton profil pour de meilleurs matchs'}
+                    ? (searcher?.profileExcellent || 'Excellent ! Profil presque complet')
+                    : (searcher?.completeProfileForBetterMatches || 'Complète ton profil pour de meilleurs matchs')}
                 </p>
               </div>
             </div>
@@ -551,7 +575,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                 className="w-full rounded-full bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040]"
                 size="sm"
               >
-                Compléter mon profil
+                {searcher?.completeMyProfile || 'Compléter mon profil'}
               </Button>
             </motion.div>
           )}
@@ -640,11 +664,11 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-purple-600" />
-                <h2 className="text-2xl font-bold text-gray-900">Tes meilleurs matchs</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{searcher?.yourBestMatches || 'Tes meilleurs matchs'}</h2>
               </div>
               {stats.topMatchesCount > 4 && (
                 <Button variant="outline" onClick={() => router.push('/dashboard/searcher/groups')}>
-                  Voir tous ({stats.topMatchesCount})
+                  {searcher?.viewAll || 'Voir tous'} ({stats.topMatchesCount})
                 </Button>
               )}
             </div>
@@ -708,7 +732,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Filter className="w-5 h-5 text-purple-600" />
-                Recherches Sauvegardées
+                {searcher?.savedSearches || 'Recherches Sauvegardées'}
               </h3>
               <Button
                 onClick={() => setShowSmartFilters(true)}
@@ -717,7 +741,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                 className="rounded-full"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                Nouveau
+                {searcher?.newSearch || 'Nouveau'}
               </Button>
             </div>
 
@@ -767,7 +791,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                   variant="outline"
                   className="w-full mt-4 rounded-full"
                 >
-                  Voir toutes les recherches
+                  {searcher?.viewAllSearches || 'Voir toutes les recherches'}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </>
@@ -777,16 +801,16 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                 <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-8 h-8 text-purple-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Aucune recherche sauvegardée</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">{searcher?.noSavedSearches || 'Aucune recherche sauvegardée'}</h4>
                 <p className="text-sm text-gray-500 mb-4">
-                  Sauvegarde tes critères de recherche pour être notifié des nouvelles propriétés qui correspondent à tes besoins.
+                  {searcher?.saveSearchCriteria || 'Sauvegarde tes critères de recherche pour être notifié des nouvelles propriétés qui correspondent à tes besoins.'}
                 </p>
                 <Button
                   onClick={() => setShowSmartFilters(true)}
                   className="rounded-full bg-gradient-to-r from-[#9c5698] via-[#9D7EE5] to-[#FFA040]"
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Créer ma première recherche
+                  {searcher?.createFirstSearch || 'Créer ma première recherche'}
                 </Button>
               </div>
             )}
@@ -801,7 +825,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
           >
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Bell className="w-5 h-5 text-purple-600" />
-              Activité Récente
+              {searcher?.recentActivity || 'Activité Récente'}
             </h3>
 
             {recentActivities.length > 0 ? (
@@ -841,7 +865,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                   variant="outline"
                   className="w-full mt-4 rounded-full"
                 >
-                  Voir toutes les notifications
+                  {searcher?.viewAllNotifications || 'Voir toutes les notifications'}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </>
@@ -851,20 +875,20 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                 <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Bell className="w-8 h-8 text-purple-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Aucune activité récente</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">{searcher?.noRecentActivity || 'Aucune activité récente'}</h4>
                 <p className="text-sm text-gray-500 mb-4">
-                  Tes notifications apparaîtront ici : nouveaux messages, propriétés correspondant à tes critères, et plus encore.
+                  {searcher?.notificationsWillAppear || 'Tes notifications apparaîtront ici : nouveaux messages, propriétés correspondant à tes critères, et plus encore.'}
                 </p>
                 <div className="bg-purple-50 rounded-xl p-4 text-left">
-                  <p className="text-sm font-medium text-purple-900 mb-2">Conseils pour commencer :</p>
+                  <p className="text-sm font-medium text-purple-900 mb-2">{searcher?.tipsToStart || 'Conseils pour commencer :'}</p>
                   <ul className="text-sm text-purple-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Target className="w-4 h-4 flex-shrink-0" />
-                      Complète ton profil pour améliorer tes matchs
+                      {searcher?.tipCompleteProfile || 'Complète ton profil pour améliorer tes matchs'}
                     </li>
                     <li className="flex items-center gap-2">
                       <Search className="w-4 h-4 flex-shrink-0" />
-                      Sauvegarde une recherche pour recevoir des alertes
+                      {searcher?.tipSaveSearch || 'Sauvegarde une recherche pour recevoir des alertes'}
                     </li>
                   </ul>
                 </div>
@@ -884,11 +908,10 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
             <div className="flex-1">
               <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
                 <Sparkles className="w-6 h-6" />
-                Continue ta recherche
+                {searcher?.continueSearch || 'Continue ta recherche'}
               </h3>
               <p className="text-purple-100 mb-4">
-                Découvre plus de propriétés qui correspondent à tes critères et augmente tes chances de trouver
-                le lieu idéal
+                {searcher?.discoverMoreProperties || 'Découvre plus de propriétés qui correspondent à tes critères et augmente tes chances de trouver le lieu idéal'}
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button
@@ -897,7 +920,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                   className="bg-white text-purple-600 hover:bg-gray-100 rounded-full"
                 >
                   <Search className="w-4 h-4 mr-2" />
-                  Explorer les propriétés
+                  {searcher?.exploreProperties || 'Explorer les propriétés'}
                 </Button>
                 <Button
                   onClick={() => setShowSmartFilters(true)}
@@ -905,7 +928,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
                   className="border-white text-white hover:bg-white/20 rounded-full"
                 >
                   <Filter className="w-4 h-4 mr-2" />
-                  Filtres intelligents
+                  {searcher?.smartFilters || 'Filtres intelligents'}
                 </Button>
               </div>
             </div>
@@ -914,11 +937,11 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
                 <p className="text-3xl font-bold">{stats.topMatchesCount}</p>
-                <p className="text-sm text-purple-100">Top Matchs</p>
+                <p className="text-sm text-purple-100">{searcher?.topMatches || 'Top Matchs'}</p>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
                 <p className="text-3xl font-bold">{stats.savedSearchesCount}</p>
-                <p className="text-sm text-purple-100">Recherches</p>
+                <p className="text-sm text-purple-100">{searcher?.searches || 'Recherches'}</p>
               </div>
             </div>
           </div>
@@ -943,7 +966,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <Sparkles className="w-6 h-6 text-purple-600" />
-                  <h2 className="text-2xl font-bold text-gray-900">Filtres intelligents</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{searcher?.smartFilters || 'Filtres intelligents'}</h2>
                 </div>
                 <button
                   onClick={() => setShowSmartFilters(false)}
@@ -966,7 +989,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard() {
               className="bg-gradient-to-r from-purple-600 to-orange-600 hover:from-purple-700 hover:to-orange-700 text-white shadow-2xl rounded-full px-6 py-6"
             >
               <TrendingUp className="w-6 h-6 mr-2" />
-              Comparer ({comparisonProperties.length})
+              {searcher?.compare || 'Comparer'} ({comparisonProperties.length})
             </Button>
           </motion.div>
         )}

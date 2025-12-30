@@ -24,6 +24,7 @@ import {
   type MFAStatus,
   type MFAFactor
 } from '@/lib/auth/mfa';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // =============================================================================
 // TYPES
@@ -88,6 +89,9 @@ function OTPInput({
 // =============================================================================
 
 export default function MFASettings({ onStatusChange }: MFASettingsProps) {
+  const { language, getSection } = useLanguage();
+  const mfa = getSection('mfa');
+
   const [mfaStatus, setMfaStatus] = useState<MFAStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [setupStep, setSetupStep] = useState<SetupStep>('initial');
@@ -100,6 +104,14 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [secretCopied, setSecretCopied] = useState(false);
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE'
+  };
 
   // Load MFA status on mount
   useEffect(() => {
@@ -130,10 +142,10 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
     setIsSubmitting(true);
 
     try {
-      const result = await enrollMFA('Mon Application Authenticator');
+      const result = await enrollMFA(mfa?.myAuthenticatorApp || 'My Authenticator App');
 
       if (!result.success || !result.qrCode || !result.secret || !result.factorId) {
-        setError(result.error || 'Erreur lors de la configuration MFA');
+        setError(result.error || mfa?.errors?.configError || 'Error during MFA configuration');
         return;
       }
 
@@ -144,7 +156,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
       });
       setSetupStep('scanning');
     } catch (err) {
-      setError('Erreur inattendue lors de la configuration');
+      setError(mfa?.errors?.unexpectedError || 'Unexpected error during configuration');
     } finally {
       setIsSubmitting(false);
     }
@@ -165,7 +177,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
       const result = await verifyMFAEnrollment(setupData.factorId, verificationCode);
 
       if (!result.success) {
-        setError(result.error || 'Code invalide');
+        setError(result.error || mfa?.errors?.invalidCode || 'Invalid code');
         setVerificationCode('');
         return;
       }
@@ -174,7 +186,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
       await loadMFAStatus();
       onStatusChange?.(true);
     } catch (err) {
-      setError('Erreur lors de la vérification');
+      setError(mfa?.errors?.verificationError || 'Error during verification');
       setVerificationCode('');
     } finally {
       setIsSubmitting(false);
@@ -182,7 +194,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   };
 
   const handleDisableMFA = async (factorId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir désactiver l\'authentification à deux facteurs ?')) {
+    if (!confirm(mfa?.confirmDisable || 'Are you sure you want to disable two-factor authentication?')) {
       return;
     }
 
@@ -193,14 +205,14 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
       const result = await unenrollMFA(factorId);
 
       if (!result.success) {
-        setError(result.error || 'Erreur lors de la désactivation');
+        setError(result.error || mfa?.errors?.disableError || 'Error during deactivation');
         return;
       }
 
       await loadMFAStatus();
       onStatusChange?.(false);
     } catch (err) {
-      setError('Erreur lors de la désactivation');
+      setError(mfa?.errors?.disableError || 'Error during deactivation');
     } finally {
       setIsSubmitting(false);
     }
@@ -241,8 +253,8 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <Smartphone className="w-6 h-6 text-emerald-700" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Authentification à deux facteurs</h2>
-            <p className="text-sm text-gray-600">Sécurisez votre compte avec un code supplémentaire</p>
+            <h2 className="text-xl font-bold text-gray-900">{mfa?.title || 'Two-Factor Authentication'}</h2>
+            <p className="text-sm text-gray-600">{mfa?.subtitle || 'Secure your account with an additional code'}</p>
           </div>
         </div>
 
@@ -253,9 +265,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <CheckCircle className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <p className="font-semibold text-emerald-800">2FA activée</p>
+              <p className="font-semibold text-emerald-800">{mfa?.enabled || '2FA enabled'}</p>
               <p className="text-sm text-emerald-600">
-                Votre compte est protégé par l'authentification à deux facteurs
+                {mfa?.enabledDescription || 'Your account is protected by two-factor authentication'}
               </p>
             </div>
           </div>
@@ -263,7 +275,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
 
         {/* Enrolled Factors */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-700">Méthodes d'authentification</h3>
+          <h3 className="text-sm font-semibold text-gray-700">{mfa?.authMethods || 'Authentication methods'}</h3>
           {mfaStatus.factors.map((factor) => (
             <div
               key={factor.id}
@@ -275,10 +287,10 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">
-                    {factor.friendly_name || 'Application Authenticator'}
+                    {factor.friendly_name || mfa?.authenticatorApp || 'Authenticator App'}
                   </p>
                   <p className="text-xs text-gray-500">
-                    Ajouté le {new Date(factor.created_at).toLocaleDateString('fr-FR')}
+                    {mfa?.addedOn || 'Added on'} {new Date(factor.created_at).toLocaleDateString(localeMap[language] || 'en-US')}
                   </p>
                 </div>
               </div>
@@ -317,8 +329,8 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
           <Shield className="w-6 h-6 text-purple-700" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Authentification à deux facteurs</h2>
-          <p className="text-sm text-gray-600">Ajoutez une couche de sécurité supplémentaire</p>
+          <h2 className="text-xl font-bold text-gray-900">{mfa?.title || 'Two-Factor Authentication'}</h2>
+          <p className="text-sm text-gray-600">{mfa?.subtitleAdd || 'Add an extra layer of security'}</p>
         </div>
       </div>
 
@@ -335,26 +347,25 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-amber-800">2FA non activée</p>
+                  <p className="font-semibold text-amber-800">{mfa?.notEnabled || '2FA not enabled'}</p>
                   <p className="text-sm text-amber-700 mt-1">
-                    Votre compte n'est pas protégé par l'authentification à deux facteurs.
-                    Activez-la pour une sécurité renforcée.
+                    {mfa?.notEnabledDescription || 'Your account is not protected by two-factor authentication. Enable it for enhanced security.'}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-4 mb-6">
-              <h3 className="font-semibold text-gray-900">Comment ça marche ?</h3>
+              <h3 className="font-semibold text-gray-900">{mfa?.howItWorks || 'How does it work?'}</h3>
               <div className="grid gap-3">
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
                   <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
                     1
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Installez une application</p>
+                    <p className="font-medium text-gray-900">{mfa?.step1Title || 'Install an app'}</p>
                     <p className="text-sm text-gray-600">
-                      Google Authenticator, Authy, ou 1Password
+                      {mfa?.step1Description || 'Google Authenticator, Authy, or 1Password'}
                     </p>
                   </div>
                 </div>
@@ -363,9 +374,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                     2
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Scannez le QR code</p>
+                    <p className="font-medium text-gray-900">{mfa?.step2Title || 'Scan the QR code'}</p>
                     <p className="text-sm text-gray-600">
-                      Liez votre compte à l'application
+                      {mfa?.step2Description || 'Link your account to the app'}
                     </p>
                   </div>
                 </div>
@@ -374,9 +385,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                     3
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Entrez le code</p>
+                    <p className="font-medium text-gray-900">{mfa?.step3Title || 'Enter the code'}</p>
                     <p className="text-sm text-gray-600">
-                      Un code à 6 chiffres pour confirmer
+                      {mfa?.step3Description || 'A 6-digit code to confirm'}
                     </p>
                   </div>
                 </div>
@@ -393,7 +404,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               ) : (
                 <Shield className="w-4 h-4 mr-2" />
               )}
-              Activer l'authentification 2FA
+              {mfa?.enable2FA || 'Enable 2FA authentication'}
             </Button>
 
             {error && (
@@ -415,9 +426,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             className="text-center"
           >
             <div className="mb-4">
-              <h3 className="font-semibold text-gray-900 mb-2">Scannez ce QR code</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{mfa?.scanQRCode || 'Scan this QR code'}</h3>
               <p className="text-sm text-gray-600">
-                Ouvrez votre application d'authentification et scannez ce code
+                {mfa?.scanQRCodeDescription || 'Open your authenticator app and scan this code'}
               </p>
             </div>
 
@@ -427,7 +438,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={setupData.qrCode}
-                  alt="QR Code pour configuration 2FA"
+                  alt={mfa?.qrCodeAlt || 'QR Code for 2FA setup'}
                   className="w-48 h-48"
                 />
               </div>
@@ -436,7 +447,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             {/* Manual Entry */}
             <div className="mb-6">
               <p className="text-xs text-gray-500 mb-2">
-                Ou entrez ce code manuellement :
+                {mfa?.manualEntry || 'Or enter this code manually:'}
               </p>
               <div className="flex items-center justify-center gap-2">
                 <code className="px-3 py-2 bg-gray-100 rounded-lg font-mono text-sm text-gray-800 select-all">
@@ -463,13 +474,13 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 onClick={handleCancel}
                 className="flex-1 rounded-xl"
               >
-                Annuler
+                {mfa?.cancel || 'Cancel'}
               </Button>
               <Button
                 onClick={handleProceedToVerify}
                 className="flex-1 rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
               >
-                Continuer
+                {mfa?.continue || 'Continue'}
               </Button>
             </div>
           </motion.div>
@@ -485,9 +496,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             className="text-center"
           >
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Entrez le code</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{mfa?.enterCode || 'Enter the code'}</h3>
               <p className="text-sm text-gray-600">
-                Entrez le code à 6 chiffres affiché dans votre application
+                {mfa?.enterCodeDescription || 'Enter the 6-digit code displayed in your app'}
               </p>
             </div>
 
@@ -526,7 +537,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 disabled={isSubmitting}
                 className="flex-1 rounded-xl"
               >
-                Annuler
+                {mfa?.cancel || 'Cancel'}
               </Button>
               <Button
                 onClick={handleVerify}
@@ -538,7 +549,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 ) : (
                   <CheckCircle className="w-4 h-4 mr-2" />
                 )}
-                Vérifier
+                {mfa?.verify || 'Verify'}
               </Button>
             </div>
           </motion.div>
@@ -555,15 +566,15 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-emerald-600" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">2FA activée avec succès !</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{mfa?.successTitle || '2FA enabled successfully!'}</h3>
             <p className="text-gray-600 mb-6">
-              Votre compte est maintenant protégé par l'authentification à deux facteurs.
+              {mfa?.successDescription || 'Your account is now protected by two-factor authentication.'}
             </p>
             <Button
               onClick={() => setSetupStep('initial')}
               className="rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
             >
-              Terminé
+              {mfa?.done || 'Done'}
             </Button>
           </motion.div>
         )}

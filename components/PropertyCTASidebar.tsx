@@ -10,6 +10,7 @@ import RoomPricingSelector from '@/components/RoomPricingSelector';
 import CostBreakdownCard from '@/components/CostBreakdownCard';
 import ScheduleTourModal from '@/components/ScheduleTourModal';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface PropertyOwner {
   id: string;
@@ -42,6 +43,18 @@ export default function PropertyCTASidebar({
   hasVirtualTour = false,
   className
 }: PropertyCTASidebarProps) {
+  const { language, getSection } = useLanguage();
+  const property = getSection('property');
+  const common = getSection('common');
+
+  // Locale map for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+
   const [selectedRoom, setSelectedRoom] = useState<RoomWithTotal | undefined>(
     rooms.find(r => r.is_available) || rooms[0]
   );
@@ -68,7 +81,7 @@ export default function PropertyCTASidebar({
   const handleContact = () => {
     // Open contact form or email
     if (owner?.email) {
-      window.location.href = `mailto:${owner.email}?subject=Intéressé par ${propertyTitle}`;
+      window.location.href = `mailto:${owner.email}?subject=${property?.sidebar?.interestedIn || 'Intéressé par'} ${propertyTitle}`;
     }
   };
 
@@ -89,7 +102,7 @@ export default function PropertyCTASidebar({
           <CardHeader className="pb-4">
             <CardTitle className="text-base flex items-center gap-2">
               <User className="w-5 h-5 text-gray-600" />
-              Votre contact propriétaire
+              {property?.sidebar?.ownerContact || 'Votre contact propriétaire'}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -136,13 +149,13 @@ export default function PropertyCTASidebar({
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="font-medium">Vérifié</span>
+                <span className="font-medium">{property?.sidebar?.verified || 'Vérifié'}</span>
               </div>
               <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <span className="font-medium">Réactif</span>
+                <span className="font-medium">{property?.sidebar?.responsive || 'Réactif'}</span>
               </div>
             </div>
           </CardContent>
@@ -152,7 +165,7 @@ export default function PropertyCTASidebar({
       {/* Room Selection */}
       <Card className="sticky top-24">
         <CardHeader>
-          <CardTitle className="text-lg">Sélectionnez votre chambre</CardTitle>
+          <CardTitle className="text-lg">{property?.sidebar?.selectRoom || 'Sélectionnez votre chambre'}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <RoomPricingSelector
@@ -179,7 +192,7 @@ export default function PropertyCTASidebar({
               disabled={!selectedRoom?.is_available}
             >
               <Send className="w-5 h-5 mr-2" />
-              Candidater pour cette chambre
+              {property?.sidebar?.applyForRoom || 'Candidater pour cette chambre'}
             </Button>
 
             <div className="grid grid-cols-2 gap-2">
@@ -189,7 +202,7 @@ export default function PropertyCTASidebar({
                 className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <Calendar className="w-4 h-4 mr-2" />
-                Visite
+                {property?.sidebar?.visit || 'Visite'}
               </Button>
               <Button
                 onClick={handleVirtualTour}
@@ -197,7 +210,7 @@ export default function PropertyCTASidebar({
                 className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <Video className="w-4 h-4 mr-2" />
-                Virtuelle
+                {property?.sidebar?.virtual || 'Virtuelle'}
               </Button>
             </div>
 
@@ -207,7 +220,7 @@ export default function PropertyCTASidebar({
               className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               <Phone className="w-4 h-4 mr-2" />
-              Contacter le propriétaire
+              {property?.sidebar?.contactOwner || 'Contacter le propriétaire'}
             </Button>
           </div>
         </CardContent>
@@ -226,9 +239,9 @@ export default function PropertyCTASidebar({
               <span>
                 {selectedRoom?.is_available
                   ? selectedRoom.available_from
-                    ? `Disponible dès le ${new Date(selectedRoom.available_from).toLocaleDateString('fr-FR')}`
-                    : 'Disponible immédiatement'
-                  : 'Occupée'
+                    ? `${property?.sidebar?.availableFrom || 'Disponible dès le'} ${new Date(selectedRoom.available_from).toLocaleDateString(localeMap[language] || 'en-US')}`
+                    : property?.sidebar?.availableNow || 'Disponible immédiatement'
+                  : property?.sidebar?.occupied || 'Occupée'
                 }
               </span>
             </div>
@@ -242,14 +255,14 @@ export default function PropertyCTASidebar({
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Calendar className="w-5 h-5 text-gray-600" />
-              Disponibilité
+              {property?.sidebar?.availability || 'Disponibilité'}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Disponible à partir du</p>
+              <p className="text-sm text-gray-600 mb-1">{property?.sidebar?.availableStarting || 'Disponible à partir du'}</p>
               <p className="text-2xl font-bold text-gray-900">
-                {new Date(selectedRoom.available_from).toLocaleDateString('fr-FR', {
+                {new Date(selectedRoom.available_from).toLocaleDateString(localeMap[language] || 'en-US', {
                   day: 'numeric',
                   month: 'long',
                   year: 'numeric'
@@ -268,19 +281,19 @@ export default function PropertyCTASidebar({
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">✓</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">Propriété vérifiée</p>
+              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.propertyVerified || 'Propriété vérifiée'}</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">🔒</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">Paiement sécurisé</p>
+              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.securePayment || 'Paiement sécurisé'}</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
                 <span className="text-lg">📋</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">Contrat de bail standard</p>
+              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.standardLease || 'Contrat de bail standard'}</p>
             </div>
           </div>
         </CardContent>
@@ -303,19 +316,19 @@ export default function PropertyCTASidebar({
           <Card className="max-w-4xl w-full">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Visite virtuelle</CardTitle>
+                <CardTitle>{property?.sidebar?.virtualTour || 'Visite virtuelle'}</CardTitle>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowVirtualTour(false)}
                 >
-                  Fermer
+                  {common?.close || 'Fermer'}
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
               <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Visite virtuelle à venir</p>
+                <p className="text-gray-500">{property?.sidebar?.virtualTourComingSoon || 'Visite virtuelle à venir'}</p>
               </div>
             </CardContent>
           </Card>

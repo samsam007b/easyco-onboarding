@@ -22,6 +22,7 @@ import {
 } from 'recharts';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import type { ExpenseWithDetails } from '@/types/finances.types';
 
 // Category colors matching the app theme
@@ -35,25 +36,24 @@ const CATEGORY_COLORS: Record<string, string> = {
   other: '#6b7280',     // gray
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  rent: 'Loyer',
-  utilities: 'Charges',
-  groceries: 'Courses',
-  cleaning: 'Ménage',
-  maintenance: 'Entretien',
-  internet: 'Internet',
-  other: 'Autre',
-};
-
 interface ExpenseChartsProps {
   expenses: ExpenseWithDetails[];
   period?: 'week' | 'month' | 'year';
 }
 
 // Helper to group expenses by date
-function groupByDate(expenses: ExpenseWithDetails[], period: 'week' | 'month' | 'year') {
+interface GroupByDateOptions {
+  locale: string;
+  weekPrefix: string;
+}
+
+function groupByDate(
+  expenses: ExpenseWithDetails[],
+  period: 'week' | 'month' | 'year',
+  options: GroupByDateOptions
+) {
   const grouped = new Map<string, number>();
-  const now = new Date();
+  const { locale, weekPrefix } = options;
 
   expenses.forEach((exp) => {
     const date = new Date(exp.date);
@@ -61,14 +61,14 @@ function groupByDate(expenses: ExpenseWithDetails[], period: 'week' | 'month' | 
 
     if (period === 'week') {
       // Group by day for weekly view
-      key = date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+      key = date.toLocaleDateString(locale, { weekday: 'short', day: 'numeric' });
     } else if (period === 'month') {
       // Group by week for monthly view
       const weekNum = Math.ceil(date.getDate() / 7);
-      key = `Sem ${weekNum}`;
+      key = `${weekPrefix} ${weekNum}`;
     } else {
       // Group by month for yearly view
-      key = date.toLocaleDateString('fr-FR', { month: 'short' });
+      key = date.toLocaleDateString(locale, { month: 'short' });
     }
 
     grouped.set(key, (grouped.get(key) || 0) + exp.amount);
@@ -81,7 +81,10 @@ function groupByDate(expenses: ExpenseWithDetails[], period: 'week' | 'month' | 
 }
 
 // Helper to group expenses by category
-function groupByCategory(expenses: ExpenseWithDetails[]) {
+function groupByCategory(
+  expenses: ExpenseWithDetails[],
+  getCategoryLabel: (category: string) => string
+) {
   const grouped = new Map<string, number>();
 
   expenses.forEach((exp) => {
@@ -92,7 +95,7 @@ function groupByCategory(expenses: ExpenseWithDetails[]) {
   return Array.from(grouped.entries())
     .map(([category, amount]) => ({
       category,
-      label: CATEGORY_LABELS[category] || category,
+      label: getCategoryLabel(category),
       amount: Math.round(amount * 100) / 100,
       color: CATEGORY_COLORS[category] || CATEGORY_COLORS.other,
     }))
@@ -162,14 +165,35 @@ export function ExpenseProgressChart({
   expenses,
   period = 'month',
 }: ExpenseChartsProps) {
-  const data = useMemo(() => groupByDate(expenses, period), [expenses, period]);
+  const { language, getSection } = useLanguage();
+  const charts = getSection('expenseCharts');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+  const weekPrefix = charts?.weekPrefix || 'Sem';
+
+  const data = useMemo(
+    () => groupByDate(expenses, period, { locale, weekPrefix }),
+    [expenses, period, locale, weekPrefix]
+  );
   const trend = useMemo(() => calculateTrend(expenses, period), [expenses, period]);
   const total = useMemo(
     () => expenses.reduce((sum, e) => sum + e.amount, 0),
     [expenses]
   );
 
-  const periodLabel = period === 'week' ? 'cette semaine' : period === 'month' ? 'ce mois' : 'cette année';
+  const periodLabel =
+    period === 'week'
+      ? charts?.thisWeek || 'cette semaine'
+      : period === 'month'
+        ? charts?.thisMonth || 'ce mois'
+        : charts?.thisYear || 'cette année';
 
   return (
     <div className="space-y-3">
@@ -177,7 +201,7 @@ export function ExpenseProgressChart({
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-            Total {periodLabel}
+            {charts?.total || 'Total'} {periodLabel}
           </p>
           <p className="text-2xl font-bold text-gray-900">€{total.toFixed(2)}</p>
         </div>
@@ -238,7 +262,27 @@ export function ExpenseProgressChart({
  * Donut Chart - Category breakdown
  */
 export function CategoryBreakdownChart({ expenses }: { expenses: ExpenseWithDetails[] }) {
-  const data = useMemo(() => groupByCategory(expenses), [expenses]);
+  const { getSection } = useLanguage();
+  const charts = getSection('expenseCharts');
+
+  // Helper to get translated category label
+  const getCategoryLabel = (category: string): string => {
+    const categoryMap: Record<string, string> = {
+      rent: charts?.catRent || 'Loyer',
+      utilities: charts?.catUtilities || 'Charges',
+      groceries: charts?.catGroceries || 'Courses',
+      cleaning: charts?.catCleaning || 'Ménage',
+      maintenance: charts?.catMaintenance || 'Entretien',
+      internet: charts?.catInternet || 'Internet',
+      other: charts?.catOther || 'Autre',
+    };
+    return categoryMap[category] || category;
+  };
+
+  const data = useMemo(
+    () => groupByCategory(expenses, getCategoryLabel),
+    [expenses, charts]
+  );
   const total = useMemo(
     () => expenses.reduce((sum, e) => sum + e.amount, 0),
     [expenses]
@@ -247,7 +291,7 @@ export function CategoryBreakdownChart({ expenses }: { expenses: ExpenseWithDeta
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[180px] text-sm text-gray-500">
-        Aucune donnée
+        {charts?.noData || 'Aucune donnée'}
       </div>
     );
   }
@@ -276,7 +320,7 @@ export function CategoryBreakdownChart({ expenses }: { expenses: ExpenseWithDeta
         {/* Center label */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-xs text-gray-500">Total</p>
+            <p className="text-xs text-gray-500">{charts?.total || 'Total'}</p>
             <p className="text-sm font-bold text-gray-900">€{Math.round(total)}</p>
           </div>
         </div>
@@ -299,7 +343,9 @@ export function CategoryBreakdownChart({ expenses }: { expenses: ExpenseWithDeta
           </div>
         ))}
         {data.length > 5 && (
-          <p className="text-xs text-gray-400">+{data.length - 5} autres</p>
+          <p className="text-xs text-gray-400">
+            {(charts?.othersCount || '+{count} autres').replace('{count}', String(data.length - 5))}
+          </p>
         )}
       </div>
     </div>

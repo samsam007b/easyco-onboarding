@@ -38,6 +38,7 @@ import {
   RESIDENT_CHECKLIST_ITEMS,
   celebrateToast,
 } from '@/components/onboarding';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // V2 Fun Design Colors
 const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
@@ -80,6 +81,8 @@ interface Activity {
 const ModernResidentDashboard = memo(function ModernResidentDashboard() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const resident = getSection('dashboard')?.resident;
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
@@ -153,29 +156,29 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
     {
       id: 'welcome',
       target: '[data-onboarding="kpi-cards"]',
-      title: 'Bienvenue dans ton Hub ! 🏠',
-      description: 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
+      title: resident?.onboarding?.welcome?.title || 'Bienvenue dans ton Hub ! 🏠',
+      description: resident?.onboarding?.welcome?.description || 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
       position: 'bottom',
     },
     {
       id: 'finances',
       target: '[data-onboarding="finances-card"]',
-      title: 'Gère tes finances',
-      description: 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes colocs.',
+      title: resident?.onboarding?.finances?.title || 'Gère tes finances',
+      description: resident?.onboarding?.finances?.description || 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes colocs.',
       position: 'bottom',
     },
     {
       id: 'members',
       target: '[data-onboarding="members-card"]',
-      title: 'Tes colocataires',
-      description: 'Retrouve tous les membres de ta coloc, invite de nouveaux colocs ou anticipe les départs.',
+      title: resident?.onboarding?.members?.title || 'Tes colocataires',
+      description: resident?.onboarding?.members?.description || 'Retrouve tous les membres de ta coloc, invite de nouveaux colocs ou anticipe les départs.',
       position: 'bottom',
     },
     {
       id: 'tasks',
       target: '[data-onboarding="tasks-section"]',
-      title: 'Organise la vie commune',
-      description: 'Planifie les tâches ménagères, les réunions et les échéances importantes de la coloc.',
+      title: resident?.onboarding?.tasks?.title || 'Organise la vie commune',
+      description: resident?.onboarding?.tasks?.description || 'Planifie les tâches ménagères, les réunions et les échéances importantes de la coloc.',
       position: 'right',
     },
   ];
@@ -283,12 +286,21 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
 
   const rentPercentage = (stats.rentStatus.paid / stats.rentStatus.total) * 100;
 
+  // Get locale code for date formatting
+  const localeMap: { [key: string]: string } = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
   // V2 Fun KPI Cards Configuration
   const kpiCards = [
     {
-      title: 'Loyer du Mois',
+      title: resident?.monthlyRent || 'Loyer du Mois',
       value: `€${stats.rentStatus.paid}/${stats.rentStatus.total}`,
-      subtitle: `Échéance: ${new Date(stats.rentStatus.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
+      subtitle: `${resident?.dueDate || 'Échéance'}: ${new Date(stats.rentStatus.dueDate).toLocaleDateString(locale, { day: 'numeric', month: 'short' })}`,
       icon: Home,
       iconGradient: RESIDENT_GRADIENT,
       bgGradient: CARD_BG_GRADIENT,
@@ -297,9 +309,9 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       onboardingId: undefined,
     },
     {
-      title: 'Dépenses Partagées',
+      title: resident?.sharedExpenses || 'Dépenses Partagées',
       value: `€${stats.sharedExpenses}`,
-      subtitle: 'À répartir',
+      subtitle: resident?.toSplit || 'À répartir',
       icon: DollarSign,
       iconGradient: RESIDENT_GRADIENT,
       bgGradient: CARD_BG_GRADIENT,
@@ -308,9 +320,9 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       onboardingId: 'finances-card',
     },
     {
-      title: 'Ton Solde',
+      title: resident?.yourBalance || 'Ton Solde',
       value: stats.yourBalance > 0 ? `+€${stats.yourBalance}` : `-€${Math.abs(stats.yourBalance)}`,
-      subtitle: stats.yourBalance > 0 ? 'On te doit' : 'Tu dois',
+      subtitle: stats.yourBalance > 0 ? (resident?.owedToYou || 'On te doit') : (resident?.youOwe || 'Tu dois'),
       icon: TrendingUp,
       iconGradient: stats.yourBalance > 0 ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)' : RESIDENT_GRADIENT,
       bgGradient: stats.yourBalance > 0 ? 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)' : CARD_BG_GRADIENT,
@@ -319,9 +331,9 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       onboardingId: undefined,
     },
     {
-      title: 'Colocataires',
+      title: resident?.roommates || 'Colocataires',
       value: stats.roommatesCount,
-      subtitle: 'Membres actifs',
+      subtitle: resident?.activeMembers || 'Membres actifs',
       icon: Users,
       iconGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
       bgGradient: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
@@ -350,7 +362,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={64} />
-          <p className="text-gray-600 font-medium">Chargement du hub...</p>
+          <p className="text-gray-600 font-medium">{resident?.loadingHub || 'Chargement du hub...'}</p>
         </div>
       </div>
     );
@@ -507,7 +519,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   >
                     <Clock className="w-5 h-5 text-white" />
                   </motion.div>
-                  Tâches à Venir
+                  {resident?.upcomingTasks || 'Tâches à Venir'}
                 </h3>
                 <Button
                   onClick={() => router.push('/hub/tasks')}
@@ -516,7 +528,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   className="rounded-full font-medium"
                   style={{ color: RESIDENT_PRIMARY }}
                 >
-                  Tout voir
+                  {resident?.viewAll || 'Tout voir'}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
@@ -548,7 +560,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       <div>
                         <p className="font-semibold text-gray-900">{task.title}</p>
                         <p className="text-xs text-gray-500">
-                          {new Date(task.dueDate).toLocaleDateString('fr-FR', {
+                          {new Date(task.dueDate).toLocaleDateString(locale, {
                             day: 'numeric',
                             month: 'short'
                           })}
@@ -562,7 +574,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                         color: task.priority === 'high' ? '#ef4444' : task.priority === 'medium' ? '#f59e0b' : '#10b981',
                       }}
                     >
-                      {task.priority === 'high' ? 'Urgent' : task.priority === 'medium' ? 'Moyen' : 'Bas'}
+                      {task.priority === 'high' ? (resident?.priorityUrgent || 'Urgent') : task.priority === 'medium' ? (resident?.priorityMedium || 'Moyen') : (resident?.priorityLow || 'Bas')}
                     </Badge>
                   </motion.div>
                 ))}
@@ -579,7 +591,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Ajouter une tâche
+                  {resident?.addTask || 'Ajouter une tâche'}
                 </Button>
               </motion.div>
             </div>
@@ -606,7 +618,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-                Activité Récente
+                {resident?.recentActivity || 'Activité Récente'}
               </h3>
 
               <div className="space-y-3">
@@ -675,9 +687,9 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
               </motion.div>
               <div>
                 <h3 className="text-lg font-bold text-gray-900">
-                  Bonheur de la Coloc
+                  {resident?.communityHappiness || 'Bonheur de la Coloc'}
                 </h3>
-                <p className="text-gray-500 text-sm">Basé sur l'activité et les interactions</p>
+                <p className="text-gray-500 text-sm">{resident?.happinessSubtitle || 'Basé sur l\'activité et les interactions'}</p>
               </div>
             </div>
             <div className="text-right">
@@ -690,7 +702,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
               >
                 {stats.communityHappiness}%
               </motion.p>
-              <p className="text-gray-500 text-sm mt-1 font-medium">Excellent!</p>
+              <p className="text-gray-500 text-sm mt-1 font-medium">{resident?.excellent || 'Excellent!'}</p>
             </div>
           </div>
         </motion.div>

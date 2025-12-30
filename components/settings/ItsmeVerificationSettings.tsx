@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // =============================================================================
 // FEATURE FLAG - Set to true when ITSME is configured
@@ -80,12 +81,23 @@ export default function ItsmeVerificationSettings({
   onStatusChange,
   verificationData,
 }: ItsmeVerificationSettingsProps) {
+  const { language, getSection } = useLanguage();
+  const verification = getSection('verification');
+
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(verificationData?.isVerified ?? false);
   const [userData, setUserData] = useState(verificationData);
   const [error, setError] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-BE',
+    en: 'en-US',
+    nl: 'nl-BE',
+    de: 'de-DE',
+  };
 
   // Check for ITSME callback results
   useEffect(() => {
@@ -95,8 +107,8 @@ export default function ItsmeVerificationSettings({
     if (itsmeVerified === 'true') {
       setIsVerified(true);
       onStatusChange?.(true);
-      toast.success('Identité vérifiée!', {
-        description: 'Votre identité a été vérifiée avec succès via ITSME.',
+      toast.success(verification?.itsme?.identityVerified || 'Identity verified!', {
+        description: verification?.itsme?.identityVerifiedSuccess || 'Your identity has been verified successfully via ITSME.',
       });
 
       // Clean URL
@@ -105,19 +117,19 @@ export default function ItsmeVerificationSettings({
 
     if (itsmeError) {
       const errorMessages: Record<string, string> = {
-        itsme_access_denied: 'Vous avez annulé la vérification ITSME.',
-        itsme_not_configured: 'La vérification ITSME n\'est pas configurée.',
-        state_mismatch: 'Erreur de sécurité. Veuillez réessayer.',
-        session_expired: 'Session expirée. Veuillez réessayer.',
-        verification_failed: 'La vérification a échoué. Veuillez réessayer.',
+        itsme_access_denied: verification?.itsme?.errors?.accessDenied || 'You cancelled the ITSME verification.',
+        itsme_not_configured: verification?.itsme?.errors?.notConfigured || 'ITSME verification is not configured.',
+        state_mismatch: verification?.itsme?.errors?.stateMismatch || 'Security error. Please try again.',
+        session_expired: verification?.itsme?.errors?.sessionExpired || 'Session expired. Please try again.',
+        verification_failed: verification?.itsme?.errors?.verificationFailed || 'Verification failed. Please try again.',
       };
 
-      setError(errorMessages[itsmeError] || 'Une erreur est survenue.');
+      setError(errorMessages[itsmeError] || verification?.itsme?.errors?.generic || 'An error occurred.');
 
       // Clean URL
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, [searchParams, onStatusChange]);
+  }, [searchParams, onStatusChange, verification]);
 
   // Start ITSME verification
   const handleStartVerification = () => {
@@ -133,7 +145,7 @@ export default function ItsmeVerificationSettings({
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return null;
     try {
-      return new Date(dateStr).toLocaleDateString('fr-BE', {
+      return new Date(dateStr).toLocaleDateString(localeMap[language] || 'en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -156,14 +168,14 @@ export default function ItsmeVerificationSettings({
             <BadgeCheck className="w-5 h-5" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">Vérification d'identité ITSME</h3>
+            <h3 className="font-semibold text-gray-900">{verification?.itsme?.title || 'ITSME Identity Verification'}</h3>
             <p className="text-sm text-gray-500">
-              Vérifiez votre identité avec l'app ITSME
+              {verification?.itsme?.subtitle || 'Verify your identity with the ITSME app'}
             </p>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">
             <Clock className="w-4 h-4" />
-            Prochainement
+            {verification?.comingSoon || 'Coming Soon'}
           </div>
         </div>
 
@@ -173,11 +185,10 @@ export default function ItsmeVerificationSettings({
             <ItsmeLogo className="w-28 h-auto opacity-60" />
           </div>
           <p className="text-sm text-gray-700 text-center mb-2">
-            <strong>ITSME</strong> est l'identité numérique belge officielle.
+            <strong>ITSME</strong> {verification?.itsme?.officialIdentity || 'is the official Belgian digital identity.'}
           </p>
           <p className="text-xs text-gray-500 text-center">
-            Bientôt, vous pourrez vérifier votre identité en quelques secondes avec l'app ITSME
-            pour obtenir un badge de confiance premium sur votre profil.
+            {verification?.itsme?.comingSoonDescription || 'Soon, you will be able to verify your identity in seconds with the ITSME app to earn a premium trust badge on your profile.'}
           </p>
         </div>
 
@@ -185,15 +196,15 @@ export default function ItsmeVerificationSettings({
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
             <Shield className="w-4 h-4 text-gray-400" />
-            <span className="text-xs text-gray-500">Sécurisé</span>
+            <span className="text-xs text-gray-500">{verification?.itsme?.secure || 'Secure'}</span>
           </div>
           <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
             <User className="w-4 h-4 text-gray-400" />
-            <span className="text-xs text-gray-500">Badge vérifié</span>
+            <span className="text-xs text-gray-500">{verification?.itsme?.verifiedBadge || 'Verified badge'}</span>
           </div>
           <div className="flex flex-col items-center gap-1.5 p-2 bg-gray-50 rounded-lg">
             <Globe className="w-4 h-4 text-gray-400" />
-            <span className="text-xs text-gray-500">Confiance</span>
+            <span className="text-xs text-gray-500">{verification?.itsme?.trust || 'Trust'}</span>
           </div>
         </div>
       </div>
@@ -217,11 +228,11 @@ export default function ItsmeVerificationSettings({
           <BadgeCheck className="w-5 h-5" />
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">Vérification d'identité ITSME</h3>
+          <h3 className="font-semibold text-gray-900">{verification?.itsme?.title || 'ITSME Identity Verification'}</h3>
           <p className="text-sm text-gray-500">
             {isVerified
-              ? 'Votre identité est vérifiée'
-              : 'Vérifiez votre identité avec l\'app ITSME'
+              ? (verification?.itsme?.identityIsVerified || 'Your identity is verified')
+              : (verification?.itsme?.subtitle || 'Verify your identity with the ITSME app')
             }
           </p>
         </div>
@@ -229,7 +240,7 @@ export default function ItsmeVerificationSettings({
         {isVerified && (
           <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
             <CheckCircle className="w-4 h-4" />
-            Vérifié
+            {verification?.verified || 'Verified'}
           </div>
         )}
       </div>
@@ -250,10 +261,10 @@ export default function ItsmeVerificationSettings({
                 <ItsmeLogo className="w-32 h-auto" />
               </div>
               <p className="text-gray-700 mb-2">
-                <strong>ITSME</strong> est l'identité numérique belge officielle.
+                <strong>ITSME</strong> {verification?.itsme?.officialIdentity || 'is the official Belgian digital identity.'}
               </p>
               <p className="text-sm text-gray-600">
-                La vérification est rapide, sécurisée et gratuite.
+                {verification?.itsme?.fastSecureFree || 'Verification is fast, secure and free.'}
               </p>
             </div>
 
@@ -261,15 +272,15 @@ export default function ItsmeVerificationSettings({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
                 <Shield className="w-5 h-5 text-blue-600" />
-                <span className="text-sm text-gray-700">Sécurisé</span>
+                <span className="text-sm text-gray-700">{verification?.itsme?.secure || 'Secure'}</span>
               </div>
               <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
                 <User className="w-5 h-5 text-green-600" />
-                <span className="text-sm text-gray-700">Badge vérifié</span>
+                <span className="text-sm text-gray-700">{verification?.itsme?.verifiedBadge || 'Verified badge'}</span>
               </div>
               <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
                 <Globe className="w-5 h-5 text-purple-600" />
-                <span className="text-sm text-gray-700">Confiance</span>
+                <span className="text-sm text-gray-700">{verification?.itsme?.trust || 'Trust'}</span>
               </div>
             </div>
 
@@ -279,7 +290,7 @@ export default function ItsmeVerificationSettings({
               className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
             >
               <Info className="w-4 h-4" />
-              {showInfo ? 'Masquer les informations' : 'Quelles données sont vérifiées ?'}
+              {showInfo ? (verification?.itsme?.hideInfo || 'Hide information') : (verification?.itsme?.whatDataVerified || 'What data is verified?')}
             </button>
 
             <AnimatePresence>
@@ -290,12 +301,12 @@ export default function ItsmeVerificationSettings({
                   exit={{ opacity: 0, height: 0 }}
                   className="bg-blue-50 rounded-lg p-4 text-sm text-blue-800"
                 >
-                  <p className="font-medium mb-2">ITSME vérifie :</p>
+                  <p className="font-medium mb-2">{verification?.itsme?.itsmeVerifies || 'ITSME verifies:'}</p>
                   <ul className="space-y-1">
-                    <li>• Votre nom et prénom officiels</li>
-                    <li>• Votre date de naissance</li>
-                    <li>• Votre nationalité</li>
-                    <li>• Votre numéro de registre national (hashé, jamais stocké en clair)</li>
+                    <li>• {verification?.itsme?.verifyItem1 || 'Your official first and last name'}</li>
+                    <li>• {verification?.itsme?.verifyItem2 || 'Your date of birth'}</li>
+                    <li>• {verification?.itsme?.verifyItem3 || 'Your nationality'}</li>
+                    <li>• {verification?.itsme?.verifyItem4 || 'Your national registry number (hashed, never stored in plain text)'}</li>
                   </ul>
                 </motion.div>
               )}
@@ -318,18 +329,18 @@ export default function ItsmeVerificationSettings({
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Redirection vers ITSME...
+                  {verification?.itsme?.redirectingToItsme || 'Redirecting to ITSME...'}
                 </>
               ) : (
                 <>
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Vérifier avec ITSME
+                  {verification?.itsme?.verifyWithItsme || 'Verify with ITSME'}
                 </>
               )}
             </Button>
 
             <p className="text-xs text-gray-500 text-center">
-              Vous serez redirigé vers l'application ITSME pour confirmer votre identité.
+              {verification?.itsme?.redirectDescription || 'You will be redirected to the ITSME app to confirm your identity.'}
               <br />
               <a
                 href="https://www.itsme.be/"
@@ -337,7 +348,7 @@ export default function ItsmeVerificationSettings({
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
               >
-                Télécharger l'app ITSME
+                {verification?.itsme?.downloadApp || 'Download the ITSME app'}
               </a>
             </p>
           </motion.div>
@@ -361,11 +372,11 @@ export default function ItsmeVerificationSettings({
                   <p className="font-semibold text-emerald-800">
                     {userData?.givenName && userData?.familyName
                       ? `${userData.givenName} ${userData.familyName}`
-                      : 'Identité vérifiée'
+                      : (verification?.itsme?.identityVerified || 'Identity verified')
                     }
                   </p>
                   <p className="text-sm text-emerald-600">
-                    Vérifié via ITSME
+                    {verification?.itsme?.verifiedViaItsme || 'Verified via ITSME'}
                   </p>
                 </div>
               </div>
@@ -391,26 +402,26 @@ export default function ItsmeVerificationSettings({
 
             {/* Benefits of being verified */}
             <div className="bg-gray-50 rounded-xl p-4">
-              <p className="font-medium text-gray-900 mb-2">Avantages du badge vérifié :</p>
+              <p className="font-medium text-gray-900 mb-2">{verification?.itsme?.verifiedBenefits || 'Benefits of being verified:'}</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  Profil de confiance pour les propriétaires
+                  {verification?.itsme?.benefitTrust || 'Trusted profile for landlords'}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  Priorité dans les résultats de recherche
+                  {verification?.itsme?.benefitPriority || 'Priority in search results'}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  Badge "Vérifié" sur votre profil
+                  {verification?.itsme?.benefitBadge || '"Verified" badge on your profile'}
                 </li>
               </ul>
             </div>
 
             {userData?.verifiedAt && (
               <p className="text-xs text-gray-500 text-center">
-                Vérifié le {formatDate(userData.verifiedAt)}
+                {verification?.itsme?.verifiedOn || 'Verified on'} {formatDate(userData.verifiedAt)}
               </p>
             )}
           </motion.div>

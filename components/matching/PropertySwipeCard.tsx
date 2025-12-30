@@ -30,6 +30,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface PropertySwipeCardProps {
   property: any;
@@ -52,6 +53,8 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
   isPreview = false,
   index = 0
 }: PropertySwipeCardProps) {
+  const { getSection } = useLanguage();
+  const matching = getSection('matching');
   const [showDetails, setShowDetails] = useState(false);
   const [exitX, setExitX] = useState(0);
   const [exitY, setExitY] = useState(0);
@@ -109,20 +112,20 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
   // Core info badges
   const coreInfo = [
-    { icon: Euro, label: `${property.monthly_rent}€/mois`, color: 'text-orange-600' },
-    { icon: Bed, label: `${property.bedrooms} chambres`, color: 'text-blue-600' },
-    { icon: Bath, label: `${property.bathrooms} SdB`, color: 'text-purple-600' },
-    { icon: Users, label: `${residents.length}/${property.total_rooms || property.bedrooms} colocataires`, color: 'text-green-600' },
+    { icon: Euro, label: `${property.monthly_rent}€/${matching.swipe?.perMonth || 'mois'}`, color: 'text-orange-600' },
+    { icon: Bed, label: `${property.bedrooms} ${matching.swipe?.bedrooms || 'chambres'}`, color: 'text-blue-600' },
+    { icon: Bath, label: `${property.bathrooms} ${matching.swipe?.bathrooms || 'SdB'}`, color: 'text-purple-600' },
+    { icon: Users, label: `${residents.length}/${property.total_rooms || property.bedrooms} ${matching.swipe?.roommates || 'colocataires'}`, color: 'text-green-600' },
   ];
 
   // Amenities
   const amenities = [
-    { key: 'furnished', icon: Sofa, label: 'Meublé', value: property.furnished },
+    { key: 'furnished', icon: Sofa, label: matching.swipe?.furnished || 'Meublé', value: property.furnished },
     { key: 'wifi', icon: Wifi, label: 'WiFi', value: property.wifi },
-    { key: 'parking', icon: Car, label: 'Parking', value: property.parking },
-    { key: 'balcony', icon: TreeDeciduous, label: 'Balcon', value: property.balcony },
-    { key: 'pets_allowed', icon: Dog, label: 'Animaux OK', value: property.pets_allowed },
-    { key: 'smoking_allowed', icon: Cigarette, label: 'Fumeur OK', value: property.smoking_allowed },
+    { key: 'parking', icon: Car, label: matching.swipe?.parking || 'Parking', value: property.parking },
+    { key: 'balcony', icon: TreeDeciduous, label: matching.swipe?.balcony || 'Balcon', value: property.balcony },
+    { key: 'pets_allowed', icon: Dog, label: matching.swipe?.petsOk || 'Animaux OK', value: property.pets_allowed },
+    { key: 'smoking_allowed', icon: Cigarette, label: matching.swipe?.smokingOk || 'Fumeur OK', value: property.smoking_allowed },
   ].filter(a => a.value);
 
   if (isPreview) {
@@ -211,7 +214,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               <div className="absolute top-4 left-4">
                 <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-lg">
                   <Star className="w-3 h-3 mr-1 fill-current" />
-                  Coup de cœur
+                  {matching.swipe?.favorite || 'Coup de cœur'}
                 </Badge>
               </div>
             )}
@@ -283,9 +286,9 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                     <Users className="w-4 h-4 text-orange-600" />
-                    Colocataires actuels
+                    {matching.swipe?.currentRoommates || 'Colocataires actuels'}
                   </p>
-                  <span className="text-xs text-gray-600">{residents.length} personne{residents.length > 1 ? 's' : ''}</span>
+                  <span className="text-xs text-gray-600">{residents.length} {residents.length > 1 ? (matching.swipe?.persons || 'personnes') : (matching.swipe?.person || 'personne')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {residents.slice(0, 4).map((resident, idx) => (
@@ -311,7 +314,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               <div className="mb-4">
                 <p className="text-xs font-semibold text-gray-600 mb-3 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  Équipements
+                  {matching.swipe?.amenities || 'Équipements'}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {amenities.map((amenity, idx) => (
@@ -332,7 +335,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             {property.available_from && (
               <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
                 <Calendar className="w-4 h-4" />
-                <span>Disponible à partir du {new Date(property.available_from).toLocaleDateString('fr-FR')}</span>
+                <span>{matching.swipe?.availableFrom || 'Disponible à partir du'} {new Date(property.available_from).toLocaleDateString('fr-FR')}</span>
               </div>
             )}
 
@@ -344,7 +347,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               }}
               className="w-full py-3 bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-xl flex items-center justify-center gap-2 text-orange-700 font-semibold hover:from-orange-100 hover:to-yellow-100 transition-all group"
             >
-              <span>Voir tous les détails</span>
+              <span>{matching.swipe?.viewAllDetails || 'Voir tous les détails'}</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             </div>
@@ -356,7 +359,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             style={{ opacity: likeOpacity }}
           >
             <div className="px-6 py-3 bg-green-500 text-white text-3xl font-bold rounded-2xl rotate-[-20deg] shadow-2xl border-4 border-white">
-              ❤️ J'AIME
+              {matching.swipe?.like || "❤️ J'AIME"}
             </div>
           </motion.div>
 
@@ -365,7 +368,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             style={{ opacity: passOpacity }}
           >
             <div className="px-6 py-3 bg-red-500 text-white text-3xl font-bold rounded-2xl rotate-[20deg] shadow-2xl border-4 border-white">
-              ❌ PASSE
+              {matching.swipe?.pass || '❌ PASSE'}
             </div>
           </motion.div>
 
@@ -375,7 +378,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
           >
             <div className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-3xl font-bold rounded-2xl shadow-2xl border-4 border-white flex items-center gap-2">
               <Star className="w-8 h-8 fill-current" />
-              SUPER LIKE
+              {matching.swipe?.superLike || 'SUPER LIKE'}
             </div>
           </motion.div>
         </div>
@@ -400,7 +403,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between z-10">
-                <h3 className="text-2xl font-bold text-gray-900">Détails complets</h3>
+                <h3 className="text-2xl font-bold text-gray-900">{matching.swipe?.fullDetails || 'Détails complets'}</h3>
                 <button
                   onClick={() => setShowDetails(false)}
                   className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
@@ -413,7 +416,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 {/* Description */}
                 {property.description && (
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">{matching.swipe?.description || 'Description'}</h4>
                     <p className="text-gray-700 leading-relaxed">{property.description}</p>
                   </div>
                 )}
@@ -421,19 +424,19 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 {/* All Details */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Superficie</p>
+                    <p className="text-sm text-gray-600 mb-1">{matching.swipe?.area || 'Superficie'}</p>
                     <p className="font-semibold">{property.total_area || 'N/A'} m²</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Type</p>
+                    <p className="text-sm text-gray-600 mb-1">{matching.swipe?.type || 'Type'}</p>
                     <p className="font-semibold capitalize">{property.property_type || 'N/A'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Étage</p>
+                    <p className="text-sm text-gray-600 mb-1">{matching.swipe?.floor || 'Étage'}</p>
                     <p className="font-semibold">{property.floor || 'N/A'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Année</p>
+                    <p className="text-sm text-gray-600 mb-1">{matching.swipe?.year || 'Année'}</p>
                     <p className="font-semibold">{property.year_built || 'N/A'}</p>
                   </div>
                 </div>
@@ -443,13 +446,13 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                   <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
                     <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <Shield className="w-5 h-5 text-green-600" />
-                      Pourquoi ce match ?
+                      {matching.swipe?.whyMatch || 'Pourquoi ce match ?'}
                     </h4>
                     <div className="space-y-2 text-sm text-gray-700">
-                      <p>✓ Budget compatible avec tes préférences</p>
-                      <p>✓ Localisation dans ta zone recherchée</p>
-                      <p>✓ Type de logement correspondant</p>
-                      <p>✓ Disponibilités alignées</p>
+                      <p>✓ {matching.swipe?.matchReason1 || 'Budget compatible avec tes préférences'}</p>
+                      <p>✓ {matching.swipe?.matchReason2 || 'Localisation dans ta zone recherchée'}</p>
+                      <p>✓ {matching.swipe?.matchReason3 || 'Type de logement correspondant'}</p>
+                      <p>✓ {matching.swipe?.matchReason4 || 'Disponibilités alignées'}</p>
                     </div>
                   </div>
                 )}
@@ -464,7 +467,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                   }}
                 >
                   <Heart className="w-5 h-5 mr-2" />
-                  J'aime ce logement !
+                  {matching.swipe?.iLoveThisPlace || "J'aime ce logement !"}
                 </Button>
               </div>
             </motion.div>

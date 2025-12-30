@@ -362,15 +362,17 @@ Pages disponibles:
 - /dashboard/owner : Dashboard propriétaire
 - /hub/finances : Gestion des finances
 - /properties : Mes propriétés
-- /properties/new : Ajouter une propriété
+- /properties/add : Ajouter une propriété
 - /matching/properties : Rechercher une colocation
+- /matching/swipe : Parcourir les annonces (swipe)
 - /messages : Messagerie
 - /profile : Mon profil
 - /settings : Paramètres
 - /dashboard/settings/preferences : Notifications et alertes
-- /settings/subscription : Abonnement
-- /referral : Programme de parrainage
-- /help : Centre d'aide
+- /dashboard/subscription : Mon abonnement
+- /settings/referrals : Programme de parrainage
+- /settings/security : Sécurité du compte
+- /about : À propos
 
 ### setFilters - Configurer les filtres de recherche
 [ACTION:setFilters:{"filters":{"city":"Bruxelles","maxBudget":600}}]
@@ -454,10 +456,10 @@ function getFAQOnlyFallbackResponse(
   // Intent-specific fallbacks with navigation
   const intentFallbacks: Record<string, FAQFallbackResponse> = {
     pricing: {
-      message: `Bonjour${userName} ! Pour toutes les informations sur nos tarifs :\n\n• **Trial gratuit** : 3 mois (propriétaires) ou 6 mois (résidents)\n• **Abonnement Owner** : 15,99€/mois\n• **Abonnement Resident** : 7,99€/mois\n• **Parrainage** : Jusqu'à 24 mois gratuits\n\nVous pouvez consulter tous les détails sur la page des tarifs.`,
+      message: `Bonjour${userName} ! Pour toutes les informations sur nos tarifs :\n\n• **Trial gratuit** : 3 mois (propriétaires) ou 6 mois (résidents)\n• **Abonnement Owner** : 15,99€/mois\n• **Abonnement Resident** : 7,99€/mois\n• **Parrainage** : Jusqu'à 24 mois gratuits\n\nVous pouvez consulter votre abonnement dans les paramètres.`,
       suggestedActions: [
-        { type: 'navigate', label: 'Voir les tarifs', value: '/pricing' },
-        { type: 'navigate', label: 'Mon abonnement', value: '/settings/subscription' },
+        { type: 'navigate', label: 'Mon abonnement', value: '/dashboard/subscription' },
+        { type: 'navigate', label: 'Parrainage', value: '/settings/referrals' },
       ],
     },
     matching: {
@@ -471,7 +473,7 @@ function getFAQOnlyFallbackResponse(
       message: `La gestion des finances partagées vous permet de :\n\n• Scanner vos tickets de caisse\n• Répartir automatiquement les dépenses\n• Suivre qui doit quoi\n• Gérer les comptes communs\n\nAccédez à vos finances depuis votre Hub.`,
       suggestedActions: [
         { type: 'navigate', label: 'Mes finances', value: '/hub/finances' },
-        { type: 'navigate', label: 'Scanner un ticket', value: '/hub/finances/scan' },
+        { type: 'navigate', label: 'Ajouter une dépense', value: '/hub/finances' },
       ],
     },
     search: {
@@ -511,9 +513,9 @@ function getFAQOnlyFallbackResponse(
 
   // Generic fallback with common actions
   return {
-    message: `Bonjour${userName} ! Je suis l'assistant IzzIco en mode FAQ.\n\nJe peux vous aider avec :\n• **Navigation** sur la plateforme\n• **Questions fréquentes** sur les tarifs et fonctionnalités\n• **Aide** pour trouver une page\n\nPour une question spécifique, essayez de reformuler ou consultez notre centre d'aide.`,
+    message: `Bonjour${userName} ! Je suis l'assistant IzzIco en mode FAQ.\n\nJe peux vous aider avec :\n• **Navigation** sur la plateforme\n• **Questions fréquentes** sur les tarifs et fonctionnalités\n• **Aide** pour trouver une page\n\nPour une question spécifique, essayez de reformuler ou consultez la page À propos.`,
     suggestedActions: [
-      { type: 'navigate', label: 'Centre d\'aide', value: '/help' },
+      { type: 'navigate', label: 'À propos', value: '/about' },
       { type: 'navigate', label: 'Rechercher', value: '/matching/properties' },
       { type: 'contact', label: 'Contacter le support', value: 'support@izzico.be' },
     ],

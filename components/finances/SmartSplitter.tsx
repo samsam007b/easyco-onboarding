@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import type { SplitMethod, SplitConfig, SplitAllocation } from '@/types/finances.types';
 
 interface SmartSplitterProps {
@@ -33,38 +34,42 @@ interface SmartSplitterProps {
   onBack: () => void;
 }
 
-const SPLIT_METHODS: Array<{
-  value: SplitMethod;
-  label: string;
-  icon: any;
-  description: string;
-}> = [
-  {
-    value: 'equal',
-    label: 'Égal',
-    icon: Users,
-    description: 'Diviser en parts égales',
-  },
-  {
-    value: 'custom',
-    label: 'Personnalisé',
-    icon: Calculator,
-    description: 'Montants spécifiques',
-  },
-  {
-    value: 'percentage',
-    label: 'Pourcentage',
-    icon: Percent,
-    description: 'Répartition en %',
-  },
-];
-
 export default function SmartSplitter({
   totalAmount,
   roommates,
   onComplete,
   onBack,
 }: SmartSplitterProps) {
+  const { getSection } = useLanguage();
+  const splitter = getSection('smartSplitter');
+
+  // Define split methods with translations
+  const SPLIT_METHODS: Array<{
+    value: SplitMethod;
+    label: string;
+    icon: any;
+    description: string;
+  }> = [
+    {
+      value: 'equal',
+      label: splitter?.equal || 'Égal',
+      icon: Users,
+      description: splitter?.equalDescription || 'Diviser en parts égales',
+    },
+    {
+      value: 'custom',
+      label: splitter?.custom || 'Personnalisé',
+      icon: Calculator,
+      description: splitter?.customDescription || 'Montants spécifiques',
+    },
+    {
+      value: 'percentage',
+      label: splitter?.percentage || 'Pourcentage',
+      icon: Percent,
+      description: splitter?.percentageDescription || 'Répartition en %',
+    },
+  ];
+
   const [method, setMethod] = useState<SplitMethod>('equal');
   const [allocations, setAllocations] = useState<SplitAllocation[]>([]);
   const [isValid, setIsValid] = useState(false);
@@ -159,10 +164,12 @@ export default function SmartSplitter({
       {/* Header */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Partager la dépense
+          {splitter?.title || 'Partager la dépense'}
         </h2>
         <p className="text-gray-600">
-          €{totalAmount.toFixed(2)} à répartir entre {roommates.length} personnes
+          {(splitter?.subtitle || '€{amount} à répartir entre {count} personnes')
+            .replace('{amount}', totalAmount.toFixed(2))
+            .replace('{count}', String(roommates.length))}
         </p>
       </div>
 
@@ -223,7 +230,7 @@ export default function SmartSplitter({
               </p>
               {method === 'equal' && (
                 <p className="text-sm text-gray-500">
-                  Part égale
+                  {splitter?.equalShare || 'Part égale'}
                 </p>
               )}
             </div>
@@ -292,7 +299,9 @@ export default function SmartSplitter({
                 isValid ? 'text-green-900' : 'text-yellow-900'
               )}
             >
-              {isValid ? 'Répartition correcte' : 'Répartition incomplète'}
+              {isValid
+                ? (splitter?.correctDistribution || 'Répartition correcte')
+                : (splitter?.incompleteDistribution || 'Répartition incomplète')}
             </h3>
 
             <div className="space-y-2 text-sm">
@@ -300,13 +309,13 @@ export default function SmartSplitter({
                 <>
                   <div className="flex justify-between">
                     <span className={isValid ? 'text-green-700' : 'text-yellow-700'}>
-                      Total réparti:
+                      {splitter?.totalDistributed || 'Total réparti:'}
                     </span>
                     <span className="font-bold">€{currentTotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className={isValid ? 'text-green-700' : 'text-yellow-700'}>
-                      Restant:
+                      {splitter?.remaining || 'Restant:'}
                     </span>
                     <span className={cn(
                       'font-bold',
@@ -323,7 +332,7 @@ export default function SmartSplitter({
                       className="w-full mt-2"
                     >
                       <Calculator className="w-4 h-4 mr-2" />
-                      Distribuer automatiquement
+                      {splitter?.autoDistribute || 'Distribuer automatiquement'}
                     </Button>
                   )}
                 </>
@@ -332,7 +341,7 @@ export default function SmartSplitter({
               {method === 'percentage' && (
                 <div className="flex justify-between">
                   <span className={isValid ? 'text-green-700' : 'text-yellow-700'}>
-                    Total:
+                    {splitter?.total || 'Total:'}
                   </span>
                   <span className={cn(
                     'font-bold',
@@ -354,7 +363,7 @@ export default function SmartSplitter({
           onClick={onBack}
           className="flex-1 rounded-full"
         >
-          Retour
+          {splitter?.back || 'Retour'}
         </Button>
         <Button
           onClick={handleConfirm}
@@ -362,7 +371,7 @@ export default function SmartSplitter({
           className="flex-1 rounded-full cta-resident"
         >
           <Check className="w-4 h-4 mr-2" />
-          Confirmer le partage
+          {splitter?.confirmSplit || 'Confirmer le partage'}
         </Button>
       </div>
     </div>

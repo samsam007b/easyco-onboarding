@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { useOnlineStatus } from '@/lib/hooks/use-online-status';
 import { useAuth } from '@/lib/contexts/auth-context';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { motion } from 'framer-motion';
 
 interface ConversationListProps {
@@ -59,6 +60,8 @@ export function ConversationList({
   const [searchQuery, setSearchQuery] = useState('');
   const { isUserOnline } = useOnlineStatus(user?.id || null);
   const styles = variantStyles[variant];
+  const { getSection } = useLanguage();
+  const messaging = getSection('messaging');
 
   // Filter conversations
   const filteredConversations = conversations.filter((conv) => {
@@ -92,7 +95,7 @@ export function ConversationList({
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Rechercher une conversation..."
+            placeholder={messaging?.searchPlaceholder || "Rechercher une conversation..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={cn(
@@ -106,7 +109,7 @@ export function ConversationList({
       {/* Conversation list */}
       <div className="flex-1 overflow-y-auto px-2">
         {filteredConversations.length === 0 ? (
-          <EmptyState showArchived={showArchived} variant={variant} styles={styles} />
+          <EmptyState showArchived={showArchived} variant={variant} styles={styles} messaging={messaging} />
         ) : (
           <div className="space-y-1 pb-4">
             {filteredConversations.map((conversation, index) => (
@@ -123,6 +126,7 @@ export function ConversationList({
                   isUserOnline={isUserOnline}
                   variant={variant}
                   styles={styles}
+                  messaging={messaging}
                 />
               </motion.div>
             ))}
@@ -137,9 +141,10 @@ interface EmptyStateProps {
   showArchived: boolean;
   variant: 'searcher' | 'owner' | 'hub';
   styles: typeof variantStyles.searcher;
+  messaging: Record<string, string> | undefined;
 }
 
-function EmptyState({ showArchived, variant, styles }: EmptyStateProps) {
+function EmptyState({ showArchived, variant, styles, messaging }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center p-8">
       <div className={cn('w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-md', styles.accent)}>
@@ -150,12 +155,14 @@ function EmptyState({ showArchived, variant, styles }: EmptyStateProps) {
         )}
       </div>
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
-        {showArchived ? 'Aucune conversation archivée' : 'Aucune conversation'}
+        {showArchived
+          ? (messaging?.noArchivedConversations || 'Aucune conversation archivée')
+          : (messaging?.noConversations || 'Aucune conversation')}
       </h3>
       <p className="text-sm text-gray-500 max-w-xs">
         {showArchived
-          ? 'Les conversations archivées apparaîtront ici'
-          : 'Vos conversations apparaîtront ici'}
+          ? (messaging?.archivedWillAppear || 'Les conversations archivées apparaîtront ici')
+          : (messaging?.conversationsWillAppear || 'Vos conversations apparaîtront ici')}
       </p>
     </div>
   );
@@ -168,6 +175,7 @@ interface ConversationItemProps {
   isUserOnline: (userId: string) => boolean;
   variant: 'searcher' | 'owner' | 'hub';
   styles: typeof variantStyles.searcher;
+  messaging: Record<string, string> | undefined;
 }
 
 function ConversationItem({
@@ -177,6 +185,7 @@ function ConversationItem({
   isUserOnline,
   variant,
   styles,
+  messaging,
 }: ConversationItemProps) {
   const hasUnread = conversation.unread_count > 0;
   const isOnline = isUserOnline(conversation.other_user_id);
@@ -221,7 +230,7 @@ function ConversationItem({
               'absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white',
               styles.online
             )}
-            title="En ligne"
+            title={messaging?.online || "En ligne"}
           />
         )}
       </div>
@@ -251,7 +260,7 @@ function ConversationItem({
               hasUnread ? 'text-gray-800 font-medium' : 'text-gray-500'
             )}
           >
-            {conversation.last_message || 'Pas encore de messages'}
+            {conversation.last_message || (messaging?.noMessagesYet || 'Pas encore de messages')}
           </p>
 
           {hasUnread && (

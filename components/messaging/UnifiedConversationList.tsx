@@ -25,6 +25,7 @@ import {
   ChevronRight,
   Sparkles,
 } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // V2 Fun Animation variants
 const containerVariants = {
@@ -82,6 +83,17 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
   currentUserId,
 }: UnifiedConversationListProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const { language, getSection } = useLanguage();
+  const unifiedMessaging = getSection('unifiedMessaging');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
 
   const { pinnedConversations, conversations, missingInvitations } = state;
 
@@ -129,7 +141,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
           </motion.div>
           <div>
             <h2 className="text-lg font-bold text-gray-900">
-              Messages
+              {unifiedMessaging?.title || 'Messages'}
             </h2>
             <p className="text-xs text-gray-500 flex items-center gap-2">
               <Badge
@@ -138,7 +150,9 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               >
                 {pinnedConversations.length + conversations.length}
               </Badge>
-              conversation{pinnedConversations.length + conversations.length > 1 ? 's' : ''}
+              {pinnedConversations.length + conversations.length > 1
+                ? (unifiedMessaging?.conversations || 'conversations')
+                : (unifiedMessaging?.conversation || 'conversation')}
             </p>
           </div>
         </div>
@@ -151,7 +165,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Rechercher une conversation..."
+            placeholder={unifiedMessaging?.searchPlaceholder || "Rechercher une conversation..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange-300 bg-white shadow-sm text-sm"
@@ -190,10 +204,10 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-amber-800">
                     {missingInvitations.needsOwner && missingInvitations.needsResidents
-                      ? 'Invitez votre propriétaire et vos colocataires'
+                      ? (unifiedMessaging?.inviteBoth || 'Invitez votre propriétaire et vos colocataires')
                       : missingInvitations.needsOwner
-                      ? 'Invitez votre propriétaire'
-                      : 'Invitez vos colocataires'}
+                      ? (unifiedMessaging?.inviteOwner || 'Invitez votre propriétaire')
+                      : (unifiedMessaging?.inviteRoommates || 'Invitez vos colocataires')}
                   </p>
                   <div className="flex gap-2 mt-3">
                     {missingInvitations.needsOwner && (
@@ -208,7 +222,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                           }}
                         >
                           <Key className="w-3 h-3 mr-1" />
-                          Propriétaire
+                          {unifiedMessaging?.ownerButton || 'Propriétaire'}
                         </Button>
                       </motion.div>
                     )}
@@ -224,7 +238,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                           }}
                         >
                           <UserPlus className="w-3 h-3 mr-1" />
-                          Colocataires
+                          {unifiedMessaging?.roommatesButton || 'Colocataires'}
                         </Button>
                       </motion.div>
                     )}
@@ -254,7 +268,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                 <Pin className="w-4 h-4 text-orange-500" />
               </motion.div>
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                Épinglées
+                {unifiedMessaging?.pinned || 'Épinglées'}
               </span>
             </div>
             <div className="space-y-2">
@@ -290,7 +304,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               <div className="flex items-center gap-2 px-2 mb-3">
                 <MessageCircle className="w-4 h-4 text-gray-400" />
                 <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                  Conversations
+                  {unifiedMessaging?.conversationsHeader || 'Conversations'}
                 </span>
               </div>
             )}
@@ -362,12 +376,12 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               {searchQuery ? (
                 <>
                   <Search className="w-5 h-5 text-gray-400" />
-                  Aucun résultat
+                  {unifiedMessaging?.noResults || 'Aucun résultat'}
                 </>
               ) : (
                 <>
                   <MessageCircle className="w-5 h-5 text-gray-400" />
-                  Aucune conversation
+                  {unifiedMessaging?.noConversations || 'Aucune conversation'}
                 </>
               )}
             </motion.h3>
@@ -376,8 +390,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               className="text-sm text-gray-500 max-w-xs"
             >
               {searchQuery
-                ? 'Essayez avec d\'autres termes de recherche'
-                : 'Vos conversations apparaîtront ici'}
+                ? (unifiedMessaging?.tryOtherTerms || 'Essayez avec d\'autres termes de recherche')
+                : (unifiedMessaging?.conversationsWillAppear || 'Vos conversations apparaîtront ici')}
             </motion.p>
           </motion.div>
         )}
@@ -402,6 +416,18 @@ function ConversationItem({
   currentUserId,
   isPinned,
 }: ConversationItemProps) {
+  const { language, getSection } = useLanguage();
+  const unifiedMessaging = getSection('unifiedMessaging');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
   const hasUnread = conversation.unreadCount > 0;
   const roleVisual = conversation.otherUserRole
     ? ROLE_VISUALS[conversation.otherUserRole]
@@ -417,12 +443,12 @@ function ConversationItem({
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'maintenant';
-    if (diffMins < 60) return `${diffMins}min`;
-    if (diffHours < 24) return `${diffHours}h`;
-    if (diffDays === 1) return 'Hier';
-    if (diffDays < 7) return `${diffDays}j`;
-    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    if (diffMins < 1) return unifiedMessaging?.now || 'maintenant';
+    if (diffMins < 60) return `${diffMins}${unifiedMessaging?.minShort || 'min'}`;
+    if (diffHours < 24) return `${diffHours}${unifiedMessaging?.hourShort || 'h'}`;
+    if (diffDays === 1) return unifiedMessaging?.yesterday || 'Hier';
+    if (diffDays < 7) return `${diffDays}${unifiedMessaging?.dayShort || 'j'}`;
+    return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
   };
 
   // Get conversation icon for special types - V2 Fun styling

@@ -273,7 +273,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   if (ctx.subscriptionStatus === 'trial' && ctx.trialDaysRemaining !== undefined && ctx.trialDaysRemaining < 14) {
     return {
       message: `⏰ Votre essai se termine dans ${ctx.trialDaysRemaining} jours. Pensez au parrainage pour prolonger gratuitement !`,
-      action: { label: 'Voir le parrainage', value: '/settings/referral' }
+      action: { label: 'Voir le parrainage', value: '/settings/referrals' }
     };
   }
 
@@ -1052,7 +1052,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Priority 3: Profile completion
     if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 80 && !ctx.onboardingCompleted) {
-      suggestedActions.push({ type: 'navigate', label: 'Compléter mon profil', value: '/onboarding' });
+      suggestedActions.push({ type: 'navigate', label: 'Compléter mon profil', value: '/onboarding/searcher' });
     }
 
     return {
@@ -1173,7 +1173,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     ];
 
     if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 100) {
-      suggestedActions.push({ type: 'navigate', label: 'Compléter mon profil', value: '/onboarding' });
+      suggestedActions.push({ type: 'navigate', label: 'Compléter mon profil', value: '/onboarding/searcher' });
     }
 
     return {
@@ -1238,7 +1238,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.95,
       suggestedActions: [
-        { type: 'navigate', label: 'Continuer l\'inscription', value: '/onboarding' },
+        { type: 'navigate', label: 'Continuer l\'inscription', value: '/onboarding/searcher' },
       ],
     };
   },
@@ -1340,7 +1340,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.95,
       suggestedActions: [
-        { type: 'navigate', label: 'Voir mon abonnement', value: '/settings/subscription' },
+        { type: 'navigate', label: 'Voir mon abonnement', value: '/dashboard/subscription' },
         { type: 'explain', label: 'Programme parrainage', value: 'referral' },
       ],
     };
@@ -1397,7 +1397,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.95,
       suggestedActions: [
-        { type: 'navigate', label: 'Mon abonnement', value: '/settings/subscription' },
+        { type: 'navigate', label: 'Mon abonnement', value: '/dashboard/subscription' },
       ],
     };
   },
@@ -1443,7 +1443,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.95,
       suggestedActions: [
-        { type: 'navigate', label: 'Gérer mon abonnement', value: '/settings/subscription' },
+        { type: 'navigate', label: 'Gérer mon abonnement', value: '/dashboard/subscription' },
         { type: 'contact', label: 'Contacter le support', value: 'support@izzico.be' },
       ],
     };
@@ -1496,7 +1496,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.95,
       suggestedActions: [
-        { type: 'navigate', label: 'Mon espace parrainage', value: '/settings/referral' },
+        { type: 'navigate', label: 'Mon espace parrainage', value: '/settings/referrals' },
       ],
     };
   },
@@ -1936,7 +1936,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.80,
       suggestedActions: !ctx.onboardingCompleted
-        ? [{ type: 'navigate', label: 'Terminer l\'inscription', value: '/onboarding' }]
+        ? [{ type: 'navigate', label: 'Terminer l\'inscription', value: '/onboarding/searcher' }]
         : undefined,
     };
   },
@@ -2188,7 +2188,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       confidence: 0.90,
       suggestedActions: [
         { type: 'contact', label: 'Envoyer un email', value: 'mailto:support@izzico.be' },
-        { type: 'navigate', label: 'Centre d\'aide', value: '/help' },
+        { type: 'navigate', label: 'Centre d\'aide', value: '/about' },
       ],
     };
   },
@@ -2577,7 +2577,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response,
       confidence: 0.90,
       suggestedActions: !ctx.onboardingCompleted
-        ? [{ type: 'navigate', label: 'Commencer maintenant', value: '/onboarding' }]
+        ? [{ type: 'navigate', label: 'Commencer maintenant', value: '/onboarding/searcher' }]
         : undefined,
     };
   },

@@ -10,6 +10,7 @@ import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { ScheduleTourInput } from '@/types/virtual-tours.types';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ScheduleTourModalProps {
   isOpen: boolean;
@@ -26,6 +27,17 @@ export default function ScheduleTourModal({
   propertyTitle,
   hasVirtualTour,
 }: ScheduleTourModalProps) {
+  const { language, getSection } = useLanguage();
+  const scheduleTour = getSection('property')?.scheduleTour;
+
+  // Locale map for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+
   const [tourType, setTourType] = useState<'virtual' | 'physical'>(
     hasVirtualTour ? 'virtual' : 'physical'
   );
@@ -58,10 +70,10 @@ export default function ScheduleTourModal({
 
       toast.success(
         tourType === 'virtual'
-          ? 'Visite virtuelle planifiée avec succès !'
-          : 'Visite physique planifiée avec succès !',
+          ? scheduleTour?.successVirtual || 'Visite virtuelle planifiée avec succès !'
+          : scheduleTour?.successPhysical || 'Visite physique planifiée avec succès !',
         {
-          description: `Nous vous enverrons un rappel avant votre visite du ${new Date(scheduledFor).toLocaleDateString('fr-FR')}.`,
+          description: `${scheduleTour?.reminderMessage || 'Nous vous enverrons un rappel avant votre visite du'} ${new Date(scheduledFor).toLocaleDateString(localeMap[language] || 'en-US')}.`,
         }
       );
 
@@ -69,8 +81,8 @@ export default function ScheduleTourModal({
       resetForm();
     } catch (error) {
       console.error('Error scheduling tour:', error);
-      toast.error('Erreur lors de la planification', {
-        description: 'Veuillez réessayer plus tard.',
+      toast.error(scheduleTour?.errorTitle || 'Erreur lors de la planification', {
+        description: scheduleTour?.errorMessage || 'Veuillez réessayer plus tard.',
       });
     } finally {
       setIsLoading(false);
@@ -97,14 +109,14 @@ export default function ScheduleTourModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-xl">Planifier une visite</DialogTitle>
+          <DialogTitle className="text-xl">{scheduleTour?.title || 'Planifier une visite'}</DialogTitle>
           <p className="text-sm text-gray-600 mt-2">{propertyTitle}</p>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-5 mt-4">
           {/* Tour Type Selection */}
           <div className="space-y-2">
-            <Label>Type de visite</Label>
+            <Label>{scheduleTour?.tourType || 'Type de visite'}</Label>
             <div className="grid grid-cols-2 gap-3">
               {hasVirtualTour && (
                 <button
@@ -121,8 +133,8 @@ export default function ScheduleTourModal({
                       tourType === 'virtual' ? 'text-purple-600' : 'text-gray-400'
                     }`}
                   />
-                  <p className="font-semibold text-sm">Visite virtuelle</p>
-                  <p className="text-xs text-gray-600 mt-1">360° en ligne</p>
+                  <p className="font-semibold text-sm">{scheduleTour?.virtualTour || 'Visite virtuelle'}</p>
+                  <p className="text-xs text-gray-600 mt-1">{scheduleTour?.virtualTourDesc || '360° en ligne'}</p>
                 </button>
               )}
 
@@ -140,8 +152,8 @@ export default function ScheduleTourModal({
                     tourType === 'physical' ? 'text-blue-600' : 'text-gray-400'
                   }`}
                 />
-                <p className="font-semibold text-sm">Visite physique</p>
-                <p className="text-xs text-gray-600 mt-1">Sur place</p>
+                <p className="font-semibold text-sm">{scheduleTour?.physicalTour || 'Visite physique'}</p>
+                <p className="text-xs text-gray-600 mt-1">{scheduleTour?.physicalTourDesc || 'Sur place'}</p>
               </button>
             </div>
           </div>
@@ -150,7 +162,7 @@ export default function ScheduleTourModal({
           <div className="space-y-2">
             <Label htmlFor="date" className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              Date
+              {scheduleTour?.date || 'Date'}
             </Label>
             <Input
               id="date"
@@ -167,7 +179,7 @@ export default function ScheduleTourModal({
           <div className="space-y-2">
             <Label htmlFor="time" className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              Heure
+              {scheduleTour?.time || 'Heure'}
             </Label>
             <Input
               id="time"
@@ -182,7 +194,7 @@ export default function ScheduleTourModal({
           <div className="space-y-2">
             <Label htmlFor="attendees" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Nombre de participants
+              {scheduleTour?.attendees || 'Nombre de participants'}
             </Label>
             <Input
               id="attendees"
@@ -193,14 +205,14 @@ export default function ScheduleTourModal({
               max={10}
               required
             />
-            <p className="text-xs text-gray-500">Maximum 10 personnes</p>
+            <p className="text-xs text-gray-500">{scheduleTour?.maxAttendees || 'Maximum 10 personnes'}</p>
           </div>
 
           {/* Notes */}
           <div className="space-y-2">
             <Label htmlFor="notes" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
-              Notes ou questions (optionnel)
+              {scheduleTour?.notesLabel || 'Notes ou questions (optionnel)'}
             </Label>
             <textarea
               id="notes"
@@ -208,7 +220,7 @@ export default function ScheduleTourModal({
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              placeholder="Questions spécifiques, contraintes horaires, etc."
+              placeholder={scheduleTour?.notesPlaceholder || 'Questions spécifiques, contraintes horaires, etc.'}
             />
           </div>
 
@@ -219,17 +231,10 @@ export default function ScheduleTourModal({
             }`}
           >
             <p className="text-xs text-gray-700">
-              {tourType === 'virtual' ? (
-                <>
-                  <strong>Visite virtuelle :</strong> Vous recevrez un email avec le lien de
-                  connexion 15 minutes avant l'heure prévue.
-                </>
-              ) : (
-                <>
-                  <strong>Visite physique :</strong> L'adresse exacte vous sera communiquée par
-                  email après confirmation du propriétaire.
-                </>
-              )}
+              {tourType === 'virtual'
+                ? scheduleTour?.virtualInfo || 'Visite virtuelle : Vous recevrez un email avec le lien de connexion 15 minutes avant l\'heure prévue.'
+                : scheduleTour?.physicalInfo || 'Visite physique : L\'adresse exacte vous sera communiquée par email après confirmation du propriétaire.'
+              }
             </p>
           </div>
 
@@ -242,7 +247,7 @@ export default function ScheduleTourModal({
               className="flex-1"
               disabled={isLoading}
             >
-              Annuler
+              {scheduleTour?.cancel || 'Annuler'}
             </Button>
             <Button
               type="submit"
@@ -253,7 +258,7 @@ export default function ScheduleTourModal({
               }`}
               disabled={isLoading}
             >
-              {isLoading ? 'Planification...' : 'Confirmer'}
+              {isLoading ? (scheduleTour?.scheduling || 'Planification...') : (scheduleTour?.confirm || 'Confirmer')}
             </Button>
           </div>
         </form>

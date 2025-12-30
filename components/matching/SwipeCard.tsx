@@ -32,6 +32,7 @@ import { UserProfile, getCompatibilityQuality, CompatibilityResult } from '@/lib
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface SwipeCardProps {
   user: UserProfile & {
@@ -57,6 +58,8 @@ export const SwipeCard = memo(function SwipeCard({
   isExpanded: controlledExpanded,
   onExpandChange
 }: SwipeCardProps) {
+  const { getSection } = useLanguage();
+  const matching = getSection('matching');
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [showIncompleteDropdown, setShowIncompleteDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -117,9 +120,9 @@ export const SwipeCard = memo(function SwipeCard({
   const getWakeTimeLabel = (time?: string) => {
     if (!time) return null;
     const labels: Record<string, string> = {
-      'early': 'Lève-tôt',
-      'moderate': 'Normal',
-      'late': 'Lève-tard'
+      'early': matching.profile?.wakeTime?.early || 'Lève-tôt',
+      'moderate': matching.profile?.wakeTime?.moderate || 'Normal',
+      'late': matching.profile?.wakeTime?.late || 'Lève-tard'
     };
     return labels[time] || time;
   };
@@ -127,30 +130,30 @@ export const SwipeCard = memo(function SwipeCard({
   const getSleepTimeLabel = (time?: string) => {
     if (!time) return null;
     const labels: Record<string, string> = {
-      'early': 'Couche tôt',
-      'before_23h': 'Avant 23h',
-      'moderate': 'Normal',
-      '23h_01h': '23h-1h',
-      'late': 'Couche tard',
-      'after_01h': 'Après 1h'
+      'early': matching.profile?.sleepTime?.early || 'Couche tôt',
+      'before_23h': matching.profile?.sleepTime?.before_23h || 'Avant 23h',
+      'moderate': matching.profile?.sleepTime?.moderate || 'Normal',
+      '23h_01h': matching.profile?.sleepTime?.['23h_01h'] || '23h-1h',
+      'late': matching.profile?.sleepTime?.late || 'Couche tard',
+      'after_01h': matching.profile?.sleepTime?.after_01h || 'Après 1h'
     };
     return labels[time] || time;
   };
 
   const getCleanlinessLabel = (level?: number) => {
     if (!level) return null;
-    if (level >= 8) return 'Très ordonné';
-    if (level >= 6) return 'Ordonné';
-    if (level >= 4) return 'Flexible';
-    return 'Décontracté';
+    if (level >= 8) return matching.profile?.cleanliness?.veryTidy || 'Très ordonné';
+    if (level >= 6) return matching.profile?.cleanliness?.tidy || 'Ordonné';
+    if (level >= 4) return matching.profile?.cleanliness?.flexible || 'Flexible';
+    return matching.profile?.cleanliness?.relaxed || 'Décontracté';
   };
 
   const getSocialLabel = (level?: number) => {
     if (!level) return null;
-    if (level >= 8) return 'Très sociable';
-    if (level >= 6) return 'Sociable';
-    if (level >= 4) return 'Équilibré';
-    return 'Calme';
+    if (level >= 8) return matching.profile?.social?.verySociable || 'Très sociable';
+    if (level >= 6) return matching.profile?.social?.sociable || 'Sociable';
+    if (level >= 4) return matching.profile?.social?.balanced || 'Équilibré';
+    return matching.profile?.social?.calm || 'Calme';
   };
 
   const handleDragEnd = useCallback(async (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -289,7 +292,7 @@ export const SwipeCard = memo(function SwipeCard({
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <AlertTriangle className="w-4 h-4 text-amber-500" />
-                            <span className="font-semibold text-gray-900 text-sm">Score non disponible</span>
+                            <span className="font-semibold text-gray-900 text-sm">{matching.profile?.scoreNotAvailable || 'Score non disponible'}</span>
                           </div>
                           <button
                             onClick={(e) => {
@@ -308,17 +311,17 @@ export const SwipeCard = memo(function SwipeCard({
                         <p className="text-sm text-gray-600">
                           {otherUserCompleteness && otherUserCompleteness.percentage < 40 ? (
                             <>
-                              <span className="font-medium text-gray-900">{user.first_name}</span> n'a pas assez complété son profil pour que l'algorithme de compatibilité fonctionne.
+                              <span className="font-medium text-gray-900">{user.first_name}</span> {matching.profile?.profileIncomplete || "n'a pas assez complété son profil pour que l'algorithme de compatibilité fonctionne."}
                             </>
                           ) : (
-                            <>Ton profil n'est pas assez complété pour que l'algorithme puisse calculer un score de compatibilité fiable.</>
+                            <>{matching.profile?.yourProfileIncomplete || "Ton profil n'est pas assez complété pour que l'algorithme puisse calculer un score de compatibilité fiable."}</>
                           )}
                         </p>
 
                         {/* Missing categories */}
                         {otherUserCompleteness && otherUserCompleteness.missingCategories.length > 0 && (
                           <div className="bg-amber-50 rounded-xl p-3">
-                            <p className="text-xs font-medium text-amber-800 mb-2">Informations manquantes :</p>
+                            <p className="text-xs font-medium text-amber-800 mb-2">{matching.profile?.missingInfo || 'Informations manquantes :'}</p>
                             <div className="flex flex-wrap gap-1">
                               {otherUserCompleteness.missingCategories.map((cat, idx) => (
                                 <span key={idx} className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
@@ -335,12 +338,12 @@ export const SwipeCard = memo(function SwipeCard({
                             className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-lg"
                           >
                             <UserCog className="w-4 h-4 mr-2" />
-                            Enrichir mon profil
+                            {matching.profile?.enhanceProfile || 'Enrichir mon profil'}
                           </Button>
                         </Link>
 
                         <p className="text-[10px] text-gray-400 text-center">
-                          Un profil complet = des matchs plus précis !
+                          {matching.profile?.completeProfileTip || 'Un profil complet = des matchs plus précis !'}
                         </p>
                       </div>
                     </motion.div>
@@ -354,7 +357,7 @@ export const SwipeCard = memo(function SwipeCard({
           <div className="absolute bottom-4 left-4 right-4">
             <h2 className="text-2xl font-bold text-white mb-1">
               {user.first_name} {user.last_name}
-              {age && <span className="text-xl font-normal ml-2 text-white/90">{age} ans</span>}
+              {age && <span className="text-xl font-normal ml-2 text-white/90">{age} {matching.profile?.yearsOld || 'ans'}</span>}
             </h2>
             <div className="flex items-center gap-3 text-white/90 text-sm">
               {user.occupation_status && (
@@ -388,7 +391,7 @@ export const SwipeCard = memo(function SwipeCard({
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
                 <Euro className="w-4 h-4 text-gray-500" />
                 <div>
-                  <p className="text-[10px] text-gray-500 uppercase font-medium">Budget</p>
+                  <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.card?.budget || 'Budget'}</p>
                   <p className="text-sm font-bold text-gray-900">
                     {user.min_budget && user.max_budget
                       ? `${user.min_budget}-${user.max_budget}€`
@@ -406,7 +409,7 @@ export const SwipeCard = memo(function SwipeCard({
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
                 <Home className="w-4 h-4 text-gray-500" />
                 <div>
-                  <p className="text-[10px] text-gray-500 uppercase font-medium">Propreté</p>
+                  <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.cleanliness?.label || 'Propreté'}</p>
                   <p className="text-sm font-bold text-gray-900">{getCleanlinessLabel(user.cleanliness_level)}</p>
                 </div>
               </div>
@@ -417,7 +420,7 @@ export const SwipeCard = memo(function SwipeCard({
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
                 <Users className="w-4 h-4 text-gray-500" />
                 <div>
-                  <p className="text-[10px] text-gray-500 uppercase font-medium">Social</p>
+                  <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.social?.label || 'Social'}</p>
                   <p className="text-sm font-bold text-gray-900">{getSocialLabel(user.social_energy)}</p>
                 </div>
               </div>
@@ -428,7 +431,7 @@ export const SwipeCard = memo(function SwipeCard({
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
                 <Clock className="w-4 h-4 text-gray-500" />
                 <div>
-                  <p className="text-[10px] text-gray-500 uppercase font-medium">Rythme</p>
+                  <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.rhythm || 'Rythme'}</p>
                   <p className="text-sm font-bold text-gray-900">
                     {getWakeTimeLabel(user.wake_up_time) || getSleepTimeLabel(user.sleep_time)}
                   </p>
@@ -441,32 +444,32 @@ export const SwipeCard = memo(function SwipeCard({
           <div className="flex flex-wrap gap-1.5 mb-3">
             {user.smoking && (
               <Badge variant="default" size="sm" className="bg-red-50 border-red-200 text-red-700">
-                <Cigarette className="w-3 h-3 mr-1" /> Fumeur
+                <Cigarette className="w-3 h-3 mr-1" /> {matching.profile?.smoker || 'Fumeur'}
               </Badge>
             )}
             {user.smoking === false && (
               <Badge variant="default" size="sm" className="bg-green-50 border-green-200 text-green-700">
-                <XCircle className="w-3 h-3 mr-1" /> Non-fumeur
+                <XCircle className="w-3 h-3 mr-1" /> {matching.profile?.nonSmoker || 'Non-fumeur'}
               </Badge>
             )}
             {user.pets && (
               <Badge variant="default" size="sm" className="bg-amber-50 border-amber-200 text-amber-700">
-                <Dog className="w-3 h-3 mr-1" /> A un animal
+                <Dog className="w-3 h-3 mr-1" /> {matching.profile?.hasPet || 'A un animal'}
               </Badge>
             )}
             {user.cooking_frequency && ['often', 'daily'].includes(user.cooking_frequency) && (
               <Badge variant="default" size="sm" className="bg-orange-50 border-orange-200 text-orange-700">
-                <Utensils className="w-3 h-3 mr-1" /> Cuisine souvent
+                <Utensils className="w-3 h-3 mr-1" /> {matching.profile?.cooksOften || 'Cuisine souvent'}
               </Badge>
             )}
             {user.shared_meals_interest && (
               <Badge variant="default" size="sm" className="bg-pink-50 border-pink-200 text-pink-700">
-                <Heart className="w-3 h-3 mr-1" /> Repas partagés
+                <Heart className="w-3 h-3 mr-1" /> {matching.profile?.sharedMeals || 'Repas partagés'}
               </Badge>
             )}
             {user.music_at_home && (
               <Badge variant="default" size="sm" className="bg-indigo-50 border-indigo-200 text-indigo-700">
-                <Music className="w-3 h-3 mr-1" /> Musique
+                <Music className="w-3 h-3 mr-1" /> {matching.profile?.musicAtHome || 'Musique'}
               </Badge>
             )}
           </div>
@@ -478,7 +481,7 @@ export const SwipeCard = memo(function SwipeCard({
 
           {/* Expand Indicator */}
           <div className="flex items-center justify-center gap-2 text-orange-500 font-medium text-sm">
-            <span>{isExpanded ? 'Voir moins' : 'Voir plus de détails'}</span>
+            <span>{isExpanded ? (matching.profile?.seeLess || 'Voir moins') : (matching.profile?.seeMore || 'Voir plus de détails')}</span>
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.3 }}
@@ -501,7 +504,7 @@ export const SwipeCard = memo(function SwipeCard({
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <MessageCircle className="w-4 h-4 text-gray-500" />
-                    À propos
+                    {matching.profile?.about || 'À propos'}
                   </p>
                   <p className="text-gray-700 text-sm leading-relaxed">{user.bio}</p>
                 </div>
@@ -512,7 +515,7 @@ export const SwipeCard = memo(function SwipeCard({
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <Globe className="w-4 h-4 text-gray-500" />
-                    Langues
+                    {matching.profile?.languages || 'Langues'}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {user.languages.map((lang, idx) => (
@@ -527,7 +530,7 @@ export const SwipeCard = memo(function SwipeCard({
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <Heart className="w-4 h-4 text-gray-500" />
-                    Valeurs
+                    {matching.profile?.values || 'Valeurs'}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {user.core_values.map((value, idx) => (
@@ -544,7 +547,7 @@ export const SwipeCard = memo(function SwipeCard({
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-gray-500" />
-                    Hobbies
+                    {matching.profile?.hobbies || 'Hobbies'}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {user.hobbies.map((hobby, idx) => (
@@ -559,7 +562,7 @@ export const SwipeCard = memo(function SwipeCard({
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 text-red-500" />
-                    Deal breakers
+                    {matching.profile?.dealBreakers || 'Deal breakers'}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {user.deal_breakers.map((breaker, idx) => (
@@ -575,42 +578,42 @@ export const SwipeCard = memo(function SwipeCard({
               <div>
                 <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Home className="w-4 h-4 text-gray-500" />
-                  Mode de vie
+                  {matching.profile?.lifestyleTitle || 'Mode de vie'}
                 </p>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                   {user.wake_up_time && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Réveil</span>
+                      <span className="text-gray-500">{matching.profile?.wakeUp || 'Réveil'}</span>
                       <span className="font-medium text-gray-900">{getWakeTimeLabel(user.wake_up_time)}</span>
                     </div>
                   )}
                   {user.sleep_time && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Coucher</span>
+                      <span className="text-gray-500">{matching.profile?.bedtime || 'Coucher'}</span>
                       <span className="font-medium text-gray-900">{getSleepTimeLabel(user.sleep_time)}</span>
                     </div>
                   )}
                   {user.guest_frequency && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Invités</span>
+                      <span className="text-gray-500">{matching.profile?.guests || 'Invités'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.guest_frequency.replace('_', ' ')}</span>
                     </div>
                   )}
                   {user.work_schedule && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Travail</span>
+                      <span className="text-gray-500">{matching.profile?.work || 'Travail'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.work_schedule}</span>
                     </div>
                   )}
                   {user.diet_type && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Régime</span>
+                      <span className="text-gray-500">{matching.profile?.diet || 'Régime'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.diet_type}</span>
                     </div>
                   )}
                   {user.music_habits && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Musique</span>
+                      <span className="text-gray-500">{matching.profile?.musicLabel || 'Musique'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.music_habits.replace(/_/g, ' ')}</span>
                     </div>
                   )}
@@ -621,30 +624,30 @@ export const SwipeCard = memo(function SwipeCard({
               <div>
                 <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Users className="w-4 h-4 text-gray-500" />
-                  Préférences coliving
+                  {matching.profile?.colivingPrefs || 'Préférences coliving'}
                 </p>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                   {user.preferred_coliving_size && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Taille</span>
+                      <span className="text-gray-500">{matching.profile?.sizeLabel || 'Taille'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.preferred_coliving_size.replace('_', ' ')}</span>
                     </div>
                   )}
                   {user.preferred_gender_mix && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Mixité</span>
+                      <span className="text-gray-500">{matching.profile?.genderMix || 'Mixité'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.preferred_gender_mix.replace('_', ' ')}</span>
                     </div>
                   )}
                   {user.communication_style && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Communication</span>
+                      <span className="text-gray-500">{matching.profile?.communication || 'Communication'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.communication_style}</span>
                     </div>
                   )}
                   {user.cultural_openness && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Ouverture</span>
+                      <span className="text-gray-500">{matching.profile?.openness || 'Ouverture'}</span>
                       <span className="font-medium text-gray-900 capitalize">{user.cultural_openness.replace('_', ' ')}</span>
                     </div>
                   )}
@@ -658,14 +661,14 @@ export const SwipeCard = memo(function SwipeCard({
                   user.smoking_tolerance ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                 )}>
                   <Cigarette className="w-4 h-4" />
-                  <span>{user.smoking_tolerance ? 'Tolère fumeurs' : 'Ne tolère pas fumeurs'}</span>
+                  <span>{user.smoking_tolerance ? (matching.profile?.toleratesSmokers || 'Tolère fumeurs') : (matching.profile?.noSmokers || 'Ne tolère pas fumeurs')}</span>
                 </div>
                 <div className={cn(
                   "flex items-center gap-2 p-2 rounded-lg text-xs",
                   user.pets_tolerance ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                 )}>
                   <Dog className="w-4 h-4" />
-                  <span>{user.pets_tolerance ? 'Tolère animaux' : 'Ne tolère pas animaux'}</span>
+                  <span>{user.pets_tolerance ? (matching.profile?.toleratesPets || 'Tolère animaux') : (matching.profile?.noPets || 'Ne tolère pas animaux')}</span>
                 </div>
               </div>
             </motion.div>

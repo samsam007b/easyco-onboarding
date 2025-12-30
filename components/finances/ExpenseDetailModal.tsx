@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   X,
   Calendar,
@@ -41,15 +42,7 @@ interface ExpenseDetailModalProps {
   currentUserId?: string;
 }
 
-const categoryLabels: Record<string, string> = {
-  rent: 'Loyer',
-  utilities: 'Charges',
-  groceries: 'Courses',
-  cleaning: 'Ménage',
-  maintenance: 'Entretien',
-  internet: 'Internet',
-  other: 'Autre',
-};
+// categoryLabels are now dynamically provided via translations
 
 const categoryColors: Record<string, string> = {
   rent: 'bg-purple-100 text-purple-700',
@@ -73,6 +66,32 @@ export default function ExpenseDetailModal({
   const [showOCRDetails, setShowOCRDetails] = useState(false);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
 
+  const { language, getSection } = useLanguage();
+  const detail = getSection('expenseDetail');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
+  // Helper function to get translated category labels
+  const getCategoryLabel = (category: string): string => {
+    const labels: Record<string, string> = {
+      rent: detail?.catRent || 'Loyer',
+      utilities: detail?.catUtilities || 'Charges',
+      groceries: detail?.catGroceries || 'Courses',
+      cleaning: detail?.catCleaning || 'Ménage',
+      maintenance: detail?.catMaintenance || 'Entretien',
+      internet: detail?.catInternet || 'Internet',
+      other: detail?.catOther || 'Autre',
+    };
+    return labels[category] || category;
+  };
+
   if (!expense) return null;
 
   const ocrData: OCRData | null = expense.ocr_data
@@ -94,7 +113,7 @@ export default function ExpenseDetailModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden p-0">
-        <DialogTitle className="sr-only">Détails de la dépense: {expense.title}</DialogTitle>
+        <DialogTitle className="sr-only">{detail?.expenseDetails || 'Détails de la dépense'}: {expense.title}</DialogTitle>
 
         <div className="flex flex-col max-h-[90vh]">
           {/* Header */}
@@ -119,7 +138,7 @@ export default function ExpenseDetailModal({
                 <h2 className="text-2xl font-bold text-white truncate">{expense.title}</h2>
                 <div className="flex items-center gap-2 mt-1">
                   <Badge className={cn('text-xs', categoryColors[expense.category])}>
-                    {categoryLabels[expense.category] || expense.category}
+                    {getCategoryLabel(expense.category)}
                   </Badge>
                   {expense.receipt_image_url && (
                     <Badge className="text-xs bg-white/20 text-white border-none">
@@ -133,7 +152,7 @@ export default function ExpenseDetailModal({
 
             {/* Amount */}
             <div className="mt-6 text-center">
-              <p className="text-white/80 text-sm font-medium">Montant total</p>
+              <p className="text-white/80 text-sm font-medium">{detail?.totalAmount || 'Montant total'}</p>
               <p className="text-5xl font-bold text-white mt-1">
                 €{expense.amount.toFixed(2)}
               </p>
@@ -149,7 +168,7 @@ export default function ExpenseDetailModal({
                   <User className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">Payé par</p>
+                  <p className="text-xs text-gray-500 font-medium">{detail?.paidBy || 'Payé par'}</p>
                   <p className="font-semibold text-gray-900">{expense.paid_by_name}</p>
                 </div>
               </div>
@@ -159,9 +178,9 @@ export default function ExpenseDetailModal({
                   <Calendar className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">Date</p>
+                  <p className="text-xs text-gray-500 font-medium">{detail?.date || 'Date'}</p>
                   <p className="font-semibold text-gray-900">
-                    {new Date(expense.date).toLocaleDateString('fr-FR', {
+                    {new Date(expense.date).toLocaleDateString(locale, {
                       day: 'numeric',
                       month: 'long',
                       year: 'numeric',
@@ -174,7 +193,7 @@ export default function ExpenseDetailModal({
             {/* Description */}
             {expense.description && (
               <div className="p-4 bg-gray-50 rounded-xl">
-                <p className="text-sm text-gray-500 font-medium mb-1">Description</p>
+                <p className="text-sm text-gray-500 font-medium mb-1">{detail?.description || 'Description'}</p>
                 <p className="text-gray-900">{expense.description}</p>
               </div>
             )}
@@ -191,8 +210,8 @@ export default function ExpenseDetailModal({
                       <Receipt className="w-5 h-5 text-green-600" />
                     </div>
                     <div className="text-left">
-                      <p className="font-semibold text-gray-900">Photo du ticket</p>
-                      <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                      <p className="font-semibold text-gray-900">{detail?.receiptPhoto || 'Photo du ticket'}</p>
+                      <p className="text-xs text-gray-500">{detail?.clickToView || 'Cliquez pour voir'}</p>
                     </div>
                   </div>
                   {showReceipt ? (
@@ -230,7 +249,7 @@ export default function ExpenseDetailModal({
                         <div className="overflow-auto max-h-[400px]">
                           <img
                             src={expense.receipt_image_url}
-                            alt="Ticket de caisse"
+                            alt={detail?.receiptAlt || 'Ticket de caisse'}
                             className="mx-auto transition-transform duration-200"
                             style={{ transform: `scale(${receiptZoom})` }}
                           />
@@ -254,9 +273,9 @@ export default function ExpenseDetailModal({
                       <Scan className="w-5 h-5 text-blue-600" />
                     </div>
                     <div className="text-left">
-                      <p className="font-semibold text-gray-900">Données OCR extraites</p>
+                      <p className="font-semibold text-gray-900">{detail?.ocrData || 'Données OCR extraites'}</p>
                       <p className="text-xs text-gray-500">
-                        Confiance: {Math.round((ocrData.confidence || 0) * 100)}%
+                        {detail?.confidence || 'Confiance:'} {Math.round((ocrData.confidence || 0) * 100)}%
                       </p>
                     </div>
                   </div>
@@ -281,7 +300,7 @@ export default function ExpenseDetailModal({
                           <div className="flex items-center gap-3">
                             <Store className="w-5 h-5 text-gray-400" />
                             <div>
-                              <p className="text-xs text-gray-500">Commerce</p>
+                              <p className="text-xs text-gray-500">{detail?.merchant || 'Commerce'}</p>
                               <p className="font-medium text-gray-900">{ocrData.merchant}</p>
                             </div>
                           </div>
@@ -292,7 +311,7 @@ export default function ExpenseDetailModal({
                           <div className="flex items-center gap-3">
                             <CreditCard className="w-5 h-5 text-gray-400" />
                             <div>
-                              <p className="text-xs text-gray-500">Total détecté</p>
+                              <p className="text-xs text-gray-500">{detail?.detectedTotal || 'Total détecté'}</p>
                               <p className="font-medium text-gray-900">€{ocrData.total.toFixed(2)}</p>
                             </div>
                           </div>
@@ -304,7 +323,7 @@ export default function ExpenseDetailModal({
                             <div className="flex items-center gap-2 mb-2">
                               <ShoppingCart className="w-5 h-5 text-gray-400" />
                               <p className="text-xs text-gray-500 font-medium">
-                                Articles détectés ({ocrData.items.length})
+                                {detail?.detectedItems || 'Articles détectés'} ({ocrData.items.length})
                               </p>
                             </div>
                             <div className="space-y-2 ml-7">
@@ -335,7 +354,7 @@ export default function ExpenseDetailModal({
             <div className="space-y-3">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-gray-400" />
-                Répartition ({expense.splits?.length || 0} personnes)
+                {detail?.splitTitle || 'Répartition'} ({expense.splits?.length || 0} {detail?.people || 'personnes'})
               </h3>
 
               <div className="space-y-2">
@@ -362,14 +381,14 @@ export default function ExpenseDetailModal({
                               : 'bg-gradient-to-br from-gray-400 to-gray-500'
                           )}
                         >
-                          {isPayer ? '€' : (isCurrentUser ? 'T' : '?')}
+                          {isPayer ? '€' : (isCurrentUser ? (detail?.you || 'Toi').charAt(0) : '?')}
                         </div>
                         <div>
                           <p className="font-medium text-gray-900">
-                            {isPayer ? expense.paid_by_name : (isCurrentUser ? 'Toi' : 'Colocataire')}
+                            {isPayer ? expense.paid_by_name : (isCurrentUser ? (detail?.you || 'Toi') : (detail?.roommate || 'Colocataire'))}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {isPayer ? 'A payé' : split.paid ? 'Remboursé' : 'Doit'}
+                            {isPayer ? (detail?.hasPaid || 'A payé') : split.paid ? (detail?.reimbursed || 'Remboursé') : (detail?.owes || 'Doit')}
                           </p>
                         </div>
                       </div>
@@ -399,7 +418,7 @@ export default function ExpenseDetailModal({
                             {markingPaid === split.user_id ? (
                               <Clock className="w-3 h-3 animate-spin" />
                             ) : (
-                              'Marquer payé'
+                              detail?.markPaid || 'Marquer payé'
                             )}
                           </Button>
                         ) : (

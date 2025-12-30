@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   User,
   Bell,
@@ -47,6 +48,8 @@ export default function SettingsPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState<string>('');
+  const { getSection } = useLanguage();
+  const settings = getSection('settings');
 
   useEffect(() => {
     loadUserType();
@@ -103,8 +106,8 @@ export default function SettingsPage() {
   const settingsSections: SettingsSection[] = [
     {
       id: 'profile',
-      title: 'Profil',
-      description: 'Gérer vos informations personnelles',
+      title: settings.sections?.profile?.title || 'Profil',
+      description: settings.sections?.profile?.description || 'Gérer vos informations personnelles',
       icon: User,
       href: userType === 'owner' ? '/dashboard/my-profile-owner' : userType === 'resident' ? '/dashboard/my-profile-resident' : '/profile',
       color: 'bg-orange-100',
@@ -112,8 +115,8 @@ export default function SettingsPage() {
     },
     {
       id: 'security',
-      title: 'Sécurité',
-      description: 'Mot de passe et authentification',
+      title: settings.sections?.security?.title || 'Sécurité',
+      description: settings.sections?.security?.description || 'Mot de passe et authentification',
       icon: Shield,
       href: '/settings/security',
       color: 'bg-red-100',
@@ -121,18 +124,18 @@ export default function SettingsPage() {
     },
     {
       id: 'verification',
-      title: 'Vérifications',
-      description: 'Téléphone, identité ITSME et badges',
+      title: settings.sections?.verification?.title || 'Vérifications',
+      description: settings.sections?.verification?.description || 'Téléphone, identité ITSME et badges',
       icon: BadgeCheck,
       href: '/settings/verification',
       color: 'bg-emerald-100',
-      badge: 'Nouveau',
+      badge: settings.badges?.new || 'Nouveau',
       category: 'account',
     },
     {
       id: 'privacy',
-      title: 'Confidentialité',
-      description: 'Contrôler la visibilité de votre profil',
+      title: settings.sections?.privacy?.title || 'Confidentialité',
+      description: settings.sections?.privacy?.description || 'Contrôler la visibilité de votre profil',
       icon: Eye,
       href: '/settings/privacy',
       color: 'bg-blue-100',
@@ -140,8 +143,8 @@ export default function SettingsPage() {
     },
     {
       id: 'private-codes',
-      title: 'Codes Privés',
-      description: 'Codes d\'invitation de votre résidence',
+      title: settings.sections?.privateCodes?.title || 'Codes Privés',
+      description: settings.sections?.privateCodes?.description || 'Codes d\'invitation de votre résidence',
       icon: Lock,
       href: '/settings/private-codes',
       color: 'bg-purple-100',
@@ -150,28 +153,28 @@ export default function SettingsPage() {
     },
     {
       id: 'residence-profile',
-      title: 'Profil de la Résidence',
-      description: 'Gérer les informations de votre résidence',
+      title: settings.sections?.residenceProfile?.title || 'Profil de la Résidence',
+      description: settings.sections?.residenceProfile?.description || 'Gérer les informations de votre résidence',
       icon: Home,
       href: '/settings/residence-profile',
       color: 'bg-pink-100',
-      badge: userType === 'resident' ? 'New' : undefined,
+      badge: userType === 'resident' ? (settings.badges?.new || 'New') : undefined,
       category: 'account',
     },
     {
       id: 'referrals',
-      title: 'Parrainage',
-      description: 'Invitez vos amis et gagnez des mois gratuits',
+      title: settings.sections?.referrals?.title || 'Parrainage',
+      description: settings.sections?.referrals?.description || 'Invitez vos amis et gagnez des mois gratuits',
       icon: Gift,
       href: '/settings/referrals',
       color: 'bg-green-100',
-      badge: 'Nouveau',
+      badge: settings.badges?.new || 'Nouveau',
       category: 'account',
     },
     {
       id: 'invitations',
-      title: 'Invitations',
-      description: 'Gerez vos invitations a rejoindre des colocations',
+      title: settings.sections?.invitations?.title || 'Invitations',
+      description: settings.sections?.invitations?.description || 'Gerez vos invitations a rejoindre des colocations',
       icon: Mail,
       href: '/settings/invitations',
       color: 'bg-amber-100',
@@ -179,8 +182,8 @@ export default function SettingsPage() {
     },
     {
       id: 'notifications',
-      title: 'Notifications',
-      description: 'Configurer vos préférences',
+      title: settings.sections?.notifications?.title || 'Notifications',
+      description: settings.sections?.notifications?.description || 'Configurer vos préférences',
       icon: Bell,
       href: '/dashboard/settings/preferences',
       color: 'bg-yellow-100',
@@ -188,8 +191,8 @@ export default function SettingsPage() {
     },
     {
       id: 'language',
-      title: 'Langue & Région',
-      description: 'Changer la langue de l\'interface',
+      title: settings.sections?.language?.title || 'Langue & Région',
+      description: settings.sections?.language?.description || 'Changer la langue de l\'interface',
       icon: Globe,
       href: '/settings/language',
       color: 'bg-emerald-100',
@@ -197,8 +200,8 @@ export default function SettingsPage() {
     },
     {
       id: 'email',
-      title: 'Emails',
-      description: 'Préférences de communications',
+      title: settings.sections?.email?.title || 'Emails',
+      description: settings.sections?.email?.description || 'Préférences de communications',
       icon: Mail,
       href: '/settings/email',
       color: 'bg-pink-100',
@@ -206,8 +209,8 @@ export default function SettingsPage() {
     },
     {
       id: 'subscription',
-      title: 'Mon Abonnement',
-      description: 'Gérer votre plan et votre essai gratuit',
+      title: settings.sections?.subscription?.title || 'Mon Abonnement',
+      description: settings.sections?.subscription?.description || 'Gérer votre plan et votre essai gratuit',
       icon: Sparkles,
       href: '/dashboard/subscription',
       color: 'bg-gradient-to-br from-purple-100 to-pink-100',
@@ -216,8 +219,8 @@ export default function SettingsPage() {
     },
     {
       id: 'payment',
-      title: 'Moyens de paiement',
-      description: 'Gérer vos cartes et méthodes de paiement',
+      title: settings.sections?.payment?.title || 'Moyens de paiement',
+      description: settings.sections?.payment?.description || 'Gérer vos cartes et méthodes de paiement',
       icon: CreditCard,
       href: '/settings/payment',
       color: 'bg-indigo-100',
@@ -225,8 +228,8 @@ export default function SettingsPage() {
     },
     {
       id: 'invoices',
-      title: 'Factures',
-      description: 'Historique et téléchargement des factures',
+      title: settings.sections?.invoices?.title || 'Factures',
+      description: settings.sections?.invoices?.description || 'Historique et téléchargement des factures',
       icon: Receipt,
       href: '/settings/invoices',
       color: 'bg-emerald-100',
@@ -234,8 +237,8 @@ export default function SettingsPage() {
     },
     {
       id: 'devices',
-      title: 'Appareils',
-      description: 'Gérer vos sessions actives',
+      title: settings.sections?.devices?.title || 'Appareils',
+      description: settings.sections?.devices?.description || 'Gérer vos sessions actives',
       icon: Smartphone,
       href: '/settings/devices',
       color: 'bg-cyan-100',
@@ -244,9 +247,9 @@ export default function SettingsPage() {
   ];
 
   const categories = [
-    { id: 'account', title: 'Compte', icon: User },
-    { id: 'preferences', title: 'Préférences', icon: SettingsIcon },
-    { id: 'advanced', title: 'Avancé', icon: Shield },
+    { id: 'account', title: settings.categories?.account || 'Compte', icon: User },
+    { id: 'preferences', title: settings.categories?.preferences || 'Préférences', icon: SettingsIcon },
+    { id: 'advanced', title: settings.categories?.advanced || 'Avancé', icon: Shield },
   ] as const;
 
   if (isLoading) {
@@ -254,7 +257,7 @@ export default function SettingsPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">Chargement...</p>
+          <p className="text-gray-600 font-medium">{settings.loading || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -287,7 +290,7 @@ export default function SettingsPage() {
               className="mb-6 rounded-full"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour
+              {settings.back || 'Retour'}
             </Button>
 
             <div className="text-center">
@@ -306,8 +309,8 @@ export default function SettingsPage() {
                   )} />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
-              <p className="text-gray-600 text-lg">Gérer votre compte et vos préférences</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">{settings.title || 'Paramètres'}</h1>
+              <p className="text-gray-600 text-lg">{settings.subtitle || 'Gérer votre compte et vos préférences'}</p>
             </div>
           </motion.div>
         </div>
@@ -435,8 +438,8 @@ export default function SettingsPage() {
                 <HelpCircle className="w-7 h-7 text-orange-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-1 text-gray-900">Besoin d'aide ?</h3>
-                <p className="text-gray-600">Consultez notre centre d'aide ou contactez le support</p>
+                <h3 className="text-xl font-bold mb-1 text-gray-900">{settings.help?.title || 'Besoin d\'aide ?'}</h3>
+                <p className="text-gray-600">{settings.help?.description || 'Consultez notre centre d\'aide ou contactez le support'}</p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -444,13 +447,13 @@ export default function SettingsPage() {
                 onClick={() => router.push('/help')}
                 className="px-4 py-2 rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-50 transition-all duration-300 font-medium"
               >
-                Centre d'aide
+                {settings.help?.helpCenter || 'Centre d\'aide'}
               </button>
               <button
                 onClick={() => router.push('/contact')}
                 className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all duration-300 font-semibold"
               >
-                Contacter le support
+                {settings.help?.contactSupport || 'Contacter le support'}
               </button>
             </div>
           </div>

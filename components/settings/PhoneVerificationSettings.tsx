@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // =============================================================================
 // FEATURE FLAG - Set to true when Twilio is configured
@@ -143,6 +144,9 @@ export default function PhoneVerificationSettings({
   initialPhone = '',
   isVerified: initialVerified = false,
 }: PhoneVerificationSettingsProps) {
+  const { getSection } = useLanguage();
+  const verification = getSection('verification');
+
   const [step, setStep] = useState<VerificationStep>(initialVerified ? 'verified' : 'idle');
   const [phoneNumber, setPhoneNumber] = useState(initialPhone);
   const [maskedPhone, setMaskedPhone] = useState('');
@@ -192,7 +196,7 @@ export default function PhoneVerificationSettings({
   // Send OTP
   const handleSendOTP = async () => {
     if (!phoneNumber.trim()) {
-      setError('Veuillez entrer un numéro de téléphone');
+      setError(verification?.phone?.errors?.enterNumber || 'Please enter a phone number');
       return;
     }
 
@@ -210,7 +214,7 @@ export default function PhoneVerificationSettings({
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de l\'envoi du code');
+        setError(data.error || verification?.phone?.errors?.sendError || 'Error sending code');
         setStep('idle');
         return;
       }
@@ -220,11 +224,11 @@ export default function PhoneVerificationSettings({
       setCanResend(false);
       setResendCooldown(60);
 
-      toast.success('Code envoyé!', {
-        description: `Un code de vérification a été envoyé au ${data.maskedPhone}`,
+      toast.success(verification?.phone?.codeSent || 'Code sent!', {
+        description: `${verification?.phone?.codeSentTo || 'A verification code was sent to'} ${data.maskedPhone}`,
       });
     } catch (err) {
-      setError('Erreur de connexion. Veuillez réessayer.');
+      setError(verification?.phone?.errors?.connectionError || 'Connection error. Please try again.');
       setStep('idle');
     } finally {
       setIsLoading(false);
@@ -249,7 +253,7 @@ export default function PhoneVerificationSettings({
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Code invalide');
+        setError(data.error || verification?.phone?.errors?.invalidCode || 'Invalid code');
         setStep('pending');
         setOtpCode('');
         return;
@@ -258,17 +262,17 @@ export default function PhoneVerificationSettings({
       setStep('verified');
       onStatusChange?.(true);
 
-      toast.success('Téléphone vérifié!', {
-        description: 'Votre numéro de téléphone a été vérifié avec succès.',
+      toast.success(verification?.phone?.phoneVerified || 'Phone verified!', {
+        description: verification?.phone?.phoneVerifiedSuccess || 'Your phone number has been verified successfully.',
       });
     } catch (err) {
-      setError('Erreur de connexion. Veuillez réessayer.');
+      setError(verification?.phone?.errors?.connectionError || 'Connection error. Please try again.');
       setStep('pending');
       setOtpCode('');
     } finally {
       setIsLoading(false);
     }
-  }, [otpCode, phoneNumber, onStatusChange]);
+  }, [otpCode, phoneNumber, onStatusChange, verification]);
 
   // Resend OTP
   const handleResend = async () => {
@@ -305,14 +309,14 @@ export default function PhoneVerificationSettings({
             <Phone className="w-5 h-5" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">Vérification du téléphone</h3>
+            <h3 className="font-semibold text-gray-900">{verification?.phone?.title || 'Phone Verification'}</h3>
             <p className="text-sm text-gray-500">
-              Confirmez votre numéro par SMS
+              {verification?.phone?.subtitle || 'Confirm your number by SMS'}
             </p>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">
             <Clock className="w-4 h-4" />
-            Prochainement
+            {verification?.comingSoon || 'Coming Soon'}
           </div>
         </div>
 
@@ -324,10 +328,10 @@ export default function PhoneVerificationSettings({
             </div>
             <div>
               <p className="text-sm text-gray-700 font-medium mb-1">
-                Cette fonctionnalité arrive bientôt
+                {verification?.phone?.comingSoonTitle || 'This feature is coming soon'}
               </p>
               <p className="text-xs text-gray-500">
-                Vous pourrez bientôt vérifier votre numéro de téléphone par SMS pour renforcer la sécurité de votre compte et obtenir un badge de confiance supplémentaire.
+                {verification?.phone?.comingSoonDescription || 'You will soon be able to verify your phone number via SMS to enhance your account security and earn an additional trust badge.'}
               </p>
             </div>
           </div>
@@ -353,11 +357,11 @@ export default function PhoneVerificationSettings({
           <Phone className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Vérification du téléphone</h3>
+          <h3 className="font-semibold text-gray-900">{verification?.phone?.title || 'Phone Verification'}</h3>
           <p className="text-sm text-gray-500">
             {step === 'verified'
-              ? 'Votre numéro est vérifié'
-              : 'Confirmez votre numéro par SMS'
+              ? (verification?.phone?.numberVerified || 'Your number is verified')
+              : (verification?.phone?.subtitle || 'Confirm your number by SMS')
             }
           </p>
         </div>
@@ -365,7 +369,7 @@ export default function PhoneVerificationSettings({
         {step === 'verified' && (
           <div className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
             <CheckCircle className="w-4 h-4" />
-            Vérifié
+            {verification?.verified || 'Verified'}
           </div>
         )}
       </div>
@@ -382,7 +386,7 @@ export default function PhoneVerificationSettings({
           >
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Numéro de téléphone
+                {verification?.phone?.phoneNumber || 'Phone Number'}
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -418,11 +422,11 @@ export default function PhoneVerificationSettings({
               ) : (
                 <Send className="w-4 h-4 mr-2" />
               )}
-              Envoyer le code
+              {verification?.phone?.sendCode || 'Send code'}
             </Button>
 
             <p className="text-xs text-gray-500 text-center">
-              Un code de vérification sera envoyé par SMS à ce numéro.
+              {verification?.phone?.willSendSms || 'A verification code will be sent to this number via SMS.'}
             </p>
           </motion.div>
         )}
@@ -437,7 +441,7 @@ export default function PhoneVerificationSettings({
             className="flex flex-col items-center py-8"
           >
             <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
-            <p className="text-gray-600">Envoi du code en cours...</p>
+            <p className="text-gray-600">{verification?.phone?.sendingCode || 'Sending code...'}</p>
           </motion.div>
         )}
 
@@ -452,19 +456,19 @@ export default function PhoneVerificationSettings({
           >
             <div className="text-center">
               <p className="text-gray-600 mb-1">
-                Code envoyé au <span className="font-medium">{maskedPhone}</span>
+                {verification?.phone?.codeSentToNumber || 'Code sent to'} <span className="font-medium">{maskedPhone}</span>
               </p>
               <button
                 onClick={handleChangeNumber}
                 className="text-sm text-blue-600 hover:underline"
               >
-                Changer de numéro
+                {verification?.phone?.changeNumber || 'Change number'}
               </button>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
-                Entrez le code à 6 chiffres
+                {verification?.phone?.enterCode || 'Enter the 6-digit code'}
               </label>
               <OTPInput
                 value={otpCode}
@@ -488,11 +492,11 @@ export default function PhoneVerificationSettings({
                   className="text-blue-600 hover:underline flex items-center gap-1"
                 >
                   <RefreshCw className="w-4 h-4" />
-                  Renvoyer le code
+                  {verification?.phone?.resendCode || 'Resend code'}
                 </button>
               ) : (
                 <span className="text-gray-500">
-                  Renvoyer dans{' '}
+                  {verification?.phone?.resendIn || 'Resend in'}{' '}
                   <CountdownTimer
                     seconds={resendCooldown}
                     onComplete={handleCooldownComplete}
@@ -504,7 +508,7 @@ export default function PhoneVerificationSettings({
             {step === 'verifying' && (
               <div className="flex items-center justify-center gap-2 text-blue-600">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Vérification en cours...
+                {verification?.phone?.verifying || 'Verifying...'}
               </div>
             )}
           </motion.div>
@@ -525,10 +529,10 @@ export default function PhoneVerificationSettings({
                 </div>
                 <div>
                   <p className="font-medium text-emerald-800">
-                    {maskedPhone || phoneNumber || 'Téléphone vérifié'}
+                    {maskedPhone || phoneNumber || (verification?.phone?.phoneVerified || 'Phone verified')}
                   </p>
                   <p className="text-sm text-emerald-600">
-                    Numéro vérifié avec succès
+                    {verification?.phone?.numberVerifiedSuccess || 'Number verified successfully'}
                   </p>
                 </div>
               </div>
@@ -540,7 +544,7 @@ export default function PhoneVerificationSettings({
               onClick={handleChangeNumber}
               className="w-full"
             >
-              Changer de numéro
+              {verification?.phone?.changeNumber || 'Change number'}
             </Button>
           </motion.div>
         )}

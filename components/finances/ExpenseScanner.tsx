@@ -44,6 +44,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { aiService, type OCRResult as AIServiceOCRResult } from '@/lib/services/ai';
 import type { OCRData, ExpenseCategory } from '@/types/finances.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ExpenseScannerProps {
   onComplete: (data: ScanResult) => void;
@@ -166,6 +167,18 @@ interface LineItem {
 }
 
 const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerProps) {
+  const { language, getSection } = useLanguage();
+  const scanner = getSection('expenseScanner');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
   const [currentStep, setCurrentStep] = useState<ScanStep>('upload');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -185,6 +198,20 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Category labels (translated)
+  const getCategoryLabel = (cat: ExpenseCategory): string => {
+    const labels: Record<ExpenseCategory, string> = {
+      rent: scanner?.catRent || 'Loyer',
+      groceries: scanner?.catGroceries || 'Courses',
+      utilities: scanner?.catUtilities || 'Factures',
+      cleaning: scanner?.catCleaning || 'Ménage',
+      internet: scanner?.catInternet || 'Internet',
+      maintenance: scanner?.catMaintenance || 'Entretien',
+      other: scanner?.catOther || 'Autre',
+    };
+    return labels[cat] || cat;
+  };
 
   // Step 1: Handle file selection
   const handleFileSelect = async (file: File) => {
@@ -272,12 +299,12 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
 
         setCurrentStep('review');
       } else {
-        setScanError(result.error || 'Échec du scan');
+        setScanError(result.error || (scanner?.scanFailed || 'Échec du scan'));
         setCurrentStep('review'); // Still allow manual entry
       }
     } catch (error: any) {
       console.error('[Scanner] OCR error:', error);
-      setScanError('Erreur lors du scan. Vous pouvez saisir manuellement.');
+      setScanError(scanner?.scanErrorManualEntry || 'Erreur lors du scan. Vous pouvez saisir manuellement.');
       setCurrentStep('review');
     } finally {
       setIsScanning(false);
@@ -313,11 +340,11 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
   // Step 3: Proceed to category selection
   const handleReviewNext = () => {
     if (!amount || parseFloat(amount) <= 0) {
-      alert('Veuillez saisir un montant valide');
+      alert(scanner?.pleaseEnterValidAmount || 'Veuillez saisir un montant valide');
       return;
     }
     if (!title.trim()) {
-      alert('Veuillez saisir un titre');
+      alert(scanner?.pleaseEnterTitle || 'Veuillez saisir un titre');
       return;
     }
     setCurrentStep('category');
@@ -347,10 +374,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
 
   // Step configuration with icons
   const steps = [
-    { icon: Scan, label: 'Scanner' },
-    { icon: Edit3, label: 'Vérifier' },
-    { icon: Package, label: 'Catégorie' },
-    { icon: Users, label: 'Répartir' },
+    { icon: Scan, label: scanner?.stepScan || 'Scanner' },
+    { icon: Edit3, label: scanner?.stepVerify || 'Vérifier' },
+    { icon: Package, label: scanner?.stepCategory || 'Catégorie' },
+    { icon: Users, label: scanner?.stepSplit || 'Répartir' },
   ];
 
   const stepIndex = ['upload', 'scanning', 'review', 'category', 'confirm'].indexOf(currentStep);
@@ -425,7 +452,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
           animate={{ opacity: 1, y: 0 }}
           className="text-center text-sm font-semibold text-gray-500"
         >
-          Étape {progressIndex + 1}/4 • {steps[progressIndex]?.label}
+          {(scanner?.stepOf || 'Étape {current}/4 •').replace('{current}', String(progressIndex + 1))} {steps[progressIndex]?.label}
         </motion.p>
       </motion.div>
 
@@ -458,11 +485,11 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Receipt className="w-10 h-10 text-white" />
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-                Scannez votre ticket
+                {scanner?.scanTitle || 'Scannez votre ticket'}
                 <Camera className="w-5 h-5 inline-block ml-1" style={{ color: '#ee5736' }} />
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
-                L'IA analyse automatiquement vos reçus
+                {scanner?.scanDescription || "L'IA analyse automatiquement vos reçus"}
                 <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
@@ -508,10 +535,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   </motion.div>
                   <h3 className="text-xl font-bold mb-1 flex items-center justify-center gap-2">
                     <Camera className="w-5 h-5" />
-                    Prendre une photo
+                    {scanner?.takePhoto || 'Prendre une photo'}
                   </h3>
                   <p className="text-sm text-white/80">
-                    Ouvrir la caméra
+                    {scanner?.openCamera || 'Ouvrir la caméra'}
                   </p>
                 </div>
                 <motion.div
@@ -543,10 +570,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   </motion.div>
                   <h3 className="text-xl font-bold mb-1 flex items-center justify-center gap-2">
                     <ImagePlus className="w-5 h-5" />
-                    Choisir un fichier
+                    {scanner?.chooseFile || 'Choisir un fichier'}
                   </h3>
                   <p className="text-sm text-white/80">
-                    Depuis la galerie
+                    {scanner?.fromGallery || 'Depuis la galerie'}
                   </p>
                 </div>
                 <motion.div
@@ -570,7 +597,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 style={{ color: '#ee5736' }}
               >
                 <X className="w-4 h-4 mr-2" />
-                Annuler
+                {scanner?.cancel || 'Annuler'}
               </Button>
             </motion.div>
           </motion.div>
@@ -630,10 +657,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
             >
               <Sparkles className="w-6 h-6" style={{ color: '#ee5736' }} />
-              Analyse IA en cours...
+              {scanner?.aiAnalysisInProgress || 'Analyse IA en cours...'}
             </motion.h2>
             <p className="text-gray-600 mb-6 flex items-center justify-center gap-1">
-              Notre IA lit votre ticket comme un pro
+              {scanner?.aiReadingReceipt || 'Notre IA lit votre ticket comme un pro'}
               <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
             </p>
 
@@ -658,7 +685,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Loader2 className="w-5 h-5" style={{ color: '#ee5736' }} />
               </motion.div>
               <span className="text-sm text-gray-500">
-                Extraction des données du ticket
+                {scanner?.extractingData || 'Extraction des données du ticket'}
               </span>
             </div>
 
@@ -703,7 +730,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               className="text-center mb-6"
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-                Vérifiez les informations
+                {scanner?.verifyInfo || 'Vérifiez les informations'}
                 <PenLine className="w-5 h-5" style={{ color: '#ee5736' }} />
               </h2>
               <div className="text-gray-600">
@@ -721,7 +748,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                         <Sparkles className="w-5 h-5" />
                       </motion.div>
                       <span className="flex items-center gap-1">
-                        Données extraites automatiquement
+                        {scanner?.dataExtracted || 'Données extraites automatiquement'}
                         <PartyPopper className="w-4 h-4" />
                       </span>
                     </span>
@@ -742,12 +769,12 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                       )}
                       <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold flex items-center gap-1">
                         <Check className="w-3 h-3" />
-                        {Math.round((ocrData.confidence || 0) * 100)}% confiance
+                        {Math.round((ocrData.confidence || 0) * 100)}% {scanner?.confidence || 'confiance'}
                       </Badge>
                     </div>
                   </motion.div>
                 ) : (
-                  <span>Saisissez les détails manuellement</span>
+                  <span>{scanner?.enterManually || 'Saisissez les détails manuellement'}</span>
                 )}
               </div>
             </motion.div>
@@ -777,7 +804,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
                   >
                     <Camera className="w-3 h-3" />
-                    Ticket scanné
+                    {scanner?.scannedReceipt || 'Ticket scanné'}
                   </Badge>
                 </div>
                 <img
@@ -798,13 +825,13 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div variants={itemVariants}>
                 <Label htmlFor="title" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
                   <Tag className="w-4 h-4" style={{ color: '#ee5736' }} />
-                  Titre *
+                  {scanner?.title || 'Titre *'}
                 </Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ex: Courses de la semaine"
+                  placeholder={scanner?.titlePlaceholder || 'Ex: Courses de la semaine'}
                   className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5 text-base"
                 />
               </motion.div>
@@ -812,7 +839,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div variants={itemVariants}>
                 <Label htmlFor="amount" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
                   <DollarSign className="w-4 h-4" style={{ color: '#ee5736' }} />
-                  Montant (€) *
+                  {scanner?.amount || 'Montant (€) *'}
                 </Label>
                 <Input
                   id="amount"
@@ -830,7 +857,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="date" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
                     <Edit3 className="w-4 h-4" style={{ color: '#ee5736' }} />
-                    Date
+                    {scanner?.date || 'Date'}
                   </Label>
                   <Input
                     id="date"
@@ -844,13 +871,13 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="description" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
                     <FileText className="w-4 h-4" style={{ color: '#ee5736' }} />
-                    Description
+                    {scanner?.description || 'Description'}
                   </Label>
                   <Input
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Optionnel"
+                    placeholder={scanner?.optional || 'Optionnel'}
                     className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5"
                   />
                 </motion.div>
@@ -877,7 +904,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   </motion.div>
                   <h3 className="text-sm font-bold text-gray-800 flex items-center gap-1">
                     <ShoppingCart className="w-4 h-4" />
-                    Articles ({lineItems.length})
+                    {scanner?.articles || 'Articles'} ({lineItems.length})
                   </h3>
                 </div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -891,7 +918,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     }}
                   >
                     <Plus className="w-4 h-4 mr-1" />
-                    Ajouter
+                    {scanner?.addArticle || 'Ajouter'}
                   </Button>
                 </motion.div>
               </div>
@@ -911,7 +938,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                           <Input
                             value={item.name}
                             onChange={(e) => updateLineItem(item.id, 'name', e.target.value)}
-                            placeholder="Nom de l'article"
+                            placeholder={scanner?.articleName || "Nom de l'article"}
                             className="text-sm rounded-lg border-gray-200"
                           />
                           <div className="grid grid-cols-2 gap-2">
@@ -949,17 +976,17 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="text-center py-6">
                   <Package className="w-10 h-10 mx-auto mb-2 text-blue-400" />
                   <p className="text-sm text-blue-600 font-medium">
-                    Aucun article détecté
+                    {scanner?.noArticlesDetected || 'Aucun article détecté'}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Cliquez sur "Ajouter" pour en ajouter manuellement
+                    {scanner?.clickToAddManually || 'Cliquez sur "Ajouter" pour en ajouter manuellement'}
                   </p>
                 </div>
               )}
 
               {lineItems.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-blue-200/50 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-600">Total calculé:</span>
+                  <span className="text-sm font-semibold text-gray-600">{scanner?.calculatedTotal || 'Total calculé:'}</span>
                   <span
                     className="text-xl font-bold"
                     style={{ color: '#3b82f6' }}
@@ -983,7 +1010,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ee5736' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Retour
+                  {scanner?.back || 'Retour'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -995,7 +1022,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     boxShadow: '0 8px 20px rgba(238, 87, 54, 0.35)',
                   }}
                 >
-                  Suivant
+                  {scanner?.next || 'Suivant'}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </motion.div>
@@ -1019,11 +1046,11 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               className="text-center mb-6"
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-                Choisissez une catégorie
+                {scanner?.chooseCategory || 'Choisissez une catégorie'}
                 <Tag className="w-5 h-5" style={{ color: '#ee5736' }} />
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
-                Organisez vos dépenses par type
+                {scanner?.organizeExpenses || 'Organisez vos dépenses par type'}
                 <Sparkles className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
@@ -1070,7 +1097,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                       "text-sm font-bold",
                       isSelected ? "text-white" : "text-gray-700"
                     )}>
-                      {cat.label}
+                      {getCategoryLabel(cat.value)}
                     </div>
                     {isSelected && (
                       <motion.div
@@ -1105,7 +1132,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ee5736' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Retour
+                  {scanner?.back || 'Retour'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -1117,7 +1144,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     boxShadow: '0 8px 20px rgba(238, 87, 54, 0.35)',
                   }}
                 >
-                  Suivant
+                  {scanner?.next || 'Suivant'}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </motion.div>
@@ -1148,10 +1175,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <PartyPopper className="w-12 h-12 mx-auto" style={{ color: '#ee5736' }} />
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Récapitulatif
+                {scanner?.summary || 'Récapitulatif'}
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
-                Tout est prêt ! Vérifiez et partagez
+                {scanner?.readyToShare || 'Tout est prêt ! Vérifiez et partagez'}
                 <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
               </p>
             </motion.div>
@@ -1179,7 +1206,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               >
                 <p className="text-sm text-white/80 font-medium mb-1 flex items-center justify-center gap-1">
                   <DollarSign className="w-4 h-4" />
-                  Montant total
+                  {scanner?.totalAmount || 'Montant total'}
                 </p>
                 <motion.p
                   animate={{ scale: [1, 1.02, 1] }}
@@ -1195,7 +1222,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="flex items-center justify-between py-2 border-b border-gray-100">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                     <Tag className="w-4 h-4" />
-                    Titre
+                    {(scanner?.title || 'Titre *').replace(' *', '')}
                   </span>
                   <span className="text-base font-bold text-gray-900">{title}</span>
                 </div>
@@ -1203,10 +1230,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="flex items-center justify-between py-2 border-b border-gray-100">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                     <Edit3 className="w-4 h-4" />
-                    Date
+                    {scanner?.date || 'Date'}
                   </span>
                   <span className="font-semibold text-gray-900">
-                    {new Date(date).toLocaleDateString('fr-FR', {
+                    {new Date(date).toLocaleDateString(locale, {
                       weekday: 'short',
                       day: 'numeric',
                       month: 'long',
@@ -1217,7 +1244,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="flex items-center justify-between py-2">
                   <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                     <Tag className="w-4 h-4" />
-                    Catégorie
+                    {scanner?.category || 'Catégorie'}
                   </span>
                   {(() => {
                     const selectedCat = CATEGORY_OPTIONS.find((c) => c.value === category);
@@ -1232,7 +1259,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                         }}
                       >
                         <SelectedCatIcon className="w-4 h-4" />
-                        {selectedCat.label}
+                        {getCategoryLabel(selectedCat.value)}
                       </Badge>
                     );
                   })()}
@@ -1243,7 +1270,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="pt-4 border-t border-gray-200">
                   <span className="text-sm font-medium text-gray-500 block mb-2 flex items-center gap-2">
                     <FileText className="w-4 h-4" />
-                    Description
+                    {scanner?.description || 'Description'}
                   </span>
                   <p className="text-sm text-gray-700 bg-white rounded-xl p-3 border border-gray-100">
                     {description}
@@ -1256,12 +1283,12 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="flex items-center gap-2 pt-2">
                   <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold flex items-center gap-1">
                     <Check className="w-3 h-3" />
-                    Ticket joint
+                    {scanner?.receiptAttached || 'Ticket joint'}
                   </Badge>
                   {ocrData && (
                     <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold flex items-center gap-1">
                       <Bot className="w-3 h-3" />
-                      OCR analysé
+                      {scanner?.ocrAnalyzed || 'OCR analysé'}
                     </Badge>
                   )}
                 </div>
@@ -1278,7 +1305,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ee5736' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Retour
+                  {scanner?.back || 'Retour'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -1291,7 +1318,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   }}
                 >
                   <Users className="w-5 h-5 mr-2" />
-                  Répartir entre colocs
+                  {scanner?.splitWithRoommates || 'Répartir entre colocs'}
                 </Button>
               </motion.div>
             </div>

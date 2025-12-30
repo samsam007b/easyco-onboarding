@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useState, memo, useCallback } from 'react';
 import { MapPin, Euro, Calendar, Heart, X, Eye, TrendingUp, Home, Users, Sparkles } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export interface PropertyMatch {
   id: string;
@@ -89,6 +90,8 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
   onViewDetails,
 }: PropertyMatchCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const { getSection, language } = useLanguage();
+  const matching = getSection('matching');
   const property = match.property;
   const owner = match.owner;
 
@@ -153,7 +156,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           <div className="absolute top-4 left-4">
             <Badge variant="secondary" className="backdrop-blur-sm">
               <Eye className="w-3 h-3 mr-1" />
-              Vu
+              {matching.card?.seen || 'Vu'}
             </Badge>
           </div>
         )}
@@ -162,7 +165,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           <div className="absolute top-4 left-4">
             <Badge variant="default" className="backdrop-blur-sm">
               <Users className="w-3 h-3 mr-1" />
-              Contacté
+              {matching.card?.contacted || 'Contacté'}
             </Badge>
           </div>
         )}
@@ -187,7 +190,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="flex items-center gap-2 text-gray-700">
             <Euro className="w-4 h-4 text-gray-500" />
-            <span className="font-semibold">{formatPrice(property.monthly_rent)}/mois</span>
+            <span className="font-semibold">{formatPrice(property.monthly_rent)}{matching.card?.perMonth || '/mois'}</span>
           </div>
           <div className="flex items-center gap-2 text-gray-700">
             <Calendar className="w-4 h-4 text-gray-500" />
@@ -202,12 +205,12 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           </Badge>
           {property.number_of_rooms && (
             <Badge variant="secondary" size="sm">
-              {property.number_of_rooms} pièces
+              {property.number_of_rooms} {matching.swipe?.rooms || 'pièces'}
             </Badge>
           )}
           {property.furnished && (
             <Badge variant="secondary" size="sm">
-              Meublé
+              {matching.swipe?.furnished || 'Meublé'}
             </Badge>
           )}
         </div>
@@ -218,7 +221,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-gray-500" />
               <span className="text-sm font-semibold text-gray-900">
-                Pourquoi ce match ?
+                {matching.card?.whyMatch || 'Pourquoi ce match ?'}
               </span>
             </div>
             <ul className="text-sm text-gray-700 space-y-1">
@@ -238,7 +241,9 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           className="w-full text-sm text-gray-600 hover:text-gray-800 font-medium mb-3 text-left flex items-center gap-2"
         >
           <TrendingUp className="w-4 h-4" />
-          {showDetails ? 'Masquer les détails' : 'Voir le détail du score'}
+          {showDetails
+            ? (matching.card?.hideDetails || 'Masquer les détails')
+            : (matching.card?.showDetails || 'Voir le détail du score')}
         </button>
 
         {/* Detailed Score Breakdown */}
@@ -246,7 +251,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
           <div className="mb-4 space-y-3 p-3 bg-gray-50 rounded-lg">
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">Budget</span>
+                <span className="text-gray-700">{matching.card?.budget || 'Budget'}</span>
                 <span className={`font-semibold ${getScoreColor(scoreBreakdown.budget_score)}`}>
                   {scoreBreakdown.budget_score}%
                 </span>
@@ -256,7 +261,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">Localisation</span>
+                <span className="text-gray-700">{matching.card?.location || 'Localisation'}</span>
                 <span className={`font-semibold ${getScoreColor(scoreBreakdown.location_score)}`}>
                   {scoreBreakdown.location_score}%
                 </span>
@@ -266,7 +271,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">Style de vie</span>
+                <span className="text-gray-700">{matching.card?.lifestyle || 'Style de vie'}</span>
                 <span className={`font-semibold ${getScoreColor(scoreBreakdown.lifestyle_score)}`}>
                   {scoreBreakdown.lifestyle_score}%
                 </span>
@@ -276,7 +281,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">Disponibilité</span>
+                <span className="text-gray-700">{matching.card?.availability || 'Disponibilité'}</span>
                 <span
                   className={`font-semibold ${getScoreColor(scoreBreakdown.availability_score)}`}
                 >
@@ -288,7 +293,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700">Préférences</span>
+                <span className="text-gray-700">{matching.card?.preferences || 'Préférences'}</span>
                 <span
                   className={`font-semibold ${getScoreColor(scoreBreakdown.preferences_score)}`}
                 >
@@ -321,7 +326,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
               <p className="text-sm font-medium text-gray-900">
                 {owner.first_name} {owner.last_name}
               </p>
-              <p className="text-xs text-gray-600">Propriétaire</p>
+              <p className="text-xs text-gray-600">{matching.card?.owner || 'Propriétaire'}</p>
             </div>
           </div>
         )}
@@ -354,7 +359,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
               onClick={handleViewDetails}
             >
               <Eye className="w-4 h-4 mr-2" />
-              Voir le bien
+              {matching.card?.viewProperty || 'Voir le bien'}
             </Button>
 
             {match.status !== 'contacted' && (
@@ -364,7 +369,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
                 onClick={handleContact}
               >
                 <Heart className="w-4 h-4 mr-2" />
-                Contacter
+                {matching.card?.contact || 'Contacter'}
               </Button>
             )}
 

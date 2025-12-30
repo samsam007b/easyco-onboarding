@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, RotateCcw } from 'lucide-react';
 import { UserProfile } from '@/lib/services/user-matching-service';
 import Image from 'next/image';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface CardPileProps {
   type: 'like' | 'pass';
@@ -19,6 +20,8 @@ export const CardPile = memo(function CardPile({
   onUndo,
   maxVisible = 5
 }: CardPileProps) {
+  const { getSection } = useLanguage();
+  const matching = getSection('matching');
   const isLike = type === 'like';
   const visibleCards = cards.slice(-maxVisible).reverse();
 
@@ -42,9 +45,13 @@ export const CardPile = memo(function CardPile({
         </div>
         <div className={isLike ? 'text-left' : 'text-right'}>
           <p className={`text-xs font-bold ${isLike ? 'text-green-700' : 'text-red-700'}`}>
-            {isLike ? 'LIKE' : 'NOPE'}
+            {isLike ? (matching.cardPile?.like || 'LIKE') : (matching.cardPile?.nope || 'NOPE')}
           </p>
-          <p className="text-[10px] text-gray-500">{cards.length} profil{cards.length > 1 ? 's' : ''}</p>
+          <p className="text-[10px] text-gray-500">
+            {cards.length} {cards.length > 1
+              ? (matching.cardPile?.profiles || 'profils')
+              : (matching.cardPile?.profile || 'profil')}
+          </p>
         </div>
       </div>
 
@@ -67,7 +74,7 @@ export const CardPile = memo(function CardPile({
               `}
             >
               <p className={`text-xs ${isLike ? 'text-green-400' : 'text-red-400'}`}>
-                Vide
+                {matching.cardPile?.empty || 'Vide'}
               </p>
             </motion.div>
           ) : (
@@ -189,7 +196,7 @@ export const CardPile = memo(function CardPile({
           `}
         >
           <RotateCcw className="w-2.5 h-2.5" />
-          Annuler
+          {matching.cardPile?.undo || 'Annuler'}
         </motion.button>
       )}
     </div>

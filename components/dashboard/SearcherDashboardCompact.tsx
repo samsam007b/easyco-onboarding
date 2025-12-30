@@ -15,6 +15,7 @@ import {
 import Image from 'next/image';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface SearcherDashboardCompactProps {
   userId: string;
@@ -46,6 +47,8 @@ interface SearchPreferences {
 export default function SearcherDashboardCompact({ userId, userData }: SearcherDashboardCompactProps) {
   const router = useRouter();
   const supabase = createClient();
+  const { getSection } = useLanguage();
+  const searcher = getSection('dashboard')?.searcher;
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -214,12 +217,12 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               {/* Welcome text */}
               <div>
                 <h1 className="text-sm font-bold text-gray-900">
-                  Salut, {userData.full_name.split(' ')[0]} !
+                  {searcher?.hiUser || 'Salut,'} {userData.full_name.split(' ')[0]}!
                 </h1>
                 <p className="text-[10px] text-gray-600">
                   {preferences.cities.length > 0
                     ? `${preferences.cities.slice(0, 2).join(', ')} • ${preferences.minBudget}-${preferences.maxBudget}€`
-                    : 'Configure ta recherche'}
+                    : (searcher?.configureSearch || 'Configure ta recherche')}
                 </p>
               </div>
             </div>
@@ -228,10 +231,10 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
           {/* Stats inline */}
           <div className="grid grid-cols-4 gap-2">
             {[
-              { label: 'Groupes', value: stats.likedProfiles.toString(), icon: Users, route: '/dashboard/searcher/groups' },
-              { label: 'Favoris', value: stats.favoritesCount.toString(), icon: Bookmark, route: '/dashboard/searcher/favorites' },
-              { label: 'Messages', value: stats.unreadMessages.toString(), icon: MessageCircle, route: '/dashboard/searcher/messages', badge: stats.unreadMessages },
-              { label: 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/profile-completion' }
+              { label: searcher?.groups || 'Groupes', value: stats.likedProfiles.toString(), icon: Users, route: '/dashboard/searcher/groups' },
+              { label: searcher?.favorites || 'Favoris', value: stats.favoritesCount.toString(), icon: Bookmark, route: '/dashboard/searcher/favorites' },
+              { label: searcher?.messages || 'Messages', value: stats.unreadMessages.toString(), icon: MessageCircle, route: '/dashboard/searcher/messages', badge: stats.unreadMessages },
+              { label: searcher?.profileLabel || 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/profile-completion' }
             ].map((stat) => {
               const Icon = stat.icon;
               return (

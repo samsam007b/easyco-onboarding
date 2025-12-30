@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   DollarSign,
   Calendar,
@@ -46,15 +47,7 @@ interface ExpenseGroup {
   total: number;
 }
 
-const categoryLabels: Record<string, string> = {
-  rent: 'Loyer',
-  utilities: 'Charges',
-  groceries: 'Courses',
-  cleaning: 'Ménage',
-  maintenance: 'Entretien',
-  internet: 'Internet',
-  other: 'Autre',
-};
+// categoryLabels are now dynamically provided via translations
 
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   rent: Home,
@@ -131,7 +124,18 @@ const itemVariants = {
   },
 };
 
-function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
+interface PeriodTranslations {
+  today: string;
+  thisWeek: string;
+  thisMonth: string;
+  older: string;
+  locale: string;
+}
+
+function groupExpensesByPeriod(
+  expenses: ExpenseWithDetails[],
+  translations: PeriodTranslations
+): ExpenseGroup[] {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const startOfWeek = new Date(today);
@@ -168,7 +172,7 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
   if (groups.today.length > 0) {
     result.push({
       label: 'today',
-      labelFr: "Aujourd'hui",
+      labelFr: translations.today,
       expenses: groups.today,
       total: groups.today.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -177,7 +181,7 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
   if (groups.thisWeek.length > 0) {
     result.push({
       label: 'thisWeek',
-      labelFr: 'Cette semaine',
+      labelFr: translations.thisWeek,
       expenses: groups.thisWeek,
       total: groups.thisWeek.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -186,14 +190,14 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
   if (groups.thisMonth.length > 0) {
     result.push({
       label: 'thisMonth',
-      labelFr: 'Ce mois',
+      labelFr: translations.thisMonth,
       expenses: groups.thisMonth,
       total: groups.thisMonth.reduce((sum, e) => sum + e.amount, 0),
     });
   }
 
   if (groups.lastMonth.length > 0) {
-    const monthName = startOfLastMonth.toLocaleDateString('fr-FR', { month: 'long' });
+    const monthName = startOfLastMonth.toLocaleDateString(translations.locale, { month: 'long' });
     result.push({
       label: 'lastMonth',
       labelFr: monthName.charAt(0).toUpperCase() + monthName.slice(1),
@@ -205,7 +209,7 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
   if (groups.older.length > 0) {
     result.push({
       label: 'older',
-      labelFr: 'Plus ancien',
+      labelFr: translations.older,
       expenses: groups.older,
       total: groups.older.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -220,19 +224,54 @@ export default function ExpenseListByPeriod({
   showPeriodHeaders = true,
   maxItems,
 }: ExpenseListByPeriodProps) {
+  const { language, getSection } = useLanguage();
+  const list = getSection('expenseList');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
+  // Helper function to get translated category labels
+  const getCategoryLabel = (category: string): string => {
+    const labels: Record<string, string> = {
+      rent: list?.catRent || 'Loyer',
+      utilities: list?.catUtilities || 'Charges',
+      groceries: list?.catGroceries || 'Courses',
+      cleaning: list?.catCleaning || 'Ménage',
+      maintenance: list?.catMaintenance || 'Entretien',
+      internet: list?.catInternet || 'Internet',
+      other: list?.catOther || 'Autre',
+    };
+    return labels[category] || category;
+  };
+
+  // Period translations for grouping function
+  const periodTranslations: PeriodTranslations = {
+    today: list?.today || "Aujourd'hui",
+    thisWeek: list?.thisWeek || 'Cette semaine',
+    thisMonth: list?.thisMonth || 'Ce mois',
+    older: list?.older || 'Plus ancien',
+    locale,
+  };
+
   const groupedExpenses = useMemo(() => {
     if (!showPeriodHeaders) {
       // Return flat list
       const limitedExpenses = maxItems ? expenses.slice(0, maxItems) : expenses;
       return [{
         label: 'all',
-        labelFr: 'Toutes les dépenses',
+        labelFr: list?.allExpenses || 'Toutes les dépenses',
         expenses: limitedExpenses,
         total: limitedExpenses.reduce((sum, e) => sum + e.amount, 0),
       }];
     }
-    return groupExpensesByPeriod(expenses);
-  }, [expenses, showPeriodHeaders, maxItems]);
+    return groupExpensesByPeriod(expenses, periodTranslations);
+  }, [expenses, showPeriodHeaders, maxItems, list, periodTranslations]);
 
   if (expenses.length === 0) {
     return (
@@ -303,10 +342,10 @@ export default function ExpenseListByPeriod({
           transition={{ delay: 0.2 }}
         >
           <p className="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-            Aucune dépense <Receipt className="w-6 h-6" style={{ color: '#ee5736' }} />
+            {list?.noExpenses || 'Aucune dépense'} <Receipt className="w-6 h-6" style={{ color: '#ee5736' }} />
           </p>
           <p className="text-gray-500">
-            Scannez votre premier ticket pour commencer !
+            {list?.scanFirstReceipt || 'Scannez votre premier ticket pour commencer !'}
           </p>
         </motion.div>
       </motion.div>
@@ -344,7 +383,9 @@ export default function ExpenseListByPeriod({
                   <Badge
                     className="text-xs border-none text-gray-600 bg-gray-100/80"
                   >
-                    {group.expenses.length} dépense{group.expenses.length !== 1 ? 's' : ''}
+                    {group.expenses.length} {group.expenses.length !== 1
+                      ? (list?.expenses || 'dépenses')
+                      : (list?.expense || 'dépense')}
                   </Badge>
                 </div>
                 <motion.div
@@ -439,7 +480,7 @@ export default function ExpenseListByPeriod({
                           <span className="text-gray-300">•</span>
                           <span className="flex items-center gap-1 flex-shrink-0">
                             <Calendar className="w-3.5 h-3.5" />
-                            {new Date(expense.date).toLocaleDateString('fr-FR', {
+                            {new Date(expense.date).toLocaleDateString(locale, {
                               day: 'numeric',
                               month: 'short',
                             })}
@@ -453,7 +494,7 @@ export default function ExpenseListByPeriod({
                             }}
                           >
                             <DollarSign className="w-3 h-3" />
-                            Ta part: €{(expense.your_share || 0).toFixed(2)}
+                            {list?.yourShare || 'Ta part:'} €{(expense.your_share || 0).toFixed(2)}
                           </Badge>
                           <Badge
                             className="text-xs border-none px-2.5 py-1 flex items-center gap-1"
@@ -463,7 +504,7 @@ export default function ExpenseListByPeriod({
                             }}
                           >
                             <CatIcon className="w-3 h-3" />
-                            {categoryLabels[expense.category] || expense.category}
+                            {getCategoryLabel(expense.category)}
                           </Badge>
                         </div>
                       </div>

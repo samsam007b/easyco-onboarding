@@ -9,6 +9,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   DollarSign,
   Users,
@@ -98,9 +99,10 @@ interface ContributorRowProps {
   amount: number;
   total: number;
   isCurrentUser: boolean;
+  youLabel: string;
 }
 
-function ContributorRow({ name, amount, total, isCurrentUser }: ContributorRowProps) {
+function ContributorRow({ name, amount, total, isCurrentUser, youLabel }: ContributorRowProps) {
   const percentage = total > 0 ? (amount / total) * 100 : 0;
 
   return (
@@ -113,12 +115,12 @@ function ContributorRow({ name, amount, total, isCurrentUser }: ContributorRowPr
             : 'bg-gradient-to-br from-gray-400 to-gray-500'
         )}
       >
-        {name.charAt(0).toUpperCase()}
+        {(isCurrentUser ? youLabel : name).charAt(0).toUpperCase()}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
           <span className="text-sm font-medium text-gray-900 truncate">
-            {isCurrentUser ? 'Toi' : name}
+            {isCurrentUser ? youLabel : name}
           </span>
           <span className="text-sm font-semibold text-gray-900 tabular-nums">
             €{amount.toFixed(2)}
@@ -151,6 +153,9 @@ export default function ResidenceFinanceOverview({
   roommates,
   currentUserId,
 }: ResidenceFinanceOverviewProps) {
+  const { getSection } = useLanguage();
+  const overview = getSection('financeOverview');
+
   // Calculate stats
   const stats = useMemo(() => {
     const now = new Date();
@@ -237,14 +242,14 @@ export default function ResidenceFinanceOverview({
       {/* Main Stats Grid - Compact 2x2 */}
       <div className="grid grid-cols-2 gap-2">
         <StatCard
-          label="Total résidence"
+          label={overview?.totalResidence || 'Total résidence'}
           value={`€${stats.totalExpenses.toFixed(0)}`}
-          subValue={`${stats.expenseCount} dépenses`}
+          subValue={(overview?.expensesCount || '{count} dépenses').replace('{count}', String(stats.expenseCount))}
           icon={<DollarSign className="w-4 h-4" />}
           accent
         />
         <StatCard
-          label="Ce mois"
+          label={overview?.thisMonth || 'Ce mois'}
           value={`€${stats.thisMonthExpenses.toFixed(0)}`}
           icon={<Calendar className="w-4 h-4" />}
           trend={{
@@ -253,15 +258,17 @@ export default function ResidenceFinanceOverview({
           }}
         />
         <StatCard
-          label="Ta part ce mois"
+          label={overview?.yourShareThisMonth || 'Ta part ce mois'}
           value={`€${stats.yourShareThisMonth.toFixed(0)}`}
           icon={<Users className="w-4 h-4" />}
           sparkline={<MiniSparkline expenses={expenses} days={7} />}
         />
         <StatCard
-          label="Ton solde"
+          label={overview?.yourBalance || 'Ton solde'}
           value={`€${Math.abs(stats.yourBalance).toFixed(0)}`}
-          subValue={stats.yourBalance >= 0 ? 'On te doit' : 'Tu dois'}
+          subValue={stats.yourBalance >= 0
+            ? (overview?.youAreOwed || 'On te doit')
+            : (overview?.youOwe || 'Tu dois')}
           icon={<PiggyBank className="w-4 h-4" />}
         />
       </div>
@@ -274,7 +281,7 @@ export default function ResidenceFinanceOverview({
               <Users className="w-3.5 h-3.5 text-gray-600" />
             </div>
             <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-              Contributions
+              {overview?.contributions || 'Contributions'}
             </h4>
           </div>
           <div className="space-y-1">
@@ -285,6 +292,7 @@ export default function ResidenceFinanceOverview({
                 amount={c.amount}
                 total={stats.totalExpenses}
                 isCurrentUser={c.id === currentUserId}
+                youLabel={overview?.you || 'Toi'}
               />
             ))}
           </div>

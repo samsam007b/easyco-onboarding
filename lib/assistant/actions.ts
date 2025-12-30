@@ -295,7 +295,7 @@ export const NAVIGATION_PATHS = {
 
   // Properties
   properties: { path: '/properties', description: 'Mes propriétés' },
-  add_property: { path: '/properties/new', description: 'Ajouter une propriété' },
+  add_property: { path: '/properties/add', description: 'Ajouter une propriété' },
 
   // Search / Matching
   search: { path: '/matching/properties', description: 'Rechercher une colocation' },
@@ -309,18 +309,18 @@ export const NAVIGATION_PATHS = {
   profile: { path: '/profile', description: 'Mon profil' },
   settings: { path: '/settings', description: 'Paramètres' },
   settings_notifications: { path: '/dashboard/settings/preferences', description: 'Paramètres de notification et alertes' },
-  settings_subscription: { path: '/settings/subscription', description: 'Mon abonnement' },
+  settings_subscription: { path: '/dashboard/subscription', description: 'Mon abonnement' },
   settings_security: { path: '/settings/security', description: 'Sécurité du compte' },
 
   // Referral
-  referral: { path: '/referral', description: 'Programme de parrainage' },
+  referral: { path: '/settings/referrals', description: 'Programme de parrainage' },
 
   // Onboarding
-  onboarding: { path: '/onboarding', description: "Assistant d'inscription" },
+  onboarding: { path: '/onboarding/searcher', description: "Assistant d'inscription" },
 
-  // Help
-  help: { path: '/help', description: "Centre d'aide" },
-  pricing: { path: '/pricing', description: 'Tarifs' },
+  // Help & Info
+  about: { path: '/about', description: "À propos d'IzzIco" },
+  legal: { path: '/legal/terms', description: 'Conditions générales' },
 } as const;
 
 // =====================================================

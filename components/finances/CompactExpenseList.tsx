@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   DollarSign,
   Calendar,
@@ -36,27 +37,26 @@ const categoryColors: Record<string, string> = {
   other: 'bg-gray-500',
 };
 
-const categoryLabels: Record<string, string> = {
-  rent: 'Loyer',
-  utilities: 'Charges',
-  groceries: 'Courses',
-  cleaning: 'Ménage',
-  maintenance: 'Entretien',
-  internet: 'Internet',
-  other: 'Autre',
-};
+// categoryLabels are now dynamically provided via translations
 
-function formatDate(dateString: string): string {
+interface FormatDateTranslations {
+  today: string;
+  yesterday: string;
+  daysAgo: string;
+  locale: string;
+}
+
+function formatDate(dateString: string, translations: FormatDateTranslations): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffDays === 0) return "Aujourd'hui";
-  if (diffDays === 1) return 'Hier';
-  if (diffDays < 7) return `Il y a ${diffDays}j`;
+  if (diffDays === 0) return translations.today;
+  if (diffDays === 1) return translations.yesterday;
+  if (diffDays < 7) return translations.daysAgo.replace('{days}', String(diffDays));
 
-  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+  return date.toLocaleDateString(translations.locale, { day: 'numeric', month: 'short' });
 }
 
 export default function CompactExpenseList({
@@ -65,6 +65,26 @@ export default function CompactExpenseList({
   maxItems,
   showDate = true,
 }: CompactExpenseListProps) {
+  const { language, getSection } = useLanguage();
+  const list = getSection('expenseList');
+
+  // Locale mapping for date formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
+  // Format date translations
+  const dateTranslations: FormatDateTranslations = {
+    today: list?.today || "Aujourd'hui",
+    yesterday: list?.yesterday || 'Hier',
+    daysAgo: list?.daysAgo || 'Il y a {days}j',
+    locale,
+  };
+
   const displayExpenses = maxItems ? expenses.slice(0, maxItems) : expenses;
 
   if (displayExpenses.length === 0) {
@@ -73,9 +93,9 @@ export default function CompactExpenseList({
         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-3 shadow-sm">
           <Receipt className="w-6 h-6 text-white" />
         </div>
-        <p className="text-sm font-medium text-gray-900 mb-1">Aucune dépense</p>
+        <p className="text-sm font-medium text-gray-900 mb-1">{list?.noExpenses || 'Aucune dépense'}</p>
         <p className="text-xs text-gray-500">
-          Scannez un ticket pour commencer
+          {list?.scanReceipt || 'Scannez un ticket pour commencer'}
         </p>
       </div>
     );
@@ -125,7 +145,7 @@ export default function CompactExpenseList({
                 {showDate && (
                   <>
                     <span className="text-gray-300">•</span>
-                    <span className="flex-shrink-0">{formatDate(expense.date)}</span>
+                    <span className="flex-shrink-0">{formatDate(expense.date, dateTranslations)}</span>
                   </>
                 )}
               </div>
@@ -136,7 +156,7 @@ export default function CompactExpenseList({
                     'bg-orange-50 text-orange-600'
                   )}
                 >
-                  Ta part: €{(expense.your_share || 0).toFixed(0)}
+                  {list?.yourShare || 'Ta part:'} €{(expense.your_share || 0).toFixed(0)}
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
               </div>
@@ -158,11 +178,19 @@ interface GroupedExpenseListProps {
 
 interface ExpenseGroup {
   label: string;
+  labelKey: string;
   expenses: ExpenseWithDetails[];
   total: number;
 }
 
-function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
+interface PeriodTranslations {
+  today: string;
+  thisWeek: string;
+  thisMonth: string;
+  older: string;
+}
+
+function groupExpensesByPeriod(expenses: ExpenseWithDetails[], translations: PeriodTranslations): ExpenseGroup[] {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const startOfWeek = new Date(today);
@@ -194,7 +222,8 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
 
   if (groups.today.length > 0) {
     result.push({
-      label: "Aujourd'hui",
+      label: translations.today,
+      labelKey: 'today',
       expenses: groups.today,
       total: groups.today.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -202,7 +231,8 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
 
   if (groups.thisWeek.length > 0) {
     result.push({
-      label: 'Cette semaine',
+      label: translations.thisWeek,
+      labelKey: 'thisWeek',
       expenses: groups.thisWeek,
       total: groups.thisWeek.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -210,7 +240,8 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
 
   if (groups.thisMonth.length > 0) {
     result.push({
-      label: 'Ce mois',
+      label: translations.thisMonth,
+      labelKey: 'thisMonth',
       expenses: groups.thisMonth,
       total: groups.thisMonth.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -218,7 +249,8 @@ function groupExpensesByPeriod(expenses: ExpenseWithDetails[]): ExpenseGroup[] {
 
   if (groups.older.length > 0) {
     result.push({
-      label: 'Plus ancien',
+      label: translations.older,
+      labelKey: 'older',
       expenses: groups.older,
       total: groups.older.reduce((sum, e) => sum + e.amount, 0),
     });
@@ -231,7 +263,18 @@ export function GroupedExpenseList({
   expenses,
   onExpenseClick,
 }: GroupedExpenseListProps) {
-  const groups = useMemo(() => groupExpensesByPeriod(expenses), [expenses]);
+  const { getSection } = useLanguage();
+  const list = getSection('expenseList');
+
+  // Period translations for grouping function
+  const periodTranslations: PeriodTranslations = {
+    today: list?.today || "Aujourd'hui",
+    thisWeek: list?.thisWeek || 'Cette semaine',
+    thisMonth: list?.thisMonth || 'Ce mois',
+    older: list?.older || 'Plus ancien',
+  };
+
+  const groups = useMemo(() => groupExpensesByPeriod(expenses, periodTranslations), [expenses, periodTranslations]);
 
   if (expenses.length === 0) {
     return (
@@ -239,9 +282,9 @@ export function GroupedExpenseList({
         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4 shadow-md">
           <Receipt className="w-7 h-7 text-white" />
         </div>
-        <p className="text-sm font-semibold text-gray-900 mb-1">Aucune dépense</p>
+        <p className="text-sm font-semibold text-gray-900 mb-1">{list?.noExpenses || 'Aucune dépense'}</p>
         <p className="text-xs text-gray-500">
-          Vos dépenses apparaîtront ici
+          {list?.expensesWillAppearHere || 'Vos dépenses apparaîtront ici'}
         </p>
       </div>
     );
@@ -266,7 +309,7 @@ export function GroupedExpenseList({
             <CompactExpenseList
               expenses={group.expenses}
               onExpenseClick={onExpenseClick}
-              showDate={group.label !== "Aujourd'hui"}
+              showDate={group.labelKey !== 'today'}
             />
           </div>
         </div>

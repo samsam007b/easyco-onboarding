@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   ChevronLeft,
   ChevronRight,
@@ -22,13 +23,6 @@ interface ExpenseCalendarViewProps {
   onExpenseClick: (expense: ExpenseWithDetails) => void;
   onDayClick?: (date: Date, expenses: ExpenseWithDetails[]) => void;
 }
-
-const MONTHS = [
-  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-];
-
-const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 const categoryColors: Record<string, string> = {
   rent: 'bg-purple-500',
@@ -45,6 +39,49 @@ export default function ExpenseCalendarView({
   onExpenseClick,
   onDayClick,
 }: ExpenseCalendarViewProps) {
+  const { getSection } = useLanguage();
+  const calendar = getSection('expenseCalendar');
+
+  // Get translated month and day names
+  const MONTHS = [
+    calendar?.january || 'Janvier',
+    calendar?.february || 'Février',
+    calendar?.march || 'Mars',
+    calendar?.april || 'Avril',
+    calendar?.may || 'Mai',
+    calendar?.june || 'Juin',
+    calendar?.july || 'Juillet',
+    calendar?.august || 'Août',
+    calendar?.september || 'Septembre',
+    calendar?.october || 'Octobre',
+    calendar?.november || 'Novembre',
+    calendar?.december || 'Décembre',
+  ];
+
+  const DAYS = [
+    calendar?.mon || 'Lun',
+    calendar?.tue || 'Mar',
+    calendar?.wed || 'Mer',
+    calendar?.thu || 'Jeu',
+    calendar?.fri || 'Ven',
+    calendar?.sat || 'Sam',
+    calendar?.sun || 'Dim',
+  ];
+
+  // Helper to get translated category label
+  const getCategoryLabel = (category: string): string => {
+    const categoryMap: Record<string, string> = {
+      rent: calendar?.catRent || 'Loyer',
+      utilities: calendar?.catUtilities || 'Charges',
+      groceries: calendar?.catGroceries || 'Courses',
+      cleaning: calendar?.catCleaning || 'Ménage',
+      maintenance: calendar?.catMaintenance || 'Entretien',
+      internet: calendar?.catInternet || 'Internet',
+      other: calendar?.catOther || 'Autre',
+    };
+    return categoryMap[category] || category;
+  };
+
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // Group expenses by date
@@ -134,7 +171,7 @@ export default function ExpenseCalendarView({
             {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
           </h3>
           <p className="text-sm text-gray-500">
-            Total du mois: €{monthlyTotal.toFixed(2)}
+            {calendar?.monthTotal || 'Total du mois'}: €{monthlyTotal.toFixed(2)}
           </p>
         </div>
 
@@ -153,7 +190,7 @@ export default function ExpenseCalendarView({
             className="rounded-full text-white font-medium"
             style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
           >
-            Aujourd'hui
+            {calendar?.today || "Aujourd'hui"}
           </Button>
           <Button
             onClick={nextMonth}
@@ -172,13 +209,7 @@ export default function ExpenseCalendarView({
           <div key={category} className="flex items-center gap-1.5">
             <div className={cn('w-2.5 h-2.5 rounded-full', color)} />
             <span className="text-xs text-gray-500 capitalize">
-              {category === 'rent' && 'Loyer'}
-              {category === 'utilities' && 'Charges'}
-              {category === 'groceries' && 'Courses'}
-              {category === 'cleaning' && 'Ménage'}
-              {category === 'maintenance' && 'Entretien'}
-              {category === 'internet' && 'Internet'}
-              {category === 'other' && 'Autre'}
+              {getCategoryLabel(category)}
             </span>
           </div>
         ))}
@@ -296,11 +327,11 @@ export default function ExpenseCalendarView({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-gray-50 rounded-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">{expenses.length}</p>
-          <p className="text-xs text-gray-500">Dépenses totales</p>
+          <p className="text-xs text-gray-500">{calendar?.totalExpenses || 'Dépenses totales'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 text-center">
           <p className="text-2xl font-bold text-[#ee5736]">€{monthlyTotal.toFixed(0)}</p>
-          <p className="text-xs text-gray-500">Ce mois</p>
+          <p className="text-xs text-gray-500">{calendar?.thisMonth || 'Ce mois'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">
@@ -309,7 +340,7 @@ export default function ExpenseCalendarView({
               return d.getMonth() === currentDate.getMonth() && d.getFullYear() === currentDate.getFullYear();
             }).length}
           </p>
-          <p className="text-xs text-gray-500">Jours avec dépenses</p>
+          <p className="text-xs text-gray-500">{calendar?.daysWithExpenses || 'Jours avec dépenses'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">
@@ -318,7 +349,7 @@ export default function ExpenseCalendarView({
               return d.getMonth() === currentDate.getMonth() && d.getFullYear() === currentDate.getFullYear();
             }).length)).toFixed(0) : '0'}
           </p>
-          <p className="text-xs text-gray-500">Moyenne/dépense</p>
+          <p className="text-xs text-gray-500">{calendar?.averagePerExpense || 'Moyenne/dépense'}</p>
         </div>
       </div>
     </div>

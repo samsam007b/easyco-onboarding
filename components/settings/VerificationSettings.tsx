@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
+import { useLanguage } from '@/lib/i18n/use-language';
 import PhoneVerificationSettings from './PhoneVerificationSettings';
 import ItsmeVerificationSettings from './ItsmeVerificationSettings';
 
@@ -58,25 +59,28 @@ function VerificationProgress({
   phoneVerified: boolean;
   itsmeVerified: boolean;
 }) {
+  const { getSection } = useLanguage();
+  const verification = getSection('verification');
+
   const total = 3;
   const completed = [emailVerified, phoneVerified, itsmeVerified].filter(Boolean).length;
   const percentage = Math.round((completed / total) * 100);
 
   // Calculate verification level
   let level: 'starter' | 'basic' | 'verified' | 'premium' = 'starter';
-  let levelLabel = 'Débutant';
+  let levelLabel = verification?.levels?.starter || 'Starter';
 
   if (completed >= 1) {
     level = 'basic';
-    levelLabel = 'Basique';
+    levelLabel = verification?.levels?.basic || 'Basic';
   }
   if (completed >= 2) {
     level = 'verified';
-    levelLabel = 'Vérifié';
+    levelLabel = verification?.levels?.verified || 'Verified';
   }
   if (completed === 3) {
     level = 'premium';
-    levelLabel = 'Premium';
+    levelLabel = verification?.levels?.premium || 'Premium';
   }
 
   const levelColors = {
@@ -90,8 +94,8 @@ function VerificationProgress({
     <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-semibold text-gray-900">Niveau de confiance</h3>
-          <p className="text-sm text-gray-500">{completed}/{total} vérifications complétées</p>
+          <h3 className="font-semibold text-gray-900">{verification?.trustLevel || 'Trust Level'}</h3>
+          <p className="text-sm text-gray-500">{completed}/{total} {verification?.verificationsCompleted || 'verifications completed'}</p>
         </div>
         <div className={cn(
           "px-4 py-2 rounded-full text-white font-medium bg-gradient-to-r",
@@ -133,7 +137,7 @@ function VerificationProgress({
           ) : (
             <AlertCircle className="w-4 h-4 text-gray-300" />
           )}
-          <span className={phoneVerified ? 'text-gray-900' : 'text-gray-400'}>Téléphone</span>
+          <span className={phoneVerified ? 'text-gray-900' : 'text-gray-400'}>{verification?.phone?.title || 'Phone'}</span>
         </div>
         <div className="flex items-center gap-2">
           {itsmeVerified ? (
@@ -159,6 +163,9 @@ function EmailVerificationCard({
   verified: boolean;
   email?: string;
 }) {
+  const { getSection } = useLanguage();
+  const verification = getSection('verification');
+
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-4">
       <div className="flex items-center gap-3">
@@ -171,18 +178,18 @@ function EmailVerificationCard({
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900">Email</h3>
           <p className="text-sm text-gray-500">
-            {email || 'Non renseigné'}
+            {email || verification?.email?.notProvided || 'Not provided'}
           </p>
         </div>
         {verified ? (
           <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
             <CheckCircle className="w-4 h-4" />
-            Vérifié
+            {verification?.verified || 'Verified'}
           </div>
         ) : (
           <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">
             <AlertCircle className="w-4 h-4" />
-            Non vérifié
+            {verification?.notVerified || 'Not verified'}
           </div>
         )}
       </div>
@@ -226,6 +233,9 @@ function LoadingState() {
 // =============================================================================
 
 function VerificationSettingsContent({ onStatusChange }: VerificationSettingsProps) {
+  const { getSection } = useLanguage();
+  const verification = getSection('verification');
+
   const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState<VerificationStatus>({
     email: { verified: false },
@@ -354,24 +364,24 @@ function VerificationSettingsContent({ onStatusChange }: VerificationSettingsPro
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 mb-1">
-              Pourquoi se faire vérifier ?
+              {verification?.whyVerify?.title || 'Why get verified?'}
             </h4>
             <ul className="text-sm text-gray-600 space-y-1">
               <li className="flex items-center gap-2">
                 <ChevronRight className="w-3 h-3 text-blue-500" />
-                Profil de confiance pour les propriétaires et colocataires
+                {verification?.whyVerify?.benefit1 || 'Trusted profile for landlords and roommates'}
               </li>
               <li className="flex items-center gap-2">
                 <ChevronRight className="w-3 h-3 text-blue-500" />
-                Badge "Vérifié" visible sur votre profil
+                {verification?.whyVerify?.benefit2 || '"Verified" badge visible on your profile'}
               </li>
               <li className="flex items-center gap-2">
                 <ChevronRight className="w-3 h-3 text-blue-500" />
-                Priorité dans les résultats de recherche
+                {verification?.whyVerify?.benefit3 || 'Priority in search results'}
               </li>
               <li className="flex items-center gap-2">
                 <ChevronRight className="w-3 h-3 text-blue-500" />
-                Accès à plus de fonctionnalités premium
+                {verification?.whyVerify?.benefit4 || 'Access to more premium features'}
               </li>
             </ul>
           </div>
