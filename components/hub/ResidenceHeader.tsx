@@ -9,11 +9,11 @@ import { Home, Users, MapPin, Sparkles, Plus, UserPlus, FileText, Vote, ArrowRig
 import { Button } from '@/components/ui/button';
 import { InvitePopup } from '@/components/referral';
 
-// V2 Fun Design Colors
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
-const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.25)';
-const RESIDENT_PRIMARY = '#ee5736';
+// Premium Muted Design Colors - Warm Slate/Taupe palette
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #5a524b 0%, #6d645c 50%, #80766e 100%)';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #f9f7f5 0%, #f0ece8 100%)';
+const ACCENT_SHADOW = 'rgba(90, 82, 75, 0.20)';
+const RESIDENT_PRIMARY = '#6d645c';
 
 interface PropertyInfo {
   id: string;
