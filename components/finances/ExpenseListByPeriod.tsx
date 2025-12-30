@@ -303,7 +303,7 @@ export default function ExpenseListByPeriod({
           transition={{ delay: 0.2 }}
         >
           <p className="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-            Aucune dépense <span className="text-2xl">🧾</span>
+            Aucune dépense <Receipt className="w-6 h-6" style={{ color: '#ee5736' }} />
           </p>
           <p className="text-gray-500">
             Scannez votre premier ticket pour commencer !

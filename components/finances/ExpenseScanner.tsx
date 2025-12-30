@@ -1291,7 +1291,7 @@ export default function ExpenseScanner({ onComplete, onCancel }: ExpenseScannerP
                   }}
                 >
                   <Users className="w-5 h-5 mr-2" />
-                  Répartir entre colocs 🎯
+                  Répartir entre colocs
                 </Button>
               </motion.div>
             </div>

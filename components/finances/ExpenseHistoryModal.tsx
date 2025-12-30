@@ -178,7 +178,7 @@ export default function ExpenseHistoryModal({
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     Historique des dépenses
-                    <span className="text-lg">💰</span>
+                    <DollarSign className="w-5 h-5" style={{ color: '#ee5736' }} />
                   </h2>
                   <p className="text-sm text-gray-500 flex items-center gap-2">
                     <Badge
@@ -284,7 +284,7 @@ export default function ExpenseHistoryModal({
               >
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <Input
-                  placeholder="🔍 Rechercher une dépense..."
+                  placeholder="Rechercher une dépense..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-12 py-6 rounded-2xl border-2 border-gray-200 focus:border-orange-300 text-base shadow-sm"
@@ -365,33 +365,38 @@ export default function ExpenseHistoryModal({
                             : {}
                         }
                       >
-                        ✨ Toutes
+                        <Sparkles className="w-4 h-4 mr-1" />
+                        Toutes
                       </motion.button>
-                      {allCategories.map((cat) => (
-                        <motion.button
-                          key={cat}
-                          variants={itemVariants}
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => setSelectedCategory(cat)}
-                          className={cn(
-                            'px-4 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm',
-                            selectedCategory === cat
-                              ? 'text-white'
-                              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'
-                          )}
-                          style={
-                            selectedCategory === cat
-                              ? {
-                                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                                  boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
-                                }
-                              : {}
-                          }
-                        >
-                          {categoryEmojis[cat]} {categoryLabels[cat]}
-                        </motion.button>
-                      ))}
+                      {allCategories.map((cat) => {
+                        const CatIcon = categoryIcons[cat] || Package;
+                        return (
+                          <motion.button
+                            key={cat}
+                            variants={itemVariants}
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={cn(
+                              'px-4 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm flex items-center gap-1',
+                              selectedCategory === cat
+                                ? 'text-white'
+                                : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'
+                            )}
+                            style={
+                              selectedCategory === cat
+                                ? {
+                                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                                    boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
+                                  }
+                                : {}
+                            }
+                          >
+                            <CatIcon className="w-4 h-4" />
+                            {categoryLabels[cat]}
+                          </motion.button>
+                        );
+                      })}
                     </div>
                   </motion.div>
                 </motion.div>
