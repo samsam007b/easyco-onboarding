@@ -396,8 +396,8 @@ function createFAQStreamResponse(content: string, metadata: any) {
       // Start the message
       writer.write({ type: 'start', messageId });
 
-      // Write text content
-      writer.write({ type: 'text-delta', delta: content, id: messageId });
+      // Write text content (UIMessageStream uses 'text' type, not 'text-delta')
+      writer.write({ type: 'text', text: content });
 
       // Finish the message
       writer.write({ type: 'finish', finishReason: 'stop' });
@@ -426,9 +426,9 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
         // Start the message
         writer.write({ type: 'start', messageId });
 
-        // Stream text chunks from Groq
+        // Stream text chunks from Groq (UIMessageStream uses 'text' type)
         for await (const chunk of streamGroqResponse(messages)) {
-          writer.write({ type: 'text-delta', delta: chunk, id: messageId });
+          writer.write({ type: 'text', text: chunk });
         }
 
         // Finish the message
@@ -465,8 +465,8 @@ function createErrorStreamResponse(errorMessage: string) {
       // Start the message
       writer.write({ type: 'start', messageId });
 
-      // Write error as text content
-      writer.write({ type: 'text-delta', delta: userFriendlyMessage, id: messageId });
+      // Write error as text content (UIMessageStream uses 'text' type)
+      writer.write({ type: 'text', text: userFriendlyMessage });
 
       // Finish the message
       writer.write({ type: 'finish', finishReason: 'stop' });
