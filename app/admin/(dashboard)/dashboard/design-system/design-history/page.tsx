@@ -1,8 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { History, Calendar, Palette, Layout, Users, CheckSquare, Heart, Clock, ArrowLeft, Eye, Tag, Layers } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { History, Calendar, Palette, Layout, CheckSquare, Clock, ArrowLeft, Eye, Tag, Layers, Upload, Plus, Trash2, RefreshCw, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { ScreenshotDropZone } from '@/components/admin/design-system/ScreenshotDropZone';
+
+type UploadedScreenshot = {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  status: 'uploading' | 'success' | 'error';
+};
 
 type DesignVersion = {
   id: string;
@@ -119,8 +129,63 @@ const designVersions: DesignVersion[] = [
 export default function DesignHistoryPage() {
   const [selectedVersion, setSelectedVersion] = useState<string>(designVersions[0].id);
   const [activeTab, setActiveTab] = useState<'overview' | 'colors' | 'pages' | 'screenshots'>('overview');
+  const [uploadedScreenshots, setUploadedScreenshots] = useState<UploadedScreenshot[]>([]);
+  const [isLoadingScreenshots, setIsLoadingScreenshots] = useState(false);
+  const [showUploadZone, setShowUploadZone] = useState(false);
 
   const currentVersion = designVersions.find(v => v.id === selectedVersion) || designVersions[0];
+
+  // Fetch existing screenshots when version changes
+  const fetchScreenshots = useCallback(async () => {
+    setIsLoadingScreenshots(true);
+    try {
+      const response = await fetch(`/api/admin/design-screenshots/upload?versionId=${selectedVersion}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUploadedScreenshots(
+          data.screenshots.map((s: { id: string; name: string; url: string }) => ({
+            ...s,
+            description: '',
+            status: 'success' as const,
+          }))
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching screenshots:', error);
+    } finally {
+      setIsLoadingScreenshots(false);
+    }
+  }, [selectedVersion]);
+
+  useEffect(() => {
+    fetchScreenshots();
+  }, [fetchScreenshots]);
+
+  const handleUploadComplete = useCallback((screenshots: UploadedScreenshot[]) => {
+    setUploadedScreenshots(screenshots);
+    setShowUploadZone(false);
+  }, []);
+
+  const handleDeleteScreenshot = useCallback(async (screenshot: UploadedScreenshot) => {
+    // Find the path from the URL
+    const path = `${selectedVersion}/${screenshot.url.split('/').pop()}`;
+
+    try {
+      const response = await fetch(`/api/admin/design-screenshots/upload?path=${encodeURIComponent(path)}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setUploadedScreenshots((prev) => prev.filter((s) => s.id !== screenshot.id));
+        toast.success('Screenshot supprimé');
+      } else {
+        toast.error('Erreur lors de la suppression');
+      }
+    } catch (error) {
+      console.error('Error deleting screenshot:', error);
+      toast.error('Erreur lors de la suppression');
+    }
+  }, [selectedVersion]);
 
   const getStatusBadge = (status: DesignVersion['status']) => {
     switch (status) {
@@ -240,6 +305,11 @@ export default function DesignHistoryPage() {
               >
                 <Icon className="w-4 h-4" />
                 {tab.label}
+                {tab.id === 'screenshots' && uploadedScreenshots.length > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 bg-orange-500/30 rounded text-xs">
+                    {uploadedScreenshots.length}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -359,41 +429,153 @@ export default function DesignHistoryPage() {
 
         {/* Screenshots Tab */}
         {activeTab === 'screenshots' && (
-          <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Layers className="w-5 h-5 text-blue-400" />
-              Screenshots de référence
-            </h3>
-            <p className="text-slate-400 mb-6">
-              Les screenshots de cette version sont stockés pour référence future.
-              Ils documentent l'état exact du design à cette période.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentVersion.screenshots.map((screenshot, index) => (
-                <div key={index} className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700">
-                  {/* Placeholder for screenshot - in production these would be actual images */}
-                  <div className="aspect-[9/16] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-                    <div className="text-center p-4">
-                      <Layers className="w-12 h-12 text-slate-600 mx-auto mb-2" />
-                      <p className="text-slate-500 text-sm">{screenshot.name}</p>
-                    </div>
-                  </div>
-                  <div className="p-3">
-                    <p className="text-sm font-medium text-slate-300">{screenshot.description}</p>
-                    <p className="text-xs text-slate-500 font-mono mt-1">{screenshot.name}.png</p>
-                  </div>
+          <div className="space-y-6">
+            {/* Header with actions */}
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-blue-400" />
+                  Screenshots de référence
+                </h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={fetchScreenshots}
+                    disabled={isLoadingScreenshots}
+                    className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm flex items-center gap-2 transition-colors disabled:opacity-50"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${isLoadingScreenshots ? 'animate-spin' : ''}`} />
+                    Rafraîchir
+                  </button>
+                  <button
+                    onClick={() => setShowUploadZone(!showUploadZone)}
+                    className={`px-3 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors ${
+                      showUploadZone
+                        ? 'bg-orange-600 hover:bg-orange-500 text-white'
+                        : 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white'
+                    }`}
+                  >
+                    {showUploadZone ? (
+                      <>Fermer</>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4" />
+                        Ajouter des screenshots
+                      </>
+                    )}
+                  </button>
                 </div>
-              ))}
+              </div>
+              <p className="text-slate-400">
+                Les screenshots de cette version sont stockés pour référence future.
+                Ils documentent l'état exact du design à cette période.
+              </p>
             </div>
 
-            <div className="mt-6 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+            {/* Upload Zone (collapsible) */}
+            {showUploadZone && (
+              <div className="bg-slate-800 rounded-xl border border-orange-700/50 p-6">
+                <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-orange-400" />
+                  Uploader de nouveaux screenshots
+                </h4>
+                <ScreenshotDropZone
+                  versionId={selectedVersion}
+                  existingScreenshots={uploadedScreenshots}
+                  onUploadComplete={handleUploadComplete}
+                />
+              </div>
+            )}
+
+            {/* Screenshots Grid */}
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+              {isLoadingScreenshots ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
+                </div>
+              ) : uploadedScreenshots.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {uploadedScreenshots.map((screenshot) => (
+                    <div key={screenshot.id} className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700 group relative">
+                      {/* Image */}
+                      <div className="aspect-[9/16] relative">
+                        {screenshot.url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={screenshot.url}
+                            alt={screenshot.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-slate-800">
+                            <ImageIcon className="w-12 h-12 text-slate-600" />
+                          </div>
+                        )}
+
+                        {/* Delete button overlay */}
+                        <button
+                          onClick={() => handleDeleteScreenshot(screenshot)}
+                          className="absolute top-2 right-2 p-2 bg-red-500/80 hover:bg-red-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-4 h-4 text-white" />
+                        </button>
+                      </div>
+
+                      {/* Info */}
+                      <div className="p-3">
+                        <p className="text-sm font-medium text-slate-300">{screenshot.name}</p>
+                        <p className="text-xs text-slate-500 font-mono mt-1">{screenshot.name}.png</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center mx-auto mb-4">
+                    <ImageIcon className="w-8 h-8 text-slate-500" />
+                  </div>
+                  <p className="text-slate-400 mb-4">Aucun screenshot uploadé pour cette version</p>
+                  <button
+                    onClick={() => setShowUploadZone(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-lg text-sm flex items-center gap-2 mx-auto transition-colors"
+                  >
+                    <Upload className="w-4 h-4" />
+                    Ajouter des screenshots
+                  </button>
+                </div>
+              )}
+
+              {/* Placeholder screenshots from static data */}
+              {uploadedScreenshots.length === 0 && currentVersion.screenshots.length > 0 && (
+                <div className="mt-8 pt-8 border-t border-slate-700">
+                  <h4 className="text-sm font-semibold text-slate-400 mb-4">
+                    Screenshots prévus (non uploadés)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 opacity-50">
+                    {currentVersion.screenshots.map((screenshot, index) => (
+                      <div key={index} className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700 border-dashed">
+                        <div className="aspect-[9/16] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                          <div className="text-center p-4">
+                            <Layers className="w-12 h-12 text-slate-600 mx-auto mb-2" />
+                            <p className="text-slate-500 text-sm">{screenshot.name}</p>
+                          </div>
+                        </div>
+                        <div className="p-3">
+                          <p className="text-sm font-medium text-slate-500">{screenshot.description}</p>
+                          <p className="text-xs text-slate-600 font-mono mt-1">{screenshot.name}.png</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
               <p className="text-amber-300 text-sm">
-                <strong>Note:</strong> Pour ajouter les screenshots réels, placez-les dans
-                <code className="mx-1 px-2 py-0.5 bg-slate-800 rounded text-amber-400">
-                  /public/design-history/v1-coral-gradient-resident/
-                </code>
-                avec les noms correspondants.
+                <strong>Tip:</strong> Glissez-déposez vos screenshots directement dans la zone d'upload ci-dessus,
+                ou cliquez sur le bouton "Ajouter des screenshots" pour sélectionner des fichiers.
+                Les formats supportés sont JPG, PNG et WebP (max 10MB par fichier).
               </p>
             </div>
           </div>
@@ -411,7 +593,7 @@ export default function DesignHistoryPage() {
             <li>Prendre des screenshots de toutes les pages principales</li>
             <li>Ajouter un nouvel objet dans le tableau <code className="text-amber-400">designVersions</code></li>
             <li>Documenter les couleurs, pages et caractéristiques</li>
-            <li>Stocker les screenshots dans <code className="text-amber-400">/public/design-history/[version-id]/</code></li>
+            <li>Utiliser le drag & drop pour uploader les screenshots</li>
             <li>Marquer l'ancienne version comme "archived" si elle est remplacée</li>
           </ol>
         </div>
