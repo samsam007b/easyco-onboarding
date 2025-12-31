@@ -7749,6 +7749,954 @@ export const translations = {
         nl: 'Eigenaar',
         de: 'Immobilieneigentümer',
       },
+
+      // ============================================
+      // PROPERTIES PAGE - app/dashboard/owner/properties
+      // ============================================
+      propertiesPage: {
+        loading: {
+          title: {
+            fr: 'Chargement des propriétés...',
+            en: 'Loading properties...',
+            nl: 'Eigenschappen laden...',
+            de: 'Immobilien werden geladen...',
+          },
+          subtitle: {
+            fr: 'Préparation de vos annonces',
+            en: 'Preparing your listings',
+            nl: 'Je advertenties voorbereiden',
+            de: 'Ihre Anzeigen werden vorbereitet',
+          },
+        },
+        header: {
+          title: {
+            fr: 'Mes Propriétés',
+            en: 'My Properties',
+            nl: 'Mijn Eigendommen',
+            de: 'Meine Immobilien',
+          },
+          subtitle: {
+            fr: 'Gérer et suivre toutes vos annonces immobilières',
+            en: 'Manage and track all your property listings',
+            nl: 'Beheer en volg al je vastgoedadvertenties',
+            de: 'Verwalten und verfolgen Sie alle Ihre Immobilienanzeigen',
+          },
+          addButton: {
+            fr: 'Ajouter',
+            en: 'Add',
+            nl: 'Toevoegen',
+            de: 'Hinzufügen',
+          },
+        },
+        stats: {
+          total: {
+            fr: 'Total',
+            en: 'Total',
+            nl: 'Totaal',
+            de: 'Gesamt',
+          },
+          published: {
+            fr: 'Publiées',
+            en: 'Published',
+            nl: 'Gepubliceerd',
+            de: 'Veröffentlicht',
+          },
+          drafts: {
+            fr: 'Brouillons',
+            en: 'Drafts',
+            nl: 'Concepten',
+            de: 'Entwürfe',
+          },
+          archived: {
+            fr: 'Archivées',
+            en: 'Archived',
+            nl: 'Gearchiveerd',
+            de: 'Archiviert',
+          },
+        },
+        filters: {
+          all: {
+            fr: 'Toutes',
+            en: 'All',
+            nl: 'Alle',
+            de: 'Alle',
+          },
+          published: {
+            fr: 'Publiées',
+            en: 'Published',
+            nl: 'Gepubliceerd',
+            de: 'Veröffentlicht',
+          },
+          drafts: {
+            fr: 'Brouillons',
+            en: 'Drafts',
+            nl: 'Concepten',
+            de: 'Entwürfe',
+          },
+          archived: {
+            fr: 'Archivées',
+            en: 'Archived',
+            nl: 'Gearchiveerd',
+            de: 'Archiviert',
+          },
+        },
+        status: {
+          published: {
+            fr: 'Publié',
+            en: 'Published',
+            nl: 'Gepubliceerd',
+            de: 'Veröffentlicht',
+          },
+          draft: {
+            fr: 'Brouillon',
+            en: 'Draft',
+            nl: 'Concept',
+            de: 'Entwurf',
+          },
+          archived: {
+            fr: 'Archivé',
+            en: 'Archived',
+            nl: 'Gearchiveerd',
+            de: 'Archiviert',
+          },
+        },
+        empty: {
+          noProperties: {
+            fr: 'Aucune propriété',
+            en: 'No properties',
+            nl: 'Geen eigendommen',
+            de: 'Keine Immobilien',
+          },
+          noPublished: {
+            fr: 'Aucune propriété publiée',
+            en: 'No published properties',
+            nl: 'Geen gepubliceerde eigendommen',
+            de: 'Keine veröffentlichten Immobilien',
+          },
+          noDraft: {
+            fr: 'Aucune propriété en brouillon',
+            en: 'No draft properties',
+            nl: 'Geen concepteigendommen',
+            de: 'Keine Entwurfsimmobilien',
+          },
+          noArchived: {
+            fr: 'Aucune propriété archivée',
+            en: 'No archived properties',
+            nl: 'Geen gearchiveerde eigendommen',
+            de: 'Keine archivierten Immobilien',
+          },
+          addFirst: {
+            fr: 'Ajoutez votre première propriété pour commencer à gérer votre portefeuille',
+            en: 'Add your first property to start managing your portfolio',
+            nl: 'Voeg je eerste eigendom toe om je portfolio te beheren',
+            de: 'Fügen Sie Ihre erste Immobilie hinzu, um Ihr Portfolio zu verwalten',
+          },
+          changeFilters: {
+            fr: 'Modifier vos filtres pour voir plus de propriétés',
+            en: 'Change your filters to see more properties',
+            nl: 'Wijzig je filters om meer eigendommen te zien',
+            de: 'Ändern Sie Ihre Filter, um mehr Immobilien zu sehen',
+          },
+          addFirstButton: {
+            fr: 'Ajouter ma première propriété',
+            en: 'Add my first property',
+            nl: 'Mijn eerste eigendom toevoegen',
+            de: 'Meine erste Immobilie hinzufügen',
+          },
+        },
+        card: {
+          bedroom: {
+            fr: 'chambre',
+            en: 'bedroom',
+            nl: 'slaapkamer',
+            de: 'Schlafzimmer',
+          },
+          bedrooms: {
+            fr: 'chambres',
+            en: 'bedrooms',
+            nl: 'slaapkamers',
+            de: 'Schlafzimmer',
+          },
+          bathroom: {
+            fr: 'SDB',
+            en: 'bath',
+            nl: 'badkamer',
+            de: 'Bad',
+          },
+          perMonth: {
+            fr: '€/mois',
+            en: '€/month',
+            nl: '€/maand',
+            de: '€/Monat',
+          },
+        },
+        actions: {
+          view: {
+            fr: 'Voir',
+            en: 'View',
+            nl: 'Bekijken',
+            de: 'Ansehen',
+          },
+          edit: {
+            fr: 'Modifier',
+            en: 'Edit',
+            nl: 'Bewerken',
+            de: 'Bearbeiten',
+          },
+          publish: {
+            fr: 'Publier',
+            en: 'Publish',
+            nl: 'Publiceren',
+            de: 'Veröffentlichen',
+          },
+          unpublish: {
+            fr: 'Dépublier',
+            en: 'Unpublish',
+            nl: 'Depubliceren',
+            de: 'Nicht mehr veröffentlichen',
+          },
+          delete: {
+            fr: 'Supprimer',
+            en: 'Delete',
+            nl: 'Verwijderen',
+            de: 'Löschen',
+          },
+        },
+        deleteModal: {
+          title: {
+            fr: 'Supprimer la propriété ?',
+            en: 'Delete property?',
+            nl: 'Eigendom verwijderen?',
+            de: 'Immobilie löschen?',
+          },
+          confirm: {
+            fr: 'Êtes-vous sûr de vouloir supprimer',
+            en: 'Are you sure you want to delete',
+            nl: 'Weet je zeker dat je wilt verwijderen',
+            de: 'Sind Sie sicher, dass Sie löschen möchten',
+          },
+          irreversible: {
+            fr: 'Cette action est irréversible.',
+            en: 'This action cannot be undone.',
+            nl: 'Deze actie kan niet ongedaan worden gemaakt.',
+            de: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+          },
+          cancel: {
+            fr: 'Annuler',
+            en: 'Cancel',
+            nl: 'Annuleren',
+            de: 'Abbrechen',
+          },
+          delete: {
+            fr: 'Supprimer',
+            en: 'Delete',
+            nl: 'Verwijderen',
+            de: 'Löschen',
+          },
+        },
+        toast: {
+          loadError: {
+            fr: 'Erreur lors du chargement',
+            en: 'Error loading data',
+            nl: 'Fout bij het laden',
+            de: 'Fehler beim Laden',
+          },
+          deleteSuccess: {
+            fr: 'Propriété supprimée',
+            en: 'Property deleted',
+            nl: 'Eigendom verwijderd',
+            de: 'Immobilie gelöscht',
+          },
+          deleteError: {
+            fr: 'Erreur lors de la suppression',
+            en: 'Error deleting property',
+            nl: 'Fout bij het verwijderen',
+            de: 'Fehler beim Löschen',
+          },
+          publishSuccess: {
+            fr: 'Propriété publiée',
+            en: 'Property published',
+            nl: 'Eigendom gepubliceerd',
+            de: 'Immobilie veröffentlicht',
+          },
+          unpublishSuccess: {
+            fr: 'Propriété dépubliée',
+            en: 'Property unpublished',
+            nl: 'Eigendom gedepubliceerd',
+            de: 'Immobilie nicht mehr veröffentlicht',
+          },
+          updateError: {
+            fr: 'Erreur lors de la mise à jour',
+            en: 'Error updating property',
+            nl: 'Fout bij het bijwerken',
+            de: 'Fehler beim Aktualisieren',
+          },
+        },
+      },
+
+      // ============================================
+      // APPLICATIONS PAGE - app/dashboard/owner/applications
+      // ============================================
+      applicationsPage: {
+        loading: {
+          title: {
+            fr: 'Chargement des candidatures...',
+            en: 'Loading applications...',
+            nl: 'Aanvragen laden...',
+            de: 'Bewerbungen werden geladen...',
+          },
+          subtitle: {
+            fr: 'Préparation de vos données',
+            en: 'Preparing your data',
+            nl: 'Je gegevens voorbereiden',
+            de: 'Ihre Daten werden vorbereitet',
+          },
+        },
+        header: {
+          title: {
+            fr: 'Candidatures',
+            en: 'Applications',
+            nl: 'Aanvragen',
+            de: 'Bewerbungen',
+          },
+          subtitle: {
+            fr: 'Gérer les candidatures individuelles et de groupe pour vos propriétés',
+            en: 'Manage individual and group applications for your properties',
+            nl: 'Beheer individuele en groepsaanvragen voor je eigendommen',
+            de: 'Verwalten Sie Einzel- und Gruppenbewerbungen für Ihre Immobilien',
+          },
+        },
+        stats: {
+          total: {
+            fr: 'Total',
+            en: 'Total',
+            nl: 'Totaal',
+            de: 'Gesamt',
+          },
+          individual: {
+            fr: 'Individuel',
+            en: 'Individual',
+            nl: 'Individueel',
+            de: 'Einzeln',
+          },
+          groups: {
+            fr: 'Groupes',
+            en: 'Groups',
+            nl: 'Groepen',
+            de: 'Gruppen',
+          },
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          reviewing: {
+            fr: 'En révision',
+            en: 'Reviewing',
+            nl: 'In beoordeling',
+            de: 'In Prüfung',
+          },
+          approved: {
+            fr: 'Approuvées',
+            en: 'Approved',
+            nl: 'Goedgekeurd',
+            de: 'Genehmigt',
+          },
+          rejected: {
+            fr: 'Rejetées',
+            en: 'Rejected',
+            nl: 'Afgewezen',
+            de: 'Abgelehnt',
+          },
+        },
+        filters: {
+          allTypes: {
+            fr: 'Tous les types',
+            en: 'All types',
+            nl: 'Alle types',
+            de: 'Alle Typen',
+          },
+          individual: {
+            fr: 'Individuel',
+            en: 'Individual',
+            nl: 'Individueel',
+            de: 'Einzeln',
+          },
+          groups: {
+            fr: 'Groupes',
+            en: 'Groups',
+            nl: 'Groepen',
+            de: 'Gruppen',
+          },
+          allStatuses: {
+            fr: 'Tous les statuts',
+            en: 'All statuses',
+            nl: 'Alle statussen',
+            de: 'Alle Status',
+          },
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          reviewing: {
+            fr: 'En révision',
+            en: 'Reviewing',
+            nl: 'In beoordeling',
+            de: 'In Prüfung',
+          },
+          approved: {
+            fr: 'Approuvées',
+            en: 'Approved',
+            nl: 'Goedgekeurd',
+            de: 'Genehmigt',
+          },
+          rejected: {
+            fr: 'Rejetées',
+            en: 'Rejected',
+            nl: 'Afgewezen',
+            de: 'Abgelehnt',
+          },
+          allProperties: {
+            fr: 'Toutes les propriétés',
+            en: 'All properties',
+            nl: 'Alle eigendommen',
+            de: 'Alle Immobilien',
+          },
+        },
+        status: {
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          reviewing: {
+            fr: 'En révision',
+            en: 'Reviewing',
+            nl: 'In beoordeling',
+            de: 'In Prüfung',
+          },
+          approved: {
+            fr: 'Approuvée',
+            en: 'Approved',
+            nl: 'Goedgekeurd',
+            de: 'Genehmigt',
+          },
+          rejected: {
+            fr: 'Rejetée',
+            en: 'Rejected',
+            nl: 'Afgewezen',
+            de: 'Abgelehnt',
+          },
+          withdrawn: {
+            fr: 'Retirée',
+            en: 'Withdrawn',
+            nl: 'Ingetrokken',
+            de: 'Zurückgezogen',
+          },
+          expired: {
+            fr: 'Expirée',
+            en: 'Expired',
+            nl: 'Verlopen',
+            de: 'Abgelaufen',
+          },
+        },
+        empty: {
+          title: {
+            fr: 'Aucune candidature trouvée',
+            en: 'No applications found',
+            nl: 'Geen aanvragen gevonden',
+            de: 'Keine Bewerbungen gefunden',
+          },
+          subtitle: {
+            fr: 'Essayez de modifier vos filtres ou attendez de nouvelles candidatures',
+            en: 'Try changing your filters or wait for new applications',
+            nl: 'Probeer je filters te wijzigen of wacht op nieuwe aanvragen',
+            de: 'Versuchen Sie, Ihre Filter zu ändern oder warten Sie auf neue Bewerbungen',
+          },
+        },
+        card: {
+          group: {
+            fr: 'Groupe',
+            en: 'Group',
+            nl: 'Groep',
+            de: 'Gruppe',
+          },
+          members: {
+            fr: 'Membres',
+            en: 'Members',
+            nl: 'Leden',
+            de: 'Mitglieder',
+          },
+          combinedIncome: {
+            fr: 'Revenu combiné:',
+            en: 'Combined income:',
+            nl: 'Gecombineerd inkomen:',
+            de: 'Kombiniertes Einkommen:',
+          },
+          message: {
+            fr: 'Message :',
+            en: 'Message:',
+            nl: 'Bericht:',
+            de: 'Nachricht:',
+          },
+          appliedOn: {
+            fr: 'Candidature du',
+            en: 'Applied on',
+            nl: 'Aangevraagd op',
+            de: 'Beworben am',
+          },
+          at: {
+            fr: 'à',
+            en: 'at',
+            nl: 'om',
+            de: 'um',
+          },
+          moveIn: {
+            fr: 'Emménagement:',
+            en: 'Move-in:',
+            nl: 'Intrek:',
+            de: 'Einzug:',
+          },
+          leaseDuration: {
+            fr: 'mois',
+            en: 'months',
+            nl: 'maanden',
+            de: 'Monate',
+          },
+          perMonth: {
+            fr: '€/mois',
+            en: '€/month',
+            nl: '€/maand',
+            de: '€/Monat',
+          },
+        },
+        actions: {
+          review: {
+            fr: 'Réviser',
+            en: 'Review',
+            nl: 'Beoordelen',
+            de: 'Prüfen',
+          },
+          approve: {
+            fr: 'Approuver',
+            en: 'Approve',
+            nl: 'Goedkeuren',
+            de: 'Genehmigen',
+          },
+          reject: {
+            fr: 'Rejeter',
+            en: 'Reject',
+            nl: 'Afwijzen',
+            de: 'Ablehnen',
+          },
+        },
+        modal: {
+          approveTitle: {
+            fr: 'Approuver la candidature',
+            en: 'Approve application',
+            nl: 'Aanvraag goedkeuren',
+            de: 'Bewerbung genehmigen',
+          },
+          rejectTitle: {
+            fr: 'Rejeter la candidature',
+            en: 'Reject application',
+            nl: 'Aanvraag afwijzen',
+            de: 'Bewerbung ablehnen',
+          },
+          approveConfirm: {
+            fr: 'Êtes-vous sûr de vouloir approuver la candidature de',
+            en: 'Are you sure you want to approve the application from',
+            nl: 'Weet je zeker dat je de aanvraag wilt goedkeuren van',
+            de: 'Sind Sie sicher, dass Sie die Bewerbung genehmigen möchten von',
+          },
+          rejectConfirm: {
+            fr: 'Êtes-vous sûr de vouloir rejeter la candidature de',
+            en: 'Are you sure you want to reject the application from',
+            nl: 'Weet je zeker dat je de aanvraag wilt afwijzen van',
+            de: 'Sind Sie sicher, dass Sie die Bewerbung ablehnen möchten von',
+          },
+          rejectReasonLabel: {
+            fr: 'Raison du rejet (optionnel)',
+            en: 'Rejection reason (optional)',
+            nl: 'Reden voor afwijzing (optioneel)',
+            de: 'Ablehnungsgrund (optional)',
+          },
+          rejectReasonPlaceholder: {
+            fr: 'Expliquez pourquoi vous rejetez cette candidature...',
+            en: 'Explain why you are rejecting this application...',
+            nl: 'Leg uit waarom je deze aanvraag afwijst...',
+            de: 'Erklären Sie, warum Sie diese Bewerbung ablehnen...',
+          },
+          notifyApplicant: {
+            fr: 'Le candidat sera notifié de votre décision.',
+            en: 'The applicant will be notified of your decision.',
+            nl: 'De aanvrager wordt op de hoogte gebracht van je beslissing.',
+            de: 'Der Bewerber wird über Ihre Entscheidung informiert.',
+          },
+          cancel: {
+            fr: 'Annuler',
+            en: 'Cancel',
+            nl: 'Annuleren',
+            de: 'Abbrechen',
+          },
+          processing: {
+            fr: 'Traitement...',
+            en: 'Processing...',
+            nl: 'Verwerken...',
+            de: 'Wird verarbeitet...',
+          },
+        },
+        toast: {
+          approveSuccess: {
+            fr: 'Candidature approuvée !',
+            en: 'Application approved!',
+            nl: 'Aanvraag goedgekeurd!',
+            de: 'Bewerbung genehmigt!',
+          },
+          rejectSuccess: {
+            fr: 'Candidature rejetée',
+            en: 'Application rejected',
+            nl: 'Aanvraag afgewezen',
+            de: 'Bewerbung abgelehnt',
+          },
+          actionError: {
+            fr: "Erreur lors de l'action",
+            en: 'Error during action',
+            nl: 'Fout bij actie',
+            de: 'Fehler bei der Aktion',
+          },
+        },
+      },
+
+      // ============================================
+      // FINANCE PAGE - app/dashboard/owner/finance
+      // ============================================
+      financePage: {
+        loading: {
+          title: {
+            fr: 'Chargement des finances...',
+            en: 'Loading finances...',
+            nl: 'Financiën laden...',
+            de: 'Finanzen werden geladen...',
+          },
+          subtitle: {
+            fr: 'Préparation de vos données',
+            en: 'Preparing your data',
+            nl: 'Je gegevens voorbereiden',
+            de: 'Ihre Daten werden vorbereitet',
+          },
+        },
+        header: {
+          title: {
+            fr: 'Rapport Financier',
+            en: 'Financial Report',
+            nl: 'Financieel Rapport',
+            de: 'Finanzbericht',
+          },
+          subtitle: {
+            fr: "Vue d'ensemble complète de vos finances",
+            en: 'Complete overview of your finances',
+            nl: 'Volledig overzicht van je financiën',
+            de: 'Vollständiger Überblick über Ihre Finanzen',
+          },
+        },
+        kpi: {
+          totalRevenue: {
+            fr: 'Revenus Totaux',
+            en: 'Total Revenue',
+            nl: 'Totale Omzet',
+            de: 'Gesamteinnahmen',
+          },
+          totalExpenses: {
+            fr: 'Dépenses Totales',
+            en: 'Total Expenses',
+            nl: 'Totale Uitgaven',
+            de: 'Gesamtausgaben',
+          },
+          netProfit: {
+            fr: 'Bénéfice Net',
+            en: 'Net Profit',
+            nl: 'Nettowinst',
+            de: 'Nettogewinn',
+          },
+          occupancyRate: {
+            fr: "Taux d'Occupation",
+            en: 'Occupancy Rate',
+            nl: 'Bezettingsgraad',
+            de: 'Belegungsrate',
+          },
+          vsLastMonth: {
+            fr: 'vs mois dernier',
+            en: 'vs last month',
+            nl: 'vs vorige maand',
+            de: 'vs letzten Monat',
+          },
+        },
+        monthly: {
+          title: {
+            fr: 'Détails Mensuels',
+            en: 'Monthly Details',
+            nl: 'Maandelijkse Details',
+            de: 'Monatliche Details',
+          },
+          revenue: {
+            fr: 'Revenus',
+            en: 'Revenue',
+            nl: 'Omzet',
+            de: 'Einnahmen',
+          },
+          expenses: {
+            fr: 'Dépenses',
+            en: 'Expenses',
+            nl: 'Uitgaven',
+            de: 'Ausgaben',
+          },
+          profit: {
+            fr: 'Bénéfice',
+            en: 'Profit',
+            nl: 'Winst',
+            de: 'Gewinn',
+          },
+        },
+        chart: {
+          title: {
+            fr: 'Revenus vs Dépenses',
+            en: 'Revenue vs Expenses',
+            nl: 'Omzet vs Uitgaven',
+            de: 'Einnahmen vs Ausgaben',
+          },
+          comingSoon: {
+            fr: 'Visualisation à venir',
+            en: 'Visualization coming soon',
+            nl: 'Visualisatie binnenkort',
+            de: 'Visualisierung kommt bald',
+          },
+          comingSoonSubtitle: {
+            fr: 'Graphiques interactifs bientôt disponibles',
+            en: 'Interactive charts available soon',
+            nl: 'Interactieve grafieken binnenkort beschikbaar',
+            de: 'Interaktive Diagramme bald verfügbar',
+          },
+        },
+        months: {
+          jan: { fr: 'Jan', en: 'Jan', nl: 'Jan', de: 'Jan' },
+          feb: { fr: 'Fév', en: 'Feb', nl: 'Feb', de: 'Feb' },
+          mar: { fr: 'Mar', en: 'Mar', nl: 'Mrt', de: 'Mär' },
+          apr: { fr: 'Avr', en: 'Apr', nl: 'Apr', de: 'Apr' },
+          may: { fr: 'Mai', en: 'May', nl: 'Mei', de: 'Mai' },
+          jun: { fr: 'Juin', en: 'Jun', nl: 'Jun', de: 'Jun' },
+          jul: { fr: 'Juil', en: 'Jul', nl: 'Jul', de: 'Jul' },
+          aug: { fr: 'Août', en: 'Aug', nl: 'Aug', de: 'Aug' },
+          sep: { fr: 'Sep', en: 'Sep', nl: 'Sep', de: 'Sep' },
+          oct: { fr: 'Oct', en: 'Oct', nl: 'Okt', de: 'Okt' },
+          nov: { fr: 'Nov', en: 'Nov', nl: 'Nov', de: 'Nov' },
+          dec: { fr: 'Déc', en: 'Dec', nl: 'Dec', de: 'Dez' },
+        },
+      },
+
+      // ============================================
+      // MAINTENANCE PAGE - app/dashboard/owner/maintenance
+      // ============================================
+      maintenancePage: {
+        loading: {
+          title: {
+            fr: 'Chargement de la maintenance...',
+            en: 'Loading maintenance...',
+            nl: 'Onderhoud laden...',
+            de: 'Wartung wird geladen...',
+          },
+          subtitle: {
+            fr: 'Préparation de vos données',
+            en: 'Preparing your data',
+            nl: 'Je gegevens voorbereiden',
+            de: 'Ihre Daten werden vorbereitet',
+          },
+        },
+        header: {
+          title: {
+            fr: 'Maintenance',
+            en: 'Maintenance',
+            nl: 'Onderhoud',
+            de: 'Wartung',
+          },
+          subtitle: {
+            fr: 'Gérer les tickets de maintenance de vos propriétés',
+            en: 'Manage maintenance tickets for your properties',
+            nl: 'Beheer onderhoudstickets voor je eigendommen',
+            de: 'Verwalten Sie Wartungstickets für Ihre Immobilien',
+          },
+          newTicket: {
+            fr: 'Nouveau Ticket',
+            en: 'New Ticket',
+            nl: 'Nieuw Ticket',
+            de: 'Neues Ticket',
+          },
+        },
+        stats: {
+          total: {
+            fr: 'Total',
+            en: 'Total',
+            nl: 'Totaal',
+            de: 'Gesamt',
+          },
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          inProgress: {
+            fr: 'En cours',
+            en: 'In progress',
+            nl: 'In behandeling',
+            de: 'In Bearbeitung',
+          },
+          completed: {
+            fr: 'Terminés',
+            en: 'Completed',
+            nl: 'Voltooid',
+            de: 'Abgeschlossen',
+          },
+        },
+        filters: {
+          all: {
+            fr: 'Tous',
+            en: 'All',
+            nl: 'Alle',
+            de: 'Alle',
+          },
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          inProgress: {
+            fr: 'En cours',
+            en: 'In progress',
+            nl: 'In behandeling',
+            de: 'In Bearbeitung',
+          },
+          completed: {
+            fr: 'Terminés',
+            en: 'Completed',
+            nl: 'Voltooid',
+            de: 'Abgeschlossen',
+          },
+        },
+        status: {
+          pending: {
+            fr: 'En attente',
+            en: 'Pending',
+            nl: 'In afwachting',
+            de: 'Ausstehend',
+          },
+          inProgress: {
+            fr: 'En cours',
+            en: 'In progress',
+            nl: 'In behandeling',
+            de: 'In Bearbeitung',
+          },
+          completed: {
+            fr: 'Terminé',
+            en: 'Completed',
+            nl: 'Voltooid',
+            de: 'Abgeschlossen',
+          },
+        },
+        priority: {
+          high: {
+            fr: 'Urgent',
+            en: 'Urgent',
+            nl: 'Dringend',
+            de: 'Dringend',
+          },
+          medium: {
+            fr: 'Moyen',
+            en: 'Medium',
+            nl: 'Gemiddeld',
+            de: 'Mittel',
+          },
+          low: {
+            fr: 'Faible',
+            en: 'Low',
+            nl: 'Laag',
+            de: 'Niedrig',
+          },
+        },
+        empty: {
+          title: {
+            fr: 'Aucun ticket trouvé',
+            en: 'No tickets found',
+            nl: 'Geen tickets gevonden',
+            de: 'Keine Tickets gefunden',
+          },
+          createFirst: {
+            fr: 'Créez votre premier ticket de maintenance',
+            en: 'Create your first maintenance ticket',
+            nl: 'Maak je eerste onderhoudsticket aan',
+            de: 'Erstellen Sie Ihr erstes Wartungsticket',
+          },
+          noWithStatus: {
+            fr: 'Aucun ticket avec ce statut',
+            en: 'No tickets with this status',
+            nl: 'Geen tickets met deze status',
+            de: 'Keine Tickets mit diesem Status',
+          },
+          createButton: {
+            fr: 'Créer un ticket',
+            en: 'Create ticket',
+            nl: 'Ticket aanmaken',
+            de: 'Ticket erstellen',
+          },
+        },
+        card: {
+          assignedTo: {
+            fr: 'Assigné à :',
+            en: 'Assigned to:',
+            nl: 'Toegewezen aan:',
+            de: 'Zugewiesen an:',
+          },
+        },
+        actions: {
+          viewDetails: {
+            fr: 'Voir Détails',
+            en: 'View Details',
+            nl: 'Details Bekijken',
+            de: 'Details Anzeigen',
+          },
+          start: {
+            fr: 'Commencer',
+            en: 'Start',
+            nl: 'Starten',
+            de: 'Starten',
+          },
+          complete: {
+            fr: 'Terminer',
+            en: 'Complete',
+            nl: 'Voltooien',
+            de: 'Abschließen',
+          },
+        },
+        time: {
+          hoursAgo: {
+            fr: 'Il y a {count} heures',
+            en: '{count} hours ago',
+            nl: '{count} uur geleden',
+            de: 'Vor {count} Stunden',
+          },
+          daysAgo: {
+            fr: 'Il y a {count} jour(s)',
+            en: '{count} day(s) ago',
+            nl: '{count} dag(en) geleden',
+            de: 'Vor {count} Tag(en)',
+          },
+        },
+      },
     },
 
     // Resident Dashboard

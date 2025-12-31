@@ -27,6 +27,7 @@ import { useRole } from '@/lib/role/role-context';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface UserProfile {
   full_name: string;
@@ -39,6 +40,8 @@ export default function PropertiesManagement() {
   const router = useRouter();
   const supabase = createClient();
   const { setActiveRole } = useRole();
+  const { getSection, language } = useLanguage();
+  const t = getSection('dashboard')?.owner?.propertiesPage;
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,7 +94,7 @@ export default function PropertiesManagement() {
         setProperties(result.data);
       }
     } catch (error: any) {
-      toast.error('Erreur lors du chargement');
+      toast.error(t?.toast?.loadError?.[language] || 'Erreur lors du chargement');
     } finally {
       setIsLoading(false);
     }
@@ -108,13 +111,13 @@ export default function PropertiesManagement() {
 
       if (error) throw error;
 
-      toast.success('Propriété supprimée');
+      toast.success(t?.toast?.deleteSuccess?.[language] || 'Propriété supprimée');
       setDeleteModal({ open: false, propertyId: null, propertyTitle: '' });
 
       // Reload data to ensure consistency
       await loadData();
     } catch (error: any) {
-      toast.error('Erreur lors de la suppression');
+      toast.error(t?.toast?.deleteError?.[language] || 'Erreur lors de la suppression');
     }
   };
 
@@ -129,12 +132,15 @@ export default function PropertiesManagement() {
 
       if (error) throw error;
 
-      toast.success(`Propriété ${newStatus === 'published' ? 'publiée' : 'dépubliée'}`);
+      const successMsg = newStatus === 'published'
+        ? (t?.toast?.publishSuccess?.[language] || 'Propriété publiée')
+        : (t?.toast?.unpublishSuccess?.[language] || 'Propriété dépubliée');
+      toast.success(successMsg);
       setProperties(properties.map(p =>
         p.id === propertyId ? { ...p, status: newStatus } : p
       ));
     } catch (error: any) {
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t?.toast?.updateError?.[language] || 'Erreur lors de la mise à jour');
     }
   };
 
@@ -142,17 +148,17 @@ export default function PropertiesManagement() {
     const config: Record<string, { variant: "default" | "secondary" | "destructive" | "outline", label: string, className: string }> = {
       published: {
         variant: 'secondary',
-        label: 'Publié',
+        label: t?.status?.published?.[language] || 'Publié',
         className: 'bg-green-100 text-green-800 border-green-200'
       },
       draft: {
         variant: 'secondary',
-        label: 'Brouillon',
+        label: t?.status?.draft?.[language] || 'Brouillon',
         className: 'bg-yellow-100 text-yellow-800 border-yellow-200'
       },
       archived: {
         variant: 'secondary',
-        label: 'Archivé',
+        label: t?.status?.archived?.[language] || 'Archivé',
         className: 'bg-gray-100 text-gray-800 border-gray-200'
       }
     };
@@ -171,8 +177,12 @@ export default function PropertiesManagement() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des propriétés...</h3>
-          <p className="text-gray-600">Préparation de vos annonces</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {t?.loading?.title?.[language] || 'Chargement des propriétés...'}
+          </h3>
+          <p className="text-gray-600">
+            {t?.loading?.subtitle?.[language] || 'Préparation de vos annonces'}
+          </p>
         </div>
       </div>
     );
@@ -195,10 +205,10 @@ export default function PropertiesManagement() {
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                   <Building2 className="w-6 h-6 text-gray-700" />
                 </div>
-                Mes Propriétés
+                {t?.header?.title?.[language] || 'Mes Propriétés'}
               </h1>
               <p className="text-gray-600">
-                Gérer et suivre toutes vos annonces immobilières
+                {t?.header?.subtitle?.[language] || 'Gérer et suivre toutes vos annonces immobilières'}
               </p>
             </div>
             <Button
@@ -207,7 +217,7 @@ export default function PropertiesManagement() {
               size="lg"
             >
               <Plus className="w-5 h-5 mr-2" />
-              Ajouter
+              {t?.header?.addButton?.[language] || 'Ajouter'}
             </Button>
           </div>
 
@@ -221,7 +231,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Home className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">Total</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total'}</p>
               </div>
               <p className="text-2xl font-bold text-purple-900">{properties.length}</p>
             </motion.div>
@@ -234,7 +244,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="w-4 h-4 text-green-600" />
-                <p className="text-sm text-gray-600 font-medium">Publiées</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.published?.[language] || 'Publiées'}</p>
               </div>
               <p className="text-2xl font-bold text-green-700">
                 {properties.filter(p => p.status === 'published').length}
@@ -249,7 +259,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Edit className="w-4 h-4 text-yellow-600" />
-                <p className="text-sm text-gray-600 font-medium">Brouillons</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.drafts?.[language] || 'Brouillons'}</p>
               </div>
               <p className="text-2xl font-bold text-yellow-700">
                 {properties.filter(p => p.status === 'draft').length}
@@ -264,7 +274,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Building2 className="w-4 h-4 text-gray-600" />
-                <p className="text-sm text-gray-600 font-medium">Archivées</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.archived?.[language] || 'Archivées'}</p>
               </div>
               <p className="text-2xl font-bold text-gray-700">
                 {properties.filter(p => p.status === 'archived').length}
@@ -275,10 +285,10 @@ export default function PropertiesManagement() {
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mt-6">
             {[
-              { value: 'all', label: 'Toutes' },
-              { value: 'published', label: 'Publiées' },
-              { value: 'draft', label: 'Brouillons' },
-              { value: 'archived', label: 'Archivées' }
+              { value: 'all', label: t?.filters?.all?.[language] || 'Toutes' },
+              { value: 'published', label: t?.filters?.published?.[language] || 'Publiées' },
+              { value: 'draft', label: t?.filters?.drafts?.[language] || 'Brouillons' },
+              { value: 'archived', label: t?.filters?.archived?.[language] || 'Archivées' }
             ].map((filter) => (
               <Button
                 key={filter.value}
@@ -315,17 +325,18 @@ export default function PropertiesManagement() {
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               {filterStatus === 'all'
-                ? 'Aucune propriété'
-                : `Aucune propriété ${
-                    filterStatus === 'published' ? 'publiée' :
-                    filterStatus === 'draft' ? 'en brouillon' : 'archivée'
-                  }`
+                ? (t?.empty?.noProperties?.[language] || 'Aucune propriété')
+                : filterStatus === 'published'
+                  ? (t?.empty?.noPublished?.[language] || 'Aucune propriété publiée')
+                  : filterStatus === 'draft'
+                    ? (t?.empty?.noDrafts?.[language] || 'Aucune propriété en brouillon')
+                    : (t?.empty?.noArchived?.[language] || 'Aucune propriété archivée')
               }
             </h3>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               {filterStatus === 'all'
-                ? 'Ajoutez votre première propriété pour commencer à gérer votre portefeuille'
-                : 'Modifier vos filtres pour voir plus de propriétés'
+                ? (t?.empty?.addFirst?.[language] || 'Ajoutez votre première propriété pour commencer à gérer votre portefeuille')
+                : (t?.empty?.changeFilters?.[language] || 'Modifier vos filtres pour voir plus de propriétés')
               }
             </p>
             {filterStatus === 'all' && (
@@ -334,7 +345,7 @@ export default function PropertiesManagement() {
                 className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 px-8 py-6 text-lg shadow-sm hover:shadow-md transition-all hover:scale-105"
               >
                 <Plus className="w-5 h-5 mr-2" />
-                Ajouter ma première propriété
+                {t?.empty?.addFirstButton?.[language] || 'Ajouter ma première propriété'}
               </Button>
             )}
           </motion.div>
@@ -372,15 +383,19 @@ export default function PropertiesManagement() {
                       <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                         <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
                           <Bed className="w-4 h-4 text-purple-600" />
-                          <span className="font-medium">{property.bedrooms} chambre{property.bedrooms > 1 ? 's' : ''}</span>
+                          <span className="font-medium">
+                            {property.bedrooms} {property.bedrooms > 1
+                              ? (t?.card?.bedrooms?.[language] || 'chambres')
+                              : (t?.card?.bedroom?.[language] || 'chambre')}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
                           <Bath className="w-4 h-4 text-blue-600" />
-                          <span className="font-medium">{property.bathrooms} SDB</span>
+                          <span className="font-medium">{property.bathrooms} {t?.card?.bathroom?.[language] || 'SDB'}</span>
                         </div>
                         <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
                           <DollarSign className="w-4 h-4 text-green-600" />
-                          <span className="font-medium">{property.monthly_rent}€/mois</span>
+                          <span className="font-medium">{property.monthly_rent}€{t?.card?.perMonth?.[language] || '/mois'}</span>
                         </div>
                         {property.created_at && (
                           <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
@@ -403,7 +418,7 @@ export default function PropertiesManagement() {
                         onClick={() => router.push(`/properties/${property.id}`)}
                       >
                         <Eye className="w-4 h-4 mr-2" />
-                        Voir
+                        {t?.actions?.view?.[language] || 'Voir'}
                       </Button>
                       <Button
                         variant="outline"
@@ -411,7 +426,7 @@ export default function PropertiesManagement() {
                         onClick={() => router.push(`/properties/edit/${property.id}`)}
                       >
                         <Edit className="w-4 h-4 mr-2" />
-                        Modifier
+                        {t?.actions?.edit?.[language] || 'Modifier'}
                       </Button>
                       <Button
                         variant="outline"
@@ -423,7 +438,9 @@ export default function PropertiesManagement() {
                         )}
                         onClick={() => handleToggleStatus(property.id, property.status)}
                       >
-                        {property.status === 'published' ? 'Dépublier' : 'Publier'}
+                        {property.status === 'published'
+                          ? (t?.actions?.unpublish?.[language] || 'Dépublier')
+                          : (t?.actions?.publish?.[language] || 'Publier')}
                       </Button>
                       <Button
                         variant="outline"
@@ -431,7 +448,7 @@ export default function PropertiesManagement() {
                         onClick={() => setDeleteModal({ open: true, propertyId: property.id, propertyTitle: property.title })}
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
-                        Supprimer
+                        {t?.actions?.delete?.[language] || 'Supprimer'}
                       </Button>
                     </div>
                   </div>
@@ -469,18 +486,18 @@ export default function PropertiesManagement() {
 
               {/* Title */}
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Supprimer la propriété ?
+                {t?.deleteModal?.title?.[language] || 'Supprimer la propriété ?'}
               </h3>
 
               {/* Description */}
               <p className="text-gray-600 mb-2">
-                Êtes-vous sûr de vouloir supprimer
+                {t?.deleteModal?.confirm?.[language] || 'Êtes-vous sûr de vouloir supprimer'}
               </p>
               <p className="font-semibold text-gray-900 mb-4">
                 "{deleteModal.propertyTitle}" ?
               </p>
               <p className="text-sm text-red-600 mb-8">
-                Cette action est irréversible.
+                {t?.deleteModal?.irreversible?.[language] || 'Cette action est irréversible.'}
               </p>
 
               {/* Actions */}
@@ -490,13 +507,13 @@ export default function PropertiesManagement() {
                   className="flex-1 rounded-xl"
                   onClick={() => setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })}
                 >
-                  Annuler
+                  {t?.deleteModal?.cancel?.[language] || 'Annuler'}
                 </Button>
                 <Button
                   className="flex-1 rounded-xl bg-red-600 hover:bg-red-700 text-white"
                   onClick={handleDeleteProperty}
                 >
-                  Supprimer
+                  {t?.deleteModal?.deleteButton?.[language] || 'Supprimer'}
                 </Button>
               </div>
             </div>

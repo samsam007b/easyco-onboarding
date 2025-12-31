@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,8 @@ interface MaintenanceTicket {
 export default function MaintenancePage() {
   const router = useRouter();
   const { setActiveRole } = useRole();
+  const { getSection, language } = useLanguage();
+  const t = getSection('dashboard')?.owner?.maintenancePage;
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'in_progress' | 'completed'>('all');
 
@@ -87,17 +90,17 @@ export default function MaintenancePage() {
     const config = {
       high: {
         className: 'bg-red-100 text-red-800 border-red-200',
-        label: 'Urgent',
+        label: t?.priority?.high?.[language] || 'Urgent',
         icon: AlertCircle
       },
       medium: {
         className: 'bg-orange-100 text-orange-800 border-orange-200',
-        label: 'Moyen',
+        label: t?.priority?.medium?.[language] || 'Moyen',
         icon: Clock
       },
       low: {
         className: 'bg-blue-100 text-blue-800 border-blue-200',
-        label: 'Faible',
+        label: t?.priority?.low?.[language] || 'Faible',
         icon: Activity
       }
     };
@@ -108,17 +111,17 @@ export default function MaintenancePage() {
     const config = {
       pending: {
         className: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-        label: 'En attente',
+        label: t?.status?.pending?.[language] || 'En attente',
         icon: Clock
       },
       in_progress: {
         className: 'bg-blue-100 text-blue-800 border-blue-200',
-        label: 'En cours',
+        label: t?.status?.inProgress?.[language] || 'En cours',
         icon: Settings
       },
       completed: {
         className: 'bg-green-100 text-green-800 border-green-200',
-        label: 'Terminé',
+        label: t?.status?.completed?.[language] || 'Terminé',
         icon: CheckCircle
       }
     };
@@ -144,8 +147,12 @@ export default function MaintenancePage() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement de la maintenance...</h3>
-          <p className="text-gray-600">Préparation de vos données</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {t?.loading?.title?.[language] || 'Chargement de la maintenance...'}
+          </h3>
+          <p className="text-gray-600">
+            {t?.loading?.subtitle?.[language] || 'Préparation de vos données'}
+          </p>
         </div>
       </div>
     );
@@ -166,10 +173,10 @@ export default function MaintenancePage() {
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                   <Wrench className="w-6 h-6 text-gray-700" />
                 </div>
-                Maintenance
+                {t?.header?.title?.[language] || 'Maintenance'}
               </h1>
               <p className="text-gray-600">
-                Gérer les tickets de maintenance de vos propriétés
+                {t?.header?.subtitle?.[language] || 'Gérer les tickets de maintenance de vos propriétés'}
               </p>
             </div>
             <Button
@@ -177,7 +184,7 @@ export default function MaintenancePage() {
               className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 shadow-sm hover:shadow-md hover:scale-105 transition-all"
             >
               <Plus className="w-5 h-5 mr-2" />
-              Nouveau Ticket
+              {t?.header?.newTicket?.[language] || 'Nouveau Ticket'}
             </Button>
           </div>
 
@@ -191,7 +198,9 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Wrench className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">Total</p>
+                <p className="text-sm text-gray-600 font-medium">
+                  {t?.stats?.total?.[language] || 'Total'}
+                </p>
               </div>
               <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
             </motion.div>
@@ -204,7 +213,9 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-yellow-600" />
-                <p className="text-sm text-gray-600 font-medium">En attente</p>
+                <p className="text-sm text-gray-600 font-medium">
+                  {t?.stats?.pending?.[language] || 'En attente'}
+                </p>
               </div>
               <p className="text-2xl font-bold text-yellow-700">{stats.pending}</p>
             </motion.div>
@@ -217,7 +228,9 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Settings className="w-4 h-4 text-blue-600" />
-                <p className="text-sm text-gray-600 font-medium">En cours</p>
+                <p className="text-sm text-gray-600 font-medium">
+                  {t?.stats?.inProgress?.[language] || 'En cours'}
+                </p>
               </div>
               <p className="text-2xl font-bold text-blue-700">{stats.in_progress}</p>
             </motion.div>
@@ -230,7 +243,9 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <p className="text-sm text-gray-600 font-medium">Terminés</p>
+                <p className="text-sm text-gray-600 font-medium">
+                  {t?.stats?.completed?.[language] || 'Terminés'}
+                </p>
               </div>
               <p className="text-2xl font-bold text-green-700">{stats.completed}</p>
             </motion.div>
@@ -239,10 +254,10 @@ export default function MaintenancePage() {
           {/* Filters */}
           <div className="mt-6 flex flex-wrap gap-2">
             {[
-              { value: 'all', label: 'Tous', count: stats.total },
-              { value: 'pending', label: 'En attente', count: stats.pending },
-              { value: 'in_progress', label: 'En cours', count: stats.in_progress },
-              { value: 'completed', label: 'Terminés', count: stats.completed }
+              { value: 'all', label: t?.filters?.all?.[language] || 'Tous', count: stats.total },
+              { value: 'pending', label: t?.filters?.pending?.[language] || 'En attente', count: stats.pending },
+              { value: 'in_progress', label: t?.filters?.inProgress?.[language] || 'En cours', count: stats.in_progress },
+              { value: 'completed', label: t?.filters?.completed?.[language] || 'Terminés', count: stats.completed }
             ].map((filter) => (
               <Button
                 key={filter.value}
@@ -274,12 +289,12 @@ export default function MaintenancePage() {
               <Wrench className="w-10 h-10 text-gray-700" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              Aucun ticket trouvé
+              {t?.empty?.title?.[language] || 'Aucun ticket trouvé'}
             </h3>
             <p className="text-gray-600 mb-4 max-w-md mx-auto">
               {filterStatus === 'all'
-                ? 'Créez votre premier ticket de maintenance'
-                : 'Aucun ticket avec ce statut'}
+                ? (t?.empty?.createFirst?.[language] || 'Créez votre premier ticket de maintenance')
+                : (t?.empty?.noWithStatus?.[language] || 'Aucun ticket avec ce statut')}
             </p>
             {filterStatus === 'all' && (
               <Button
@@ -287,7 +302,7 @@ export default function MaintenancePage() {
                 className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 px-8 shadow-sm"
               >
                 <Plus className="w-5 h-5 mr-2" />
-                Créer un ticket
+                {t?.empty?.createButton?.[language] || 'Créer un ticket'}
               </Button>
             )}
           </motion.div>
@@ -339,7 +354,7 @@ export default function MaintenancePage() {
                             {ticket.assignedTo && (
                               <div className="flex items-center gap-2 text-gray-700">
                                 <User className="w-4 h-4 text-gray-500" />
-                                <span>Assigné à : <span className="font-semibold">{ticket.assignedTo}</span></span>
+                                <span>{t?.card?.assignedTo?.[language] || 'Assigné à :'} <span className="font-semibold">{ticket.assignedTo}</span></span>
                               </div>
                             )}
 
@@ -362,7 +377,7 @@ export default function MaintenancePage() {
                           /* TODO: View details */
                         }}
                       >
-                        Voir Détails
+                        {t?.actions?.viewDetails?.[language] || 'Voir Détails'}
                       </Button>
                       {ticket.status !== 'completed' && (
                         <Button
@@ -372,7 +387,9 @@ export default function MaintenancePage() {
                             /* TODO: Update status */
                           }}
                         >
-                          {ticket.status === 'pending' ? 'Commencer' : 'Terminer'}
+                          {ticket.status === 'pending'
+                            ? (t?.actions?.start?.[language] || 'Commencer')
+                            : (t?.actions?.complete?.[language] || 'Terminer')}
                         </Button>
                       )}
                     </div>

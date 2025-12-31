@@ -11,6 +11,7 @@ import type { Application, GroupApplication } from '@/lib/hooks/use-applications
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   CheckCircle,
   XCircle,
@@ -40,6 +41,8 @@ type CombinedStatus = Application['status'] | GroupApplication['status'];
 export default function OwnerApplicationsPage() {
   const router = useRouter();
   const { setActiveRole } = useRole();
+  const { getSection, language } = useLanguage();
+  const t = getSection('dashboard')?.owner?.applicationsPage;
   const [userId, setUserId] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -184,7 +187,7 @@ export default function OwnerApplicationsPage() {
         }
 
         if (success) {
-          toast.success('Candidature approuvée !');
+          toast.success(t?.toast?.approveSuccess?.[language] || 'Candidature approuvée !');
           await loadApplicationsData();
         }
       } else if (actionModal.action === 'reject') {
@@ -203,14 +206,14 @@ export default function OwnerApplicationsPage() {
         }
 
         if (success) {
-          toast.success('Candidature rejetée');
+          toast.success(t?.toast?.rejectSuccess?.[language] || 'Candidature rejetée');
           await loadApplicationsData();
         }
       }
 
       handleCloseModal();
     } catch (error) {
-      toast.error('Erreur lors de l\'action');
+      toast.error(t?.toast?.actionError?.[language] || 'Erreur lors de l\'action');
     } finally {
       setProcessingAction(false);
     }
@@ -234,32 +237,32 @@ export default function OwnerApplicationsPage() {
     const config: Record<CombinedStatus, { className: string; label: string; icon: any }> = {
       pending: {
         className: 'bg-orange-100 text-orange-800 border-orange-200',
-        label: 'En attente',
+        label: t?.status?.pending?.[language] || 'En attente',
         icon: Clock
       },
       reviewing: {
         className: 'bg-blue-100 text-blue-800 border-blue-200',
-        label: 'En révision',
+        label: t?.status?.reviewing?.[language] || 'En révision',
         icon: Eye
       },
       approved: {
         className: 'bg-green-100 text-green-800 border-green-200',
-        label: 'Approuvée',
+        label: t?.status?.approved?.[language] || 'Approuvée',
         icon: CheckCircle
       },
       rejected: {
         className: 'bg-red-100 text-red-800 border-red-200',
-        label: 'Rejetée',
+        label: t?.status?.rejected?.[language] || 'Rejetée',
         icon: XCircle
       },
       withdrawn: {
         className: 'bg-gray-100 text-gray-800 border-gray-200',
-        label: 'Retirée',
+        label: t?.status?.withdrawn?.[language] || 'Retirée',
         icon: XCircle
       },
       expired: {
         className: 'bg-gray-100 text-gray-800 border-gray-200',
-        label: 'Expirée',
+        label: t?.status?.expired?.[language] || 'Expirée',
         icon: Clock
       },
     };
@@ -315,8 +318,12 @@ export default function OwnerApplicationsPage() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des candidatures...</h3>
-          <p className="text-gray-600">Préparation de vos données</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {t?.loading?.title?.[language] || 'Chargement des candidatures...'}
+          </h3>
+          <p className="text-gray-600">
+            {t?.loading?.subtitle?.[language] || 'Préparation de vos données'}
+          </p>
         </div>
       </div>
     );
@@ -337,10 +344,10 @@ export default function OwnerApplicationsPage() {
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                   <FileText className="w-6 h-6 text-gray-700" />
                 </div>
-                Candidatures
+                {t?.header?.title?.[language] || 'Candidatures'}
               </h1>
               <p className="text-gray-600">
-                Gérer les candidatures individuelles et de groupe pour vos propriétés
+                {t?.header?.subtitle?.[language] || 'Gérer les candidatures individuelles et de groupe pour vos propriétés'}
               </p>
             </div>
           </div>
@@ -355,7 +362,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Building2 className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">Total</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total'}</p>
               </div>
               <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
             </motion.div>
@@ -368,7 +375,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <UserCircle className="w-4 h-4 text-blue-600" />
-                <p className="text-sm text-gray-600 font-medium">Individuel</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.individual?.[language] || 'Individuel'}</p>
               </div>
               <p className="text-2xl font-bold text-blue-700">{stats.individual}</p>
             </motion.div>
@@ -381,7 +388,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">Groupes</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.groups?.[language] || 'Groupes'}</p>
               </div>
               <p className="text-2xl font-bold text-purple-700">{stats.groups}</p>
             </motion.div>
@@ -394,7 +401,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-orange-600" />
-                <p className="text-sm text-gray-600 font-medium">En attente</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.pending?.[language] || 'En attente'}</p>
               </div>
               <p className="text-2xl font-bold text-orange-700">{stats.pending}</p>
             </motion.div>
@@ -407,7 +414,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Eye className="w-4 h-4 text-blue-600" />
-                <p className="text-sm text-gray-600 font-medium">En révision</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.reviewing?.[language] || 'En révision'}</p>
               </div>
               <p className="text-2xl font-bold text-blue-700">{stats.reviewing}</p>
             </motion.div>
@@ -420,7 +427,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <p className="text-sm text-gray-600 font-medium">Approuvées</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.approved?.[language] || 'Approuvées'}</p>
               </div>
               <p className="text-2xl font-bold text-green-700">{stats.approved}</p>
             </motion.div>
@@ -433,7 +440,7 @@ export default function OwnerApplicationsPage() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <XCircle className="w-4 h-4 text-red-600" />
-                <p className="text-sm text-gray-600 font-medium">Rejetées</p>
+                <p className="text-sm text-gray-600 font-medium">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
               </div>
               <p className="text-2xl font-bold text-red-700">{stats.rejected}</p>
             </motion.div>
@@ -444,9 +451,9 @@ export default function OwnerApplicationsPage() {
             {/* Type Filters */}
             <div className="flex flex-wrap gap-2">
               {[
-                { value: 'all', label: 'Tous les types', count: stats.total },
-                { value: 'individual', label: 'Individuel', count: stats.individual },
-                { value: 'group', label: 'Groupes', count: stats.groups }
+                { value: 'all', label: t?.filters?.allTypes?.[language] || 'Tous les types', count: stats.total },
+                { value: 'individual', label: t?.filters?.individual?.[language] || 'Individuel', count: stats.individual },
+                { value: 'group', label: t?.filters?.groups?.[language] || 'Groupes', count: stats.groups }
               ].map((filter) => (
                 <Button
                   key={filter.value}
@@ -468,11 +475,11 @@ export default function OwnerApplicationsPage() {
             {/* Status Filters */}
             <div className="flex flex-wrap gap-2">
               {[
-                { value: 'all', label: 'Tous les statuts' },
-                { value: 'pending', label: 'En attente', count: stats.pending },
-                { value: 'reviewing', label: 'En révision', count: stats.reviewing },
-                { value: 'approved', label: 'Approuvées', count: stats.approved },
-                { value: 'rejected', label: 'Rejetées', count: stats.rejected }
+                { value: 'all', label: t?.filters?.allStatuses?.[language] || 'Tous les statuts' },
+                { value: 'pending', label: t?.status?.pending?.[language] || 'En attente', count: stats.pending },
+                { value: 'reviewing', label: t?.status?.reviewing?.[language] || 'En révision', count: stats.reviewing },
+                { value: 'approved', label: t?.status?.approved?.[language] || 'Approuvées', count: stats.approved },
+                { value: 'rejected', label: t?.status?.rejected?.[language] || 'Rejetées', count: stats.rejected }
               ].map((filter) => (
                 <Button
                   key={filter.value}
@@ -499,7 +506,7 @@ export default function OwnerApplicationsPage() {
                   onChange={(e) => setFilterProperty(e.target.value)}
                   className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
                 >
-                  <option value="all">Toutes les propriétés</option>
+                  <option value="all">{t?.filters?.allProperties?.[language] || 'Toutes les propriétés'}</option>
                   {properties.map((property) => (
                     <option key={property.id} value={property.id}>
                       {property.title}
@@ -523,10 +530,10 @@ export default function OwnerApplicationsPage() {
               <FileText className="w-10 h-10 text-gray-700" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              Aucune candidature trouvée
+              {t?.empty?.noApplications?.[language] || 'Aucune candidature trouvée'}
             </h3>
             <p className="text-gray-600 mb-4 max-w-md mx-auto">
-              Essayez de modifier vos filtres ou attendez de nouvelles candidatures
+              {t?.empty?.tryFilters?.[language] || 'Essayez de modifier vos filtres ou attendez de nouvelles candidatures'}
             </p>
           </motion.div>
         ) : (
@@ -553,7 +560,7 @@ export default function OwnerApplicationsPage() {
                             {groupApp.group?.name || 'Groupe'}
                           </h3>
                           <Badge className="bg-purple-100 text-purple-800 border-purple-200">
-                            Groupe
+                            {t?.card?.group?.[language] || 'Groupe'}
                           </Badge>
                           {getStatusBadge(groupApp.status)}
                         </div>
@@ -567,7 +574,7 @@ export default function OwnerApplicationsPage() {
                     {groupApp.group?.members && groupApp.group.members.length > 0 && (
                       <div className="mb-4 p-4 bg-purple-50/50 rounded-xl border border-purple-200/30">
                         <p className="text-sm font-semibold text-gray-900 mb-3">
-                          Membres ({groupApp.group.members.length}/{groupApp.group.max_members})
+                          {t?.card?.members?.[language] || 'Membres'} ({groupApp.group.members.length}/{groupApp.group.max_members})
                         </p>
                         <div className="space-y-2">
                           {groupApp.group.members.map((member, idx) => (
@@ -587,7 +594,7 @@ export default function OwnerApplicationsPage() {
                     {groupApp.combined_income && (
                       <div className="flex items-center gap-2 text-sm text-gray-700 mb-3">
                         <DollarSign className="w-4 h-4 text-green-600" />
-                        <span>Revenu combiné: <span className="font-semibold">{groupApp.combined_income.toLocaleString()}€/mois</span></span>
+                        <span>{t?.card?.combinedIncome?.[language] || 'Revenu combiné'}: <span className="font-semibold">{groupApp.combined_income.toLocaleString()}€/{t?.card?.perMonth?.[language] || 'mois'}</span></span>
                       </div>
                     )}
 
@@ -595,15 +602,15 @@ export default function OwnerApplicationsPage() {
                       <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
                         <div className="flex items-center gap-2 mb-1">
                           <MessageSquare className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm font-medium text-gray-700">Message :</span>
+                          <span className="text-sm font-medium text-gray-700">{t?.card?.message?.[language] || 'Message'} :</span>
                         </div>
                         <p className="text-sm text-gray-600">{groupApp.message}</p>
                       </div>
                     )}
 
                     <p className="text-xs text-gray-500 mt-3">
-                      Candidature du {new Date(groupApp.created_at).toLocaleDateString('fr-FR')} à{' '}
-                      {new Date(groupApp.created_at).toLocaleTimeString('fr-FR')}
+                      {t?.card?.applicationFrom?.[language] || 'Candidature du'} {new Date(groupApp.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')} {t?.card?.at?.[language] || 'à'}{' '}
+                      {new Date(groupApp.created_at).toLocaleTimeString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                     </p>
                   </div>
 
@@ -617,14 +624,14 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleMarkReviewing(groupApp.id, true)}
                         >
                           <Eye className="w-4 h-4 mr-2" />
-                          Réviser
+                          {t?.actions?.review?.[language] || 'Réviser'}
                         </Button>
                         <Button
                           className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => handleOpenActionModal('approve', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
                           <ThumbsUp className="w-4 h-4 mr-2" />
-                          Approuver
+                          {t?.actions?.approve?.[language] || 'Approuver'}
                         </Button>
                         <Button
                           variant="outline"
@@ -632,7 +639,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('reject', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
                           <ThumbsDown className="w-4 h-4 mr-2" />
-                          Rejeter
+                          {t?.actions?.reject?.[language] || 'Rejeter'}
                         </Button>
                       </>
                     )}
@@ -644,7 +651,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('approve', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
                           <ThumbsUp className="w-4 h-4 mr-2" />
-                          Approuver
+                          {t?.actions?.approve?.[language] || 'Approuver'}
                         </Button>
                         <Button
                           variant="outline"
@@ -652,7 +659,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('reject', groupApp.id, 'group', groupApp.group?.name || 'Groupe')}
                         >
                           <ThumbsDown className="w-4 h-4 mr-2" />
-                          Rejeter
+                          {t?.actions?.reject?.[language] || 'Rejeter'}
                         </Button>
                       </>
                     )}
@@ -662,17 +669,17 @@ export default function OwnerApplicationsPage() {
                         {groupApp.status === 'approved' ? (
                           <div className="text-green-600 font-semibold">
                             <CheckCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
-                            Approuvée
+                            {t?.status?.approved?.[language] || 'Approuvée'}
                           </div>
                         ) : (
                           <div className="text-red-600 font-semibold">
                             <XCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
-                            Rejetée
+                            {t?.status?.rejected?.[language] || 'Rejetée'}
                           </div>
                         )}
                         {groupApp.reviewed_at && (
                           <p className="text-xs mt-1">
-                            {new Date(groupApp.reviewed_at).toLocaleDateString('fr-FR')}
+                            {new Date(groupApp.reviewed_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                           </p>
                         )}
                       </div>
@@ -742,7 +749,7 @@ export default function OwnerApplicationsPage() {
                         <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Calendar className="w-4 h-4 text-gray-500" />
                           <span className="text-gray-700">
-                            Emménagement: {new Date(application.desired_move_in_date).toLocaleDateString('fr-FR')}
+                            {t?.card?.moveIn?.[language] || 'Emménagement'}: {new Date(application.desired_move_in_date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                           </span>
                         </div>
                       )}
@@ -750,7 +757,7 @@ export default function OwnerApplicationsPage() {
                       {application.lease_duration_months && (
                         <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
                           <Clock className="w-4 h-4 text-gray-500" />
-                          <span className="text-gray-700">{application.lease_duration_months} mois</span>
+                          <span className="text-gray-700">{application.lease_duration_months} {t?.card?.months?.[language] || 'mois'}</span>
                         </div>
                       )}
                     </div>
@@ -759,15 +766,15 @@ export default function OwnerApplicationsPage() {
                       <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 mb-3">
                         <div className="flex items-center gap-2 mb-1">
                           <MessageSquare className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm font-medium text-gray-700">Message :</span>
+                          <span className="text-sm font-medium text-gray-700">{t?.card?.message?.[language] || 'Message'} :</span>
                         </div>
                         <p className="text-sm text-gray-600">{application.message}</p>
                       </div>
                     )}
 
                     <p className="text-xs text-gray-500">
-                      Candidature du {new Date(application.created_at).toLocaleDateString('fr-FR')} à{' '}
-                      {new Date(application.created_at).toLocaleTimeString('fr-FR')}
+                      {t?.card?.applicationFrom?.[language] || 'Candidature du'} {new Date(application.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')} {t?.card?.at?.[language] || 'à'}{' '}
+                      {new Date(application.created_at).toLocaleTimeString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                     </p>
                   </div>
 
@@ -781,14 +788,14 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleMarkReviewing(application.id, false)}
                         >
                           <Eye className="w-4 h-4 mr-2" />
-                          Réviser
+                          {t?.actions?.review?.[language] || 'Réviser'}
                         </Button>
                         <Button
                           className="flex-1 rounded-xl bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => handleOpenActionModal('approve', application.id, 'individual', application.applicant_name)}
                         >
                           <ThumbsUp className="w-4 h-4 mr-2" />
-                          Approuver
+                          {t?.actions?.approve?.[language] || 'Approuver'}
                         </Button>
                         <Button
                           variant="outline"
@@ -796,7 +803,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('reject', application.id, 'individual', application.applicant_name)}
                         >
                           <ThumbsDown className="w-4 h-4 mr-2" />
-                          Rejeter
+                          {t?.actions?.reject?.[language] || 'Rejeter'}
                         </Button>
                       </>
                     )}
@@ -808,7 +815,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('approve', application.id, 'individual', application.applicant_name)}
                         >
                           <ThumbsUp className="w-4 h-4 mr-2" />
-                          Approuver
+                          {t?.actions?.approve?.[language] || 'Approuver'}
                         </Button>
                         <Button
                           variant="outline"
@@ -816,7 +823,7 @@ export default function OwnerApplicationsPage() {
                           onClick={() => handleOpenActionModal('reject', application.id, 'individual', application.applicant_name)}
                         >
                           <ThumbsDown className="w-4 h-4 mr-2" />
-                          Rejeter
+                          {t?.actions?.reject?.[language] || 'Rejeter'}
                         </Button>
                       </>
                     )}
@@ -826,17 +833,17 @@ export default function OwnerApplicationsPage() {
                         {application.status === 'approved' ? (
                           <div className="text-green-600 font-semibold">
                             <CheckCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
-                            Approuvée
+                            {t?.status?.approved?.[language] || 'Approuvée'}
                           </div>
                         ) : (
                           <div className="text-red-600 font-semibold">
                             <XCircle className="w-5 h-5 mx-auto lg:ml-auto mb-1" />
-                            Rejetée
+                            {t?.status?.rejected?.[language] || 'Rejetée'}
                           </div>
                         )}
                         {application.reviewed_at && (
                           <p className="text-xs mt-1">
-                            {new Date(application.reviewed_at).toLocaleDateString('fr-FR')}
+                            {new Date(application.reviewed_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                           </p>
                         )}
                       </div>
@@ -886,14 +893,16 @@ export default function OwnerApplicationsPage() {
 
                 {/* Title */}
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {actionModal.action === 'approve' ? 'Approuver la candidature' : 'Rejeter la candidature'}
+                  {actionModal.action === 'approve'
+                    ? (t?.modal?.approveTitle?.[language] || 'Approuver la candidature')
+                    : (t?.modal?.rejectTitle?.[language] || 'Rejeter la candidature')}
                 </h3>
 
                 {/* Description */}
                 <p className="text-gray-600 mb-2">
                   {actionModal.action === 'approve'
-                    ? 'Êtes-vous sûr de vouloir approuver la candidature de'
-                    : 'Êtes-vous sûr de vouloir rejeter la candidature de'
+                    ? (t?.modal?.approveConfirm?.[language] || 'Êtes-vous sûr de vouloir approuver la candidature de')
+                    : (t?.modal?.rejectConfirm?.[language] || 'Êtes-vous sûr de vouloir rejeter la candidature de')
                   }
                 </p>
                 <p className="font-semibold text-gray-900 mb-4">
@@ -904,12 +913,12 @@ export default function OwnerApplicationsPage() {
                 {actionModal.action === 'reject' && (
                   <div className="mb-6 text-left">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Raison du rejet (optionnel)
+                      {t?.modal?.rejectReasonLabel?.[language] || 'Raison du rejet (optionnel)'}
                     </label>
                     <textarea
                       value={rejectReason}
                       onChange={(e) => setRejectReason(e.target.value)}
-                      placeholder="Expliquez pourquoi vous rejetez cette candidature..."
+                      placeholder={t?.modal?.rejectReasonPlaceholder?.[language] || 'Expliquez pourquoi vous rejetez cette candidature...'}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
                       rows={4}
                       disabled={processingAction}
@@ -919,7 +928,7 @@ export default function OwnerApplicationsPage() {
 
                 {actionModal.action === 'approve' && (
                   <p className="text-sm text-gray-600 mb-8">
-                    Le candidat sera notifié de votre décision.
+                    {t?.modal?.notifyApplicant?.[language] || 'Le candidat sera notifié de votre décision.'}
                   </p>
                 )}
 
@@ -931,7 +940,7 @@ export default function OwnerApplicationsPage() {
                     onClick={handleCloseModal}
                     disabled={processingAction}
                   >
-                    Annuler
+                    {t?.modal?.cancel?.[language] || 'Annuler'}
                   </Button>
                   <Button
                     className={cn(
@@ -946,10 +955,12 @@ export default function OwnerApplicationsPage() {
                     {processingAction ? (
                       <>
                         <Clock className="w-4 h-4 mr-2 animate-spin" />
-                        Traitement...
+                        {t?.modal?.processing?.[language] || 'Traitement...'}
                       </>
                     ) : (
-                      actionModal.action === 'approve' ? 'Approuver' : 'Rejeter'
+                      actionModal.action === 'approve'
+                        ? (t?.actions?.approve?.[language] || 'Approuver')
+                        : (t?.actions?.reject?.[language] || 'Rejeter')
                     )}
                   </Button>
                 </div>

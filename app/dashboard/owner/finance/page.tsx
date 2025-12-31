@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import {
@@ -20,6 +21,8 @@ import {
 export default function FinanceReportPage() {
   const router = useRouter();
   const { setActiveRole } = useRole();
+  const { getSection, language } = useLanguage();
+  const t = getSection('dashboard')?.owner?.financePage;
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -61,8 +64,12 @@ export default function FinanceReportPage() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement des finances...</h3>
-          <p className="text-gray-600">Préparation de vos données</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {t?.loading?.title?.[language] || 'Chargement des finances...'}
+          </h3>
+          <p className="text-gray-600">
+            {t?.loading?.subtitle?.[language] || 'Préparation de vos données'}
+          </p>
         </div>
       </div>
     );
@@ -82,10 +89,10 @@ export default function FinanceReportPage() {
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
                 <BarChart3 className="w-6 h-6 text-gray-700" />
               </div>
-              Rapport Financier
+              {t?.header?.title?.[language] || 'Rapport Financier'}
             </h1>
             <p className="text-gray-600">
-              Vue d'ensemble complète de vos finances
+              {t?.header?.subtitle?.[language] || "Vue d'ensemble complète de vos finances"}
             </p>
           </div>
 
@@ -101,7 +108,9 @@ export default function FinanceReportPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 flex items-center justify-center">
                   <DollarSign className="w-5 h-5 text-amber-700" />
                 </div>
-                <p className="text-sm font-medium text-gray-700">Revenus Totaux</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {t?.kpi?.totalRevenue?.[language] || 'Revenus Totaux'}
+                </p>
               </div>
               <p className="text-3xl font-bold text-gray-900 mb-2">
                 €{financialData.totalRevenue.toLocaleString()}
@@ -109,7 +118,7 @@ export default function FinanceReportPage() {
               <div className="flex items-center gap-1 text-sm text-amber-700">
                 <ArrowUpRight className="w-4 h-4" />
                 <span className="font-semibold">{financialData.revenueChange}%</span>
-                <span className="text-gray-600">vs mois dernier</span>
+                <span className="text-gray-600">{t?.kpi?.vsLastMonth?.[language] || 'vs mois dernier'}</span>
               </div>
             </motion.div>
 
@@ -123,7 +132,9 @@ export default function FinanceReportPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
                   <TrendingDown className="w-5 h-5 text-red-700" />
                 </div>
-                <p className="text-sm font-medium text-gray-700">Dépenses Totales</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {t?.kpi?.totalExpenses?.[language] || 'Dépenses Totales'}
+                </p>
               </div>
               <p className="text-3xl font-bold text-gray-900 mb-2">
                 €{financialData.totalExpenses.toLocaleString()}
@@ -131,7 +142,7 @@ export default function FinanceReportPage() {
               <div className="flex items-center gap-1 text-sm text-red-700">
                 <ArrowUpRight className="w-4 h-4" />
                 <span className="font-semibold">{financialData.expensesChange}%</span>
-                <span className="text-gray-600">vs mois dernier</span>
+                <span className="text-gray-600">{t?.kpi?.vsLastMonth?.[language] || 'vs mois dernier'}</span>
               </div>
             </motion.div>
 
@@ -145,7 +156,9 @@ export default function FinanceReportPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-green-700" />
                 </div>
-                <p className="text-sm font-medium text-gray-700">Bénéfice Net</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {t?.kpi?.netProfit?.[language] || 'Bénéfice Net'}
+                </p>
               </div>
               <p className="text-3xl font-bold text-gray-900 mb-2">
                 €{financialData.netProfit.toLocaleString()}
@@ -153,7 +166,7 @@ export default function FinanceReportPage() {
               <div className="flex items-center gap-1 text-sm text-green-700">
                 <ArrowUpRight className="w-4 h-4" />
                 <span className="font-semibold">{financialData.profitChange}%</span>
-                <span className="text-gray-600">vs mois dernier</span>
+                <span className="text-gray-600">{t?.kpi?.vsLastMonth?.[language] || 'vs mois dernier'}</span>
               </div>
             </motion.div>
 
@@ -167,7 +180,9 @@ export default function FinanceReportPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
                   <PieChart className="w-5 h-5 text-blue-700" />
                 </div>
-                <p className="text-sm font-medium text-gray-700">Taux d'Occupation</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {t?.kpi?.occupancyRate?.[language] || "Taux d'Occupation"}
+                </p>
               </div>
               <p className="text-3xl font-bold text-gray-900 mb-2">
                 {financialData.occupancyRate}%
@@ -175,7 +190,7 @@ export default function FinanceReportPage() {
               <div className="flex items-center gap-1 text-sm text-blue-700">
                 <ArrowUpRight className="w-4 h-4" />
                 <span className="font-semibold">{financialData.occupancyChange}%</span>
-                <span className="text-gray-600">vs mois dernier</span>
+                <span className="text-gray-600">{t?.kpi?.vsLastMonth?.[language] || 'vs mois dernier'}</span>
               </div>
             </motion.div>
           </div>
@@ -188,41 +203,60 @@ export default function FinanceReportPage() {
           transition={{ delay: 0.3 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Détails Mensuels</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">
+            {t?.monthly?.title?.[language] || 'Détails Mensuels'}
+          </h2>
           <div className="space-y-3">
-            {financialData.monthlyBreakdown.map((month, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + idx * 0.05 }}
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-gradient-to-br from-gray-50/50 to-slate-50/50 rounded-xl border border-gray-200/50 hover:shadow-md transition-all"
-              >
-                <div className="flex-1 mb-3 sm:mb-0">
-                  <h4 className="text-lg font-bold text-gray-900">{month.month}</h4>
-                </div>
-                <div className="flex flex-wrap gap-6">
-                  <div className="text-left sm:text-right">
-                    <p className="text-xs text-gray-600 mb-1 font-medium">Revenus</p>
-                    <p className="font-bold text-green-700 text-lg">
-                      €{month.revenue.toLocaleString()}
-                    </p>
+            {financialData.monthlyBreakdown.map((month, idx) => {
+              // Map month abbreviations to translation keys
+              const monthKeys: Record<string, 'jan' | 'feb' | 'mar' | 'apr' | 'may' | 'jun' | 'jul' | 'aug' | 'sep' | 'oct' | 'nov' | 'dec'> = {
+                'Jan': 'jan', 'Fév': 'feb', 'Mar': 'mar', 'Avr': 'apr',
+                'Mai': 'may', 'Juin': 'jun', 'Juil': 'jul', 'Août': 'aug',
+                'Sep': 'sep', 'Oct': 'oct', 'Nov': 'nov', 'Déc': 'dec'
+              };
+              const monthKey = monthKeys[month.month];
+              const translatedMonth = monthKey ? (t?.months?.[monthKey]?.[language] || month.month) : month.month;
+
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + idx * 0.05 }}
+                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-gradient-to-br from-gray-50/50 to-slate-50/50 rounded-xl border border-gray-200/50 hover:shadow-md transition-all"
+                >
+                  <div className="flex-1 mb-3 sm:mb-0">
+                    <h4 className="text-lg font-bold text-gray-900">{translatedMonth}</h4>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <p className="text-xs text-gray-600 mb-1 font-medium">Dépenses</p>
-                    <p className="font-bold text-red-700 text-lg">
-                      €{month.expenses.toLocaleString()}
-                    </p>
+                  <div className="flex flex-wrap gap-6">
+                    <div className="text-left sm:text-right">
+                      <p className="text-xs text-gray-600 mb-1 font-medium">
+                        {t?.monthly?.revenue?.[language] || 'Revenus'}
+                      </p>
+                      <p className="font-bold text-green-700 text-lg">
+                        €{month.revenue.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-left sm:text-right">
+                      <p className="text-xs text-gray-600 mb-1 font-medium">
+                        {t?.monthly?.expenses?.[language] || 'Dépenses'}
+                      </p>
+                      <p className="font-bold text-red-700 text-lg">
+                        €{month.expenses.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-left sm:text-right">
+                      <p className="text-xs text-gray-600 mb-1 font-medium">
+                        {t?.monthly?.profit?.[language] || 'Bénéfice'}
+                      </p>
+                      <p className="font-bold text-purple-700 text-lg">
+                        €{month.profit.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <p className="text-xs text-gray-600 mb-1 font-medium">Bénéfice</p>
-                    <p className="font-bold text-purple-700 text-lg">
-                      €{month.profit.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -233,7 +267,9 @@ export default function FinanceReportPage() {
           transition={{ delay: 0.6 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8"
         >
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Revenus vs Dépenses</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">
+            {t?.chart?.title?.[language] || 'Revenus vs Dépenses'}
+          </h2>
           <div className="relative overflow-hidden h-64 flex items-center justify-center bg-gradient-to-br from-purple-50/50 via-white to-indigo-50/50 rounded-2xl border border-purple-200/30">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-purple-200/20 to-indigo-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -248,8 +284,12 @@ export default function FinanceReportPage() {
               >
                 <BarChart3 className="w-10 h-10 text-gray-700" />
               </motion.div>
-              <p className="text-gray-600 text-lg font-medium">Visualisation à venir</p>
-              <p className="text-sm text-gray-500 mt-2">Graphiques interactifs bientôt disponibles</p>
+              <p className="text-gray-600 text-lg font-medium">
+                {t?.chart?.comingSoon?.[language] || 'Visualisation à venir'}
+              </p>
+              <p className="text-sm text-gray-500 mt-2">
+                {t?.chart?.comingSoonSubtitle?.[language] || 'Graphiques interactifs bientôt disponibles'}
+              </p>
             </div>
           </div>
         </motion.div>
