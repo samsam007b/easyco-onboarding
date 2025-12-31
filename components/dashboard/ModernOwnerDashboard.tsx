@@ -326,7 +326,7 @@ export default function ModernOwnerDashboard() {
                     borderRadius: '12px',
                     padding: '12px',
                   }}
-                  formatter={(value: number) => [`€${value}`, '']}
+                  formatter={(value) => [`€${value ?? 0}`, '']}
                 />
                 <Line
                   type="monotone"
