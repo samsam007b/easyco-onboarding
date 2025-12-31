@@ -482,7 +482,7 @@ export default function HubCalendarPage() {
 
           {/* Days of week - V2 Fun */}
           <div className="grid grid-cols-7 gap-2 mb-2">
-            {DAYS.map((day, idx) => (
+            {DAYS.map((day: string, idx: number) => (
               <motion.div
                 key={day}
                 initial={{ opacity: 0, y: -10 }}

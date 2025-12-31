@@ -51,6 +51,7 @@ import {
   formatFileSize,
   getFileIcon,
 } from '@/types/documents.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Map icon names to icon components
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -69,6 +70,8 @@ const getCategoryIcon = (iconName: string) => {
 };
 
 export default function DocumentsPage() {
+  const { getSection, language } = useLanguage();
+  const t = getSection('hub')?.documents;
   const router = useRouter();
   const supabase = createClient();
 
@@ -178,7 +181,7 @@ export default function DocumentsPage() {
     if (!propertyId || !userId || !selectedFile) return;
 
     if (!uploadForm.title) {
-      alert('Veuillez donner un titre au document');
+      alert(t?.errors?.titleRequired?.[language] || 'Veuillez donner un titre au document');
       return;
     }
 
@@ -196,18 +199,18 @@ export default function DocumentsPage() {
         resetUploadForm();
         await loadData();
       } else {
-        alert(result.error || 'Erreur lors de l\'upload');
+        alert(result.error || (t?.errors?.uploadError?.[language] || 'Erreur lors de l\'upload'));
       }
     } catch (error) {
       console.error('[Documents] Upload error:', error);
-      alert('Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleDelete = async (documentId: string) => {
-    if (!confirm('Voulez-vous vraiment supprimer ce document ?')) return;
+    if (!confirm(t?.deleteConfirm?.[language] || 'Voulez-vous vraiment supprimer ce document ?')) return;
 
     try {
       const result = await documentService.deleteDocument(documentId);
@@ -217,11 +220,11 @@ export default function DocumentsPage() {
         setShowViewModal(false);
         await loadData();
       } else {
-        alert(result.error || 'Erreur lors de la suppression');
+        alert(result.error || (t?.errors?.deleteError?.[language] || 'Erreur lors de la suppression'));
       }
     } catch (error) {
       console.error('[Documents] Delete error:', error);
-      alert('Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
     }
   };
 
@@ -250,7 +253,7 @@ export default function DocumentsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -269,7 +272,7 @@ export default function DocumentsPage() {
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            ← Retour au hub
+            ← {t?.backToHub?.[language] || 'Retour au hub'}
           </Button>
 
           <div className="flex items-center justify-between mb-6">
@@ -279,9 +282,9 @@ export default function DocumentsPage() {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  Coffre-fort documents
+                  {t?.title?.[language] || 'Coffre-fort documents'}
                 </h1>
-                <p className="text-gray-600">Stockez et partagez vos documents importants</p>
+                <p className="text-gray-600">{t?.subtitle?.[language] || 'Stockez et partagez vos documents importants'}</p>
               </div>
             </div>
 
@@ -291,7 +294,7 @@ export default function DocumentsPage() {
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Upload document
+              {t?.uploadDocument?.[language] || 'Upload document'}
             </Button>
           </div>
 
@@ -303,7 +306,7 @@ export default function DocumentsPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Documents</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_documents || 0}
                   </p>
@@ -317,7 +320,7 @@ export default function DocumentsPage() {
             <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Stockage utilisé</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.storageUsed?.[language] || 'Stockage utilisé'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {formatFileSize(stats?.total_size_bytes)}
                   </p>
@@ -331,7 +334,7 @@ export default function DocumentsPage() {
             <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Expirent bientôt</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.expiringSoon?.[language] || 'Expirent bientôt'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.expiring_soon || 0}
                   </p>
@@ -345,7 +348,7 @@ export default function DocumentsPage() {
             <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Expirés</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.expired?.[language] || 'Expirés'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.expired || 0}
                   </p>
@@ -364,7 +367,7 @@ export default function DocumentsPage() {
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Rechercher un document..."
+                placeholder={t?.searchPlaceholder?.[language] || 'Rechercher un document...'}
                 className="pl-10 rounded-full"
               />
             </div>
@@ -377,7 +380,7 @@ export default function DocumentsPage() {
                 className="rounded-full flex-shrink-0 text-white border-none"
                 style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
               >
-                Tous
+                {t?.filters?.all?.[language] || 'Tous'}
               </Button>
               {DOCUMENT_CATEGORIES.slice(0, 5).map((cat) => {
                 const Icon = getCategoryIcon(cat.icon);
@@ -408,15 +411,15 @@ export default function DocumentsPage() {
               className="col-span-full bg-white rounded-3xl shadow-lg p-12 text-center"
             >
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Aucun document</h3>
-              <p className="text-gray-600 mb-6">Uploadez votre premier document</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.emptyState?.noDocuments?.[language] || 'Aucun document'}</h3>
+              <p className="text-gray-600 mb-6">{t?.emptyState?.uploadFirst?.[language] || 'Uploadez votre premier document'}</p>
               <Button
                 onClick={() => setShowUploadModal(true)}
                 className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Upload document
+                {t?.uploadDocument?.[language] || 'Upload document'}
               </Button>
             </motion.div>
           ) : (
@@ -459,10 +462,10 @@ export default function DocumentsPage() {
                       <span>{doc.uploader_name}</span>
                       <span>•</span>
                       <span>
-                        {new Date(doc.created_at).toLocaleDateString('fr-FR', {
-                          day: 'numeric',
-                          month: 'short',
-                        })}
+                        {new Date(doc.created_at).toLocaleDateString(
+                          language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
+                          { day: 'numeric', month: 'short' }
+                        )}
                       </span>
                     </div>
 
@@ -470,25 +473,25 @@ export default function DocumentsPage() {
                     {doc.is_expiring_soon && !doc.is_expired && (
                       <div className="flex items-center gap-1 text-xs text-yellow-700 bg-yellow-50 px-2 py-1 rounded-full mb-2">
                         <AlertTriangle className="w-3 h-3" />
-                        Expire le{' '}
-                        {new Date(doc.expires_at!).toLocaleDateString('fr-FR', {
-                          day: 'numeric',
-                          month: 'short',
-                        })}
+                        {t?.expiresOn?.[language] || 'Expire le'}{' '}
+                        {new Date(doc.expires_at!).toLocaleDateString(
+                          language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
+                          { day: 'numeric', month: 'short' }
+                        )}
                       </div>
                     )}
 
                     {doc.is_expired && (
                       <div className="flex items-center gap-1 text-xs text-red-700 bg-red-50 px-2 py-1 rounded-full mb-2">
                         <Calendar className="w-3 h-3" />
-                        Expiré
+                        {t?.expiredLabel?.[language] || 'Expiré'}
                       </div>
                     )}
 
                     {/* Private Badge */}
                     {doc.is_private && (
                       <Badge variant="secondary" className="text-xs">
-                        🔒 Privé
+                        🔒 {t?.privateLabel?.[language] || 'Privé'}
                       </Badge>
                     )}
                   </motion.div>
@@ -508,7 +511,7 @@ export default function DocumentsPage() {
             className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Upload un document</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t?.uploadModal?.title?.[language] || 'Upload un document'}</h2>
               <button
                 onClick={() => {
                   setShowUploadModal(false);
@@ -523,7 +526,7 @@ export default function DocumentsPage() {
             <div className="space-y-4">
               {/* File Upload Zone */}
               <div>
-                <Label>Fichier *</Label>
+                <Label>{t?.uploadModal?.file?.[language] || 'Fichier'} *</Label>
                 <div
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -549,16 +552,16 @@ export default function DocumentsPage() {
                         }}
                         className="rounded-full"
                       >
-                        Changer de fichier
+                        {t?.uploadModal?.changeFile?.[language] || 'Changer de fichier'}
                       </Button>
                     </div>
                   ) : (
                     <label className="cursor-pointer">
                       <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                       <p className="text-gray-600 mb-1">
-                        Glissez un fichier ici ou cliquez pour sélectionner
+                        {t?.uploadModal?.dragDropText?.[language] || 'Glissez un fichier ici ou cliquez pour sélectionner'}
                       </p>
-                      <p className="text-xs text-gray-500">PDF, Images, Documents (Max 50MB)</p>
+                      <p className="text-xs text-gray-500">{t?.uploadModal?.fileTypes?.[language] || 'PDF, Images, Documents (Max 50MB)'}</p>
                       <input
                         type="file"
                         onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
@@ -572,29 +575,29 @@ export default function DocumentsPage() {
 
               {/* Title */}
               <div>
-                <Label>Titre *</Label>
+                <Label>{t?.uploadModal?.docTitle?.[language] || 'Titre'} *</Label>
                 <Input
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
-                  placeholder="Ex: Contrat de bail 2024"
+                  placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'Ex: Contrat de bail 2024'}
                   className="rounded-xl"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <Label>Description (optionnel)</Label>
+                <Label>{t?.uploadModal?.description?.[language] || 'Description (optionnel)'}</Label>
                 <Textarea
                   value={uploadForm.description}
                   onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
-                  placeholder="Ajoutez des détails sur ce document..."
+                  placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Ajoutez des détails sur ce document...'}
                   className="rounded-xl min-h-[80px]"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <Label>Catégorie *</Label>
+                <Label>{t?.uploadModal?.category?.[language] || 'Catégorie'} *</Label>
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
                   {DOCUMENT_CATEGORIES.map((cat) => {
                     const Icon = getCategoryIcon(cat.icon);
@@ -622,7 +625,7 @@ export default function DocumentsPage() {
 
               {/* Expiration Date */}
               <div>
-                <Label>Date d'expiration (optionnel)</Label>
+                <Label>{t?.uploadModal?.expirationDate?.[language] || "Date d'expiration (optionnel)"}</Label>
                 <Input
                   type="date"
                   value={uploadForm.expires_at || ''}
@@ -641,7 +644,7 @@ export default function DocumentsPage() {
                   className="w-4 h-4 rounded border-gray-300"
                 />
                 <Label htmlFor="is_private" className="cursor-pointer">
-                  Document privé (visible uniquement par moi)
+                  {t?.uploadModal?.privateDocument?.[language] || 'Document privé (visible uniquement par moi)'}
                 </Label>
               </div>
             </div>
@@ -657,7 +660,7 @@ export default function DocumentsPage() {
                 className="flex-1 rounded-full"
                 disabled={isUploading}
               >
-                Annuler
+                {t?.uploadModal?.cancel?.[language] || 'Annuler'}
               </Button>
               <Button
                 onClick={handleUpload}
@@ -668,12 +671,12 @@ export default function DocumentsPage() {
                 {isUploading ? (
                   <>
                     <LoadingHouse size={20} className="mr-2" />
-                    Upload...
+                    {t?.uploadModal?.uploading?.[language] || 'Upload...'}
                   </>
                 ) : (
                   <>
                     <Upload className="w-4 h-4 mr-2" />
-                    Uploader
+                    {t?.uploadModal?.upload?.[language] || 'Uploader'}
                   </>
                 )}
               </Button>
@@ -691,7 +694,7 @@ export default function DocumentsPage() {
             className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Détails du document</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t?.viewModal?.title?.[language] || 'Détails du document'}</h2>
               <button
                 onClick={() => {
                   setShowViewModal(false);
@@ -722,7 +725,7 @@ export default function DocumentsPage() {
               {/* Description */}
               {selectedDocument.description && (
                 <div>
-                  <Label>Description</Label>
+                  <Label>{t?.viewModal?.description?.[language] || 'Description'}</Label>
                   <p className="text-sm text-gray-700 mt-1">{selectedDocument.description}</p>
                 </div>
               )}
@@ -730,22 +733,21 @@ export default function DocumentsPage() {
               {/* Meta Info */}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <Label>Uploadé par</Label>
+                  <Label>{t?.viewModal?.uploadedBy?.[language] || 'Uploadé par'}</Label>
                   <p className="text-gray-700 mt-1">{selectedDocument.uploader_name}</p>
                 </div>
                 <div>
-                  <Label>Date d'upload</Label>
+                  <Label>{t?.viewModal?.uploadDate?.[language] || "Date d'upload"}</Label>
                   <p className="text-gray-700 mt-1">
-                    {new Date(selectedDocument.created_at).toLocaleDateString('fr-FR', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
+                    {new Date(selectedDocument.created_at).toLocaleDateString(
+                      language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
+                      { day: 'numeric', month: 'long', year: 'numeric' }
+                    )}
                   </p>
                 </div>
                 {selectedDocument.expires_at && (
                   <div className="col-span-2">
-                    <Label>Date d'expiration</Label>
+                    <Label>{t?.viewModal?.expirationDate?.[language] || "Date d'expiration"}</Label>
                     <p
                       className={cn(
                         'mt-1',
@@ -756,15 +758,14 @@ export default function DocumentsPage() {
                           : 'text-gray-700'
                       )}
                     >
-                      {new Date(selectedDocument.expires_at).toLocaleDateString('fr-FR', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                      {selectedDocument.is_expired && ' (Expiré)'}
+                      {new Date(selectedDocument.expires_at).toLocaleDateString(
+                        language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
+                        { day: 'numeric', month: 'long', year: 'numeric' }
+                      )}
+                      {selectedDocument.is_expired && ` (${t?.expiredLabel?.[language] || 'Expiré'})`}
                       {selectedDocument.is_expiring_soon &&
                         !selectedDocument.is_expired &&
-                        ' (Expire bientôt)'}
+                        ` (${t?.expiresSoon?.[language] || 'Expire bientôt'})`}
                     </p>
                   </div>
                 )}
@@ -779,7 +780,7 @@ export default function DocumentsPage() {
                 variant="outline"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Télécharger
+                {t?.viewModal?.download?.[language] || 'Télécharger'}
               </Button>
               {selectedDocument.uploaded_by === userId && (
                 <Button
@@ -787,7 +788,7 @@ export default function DocumentsPage() {
                   className="flex-1 rounded-full bg-red-500 hover:bg-red-600 text-white"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Supprimer
+                  {t?.viewModal?.delete?.[language] || 'Supprimer'}
                 </Button>
               )}
             </div>

@@ -319,12 +319,12 @@ export default function InvitePage() {
                 {isGenerating ? (
                   <>
                     <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
-                    Generation...
+                    {t?.createLink?.generating?.[language] || 'Generation...'}
                   </>
                 ) : (
                   <>
                     <LinkIcon className="w-5 h-5 mr-2" />
-                    Generer le lien d'invitation
+                    {t?.createLink?.generateButton?.[language] || 'Generer le lien d\'invitation'}
                   </>
                 )}
               </Button>
@@ -336,7 +336,7 @@ export default function InvitePage() {
                     ? 'bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200'
                     : 'bg-gradient-to-r from-orange-50 to-yellow-50 border-orange-200'
                 }`}>
-                  <p className="text-sm text-gray-600 mb-1">Lien d'invitation ({selectedRole === 'owner' ? 'Proprietaire' : 'Resident'})</p>
+                  <p className="text-sm text-gray-600 mb-1">{t?.createLink?.inviteLink?.[language] || 'Lien d\'invitation'} ({selectedRole === 'owner' ? (t?.createLink?.owner?.[language] || 'Proprietaire') : (t?.createLink?.resident?.[language] || 'Resident')})</p>
                   <p className={`text-sm font-mono break-all ${
                     selectedRole === 'owner' ? 'text-purple-700' : 'text-orange-700'
                   }`}>
@@ -357,12 +357,12 @@ export default function InvitePage() {
                     {copiedType === 'link' ? (
                       <>
                         <Check className="w-5 h-5 mr-2" />
-                        Copie !
+                        {t?.createLink?.copied?.[language] || 'Copie !'}
                       </>
                     ) : (
                       <>
                         <Copy className="w-5 h-5 mr-2" />
-                        Copier le lien
+                        {t?.createLink?.copyLink?.[language] || 'Copier le lien'}
                       </>
                     )}
                   </Button>
@@ -412,7 +412,7 @@ export default function InvitePage() {
             <div className="flex items-center gap-2 mb-4">
               <Users className="w-5 h-5 text-orange-600" />
               <h2 className="text-xl font-bold text-gray-900">
-                Membres actuels ({members.length})
+                {t?.currentMembers?.title?.[language] || 'Membres actuels'} ({members.length})
               </h2>
             </div>
 
@@ -443,14 +443,14 @@ export default function InvitePage() {
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge className="bg-orange-100 text-orange-700 border-orange-200 text-xs">
-                        {member.role === 'resident' ? 'Resident' : member.role}
+                        {member.role === 'resident' ? (t?.currentMembers?.resident?.[language] || 'Resident') : member.role}
                       </Badge>
                       <Badge className={
                         member.status === 'active'
                           ? 'bg-green-100 text-green-700 border-green-200 text-xs'
                           : 'bg-gray-100 text-gray-700 border-gray-200 text-xs'
                       }>
-                        {member.status === 'active' ? 'Actif' : member.status}
+                        {member.status === 'active' ? (t?.currentMembers?.active?.[language] || 'Actif') : member.status}
                       </Badge>
                     </div>
                   </div>
