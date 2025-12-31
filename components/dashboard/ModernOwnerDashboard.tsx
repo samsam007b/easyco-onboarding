@@ -379,7 +379,7 @@ export default function ModernOwnerDashboard() {
                       borderRadius: '12px',
                       padding: '12px',
                     }}
-                    formatter={(value: number) => [`${value}%`, owner?.occupation || 'Occupation']}
+                    formatter={(value) => [`${value ?? 0}%`, owner?.occupation || 'Occupation']}
                   />
                   <Bar
                     dataKey="occupation"
