@@ -208,7 +208,7 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
               className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
             >
               <Settings className="w-5 h-5" />
-              <span className="font-medium">Profile Settings</span>
+              <span className="font-medium">{common?.profileSettings || 'Profile Settings'}</span>
             </button>
             <button
               onClick={handleLogout}

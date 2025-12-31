@@ -6,6 +6,7 @@ import { Bell, Check, Trash2, MessageCircle, Heart, Home, X } from 'lucide-react
 import { useNotifications } from '@/lib/hooks/use-notifications';
 import { Button } from '@/components/ui/button';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface NotificationsDropdownProps {
   userId: string;
@@ -15,6 +16,10 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { getSection } = useLanguage();
+
+  // Traductions
+  const notificationsT = getSection('notifications');
 
   const {
     notifications,
@@ -66,10 +71,10 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
+    if (minutes < 1) return notificationsT?.time?.justNow || 'Just now';
+    if (minutes < 60) return `${minutes}${notificationsT?.time?.minutesAgo || 'm ago'}`;
+    if (hours < 24) return `${hours}${notificationsT?.time?.hoursAgo || 'h ago'}`;
+    if (days < 7) return `${days}${notificationsT?.time?.daysAgo || 'd ago'}`;
     return date.toLocaleDateString();
   };
 
@@ -120,7 +125,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
           {/* Header */}
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-yellow-50">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
+              <h3 className="text-lg font-bold text-gray-900">{notificationsT?.title || 'Notifications'}</h3>
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-1 hover:bg-white/50 rounded-lg transition-colors"
@@ -137,7 +142,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                   className="text-xs"
                 >
                   <Check className="w-3 h-3 mr-1" />
-                  Mark all read
+                  {notificationsT?.markAllRead || 'Mark all read'}
                 </Button>
                 <Button
                   size="sm"
@@ -146,7 +151,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                   className="text-xs"
                 >
                   <Trash2 className="w-3 h-3 mr-1" />
-                  Clear read
+                  {notificationsT?.clearRead || 'Clear read'}
                 </Button>
               </div>
             )}
@@ -161,7 +166,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
             ) : notifications.length === 0 ? (
               <div className="p-8 text-center">
                 <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">No notifications yet</p>
+                <p className="text-gray-500 text-sm">{notificationsT?.noNotifications || 'No notifications yet'}</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100">
@@ -221,7 +226,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                 }}
                 className="w-full text-center text-sm text-[#4A148C] font-semibold hover:text-[#311B92] transition-colors"
               >
-                View all notifications
+                {notificationsT?.viewAll || 'View all notifications'}
               </button>
             </div>
           )}
