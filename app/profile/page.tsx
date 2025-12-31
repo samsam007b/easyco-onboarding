@@ -352,6 +352,11 @@ export default function ProfilePage() {
       setShowResetOnboardingDialog(false)
 
       setTimeout(() => {
+        // Handle null user_type - redirect to welcome for role selection
+        if (!userData.user_type) {
+          router.push('/welcome')
+          return
+        }
         if (userData.user_type === 'searcher') {
           router.push('/onboarding/searcher/profile-type')
         } else {

@@ -244,6 +244,10 @@ export async function middleware(request: NextRequest) {
       // If onboarding not completed, redirect to onboarding
       // BUT only if not already on an onboarding page (prevent loops)
       if (!userData.onboarding_completed && !pathname.startsWith('/onboarding')) {
+        // If user_type is null/undefined, redirect to welcome for role selection
+        if (!userData.user_type) {
+          return NextResponse.redirect(new URL(welcomeRoute, request.url))
+        }
         return NextResponse.redirect(
           new URL(`/onboarding/${userData.user_type}/basic-info`, request.url)
         )

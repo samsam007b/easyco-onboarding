@@ -75,7 +75,12 @@ export default function OnboardingCompletionPage() {
         if (!userData?.onboarding_completed) {
           // If not completed, redirect back to onboarding
           logger.debug('Onboarding not completed, redirecting back');
-          router.push(`/onboarding/${userData?.user_type}/basic-info`);
+          // If user_type is null/undefined, redirect to welcome for role selection
+          if (!userData?.user_type) {
+            router.push('/welcome');
+            return;
+          }
+          router.push(`/onboarding/${userData.user_type}/basic-info`);
           return;
         }
 
