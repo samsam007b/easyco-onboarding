@@ -114,7 +114,7 @@ export default function HubMembersPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const { language, getSection } = useLanguage();
-  const hub = getSection('hub');
+  const hub = getSection('dashboard')?.hub;
 
   useEffect(() => {
     loadMembers();

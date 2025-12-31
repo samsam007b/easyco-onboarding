@@ -84,7 +84,7 @@ export default function ModernTasksPage() {
   const router = useRouter();
   const supabase = createClient();
   const { language, getSection } = useLanguage();
-  const hub = getSection('hub');
+  const hub = getSection('dashboard')?.hub;
 
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState<TaskWithDetails[]>([]);

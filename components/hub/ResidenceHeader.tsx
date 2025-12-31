@@ -37,7 +37,7 @@ export default function ResidenceHeader() {
   const router = useRouter();
   const supabase = createClient();
   const { getSection } = useLanguage();
-  const hub = getSection('hub')?.residenceHeader;
+  const hub = getSection('dashboard')?.hub?.residenceHeader;
 
   const [propertyInfo, setPropertyInfo] = useState<PropertyInfo | null>(null);
   const [completion, setCompletion] = useState<CompletionData>({ percentage: 0, nextSteps: [] });

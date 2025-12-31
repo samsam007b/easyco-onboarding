@@ -75,7 +75,7 @@ export default function ModernFinancesPage() {
   const router = useRouter();
   const supabase = createClient();
   const { language, getSection } = useLanguage();
-  const hub = getSection('hub');
+  const hub = getSection('dashboard')?.hub;
 
   const [isLoading, setIsLoading] = useState(true);
   const [expenses, setExpenses] = useState<ExpenseWithDetails[]>([]);
