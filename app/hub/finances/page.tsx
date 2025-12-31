@@ -273,8 +273,8 @@ export default function ModernFinancesPage() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
-                boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
               }}
             >
               <Wallet className="w-6 h-6 text-white" />
@@ -293,7 +293,7 @@ export default function ModernFinancesPage() {
                 onClick={() => openHistoryModal('calendar')}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-medium shadow-sm"
+                className="h-9 text-sm rounded-xl border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50 hover:border-orange-300 font-medium shadow-sm"
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 {hub.finances?.calendar || 'Calendrier'}
@@ -304,7 +304,7 @@ export default function ModernFinancesPage() {
                 onClick={handleExport}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-medium shadow-sm"
+                className="h-9 text-sm rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium shadow-sm"
               >
                 <Download className="w-4 h-4 mr-2" />
                 PDF
@@ -316,13 +316,13 @@ export default function ModernFinancesPage() {
                 size="sm"
                 className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
-                  boxShadow: '0 4px 14px rgba(238, 87, 54, 0.4)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
                 }}
               >
                 <Scan className="w-4 h-4 mr-2" />
                 {hub.finances?.scan || 'Scanner'}
-                <Sparkles className="w-3.5 h-3.5 ml-1.5 text-yellow-200" />
+                <Sparkles className="w-3.5 h-3.5 ml-1.5 text-white/80" />
               </Button>
             </motion.div>
           </div>
@@ -330,23 +330,23 @@ export default function ModernFinancesPage() {
 
         {/* Colorful Stats Cards */}
         <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4">
-          {/* Total Card - Orange Gradient */}
+          {/* Total Card - Orange Gradient (palette officielle) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
+              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">{hub.finances?.stats?.total || 'Total'}</span>
+              <span className="text-sm font-medium text-[#e05747]">{hub.finances?.stats?.total || 'Total'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <DollarSign className="w-4 h-4 text-white" />
               </div>
@@ -354,79 +354,79 @@ export default function ModernFinancesPage() {
             <p className="text-2xl font-bold text-gray-900">€{totalExpenses.toFixed(0)}</p>
             <div className="flex items-center gap-2 mt-2">
               <MiniSparkline expenses={expenses} days={7} />
-              <span className="text-xs text-orange-600 font-medium">{hub.finances?.stats?.lastDays || '7 derniers jours'}</span>
+              <span className="text-xs text-[#ff651e] font-medium">{hub.finances?.stats?.lastDays || '7 derniers jours'}</span>
             </div>
           </motion.div>
 
-          {/* Your Share Card - Purple Gradient */}
+          {/* Your Share Card - Orange (cohérence Resident) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
-              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+              background: 'linear-gradient(135deg, #FFEDE5 0%, #FFD9C7 100%)',
+              boxShadow: '0 8px 24px rgba(255, 123, 25, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+              style={{ background: 'linear-gradient(135deg, #ff7b19, #ff9014)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">{hub.finances?.stats?.yourShare || 'Ta part'}</span>
+              <span className="text-sm font-medium text-[#f8572b]">{hub.finances?.stats?.yourShare || 'Ta part'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+                style={{ background: 'linear-gradient(135deg, #ff7b19, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">€{yourShare.toFixed(0)}</p>
             <div className="flex items-center gap-2 mt-2">
-              <div className="flex-1 h-2 bg-purple-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-2 bg-orange-100 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${totalExpenses > 0 ? (yourShare / totalExpenses) * 100 : 0}%` }}
                   transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
                   className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #8b5cf6, #a78bfa)' }}
+                  style={{ background: 'linear-gradient(90deg, #ff7b19, #ff9014)' }}
                 />
               </div>
-              <span className="text-xs text-purple-600 font-bold">
+              <span className="text-xs text-[#ff7b19] font-bold">
                 {totalExpenses > 0 ? Math.round((yourShare / totalExpenses) * 100) : 0}%
               </span>
             </div>
           </motion.div>
 
-          {/* Balance Card - Green/Red */}
+          {/* Balance Card - Vert/Rouge pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
               background: totalBalance >= 0
-                ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'
-                : 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+                ? 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)'
+                : 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
               boxShadow: totalBalance >= 0
-                ? '0 8px 24px rgba(34, 197, 94, 0.15)'
-                : '0 8px 24px rgba(239, 68, 68, 0.15)',
+                ? '0 8px 24px rgba(124, 184, 155, 0.15)'
+                : '0 8px 24px rgba(208, 128, 128, 0.15)',
             }}
           >
             <div
-              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
               style={{
                 background: totalBalance >= 0
-                  ? 'linear-gradient(135deg, #22c55e, #4ade80)'
-                  : 'linear-gradient(135deg, #ef4444, #f87171)',
+                  ? 'linear-gradient(135deg, #7CB89B, #9ECDB5)'
+                  : 'linear-gradient(135deg, #D08080, #E0A0A0)',
               }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className={cn('text-sm font-medium', totalBalance >= 0 ? 'text-green-700' : 'text-red-700')}>
+              <span className={cn('text-sm font-medium', totalBalance >= 0 ? 'text-[#5A9B7A]' : 'text-[#B06060]')}>
                 {hub.finances?.stats?.balance || 'Solde'}
               </span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{
                   background: totalBalance >= 0
-                    ? 'linear-gradient(135deg, #22c55e, #4ade80)'
-                    : 'linear-gradient(135deg, #ef4444, #f87171)',
+                    ? 'linear-gradient(135deg, #7CB89B, #9ECDB5)'
+                    : 'linear-gradient(135deg, #D08080, #E0A0A0)',
                 }}
               >
                 {totalBalance >= 0 ? (
@@ -436,26 +436,26 @@ export default function ModernFinancesPage() {
                 )}
               </div>
             </div>
-            <p className={cn('text-2xl font-bold', totalBalance >= 0 ? 'text-green-600' : 'text-red-600')}>
+            <p className={cn('text-2xl font-bold', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
               {totalBalance >= 0 ? '+' : ''}€{Math.abs(totalBalance).toFixed(0)}
             </p>
-            <p className={cn('text-xs font-medium mt-2', totalBalance >= 0 ? 'text-green-600' : 'text-red-600')}>
+            <p className={cn('text-xs font-medium mt-2', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
               {totalBalance >= 0 ? `💰 ${hub.finances?.stats?.youAreOwed || 'On te doit'}` : `💸 ${hub.finances?.stats?.youOwe || 'Tu dois'}`}
             </p>
           </motion.div>
         </motion.div>
 
-        {/* Charts Section with Shadows */}
+        {/* Charts Section with Shadows - Tous en orange */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <motion.div
             whileHover={{ y: -4 }}
             className="bg-white rounded-2xl p-5 shadow-lg border-2 border-orange-100"
-            style={{ boxShadow: '0 12px 32px rgba(238, 87, 54, 0.08)' }}
+            style={{ boxShadow: '0 12px 32px rgba(255, 101, 30, 0.08)' }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
@@ -466,13 +466,13 @@ export default function ModernFinancesPage() {
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl p-5 shadow-lg border-2 border-purple-100"
-            style={{ boxShadow: '0 12px 32px rgba(139, 92, 246, 0.08)' }}
+            className="bg-white rounded-2xl p-5 shadow-lg border-2 border-orange-100"
+            style={{ boxShadow: '0 12px 32px rgba(255, 123, 25, 0.08)' }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+                style={{ background: 'linear-gradient(135deg, #ff7b19, #ff9014)' }}
               >
                 <PieChart className="w-5 h-5 text-white" />
               </div>
@@ -507,7 +507,7 @@ export default function ModernFinancesPage() {
           {/* Recent Expenses */}
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-orange-400"
+            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-[#ff651e]"
             style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
           >
             <button
@@ -517,20 +517,20 @@ export default function ModernFinancesPage() {
               <div className="flex items-center gap-3">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
                 >
                   <Receipt className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-base font-bold text-gray-900">{hub.finances?.recentExpenses || 'Dépenses récentes'}</h3>
                 <Badge
                   className="text-xs px-2 py-0.5 font-bold border-none"
-                  style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)', color: 'white' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)', color: 'white' }}
                 >
                   {expenses.length}
                 </Badge>
               </div>
               <motion.div
-                className="flex items-center gap-1 text-sm text-gray-400 group-hover:text-orange-500 transition-colors"
+                className="flex items-center gap-1 text-sm text-gray-400 group-hover:text-[#ff651e] transition-colors"
                 whileHover={{ x: 4 }}
               >
                 <span className="font-medium">{hub.finances?.viewAll || 'Tout voir'}</span>
@@ -547,16 +547,16 @@ export default function ModernFinancesPage() {
             </div>
           </motion.div>
 
-          {/* Balances */}
+          {/* Balances - Vert pastel (sémantique muted) */}
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-emerald-400"
+            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-[#7CB89B]"
             style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
           >
             <div className="flex items-center gap-3 p-4 border-b border-gray-100">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
               >
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
@@ -574,7 +574,7 @@ export default function ModernFinancesPage() {
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                     className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-lg"
-                    style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+                    style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
                   >
                     <Check className="w-7 h-7 text-white" />
                   </motion.div>
@@ -593,18 +593,18 @@ export default function ModernFinancesPage() {
                       className={cn(
                         'flex items-center justify-between p-3 rounded-xl transition-all cursor-pointer',
                         balance.amount >= 0
-                          ? 'bg-gradient-to-r from-green-50 to-emerald-50/50 hover:shadow-md'
-                          : 'bg-gradient-to-r from-red-50 to-rose-50/50 hover:shadow-md'
+                          ? 'bg-gradient-to-r from-[#F0F7F4] to-[#E8F5EE] hover:shadow-md'
+                          : 'bg-gradient-to-r from-[#FDF5F5] to-[#FAE8E8] hover:shadow-md'
                       )}
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className={cn(
-                            'w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md',
-                            balance.amount >= 0
-                              ? 'bg-gradient-to-br from-green-500 to-emerald-600'
-                              : 'bg-gradient-to-br from-red-500 to-rose-600'
-                          )}
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md"
+                          style={{
+                            background: balance.amount >= 0
+                              ? 'linear-gradient(135deg, #7CB89B, #6BA888)'
+                              : 'linear-gradient(135deg, #D08080, #C07070)',
+                          }}
                         >
                           {balance.userName.charAt(0)}
                         </div>
@@ -618,7 +618,7 @@ export default function ModernFinancesPage() {
                       <p
                         className={cn(
                           'text-base font-bold tabular-nums',
-                          balance.amount >= 0 ? 'text-green-600' : 'text-red-600'
+                          balance.amount >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]'
                         )}
                       >
                         {balance.amount >= 0 ? '+' : ''}€{Math.abs(balance.amount).toFixed(2)}
@@ -632,23 +632,23 @@ export default function ModernFinancesPage() {
         </motion.div>
       </motion.div>
 
-      {/* Animated Floating Action Button */}
+      {/* Animated Floating Action Button - Palette officielle */}
       <motion.button
         onClick={() => setCreateMode('scanner')}
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
         animate={{
           boxShadow: [
-            '0 4px 20px rgba(238, 87, 54, 0.4)',
-            '0 8px 30px rgba(238, 87, 54, 0.6)',
-            '0 4px 20px rgba(238, 87, 54, 0.4)',
+            '0 4px 20px rgba(255, 101, 30, 0.4)',
+            '0 8px 30px rgba(255, 101, 30, 0.6)',
+            '0 4px 20px rgba(255, 101, 30, 0.4)',
           ],
         }}
         transition={{
           boxShadow: { repeat: Infinity, duration: 2 },
         }}
         className="lg:hidden fixed bottom-6 right-6 w-16 h-16 rounded-2xl flex items-center justify-center text-white z-40"
-        style={{ background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
       >
         <Scan className="w-7 h-7" />
       </motion.button>

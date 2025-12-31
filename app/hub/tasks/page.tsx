@@ -65,19 +65,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { taskService } from '@/lib/services/task-service';
 import type { TaskWithDetails, CreateTaskForm, CompleteTaskForm } from '@/types/tasks.types';
 
+// Catégories - Toutes en nuances d'orange pour cohérence interface Resident
 const CATEGORY_OPTIONS = [
-  { value: 'cleaning', label: 'Nettoyage', icon: Brush, color: 'bg-blue-100 text-blue-700' },
-  { value: 'groceries', label: 'Courses', icon: ShoppingCart, color: 'bg-green-100 text-green-700' },
-  { value: 'maintenance', label: 'Entretien', icon: Wrench, color: 'bg-yellow-100 text-yellow-700' },
-  { value: 'admin', label: 'Administratif', icon: ClipboardList, color: 'bg-purple-100 text-purple-700' },
-  { value: 'other', label: 'Autre', icon: Package, color: 'bg-gray-100 text-gray-700' },
+  { value: 'cleaning', label: 'Nettoyage', icon: Brush, color: 'bg-[#FFF5F0] text-[#e05747]' },
+  { value: 'groceries', label: 'Courses', icon: ShoppingCart, color: 'bg-[#FFEDE5] text-[#f8572b]' },
+  { value: 'maintenance', label: 'Entretien', icon: Wrench, color: 'bg-[#FFD9C7] text-[#ff651e]' },
+  { value: 'admin', label: 'Administratif', icon: ClipboardList, color: 'bg-[#fff5f0] text-[#ff7b19]' },
+  { value: 'other', label: 'Autre', icon: Package, color: 'bg-gray-100 text-gray-600' },
 ];
 
+// Priorités - Orange dominant + Rouge pastel uniquement pour urgent (sémantique)
 const PRIORITY_OPTIONS = [
-  { value: 'low', label: 'Basse', color: 'bg-gray-100 text-gray-600' },
-  { value: 'medium', label: 'Moyenne', color: 'bg-blue-100 text-blue-600' },
-  { value: 'high', label: 'Haute', color: 'bg-orange-100 text-orange-600' },
-  { value: 'urgent', label: 'Urgente', color: 'bg-red-100 text-red-600' },
+  { value: 'low', label: 'Basse', color: 'bg-gray-100 text-gray-500' },
+  { value: 'medium', label: 'Moyenne', color: 'bg-[#FFF5F0] text-[#ff7b19]' },
+  { value: 'high', label: 'Haute', color: 'bg-[#FFEDE5] text-[#f8572b]' },
+  { value: 'urgent', label: 'Urgente', color: 'bg-[#FDF5F5] text-[#D08080]' }, // Rouge pastel sémantique
 ];
 
 export default function ModernTasksPage() {
@@ -245,8 +247,8 @@ export default function ModernTasksPage() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
-                boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
               }}
             >
               <CheckCircle2 className="w-6 h-6 text-white" />
@@ -265,8 +267,8 @@ export default function ModernTasksPage() {
               size="sm"
               className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
-                boxShadow: '0 4px 14px rgba(238, 87, 54, 0.4)',
+                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -287,13 +289,13 @@ export default function ModernTasksPage() {
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
             />
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'Mes tâches'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
@@ -302,79 +304,79 @@ export default function ModernTasksPage() {
             <p className="text-xs text-orange-600 font-medium mt-2">{hub.tasks?.stats?.toDo || 'à faire'}</p>
           </motion.div>
 
-          {/* Pending Card - Purple Gradient */}
+          {/* Pending Card - Gris neutre (pas de couleur sémantique) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
-              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+              background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)',
+              boxShadow: '0 8px 24px rgba(156, 163, 175, 0.15)',
             }}
           >
-            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+              style={{ background: 'linear-gradient(135deg, #9CA3AF, #D1D5DB)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">{hub.tasks?.stats?.pendingLabel || 'En attente'}</span>
+              <span className="text-sm font-medium text-gray-600">{hub.tasks?.stats?.pendingLabel || 'En attente'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+                style={{ background: 'linear-gradient(135deg, #9CA3AF, #D1D5DB)' }}
               >
                 <Clock className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{pendingTasks.length}</p>
-            <p className="text-xs text-purple-600 font-medium mt-2">{pendingTasks.length !== 1 ? (hub.tasks?.stats?.tasksPlural || 'tâches') : (hub.tasks?.stats?.taskSingular || 'tâche')}</p>
+            <p className="text-xs text-gray-500 font-medium mt-2">{pendingTasks.length !== 1 ? (hub.tasks?.stats?.tasksPlural || 'tâches') : (hub.tasks?.stats?.taskSingular || 'tâche')}</p>
           </motion.div>
 
-          {/* Completed Card - Green Gradient */}
+          {/* Completed Card - Vert pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-              boxShadow: '0 8px 24px rgba(34, 197, 94, 0.15)',
+              background: 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)',
+              boxShadow: '0 8px 24px rgba(124, 184, 155, 0.15)',
             }}
           >
-            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+              style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-green-700">{hub.tasks?.stats?.completed || 'Terminées'}</span>
+              <span className="text-sm font-medium text-[#5A9B7A]">{hub.tasks?.stats?.completed || 'Terminées'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
               >
                 <CheckCircle2 className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{completedTasks.length}</p>
-            <p className="text-xs text-green-600 font-medium mt-2">{completedTasks.length !== 1 ? (hub.tasks?.stats?.completedPlural || 'complétées') : (hub.tasks?.stats?.completedSingular || 'complétée')}</p>
+            <p className="text-xs text-[#6BA888] font-medium mt-2">{completedTasks.length !== 1 ? (hub.tasks?.stats?.completedPlural || 'complétées') : (hub.tasks?.stats?.completedSingular || 'complétée')}</p>
           </motion.div>
 
-          {/* Overdue Card - Red Gradient */}
+          {/* Overdue Card - Rouge pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
-              boxShadow: '0 8px 24px rgba(239, 68, 68, 0.15)',
+              background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
+              boxShadow: '0 8px 24px rgba(208, 128, 128, 0.15)',
             }}
           >
-            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+              style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-red-700">{hub.tasks?.stats?.overdue || 'En retard'}</span>
+              <span className="text-sm font-medium text-[#B06060]">{hub.tasks?.stats?.overdue || 'En retard'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ef4444, #f87171)' }}
+                style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
               >
                 <AlertCircle className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{overdueTasks.length}</p>
-            <p className="text-xs text-red-600 font-medium mt-2">{overdueTasks.length !== 1 ? (hub.tasks?.stats?.urgentPlural || 'urgentes') : (hub.tasks?.stats?.urgentSingular || 'urgente')}</p>
+            <p className="text-xs text-[#C07070] font-medium mt-2">{overdueTasks.length !== 1 ? (hub.tasks?.stats?.urgentPlural || 'urgentes') : (hub.tasks?.stats?.urgentSingular || 'urgente')}</p>
           </motion.div>
         </motion.div>
 
@@ -388,14 +390,14 @@ export default function ModernTasksPage() {
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
             >
               <ClipboardList className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-base font-bold text-gray-900">{hub.tasks?.allTasks || 'Toutes les tâches'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)', color: 'white' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)', color: 'white' }}
             >
               {pendingTasks.length}
             </Badge>
@@ -417,8 +419,8 @@ export default function ModernTasksPage() {
                     whileHover={{ scale: 1.05, rotate: 5 }}
                     className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
                     style={{
-                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                      boxShadow: '0 8px 24px rgba(16, 185, 129, 0.35)',
+                      background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)',
+                      boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                     }}
                   >
                     <CheckCircle2 className="w-10 h-10 text-white" />
@@ -427,7 +429,7 @@ export default function ModernTasksPage() {
                       animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      <Sparkles className="w-5 h-5 text-amber-400" />
+                      <Sparkles className="w-5 h-5 text-white" />
                     </motion.div>
                   </motion.div>
                   <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en attente'}</p>
@@ -471,8 +473,8 @@ export default function ModernTasksPage() {
                               <Badge
                                 className="text-xs border-none text-white font-semibold shadow-sm"
                                 style={{
-                                  background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
-                                  boxShadow: '0 2px 8px rgba(124, 58, 237, 0.3)',
+                                  background: 'linear-gradient(135deg, #ff7b19 0%, #ff9014 100%)',
+                                  boxShadow: '0 2px 8px rgba(255, 123, 25, 0.3)',
                                 }}
                               >
                                 <RotateCw className="w-3 h-3 mr-1" />
@@ -483,8 +485,8 @@ export default function ModernTasksPage() {
                               <Badge
                                 className="text-xs text-white border-none font-semibold shadow-sm"
                                 style={{
-                                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                                  boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
+                                  background: 'linear-gradient(135deg, #D08080 0%, #C07070 100%)',
+                                  boxShadow: '0 2px 8px rgba(208, 128, 128, 0.3)',
                                 }}
                               >
                                 <AlertCircle className="w-3 h-3 mr-1" />
@@ -495,12 +497,12 @@ export default function ModernTasksPage() {
 
                           <div className="flex items-center gap-4 text-sm text-gray-600">
                             <span className="flex items-center gap-1">
-                              <Users className="w-4 h-4" style={{ color: '#ee5736' }} />
+                              <Users className="w-4 h-4" style={{ color: '#ff651e' }} />
                               {task.assigned_to_name}
                             </span>
                             {task.due_date && (
                               <span className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" style={{ color: '#ee5736' }} />
+                                <Calendar className="w-4 h-4" style={{ color: '#ff651e' }} />
                                 {new Date(task.due_date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-GB')}
                                 {task.days_until_due !== undefined && (
                                   <span className={cn(
@@ -528,8 +530,8 @@ export default function ModernTasksPage() {
                               size="sm"
                               className="rounded-full text-white font-semibold shadow-md"
                               style={{
-                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                                background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
+                                boxShadow: '0 4px 12px rgba(124, 184, 155, 0.35)',
                               }}
                             >
                               <Check className="w-4 h-4 mr-1" />
@@ -543,7 +545,7 @@ export default function ModernTasksPage() {
                               onClick={() => handleRotateTask(task.id)}
                               size="sm"
                               variant="outline"
-                              className="rounded-full border-2 border-purple-200 text-purple-600 hover:bg-purple-50"
+                              className="rounded-full border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50"
                             >
                               <RotateCw className="w-4 h-4" />
                             </Button>
@@ -564,7 +566,7 @@ export default function ModernTasksPage() {
         <DialogContent className="max-w-lg rounded-3xl border-2 border-orange-100">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Plus className="w-5 h-5" style={{ color: '#ee5736' }} />
+              <Plus className="w-5 h-5" style={{ color: '#ff651e' }} />
               {hub.tasks?.modal?.newTask || 'Nouvelle tâche'}
             </DialogTitle>
           </DialogHeader>
@@ -637,7 +639,7 @@ export default function ModernTasksPage() {
                 variant="outline"
                 onClick={() => setShowCreateModal(false)}
                 className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ee5736' }}
+                style={{ color: '#ff651e' }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
@@ -647,7 +649,7 @@ export default function ModernTasksPage() {
                 onClick={handleCreateTask}
                 disabled={isSubmitting || !createForm.title}
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
               >
                 {isSubmitting ? (hub.tasks?.modal?.creating || 'Création...') : (hub.tasks?.modal?.create || 'Créer')}
               </Button>
@@ -656,12 +658,12 @@ export default function ModernTasksPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Complete Task Modal - V2 Fun */}
+      {/* Complete Task Modal - V2 Fun avec vert pastel */}
       <Dialog open={showCompleteModal} onOpenChange={setShowCompleteModal}>
-        <DialogContent className="max-w-lg rounded-3xl border-2 border-emerald-100">
+        <DialogContent className="max-w-lg rounded-3xl border-2 border-[#D4E8DD]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              <CheckCircle2 className="w-5 h-5 text-[#7CB89B]" />
               {hub.tasks?.completeModal?.title || 'Terminer la tâche'}
             </DialogTitle>
           </DialogHeader>
@@ -671,17 +673,17 @@ export default function ModernTasksPage() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl p-4 border-2 border-emerald-100"
+                className="rounded-2xl p-4 border-2 border-[#D4E8DD]"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(236,253,245,1) 0%, rgba(255,255,255,1) 100%)',
+                  background: 'linear-gradient(135deg, #F0F7F4 0%, #FFFFFF 100%)',
                 }}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
                     style={{
-                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                      background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
+                      boxShadow: '0 4px 12px rgba(124, 184, 155, 0.35)',
                     }}
                   >
                     <CheckCircle2 className="w-5 h-5 text-white" />
@@ -697,14 +699,14 @@ export default function ModernTasksPage() {
 
               <div>
                 <Label className="font-semibold text-gray-700 flex items-center gap-2">
-                  <PenLine className="w-4 h-4" style={{ color: '#ee5736' }} />
+                  <PenLine className="w-4 h-4" style={{ color: '#ff651e' }} />
                   {hub.tasks?.completeModal?.notesLabel || 'Notes de complétion'}
                 </Label>
                 <Textarea
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
                   placeholder={hub.tasks?.completeModal?.notesPlaceholder || 'Comment ça s\'est passé ? (optionnel)'}
-                  className="rounded-xl mt-2 border-2 border-gray-200 focus:border-emerald-300"
+                  className="rounded-xl mt-2 border-2 border-gray-200 focus:border-[#9ECDB5]"
                 />
               </div>
 
@@ -721,8 +723,8 @@ export default function ModernTasksPage() {
                   disabled={isSubmitting}
                   className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
                   style={{
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                    boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
+                    background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
+                    boxShadow: '0 4px 16px rgba(124, 184, 155, 0.4)',
                   }}
                 >
                   <Check className="w-4 h-4 mr-2" />

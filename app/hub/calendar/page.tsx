@@ -10,6 +10,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import CalendarEventModal from '@/components/CalendarEventModal';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   Calendar as CalendarIcon,
   Plus,
@@ -67,12 +68,14 @@ interface CalendarEvent {
   createdByName?: string;
 }
 
-const MONTHS = [
+// Fallback months (French) - will be replaced by translations
+const MONTHS_FALLBACK = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
 ];
 
-const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+// Fallback days (French) - will be replaced by translations
+const DAYS_FALLBACK = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 const EVENT_COLORS = [
   'bg-gradient-to-br from-[#d9574f] to-[#ff5b21]',
@@ -86,6 +89,13 @@ const EVENT_COLORS = [
 export default function HubCalendarPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { getSection, language } = useLanguage();
+  const t = getSection('hub')?.calendar;
+
+  // Get translated months and days arrays
+  const MONTHS = t?.months?.[language] || MONTHS_FALLBACK;
+  const DAYS = t?.days?.[language] || DAYS_FALLBACK;
+
   const [isLoading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -170,7 +180,7 @@ export default function HubCalendarPage() {
         const startTime = new Date(event.start_time);
         const attendeeIds = event.event_attendees?.map((a: any) => a.user_id) || [];
         const attendeeNames = attendeeIds.map(id =>
-          id === user.id ? 'Toi' : userMap.get(id) || 'Inconnu'
+          id === user.id ? (t?.you?.[language] || 'Toi') : userMap.get(id) || (t?.unknown?.[language] || 'Inconnu')
         );
 
         return {
@@ -184,7 +194,7 @@ export default function HubCalendarPage() {
           attendeeNames,
           color: EVENT_COLORS[index % EVENT_COLORS.length],
           createdBy: event.created_by,
-          createdByName: event.created_by === user.id ? 'Toi' : userMap.get(event.created_by) || 'Inconnu'
+          createdByName: event.created_by === user.id ? (t?.you?.[language] || 'Toi') : userMap.get(event.created_by) || (t?.unknown?.[language] || 'Inconnu')
         };
       });
 
@@ -248,7 +258,7 @@ export default function HubCalendarPage() {
   };
 
   const handleDeleteEvent = async (eventId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+    if (!confirm(t?.deleteConfirm?.[language] || 'Êtes-vous sûr de vouloir supprimer cet événement ?')) {
       return;
     }
 
@@ -264,7 +274,7 @@ export default function HubCalendarPage() {
       await loadEvents();
     } catch (error) {
       console.error('Error deleting event:', error);
-      alert('Erreur lors de la suppression de l\'événement');
+      alert(t?.deleteError?.[language] || 'Erreur lors de la suppression de l\'événement');
     }
   };
 
@@ -279,7 +289,7 @@ export default function HubCalendarPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">Chargement...</p>
+          <p className="text-gray-600 font-medium">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -314,9 +324,9 @@ export default function HubCalendarPage() {
               <CalendarIcon className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Calendrier</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t?.title?.[language] || 'Calendrier'}</h1>
               <p className="text-sm text-gray-500">
-                {events.length} événement{events.length !== 1 ? 's' : ''} • {MONTHS[currentDate.getMonth()]}
+                {events.length} {events.length !== 1 ? (t?.events?.[language] || 'événements') : (t?.event?.[language] || 'événement')} • {MONTHS[currentDate.getMonth()]}
               </p>
             </div>
           </div>
@@ -332,7 +342,7 @@ export default function HubCalendarPage() {
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Nouvel événement
+              {t?.newEvent?.[language] || 'Nouvel événement'}
             </Button>
           </motion.div>
         </motion.div>
@@ -352,7 +362,7 @@ export default function HubCalendarPage() {
               style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">Aujourd'hui</span>
+              <span className="text-sm font-medium text-orange-700">{t?.today?.[language] || 'Aujourd\'hui'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
@@ -361,7 +371,7 @@ export default function HubCalendarPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{todayEvents.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-2">événement{todayEvents.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">{todayEvents.length !== 1 ? (t?.events?.[language] || 'événements') : (t?.event?.[language] || 'événement')}</p>
           </motion.div>
 
           {/* This Month Card - Purple Gradient */}
@@ -377,7 +387,7 @@ export default function HubCalendarPage() {
               style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">Ce mois</span>
+              <span className="text-sm font-medium text-purple-700">{t?.thisMonth?.[language] || 'Ce mois'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
@@ -386,7 +396,7 @@ export default function HubCalendarPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{events.length}</p>
-            <p className="text-xs text-purple-600 font-medium mt-2">événement{events.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-purple-600 font-medium mt-2">{events.length !== 1 ? (t?.events?.[language] || 'événements') : (t?.event?.[language] || 'événement')}</p>
           </motion.div>
 
           {/* Upcoming Card - Green Gradient */}
@@ -402,7 +412,7 @@ export default function HubCalendarPage() {
               style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-green-700">À venir</span>
+              <span className="text-sm font-medium text-green-700">{t?.upcoming?.[language] || 'À venir'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
@@ -411,7 +421,7 @@ export default function HubCalendarPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{upcomingEvents.length}</p>
-            <p className="text-xs text-green-600 font-medium mt-2">événement{upcomingEvents.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-green-600 font-medium mt-2">{upcomingEvents.length !== 1 ? (t?.events?.[language] || 'événements') : (t?.event?.[language] || 'événement')}</p>
           </motion.div>
         </motion.div>
 
@@ -429,7 +439,7 @@ export default function HubCalendarPage() {
                 className="text-xs border-none text-white font-bold ml-2"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
               >
-                {events.length} événements
+                {events.length} {events.length !== 1 ? (t?.events?.[language] || 'événements') : (t?.event?.[language] || 'événement')}
               </Badge>
             </h2>
 
@@ -454,7 +464,7 @@ export default function HubCalendarPage() {
                     boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
                   }}
                 >
-                  Aujourd'hui
+                  {t?.today?.[language] || 'Aujourd\'hui'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
@@ -536,7 +546,7 @@ export default function HubCalendarPage() {
                         {day}
                         {isTodayDay && (
                           <span className="text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded-full font-bold">
-                            Auj
+                            {t?.todayShort?.[language] || 'Auj'}
                           </span>
                         )}
                       </div>
@@ -586,7 +596,7 @@ export default function HubCalendarPage() {
             >
               <PartyPopper className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-base font-bold text-gray-900">Événements à venir</h3>
+            <h3 className="text-base font-bold text-gray-900">{t?.upcomingEvents?.[language] || 'Événements à venir'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
               style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)', color: 'white' }}
@@ -621,8 +631,8 @@ export default function HubCalendarPage() {
                     <Sparkles className="w-5 h-5 text-amber-400" />
                   </motion.div>
                 </motion.div>
-                <p className="font-bold text-gray-900 mb-2 text-lg">Aucun événement prévu</p>
-                <p className="text-sm text-gray-500">Créez votre premier événement !</p>
+                <p className="font-bold text-gray-900 mb-2 text-lg">{t?.noEventsPlanned?.[language] || 'Aucun événement prévu'}</p>
+                <p className="text-sm text-gray-500">{t?.createFirstEvent?.[language] || 'Créez votre premier événement !'}</p>
               </motion.div>
             ) : (
               events
@@ -659,7 +669,7 @@ export default function HubCalendarPage() {
                       <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600">
                         <Badge className="bg-orange-100 text-orange-700 font-semibold border-none">
                           <CalendarIcon className="w-3 h-3 mr-1" />
-                          {new Date(event.date).toLocaleDateString('fr-FR', {
+                          {new Date(event.date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE', {
                             weekday: 'short',
                             day: 'numeric',
                             month: 'short',
@@ -679,7 +689,7 @@ export default function HubCalendarPage() {
                           <Users className="w-3 h-3" style={{ color: '#ee5736' }} />
                           {event.attendeeNames && event.attendeeNames.length > 0
                             ? event.attendeeNames.join(', ')
-                            : 'Aucun participant'}
+                            : (t?.noParticipant?.[language] || 'Aucun participant')}
                         </span>
                       </div>
                     </div>

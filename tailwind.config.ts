@@ -148,7 +148,7 @@ const config: Config = {
         'gradient-owner-cta': 'var(--gradient-owner-cta)',
         'gradient-owner-vibrant': 'var(--gradient-owner-vibrant)',
 
-        // Resident gradients
+        // Resident gradients (Palette: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014)
         'gradient-resident': 'var(--gradient-resident)',
         'gradient-resident-logo': 'var(--gradient-resident-logo)',
         'gradient-resident-soft': 'var(--gradient-resident-soft)',
@@ -157,6 +157,7 @@ const config: Config = {
         'gradient-resident-dark': 'var(--gradient-resident-dark)',
         'gradient-resident-subtle': 'var(--gradient-resident-subtle)',
         'gradient-resident-cta': 'var(--gradient-resident-cta)',
+        'gradient-resident-vibrant': 'var(--gradient-resident-vibrant)',
       },
 
       // ============================================

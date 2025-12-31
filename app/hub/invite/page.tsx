@@ -28,8 +28,11 @@ import {
   copyInviteUrl
 } from '@/lib/services/invitation-service';
 import type { InvitedRole } from '@/types/invitation.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function InvitePage() {
+  const { getSection, language } = useLanguage();
+  const t = getSection('hub')?.invite;
   const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
@@ -80,7 +83,7 @@ export default function InvitePage() {
       setInviterName(
         userProfile?.first_name
           ? `${userProfile.first_name}${userProfile.last_name ? ' ' + userProfile.last_name : ''}`
-          : 'Un colocataire'
+          : (t?.aRoommate?.[language] || 'Un colocataire')
       );
 
       // Get property details
@@ -90,7 +93,7 @@ export default function InvitePage() {
         .eq('id', membership.property_id)
         .single();
 
-      setPropertyName(property?.title || 'Votre colocation');
+      setPropertyName(property?.title || (t?.yourColocation?.[language] || 'Votre colocation'));
 
       // Get all members
       const { data: membersData } = await supabase
@@ -126,12 +129,12 @@ export default function InvitePage() {
         setInviteToken(response.token);
         const url = `${window.location.origin}/invite/${response.token}`;
         setInviteUrl(url);
-        toast.success('Lien d\'invitation genere !');
+        toast.success(t?.toast?.linkGenerated?.[language] || 'Lien d\'invitation genere !');
       } else {
-        toast.error(response.message || 'Erreur lors de la generation');
+        toast.error(response.message || (t?.toast?.generationError?.[language] || 'Erreur lors de la generation'));
       }
     } catch (error) {
-      toast.error('Erreur lors de la generation du lien');
+      toast.error(t?.toast?.generationError?.[language] || 'Erreur lors de la generation du lien');
     } finally {
       setIsGenerating(false);
     }
@@ -142,7 +145,7 @@ export default function InvitePage() {
       const success = await copyInviteUrl(inviteUrl);
       if (success) {
         setCopiedType('link');
-        toast.success('Lien copie !');
+        toast.success(t?.toast?.linkCopied?.[language] || 'Lien copie !');
         setTimeout(() => setCopiedType(null), 2000);
       }
     }
@@ -165,7 +168,7 @@ export default function InvitePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -185,7 +188,7 @@ export default function InvitePage() {
             variant="ghost"
             className="mb-6 rounded-full hover:bg-orange-50 transition-colors"
           >
-            Retour
+            {t?.back?.[language] || 'Retour'}
           </Button>
 
           <div className="flex items-center gap-3 mb-2">
@@ -197,7 +200,7 @@ export default function InvitePage() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Inviter des colocataires
+                {t?.title?.[language] || 'Inviter des colocataires'}
               </h1>
               <p className="text-gray-600">
                 {propertyName}
@@ -215,25 +218,25 @@ export default function InvitePage() {
           <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-5 h-5 text-green-600" />
-              <span className="font-semibold text-green-800">Recompenses automatiques</span>
+              <span className="font-semibold text-green-800">{t?.rewards?.title?.[language] || 'Recompenses automatiques'}</span>
             </div>
             <p className="text-sm text-green-700 mb-3">
-              Quand quelqu'un rejoint avec votre lien, vous gagnez tous les deux des mois gratuits !
+              {t?.rewards?.description?.[language] || 'Quand quelqu\'un rejoint avec votre lien, vous gagnez tous les deux des mois gratuits !'}
             </p>
             <div className="flex gap-3">
               <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                 <div className="flex items-center justify-center gap-1">
                   <Home className="w-3.5 h-3.5 text-orange-600" />
-                  <span className="text-xs text-gray-600">Resident</span>
+                  <span className="text-xs text-gray-600">{t?.rewards?.resident?.[language] || 'Resident'}</span>
                 </div>
-                <p className="font-bold text-orange-600">+2 mois</p>
+                <p className="font-bold text-orange-600">{t?.rewards?.residentMonths?.[language] || '+2 mois'}</p>
               </div>
               <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                 <div className="flex items-center justify-center gap-1">
                   <Building2 className="w-3.5 h-3.5 text-purple-600" />
-                  <span className="text-xs text-gray-600">Proprio</span>
+                  <span className="text-xs text-gray-600">{t?.rewards?.owner?.[language] || 'Proprio'}</span>
                 </div>
-                <p className="font-bold text-purple-600">+3 mois</p>
+                <p className="font-bold text-purple-600">{t?.rewards?.ownerMonths?.[language] || '+3 mois'}</p>
               </div>
             </div>
           </Card>
@@ -249,17 +252,17 @@ export default function InvitePage() {
             <div className="flex items-center gap-2 mb-4">
               <LinkIcon className="w-5 h-5 text-orange-600" />
               <h2 className="text-xl font-bold text-gray-900">
-                Creer un lien d'invitation
+                {t?.createLink?.title?.[language] || 'Creer un lien d\'invitation'}
               </h2>
             </div>
 
             <p className="text-gray-600 mb-4">
-              Generez un lien unique et trackable pour inviter quelqu'un a rejoindre votre colocation.
+              {t?.createLink?.description?.[language] || 'Generez un lien unique et trackable pour inviter quelqu\'un a rejoindre votre colocation.'}
             </p>
 
             {/* Role Selection */}
             <div className="mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Inviter en tant que :</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">{t?.createLink?.inviteAs?.[language] || 'Inviter en tant que :'}</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => {
@@ -276,7 +279,7 @@ export default function InvitePage() {
                   <div className="flex items-center justify-center gap-2">
                     <Home className={`w-5 h-5 ${selectedRole === 'resident' ? 'text-orange-600' : 'text-gray-500'}`} />
                     <span className={`font-medium ${selectedRole === 'resident' ? 'text-orange-700' : 'text-gray-600'}`}>
-                      Resident
+                      {t?.createLink?.resident?.[language] || 'Resident'}
                     </span>
                   </div>
                 </button>
@@ -295,7 +298,7 @@ export default function InvitePage() {
                   <div className="flex items-center justify-center gap-2">
                     <Building2 className={`w-5 h-5 ${selectedRole === 'owner' ? 'text-purple-600' : 'text-gray-500'}`} />
                     <span className={`font-medium ${selectedRole === 'owner' ? 'text-purple-700' : 'text-gray-600'}`}>
-                      Proprietaire
+                      {t?.createLink?.owner?.[language] || 'Proprietaire'}
                     </span>
                   </div>
                 </button>

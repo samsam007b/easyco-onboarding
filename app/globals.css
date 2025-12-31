@@ -23,11 +23,12 @@
   --owner-light: #F3F1FF;
   --owner-dark: #4A148C;
 
-  /* RESIDENT - Orange (#ee5736 - couleur dominante) */
-  --resident-primary: #ee5736;
-  --resident-hover: #d94b2a;
-  --resident-light: #FFF3EF;
-  --resident-dark: #c23f21;
+  /* RESIDENT - Orange (#ff651e - couleur dominante) */
+  /* Palette officielle : #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
+  --resident-primary: #ff651e;
+  --resident-hover: #f8572b;
+  --resident-light: #FFF5F0;
+  --resident-dark: #e05747;
 
   /* Legacy Brand Colors (backward compatibility) */
   --easy-purple-900: #9c5698;   /* Primary Owner - UPDATED */
@@ -43,11 +44,13 @@
   --easy-yellow-100: #FFF9E6;   /* Backgrounds */
   --easy-yellow-50: #FFFEF0;    /* Lightest yellow */
 
-  --easy-orange-600: #d94b2a;   /* Hover - UPDATED */
-  --easy-orange-500: #ee5736;   /* Primary Resident - UPDATED */
-  --easy-orange-400: #FF926F;   /* Lighter */
+  --easy-orange-700: #e05747;   /* Dark - from palette */
+  --easy-orange-600: #f8572b;   /* Hover - from palette */
+  --easy-orange-500: #ff651e;   /* Primary Resident - DOMINANTE */
+  --easy-orange-400: #ff7b19;   /* Lighter - from palette */
+  --easy-orange-300: #ff9014;   /* Lightest accent - from palette */
   --easy-orange-100: #FFF0EB;   /* Backgrounds */
-  --easy-orange-50: #FFF9F7;    /* Lightest */
+  --easy-orange-50: #FFF5F0;    /* Lightest */
 
   /* Legacy support */
   --easy-purple: var(--easy-purple-900);
@@ -85,15 +88,17 @@
   --gradient-searcher-cta: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%); /* Logo authentique pour CTA */
   --gradient-searcher-vibrant: linear-gradient(135deg, #FFA040 0%, #FFD080 100%); /* Très visible */
 
-  /* Resident - Orange/Coral Gradient (Extrait du logo original - zone centrale) */
-  --gradient-resident-logo: linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%);
-  --gradient-resident: linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%); /* Logo authentique V1 */
-  --gradient-resident-soft: linear-gradient(135deg, #FFF3EF 0%, #ff8017 100%);
-  --gradient-resident-light: linear-gradient(135deg, #ff8017 0%, #FFA66B 100%);
-  --gradient-resident-medium: linear-gradient(135deg, #ff5b21 0%, #d9574f 100%);
-  --gradient-resident-dark: linear-gradient(135deg, #d9574f 0%, #c23f21 100%);
-  --gradient-resident-subtle: linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%);
-  --gradient-resident-cta: linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%); /* Logo authentique pour CTA */
+  /* Resident - Orange Gradient (Palette officielle Design System) */
+  /* Palette: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
+  --gradient-resident-logo: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
+  --gradient-resident: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%); /* Gradient principal */
+  --gradient-resident-soft: linear-gradient(135deg, #FFF5F0 0%, #ff9014 100%);
+  --gradient-resident-light: linear-gradient(135deg, #ff9014 0%, #ffb060 100%);
+  --gradient-resident-medium: linear-gradient(135deg, #ff651e 0%, #f8572b 100%);
+  --gradient-resident-dark: linear-gradient(135deg, #e05747 0%, #c24030 100%);
+  --gradient-resident-subtle: linear-gradient(135deg, #FFF5F0 0%, #FFE8DC 100%);
+  --gradient-resident-cta: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%); /* Pour CTA */
+  --gradient-resident-vibrant: linear-gradient(135deg, #f8572b 0%, #ff7b19 100%); /* Très visible */
 
   /* Owner - Purple/Mauve/Rose Gradient (Extrait du logo original - zone gauche) */
   --gradient-owner-logo: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%);
@@ -142,23 +147,24 @@
   --searcher-border: #FFE082;  /* Borders subtiles */
   --searcher-shadow: rgba(255, 193, 7, 0.2); /* Ombres */
 
-  /* 🟠 RESIDENT DESIGN SYSTEM - Orange/Corail/Terracotta */
-  --resident-50: #FFF9F7;      /* Backgrounds très subtils */
-  --resident-100: #FFF0EB;     /* Backgrounds légers */
-  --resident-200: #FFD4C4;     /* Hover backgrounds */
-  --resident-300: #FFB39A;     /* Borders, dividers */
-  --resident-400: #FF926F;     /* Icons secondaires */
-  --resident-500: #ee5736;     /* PRINCIPALE - Boutons, highlights */
-  --resident-600: #d94b2a;     /* Hover states actifs */
-  --resident-700: #c23f21;     /* Textes importants */
-  --resident-800: #a83319;     /* Headers, emphase */
-  --resident-900: #8e2814;     /* Textes ultra-importants */
+  /* 🟠 RESIDENT DESIGN SYSTEM - Orange (Palette officielle) */
+  /* Base: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
+  --resident-50: #FFF5F0;      /* Backgrounds très subtils */
+  --resident-100: #FFEDE5;     /* Backgrounds légers */
+  --resident-200: #FFD9C7;     /* Hover backgrounds */
+  --resident-300: #ff9014;     /* Borders, accents clairs - PALETTE */
+  --resident-400: #ff7b19;     /* Icons secondaires - PALETTE */
+  --resident-500: #ff651e;     /* PRINCIPALE - Boutons, highlights - PALETTE */
+  --resident-600: #f8572b;     /* Hover states actifs - PALETTE */
+  --resident-700: #e05747;     /* Textes importants - PALETTE */
+  --resident-800: #c24030;     /* Headers, emphase */
+  --resident-900: #a03525;     /* Textes ultra-importants */
 
-  /* Couleurs complémentaires Resident (pour variety) */
-  --resident-accent: #ff7050;  /* Accent corail */
-  --resident-muted: #FFCCBC;   /* Backgrounds désactivés */
-  --resident-border: #ffbfa8;  /* Borders subtiles */
-  --resident-shadow: rgba(238, 87, 54, 0.2); /* Ombres */
+  /* Couleurs complémentaires Resident (toujours dans les oranges) */
+  --resident-accent: #ff7b19;  /* Accent orange - from palette */
+  --resident-muted: #FFE8DC;   /* Backgrounds désactivés */
+  --resident-border: #ffc4a8;  /* Borders subtiles */
+  --resident-shadow: rgba(255, 101, 30, 0.2); /* Ombres - based on primary */
 
   /* 🟣 OWNER DESIGN SYSTEM - Mauve/Violet/Indigo */
   --owner-50: #F9F8FF;         /* Backgrounds très subtils */
@@ -190,7 +196,7 @@
   --gray-100: #F2F2F2;          /* Subtle backgrounds */
   --gray-50: #F9F9F9;           /* Page backgrounds */
 
-  /* Semantic Colors */
+  /* Semantic Colors - Standard (pour usage général) */
   --success-500: #10B981;       /* Green - success states */
   --success-100: #D1FAE5;       /* Success backgrounds */
   --error-500: #EF4444;         /* Red - error states */
@@ -199,6 +205,27 @@
   --warning-100: #FEF3C7;       /* Warning backgrounds */
   --info-500: #3B82F6;          /* Blue - info */
   --info-100: #DBEAFE;          /* Info backgrounds */
+
+  /* ============================================
+     SEMANTIC COLORS - MUTED/PASTEL
+     Pour interfaces où une couleur de rôle domine (ex: Resident = Orange)
+     Ces couleurs sont plus ternes pour ne pas dominer
+     ============================================ */
+
+  /* Succès/Terminé - Vert grisé/pastel */
+  --semantic-success-muted: #7CB89B;      /* Vert terne mais reconnaissable */
+  --semantic-success-bg: #F0F7F4;         /* Fond très léger */
+  --semantic-success-border: #C5E0D3;     /* Bordure subtile */
+
+  /* Erreur/Urgent - Rouge grisé/pastel */
+  --semantic-error-muted: #D08080;        /* Rouge terne mais reconnaissable */
+  --semantic-error-bg: #FDF5F5;           /* Fond très léger */
+  --semantic-error-border: #F0D0D0;       /* Bordure subtile */
+
+  /* En attente/Neutre - Gris chaud (pas de couleur) */
+  --semantic-pending-muted: #9CA3AF;      /* Gris neutre */
+  --semantic-pending-bg: #F9FAFB;         /* Fond très léger */
+  --semantic-pending-border: #E5E7EB;     /* Bordure subtile */
 
   /* Spacing Scale (8px base) */
   --spacing-0: 0;
