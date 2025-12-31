@@ -7354,6 +7354,167 @@ export const translations = {
           de: 'Herzlichen Glückwunsch! Deine Residenz ist vollständig!',
         },
       },
+      // Finances page translations
+      finances: {
+        loading: {
+          fr: 'Chargement...',
+          en: 'Loading...',
+          nl: 'Laden...',
+          de: 'Laden...',
+        },
+        title: {
+          fr: 'Finances',
+          en: 'Finances',
+          nl: 'Financiën',
+          de: 'Finanzen',
+        },
+        expensesPlural: {
+          fr: 'dépenses',
+          en: 'expenses',
+          nl: 'uitgaven',
+          de: 'Ausgaben',
+        },
+        expenseSingular: {
+          fr: 'dépense',
+          en: 'expense',
+          nl: 'uitgave',
+          de: 'Ausgabe',
+        },
+        total: {
+          fr: 'total',
+          en: 'total',
+          nl: 'totaal',
+          de: 'gesamt',
+        },
+        calendar: {
+          fr: 'Calendrier',
+          en: 'Calendar',
+          nl: 'Kalender',
+          de: 'Kalender',
+        },
+        scan: {
+          fr: 'Scanner',
+          en: 'Scan',
+          nl: 'Scannen',
+          de: 'Scannen',
+        },
+        stats: {
+          total: {
+            fr: 'Total',
+            en: 'Total',
+            nl: 'Totaal',
+            de: 'Gesamt',
+          },
+          lastDays: {
+            fr: '7 derniers jours',
+            en: 'Last 7 days',
+            nl: 'Laatste 7 dagen',
+            de: 'Letzte 7 Tage',
+          },
+          yourShare: {
+            fr: 'Ta part',
+            en: 'Your share',
+            nl: 'Jouw deel',
+            de: 'Dein Anteil',
+          },
+          balance: {
+            fr: 'Solde',
+            en: 'Balance',
+            nl: 'Saldo',
+            de: 'Saldo',
+          },
+          youAreOwed: {
+            fr: 'On te doit',
+            en: 'You are owed',
+            nl: 'Je krijgt nog',
+            de: 'Dir wird geschuldet',
+          },
+          youOwe: {
+            fr: 'Tu dois',
+            en: 'You owe',
+            nl: 'Je bent verschuldigd',
+            de: 'Du schuldest',
+          },
+        },
+        charts: {
+          progression: {
+            fr: 'Progression',
+            en: 'Progression',
+            nl: 'Voortgang',
+            de: 'Verlauf',
+          },
+          byCategory: {
+            fr: 'Par catégorie',
+            en: 'By category',
+            nl: 'Per categorie',
+            de: 'Nach Kategorie',
+          },
+        },
+        recentExpenses: {
+          fr: 'Dépenses récentes',
+          en: 'Recent expenses',
+          nl: 'Recente uitgaven',
+          de: 'Letzte Ausgaben',
+        },
+        viewAll: {
+          fr: 'Tout voir',
+          en: 'View all',
+          nl: 'Alles bekijken',
+          de: 'Alle anzeigen',
+        },
+        balancesBetweenRoommates: {
+          fr: 'Soldes entre colocs',
+          en: 'Balances between roommates',
+          nl: 'Saldi tussen huisgenoten',
+          de: 'Salden zwischen Mitbewohnern',
+        },
+        emptyBalance: {
+          title: {
+            fr: 'Tout est réglé !',
+            en: 'All settled!',
+            nl: 'Alles geregeld!',
+            de: 'Alles erledigt!',
+          },
+          description: {
+            fr: 'Aucun solde en attente',
+            en: 'No pending balances',
+            nl: 'Geen openstaande saldi',
+            de: 'Keine ausstehenden Salden',
+          },
+        },
+        owesYou: {
+          fr: 'Te doit',
+          en: 'Owes you',
+          nl: 'Is je verschuldigd',
+          de: 'Schuldet dir',
+        },
+        youOweThem: {
+          fr: 'Tu lui dois',
+          en: 'You owe them',
+          nl: 'Je bent verschuldigd',
+          de: 'Du schuldest ihnen',
+        },
+        modal: {
+          scanTitle: {
+            fr: 'Scanner un ticket',
+            en: 'Scan a receipt',
+            nl: 'Scan een bon',
+            de: 'Beleg scannen',
+          },
+          splitTitle: {
+            fr: 'Répartir la dépense',
+            en: 'Split the expense',
+            nl: 'Verdeel de uitgave',
+            de: 'Ausgabe aufteilen',
+          },
+          creating: {
+            fr: 'Création de la dépense...',
+            en: 'Creating the expense...',
+            nl: 'Uitgave aanmaken...',
+            de: 'Ausgabe wird erstellt...',
+          },
+        },
+      },
     },
 
     // Matching Section
