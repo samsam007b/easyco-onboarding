@@ -1092,6 +1092,726 @@ export const translations = {
       nl: 'Verwijderen...',
       de: 'Löschen...',
     },
+    logoutSuccess: {
+      fr: 'Déconnexion réussie',
+      en: 'Successfully logged out',
+      nl: 'Succesvol uitgelogd',
+      de: 'Erfolgreich abgemeldet',
+    },
+    logoutError: {
+      fr: 'Erreur lors de la déconnexion',
+      en: 'Logout failed',
+      nl: 'Uitloggen mislukt',
+      de: 'Abmeldung fehlgeschlagen',
+    },
+    profileSettings: {
+      fr: 'Paramètres du profil',
+      en: 'Profile Settings',
+      nl: 'Profielinstellingen',
+      de: 'Profileinstellungen',
+    },
+    logout: {
+      fr: 'Se déconnecter',
+      en: 'Log out',
+      nl: 'Uitloggen',
+      de: 'Abmelden',
+    },
+    leaveSession: {
+      fr: 'Quitter votre session',
+      en: 'Leave your session',
+      nl: 'Sessie verlaten',
+      de: 'Sitzung beenden',
+    },
+    myProfile: {
+      fr: 'Mon Profil',
+      en: 'My Profile',
+      nl: 'Mijn Profiel',
+      de: 'Mein Profil',
+    },
+    manageInfo: {
+      fr: 'Gérer mes informations',
+      en: 'Manage my information',
+      nl: 'Mijn informatie beheren',
+      de: 'Meine Informationen verwalten',
+    },
+    settings: {
+      fr: 'Paramètres',
+      en: 'Settings',
+      nl: 'Instellingen',
+      de: 'Einstellungen',
+    },
+    accountPreferences: {
+      fr: 'Préférences du compte',
+      en: 'Account preferences',
+      nl: 'Accountvoorkeuren',
+      de: 'Kontoeinstellungen',
+    },
+    preferencesAndPrivacy: {
+      fr: 'Préférences et confidentialité',
+      en: 'Preferences and privacy',
+      nl: 'Voorkeuren en privacy',
+      de: 'Einstellungen und Datenschutz',
+    },
+    completeProfile: {
+      fr: 'Compléter mon profil',
+      en: 'Complete my profile',
+      nl: 'Mijn profiel voltooien',
+      de: 'Mein Profil vervollständigen',
+    },
+    finances: {
+      fr: 'Finances',
+      en: 'Finances',
+      nl: 'Financiën',
+      de: 'Finanzen',
+    },
+    rentAndExpenses: {
+      fr: 'Loyer et dépenses',
+      en: 'Rent and expenses',
+      nl: 'Huur en uitgaven',
+      de: 'Miete und Ausgaben',
+    },
+    revenueAndExpenses: {
+      fr: 'Revenus et dépenses',
+      en: 'Revenue and expenses',
+      nl: 'Inkomsten en uitgaven',
+      de: 'Einnahmen und Ausgaben',
+    },
+    quickActions: {
+      fr: 'Actions Rapides',
+      en: 'Quick Actions',
+      nl: 'Snelle Acties',
+      de: 'Schnellaktionen',
+    },
+    openMenu: {
+      fr: 'Ouvrir le menu',
+      en: 'Open menu',
+      nl: 'Menu openen',
+      de: 'Menü öffnen',
+    },
+    closeMenu: {
+      fr: 'Fermer le menu',
+      en: 'Close menu',
+      nl: 'Menu sluiten',
+      de: 'Menü schließen',
+    },
+  },
+
+  // ============================================================================
+  // SETTINGS PAGE
+  // ============================================================================
+  settings: {
+    title: {
+      fr: 'Paramètres',
+      en: 'Settings',
+      nl: 'Instellingen',
+      de: 'Einstellungen',
+    },
+    subtitle: {
+      fr: 'Gérer votre compte et vos préférences',
+      en: 'Manage your account and preferences',
+      nl: 'Beheer uw account en voorkeuren',
+      de: 'Verwalten Sie Ihr Konto und Ihre Einstellungen',
+    },
+    loading: {
+      fr: 'Chargement...',
+      en: 'Loading...',
+      nl: 'Laden...',
+      de: 'Laden...',
+    },
+    back: {
+      fr: 'Retour',
+      en: 'Back',
+      nl: 'Terug',
+      de: 'Zurück',
+    },
+    categories: {
+      account: {
+        fr: 'Compte',
+        en: 'Account',
+        nl: 'Account',
+        de: 'Konto',
+      },
+      preferences: {
+        fr: 'Préférences',
+        en: 'Preferences',
+        nl: 'Voorkeuren',
+        de: 'Einstellungen',
+      },
+      advanced: {
+        fr: 'Avancé',
+        en: 'Advanced',
+        nl: 'Geavanceerd',
+        de: 'Erweitert',
+      },
+    },
+    badges: {
+      new: {
+        fr: 'Nouveau',
+        en: 'New',
+        nl: 'Nieuw',
+        de: 'Neu',
+      },
+      premium: {
+        fr: 'Premium',
+        en: 'Premium',
+        nl: 'Premium',
+        de: 'Premium',
+      },
+    },
+    sections: {
+      profile: {
+        title: {
+          fr: 'Profil',
+          en: 'Profile',
+          nl: 'Profiel',
+          de: 'Profil',
+        },
+        description: {
+          fr: 'Gérer vos informations personnelles',
+          en: 'Manage your personal information',
+          nl: 'Beheer uw persoonlijke gegevens',
+          de: 'Verwalten Sie Ihre persönlichen Daten',
+        },
+      },
+      security: {
+        title: {
+          fr: 'Sécurité',
+          en: 'Security',
+          nl: 'Beveiliging',
+          de: 'Sicherheit',
+        },
+        description: {
+          fr: 'Mot de passe et authentification',
+          en: 'Password and authentication',
+          nl: 'Wachtwoord en authenticatie',
+          de: 'Passwort und Authentifizierung',
+        },
+      },
+      verification: {
+        title: {
+          fr: 'Vérifications',
+          en: 'Verifications',
+          nl: 'Verificaties',
+          de: 'Verifizierungen',
+        },
+        description: {
+          fr: 'Téléphone, identité ITSME et badges',
+          en: 'Phone, ITSME identity and badges',
+          nl: 'Telefoon, ITSME-identiteit en badges',
+          de: 'Telefon, ITSME-Identität und Abzeichen',
+        },
+      },
+      privacy: {
+        title: {
+          fr: 'Confidentialité',
+          en: 'Privacy',
+          nl: 'Privacy',
+          de: 'Datenschutz',
+        },
+        description: {
+          fr: 'Contrôler la visibilité de votre profil',
+          en: 'Control your profile visibility',
+          nl: 'Beheer de zichtbaarheid van uw profiel',
+          de: 'Kontrolle über die Sichtbarkeit Ihres Profils',
+        },
+      },
+      privateCodes: {
+        title: {
+          fr: 'Codes Privés',
+          en: 'Private Codes',
+          nl: 'Privécodes',
+          de: 'Private Codes',
+        },
+        description: {
+          fr: "Codes d'invitation de votre résidence",
+          en: 'Invitation codes for your residence',
+          nl: 'Uitnodigingscodes voor uw woning',
+          de: 'Einladungscodes für Ihre Residenz',
+        },
+      },
+      residenceProfile: {
+        title: {
+          fr: 'Profil de la Résidence',
+          en: 'Residence Profile',
+          nl: 'Residentieprofiel',
+          de: 'Residenzprofil',
+        },
+        description: {
+          fr: 'Gérer les informations de votre résidence',
+          en: 'Manage your residence information',
+          nl: 'Beheer uw woninggegevens',
+          de: 'Verwalten Sie Ihre Residenzinformationen',
+        },
+      },
+      referrals: {
+        title: {
+          fr: 'Parrainage',
+          en: 'Referrals',
+          nl: 'Verwijzingen',
+          de: 'Empfehlungen',
+        },
+        description: {
+          fr: 'Invitez vos amis et gagnez des mois gratuits',
+          en: 'Invite friends and earn free months',
+          nl: 'Nodig vrienden uit en verdien gratis maanden',
+          de: 'Laden Sie Freunde ein und verdienen Sie kostenlose Monate',
+        },
+      },
+      invitations: {
+        title: {
+          fr: 'Invitations',
+          en: 'Invitations',
+          nl: 'Uitnodigingen',
+          de: 'Einladungen',
+        },
+        description: {
+          fr: 'Gérez vos invitations à rejoindre des colocations',
+          en: 'Manage your invitations to join shared housing',
+          nl: 'Beheer uw uitnodigingen om deel te nemen aan gedeelde huisvesting',
+          de: 'Verwalten Sie Ihre Einladungen zu WGs',
+        },
+      },
+      notifications: {
+        title: {
+          fr: 'Notifications',
+          en: 'Notifications',
+          nl: 'Meldingen',
+          de: 'Benachrichtigungen',
+        },
+        description: {
+          fr: 'Configurer vos préférences',
+          en: 'Configure your preferences',
+          nl: 'Configureer uw voorkeuren',
+          de: 'Konfigurieren Sie Ihre Einstellungen',
+        },
+      },
+      language: {
+        title: {
+          fr: 'Langue & Région',
+          en: 'Language & Region',
+          nl: 'Taal & Regio',
+          de: 'Sprache & Region',
+        },
+        description: {
+          fr: "Changer la langue de l'interface",
+          en: 'Change the interface language',
+          nl: 'Wijzig de interfacetaal',
+          de: 'Ändern Sie die Oberflächensprache',
+        },
+      },
+      email: {
+        title: {
+          fr: 'Emails',
+          en: 'Emails',
+          nl: 'E-mails',
+          de: 'E-Mails',
+        },
+        description: {
+          fr: 'Préférences de communications',
+          en: 'Communication preferences',
+          nl: 'Communicatievoorkeuren',
+          de: 'Kommunikationseinstellungen',
+        },
+      },
+      subscription: {
+        title: {
+          fr: 'Mon Abonnement',
+          en: 'My Subscription',
+          nl: 'Mijn Abonnement',
+          de: 'Mein Abonnement',
+        },
+        description: {
+          fr: 'Gérer votre plan et votre essai gratuit',
+          en: 'Manage your plan and free trial',
+          nl: 'Beheer uw abonnement en gratis proefperiode',
+          de: 'Verwalten Sie Ihren Plan und Ihre kostenlose Testversion',
+        },
+      },
+      payment: {
+        title: {
+          fr: 'Moyens de paiement',
+          en: 'Payment Methods',
+          nl: 'Betaalmethoden',
+          de: 'Zahlungsmethoden',
+        },
+        description: {
+          fr: 'Gérer vos cartes et méthodes de paiement',
+          en: 'Manage your cards and payment methods',
+          nl: 'Beheer uw kaarten en betaalmethoden',
+          de: 'Verwalten Sie Ihre Karten und Zahlungsmethoden',
+        },
+      },
+      invoices: {
+        title: {
+          fr: 'Factures',
+          en: 'Invoices',
+          nl: 'Facturen',
+          de: 'Rechnungen',
+        },
+        description: {
+          fr: 'Historique et téléchargement des factures',
+          en: 'Invoice history and downloads',
+          nl: 'Factuurgeschiedenis en downloads',
+          de: 'Rechnungsverlauf und Downloads',
+        },
+      },
+      devices: {
+        title: {
+          fr: 'Appareils',
+          en: 'Devices',
+          nl: 'Apparaten',
+          de: 'Geräte',
+        },
+        description: {
+          fr: 'Gérer vos sessions actives',
+          en: 'Manage your active sessions',
+          nl: 'Beheer uw actieve sessies',
+          de: 'Verwalten Sie Ihre aktiven Sitzungen',
+        },
+      },
+    },
+    help: {
+      title: {
+        fr: "Besoin d'aide ?",
+        en: 'Need help?',
+        nl: 'Hulp nodig?',
+        de: 'Brauchen Sie Hilfe?',
+      },
+      description: {
+        fr: "Consultez notre centre d'aide ou contactez le support",
+        en: 'Check our help center or contact support',
+        nl: 'Bekijk ons helpcentrum of neem contact op met support',
+        de: 'Besuchen Sie unser Hilfezentrum oder kontaktieren Sie den Support',
+      },
+      helpCenter: {
+        fr: "Centre d'aide",
+        en: 'Help Center',
+        nl: 'Helpcentrum',
+        de: 'Hilfezentrum',
+      },
+      contactSupport: {
+        fr: 'Contacter le support',
+        en: 'Contact Support',
+        nl: 'Contact opnemen met support',
+        de: 'Support kontaktieren',
+      },
+    },
+  },
+
+  // ============================================================================
+  // NOTIFICATIONS
+  // ============================================================================
+  notifications: {
+    title: {
+      fr: 'Notifications',
+      en: 'Notifications',
+      nl: 'Meldingen',
+      de: 'Benachrichtigungen',
+    },
+    markAllRead: {
+      fr: 'Tout marquer comme lu',
+      en: 'Mark all read',
+      nl: 'Alles als gelezen markeren',
+      de: 'Alle als gelesen markieren',
+    },
+    clearRead: {
+      fr: 'Effacer les lues',
+      en: 'Clear read',
+      nl: 'Gelezen wissen',
+      de: 'Gelesene löschen',
+    },
+    noNotifications: {
+      fr: 'Pas encore de notifications',
+      en: 'No notifications yet',
+      nl: 'Nog geen meldingen',
+      de: 'Noch keine Benachrichtigungen',
+    },
+    viewAll: {
+      fr: 'Voir toutes les notifications',
+      en: 'View all notifications',
+      nl: 'Alle meldingen bekijken',
+      de: 'Alle Benachrichtigungen anzeigen',
+    },
+    none: {
+      fr: 'Aucune notification',
+      en: 'No notifications',
+      nl: 'Geen meldingen',
+      de: 'Keine Benachrichtigungen',
+    },
+    unread: {
+      fr: 'non lues',
+      en: 'unread',
+      nl: 'ongelezen',
+      de: 'ungelesen',
+    },
+    clickToView: {
+      fr: 'Cliquez pour voir',
+      en: 'Click to view',
+      nl: 'Klik om te bekijken',
+      de: 'Klicken um anzuzeigen',
+    },
+    time: {
+      justNow: {
+        fr: "À l'instant",
+        en: 'Just now',
+        nl: 'Zojuist',
+        de: 'Gerade eben',
+      },
+      minutesAgo: {
+        fr: 'il y a {count}m',
+        en: '{count}m ago',
+        nl: '{count}m geleden',
+        de: 'vor {count}m',
+      },
+      hoursAgo: {
+        fr: 'il y a {count}h',
+        en: '{count}h ago',
+        nl: '{count}u geleden',
+        de: 'vor {count}h',
+      },
+      daysAgo: {
+        fr: 'il y a {count}j',
+        en: '{count}d ago',
+        nl: '{count}d geleden',
+        de: 'vor {count}T',
+      },
+    },
+    newApplication: {
+      fr: 'nouvelle candidature',
+      en: 'new application',
+      nl: 'nieuwe aanvraag',
+      de: 'neue Bewerbung',
+    },
+    newApplications: {
+      fr: 'nouvelles candidatures',
+      en: 'new applications',
+      nl: 'nieuwe aanvragen',
+      de: 'neue Bewerbungen',
+    },
+  },
+
+  // ============================================================================
+  // HEADER - NAVIGATION & MENUS
+  // ============================================================================
+  header: {
+    nav: {
+      residents: {
+        fr: 'Résidents',
+        en: 'Residents',
+        nl: 'Bewoners',
+        de: 'Bewohner',
+      },
+      tasks: {
+        fr: 'Tâches',
+        en: 'Tasks',
+        nl: 'Taken',
+        de: 'Aufgaben',
+      },
+      finances: {
+        fr: 'Finances',
+        en: 'Finances',
+        nl: 'Financiën',
+        de: 'Finanzen',
+      },
+      calendar: {
+        fr: 'Calendrier',
+        en: 'Calendar',
+        nl: 'Kalender',
+        de: 'Kalender',
+      },
+      messages: {
+        fr: 'Messages',
+        en: 'Messages',
+        nl: 'Berichten',
+        de: 'Nachrichten',
+      },
+      properties: {
+        fr: 'Propriétés',
+        en: 'Properties',
+        nl: 'Eigendommen',
+        de: 'Immobilien',
+      },
+      applications: {
+        fr: 'Candidatures',
+        en: 'Applications',
+        nl: 'Aanvragen',
+        de: 'Bewerbungen',
+      },
+      finance: {
+        fr: 'Finance',
+        en: 'Finance',
+        nl: 'Financiën',
+        de: 'Finanzen',
+      },
+      maintenance: {
+        fr: 'Maintenance',
+        en: 'Maintenance',
+        nl: 'Onderhoud',
+        de: 'Wartung',
+      },
+    },
+    quickActions: {
+      title: {
+        fr: 'Actions Rapides',
+        en: 'Quick Actions',
+        nl: 'Snelle Acties',
+        de: 'Schnellaktionen',
+      },
+      resident: {
+        payRent: {
+          label: {
+            fr: 'Payer le loyer',
+            en: 'Pay rent',
+            nl: 'Huur betalen',
+            de: 'Miete zahlen',
+          },
+          description: {
+            fr: 'Effectuer un paiement',
+            en: 'Make a payment',
+            nl: 'Een betaling doen',
+            de: 'Eine Zahlung vornehmen',
+          },
+        },
+        reportIssue: {
+          label: {
+            fr: 'Signaler un problème',
+            en: 'Report an issue',
+            nl: 'Een probleem melden',
+            de: 'Ein Problem melden',
+          },
+          description: {
+            fr: 'Créer une demande',
+            en: 'Create a request',
+            nl: 'Een verzoek aanmaken',
+            de: 'Eine Anfrage erstellen',
+          },
+        },
+        addExpense: {
+          label: {
+            fr: 'Ajouter une dépense',
+            en: 'Add expense',
+            nl: 'Uitgave toevoegen',
+            de: 'Ausgabe hinzufügen',
+          },
+          description: {
+            fr: 'Partager une dépense',
+            en: 'Share an expense',
+            nl: 'Een uitgave delen',
+            de: 'Eine Ausgabe teilen',
+          },
+        },
+        contactRoommates: {
+          label: {
+            fr: 'Contacter les colocataires',
+            en: 'Contact roommates',
+            nl: 'Contact huisgenoten',
+            de: 'Mitbewohner kontaktieren',
+          },
+          description: {
+            fr: 'Envoyer un message',
+            en: 'Send a message',
+            nl: 'Een bericht sturen',
+            de: 'Eine Nachricht senden',
+          },
+        },
+      },
+      owner: {
+        addProperty: {
+          label: {
+            fr: 'Ajouter une propriété',
+            en: 'Add property',
+            nl: 'Eigendom toevoegen',
+            de: 'Immobilie hinzufügen',
+          },
+          description: {
+            fr: 'Créer un nouveau bien',
+            en: 'Create a new property',
+            nl: 'Een nieuw eigendom aanmaken',
+            de: 'Eine neue Immobilie erstellen',
+          },
+        },
+        maintenanceTicket: {
+          label: {
+            fr: 'Ticket maintenance',
+            en: 'Maintenance ticket',
+            nl: 'Onderhoudsticket',
+            de: 'Wartungsticket',
+          },
+          description: {
+            fr: 'Signaler un problème',
+            en: 'Report an issue',
+            nl: 'Een probleem melden',
+            de: 'Ein Problem melden',
+          },
+        },
+        addExpense: {
+          label: {
+            fr: 'Ajouter une dépense',
+            en: 'Add expense',
+            nl: 'Uitgave toevoegen',
+            de: 'Ausgabe hinzufügen',
+          },
+          description: {
+            fr: 'Enregistrer une dépense',
+            en: 'Record an expense',
+            nl: 'Een uitgave registreren',
+            de: 'Eine Ausgabe erfassen',
+          },
+        },
+        viewAnalytics: {
+          label: {
+            fr: 'Voir les analytics',
+            en: 'View analytics',
+            nl: 'Analytics bekijken',
+            de: 'Analytics anzeigen',
+          },
+          description: {
+            fr: 'Performances détaillées',
+            en: 'Detailed performance',
+            nl: 'Gedetailleerde prestaties',
+            de: 'Detaillierte Leistung',
+          },
+        },
+      },
+    },
+    stats: {
+      tasks: {
+        fr: 'Tâches',
+        en: 'Tasks',
+        nl: 'Taken',
+        de: 'Aufgaben',
+      },
+      members: {
+        fr: 'Membres',
+        en: 'Members',
+        nl: 'Leden',
+        de: 'Mitglieder',
+      },
+      messages: {
+        fr: 'Messages',
+        en: 'Messages',
+        nl: 'Berichten',
+        de: 'Nachrichten',
+      },
+      revenue: {
+        fr: 'Revenus',
+        en: 'Revenue',
+        nl: 'Inkomsten',
+        de: 'Einnahmen',
+      },
+      roi: {
+        fr: 'ROI',
+        en: 'ROI',
+        nl: 'ROI',
+        de: 'ROI',
+      },
+      occupation: {
+        fr: 'Occupation',
+        en: 'Occupation',
+        nl: 'Bezetting',
+        de: 'Belegung',
+      },
+    },
   },
 
   // ============================================================================

@@ -64,7 +64,9 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 }: ModernResidentHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, getSection } = useLanguage();
+  const header = getSection('header');
+  const common = getSection('common');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -88,34 +90,34 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
     {
       id: 'members',
       href: '/hub/members',
-      label: 'Résidents',
+      label: header?.nav?.residents || 'Résidents',
       icon: Users,
       badge: activeMembersCount > 0 ? activeMembersCount : null,
     },
     {
       id: 'tasks',
       href: '/hub/tasks',
-      label: 'Tâches',
+      label: header?.nav?.tasks || 'Tâches',
       icon: CheckSquare,
       badge: pendingTasks > 0 ? pendingTasks : null,
     },
     {
       id: 'finances',
       href: '/hub/finances',
-      label: 'Finances',
+      label: header?.nav?.finances || 'Finances',
       icon: DollarSign,
       badge: yourBalance !== 0 ? '!' : null,
     },
     {
       id: 'calendar',
       href: '/hub/calendar',
-      label: 'Calendrier',
+      label: header?.nav?.calendar || 'Calendrier',
       icon: Calendar,
     },
     {
       id: 'messages',
       href: '/hub/messages',
-      label: 'Messages',
+      label: header?.nav?.messages || 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
     },
@@ -125,30 +127,30 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
     {
       id: 'pay-rent',
       href: '/hub/finances',
-      label: 'Payer le loyer',
+      label: header?.quickActions?.resident?.payRent?.label || 'Payer le loyer',
       icon: Receipt,
-      description: 'Effectuer un paiement',
+      description: header?.quickActions?.resident?.payRent?.description || 'Effectuer un paiement',
     },
     {
       id: 'report-issue',
       href: '/hub/tasks',
-      label: 'Signaler un problème',
+      label: header?.quickActions?.resident?.reportIssue?.label || 'Signaler un problème',
       icon: AlertCircle,
-      description: 'Créer une demande',
+      description: header?.quickActions?.resident?.reportIssue?.description || 'Créer une demande',
     },
     {
       id: 'add-expense',
       href: '/hub/finances',
-      label: 'Ajouter une dépense',
+      label: header?.quickActions?.resident?.addExpense?.label || 'Ajouter une dépense',
       icon: Plus,
-      description: 'Partager une dépense',
+      description: header?.quickActions?.resident?.addExpense?.description || 'Partager une dépense',
     },
     {
       id: 'contact-roommates',
       href: '/hub/messages',
-      label: 'Contacter les colocataires',
+      label: header?.quickActions?.resident?.contactRoommates?.label || 'Contacter les colocataires',
       icon: MessageCircle,
-      description: 'Envoyer un message',
+      description: header?.quickActions?.resident?.contactRoommates?.description || 'Envoyer un message',
     },
   ];
 
@@ -322,7 +324,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                 aria-haspopup="true"
               >
                 <Zap className="w-4 h-4" style={{ color: showQuickActions ? 'white' : '#ee5736' }} />
-                <span>Actions Rapides</span>
+                <span>{header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}</span>
                 <ChevronDown className={cn(
                   "w-4 h-4 transition-transform",
                   showQuickActions && "rotate-180"
@@ -347,7 +349,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       <div className="px-4 py-3 border-b border-gray-100">
                         <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                           <Zap className="w-4 h-4" style={{ color: '#ee5736' }} />
-                          Actions Rapides
+                          {header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}
                         </h3>
                       </div>
                       <div className="p-2">
@@ -536,19 +538,19 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {pendingTasks || 0}
                             </div>
-                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Tâches</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.tasks || 'Tâches'}</div>
                           </div>
                           <div className="text-center border-x border-gray-200">
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {activeMembersCount || 0}
                             </div>
-                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Membres</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.members || 'Membres'}</div>
                           </div>
                           <div className="text-center">
                             <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
                               {unreadMessages || 0}
                             </div>
-                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>Messages</div>
+                            <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.messages || 'Messages'}</div>
                           </div>
                         </div>
                       </div>
@@ -567,8 +569,8 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <User className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Mon Profil</span>
-                            <span className="text-xs text-gray-500">Gérer mes informations</span>
+                            <span className="text-gray-900 font-medium block">{common?.myProfile || 'Mon Profil'}</span>
+                            <span className="text-xs text-gray-500">{common?.manageInfo || 'Gérer mes informations'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -585,8 +587,8 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <DollarSign className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Finances</span>
-                            <span className="text-xs text-gray-500">Loyer et dépenses</span>
+                            <span className="text-gray-900 font-medium block">{common?.finances || 'Finances'}</span>
+                            <span className="text-xs text-gray-500">{common?.rentAndExpenses || 'Loyer et dépenses'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -603,8 +605,8 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <Settings className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Paramètres</span>
-                            <span className="text-xs text-gray-500">Préférences du compte</span>
+                            <span className="text-gray-900 font-medium block">{common?.settings || 'Paramètres'}</span>
+                            <span className="text-xs text-gray-500">{common?.accountPreferences || 'Préférences du compte'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -619,8 +621,8 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <LogOut className="w-4 h-4 text-red-600" />
                           </div>
                           <div className="flex-1 text-left">
-                            <span className="text-red-600 font-medium block">Se déconnecter</span>
-                            <span className="text-xs text-red-400">Quitter votre session</span>
+                            <span className="text-red-600 font-medium block">{common?.logout || 'Se déconnecter'}</span>
+                            <span className="text-xs text-red-400">{common?.leaveSession || 'Quitter votre session'}</span>
                           </div>
                         </button>
                       </div>

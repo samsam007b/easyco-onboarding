@@ -36,6 +36,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ModernOwnerHeaderProps {
   profile: {
@@ -58,10 +59,16 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 }: ModernOwnerHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { language, setLanguage, getSection } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
+
+  // Traductions
+  const header = getSection('header');
+  const common = getSection('common');
+  const notifications = getSection('notifications');
 
   const {
     monthlyRevenue = 0,
@@ -75,32 +82,32 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
     {
       id: 'properties',
       href: '/dashboard/owner/properties',
-      label: 'Propriétés',
+      label: header?.nav?.properties || 'Propriétés',
       icon: Building2,
     },
     {
       id: 'applications',
       href: '/dashboard/owner/applications',
-      label: 'Candidatures',
+      label: header?.nav?.applications || 'Candidatures',
       icon: Users,
       badge: pendingApplications > 0 ? pendingApplications : null,
     },
     {
       id: 'finance',
       href: '/dashboard/owner/finance',
-      label: 'Finance',
+      label: header?.nav?.finance || 'Finance',
       icon: DollarSign,
     },
     {
       id: 'maintenance',
       href: '/dashboard/owner/maintenance',
-      label: 'Maintenance',
+      label: header?.nav?.maintenance || 'Maintenance',
       icon: Wrench,
     },
     {
       id: 'messages',
       href: '/dashboard/owner/messages',
-      label: 'Messages',
+      label: header?.nav?.messages || 'Messages',
       icon: MessageCircle,
       badge: unreadMessages > 0 ? unreadMessages : null,
     },
@@ -110,30 +117,30 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
     {
       id: 'add-property',
       href: '/properties/add',
-      label: 'Ajouter une propriété',
+      label: header?.quickActions?.owner?.addProperty?.label || 'Ajouter une propriété',
       icon: Building2,
-      description: 'Créer un nouveau bien',
+      description: header?.quickActions?.owner?.addProperty?.description || 'Créer un nouveau bien',
     },
     {
       id: 'create-ticket',
       href: '/dashboard/owner/maintenance',
-      label: 'Ticket maintenance',
+      label: header?.quickActions?.owner?.maintenanceTicket?.label || 'Ticket maintenance',
       icon: Wrench,
-      description: 'Signaler un problème',
+      description: header?.quickActions?.owner?.maintenanceTicket?.description || 'Signaler un problème',
     },
     {
       id: 'add-expense',
       href: '/dashboard/owner/expenses/add',
-      label: 'Ajouter une dépense',
+      label: header?.quickActions?.owner?.addExpense?.label || 'Ajouter une dépense',
       icon: Receipt,
-      description: 'Enregistrer une dépense',
+      description: header?.quickActions?.owner?.addExpense?.description || 'Enregistrer une dépense',
     },
     {
       id: 'view-analytics',
       href: '/dashboard/owner/finance',
-      label: 'Voir les analytics',
+      label: header?.quickActions?.owner?.viewAnalytics?.label || 'Voir les analytics',
       icon: BarChart3,
-      description: 'Performances détaillées',
+      description: header?.quickActions?.owner?.viewAnalytics?.description || 'Performances détaillées',
     },
   ];
 
@@ -229,12 +236,12 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               <button
                 onClick={() => setShowQuickActions(!showQuickActions)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-purple-50 transition-all border border-gray-200 hover:border-purple-300"
-                aria-label="Menu actions rapides"
+                aria-label={header?.quickActions?.title || 'Actions Rapides'}
                 aria-expanded={showQuickActions}
                 aria-haspopup="true"
               >
                 <Zap className="w-4 h-4 text-purple-600" />
-                <span>Actions Rapides</span>
+                <span>{header?.quickActions?.title || 'Actions Rapides'}</span>
                 <ChevronDown className={cn(
                   "w-4 h-4 transition-transform",
                   showQuickActions && "rotate-180"
@@ -258,7 +265,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       <div className="px-4 py-3 border-b border-purple-200/50">
                         <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                           <Zap className="w-4 h-4 text-purple-600" />
-                          Actions Rapides
+                          {header?.quickActions?.title || 'Actions Rapides'}
                         </h3>
                       </div>
                       <div className="p-2">
@@ -303,7 +310,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     <DollarSign className="w-4 h-4 text-gray-700" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-600 font-medium">Revenus</p>
+                    <p className="text-xs text-gray-600 font-medium">{header?.stats?.revenue || 'Revenus'}</p>
                     <p className="text-sm font-bold text-purple-900">
                       €{monthlyRevenue.toLocaleString()}
                     </p>
@@ -316,7 +323,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     <div className="flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-purple-600 group-hover:scale-110 transition-transform" />
                       <div>
-                        <p className="text-xs text-gray-600 font-medium">ROI</p>
+                        <p className="text-xs text-gray-600 font-medium">{header?.stats?.roi || 'ROI'}</p>
                         <p className="text-sm font-bold text-purple-900">{roi}%</p>
                       </div>
                     </div>
@@ -355,7 +362,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
+                        <h3 className="font-semibold text-gray-900">{notifications?.title || 'Notifications'}</h3>
                       </div>
                       <div className="max-h-96 overflow-y-auto">
                         {pendingApplications > 0 && (
@@ -369,16 +376,19 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {pendingApplications} nouvelle{pendingApplications > 1 ? 's' : ''} candidature{pendingApplications > 1 ? 's' : ''}
+                                {pendingApplications > 1
+                                  ? `${pendingApplications} ${notifications?.newApplications || 'nouvelles candidatures'}`
+                                  : `1 ${notifications?.newApplication || 'nouvelle candidature'}`
+                                }
                               </p>
-                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                              <p className="text-xs text-gray-500">{notifications?.clickToView || 'Cliquez pour voir'}</p>
                             </div>
                           </Link>
                         )}
                         {(pendingApplications === 0 && unreadMessages === 0) && (
                           <div className="px-4 py-8 text-center text-gray-500">
                             <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">Aucune notification</p>
+                            <p className="text-sm">{notifications?.none || 'Aucune notification'}</p>
                           </div>
                         )}
                       </div>
@@ -484,19 +494,19 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             <div className="text-lg font-bold text-gray-900">
                               {stats?.monthlyRevenue ? `€${Math.round(stats.monthlyRevenue / 1000)}k` : '€0'}
                             </div>
-                            <div className="text-xs text-gray-600">Revenus</div>
+                            <div className="text-xs text-gray-600">{header?.stats?.revenue || 'Revenus'}</div>
                           </div>
                           <div className="text-center border-x border-purple-200/50">
                             <div className="text-lg font-bold text-gray-900">
                               {stats?.roi || 0}%
                             </div>
-                            <div className="text-xs text-gray-600">ROI</div>
+                            <div className="text-xs text-gray-600">{header?.stats?.roi || 'ROI'}</div>
                           </div>
                           <div className="text-center">
                             <div className="text-lg font-bold text-gray-900">
                               {stats?.occupation || 0}%
                             </div>
-                            <div className="text-xs text-gray-600">Occupation</div>
+                            <div className="text-xs text-gray-600">{header?.stats?.occupation || 'Occupation'}</div>
                           </div>
                         </div>
                       </div>
@@ -512,8 +522,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             <User className="w-4 h-4 text-purple-600" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Mon Profil</span>
-                            <span className="text-xs text-gray-500">Gérer mes informations</span>
+                            <span className="text-gray-900 font-medium block">{common?.myProfile || 'Mon Profil'}</span>
+                            <span className="text-xs text-gray-500">{common?.manageInfo || 'Gérer mes informations'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -527,8 +537,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             <DollarSign className="w-4 h-4 text-green-600" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Finance</span>
-                            <span className="text-xs text-gray-500">Revenus et dépenses</span>
+                            <span className="text-gray-900 font-medium block">{common?.finances || 'Finance'}</span>
+                            <span className="text-xs text-gray-500">{common?.revenueAndExpenses || 'Revenus et dépenses'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -542,8 +552,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             <Settings className="w-4 h-4 text-blue-600" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Paramètres</span>
-                            <span className="text-xs text-gray-500">Préférences et confidentialité</span>
+                            <span className="text-gray-900 font-medium block">{common?.settings || 'Paramètres'}</span>
+                            <span className="text-xs text-gray-500">{common?.preferencesAndPrivacy || 'Préférences et confidentialité'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -558,7 +568,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         >
                           <div className="flex items-center justify-center gap-2">
                             <Sparkles className="w-4 h-4" />
-                            <span>Compléter mon profil</span>
+                            <span>{common?.completeProfile || 'Compléter mon profil'}</span>
                           </div>
                         </Link>
                       </div>
@@ -574,7 +584,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
                           <LogOut className="w-4 h-4 text-red-600" />
                         </div>
-                        <span className="font-medium">Déconnexion</span>
+                        <span className="font-medium">{common?.logout || 'Se déconnecter'}</span>
                       </button>
                     </motion.div>
                   </>
@@ -586,7 +596,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
-              aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-label={mobileMenuOpen ? (common?.closeMenu || 'Fermer le menu') : (common?.openMenu || 'Ouvrir le menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
             >
@@ -642,7 +652,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                   <Link href="/properties/add" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-semibold">
                       <Plus className="w-4 h-4 mr-2" />
-                      Ajouter une propriété
+                      {header?.quickActions?.owner?.addProperty?.label || 'Ajouter une propriété'}
                     </Button>
                   </Link>
                 </div>
@@ -663,7 +673,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     href="/dashboard/owner/properties"
                     className="flex items-center gap-2 hover:text-purple-900 transition-colors group"
                   >
-                    <span className="text-gray-600 group-hover:text-purple-700">Occupation:</span>
+                    <span className="text-gray-600 group-hover:text-purple-700">{header?.stats?.occupation || 'Occupation'}:</span>
                     <strong className="text-purple-900 font-bold group-hover:scale-110 transition-transform inline-block">{occupation}%</strong>
                   </Link>
                 )}
@@ -672,7 +682,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     href="/dashboard/owner/applications"
                     className="flex items-center gap-2 hover:text-purple-900 transition-colors group"
                   >
-                    <span className="text-gray-600 group-hover:text-purple-700">Candidatures:</span>
+                    <span className="text-gray-600 group-hover:text-purple-700">{header?.nav?.applications || 'Candidatures'}:</span>
                     <strong className="text-purple-900 font-bold group-hover:scale-110 transition-transform inline-block">{pendingApplications}</strong>
                   </Link>
                 )}
@@ -681,7 +691,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                 href="/dashboard/owner/finance"
                 className="text-purple-600 hover:text-purple-800 transition text-xs font-medium flex items-center gap-1 group"
               >
-                Voir analytiques
+                {header?.quickActions?.owner?.viewAnalytics?.label || 'Voir analytiques'}
                 <TrendingUp className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
