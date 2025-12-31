@@ -4380,6 +4380,12 @@ export const translations = {
         nl: 'Bevestig wachtwoord',
         de: 'Passwort bestätigen',
       },
+      confirmPasswordPlaceholder: {
+        fr: 'Confirmez votre mot de passe',
+        en: 'Confirm your password',
+        nl: 'Bevestig je wachtwoord',
+        de: 'Bestätigen Sie Ihr Passwort',
+      },
       userTypeLabel: {
         fr: 'Je veux :',
         en: 'I want to:',
@@ -4520,6 +4526,12 @@ export const translations = {
         nl: 'Privacybeleid',
         de: 'Datenschutzrichtlinie',
       },
+      agreeToTerms: {
+        fr: 'J\'accepte les',
+        en: 'I agree to the',
+        nl: 'Ik ga akkoord met de',
+        de: 'Ich stimme den',
+      },
       signupButton: {
         fr: 'Créer un compte',
         en: 'Create Account',
@@ -4533,6 +4545,12 @@ export const translations = {
         de: 'Konto erstellen...',
       },
       haveAccount: {
+        fr: 'Vous avez déjà un compte ?',
+        en: 'Already have an account?',
+        nl: 'Heb je al een account?',
+        de: 'Haben Sie bereits ein Konto?',
+      },
+      hasAccount: {
         fr: 'Vous avez déjà un compte ?',
         en: 'Already have an account?',
         nl: 'Heb je al een account?',
