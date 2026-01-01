@@ -6,6 +6,7 @@ import { Heart } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,15 +18,32 @@ import {
 
 export default function EnhanceHobbiesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [newHobby, setNewHobby] = useState('');
 
+  // Map of hobby keys to English names (for storage)
+  const hobbyKeys = [
+    'reading', 'sports', 'cooking', 'music', 'movies', 'gaming',
+    'hiking', 'photography', 'travel', 'art', 'yoga', 'dancing',
+    'cycling', 'running', 'swimming', 'drawing', 'writing', 'gardening'
+  ];
+
+  // English names for storage compatibility
   const commonHobbies = [
     'Reading', 'Sports', 'Cooking', 'Music', 'Movies', 'Gaming',
     'Hiking', 'Photography', 'Travel', 'Art', 'Yoga', 'Dancing',
     'Cycling', 'Running', 'Swimming', 'Drawing', 'Writing', 'Gardening'
   ];
+
+  // Get translated hobby name
+  const getHobbyLabel = (hobby: string): string => {
+    const key = hobby.toLowerCase();
+    const translationKey = `profileEnhance.hobbies.commonList.${key}`;
+    const translated = t(translationKey);
+    return translated !== translationKey ? translated : hobby;
+  };
 
   useEffect(() => {
     const loadData = async () => {

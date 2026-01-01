@@ -6,6 +6,7 @@ import { User, MessageCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -16,6 +17,7 @@ import {
 
 export default function EnhanceAboutPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [bio, setBio] = useState('');
   const [aboutMe, setAboutMe] = useState('');
@@ -86,15 +88,15 @@ export default function EnhanceAboutPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('profileEnhance.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Tell Us About Yourself"
-        description="Share a bit about who you are (all fields are optional)"
+        title={t('profileEnhance.about.title')}
+        description={t('profileEnhance.about.description')}
         icon={<User className="w-8 h-8 text-orange-600" />}
       />
 
@@ -103,13 +105,13 @@ export default function EnhanceAboutPage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="searcher"
-            label="Short Bio"
-            helperText="A brief introduction that appears at the top of your profile"
+            label={t('profileEnhance.about.shortBio.label')}
+            helperText={t('profileEnhance.about.shortBio.helper')}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={2}
             maxLength={200}
-            placeholder="e.g., Tech student passionate about sustainability and outdoor activities..."
+            placeholder={t('profileEnhance.about.shortBio.placeholder')}
           />
         </EnhanceProfileSection>
 
@@ -117,13 +119,13 @@ export default function EnhanceAboutPage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="searcher"
-            label="More About Me"
-            helperText="Share more details about your lifestyle, interests, or what makes you unique"
+            label={t('profileEnhance.about.moreAboutMe.label')}
+            helperText={t('profileEnhance.about.moreAboutMe.helper')}
             value={aboutMe}
             onChange={(e) => setAboutMe(e.target.value)}
             rows={4}
             maxLength={500}
-            placeholder="e.g., I'm a communication student who loves techno and dancing. I work from home sometimes, enjoy cooking healthy meals, and like to keep a tidy space..."
+            placeholder={t('profileEnhance.about.moreAboutMe.placeholder')}
           />
         </EnhanceProfileSection>
 
@@ -132,11 +134,11 @@ export default function EnhanceAboutPage() {
           <div className="flex items-center gap-2 mb-2">
             <MessageCircle className="w-5 h-5 text-orange-600" />
             <label className="block text-sm font-medium text-gray-700">
-              What I'm Looking For
+              {t('profileEnhance.about.lookingFor.label')}
             </label>
           </div>
           <p className="text-xs text-gray-500 mb-3">
-            Describe your ideal living situation and the kind of people you'd like to live with
+            {t('profileEnhance.about.lookingFor.helper')}
           </p>
           <EnhanceProfileTextarea
             role="searcher"
@@ -145,7 +147,7 @@ export default function EnhanceAboutPage() {
             onChange={(e) => setLookingFor(e.target.value)}
             rows={3}
             maxLength={300}
-            placeholder="e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities..."
+            placeholder={t('profileEnhance.about.lookingFor.placeholder')}
           />
         </EnhanceProfileSection>
       </div>
@@ -156,14 +158,14 @@ export default function EnhanceAboutPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleNext}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

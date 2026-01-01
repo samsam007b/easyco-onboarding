@@ -207,7 +207,7 @@ export default function GroupSettingsPage() {
   };
 
   const handleLeaveGroup = async () => {
-    if (!confirm('Are you sure you want to leave this group?')) return;
+    if (!confirm(t('groupSettings.dangerZone.leaveGroup.confirm'))) return;
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -221,12 +221,12 @@ export default function GroupSettingsPage() {
 
       if (error) throw error;
 
-      toast.success('You left the group');
+      toast.success(t('groupSettings.dangerZone.leaveGroup.success'));
       setTimeout(() => router.push('/dashboard/searcher'), 1000);
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error leaving group:', error);
-      toast.error('Failed to leave group');
+      toast.error(t('groupSettings.dangerZone.leaveGroup.failed'));
     }
   };
 
@@ -242,12 +242,12 @@ export default function GroupSettingsPage() {
 
       if (error) throw error;
 
-      toast.success('Group deleted');
+      toast.success(t('groupSettings.dangerZone.deleteGroup.success'));
       setTimeout(() => router.push('/dashboard/searcher'), 1000);
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error deleting group:', error);
-      toast.error('Failed to delete group');
+      toast.error(t('groupSettings.dangerZone.deleteGroup.failed'));
       setIsDeleting(false);
     }
   };
@@ -255,7 +255,7 @@ export default function GroupSettingsPage() {
   const copyInviteCode = () => {
     if (inviteCode) {
       navigator.clipboard.writeText(inviteCode);
-      toast.success('Invite code copied!');
+      toast.success(t('groupSettings.inviteCode.copied'));
     }
   };
 
@@ -276,7 +276,7 @@ export default function GroupSettingsPage() {
           className="mb-6 text-[#4A148C] hover:opacity-70 transition flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
-          Back to Dashboard
+          {t('groupSettings.backToDashboard')}
         </button>
 
         {/* Header */}
@@ -286,35 +286,35 @@ export default function GroupSettingsPage() {
               <SettingsIcon className="w-6 h-6 text-purple-600" />
             </div>
             <h1 className="text-3xl font-bold text-[#4A148C]">
-              Group Settings
+              {t('groupSettings.title')}
             </h1>
           </div>
-          <p className="text-gray-600">Manage your group settings and members</p>
+          <p className="text-gray-600">{t('groupSettings.subtitle')}</p>
         </div>
 
         <div className="space-y-6">
           {/* Basic Settings */}
           <div className="bg-white rounded-3xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Basic Information</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupSettings.basicInfo.title')}</h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Group Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('groupSettings.basicInfo.groupName')}</label>
                 <Input
                   type="text"
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
-                  placeholder="Group name"
+                  placeholder={t('groupSettings.basicInfo.groupNamePlaceholder')}
                   maxLength={50}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('groupSettings.basicInfo.description')}</label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Group description"
+                  placeholder={t('groupSettings.basicInfo.descriptionPlaceholder')}
                   rows={3}
                   maxLength={500}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#4A148C] focus:ring-2 focus:ring-[#4A148C]/20 outline-none transition"
@@ -323,7 +323,7 @@ export default function GroupSettingsPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Maximum Members: {maxMembers}
+                  {t('groupSettings.basicInfo.maxMembers')}: {maxMembers}
                 </label>
                 <input
                   type="range"
@@ -338,8 +338,8 @@ export default function GroupSettingsPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                   <div>
-                    <div className="font-medium text-gray-900">Open to new members</div>
-                    <div className="text-sm text-gray-500">Allow people to find and join</div>
+                    <div className="font-medium text-gray-900">{t('groupSettings.basicInfo.openToNewMembers.title')}</div>
+                    <div className="text-sm text-gray-500">{t('groupSettings.basicInfo.openToNewMembers.description')}</div>
                   </div>
                   <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -357,8 +357,8 @@ export default function GroupSettingsPage() {
 
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                   <div>
-                    <div className="font-medium text-gray-900">Require approval</div>
-                    <div className="text-sm text-gray-500">Review before members join</div>
+                    <div className="font-medium text-gray-900">{t('groupSettings.basicInfo.requireApproval.title')}</div>
+                    <div className="text-sm text-gray-500">{t('groupSettings.basicInfo.requireApproval.description')}</div>
                   </div>
                   <button
                     onClick={() => setRequiresApproval(!requiresApproval)}
@@ -382,7 +382,7 @@ export default function GroupSettingsPage() {
                 disabled={isSaving}
                 className="w-full bg-[#4A148C] hover:bg-[#4A148C]/90"
               >
-                {isSaving ? 'Saving...' : 'Save Settings'}
+                {isSaving ? t('groupSettings.basicInfo.saving') : t('groupSettings.basicInfo.saveButton')}
               </Button>
             </div>
           </div>
@@ -390,7 +390,7 @@ export default function GroupSettingsPage() {
           {/* Invite Code */}
           {inviteCode && (
             <div className="bg-white rounded-3xl p-6 shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Invite Code</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupSettings.inviteCode.title')}</h2>
               <div className="flex gap-2">
                 <Input
                   type="text"
@@ -403,7 +403,7 @@ export default function GroupSettingsPage() {
                 </Button>
               </div>
               <p className="text-sm text-gray-500 mt-2">
-                Share this code with people you want to invite
+                {t('groupSettings.inviteCode.shareHint')}
               </p>
             </div>
           )}
@@ -412,7 +412,7 @@ export default function GroupSettingsPage() {
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Users className="w-5 h-5" />
-              Members ({members.length}/{maxMembers})
+              {t('groupSettings.members.title')} ({members.length}/{maxMembers})
             </h2>
 
             <div className="space-y-3">
@@ -444,19 +444,19 @@ export default function GroupSettingsPage() {
 
           {/* Danger Zone */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-red-200">
-            <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
+            <h2 className="text-xl font-semibold text-red-600 mb-4">{t('groupSettings.dangerZone.title')}</h2>
 
             <div className="space-y-3">
               {userRole !== 'creator' && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Leave this group</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('groupSettings.dangerZone.leaveGroup.description')}</p>
                   <Button
                     onClick={handleLeaveGroup}
                     variant="outline"
                     className="border-red-300 text-red-600 hover:bg-red-50"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
-                    Leave Group
+                    {t('groupSettings.dangerZone.leaveGroup.button')}
                   </Button>
                 </div>
               )}
@@ -464,7 +464,7 @@ export default function GroupSettingsPage() {
               {userRole === 'creator' && (
                 <div>
                   <p className="text-sm text-gray-600 mb-2">
-                    Permanently delete this group and remove all members
+                    {t('groupSettings.dangerZone.deleteGroup.description')}
                   </p>
                   {!showDeleteConfirm ? (
                     <Button
@@ -473,15 +473,15 @@ export default function GroupSettingsPage() {
                       className="border-red-300 text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Group
+                      {t('groupSettings.dangerZone.deleteGroup.button')}
                     </Button>
                   ) : (
                     <div className="p-4 bg-red-50 rounded-xl border-2 border-red-200">
                       <div className="flex items-start gap-2 mb-3">
                         <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                         <div className="text-sm text-red-900">
-                          <p className="font-medium">Are you absolutely sure?</p>
-                          <p className="mt-1">This action cannot be undone.</p>
+                          <p className="font-medium">{t('groupSettings.dangerZone.deleteGroup.confirmTitle')}</p>
+                          <p className="mt-1">{t('groupSettings.dangerZone.deleteGroup.confirmDescription')}</p>
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -490,14 +490,14 @@ export default function GroupSettingsPage() {
                           disabled={isDeleting}
                           className="flex-1 bg-red-600 hover:bg-red-700 text-white"
                         >
-                          {isDeleting ? 'Deleting...' : 'Yes, Delete Group'}
+                          {isDeleting ? t('groupSettings.dangerZone.deleteGroup.deleting') : t('groupSettings.dangerZone.deleteGroup.confirmButton')}
                         </Button>
                         <Button
                           onClick={() => setShowDeleteConfirm(false)}
                           variant="outline"
                           disabled={isDeleting}
                         >
-                          Cancel
+                          {t('groupSettings.dangerZone.cancel')}
                         </Button>
                       </div>
                     </div>
