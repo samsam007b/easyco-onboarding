@@ -153,41 +153,50 @@ export default function ExpenseHistoryModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0 bg-gradient-to-br from-white via-orange-50/30 to-white">
+      <DialogContent
+        className="max-w-4xl max-h-[90vh] overflow-hidden p-0 rounded-3xl border-2 border-orange-100"
+        style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
+      >
         <DialogTitle className="sr-only">{history?.title || 'Historique des dépenses'}</DialogTitle>
 
-        <div className="flex flex-col h-[90vh]">
-          {/* Header - Fun gradient background */}
+        {/* Decorative gradient circles */}
+        <div
+          className="absolute -right-20 -top-20 w-56 h-56 rounded-full opacity-15 pointer-events-none"
+          style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+        />
+        <div
+          className="absolute -left-16 -bottom-16 w-40 h-40 rounded-full opacity-10 pointer-events-none"
+          style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+        />
+
+        <div className="flex flex-col h-[90vh] relative z-10">
+          {/* Header - V3 Fun gradient background */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
-            className="flex-shrink-0 p-6 pb-4"
+            className="flex-shrink-0 p-6 pb-4 border-b-2 border-orange-100"
             style={{
-              background: 'linear-gradient(180deg, rgba(255,245,243,1) 0%, rgba(255,255,255,0) 100%)',
+              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
             }}
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-4">
                 <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                    boxShadow: '0 12px 32px rgba(255, 101, 30, 0.35)',
                   }}
                 >
                   <Receipt className="w-7 h-7 text-white" />
-                  <motion.div
-                    className="absolute inset-0 bg-white/20"
-                    animate={{ opacity: [0, 0.3, 0] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                  />
                 </motion.div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     {history?.title || 'Historique des dépenses'}
-                    <DollarSign className="w-5 h-5" style={{ color: '#ff651e' }} />
+                    <Sparkles className="w-5 h-5" style={{ color: '#ff651e' }} />
                   </h2>
                   <p className="text-sm text-gray-500 flex items-center gap-2">
                     <Badge
@@ -277,33 +286,36 @@ export default function ExpenseHistoryModal({
 
                 {/* Close Button */}
                 <motion.button
-                  whileHover={{ scale: 1.1, rotate: 90 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={onClose}
-                  className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors shadow-sm"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                    boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
+                  }}
                 >
                   <X className="w-5 h-5" />
                 </motion.button>
               </div>
             </div>
 
-            {/* Search & Filters - Enhanced styling */}
+            {/* Search & Filters - V3 Fun styling */}
             <div className="flex items-center gap-3">
-              <motion.div
-                whileFocus={{ scale: 1.01 }}
-                className="relative flex-1"
-              >
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div className="relative flex-1">
+                <div
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                >
+                  <Search className="w-4 h-4" style={{ color: '#ff651e' }} />
+                </div>
                 <Input
                   placeholder={history?.searchPlaceholder || 'Rechercher une dépense...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 py-6 rounded-2xl border-2 border-gray-200 focus:border-orange-300 text-base shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
-                  }}
+                  className="pl-14 py-6 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 focus:bg-orange-50/30 text-base transition-all"
                 />
-              </motion.div>
+              </div>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -416,7 +428,7 @@ export default function ExpenseHistoryModal({
           </motion.div>
 
           {/* Content - Animated list/calendar */}
-          <div className="flex-1 overflow-y-auto p-6 pt-2">
+          <div className="flex-1 overflow-y-auto p-6 pt-2 bg-white">
             <AnimatePresence mode="wait">
               {viewMode === 'list' ? (
                 <motion.div

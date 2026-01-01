@@ -823,8 +823,13 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               className="space-y-4"
             >
               <motion.div variants={itemVariants}>
-                <Label htmlFor="title" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                  <Tag className="w-4 h-4" style={{ color: '#ff651e' }} />
+                <Label htmlFor="title" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <div
+                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                  >
+                    <Tag className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                  </div>
                   {scanner?.title || 'Titre *'}
                 </Label>
                 <Input
@@ -832,31 +837,44 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={scanner?.titlePlaceholder || 'Ex: Courses de la semaine'}
-                  className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5 text-base"
+                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                 />
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <Label htmlFor="amount" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                  <DollarSign className="w-4 h-4" style={{ color: '#ff651e' }} />
+                <Label htmlFor="amount" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <div
+                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(16, 185, 129, 0.15)' }}
+                  >
+                    <DollarSign className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
+                  </div>
                   {scanner?.amount || 'Montant (€) *'}
                 </Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  step="0.01"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0.00"
-                  className="rounded-xl border-2 border-gray-200 focus:border-orange-300 text-2xl font-bold py-6"
-                  style={{ color: '#ff651e' }}
-                />
+                <div className="relative">
+                  <Input
+                    id="amount"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="0.00"
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all text-xl font-bold"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
+                </div>
               </motion.div>
 
               <div className="grid grid-cols-2 gap-4">
                 <motion.div variants={itemVariants}>
-                  <Label htmlFor="date" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                    <Edit3 className="w-4 h-4" style={{ color: '#ff651e' }} />
+                  <Label htmlFor="date" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(59, 130, 246, 0.15)' }}
+                    >
+                      <Edit3 className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
+                    </div>
                     {scanner?.date || 'Date'}
                   </Label>
                   <Input
@@ -864,13 +882,18 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5"
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </motion.div>
 
                 <motion.div variants={itemVariants}>
-                  <Label htmlFor="description" className="text-sm font-bold text-gray-700 mb-2 block flex items-center gap-2">
-                    <FileText className="w-4 h-4" style={{ color: '#ff651e' }} />
+                  <Label htmlFor="description" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(236, 72, 153, 0.15)' }}
+                    >
+                      <FileText className="w-3.5 h-3.5" style={{ color: '#ec4899' }} />
+                    </div>
                     {scanner?.description || 'Description'}
                   </Label>
                   <Input
@@ -878,7 +901,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder={scanner?.optional || 'Optionnel'}
-                    className="rounded-xl border-2 border-gray-200 focus:border-orange-300 py-5"
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </motion.div>
               </div>

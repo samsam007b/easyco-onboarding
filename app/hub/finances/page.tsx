@@ -697,9 +697,22 @@ export default function ModernFinancesPage() {
         <Scan className="w-7 h-7" />
       </motion.button>
 
-      {/* Modals */}
+      {/* Modals - V3 Fun Design */}
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-3xl border-2 border-orange-100"
+          style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
+        >
+          {/* Decorative gradient circles */}
+          <div
+            className="absolute -right-20 -top-20 w-56 h-56 rounded-full opacity-15 pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+          />
+          <div
+            className="absolute -left-16 -bottom-16 w-40 h-40 rounded-full opacity-10 pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+          />
+
           <DialogTitle className="sr-only">
             {createMode === 'scanner'
               ? (hub.finances?.modal?.scanTitle || 'Scanner un ticket')
@@ -707,40 +720,44 @@ export default function ModernFinancesPage() {
               ? (hub.finances?.modal?.manualTitle || 'Ajouter une dépense')
               : (hub.finances?.modal?.splitTitle || 'Répartir la dépense')}
           </DialogTitle>
-          <AnimatePresence mode="wait">
-            {createMode === 'scanner' && (
-              <ExpenseScanner
-                onComplete={handleScanComplete}
-                onCancel={() => setCreateMode(null)}
-              />
-            )}
-            {createMode === 'manual' && (
-              <ManualExpenseForm
-                onComplete={(data) => {
-                  setScanResult(data);
-                  setCreateMode('splitter');
-                }}
-                onCancel={() => setCreateMode(null)}
-              />
-            )}
-            {createMode === 'splitter' && scanResult && (
-              <div>
-                {isCreating ? (
-                  <div className="text-center py-16">
-                    <LoadingHouse size={48} />
-                    <p className="text-sm text-gray-500 mt-3">{hub.finances?.modal?.creating || 'Création de la dépense...'}</p>
-                  </div>
-                ) : (
-                  <SmartSplitter
-                    totalAmount={scanResult.amount}
-                    roommates={roommates}
-                    onComplete={handleSplitComplete}
-                    onBack={() => setCreateMode(scanResult.receiptFile ? 'scanner' : 'manual')}
-                  />
-                )}
-              </div>
-            )}
-          </AnimatePresence>
+
+          {/* Content wrapper with padding and z-index */}
+          <div className="relative z-10 p-6">
+            <AnimatePresence mode="wait">
+              {createMode === 'scanner' && (
+                <ExpenseScanner
+                  onComplete={handleScanComplete}
+                  onCancel={() => setCreateMode(null)}
+                />
+              )}
+              {createMode === 'manual' && (
+                <ManualExpenseForm
+                  onComplete={(data) => {
+                    setScanResult(data);
+                    setCreateMode('splitter');
+                  }}
+                  onCancel={() => setCreateMode(null)}
+                />
+              )}
+              {createMode === 'splitter' && scanResult && (
+                <div>
+                  {isCreating ? (
+                    <div className="text-center py-16">
+                      <LoadingHouse size={48} />
+                      <p className="text-sm text-gray-500 mt-3">{hub.finances?.modal?.creating || 'Création de la dépense...'}</p>
+                    </div>
+                  ) : (
+                    <SmartSplitter
+                      totalAmount={scanResult.amount}
+                      roommates={roommates}
+                      onComplete={handleSplitComplete}
+                      onBack={() => setCreateMode(scanResult.receiptFile ? 'scanner' : 'manual')}
+                    />
+                  )}
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
         </DialogContent>
       </Dialog>
 

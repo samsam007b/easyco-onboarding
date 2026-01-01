@@ -561,44 +561,102 @@ export default function ModernTasksPage() {
         </motion.div>
       </motion.div>
 
-      {/* Create Task Modal - V2 Fun */}
+      {/* Create Task Modal - V3 Fun Design */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-        <DialogContent className="max-w-lg rounded-3xl border-2 border-orange-100">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Plus className="w-5 h-5" style={{ color: '#ff651e' }} />
-              {hub.tasks?.modal?.newTask || 'Nouvelle tâche'}
-            </DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-lg p-0 overflow-hidden rounded-3xl border-2 border-orange-100" style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.25)' }}>
+          {/* Decorative gradient circles */}
+          <div
+            className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+          />
+          <div
+            className="absolute -left-12 -bottom-12 w-32 h-32 rounded-full opacity-15 pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+          />
 
-          <div className="space-y-4">
+          {/* Header */}
+          <div
+            className="border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between"
+            style={{ background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)' }}
+          >
+            <div className="flex items-center gap-4">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
+              >
+                <ClipboardList className="w-6 h-6 text-white" />
+              </motion.div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  {hub.tasks?.modal?.newTask || 'Nouvelle tâche'}
+                </h2>
+                <p className="text-sm text-gray-500 flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                  Organise ta coloc efficacement
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Form */}
+          <div className="p-6 space-y-5 relative z-10">
+            {/* Title */}
             <div>
-              <Label>{hub.tasks?.modal?.titleLabel || 'Titre'} *</Label>
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                <div
+                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                >
+                  <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                </div>
+                {hub.tasks?.modal?.titleLabel || 'Titre'} *
+              </label>
               <Input
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                 placeholder={hub.tasks?.modal?.titlePlaceholder || 'Ex: Nettoyer la cuisine'}
-                className="rounded-xl"
+                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
               />
             </div>
 
+            {/* Description */}
             <div>
-              <Label>{hub.tasks?.modal?.descriptionLabel || 'Description'}</Label>
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                <div
+                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                >
+                  <PenLine className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                </div>
+                {hub.tasks?.modal?.descriptionLabel || 'Description'}
+              </label>
               <Textarea
                 value={createForm.description}
                 onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                 placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Détails (optionnel)'}
-                className="rounded-xl"
+                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+                rows={3}
               />
             </div>
 
+            {/* Category & Priority */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>{hub.tasks?.modal?.categoryLabel || 'Catégorie'}</Label>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <div
+                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(59, 130, 246, 0.15)' }}
+                  >
+                    <Package className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
+                  </div>
+                  {hub.tasks?.modal?.categoryLabel || 'Catégorie'}
+                </label>
                 <select
                   value={createForm.category}
                   onChange={(e) => setCreateForm({ ...createForm, category: e.target.value as any })}
-                  className="w-full rounded-xl border border-gray-300 p-2"
+                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat.value} value={cat.value}>
@@ -609,11 +667,19 @@ export default function ModernTasksPage() {
               </div>
 
               <div>
-                <Label>{hub.tasks?.modal?.priorityLabel || 'Priorité'}</Label>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <div
+                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(168, 85, 247, 0.15)' }}
+                  >
+                    <AlertCircle className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
+                  </div>
+                  {hub.tasks?.modal?.priorityLabel || 'Priorité'}
+                </label>
                 <select
                   value={createForm.priority}
                   onChange={(e) => setCreateForm({ ...createForm, priority: e.target.value as any })}
-                  className="w-full rounded-xl border border-gray-300 p-2"
+                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
                 >
                   {PRIORITY_OPTIONS.map((pri) => (
                     <option key={pri.value} value={pri.value}>
@@ -624,35 +690,50 @@ export default function ModernTasksPage() {
               </div>
             </div>
 
+            {/* Due Date */}
             <div>
-              <Label>{hub.tasks?.modal?.dueDateLabel || 'Date d\'échéance'}</Label>
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                <div
+                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  style={{ background: 'rgba(16, 185, 129, 0.15)' }}
+                >
+                  <Calendar className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
+                </div>
+                {hub.tasks?.modal?.dueDateLabel || "Date d'échéance"}
+              </label>
               <Input
                 type="date"
                 value={createForm.due_date}
                 onChange={(e) => setCreateForm({ ...createForm, due_date: e.target.value })}
-                className="rounded-xl"
+                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
               />
             </div>
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setShowCreateModal(false)}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ff651e' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                {hub.tasks?.modal?.cancel || 'Annuler'}
-              </Button>
-              <Button
-                onClick={handleCreateTask}
-                disabled={isSubmitting || !createForm.title}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
-              >
-                {isSubmitting ? (hub.tasks?.modal?.creating || 'Création...') : (hub.tasks?.modal?.create || 'Créer')}
-              </Button>
+            {/* Actions */}
+            <div className="flex gap-3 pt-2">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCreateModal(false)}
+                  className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                  style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
+                >
+                  {hub.tasks?.modal?.cancel || 'Annuler'}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={handleCreateTask}
+                  disabled={isSubmitting || !createForm.title}
+                  className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
+                  }}
+                >
+                  {isSubmitting ? (hub.tasks?.modal?.creating || 'Création...') : (hub.tasks?.modal?.create || 'Créer')}
+                </Button>
+              </motion.div>
             </div>
           </div>
         </DialogContent>
