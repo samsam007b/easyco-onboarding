@@ -14,11 +14,13 @@ import HubLayout from '@/components/hub/HubLayout';
 import { useLanguage } from '@/lib/i18n/use-language';
 import ExpenseScanner, { type ScanResult } from '@/components/finances/ExpenseScanner';
 import SmartSplitter from '@/components/finances/SmartSplitter';
+import ManualExpenseForm from '@/components/finances/ManualExpenseForm';
 import ExpenseDetailModal from '@/components/finances/ExpenseDetailModal';
 import ExpenseHistoryModal from '@/components/finances/ExpenseHistoryModal';
 import CompactExpenseList from '@/components/finances/CompactExpenseList';
 import { ExpenseProgressChart, CategoryBreakdownChart, MiniSparkline } from '@/components/finances/ExpenseCharts';
 import ResidenceFinanceOverview from '@/components/finances/ResidenceFinanceOverview';
+import SettleDebtModal from '@/components/finances/SettleDebtModal';
 import {
   DollarSign,
   TrendingUp,
@@ -35,6 +37,9 @@ import {
   Receipt,
   Wallet,
   CreditCard,
+  Banknote,
+  Plus,
+  PenLine,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -44,7 +49,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { expenseService } from '@/lib/services/expense-service';
 import type { ExpenseWithDetails, Balance, SplitConfig } from '@/types/finances.types';
 
-type CreateMode = 'scanner' | 'splitter' | null;
+type CreateMode = 'scanner' | 'manual' | 'splitter' | null;
 
 // Animation variants for staggered children
 const containerVariants = {
@@ -91,6 +96,10 @@ export default function ModernFinancesPage() {
   const [selectedExpense, setSelectedExpense] = useState<ExpenseWithDetails | null>(null);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [historyInitialView, setHistoryInitialView] = useState<'list' | 'calendar'>('list');
+
+  // Settle debt modal state
+  const [settleModalOpen, setSettleModalOpen] = useState(false);
+  const [selectedDebt, setSelectedDebt] = useState<{ payeeId: string; payeeName: string; amount: number } | null>(null);
 
   useEffect(() => {
     loadData();
@@ -238,6 +247,11 @@ export default function ModernFinancesPage() {
     setSelectedExpense(expense);
   };
 
+  const handleSettleDebt = (payeeId: string, payeeName: string, amount: number) => {
+    setSelectedDebt({ payeeId, payeeName, amount });
+    setSettleModalOpen(true);
+  };
+
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const yourShare = expenses.reduce((sum, exp) => sum + (exp.your_share || 0), 0);
   const totalBalance = balances.reduce((sum, bal) => sum + bal.amount, 0);
@@ -308,6 +322,17 @@ export default function ModernFinancesPage() {
               >
                 <Download className="w-4 h-4 mr-2" />
                 PDF
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => setCreateMode('manual')}
+                variant="outline"
+                size="sm"
+                className="h-9 text-sm rounded-xl border-2 border-orange-200 text-[#ff651e] hover:bg-orange-50 hover:border-orange-300 font-semibold shadow-sm"
+              >
+                <PenLine className="w-4 h-4 mr-2" />
+                {hub.finances?.addManual || 'Ajouter'}
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -591,7 +616,7 @@ export default function ModernFinancesPage() {
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.02, x: 4 }}
                       className={cn(
-                        'flex items-center justify-between p-3 rounded-xl transition-all cursor-pointer',
+                        'flex items-center justify-between p-3 rounded-xl transition-all',
                         balance.amount >= 0
                           ? 'bg-gradient-to-r from-[#F0F7F4] to-[#E8F5EE] hover:shadow-md'
                           : 'bg-gradient-to-r from-[#FDF5F5] to-[#FAE8E8] hover:shadow-md'
@@ -615,14 +640,33 @@ export default function ModernFinancesPage() {
                           </p>
                         </div>
                       </div>
-                      <p
-                        className={cn(
-                          'text-base font-bold tabular-nums',
-                          balance.amount >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]'
+                      <div className="flex items-center gap-2">
+                        <p
+                          className={cn(
+                            'text-base font-bold tabular-nums',
+                            balance.amount >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]'
+                          )}
+                        >
+                          {balance.amount >= 0 ? '+' : ''}€{Math.abs(balance.amount).toFixed(2)}
+                        </p>
+                        {/* Show "Régler" button only for debts (negative balance = you owe them) */}
+                        {balance.amount < 0 && (
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSettleDebt(balance.userId, balance.userName, balance.amount);
+                              }}
+                              className="h-7 px-2.5 text-xs font-semibold rounded-lg text-white shadow-md"
+                              style={{ background: 'linear-gradient(135deg, #7CB89B, #6BA888)' }}
+                            >
+                              <Banknote className="w-3.5 h-3.5 mr-1" />
+                              {hub.finances?.settle || 'Régler'}
+                            </Button>
+                          </motion.div>
                         )}
-                      >
-                        {balance.amount >= 0 ? '+' : ''}€{Math.abs(balance.amount).toFixed(2)}
-                      </p>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -657,12 +701,25 @@ export default function ModernFinancesPage() {
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogTitle className="sr-only">
-            {createMode === 'scanner' ? (hub.finances?.modal?.scanTitle || 'Scanner un ticket') : (hub.finances?.modal?.splitTitle || 'Répartir la dépense')}
+            {createMode === 'scanner'
+              ? (hub.finances?.modal?.scanTitle || 'Scanner un ticket')
+              : createMode === 'manual'
+              ? (hub.finances?.modal?.manualTitle || 'Ajouter une dépense')
+              : (hub.finances?.modal?.splitTitle || 'Répartir la dépense')}
           </DialogTitle>
           <AnimatePresence mode="wait">
             {createMode === 'scanner' && (
               <ExpenseScanner
                 onComplete={handleScanComplete}
+                onCancel={() => setCreateMode(null)}
+              />
+            )}
+            {createMode === 'manual' && (
+              <ManualExpenseForm
+                onComplete={(data) => {
+                  setScanResult(data);
+                  setCreateMode('splitter');
+                }}
                 onCancel={() => setCreateMode(null)}
               />
             )}
@@ -678,7 +735,7 @@ export default function ModernFinancesPage() {
                     totalAmount={scanResult.amount}
                     roommates={roommates}
                     onComplete={handleSplitComplete}
-                    onBack={() => setCreateMode('scanner')}
+                    onBack={() => setCreateMode(scanResult.receiptFile ? 'scanner' : 'manual')}
                   />
                 )}
               </div>
@@ -703,6 +760,25 @@ export default function ModernFinancesPage() {
         onExport={handleExport}
         initialView={historyInitialView}
       />
+
+      {/* Settle Debt Modal */}
+      {selectedDebt && propertyId && (
+        <SettleDebtModal
+          isOpen={settleModalOpen}
+          onClose={() => {
+            setSettleModalOpen(false);
+            setSelectedDebt(null);
+          }}
+          payeeId={selectedDebt.payeeId}
+          payeeName={selectedDebt.payeeName}
+          amount={selectedDebt.amount}
+          propertyId={propertyId}
+          onPaymentInitiated={() => {
+            // Refresh balances after payment is initiated
+            loadData();
+          }}
+        />
+      )}
     </HubLayout>
   );
 }

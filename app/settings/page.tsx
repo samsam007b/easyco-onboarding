@@ -238,13 +238,14 @@ export default function SettingsPage() {
       category: 'advanced',
     },
     {
-      id: 'payment',
-      title: settings.sections?.payment?.title || 'Moyens de paiement',
-      description: settings.sections?.payment?.description || 'Gérer vos cartes et méthodes de paiement',
+      id: 'bank-info',
+      title: settings.sections?.bankInfo?.title || 'Coordonnées bancaires',
+      description: settings.sections?.bankInfo?.description || 'IBAN et informations pour recevoir des paiements',
       icon: CreditCard,
-      href: '/settings/payment',
+      href: '/settings/bank-info',
       color: 'bg-indigo-100',
       category: 'advanced',
+      requiresResidence: true, // Only for residents who need to receive payments
     },
     {
       id: 'invoices',
@@ -414,7 +415,7 @@ export default function SettingsPage() {
                       case 'language': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
                       case 'email': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)';
                       case 'subscription': return 'linear-gradient(135deg, #9B7BD9 0%, #E07BAD 100%)';
-                      case 'payment': return 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)';
+                      case 'bank-info': return 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)';
                       case 'invoices': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
                       case 'devices': return 'linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%)';
                       default: return 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)';
