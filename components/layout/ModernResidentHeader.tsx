@@ -344,35 +344,38 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", duration: 0.3 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Zap className="w-4 h-4" style={{ color: '#ff651e' }} />
+                      {/* Header with subtle gradient background */}
+                      <div className="px-5 py-4 border-b border-gray-100" style={{ background: '#fff5f3' }}>
+                        <h3 className="font-bold text-gray-900 flex items-center gap-2.5 text-base">
+                          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                            <Zap className="w-3.5 h-3.5 text-white" />
+                          </div>
                           {header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}
                         </h3>
                       </div>
-                      <div className="p-2">
+                      <div className="p-3">
                         {quickActions.map((action) => {
                           const Icon = action.icon;
                           return (
                             <Link
                               key={action.id}
                               href={action.href}
-                              className="flex items-start gap-3 px-3 py-3 rounded-xl transition group"
+                              className="flex items-center gap-4 px-3 py-3.5 rounded-xl transition group"
                               style={{ background: 'transparent' }}
-                              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(224, 87, 71, 0.06) 0%, rgba(255, 144, 20, 0.06) 100%)'}
+                              onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               onClick={() => setShowQuickActions(false)}
                             >
                               <div
-                                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
+                                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-md"
                                 style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                               >
                                 <Icon className="w-5 h-5 text-white" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-gray-900">
+                                <p className="text-sm font-semibold text-gray-900 mb-0.5">
                                   {action.label}
                                 </p>
                                 <p className="text-xs text-gray-500">
@@ -429,26 +432,28 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                                 setLangDropdownOpen(false);
                               }}
                               className={cn(
-                                "w-full flex items-center justify-between px-5 py-3 text-sm transition-all group",
+                                "w-full flex items-center justify-between px-5 py-3.5 text-sm transition-all group",
                                 language === lang.code
-                                  ? "bg-gray-50"
-                                  : "hover:bg-gray-50"
+                                  ? ""
+                                  : "hover:bg-[#fff5f3]"
                               )}
+                              style={language === lang.code ? { background: 'linear-gradient(135deg, rgba(224, 87, 71, 0.08) 0%, rgba(255, 144, 20, 0.08) 100%)' } : undefined}
                             >
-                              <span className={cn(
-                                "font-medium transition-all",
-                                language === lang.code
-                                  ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
-                                  : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
-                              )}>
+                              <span
+                                className="font-medium transition-all"
+                                style={language === lang.code
+                                  ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontWeight: 600 }
+                                  : { color: '#374151' }
+                                }
+                              >
                                 {lang.label}
                               </span>
                               {language === lang.code && (
-                                <span className="text-purple-600 text-xs">✓</span>
+                                <span style={{ color: '#ff651e' }} className="text-sm font-medium">✓</span>
                               )}
                             </button>
                             {index < languages.length - 1 && (
-                              <div className="h-px bg-gray-100 mx-3" />
+                              <div className="h-px bg-gray-100 mx-4" />
                             )}
                           </div>
                         );
@@ -491,10 +496,10 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                      <div className="relative px-5 py-5 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
                           <div className="relative">
@@ -521,11 +526,11 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                           <div className="flex-1 min-w-0">
                             <p className="font-bold text-white truncate text-lg">{profile.full_name}</p>
                             <p className="text-white/90 text-sm truncate">{profile.email}</p>
-                            <div className="mt-1 flex items-center gap-1.5">
+                            <div className="mt-2 flex items-center gap-2">
                               <div className="h-1.5 flex-1 bg-white/30 rounded-full overflow-hidden">
                                 <div className="h-full rounded-full bg-white" style={{ width: '75%' }} />
                               </div>
-                              <span className="text-xs text-white font-medium">75%</span>
+                              <span className="text-xs text-white font-semibold">75%</span>
                             </div>
                           </div>
                         </div>
@@ -556,20 +561,20 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       </div>
 
                       {/* Menu Items */}
-                      <div className="py-2">
+                      <div className="py-3 px-3">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
-                            <User className="w-4 h-4 text-white" />
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                            <User className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.myProfile || 'Mon Profil'}</span>
+                            <span className="text-gray-900 font-semibold block">{common?.myProfile || 'Mon Profil'}</span>
                             <span className="text-xs text-gray-500">{common?.manageInfo || 'Gérer mes informations'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
@@ -577,17 +582,17 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
                         <Link
                           href="/hub/finances"
-                          className="group flex items-center gap-3 px-4 py-3 transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
-                            <DollarSign className="w-4 h-4 text-white" />
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                            <DollarSign className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.finances || 'Finances'}</span>
+                            <span className="text-gray-900 font-semibold block">{common?.finances || 'Finances'}</span>
                             <span className="text-xs text-gray-500">{common?.rentAndExpenses || 'Loyer et dépenses'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
@@ -595,33 +600,33 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
-                            <Settings className="w-4 h-4 text-white" />
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                            <Settings className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.settings || 'Paramètres'}</span>
+                            <span className="text-gray-900 font-semibold block">{common?.settings || 'Paramètres'}</span>
                             <span className="text-xs text-gray-500">{common?.accountPreferences || 'Préférences du compte'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
 
-                        <div className="my-1 h-px bg-gray-200" />
+                        <div className="my-2 h-px bg-gray-100 mx-1" />
 
                         <button
                           onClick={handleLogout}
-                          className="group w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all rounded-xl"
+                          className="group w-full flex items-center gap-3.5 px-3 py-3 hover:bg-red-50 transition-all rounded-xl"
                         >
-                          <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center transition-transform">
-                            <LogOut className="w-4 h-4 text-red-600" />
+                          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <LogOut className="w-4.5 h-4.5 text-red-600" />
                           </div>
                           <div className="flex-1 text-left">
-                            <span className="text-red-600 font-medium block">{common?.logout || 'Se déconnecter'}</span>
+                            <span className="text-red-600 font-semibold block">{common?.logout || 'Se déconnecter'}</span>
                             <span className="text-xs text-red-400">{common?.leaveSession || 'Quitter votre session'}</span>
                           </div>
                         </button>

@@ -107,10 +107,10 @@ export default function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+            className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
           >
             {/* Header */}
-            <div className="p-4 border-b border-gray-100" style={{ background: '#fff5f3' }}>
+            <div className="px-5 py-4 border-b border-gray-100">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
                 {stats.unreadCount > 0 && (
@@ -118,7 +118,7 @@ export default function NotificationBell() {
                     onClick={markAllAsRead}
                     variant="ghost"
                     size="sm"
-                    className="text-xs rounded-full hover:bg-white/60"
+                    className="text-xs rounded-full hover:bg-[#fff5f3]"
                     style={{ color: '#ff651e' }}
                   >
                     <CheckCheck className="w-3 h-3 mr-1" />
@@ -126,10 +126,10 @@ export default function NotificationBell() {
                   </Button>
                 )}
               </div>
-              <div className="flex items-center gap-4 text-xs" style={{ color: '#c23f21' }}>
-                <span>{stats.unreadCount} non lues</span>
-                <span>•</span>
-                <span>{stats.todayCount} aujourd'hui</span>
+              <div className="flex items-center gap-2 text-xs">
+                <span style={{ color: '#ff651e' }} className="font-medium">{stats.unreadCount} non lues</span>
+                <span className="text-gray-400">•</span>
+                <span className="text-gray-500">{stats.todayCount} aujourd'hui</span>
               </div>
             </div>
 
@@ -232,14 +232,14 @@ export default function NotificationBell() {
                   })}
                 </div>
               ) : (
-                <div className="p-8 text-center">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
-                    <Bell className="w-8 h-8" style={{ color: '#ff651e' }} />
+                <div className="py-12 px-8 text-center">
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, rgba(224, 87, 71, 0.12) 0%, rgba(255, 144, 20, 0.12) 100%)' }}>
+                    <Bell className="w-9 h-9" style={{ color: '#ff651e' }} />
                   </div>
-                  <p className="text-sm font-medium text-gray-900 mb-1">
+                  <p className="text-base font-semibold text-gray-900 mb-1">
                     Aucune notification
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm text-gray-500">
                     Vous êtes à jour!
                   </p>
                 </div>
@@ -248,14 +248,14 @@ export default function NotificationBell() {
 
             {/* Footer */}
             {recentNotifications.length > 0 && (
-              <div className="p-3 border-t border-gray-100" style={{ background: '#fff5f3' }}>
+              <div className="p-3 border-t border-gray-100">
                 <Button
                   onClick={() => {
                     setIsOpen(false);
                     router.push('/notifications');
                   }}
                   variant="ghost"
-                  className="w-full rounded-full text-sm font-medium hover:bg-white/60"
+                  className="w-full rounded-xl text-sm font-medium hover:bg-[#fff5f3]"
                   style={{ color: '#ff651e' }}
                 >
                   Voir toutes les notifications
