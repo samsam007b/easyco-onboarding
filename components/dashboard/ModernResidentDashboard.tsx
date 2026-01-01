@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
-import ResidenceHeader from '@/components/hub/ResidenceHeader';
+import SplitAsymmetricHeader from '@/components/dashboard/SplitAsymmetricHeader';
 import {
   Users,
   MessageCircle,
@@ -90,6 +90,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
   const resident = getSection('dashboard')?.resident;
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | undefined>(undefined);
   const [currentProperty, setCurrentProperty] = useState<any>(null);
   const [roommates, setRoommates] = useState<any[]>([]);
   const [memberCount, setMemberCount] = useState(1);
@@ -215,6 +216,19 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       }
 
       setUserId(user.id);
+
+      // Load user name
+      const { data: userData } = await supabase
+        .from('users')
+        .select('full_name')
+        .eq('id', user.id)
+        .single();
+
+      if (userData?.full_name) {
+        // Get first name only
+        const firstName = userData.full_name.split(' ')[0];
+        setUserName(firstName);
+      }
 
       // Load property membership
       const { data: propertyMember } = await supabase
@@ -394,8 +408,10 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/50" />
       </div>
 
-      {/* Residence Header at the top */}
-      <ResidenceHeader />
+      {/* Split Asymmetric Header - V3 Fun Layout */}
+      <div className="max-w-7xl mx-auto pt-6">
+        <SplitAsymmetricHeader userName={userName} />
+      </div>
 
       {/* Subscription Banner */}
       {userId && (
