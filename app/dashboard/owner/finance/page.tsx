@@ -520,7 +520,7 @@ export default function FinanceReportPage() {
                     borderRadius: '12px',
                     padding: '12px',
                   }}
-                  formatter={(value: number) => [`€${value.toLocaleString()}`, '']}
+                  formatter={(value: number | undefined) => [`€${(value ?? 0).toLocaleString()}`, '']}
                 />
                 <Legend />
                 <Bar
