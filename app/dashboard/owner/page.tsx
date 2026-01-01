@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRole } from '@/lib/role/role-context'
-import ModernOwnerDashboard from '@/components/dashboard/ModernOwnerDashboard'
+import OwnerCommandCenter from '@/components/dashboard/OwnerCommandCenter'
 
 export default function OwnerDashboardPage() {
   const { setActiveRole } = useRole()
@@ -12,5 +12,5 @@ export default function OwnerDashboardPage() {
     setActiveRole('owner')
   }, [setActiveRole])
 
-  return <ModernOwnerDashboard />
+  return <OwnerCommandCenter />
 }

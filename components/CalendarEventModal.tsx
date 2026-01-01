@@ -3,8 +3,14 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, MapPin, Users, FileText } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, Users, FileText, Sparkles, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// V3 Option C - Official Resident Palette
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+const RESIDENT_PRIMARY = '#ff651e';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
+const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.25)';
 
 interface CalendarEventModalProps {
   isOpen: boolean;
@@ -248,25 +254,68 @@ export default function CalendarEventModal({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto">
+            <div
+              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto relative border-2 border-orange-100"
+              style={{
+                boxShadow: `0 25px 80px ${ACCENT_SHADOW}`,
+              }}
+            >
+              {/* Decorative gradient circles */}
+              <div
+                className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
+                style={{ background: RESIDENT_GRADIENT }}
+              />
+              <div
+                className="absolute -left-12 -bottom-12 w-32 h-32 rounded-full opacity-15 pointer-events-none"
+                style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+              />
+
               {/* Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {eventToEdit ? 'Modifier l\'événement' : 'Nouvel événement'}
-                </h2>
-                <button
+              <div
+                className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between rounded-t-3xl z-10"
+                style={{ background: CARD_BG_GRADIENT }}
+              >
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: RESIDENT_GRADIENT }}
+                  >
+                    <Calendar className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {eventToEdit ? 'Modifier l\'événement' : 'Nouvel événement'}
+                    </h2>
+                    <p className="text-sm text-gray-500 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
+                      Planifie un moment avec ta coloc
+                    </p>
+                  </div>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={onClose}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2.5 rounded-xl transition-colors"
+                  style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                 >
-                  <X className="w-5 h-5" />
-                </button>
+                  <X className="w-5 h-5" style={{ color: RESIDENT_PRIMARY }} />
+                </motion.button>
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <form onSubmit={handleSubmit} className="p-6 space-y-6 relative z-10">
                 {/* Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: `${RESIDENT_PRIMARY}15` }}
+                    >
+                      <Calendar className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
+                    </div>
                     Titre de l'événement *
                   </label>
                   <input
@@ -274,19 +323,24 @@ export default function CalendarEventModal({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="ex: Réunion de colocation"
-                    className={`w-full px-4 py-3 rounded-xl border ${
-                      errors.title ? 'border-red-500' : 'border-gray-300'
-                    } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+                    className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                      errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
+                    } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                   />
                   {errors.title && (
-                    <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+                    <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.title}</p>
                   )}
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <FileText className="w-4 h-4 inline mr-1" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: `${RESIDENT_PRIMARY}15` }}
+                    >
+                      <FileText className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
+                    </div>
                     Description
                   </label>
                   <textarea
@@ -294,53 +348,68 @@ export default function CalendarEventModal({
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Ajoutez des détails sur l'événement..."
                     rows={3}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
                   />
                 </div>
 
                 {/* Date and Time */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Calendar className="w-4 h-4 inline mr-1" />
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <div
+                        className="w-6 h-6 rounded-lg flex items-center justify-center"
+                        style={{ background: '#10b98115' }}
+                      >
+                        <Calendar className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
+                      </div>
                       Date *
                     </label>
                     <input
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        errors.date ? 'border-red-500' : 'border-gray-300'
-                      } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+                      className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                        errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
+                      } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                     />
                     {errors.date && (
-                      <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+                      <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.date}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Clock className="w-4 h-4 inline mr-1" />
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                      <div
+                        className="w-6 h-6 rounded-lg flex items-center justify-center"
+                        style={{ background: '#8b5cf615' }}
+                      >
+                        <Clock className="w-3.5 h-3.5" style={{ color: '#8b5cf6' }} />
+                      </div>
                       Heure *
                     </label>
                     <input
                       type="time"
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        errors.time ? 'border-red-500' : 'border-gray-300'
-                      } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+                      className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                        errors.time ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
+                      } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                     />
                     {errors.time && (
-                      <p className="text-red-500 text-sm mt-1">{errors.time}</p>
+                      <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.time}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Location */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <MapPin className="w-4 h-4 inline mr-1" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: '#3b82f615' }}
+                    >
+                      <MapPin className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
+                    </div>
                     Lieu
                   </label>
                   <input
@@ -348,54 +417,100 @@ export default function CalendarEventModal({
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="ex: Salon, cuisine, extérieur..."
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </div>
 
                 {/* Attendees */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    <Users className="w-4 h-4 inline mr-1" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: '#ec489915' }}
+                    >
+                      <Users className="w-3.5 h-3.5" style={{ color: '#ec4899' }} />
+                    </div>
                     Participants
                   </label>
-                  <div className="space-y-2 max-h-40 overflow-y-auto">
-                    {propertyMembers.map((member) => (
-                      <label
-                        key={member.user_id}
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedAttendees.includes(member.user_id)}
-                          onChange={() => toggleAttendee(member.user_id)}
-                          className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
-                        />
-                        <span className="text-sm font-medium text-gray-700">
-                          {member.first_name} {member.last_name}
-                        </span>
-                      </label>
-                    ))}
+                  <div
+                    className="space-y-2 max-h-40 overflow-y-auto rounded-2xl border-2 border-gray-200 p-3"
+                    style={{ background: 'rgba(255, 255, 255, 0.8)' }}
+                  >
+                    {propertyMembers.length === 0 ? (
+                      <p className="text-sm text-gray-500 text-center py-2">Aucun membre disponible</p>
+                    ) : (
+                      propertyMembers.map((member) => (
+                        <motion.label
+                          key={member.user_id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+                            selectedAttendees.includes(member.user_id)
+                              ? 'bg-orange-50 border-2 border-orange-200'
+                              : 'hover:bg-gray-50 border-2 border-transparent'
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-lg flex items-center justify-center transition-all ${
+                              selectedAttendees.includes(member.user_id)
+                                ? ''
+                                : 'border-2 border-gray-300'
+                            }`}
+                            style={
+                              selectedAttendees.includes(member.user_id)
+                                ? { background: RESIDENT_GRADIENT }
+                                : {}
+                            }
+                          >
+                            {selectedAttendees.includes(member.user_id) && (
+                              <Check className="w-3 h-3 text-white" />
+                            )}
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={selectedAttendees.includes(member.user_id)}
+                            onChange={() => toggleAttendee(member.user_id)}
+                            className="hidden"
+                          />
+                          <span className="text-sm font-medium text-gray-700">
+                            {member.first_name} {member.last_name}
+                          </span>
+                        </motion.label>
+                      ))
+                    )}
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex gap-3 pt-4">
-                  <Button
-                    type="button"
-                    onClick={onClose}
-                    variant="outline"
-                    className="flex-1 rounded-full"
-                    disabled={isLoading}
-                  >
-                    Annuler
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="flex-1 rounded-full bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Enregistrement...' : eventToEdit ? 'Mettre à jour' : 'Créer l\'événement'}
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      type="button"
+                      onClick={onClose}
+                      variant="outline"
+                      className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                      style={{
+                        borderColor: `${RESIDENT_PRIMARY}30`,
+                        color: RESIDENT_PRIMARY,
+                      }}
+                      disabled={isLoading}
+                    >
+                      Annuler
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      type="submit"
+                      className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                      style={{
+                        background: RESIDENT_GRADIENT,
+                        boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
+                      }}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Enregistrement...' : eventToEdit ? 'Mettre à jour' : 'Créer l\'événement'}
+                    </Button>
+                  </motion.div>
                 </div>
               </form>
             </div>
