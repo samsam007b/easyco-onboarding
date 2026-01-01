@@ -302,14 +302,14 @@ export default function ExpenseListByPeriod({
             }}
             transition={{ duration: 2, repeat: Infinity }}
             style={{
-              background: 'linear-gradient(135deg, #d9574f 0%, #ff8017 100%)',
+              background: 'linear-gradient(135deg, #e05747 0%, #ff9014 100%)',
             }}
           />
           <div
             className="relative w-full h-full rounded-3xl overflow-hidden flex items-center justify-center shadow-xl"
             style={{
-              background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-              boxShadow: '0 12px 32px rgba(238, 87, 54, 0.4)',
+              background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+              boxShadow: '0 12px 32px rgba(255, 101, 30, 0.4)',
             }}
           >
             <Receipt className="w-12 h-12 text-white" />
@@ -342,7 +342,7 @@ export default function ExpenseListByPeriod({
           transition={{ delay: 0.2 }}
         >
           <p className="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-            {list?.noExpenses || 'Aucune dépense'} <Receipt className="w-6 h-6" style={{ color: '#ee5736' }} />
+            {list?.noExpenses || 'Aucune dépense'} <Receipt className="w-6 h-6" style={{ color: '#ff651e' }} />
           </p>
           <p className="text-gray-500">
             {list?.scanFirstReceipt || 'Scannez votre premier ticket pour commencer !'}
@@ -394,8 +394,8 @@ export default function ExpenseListByPeriod({
                   <Badge
                     className="text-sm font-bold border-none text-white px-4 py-1.5 shadow-md"
                     style={{
-                      background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                      boxShadow: '0 4px 12px rgba(238, 87, 54, 0.3)',
+                      background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                      boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
                     }}
                   >
                     €{group.total.toFixed(2)}
@@ -490,7 +490,7 @@ export default function ExpenseListByPeriod({
                           <Badge
                             className="text-xs font-semibold border-none text-white px-2.5 py-1 flex items-center gap-1"
                             style={{
-                              background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
+                              background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
                             }}
                           >
                             <DollarSign className="w-3 h-3" />

@@ -25,6 +25,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ResidenceData {
   id: string;
@@ -44,6 +45,8 @@ interface ResidenceData {
 export default function ResidenceProfilePage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.residenceProfile;
   const [isLoading, setIsLoading] = useState(true);
   const [residence, setResidence] = useState<ResidenceData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -131,7 +134,7 @@ export default function ResidenceProfilePage() {
   const copyToClipboard = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(type);
-    toast.success('Code copié!');
+    toast.success(t?.messages?.codeCopied?.[language] || 'Code copié!');
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
@@ -161,10 +164,10 @@ export default function ResidenceProfilePage() {
       });
 
       setIsEditing(false);
-      toast.success('Résidence mise à jour!');
+      toast.success(t?.messages?.updated?.[language] || 'Résidence mise à jour!');
     } catch (error: any) {
       console.error('Error updating residence:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t?.messages?.error?.[language] || 'Erreur lors de la mise à jour');
     } finally {
       setIsSaving(false);
     }
@@ -189,7 +192,7 @@ export default function ResidenceProfilePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -205,16 +208,16 @@ export default function ResidenceProfilePage() {
             onClick={() => router.back()}
             className="mb-4"
           >
-            ← Retour
+            ← {t?.back?.[language] || 'Retour'}
           </Button>
 
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Profil de la Résidence
+                {t?.title?.[language] || 'Profil de la Résidence'}
               </h1>
               <p className="text-gray-600">
-                Gérez les informations de votre résidence
+                {t?.subtitle?.[language] || 'Gérez les informations de votre résidence'}
               </p>
             </div>
 
@@ -224,7 +227,7 @@ export default function ResidenceProfilePage() {
                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:shadow-lg"
               >
                 <Edit2 className="w-4 h-4 mr-2" />
-                Modifier
+                {t?.buttons?.edit?.[language] || 'Modifier'}
               </Button>
             ) : (
               <div className="flex gap-2">
@@ -234,7 +237,7 @@ export default function ResidenceProfilePage() {
                   disabled={isSaving}
                 >
                   <X className="w-4 h-4 mr-2" />
-                  Annuler
+                  {t?.buttons?.cancel?.[language] || 'Annuler'}
                 </Button>
                 <Button
                   onClick={handleSave}
@@ -242,7 +245,7 @@ export default function ResidenceProfilePage() {
                   className="bg-gradient-to-r from-green-500 to-emerald-600"
                 >
                   <Save className="w-4 h-4 mr-2" />
-                  {isSaving ? 'Enregistrement...' : 'Enregistrer'}
+                  {isSaving ? (t?.buttons?.saving?.[language] || 'Enregistrement...') : (t?.buttons?.save?.[language] || 'Enregistrer')}
                 </Button>
               </div>
             )}
@@ -253,12 +256,12 @@ export default function ResidenceProfilePage() {
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Home className="w-5 h-5 text-orange-600" />
-            Informations principales
+            {t?.sections?.mainInfo?.[language] || 'Informations principales'}
           </h2>
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="title">Nom de la résidence</Label>
+              <Label htmlFor="title">{t?.fields?.name?.[language] || 'Nom de la résidence'}</Label>
               <Input
                 id="title"
                 value={editForm.title}
@@ -269,7 +272,7 @@ export default function ResidenceProfilePage() {
             </div>
 
             <div>
-              <Label htmlFor="address">Adresse</Label>
+              <Label htmlFor="address">{t?.fields?.address?.[language] || 'Adresse'}</Label>
               <Input
                 id="address"
                 value={editForm.address}
@@ -281,7 +284,7 @@ export default function ResidenceProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="city">Ville</Label>
+                <Label htmlFor="city">{t?.fields?.city?.[language] || 'Ville'}</Label>
                 <Input
                   id="city"
                   value={editForm.city}
@@ -292,7 +295,7 @@ export default function ResidenceProfilePage() {
               </div>
 
               <div>
-                <Label htmlFor="postal_code">Code postal</Label>
+                <Label htmlFor="postal_code">{t?.fields?.postalCode?.[language] || 'Code postal'}</Label>
                 <Input
                   id="postal_code"
                   value={editForm.postal_code}
@@ -305,7 +308,7 @@ export default function ResidenceProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="country">Pays</Label>
+                <Label htmlFor="country">{t?.fields?.country?.[language] || 'Pays'}</Label>
                 <Input
                   id="country"
                   value={editForm.country}
@@ -316,7 +319,7 @@ export default function ResidenceProfilePage() {
               </div>
 
               <div>
-                <Label htmlFor="total_rooms">Nombre de chambres</Label>
+                <Label htmlFor="total_rooms">{t?.fields?.rooms?.[language] || 'Nombre de chambres'}</Label>
                 <Input
                   id="total_rooms"
                   type="number"
@@ -334,26 +337,26 @@ export default function ResidenceProfilePage() {
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-blue-600" />
-            Statistiques
+            {t?.sections?.stats?.[language] || 'Statistiques'}
           </h2>
 
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
               <Users className="w-8 h-8 text-orange-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.memberCount}</div>
-              <div className="text-sm text-gray-600">Colocataires</div>
+              <div className="text-sm text-gray-600">{t?.stats?.roommates?.[language] || 'Colocataires'}</div>
             </div>
 
             <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl">
               <Home className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.total_rooms || 0}</div>
-              <div className="text-sm text-gray-600">Chambres</div>
+              <div className="text-sm text-gray-600">{t?.stats?.rooms?.[language] || 'Chambres'}</div>
             </div>
 
             <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
               <Camera className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.images?.length || 0}</div>
-              <div className="text-sm text-gray-600">Photos</div>
+              <div className="text-sm text-gray-600">{t?.stats?.photos?.[language] || 'Photos'}</div>
             </div>
           </div>
         </Card>
@@ -363,7 +366,7 @@ export default function ResidenceProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <FileText className="w-5 h-5 text-indigo-600" />
-              Documents officiels
+              {t?.sections?.documents?.[language] || 'Documents officiels'}
             </h2>
           </div>
 
@@ -374,10 +377,10 @@ export default function ResidenceProfilePage() {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-bold text-gray-900 mb-1">
-                  Accédez à vos documents
+                  {t?.documents?.title?.[language] || 'Accédez à vos documents'}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  Consultez et gérez tous les documents importants de votre résidence (baux, règlements, attestations, etc.)
+                  {t?.documents?.description?.[language] || 'Consultez et gérez tous les documents importants de votre résidence (baux, règlements, attestations, etc.)'}
                 </p>
                 <Button
                   onClick={() => router.push('/hub/documents')}
@@ -385,7 +388,7 @@ export default function ResidenceProfilePage() {
                   style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' }}
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  Voir les documents
+                  {t?.documents?.button?.[language] || 'Voir les documents'}
                 </Button>
               </div>
             </div>
@@ -396,13 +399,13 @@ export default function ResidenceProfilePage() {
         <Card className="p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Lock className="w-5 h-5 text-purple-600" />
-            Codes d'invitation
+            {t?.sections?.codes?.[language] || 'Codes d\'invitation'}
           </h2>
 
           {/* Invitation Code for Residents */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Code pour les colocataires
+              {t?.codes?.resident?.label?.[language] || 'Code pour les colocataires'}
             </label>
             <div className="flex items-center gap-2">
               <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
@@ -416,7 +419,7 @@ export default function ResidenceProfilePage() {
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Partagez ce code avec vos futurs colocataires
+              {t?.codes?.resident?.hint?.[language] || 'Partagez ce code avec vos futurs colocataires'}
             </p>
           </div>
 
@@ -424,7 +427,7 @@ export default function ResidenceProfilePage() {
           {residence.isCreator && residence.owner_code && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Code propriétaire
+                {t?.codes?.owner?.label?.[language] || 'Code propriétaire'}
               </label>
               <div className="flex items-center gap-2">
                 <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
@@ -438,7 +441,7 @@ export default function ResidenceProfilePage() {
                 </button>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Code réservé au propriétaire légal pour revendiquer la résidence
+                {t?.codes?.owner?.hint?.[language] || 'Code réservé au propriétaire légal pour revendiquer la résidence'}
               </p>
             </div>
           )}

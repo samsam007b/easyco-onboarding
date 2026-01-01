@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface Device {
   id: string;
@@ -35,6 +36,8 @@ interface Device {
 export default function DevicesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.devices;
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [devices, setDevices] = useState<Device[]>([]);
@@ -75,28 +78,28 @@ export default function DevicesPage() {
   };
 
   const handleLogoutDevice = async (deviceId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir déconnecter cet appareil ?')) return;
+    if (!confirm(t?.confirmLogout?.[language] || 'Êtes-vous sûr de vouloir déconnecter cet appareil ?')) return;
 
     try {
       // In production, this would revoke the session
-      setMessage({ type: 'success', text: 'Appareil déconnecté avec succès' });
+      setMessage({ type: 'success', text: t?.messages?.deviceLoggedOut?.[language] || 'Appareil déconnecté avec succès' });
       setDevices(devices.filter(d => d.id !== deviceId));
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de la déconnexion' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de la déconnexion') });
     }
   };
 
   const handleLogoutAllDevices = async () => {
-    if (!confirm('Êtes-vous sûr de vouloir déconnecter tous les appareils sauf celui-ci ?')) return;
+    if (!confirm(t?.confirmLogoutAll?.[language] || 'Êtes-vous sûr de vouloir déconnecter tous les appareils sauf celui-ci ?')) return;
 
     try {
       const { error } = await supabase.auth.signOut({ scope: 'others' });
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Tous les autres appareils ont été déconnectés' });
+      setMessage({ type: 'success', text: t?.messages?.allLoggedOut?.[language] || 'Tous les autres appareils ont été déconnectés' });
       loadDevices();
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de la déconnexion' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de la déconnexion') });
     }
   };
 
@@ -121,11 +124,11 @@ export default function DevicesPage() {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'À l\'instant';
-    if (diffMins < 60) return `Il y a ${diffMins} min`;
-    if (diffHours < 24) return `Il y a ${diffHours}h`;
-    if (diffDays === 1) return 'Hier';
-    return `Il y a ${diffDays} jours`;
+    if (diffMins < 1) return t?.time?.now?.[language] || 'À l\'instant';
+    if (diffMins < 60) return (t?.time?.minutes?.[language] || 'Il y a {n} min').replace('{n}', String(diffMins));
+    if (diffHours < 24) return (t?.time?.hours?.[language] || 'Il y a {n}h').replace('{n}', String(diffHours));
+    if (diffDays === 1) return t?.time?.yesterday?.[language] || 'Hier';
+    return (t?.time?.days?.[language] || 'Il y a {n} jours').replace('{n}', String(diffDays));
   };
 
   if (isLoading) {
@@ -133,7 +136,7 @@ export default function DevicesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50/30 via-white to-blue-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -154,7 +157,7 @@ export default function DevicesPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -162,8 +165,8 @@ export default function DevicesPage() {
               <Smartphone className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Appareils</h1>
-              <p className="text-gray-600">Gérer vos sessions actives</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Appareils'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Gérer vos sessions actives'}</p>
             </div>
           </div>
         </motion.div>
@@ -201,7 +204,7 @@ export default function DevicesPage() {
               className="w-full rounded-xl border-red-200 text-red-600 hover:bg-red-50"
             >
               <LogOut className="w-4 h-4 mr-2" />
-              Déconnecter tous les autres appareils
+              {t?.logoutAll?.[language] || 'Déconnecter tous les autres appareils'}
             </Button>
           </motion.div>
         )}
@@ -216,7 +219,7 @@ export default function DevicesPage() {
           {devices.length === 0 ? (
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 text-center">
               <Smartphone className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">Aucune session active</p>
+              <p className="text-gray-600">{t?.noSessions?.[language] || 'Aucune session active'}</p>
             </div>
           ) : (
             devices.map((device, index) => {
@@ -248,12 +251,12 @@ export default function DevicesPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-bold text-gray-900">
-                            {device.browser} sur {device.os}
+                            {device.browser} {t?.on?.[language] || 'sur'} {device.os}
                           </h3>
                           {device.isCurrent && (
                             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-cyan-100 text-cyan-800 text-xs font-semibold">
                               <CheckCircle2 className="w-3 h-3" />
-                              Cet appareil
+                              {t?.thisDevice?.[language] || 'Cet appareil'}
                             </span>
                           )}
                         </div>
@@ -271,7 +274,7 @@ export default function DevicesPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             <Clock className="w-4 h-4" />
-                            <span>Dernière activité : {formatLastActive(device.lastActive)}</span>
+                            <span>{t?.lastActivity?.[language] || 'Dernière activité'} : {formatLastActive(device.lastActive)}</span>
                           </div>
                         </div>
                       </div>
@@ -286,7 +289,7 @@ export default function DevicesPage() {
                         className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl flex-shrink-0"
                       >
                         <LogOut className="w-4 h-4 mr-2" />
-                        Déconnecter
+                        {t?.logout?.[language] || 'Déconnecter'}
                       </Button>
                     )}
                   </div>
@@ -306,10 +309,9 @@ export default function DevicesPage() {
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-900">
-              <p className="font-semibold mb-1">Sécurité de votre compte</p>
+              <p className="font-semibold mb-1">{t?.info?.title?.[language] || 'Sécurité de votre compte'}</p>
               <p className="text-blue-700">
-                Si vous remarquez une activité suspecte ou un appareil que vous ne reconnaissez pas,
-                déconnectez-le immédiatement et changez votre mot de passe.
+                {t?.info?.description?.[language] || 'Si vous remarquez une activité suspecte ou un appareil que vous ne reconnaissez pas, déconnectez-le immédiatement et changez votre mot de passe.'}
               </p>
             </div>
           </div>

@@ -115,7 +115,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
             >
               <div className="text-center mb-8">
                 <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
-                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                     style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                   <Home className="w-10 h-10 text-white" />
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -163,7 +163,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               <Button
                 onClick={() => setCurrentStep('codes')}
                 className="w-full rounded-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
               >
                 Voir mes codes d'accès
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -247,7 +247,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                 <Button
                   onClick={() => setCurrentStep('next-steps')}
                   className="flex-1 rounded-xl text-white shadow-lg"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                 >
                   Prochaines étapes
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -267,7 +267,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
             >
               <div className="text-center mb-6">
                 <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                     style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -316,7 +316,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                 <Button
                   onClick={onClose}
                   className="flex-1 rounded-xl text-white shadow-lg"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                 >
                   Commencer
                   <ArrowRight className="w-4 h-4 ml-2" />

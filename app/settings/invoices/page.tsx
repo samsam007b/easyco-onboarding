@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface Invoice {
   id: string;
@@ -33,6 +34,8 @@ interface Invoice {
 export default function InvoicesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.invoices;
   const [isLoading, setIsLoading] = useState(true);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [userType, setUserType] = useState<string>('');
@@ -101,7 +104,7 @@ export default function InvoicesPage() {
       }
     } catch (error) {
       console.error('Error opening Stripe portal:', error);
-      alert('Erreur lors de l\'ouverture du portail. Veuillez réessayer.');
+      alert(t?.messages?.portalError?.[language] || 'Erreur lors de l\'ouverture du portail. Veuillez réessayer.');
     }
   };
 
@@ -127,21 +130,21 @@ export default function InvoicesPage() {
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-green-100 text-green-800 text-xs font-semibold">
             <Check className="w-3 h-3" />
-            Payée
+            {t?.status?.paid?.[language] || 'Payée'}
           </span>
         );
       case 'pending':
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-yellow-100 text-yellow-800 text-xs font-semibold">
             <Calendar className="w-3 h-3" />
-            En attente
+            {t?.status?.pending?.[language] || 'En attente'}
           </span>
         );
       case 'failed':
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-semibold">
             <AlertCircle className="w-3 h-3" />
-            Échec
+            {t?.status?.failed?.[language] || 'Échec'}
           </span>
         );
       default:
@@ -154,7 +157,7 @@ export default function InvoicesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50/30 via-white to-green-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -175,7 +178,7 @@ export default function InvoicesPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -183,8 +186,8 @@ export default function InvoicesPage() {
               <Receipt className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Factures</h1>
-              <p className="text-gray-600">Historique et téléchargement de vos factures</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Factures'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Historique et téléchargement de vos factures'}</p>
             </div>
           </div>
         </motion.div>
@@ -201,10 +204,10 @@ export default function InvoicesPage() {
             className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
           >
             <ExternalLink className="w-5 h-5 mr-2" />
-            Accéder au portail de facturation Stripe
+            {t?.stripePortal?.button?.[language] || 'Accéder au portail de facturation Stripe'}
           </Button>
           <p className="text-sm text-gray-500 text-center mt-2">
-            Gérez vos factures, moyens de paiement et abonnement directement sur Stripe
+            {t?.stripePortal?.description?.[language] || 'Gérez vos factures, moyens de paiement et abonnement directement sur Stripe'}
           </p>
         </motion.div>
 
@@ -218,17 +221,16 @@ export default function InvoicesPage() {
           {invoices.length === 0 ? (
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 text-center">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Aucune facture</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.empty?.title?.[language] || 'Aucune facture'}</h3>
               <p className="text-gray-600 mb-4">
-                Vous êtes actuellement en période d'essai gratuit.
-                Vos factures apparaîtront ici une fois votre abonnement actif.
+                {t?.empty?.description?.[language] || 'Vous êtes actuellement en période d\'essai gratuit. Vos factures apparaîtront ici une fois votre abonnement actif.'}
               </p>
               <Button
                 onClick={() => router.push('/dashboard/subscription')}
                 variant="outline"
                 className="rounded-xl"
               >
-                Voir mon abonnement
+                {t?.empty?.button?.[language] || 'Voir mon abonnement'}
               </Button>
             </div>
           ) : (
@@ -256,7 +258,7 @@ export default function InvoicesPage() {
                         {formatDate(invoice.created_at)}
                         {invoice.period_start && invoice.period_end && (
                           <span className="ml-2">
-                            · Période: {formatDate(invoice.period_start)} - {formatDate(invoice.period_end)}
+                            · {t?.period?.[language] || 'Période'}: {formatDate(invoice.period_start)} - {formatDate(invoice.period_end)}
                           </span>
                         )}
                       </p>
@@ -295,10 +297,9 @@ export default function InvoicesPage() {
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-emerald-900">
-              <p className="font-semibold mb-1">Facturation automatique</p>
+              <p className="font-semibold mb-1">{t?.info?.title?.[language] || 'Facturation automatique'}</p>
               <p className="text-emerald-700">
-                Vos factures sont générées automatiquement à chaque renouvellement d'abonnement.
-                Elles sont disponibles au format PDF pour votre comptabilité.
+                {t?.info?.description?.[language] || 'Vos factures sont générées automatiquement à chaque renouvellement d\'abonnement. Elles sont disponibles au format PDF pour votre comptabilité.'}
               </p>
             </div>
           </div>
@@ -311,18 +312,18 @@ export default function InvoicesPage() {
           transition={{ delay: 0.5 }}
           className="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200"
         >
-          <h3 className="font-bold text-gray-900 mb-3">Informations de facturation</h3>
+          <h3 className="font-bold text-gray-900 mb-3">{t?.billing?.title?.[language] || 'Informations de facturation'}</h3>
           <div className="space-y-2 text-sm text-gray-600">
             <p>
-              <span className="font-medium text-gray-700">Type d'abonnement:</span>{' '}
+              <span className="font-medium text-gray-700">{t?.billing?.type?.[language] || 'Type d\'abonnement'}:</span>{' '}
               {userType === 'owner' ? 'Owner' : 'Resident'}
             </p>
             <p>
-              <span className="font-medium text-gray-700">Cycle de facturation:</span>{' '}
-              Mensuel
+              <span className="font-medium text-gray-700">{t?.billing?.cycle?.[language] || 'Cycle de facturation'}:</span>{' '}
+              {t?.billing?.monthly?.[language] || 'Mensuel'}
             </p>
             <p>
-              <span className="font-medium text-gray-700">Devise:</span>{' '}
+              <span className="font-medium text-gray-700">{t?.billing?.currency?.[language] || 'Devise'}:</span>{' '}
               EUR (€)
             </p>
           </div>
@@ -333,7 +334,7 @@ export default function InvoicesPage() {
               size="sm"
               className="rounded-xl"
             >
-              Gérer mon abonnement
+              {t?.billing?.manage?.[language] || 'Gérer mon abonnement'}
             </Button>
           </div>
         </motion.div>

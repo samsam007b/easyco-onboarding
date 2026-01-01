@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/auth/supabase-client'
 import LoadingHouse from '@/components/ui/LoadingHouse'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 /**
  * Complete Signup Page
@@ -11,6 +12,7 @@ import LoadingHouse from '@/components/ui/LoadingHouse'
  */
 export default function CompleteSignupPage() {
   const router = useRouter()
+  const { t } = useLanguage()
   const [status, setStatus] = useState<'processing' | 'error'>('processing')
   const supabase = createClient()
 
@@ -98,13 +100,13 @@ export default function CompleteSignupPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h1>
-          <p className="text-gray-600 mb-6">We couldn't complete your signup. Please try again.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('auth.completeSignup.error.title')}</h1>
+          <p className="text-gray-600 mb-6">{t('auth.completeSignup.error.description')}</p>
           <a
             href="/signup"
             className="inline-block px-6 py-3 bg-[#FFD600] hover:bg-[#F57F17] text-black font-semibold rounded-full transition-colors"
           >
-            Back to Signup
+            {t('auth.completeSignup.error.backButton')}
           </a>
         </div>
       </div>
@@ -115,7 +117,7 @@ export default function CompleteSignupPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
         <LoadingHouse size={80} />
-        <p className="text-gray-600">Completing your signup...</p>
+        <p className="text-gray-600">{t('auth.completeSignup.processing')}</p>
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ export default function SlidePageManager({ activePage }: SlidePageManagerProps) 
   // Dégradés extraits du logo original pour chaque rôle
   const borderGradients = {
     explorer: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)',
-    residents: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)',
+    residents: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
     owners: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)',
   };
 

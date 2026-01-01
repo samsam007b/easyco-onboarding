@@ -391,7 +391,7 @@ export default function CalendarEventModal({
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 rounded-full bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+                    className="flex-1 rounded-full bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Enregistrement...' : eventToEdit ? 'Mettre à jour' : 'Créer l\'événement'}

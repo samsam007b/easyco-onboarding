@@ -75,7 +75,8 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
         </button>
 
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
+          <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
+               style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
             <Home className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -177,7 +178,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
         <Button
           onClick={onClose}
           className="w-full rounded-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
-          style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
         >
           Découvrir ma résidence
           <ArrowRight className="w-5 h-5 ml-2" />

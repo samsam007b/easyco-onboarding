@@ -24,10 +24,12 @@ import {
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function BookVisitPage() {
   const router = useRouter();
   const params = useParams();
+  const { t } = useLanguage();
   const propertyId = params?.id as string;
   const supabase = createClient();
 
@@ -69,7 +71,7 @@ export default function BookVisitPage() {
           setUserEmail(user.email);
         }
       } catch (err: any) {
-        toast.error('Failed to load property');
+        toast.error(t('properties.bookVisit.errors.loadFailed'));
         router.push('/properties/browse');
       } finally {
         setLoading(false);
@@ -114,17 +116,17 @@ export default function BookVisitPage() {
 
   const handleBookVisit = async () => {
     if (!selectedDate || !selectedSlot) {
-      toast.error('Please select a date and time slot');
+      toast.error(t('properties.bookVisit.errors.selectDateTime'));
       return;
     }
 
     if (!visitorPhone.trim()) {
-      toast.error('Please provide your phone number');
+      toast.error(t('properties.bookVisit.errors.phoneRequired'));
       return;
     }
 
     if (!property?.owner?.id) {
-      toast.error('Property owner information is missing');
+      toast.error(t('properties.bookVisit.errors.ownerMissing'));
       return;
     }
 
@@ -146,7 +148,7 @@ export default function BookVisitPage() {
         router.push('/dashboard/searcher/my-visits');
       }
     } catch (err: any) {
-      toast.error(err.message || 'Failed to book visit');
+      toast.error(err.message || t('properties.bookVisit.errors.bookingFailed'));
     } finally {
       setBooking(false);
     }
@@ -157,7 +159,7 @@ export default function BookVisitPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Loading property...</p>
+          <p className="text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -184,7 +186,7 @@ export default function BookVisitPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Book a Visit</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('properties.bookVisit.title')}</h1>
               <p className="text-gray-600">{property.title}</p>
             </div>
           </div>
@@ -219,7 +221,7 @@ export default function BookVisitPage() {
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <User className="h-4 w-4" />
-                  <span className="text-sm">Hosted by {property.owner.full_name}</span>
+                  <span className="text-sm">{t('properties.bookVisit.hostedBy')} {property.owner.full_name}</span>
                 </div>
               </CardContent>
             </Card>
@@ -230,12 +232,12 @@ export default function BookVisitPage() {
                 <div className="flex gap-3">
                   <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-gray-700">
-                    <p className="font-medium mb-2">Before you book:</p>
+                    <p className="font-medium mb-2">{t('properties.bookVisit.beforeYouBook')}:</p>
                     <ul className="space-y-1 text-gray-600">
-                      <li>• Choose a convenient time slot</li>
-                      <li>• Provide accurate contact information</li>
-                      <li>• The owner will confirm within 24 hours</li>
-                      <li>• You'll receive confirmation by email</li>
+                      <li>• {t('properties.bookVisit.tips.chooseTime')}</li>
+                      <li>• {t('properties.bookVisit.tips.provideContact')}</li>
+                      <li>• {t('properties.bookVisit.tips.ownerConfirm')}</li>
+                      <li>• {t('properties.bookVisit.tips.emailConfirmation')}</li>
                     </ul>
                   </div>
                 </div>
@@ -250,7 +252,7 @@ export default function BookVisitPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Video className="h-5 w-5 text-purple-700" />
-                  Visit Type
+                  {t('properties.bookVisit.visitType')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -264,8 +266,8 @@ export default function BookVisitPage() {
                     }`}
                   >
                     <MapPin className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                    <div className="font-semibold text-gray-900">In Person</div>
-                    <div className="text-xs text-gray-500 mt-1">Visit the property</div>
+                    <div className="font-semibold text-gray-900">{t('properties.bookVisit.inPerson')}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('properties.bookVisit.visitProperty')}</div>
                   </button>
                   <button
                     onClick={() => setVisitType('virtual')}
@@ -276,8 +278,8 @@ export default function BookVisitPage() {
                     }`}
                   >
                     <Video className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                    <div className="font-semibold text-gray-900">Virtual Tour</div>
-                    <div className="text-xs text-gray-500 mt-1">Video call</div>
+                    <div className="font-semibold text-gray-900">{t('properties.bookVisit.virtualTour')}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('properties.bookVisit.videoCall')}</div>
                   </button>
                 </div>
               </CardContent>
@@ -288,7 +290,7 @@ export default function BookVisitPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CalendarIcon className="h-5 w-5 text-purple-700" />
-                  Select a Date
+                  {t('properties.bookVisit.selectDate')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -325,15 +327,15 @@ export default function BookVisitPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Clock className="h-5 w-5 text-purple-700" />
-                      Available Time Slots
+                      {t('properties.bookVisit.availableTimeSlots')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     {availableSlots.length === 0 ? (
                       <div className="text-center py-8 text-gray-500">
                         <AlertCircle className="h-12 w-12 mx-auto mb-2 text-gray-400" />
-                        <p>No available slots for this date</p>
-                        <p className="text-sm mt-1">Please try another date</p>
+                        <p>{t('properties.bookVisit.noSlots')}</p>
+                        <p className="text-sm mt-1">{t('properties.bookVisit.tryAnotherDate')}</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -374,13 +376,13 @@ export default function BookVisitPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Phone className="h-5 w-5 text-purple-700" />
-                      Your Contact Information
+                      {t('properties.bookVisit.contactInfo')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address
+                        {t('properties.bookVisit.fields.email')}
                       </label>
                       <Input
                         type="email"
@@ -392,7 +394,7 @@ export default function BookVisitPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number *
+                        {t('properties.bookVisit.fields.phone')} *
                       </label>
                       <Input
                         type="tel"
@@ -404,12 +406,12 @@ export default function BookVisitPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Message to Owner (Optional)
+                        {t('properties.bookVisit.fields.messageOptional')}
                       </label>
                       <textarea
                         value={visitorNotes}
                         onChange={(e) => setVisitorNotes(e.target.value)}
-                        placeholder="Tell the owner why you're interested..."
+                        placeholder={t('properties.bookVisit.placeholders.message')}
                         rows={3}
                         maxLength={500}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
@@ -432,13 +434,13 @@ export default function BookVisitPage() {
                     <div className="flex items-start gap-3 mb-4">
                       <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-2">Booking Summary</h3>
+                        <h3 className="font-semibold text-gray-900 mb-2">{t('properties.bookVisit.summary.title')}</h3>
                         <div className="space-y-1 text-sm text-gray-700">
                           <p>
-                            <strong>Property:</strong> {property.title}
+                            <strong>{t('properties.bookVisit.summary.property')}:</strong> {property.title}
                           </p>
                           <p>
-                            <strong>Date:</strong>{' '}
+                            <strong>{t('properties.bookVisit.summary.date')}:</strong>{' '}
                             {new Date(selectedDate).toLocaleDateString('fr-FR', {
                               weekday: 'long',
                               year: 'numeric',
@@ -447,18 +449,18 @@ export default function BookVisitPage() {
                             })}
                           </p>
                           <p>
-                            <strong>Time:</strong>{' '}
+                            <strong>{t('properties.bookVisit.summary.time')}:</strong>{' '}
                             {new Date(selectedSlot).toLocaleTimeString('fr-FR', {
                               hour: '2-digit',
                               minute: '2-digit',
                             })}
                           </p>
                           <p>
-                            <strong>Type:</strong>{' '}
-                            {visitType === 'in_person' ? 'In-Person Visit' : 'Virtual Tour'}
+                            <strong>{t('properties.bookVisit.summary.type')}:</strong>{' '}
+                            {visitType === 'in_person' ? t('properties.bookVisit.inPersonVisit') : t('properties.bookVisit.virtualTour')}
                           </p>
                           <p>
-                            <strong>Duration:</strong> 30 minutes
+                            <strong>{t('properties.bookVisit.summary.duration')}:</strong> {t('properties.bookVisit.thirtyMinutes')}
                           </p>
                         </div>
                       </div>
@@ -471,14 +473,14 @@ export default function BookVisitPage() {
                         className="flex-1 rounded-xl"
                         disabled={booking}
                       >
-                        Cancel
+                        {t('common.cancel')}
                       </Button>
                       <Button
                         onClick={handleBookVisit}
                         disabled={booking || !visitorPhone.trim()}
                         className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl shadow-lg"
                       >
-                        {booking ? 'Booking...' : 'Confirm Booking'}
+                        {booking ? t('properties.bookVisit.booking') : t('properties.bookVisit.confirmBooking')}
                       </Button>
                     </div>
                   </CardContent>

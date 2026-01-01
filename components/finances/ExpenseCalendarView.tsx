@@ -188,7 +188,7 @@ export default function ExpenseCalendarView({
             onClick={goToToday}
             size="sm"
             className="rounded-full text-white font-medium"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
           >
             {calendar?.today || "Aujourd'hui"}
           </Button>
@@ -269,14 +269,14 @@ export default function ExpenseCalendarView({
                       <span
                         className={cn(
                           'text-sm font-medium',
-                          today ? 'text-[#ee5736] font-bold' : 'text-gray-700',
+                          today ? 'text-[#ff651e] font-bold' : 'text-gray-700',
                           dayExpenses.length > 0 && 'font-semibold'
                         )}
                       >
                         {day}
                       </span>
                       {today && (
-                        <div className="w-2 h-2 rounded-full bg-[#ee5736]" />
+                        <div className="w-2 h-2 rounded-full bg-[#ff651e]" />
                       )}
                     </div>
 
@@ -330,7 +330,7 @@ export default function ExpenseCalendarView({
           <p className="text-xs text-gray-500">{calendar?.totalExpenses || 'Dépenses totales'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-[#ee5736]">€{monthlyTotal.toFixed(0)}</p>
+          <p className="text-2xl font-bold text-[#ff651e]">€{monthlyTotal.toFixed(0)}</p>
           <p className="text-xs text-gray-500">{calendar?.thisMonth || 'Ce mois'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 text-center">

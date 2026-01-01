@@ -53,7 +53,7 @@ export function InvitationModal({
 
   const gradientStyle = invitedRole === 'owner'
     ? 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)'
-    : 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+    : 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
 
   const handleAccept = async () => {
     setIsAccepting(true);

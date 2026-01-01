@@ -151,8 +151,8 @@ export default function Home() {
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #ee573620, #ee573620)'
-                    : 'linear-gradient(to bottom right, #ee573615, #ee573615)',
+                    ? 'linear-gradient(to bottom right, #ff651e20, #ff651e20)'
+                    : 'linear-gradient(to bottom right, #ff651e15, #ff651e15)',
                 }}
               />
 
@@ -160,14 +160,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#ee573640' : '#ee573630',
+                  borderColor: resolvedTheme === 'dark' ? '#ff651e40' : '#ff651e30',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: '#ee5736',
+                    background: '#ff651e',
                   }}
                 >
                   <Target className="w-10 h-10 text-white" />
@@ -175,7 +175,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: 'linear-gradient(to right, #ee5736, #ee5736)',
+                    backgroundImage: 'linear-gradient(to right, #ff651e, #ff651e)',
                   }}
                 >
                   {landing.benefits.compatibility.title}

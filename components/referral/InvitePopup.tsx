@@ -140,7 +140,7 @@ export function InvitePopup({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="p-6 text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+          <div className="p-6 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">

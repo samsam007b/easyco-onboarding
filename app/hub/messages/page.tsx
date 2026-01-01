@@ -26,6 +26,7 @@ import {
   type Message,
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 /**
  * Hub Messages Page
@@ -41,6 +42,8 @@ function HubMessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('hub')?.messages;
 
   // User state
   const [isLoading, setIsLoading] = useState(true);
@@ -116,18 +119,18 @@ function HubMessagesContent() {
 
       const role = getUserRole(userData?.user_type);
       setUserRole(role);
-      setUserName(userData?.full_name || 'Utilisateur');
+      setUserName(userData?.full_name || (t?.userFallback?.[language] || 'Utilisateur'));
 
       // Load conversations
       const result = await getUnifiedConversations(user.id, role);
       if (result.success && result.data) {
         setMessagingState(result.data);
       } else {
-        toast.error('Erreur lors du chargement des conversations');
+        toast.error(t?.errors?.loadConversations?.[language] || 'Erreur lors du chargement des conversations');
       }
     } catch (error) {
       console.error('Error loading user:', error);
-      toast.error('Erreur de chargement');
+      toast.error(t?.errors?.loadError?.[language] || 'Erreur de chargement');
     } finally {
       setIsLoading(false);
     }
@@ -198,7 +201,7 @@ function HubMessagesContent() {
     });
 
     if (!result.success) {
-      toast.error('Échec de l\'envoi du message');
+      toast.error(t?.errors?.sendFailed?.[language] || 'Échec de l\'envoi du message');
       throw new Error(result.error);
     }
 
@@ -227,11 +230,11 @@ function HubMessagesContent() {
     );
 
     if (result.success) {
-      toast.success('Conversation archivée');
+      toast.success(t?.archive?.success?.[language] || 'Conversation archivée');
       setSelectedConversation(null);
       loadUserAndConversations();
     } else {
-      toast.error('Échec de l\'archivage');
+      toast.error(t?.archive?.failed?.[language] || 'Échec de l\'archivage');
     }
   };
 
@@ -266,9 +269,9 @@ function HubMessagesContent() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
-            Chargement des messages...
+            {t?.loading?.title?.[language] || 'Chargement des messages...'}
           </h3>
-          <p className="text-gray-600">Préparation de vos conversations</p>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Préparation de vos conversations'}</p>
         </div>
       </div>
     );
@@ -307,7 +310,7 @@ function HubMessagesContent() {
             {selectedConversation.name}
           </h3>
           <p className="text-gray-500 max-w-sm mx-auto">
-            Soyez le premier à envoyer un message dans cette conversation !
+            {t?.empty?.beFirst?.[language] || 'Soyez le premier à envoyer un message dans cette conversation !'}
           </p>
         </div>
       );
@@ -370,18 +373,23 @@ function HubMessagesContent() {
   );
 }
 
+function MessagesFallback() {
+  const { language, getSection } = useLanguage();
+  const t = getSection('hub')?.messages;
+
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="text-center">
+        <LoadingHouse size={80} />
+        <p className="text-gray-600 font-medium mt-4">{t?.loading?.fallback?.[language] || 'Chargement...'}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function HubMessagesPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <LoadingHouse size={80} />
-            <p className="text-gray-600 font-medium mt-4">Chargement...</p>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<MessagesFallback />}>
       <HubMessagesContent />
     </Suspense>
   );

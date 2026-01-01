@@ -5,11 +5,11 @@ import { Sparkles, MapPin, Briefcase, Star, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
-// V2 Fun Design Colors
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-const RESIDENT_PRIMARY = '#ee5736';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
-const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.25)';
+// V3 Option C - Official Resident Palette
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+const RESIDENT_PRIMARY = '#ff651e';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
+const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.25)';
 
 // Mock profiles data
 const MOCK_PROFILES = [

@@ -59,10 +59,10 @@ const GRADIENTS = {
     shadow: 'rgba(157, 126, 229, 0.25)',
   },
   resident: {
-    primary: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+    primary: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
     bg: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-    accent: '#ee5736',
-    shadow: 'rgba(238, 87, 54, 0.25)',
+    accent: '#ff651e',
+    shadow: 'rgba(255, 101, 30, 0.25)',
   },
 };
 

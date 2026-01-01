@@ -5325,6 +5325,12 @@ export const translations = {
           nl: 'Dit e-mailadres is al geregistreerd',
           de: 'Diese E-Mail ist bereits registriert',
         },
+        emailExists: {
+          fr: 'Cet e-mail est déjà utilisé. Essayez de vous connecter.',
+          en: 'This email is already in use. Try logging in.',
+          nl: 'Dit e-mailadres is al in gebruik. Probeer in te loggen.',
+          de: 'Diese E-Mail wird bereits verwendet. Versuchen Sie sich anzumelden.',
+        },
         tryLogin: {
           fr: 'Veuillez essayer de vous connecter à la place',
           en: 'Please try logging in instead',
@@ -5350,6 +5356,58 @@ export const translations = {
           en: 'Please check your email to verify your account',
           nl: 'Controleer je e-mail om je account te verifiëren',
           de: 'Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu verifizieren',
+        },
+      },
+      // Google signup
+      signingUpGoogle: {
+        fr: 'Inscription avec Google...',
+        en: 'Signing up with Google...',
+        nl: 'Aanmelden met Google...',
+        de: 'Anmeldung mit Google...',
+      },
+      signUpWithGoogle: {
+        fr: 'S\'inscrire avec Google',
+        en: 'Sign up with Google',
+        nl: 'Aanmelden met Google',
+        de: 'Mit Google registrieren',
+      },
+      // Referral code
+      referral: {
+        haveCode: {
+          fr: 'J\'ai un code parrainage',
+          en: 'I have a referral code',
+          nl: 'Ik heb een verwijzingscode',
+          de: 'Ich habe einen Empfehlungscode',
+        },
+        codeLabel: {
+          fr: 'Code de parrainage (optionnel)',
+          en: 'Referral code (optional)',
+          nl: 'Verwijzingscode (optioneel)',
+          de: 'Empfehlungscode (optional)',
+        },
+        invitedBy: {
+          fr: 'Invité par {name} - 1 mois offert !',
+          en: 'Invited by {name} - 1 free month!',
+          nl: 'Uitgenodigd door {name} - 1 gratis maand!',
+          de: 'Eingeladen von {name} - 1 Monat gratis!',
+        },
+        referredBy: {
+          fr: 'Parrainé par {name} ! Vous recevrez 1 mois gratuit après avoir complété votre profil.',
+          en: 'Referred by {name}! You\'ll receive 1 free month after completing your profile.',
+          nl: 'Verwezen door {name}! Je ontvangt 1 gratis maand na het voltooien van je profiel.',
+          de: 'Empfohlen von {name}! Sie erhalten 1 Gratismonat nach Abschluss Ihres Profils.',
+        },
+        successMessage: {
+          fr: 'Parrainé par {name} ! Vous recevrez 1 mois gratuit après avoir complété votre profil.',
+          en: 'Referred by {name}! You\'ll receive 1 free month after completing your profile.',
+          nl: 'Verwezen door {name}! Je ontvangt 1 gratis maand na het voltooien van je profiel.',
+          de: 'Empfohlen von {name}! Sie erhalten 1 Gratismonat nach Abschluss Ihres Profils.',
+        },
+        invalidCode: {
+          fr: 'Code invalide ou expiré',
+          en: 'Invalid or expired code',
+          nl: 'Ongeldige of verlopen code',
+          de: 'Ungültiger oder abgelaufener Code',
         },
       },
     },
@@ -5485,6 +5543,358 @@ export const translations = {
           nl: 'Controleer je e-mail voor verdere instructies',
           de: 'Überprüfen Sie Ihre E-Mail für weitere Anweisungen',
         },
+      },
+    },
+
+    // Reset Password Page
+    resetPassword: {
+      title: {
+        fr: 'Réinitialiser le mot de passe',
+        en: 'Reset Password',
+        nl: 'Wachtwoord resetten',
+        de: 'Passwort zurücksetzen',
+      },
+      subtitle: {
+        fr: 'Entrez votre nouveau mot de passe ci-dessous',
+        en: 'Enter your new password below',
+        nl: 'Voer hieronder je nieuwe wachtwoord in',
+        de: 'Geben Sie unten Ihr neues Passwort ein',
+      },
+      newPassword: {
+        fr: 'Nouveau mot de passe',
+        en: 'New Password',
+        nl: 'Nieuw wachtwoord',
+        de: 'Neues Passwort',
+      },
+      newPasswordPlaceholder: {
+        fr: 'Entrez le nouveau mot de passe',
+        en: 'Enter new password',
+        nl: 'Voer nieuw wachtwoord in',
+        de: 'Neues Passwort eingeben',
+      },
+      confirmPassword: {
+        fr: 'Confirmer le nouveau mot de passe',
+        en: 'Confirm New Password',
+        nl: 'Bevestig nieuw wachtwoord',
+        de: 'Neues Passwort bestätigen',
+      },
+      confirmPasswordPlaceholder: {
+        fr: 'Confirmez le nouveau mot de passe',
+        en: 'Confirm new password',
+        nl: 'Bevestig nieuw wachtwoord',
+        de: 'Neues Passwort bestätigen',
+      },
+      updateButton: {
+        fr: 'Mettre à jour le mot de passe',
+        en: 'Update Password',
+        nl: 'Wachtwoord bijwerken',
+        de: 'Passwort aktualisieren',
+      },
+      updating: {
+        fr: 'Mise à jour du mot de passe...',
+        en: 'Updating password...',
+        nl: 'Wachtwoord bijwerken...',
+        de: 'Passwort wird aktualisiert...',
+      },
+      backToLogin: {
+        fr: 'Retour à la connexion',
+        en: 'Back to login',
+        nl: 'Terug naar inloggen',
+        de: 'Zurück zur Anmeldung',
+      },
+      verifying: {
+        fr: 'Vérification du lien de réinitialisation...',
+        en: 'Verifying reset link...',
+        nl: 'Resetlink verifiëren...',
+        de: 'Reset-Link wird überprüft...',
+      },
+      loading: {
+        fr: 'Chargement...',
+        en: 'Loading...',
+        nl: 'Laden...',
+        de: 'Laden...',
+      },
+      passwordStrength: {
+        fr: 'Force du mot de passe',
+        en: 'Password strength',
+        nl: 'Wachtwoordsterkte',
+        de: 'Passwortstärke',
+      },
+      weak: {
+        fr: 'Faible',
+        en: 'Weak',
+        nl: 'Zwak',
+        de: 'Schwach',
+      },
+      medium: {
+        fr: 'Moyen',
+        en: 'Medium',
+        nl: 'Gemiddeld',
+        de: 'Mittel',
+      },
+      strong: {
+        fr: 'Fort',
+        en: 'Strong',
+        nl: 'Sterk',
+        de: 'Stark',
+      },
+      requirements: {
+        title: {
+          fr: 'Le mot de passe doit contenir :',
+          en: 'Password must contain:',
+          nl: 'Wachtwoord moet bevatten:',
+          de: 'Passwort muss enthalten:',
+        },
+        minLength: {
+          fr: 'Au moins 8 caractères',
+          en: 'At least 8 characters',
+          nl: 'Minimaal 8 tekens',
+          de: 'Mindestens 8 Zeichen',
+        },
+        uppercase: {
+          fr: 'Une lettre majuscule',
+          en: 'One uppercase letter',
+          nl: 'Eén hoofdletter',
+          de: 'Ein Großbuchstabe',
+        },
+        lowercase: {
+          fr: 'Une lettre minuscule',
+          en: 'One lowercase letter',
+          nl: 'Eén kleine letter',
+          de: 'Ein Kleinbuchstabe',
+        },
+        number: {
+          fr: 'Un chiffre',
+          en: 'One number',
+          nl: 'Eén cijfer',
+          de: 'Eine Zahl',
+        },
+      },
+      passwordsMatch: {
+        fr: 'Les mots de passe correspondent',
+        en: 'Passwords match',
+        nl: 'Wachtwoorden komen overeen',
+        de: 'Passwörter stimmen überein',
+      },
+      passwordsNoMatch: {
+        fr: 'Les mots de passe ne correspondent pas',
+        en: 'Passwords do not match',
+        nl: 'Wachtwoorden komen niet overeen',
+        de: 'Passwörter stimmen nicht überein',
+      },
+      invalidLink: {
+        title: {
+          fr: 'Lien de réinitialisation invalide',
+          en: 'Invalid Reset Link',
+          nl: 'Ongeldige resetlink',
+          de: 'Ungültiger Reset-Link',
+        },
+        description: {
+          fr: 'Ce lien de réinitialisation est invalide ou a expiré. Veuillez en demander un nouveau.',
+          en: 'This password reset link is invalid or has expired. Please request a new one.',
+          nl: 'Deze wachtwoord resetlink is ongeldig of verlopen. Vraag een nieuwe aan.',
+          de: 'Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an.',
+        },
+        requestNew: {
+          fr: 'Demander un nouveau lien',
+          en: 'Request New Link',
+          nl: 'Nieuwe link aanvragen',
+          de: 'Neuen Link anfordern',
+        },
+      },
+      success: {
+        title: {
+          fr: 'Mot de passe mis à jour !',
+          en: 'Password Updated!',
+          nl: 'Wachtwoord bijgewerkt!',
+          de: 'Passwort aktualisiert!',
+        },
+        description: {
+          fr: 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.',
+          en: 'Your password has been successfully updated. You can now log in with your new password.',
+          nl: 'Je wachtwoord is succesvol bijgewerkt. Je kunt nu inloggen met je nieuwe wachtwoord.',
+          de: 'Ihr Passwort wurde erfolgreich aktualisiert. Sie können sich jetzt mit Ihrem neuen Passwort anmelden.',
+        },
+        goToLogin: {
+          fr: 'Aller à la connexion',
+          en: 'Go to Login',
+          nl: 'Naar inloggen',
+          de: 'Zur Anmeldung',
+        },
+      },
+      errors: {
+        invalidOrExpired: {
+          fr: 'Lien de réinitialisation invalide ou expiré',
+          en: 'Invalid or expired reset link',
+          nl: 'Ongeldige of verlopen resetlink',
+          de: 'Ungültiger oder abgelaufener Reset-Link',
+        },
+        requestNew: {
+          fr: 'Veuillez demander une nouvelle réinitialisation du mot de passe',
+          en: 'Please request a new password reset',
+          nl: 'Vraag een nieuwe wachtwoord reset aan',
+          de: 'Bitte fordern Sie eine neue Passwort-Zurücksetzung an',
+        },
+        minLength: {
+          fr: 'Le mot de passe doit contenir au moins 8 caractères',
+          en: 'Password must be at least 8 characters',
+          nl: 'Wachtwoord moet minimaal 8 tekens bevatten',
+          de: 'Passwort muss mindestens 8 Zeichen enthalten',
+        },
+        meetRequirements: {
+          fr: 'Veuillez respecter toutes les exigences du mot de passe',
+          en: 'Please meet all password requirements',
+          nl: 'Voldoe aan alle wachtwoordvereisten',
+          de: 'Bitte erfüllen Sie alle Passwortanforderungen',
+        },
+        noMatch: {
+          fr: 'Les mots de passe ne correspondent pas',
+          en: 'Passwords do not match',
+          nl: 'Wachtwoorden komen niet overeen',
+          de: 'Passwörter stimmen nicht überein',
+        },
+        updateFailed: {
+          fr: 'Échec de la mise à jour du mot de passe',
+          en: 'Failed to update password',
+          nl: 'Wachtwoord bijwerken mislukt',
+          de: 'Passwort konnte nicht aktualisiert werden',
+        },
+        unexpected: {
+          fr: 'Une erreur inattendue est survenue',
+          en: 'An unexpected error occurred',
+          nl: 'Er is een onverwachte fout opgetreden',
+          de: 'Ein unerwarteter Fehler ist aufgetreten',
+        },
+      },
+      toast: {
+        success: {
+          fr: 'Mot de passe mis à jour avec succès !',
+          en: 'Password updated successfully!',
+          nl: 'Wachtwoord succesvol bijgewerkt!',
+          de: 'Passwort erfolgreich aktualisiert!',
+        },
+        successDescription: {
+          fr: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe',
+          en: 'You can now log in with your new password',
+          nl: 'Je kunt nu inloggen met je nieuwe wachtwoord',
+          de: 'Sie können sich jetzt mit Ihrem neuen Passwort anmelden',
+        },
+      },
+    },
+
+    // Complete Signup Page
+    completeSignup: {
+      processing: {
+        fr: 'Finalisation de votre inscription...',
+        en: 'Completing your signup...',
+        nl: 'Je registratie voltooien...',
+        de: 'Ihre Anmeldung abschließen...',
+      },
+      error: {
+        title: {
+          fr: 'Une erreur est survenue',
+          en: 'Something went wrong',
+          nl: 'Er is iets misgegaan',
+          de: 'Etwas ist schiefgelaufen',
+        },
+        description: {
+          fr: 'Nous n\'avons pas pu finaliser votre inscription. Veuillez réessayer.',
+          en: 'We couldn\'t complete your signup. Please try again.',
+          nl: 'We konden je registratie niet voltooien. Probeer opnieuw.',
+          de: 'Wir konnten Ihre Anmeldung nicht abschließen. Bitte versuchen Sie es erneut.',
+        },
+        backButton: {
+          fr: 'Retour à l\'inscription',
+          en: 'Back to Signup',
+          nl: 'Terug naar registratie',
+          de: 'Zurück zur Anmeldung',
+        },
+      },
+    },
+
+    // Email Verified Page (emailVerified for backwards compatibility)
+    emailVerified: {
+      title: {
+        fr: 'Email vérifié !',
+        en: 'Email Verified!',
+        nl: 'E-mail geverifieerd!',
+        de: 'E-Mail verifiziert!',
+      },
+      description: {
+        fr: 'Votre adresse e-mail a été vérifiée avec succès. Vous avez maintenant accès complet à votre compte Izzico.',
+        en: 'Your email address has been successfully verified. You now have full access to your Izzico account.',
+        nl: 'Je e-mailadres is succesvol geverifieerd. Je hebt nu volledige toegang tot je Izzico-account.',
+        de: 'Ihre E-Mail-Adresse wurde erfolgreich verifiziert. Sie haben jetzt vollen Zugriff auf Ihr Izzico-Konto.',
+      },
+      redirecting: {
+        fr: 'Redirection dans',
+        en: 'Redirecting in',
+        nl: 'Doorverwijzen in',
+        de: 'Weiterleitung in',
+      },
+      seconds: {
+        fr: 'secondes',
+        en: 'seconds',
+        nl: 'seconden',
+        de: 'Sekunden',
+      },
+      second: {
+        fr: 'seconde',
+        en: 'second',
+        nl: 'seconde',
+        de: 'Sekunde',
+      },
+      clickHere: {
+        fr: 'Cliquez ici si vous n\'êtes pas redirigé',
+        en: 'Click here if not redirected',
+        nl: 'Klik hier als je niet wordt doorverwezen',
+        de: 'Klicken Sie hier, wenn Sie nicht weitergeleitet werden',
+      },
+      loading: {
+        fr: 'Chargement...',
+        en: 'Loading...',
+        nl: 'Laden...',
+        de: 'Laden...',
+      },
+    },
+
+    // Email Verified Page (verified path from file structure)
+    verified: {
+      title: {
+        fr: 'Email vérifié !',
+        en: 'Email Verified!',
+        nl: 'E-mail geverifieerd!',
+        de: 'E-Mail verifiziert!',
+      },
+      description: {
+        fr: 'Votre adresse e-mail a été vérifiée avec succès. Vous avez maintenant accès complet à votre compte Izzico.',
+        en: 'Your email address has been successfully verified. You now have full access to your Izzico account.',
+        nl: 'Je e-mailadres is succesvol geverifieerd. Je hebt nu volledige toegang tot je Izzico-account.',
+        de: 'Ihre E-Mail-Adresse wurde erfolgreich verifiziert. Sie haben jetzt vollen Zugriff auf Ihr Izzico-Konto.',
+      },
+      redirecting: {
+        fr: 'Redirection dans',
+        en: 'Redirecting in',
+        nl: 'Doorverwijzen in',
+        de: 'Weiterleitung in',
+      },
+      seconds: {
+        fr: 'secondes',
+        en: 'seconds',
+        nl: 'seconden',
+        de: 'Sekunden',
+      },
+      second: {
+        fr: 'seconde',
+        en: 'second',
+        nl: 'seconde',
+        de: 'Sekunde',
+      },
+      clickHere: {
+        fr: 'Cliquez ici si vous n\'êtes pas redirigé',
+        en: 'Click here if not redirected',
+        nl: 'Klik hier als je niet wordt doorverwezen',
+        de: 'Klicken Sie hier, wenn Sie nicht weitergeleitet werden',
       },
     },
 
@@ -13040,6 +13450,1781 @@ export const translations = {
         en: 'Loading...',
         nl: 'Laden...',
         de: 'Laden...',
+      },
+    },
+  },
+
+  // ============================================================================
+  // PROPERTIES PAGES
+  // ============================================================================
+  properties: {
+    // Property Details Page
+    details: {
+      loading: {
+        fr: 'Chargement de la propriété...',
+        en: 'Loading property...',
+        nl: 'Eigendom laden...',
+        de: 'Immobilie wird geladen...',
+      },
+      notFound: {
+        fr: 'Propriété introuvable',
+        en: 'Property not found',
+        nl: 'Eigendom niet gevonden',
+        de: 'Immobilie nicht gefunden',
+      },
+      backToDashboard: {
+        fr: 'Retour au tableau de bord',
+        en: 'Back to dashboard',
+        nl: 'Terug naar dashboard',
+        de: 'Zurück zum Dashboard',
+      },
+      back: {
+        fr: 'Retour',
+        en: 'Back',
+        nl: 'Terug',
+        de: 'Zurück',
+      },
+      edit: {
+        fr: 'Modifier',
+        en: 'Edit',
+        nl: 'Bewerken',
+        de: 'Bearbeiten',
+      },
+      publish: {
+        fr: 'Publier',
+        en: 'Publish',
+        nl: 'Publiceren',
+        de: 'Veröffentlichen',
+      },
+      archive: {
+        fr: 'Archiver',
+        en: 'Archive',
+        nl: 'Archiveren',
+        de: 'Archivieren',
+      },
+      viewAll: {
+        fr: 'Voir tout',
+        en: 'View all',
+        nl: 'Alles bekijken',
+        de: 'Alle ansehen',
+      },
+      startingFrom: {
+        fr: 'À partir de',
+        en: 'Starting from',
+        nl: 'Vanaf',
+        de: 'Ab',
+      },
+      perMonth: {
+        fr: '/mois',
+        en: '/month',
+        nl: '/maand',
+        de: '/Monat',
+      },
+      roomAvailable: {
+        fr: 'chambre disponible',
+        en: 'room available',
+        nl: 'kamer beschikbaar',
+        de: 'Zimmer verfügbar',
+      },
+      roomsAvailable: {
+        fr: 'chambres disponibles',
+        en: 'rooms available',
+        nl: 'kamers beschikbaar',
+        de: 'Zimmer verfügbar',
+      },
+      roommate: {
+        fr: 'colocataire',
+        en: 'roommate',
+        nl: 'huisgenoot',
+        de: 'Mitbewohner',
+      },
+      roommates: {
+        fr: 'colocataires',
+        en: 'roommates',
+        nl: 'huisgenoten',
+        de: 'Mitbewohner',
+      },
+    },
+    overview: {
+      title: {
+        fr: 'Aperçu de la propriété',
+        en: 'Property Overview',
+        nl: 'Eigendom Overzicht',
+        de: 'Immobilienübersicht',
+      },
+      bedrooms: {
+        fr: 'Chambres',
+        en: 'Bedrooms',
+        nl: 'Slaapkamers',
+        de: 'Schlafzimmer',
+      },
+      bathrooms: {
+        fr: 'Salles de bain',
+        en: 'Bathrooms',
+        nl: 'Badkamers',
+        de: 'Badezimmer',
+      },
+      surface: {
+        fr: 'Surface',
+        en: 'Surface',
+        nl: 'Oppervlakte',
+        de: 'Fläche',
+      },
+      furnished: {
+        fr: 'Meublé',
+        en: 'Furnished',
+        nl: 'Gemeubileerd',
+        de: 'Möbliert',
+      },
+      yes: {
+        fr: 'Oui',
+        en: 'Yes',
+        nl: 'Ja',
+        de: 'Ja',
+      },
+      no: {
+        fr: 'Non',
+        en: 'No',
+        nl: 'Nee',
+        de: 'Nein',
+      },
+      description: {
+        fr: 'Description',
+        en: 'Description',
+        nl: 'Beschrijving',
+        de: 'Beschreibung',
+      },
+    },
+    residents: {
+      title: {
+        fr: 'Vos futurs colocataires',
+        en: 'Your future roommates',
+        nl: 'Je toekomstige huisgenoten',
+        de: 'Ihre zukünftigen Mitbewohner',
+      },
+      subtitle: {
+        fr: 'Découvrez les personnes avec qui vous pourriez partager cette colocation',
+        en: 'Discover the people you could share this flatshare with',
+        nl: 'Ontdek de mensen met wie je deze flatshare zou kunnen delen',
+        de: 'Entdecken Sie die Menschen, mit denen Sie diese WG teilen könnten',
+      },
+    },
+    amenities: {
+      title: {
+        fr: 'Équipements',
+        en: 'Amenities',
+        nl: 'Voorzieningen',
+        de: 'Ausstattung',
+      },
+    },
+    location: {
+      title: {
+        fr: 'Localisation',
+        en: 'Location',
+        nl: 'Locatie',
+        de: 'Standort',
+      },
+    },
+    lightbox: {
+      thumbnail: {
+        fr: 'Miniature',
+        en: 'Thumbnail',
+        nl: 'Miniatuur',
+        de: 'Miniaturansicht',
+      },
+    },
+    confirmations: {
+      deleteTitle: {
+        fr: 'Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible.',
+        en: 'Are you sure you want to delete this property? This action cannot be undone.',
+        nl: 'Weet je zeker dat je dit eigendom wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.',
+        de: 'Sind Sie sicher, dass Sie diese Immobilie löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
+      },
+    },
+    toast: {
+      propertyNotFound: {
+        fr: 'Propriété introuvable',
+        en: 'Property not found',
+        nl: 'Eigendom niet gevonden',
+        de: 'Immobilie nicht gefunden',
+      },
+      deleteSuccess: {
+        fr: 'Propriété supprimée avec succès',
+        en: 'Property deleted successfully',
+        nl: 'Eigendom succesvol verwijderd',
+        de: 'Immobilie erfolgreich gelöscht',
+      },
+      deleteFailed: {
+        fr: 'Échec de la suppression de la propriété',
+        en: 'Failed to delete property',
+        nl: 'Eigendom verwijderen mislukt',
+        de: 'Immobilie konnte nicht gelöscht werden',
+      },
+      publishSuccess: {
+        fr: 'Propriété publiée avec succès',
+        en: 'Property published successfully',
+        nl: 'Eigendom succesvol gepubliceerd',
+        de: 'Immobilie erfolgreich veröffentlicht',
+      },
+      publishFailed: {
+        fr: 'Échec de la publication de la propriété',
+        en: 'Failed to publish property',
+        nl: 'Eigendom publiceren mislukt',
+        de: 'Immobilie konnte nicht veröffentlicht werden',
+      },
+      archiveSuccess: {
+        fr: 'Propriété archivée avec succès',
+        en: 'Property archived successfully',
+        nl: 'Eigendom succesvol gearchiveerd',
+        de: 'Immobilie erfolgreich archiviert',
+      },
+      archiveFailed: {
+        fr: 'Échec de l\'archivage de la propriété',
+        en: 'Failed to archive property',
+        nl: 'Eigendom archiveren mislukt',
+        de: 'Immobilie konnte nicht archiviert werden',
+      },
+    },
+
+    // Add Property Page
+    add: {
+      title: {
+        fr: 'Ajouter une propriété',
+        en: 'Add a property',
+        nl: 'Een eigendom toevoegen',
+        de: 'Immobilie hinzufügen',
+      },
+      description: {
+        fr: 'Renseignez les informations de votre bien',
+        en: 'Enter your property information',
+        nl: 'Voer uw eigendomsgegevens in',
+        de: 'Geben Sie Ihre Immobilieninformationen ein',
+      },
+      subtitle: {
+        fr: 'Renseignez les informations de votre bien',
+        en: 'Enter your property information',
+        nl: 'Voer uw eigendomsgegevens in',
+        de: 'Geben Sie Ihre Immobilieninformationen ein',
+      },
+      success: {
+        fr: 'Propriété créée avec succès !',
+        en: 'Property created successfully!',
+        nl: 'Eigendom succesvol aangemaakt!',
+        de: 'Immobilie erfolgreich erstellt!',
+      },
+      creating: {
+        fr: 'Création en cours...',
+        en: 'Creating...',
+        nl: 'Aanmaken...',
+        de: 'Wird erstellt...',
+      },
+      createButton: {
+        fr: 'Créer la propriété',
+        en: 'Create Property',
+        nl: 'Eigendom aanmaken',
+        de: 'Immobilie erstellen',
+      },
+      errors: {
+        titleRequired: {
+          fr: 'Veuillez entrer un titre pour votre propriété',
+          en: 'Please enter a title for your property',
+          nl: 'Voer een titel in voor uw eigendom',
+          de: 'Bitte geben Sie einen Titel für Ihre Immobilie ein',
+        },
+        locationRequired: {
+          fr: 'Veuillez entrer la ville et le code postal',
+          en: 'Please enter the city and postal code',
+          nl: 'Voer de stad en postcode in',
+          de: 'Bitte geben Sie Stadt und Postleitzahl ein',
+        },
+        rentRequired: {
+          fr: 'Veuillez entrer un loyer mensuel valide',
+          en: 'Please enter a valid monthly rent',
+          nl: 'Voer een geldige maandelijkse huur in',
+          de: 'Bitte geben Sie eine gültige Monatsmiete ein',
+        },
+        createFailed: {
+          fr: 'Erreur lors de la création de la propriété',
+          en: 'Error creating property',
+          nl: 'Fout bij het aanmaken van eigendom',
+          de: 'Fehler beim Erstellen der Immobilie',
+        },
+      },
+      sections: {
+        basicInfo: {
+          fr: 'Informations de base',
+          en: 'Basic Information',
+          nl: 'Basisinformatie',
+          de: 'Grundinformationen',
+        },
+        location: {
+          fr: 'Localisation',
+          en: 'Location',
+          nl: 'Locatie',
+          de: 'Standort',
+        },
+        propertyDetails: {
+          fr: 'Détails du bien',
+          en: 'Property Details',
+          nl: 'Eigendom details',
+          de: 'Immobiliendetails',
+        },
+        pricing: {
+          fr: 'Tarification',
+          en: 'Pricing',
+          nl: 'Prijzen',
+          de: 'Preise',
+        },
+        amenities: {
+          fr: 'Équipements',
+          en: 'Amenities',
+          nl: 'Voorzieningen',
+          de: 'Ausstattung',
+        },
+        houseRules: {
+          fr: 'Règles de la maison',
+          en: 'House Rules',
+          nl: 'Huisregels',
+          de: 'Hausregeln',
+        },
+        availability: {
+          fr: 'Disponibilité',
+          en: 'Availability',
+          nl: 'Beschikbaarheid',
+          de: 'Verfügbarkeit',
+        },
+      },
+      fields: {
+        propertyTitle: {
+          fr: 'Titre de l\'annonce',
+          en: 'Property Title',
+          nl: 'Titel van het eigendom',
+          de: 'Immobilientitel',
+        },
+        titlePlaceholder: {
+          fr: 'Ex: Bel appartement 2 chambres à Paris',
+          en: 'e.g., Cozy 2-bedroom apartment in Paris',
+          nl: 'Bijv., Gezellig 2-slaapkamer appartement in Amsterdam',
+          de: 'z.B., Gemütliche 2-Zimmer-Wohnung in Berlin',
+        },
+        description: {
+          fr: 'Description',
+          en: 'Description',
+          nl: 'Beschrijving',
+          de: 'Beschreibung',
+        },
+        descriptionPlaceholder: {
+          fr: 'Décrivez votre propriété, ses caractéristiques et le quartier...',
+          en: 'Describe your property, its features, and the neighborhood...',
+          nl: 'Beschrijf uw eigendom, de kenmerken en de buurt...',
+          de: 'Beschreiben Sie Ihre Immobilie, ihre Merkmale und die Nachbarschaft...',
+        },
+        propertyType: {
+          fr: 'Type de bien',
+          en: 'Property Type',
+          nl: 'Type eigendom',
+          de: 'Immobilientyp',
+        },
+        address: {
+          fr: 'Adresse',
+          en: 'Address',
+          nl: 'Adres',
+          de: 'Adresse',
+        },
+        addressPlaceholder: {
+          fr: 'Adresse de rue',
+          en: 'Street address',
+          nl: 'Straatnaam',
+          de: 'Straßenadresse',
+        },
+        city: {
+          fr: 'Ville',
+          en: 'City',
+          nl: 'Stad',
+          de: 'Stadt',
+        },
+        postalCode: {
+          fr: 'Code postal',
+          en: 'Postal Code',
+          nl: 'Postcode',
+          de: 'Postleitzahl',
+        },
+        bedrooms: {
+          fr: 'Chambres',
+          en: 'Bedrooms',
+          nl: 'Slaapkamers',
+          de: 'Schlafzimmer',
+        },
+        bathrooms: {
+          fr: 'Salles de bain',
+          en: 'Bathrooms',
+          nl: 'Badkamers',
+          de: 'Badezimmer',
+        },
+        surfaceArea: {
+          fr: 'Surface (m²)',
+          en: 'Surface Area (m²)',
+          nl: 'Oppervlakte (m²)',
+          de: 'Fläche (m²)',
+        },
+        optional: {
+          fr: 'Optionnel',
+          en: 'Optional',
+          nl: 'Optioneel',
+          de: 'Optional',
+        },
+        furnished: {
+          fr: 'Meublé',
+          en: 'Furnished',
+          nl: 'Gemeubileerd',
+          de: 'Möbliert',
+        },
+        monthlyRent: {
+          fr: 'Loyer mensuel (€)',
+          en: 'Monthly Rent (€)',
+          nl: 'Maandelijkse huur (€)',
+          de: 'Monatsmiete (€)',
+        },
+        charges: {
+          fr: 'Charges (€)',
+          en: 'Charges (€)',
+          nl: 'Kosten (€)',
+          de: 'Nebenkosten (€)',
+        },
+        deposit: {
+          fr: 'Caution (€)',
+          en: 'Deposit (€)',
+          nl: 'Borg (€)',
+          de: 'Kaution (€)',
+        },
+        smokingAllowed: {
+          fr: 'Fumeurs acceptés',
+          en: 'Smoking allowed',
+          nl: 'Roken toegestaan',
+          de: 'Rauchen erlaubt',
+        },
+        petsAllowed: {
+          fr: 'Animaux acceptés',
+          en: 'Pets allowed',
+          nl: 'Huisdieren toegestaan',
+          de: 'Haustiere erlaubt',
+        },
+        couplesAllowed: {
+          fr: 'Couples acceptés',
+          en: 'Couples allowed',
+          nl: 'Stellen toegestaan',
+          de: 'Paare erlaubt',
+        },
+        availableFrom: {
+          fr: 'Disponible à partir du',
+          en: 'Available From',
+          nl: 'Beschikbaar vanaf',
+          de: 'Verfügbar ab',
+        },
+        minimumStay: {
+          fr: 'Séjour minimum (mois)',
+          en: 'Minimum Stay (months)',
+          nl: 'Minimum verblijf (maanden)',
+          de: 'Mindestaufenthalt (Monate)',
+        },
+      },
+      propertyTypes: {
+        apartment: {
+          fr: 'Appartement',
+          en: 'Apartment',
+          nl: 'Appartement',
+          de: 'Wohnung',
+        },
+        house: {
+          fr: 'Maison',
+          en: 'House',
+          nl: 'Huis',
+          de: 'Haus',
+        },
+        studio: {
+          fr: 'Studio',
+          en: 'Studio',
+          nl: 'Studio',
+          de: 'Studio',
+        },
+        coliving: {
+          fr: 'Espace de coliving',
+          en: 'Coliving Space',
+          nl: 'Coliving ruimte',
+          de: 'Coliving-Raum',
+        },
+        shared_room: {
+          fr: 'Chambre partagée',
+          en: 'Shared Room',
+          nl: 'Gedeelde kamer',
+          de: 'Geteiltes Zimmer',
+        },
+        private_room: {
+          fr: 'Chambre privée',
+          en: 'Private Room',
+          nl: 'Privé kamer',
+          de: 'Privatzimmer',
+        },
+        entire_place: {
+          fr: 'Logement entier',
+          en: 'Entire Place',
+          nl: 'Gehele woning',
+          de: 'Gesamte Unterkunft',
+        },
+      },
+      amenitiesLabels: {
+        wifi: { fr: 'WiFi', en: 'WiFi', nl: 'WiFi', de: 'WLAN' },
+        parking: { fr: 'Parking', en: 'Parking', nl: 'Parkeren', de: 'Parken' },
+        elevator: { fr: 'Ascenseur', en: 'Elevator', nl: 'Lift', de: 'Aufzug' },
+        balcony: { fr: 'Balcon', en: 'Balcony', nl: 'Balkon', de: 'Balkon' },
+        garden: { fr: 'Jardin', en: 'Garden', nl: 'Tuin', de: 'Garten' },
+        gym: { fr: 'Salle de sport', en: 'Gym', nl: 'Sportschool', de: 'Fitnessstudio' },
+        laundry: { fr: 'Buanderie', en: 'Laundry', nl: 'Wasruimte', de: 'Waschküche' },
+        dishwasher: { fr: 'Lave-vaisselle', en: 'Dishwasher', nl: 'Vaatwasser', de: 'Geschirrspüler' },
+        washing_machine: { fr: 'Machine à laver', en: 'Washing Machine', nl: 'Wasmachine', de: 'Waschmaschine' },
+        dryer: { fr: 'Sèche-linge', en: 'Dryer', nl: 'Droger', de: 'Trockner' },
+        air_conditioning: { fr: 'Climatisation', en: 'Air Conditioning', nl: 'Airconditioning', de: 'Klimaanlage' },
+        heating: { fr: 'Chauffage', en: 'Heating', nl: 'Verwarming', de: 'Heizung' },
+        kitchen: { fr: 'Cuisine', en: 'Kitchen', nl: 'Keuken', de: 'Küche' },
+        furnished: { fr: 'Meublé', en: 'Furnished', nl: 'Gemeubileerd', de: 'Möbliert' },
+        pets_allowed: { fr: 'Animaux acceptés', en: 'Pets Allowed', nl: 'Huisdieren toegestaan', de: 'Haustiere erlaubt' },
+        smoking_allowed: { fr: 'Fumeurs acceptés', en: 'Smoking Allowed', nl: 'Roken toegestaan', de: 'Rauchen erlaubt' },
+      },
+    },
+
+    // Edit Property Page
+    edit: {
+      title: {
+        fr: 'Modifier la propriété',
+        en: 'Edit Property',
+        nl: 'Eigendom bewerken',
+        de: 'Immobilie bearbeiten',
+      },
+      description: {
+        fr: 'Mettez à jour les informations de votre propriété',
+        en: 'Update your property information',
+        nl: 'Werk de informatie van uw eigendom bij',
+        de: 'Aktualisieren Sie Ihre Immobilieninformationen',
+      },
+      loading: {
+        fr: 'Chargement de la propriété...',
+        en: 'Loading property...',
+        nl: 'Eigendom laden...',
+        de: 'Immobilie wird geladen...',
+      },
+      saving: {
+        fr: 'Enregistrement...',
+        en: 'Saving...',
+        nl: 'Opslaan...',
+        de: 'Speichern...',
+      },
+      saveButton: {
+        fr: 'Enregistrer les modifications',
+        en: 'Save Changes',
+        nl: 'Wijzigingen opslaan',
+        de: 'Änderungen speichern',
+      },
+      success: {
+        fr: 'Propriété mise à jour avec succès !',
+        en: 'Property updated successfully!',
+        nl: 'Eigendom succesvol bijgewerkt!',
+        de: 'Immobilie erfolgreich aktualisiert!',
+      },
+      errors: {
+        loadFailed: {
+          fr: 'Échec du chargement de la propriété',
+          en: 'Failed to load property',
+          nl: 'Eigendom laden mislukt',
+          de: 'Immobilie konnte nicht geladen werden',
+        },
+        titleRequired: {
+          fr: 'Veuillez entrer un titre pour la propriété',
+          en: 'Please enter a property title',
+          nl: 'Voer een titel voor het eigendom in',
+          de: 'Bitte geben Sie einen Immobilientitel ein',
+        },
+        locationRequired: {
+          fr: 'Veuillez entrer les détails de localisation',
+          en: 'Please enter location details',
+          nl: 'Voer locatiegegevens in',
+          de: 'Bitte geben Sie Standortdetails ein',
+        },
+        rentRequired: {
+          fr: 'Veuillez entrer un loyer mensuel valide',
+          en: 'Please enter a valid monthly rent',
+          nl: 'Voer een geldige maandelijkse huur in',
+          de: 'Bitte geben Sie eine gültige Monatsmiete ein',
+        },
+        updateFailed: {
+          fr: 'Échec de la mise à jour de la propriété',
+          en: 'Failed to update property',
+          nl: 'Eigendom bijwerken mislukt',
+          de: 'Immobilie konnte nicht aktualisiert werden',
+        },
+      },
+    },
+
+    // Book Visit Page
+    bookVisit: {
+      title: {
+        fr: 'Réserver une visite',
+        en: 'Book a visit',
+        nl: 'Een bezoek boeken',
+        de: 'Besichtigung buchen',
+      },
+      subtitle: {
+        fr: 'Choisissez une date et un créneau horaire',
+        en: 'Choose a date and time slot',
+        nl: 'Kies een datum en tijdslot',
+        de: 'Wählen Sie ein Datum und einen Zeitfenster',
+      },
+      selectDate: {
+        fr: 'Sélectionner une date',
+        en: 'Select a date',
+        nl: 'Selecteer een datum',
+        de: 'Datum auswählen',
+      },
+      selectTime: {
+        fr: 'Sélectionner un horaire',
+        en: 'Select a time',
+        nl: 'Selecteer een tijd',
+        de: 'Zeit auswählen',
+      },
+      confirm: {
+        fr: 'Confirmer la visite',
+        en: 'Confirm visit',
+        nl: 'Bezoek bevestigen',
+        de: 'Besichtigung bestätigen',
+      },
+      noSlots: {
+        fr: 'Aucun créneau disponible pour cette date',
+        en: 'No slots available for this date',
+        nl: 'Geen slots beschikbaar voor deze datum',
+        de: 'Keine Termine für dieses Datum verfügbar',
+      },
+      tryAnotherDate: {
+        fr: 'Essayez une autre date',
+        en: 'Try another date',
+        nl: 'Probeer een andere datum',
+        de: 'Versuchen Sie ein anderes Datum',
+      },
+      hostedBy: {
+        fr: 'Hébergé par',
+        en: 'Hosted by',
+        nl: 'Gehost door',
+        de: 'Gastgeber',
+      },
+      beforeYouBook: {
+        fr: 'Avant de réserver',
+        en: 'Before you book',
+        nl: 'Voordat u boekt',
+        de: 'Bevor Sie buchen',
+      },
+      tips: {
+        chooseTime: {
+          fr: 'Choisissez un créneau horaire qui vous convient',
+          en: 'Choose a time slot that works for you',
+          nl: 'Kies een tijdslot dat bij u past',
+          de: 'Wählen Sie einen passenden Zeitpunkt',
+        },
+        provideContact: {
+          fr: 'Fournissez vos coordonnées pour que le propriétaire puisse vous contacter',
+          en: 'Provide your contact details so the owner can reach you',
+          nl: 'Geef uw contactgegevens zodat de eigenaar u kan bereiken',
+          de: 'Geben Sie Ihre Kontaktdaten an, damit der Eigentümer Sie erreichen kann',
+        },
+        ownerConfirm: {
+          fr: 'Le propriétaire confirmera votre visite par email',
+          en: 'The owner will confirm your visit by email',
+          nl: 'De eigenaar bevestigt uw bezoek per e-mail',
+          de: 'Der Eigentümer bestätigt Ihren Besuch per E-Mail',
+        },
+        emailConfirmation: {
+          fr: 'Vous recevrez un email de confirmation avec les détails',
+          en: 'You will receive a confirmation email with the details',
+          nl: 'U ontvangt een bevestigingsmail met de details',
+          de: 'Sie erhalten eine Bestätigungs-E-Mail mit den Details',
+        },
+      },
+      visitType: {
+        fr: 'Type de visite',
+        en: 'Visit type',
+        nl: 'Bezoektype',
+        de: 'Besichtigungsart',
+      },
+      inPerson: {
+        fr: 'En personne',
+        en: 'In person',
+        nl: 'Persoonlijk',
+        de: 'Vor Ort',
+      },
+      inPersonVisit: {
+        fr: 'Visite en personne',
+        en: 'In-person visit',
+        nl: 'Persoonlijk bezoek',
+        de: 'Besichtigung vor Ort',
+      },
+      visitProperty: {
+        fr: 'Visitez le logement en personne',
+        en: 'Visit the property in person',
+        nl: 'Bezoek het eigendom persoonlijk',
+        de: 'Besichtigen Sie die Immobilie vor Ort',
+      },
+      virtualTour: {
+        fr: 'Visite virtuelle',
+        en: 'Virtual tour',
+        nl: 'Virtuele rondleiding',
+        de: 'Virtuelle Besichtigung',
+      },
+      videoCall: {
+        fr: 'Par appel vidéo avec le propriétaire',
+        en: 'Video call with the owner',
+        nl: 'Videogesprek met de eigenaar',
+        de: 'Videoanruf mit dem Eigentümer',
+      },
+      availableTimeSlots: {
+        fr: 'Créneaux disponibles',
+        en: 'Available time slots',
+        nl: 'Beschikbare tijdslots',
+        de: 'Verfügbare Zeitfenster',
+      },
+      contactInfo: {
+        fr: 'Vos coordonnées',
+        en: 'Your contact information',
+        nl: 'Uw contactgegevens',
+        de: 'Ihre Kontaktdaten',
+      },
+      fields: {
+        email: {
+          fr: 'Adresse email',
+          en: 'Email address',
+          nl: 'E-mailadres',
+          de: 'E-Mail-Adresse',
+        },
+        phone: {
+          fr: 'Numéro de téléphone',
+          en: 'Phone number',
+          nl: 'Telefoonnummer',
+          de: 'Telefonnummer',
+        },
+        messageOptional: {
+          fr: 'Message pour le propriétaire (optionnel)',
+          en: 'Message to the owner (optional)',
+          nl: 'Bericht voor de eigenaar (optioneel)',
+          de: 'Nachricht an den Eigentümer (optional)',
+        },
+      },
+      placeholders: {
+        message: {
+          fr: 'Présentez-vous brièvement ou posez des questions...',
+          en: 'Briefly introduce yourself or ask questions...',
+          nl: 'Stel uzelf kort voor of stel vragen...',
+          de: 'Stellen Sie sich kurz vor oder stellen Sie Fragen...',
+        },
+      },
+      summary: {
+        title: {
+          fr: 'Récapitulatif de votre visite',
+          en: 'Visit summary',
+          nl: 'Bezoeksamenvatting',
+          de: 'Besichtigungsübersicht',
+        },
+        property: {
+          fr: 'Propriété',
+          en: 'Property',
+          nl: 'Eigendom',
+          de: 'Immobilie',
+        },
+        date: {
+          fr: 'Date',
+          en: 'Date',
+          nl: 'Datum',
+          de: 'Datum',
+        },
+        time: {
+          fr: 'Heure',
+          en: 'Time',
+          nl: 'Tijd',
+          de: 'Uhrzeit',
+        },
+        type: {
+          fr: 'Type',
+          en: 'Type',
+          nl: 'Type',
+          de: 'Typ',
+        },
+        duration: {
+          fr: 'Durée',
+          en: 'Duration',
+          nl: 'Duur',
+          de: 'Dauer',
+        },
+      },
+      thirtyMinutes: {
+        fr: '30 minutes',
+        en: '30 minutes',
+        nl: '30 minuten',
+        de: '30 Minuten',
+      },
+      booking: {
+        fr: 'Réservation en cours...',
+        en: 'Booking...',
+        nl: 'Boeken...',
+        de: 'Wird gebucht...',
+      },
+      confirmBooking: {
+        fr: 'Confirmer la réservation',
+        en: 'Confirm booking',
+        nl: 'Boeking bevestigen',
+        de: 'Buchung bestätigen',
+      },
+      errors: {
+        loadFailed: {
+          fr: 'Erreur lors du chargement de la propriété',
+          en: 'Error loading property',
+          nl: 'Fout bij het laden van eigendom',
+          de: 'Fehler beim Laden der Immobilie',
+        },
+        selectDateTime: {
+          fr: 'Veuillez sélectionner une date et un créneau',
+          en: 'Please select a date and time slot',
+          nl: 'Selecteer een datum en tijdslot',
+          de: 'Bitte wählen Sie ein Datum und einen Zeitfenster',
+        },
+        phoneRequired: {
+          fr: 'Veuillez entrer votre numéro de téléphone',
+          en: 'Please enter your phone number',
+          nl: 'Voer uw telefoonnummer in',
+          de: 'Bitte geben Sie Ihre Telefonnummer ein',
+        },
+        ownerMissing: {
+          fr: 'Propriétaire introuvable',
+          en: 'Owner not found',
+          nl: 'Eigenaar niet gevonden',
+          de: 'Eigentümer nicht gefunden',
+        },
+        bookingFailed: {
+          fr: 'Erreur lors de la réservation',
+          en: 'Booking failed',
+          nl: 'Boeking mislukt',
+          de: 'Buchung fehlgeschlagen',
+        },
+      },
+    },
+
+    // Apply Page
+    apply: {
+      title: {
+        fr: 'Postuler pour ce logement',
+        en: 'Apply for this property',
+        nl: 'Solliciteren voor dit eigendom',
+        de: 'Für diese Immobilie bewerben',
+      },
+      subtitle: {
+        fr: 'Complétez votre candidature',
+        en: 'Complete your application',
+        nl: 'Voltooi uw aanvraag',
+        de: 'Vervollständigen Sie Ihre Bewerbung',
+      },
+      selectedRoom: {
+        fr: 'Chambre sélectionnée',
+        en: 'Selected room',
+        nl: 'Geselecteerde kamer',
+        de: 'Ausgewähltes Zimmer',
+      },
+      room: {
+        fr: 'Chambre',
+        en: 'Room',
+        nl: 'Kamer',
+        de: 'Zimmer',
+      },
+      perMonth: {
+        fr: 'mois',
+        en: 'month',
+        nl: 'maand',
+        de: 'Monat',
+      },
+      selectRoom: {
+        fr: 'Sélectionner une chambre',
+        en: 'Select a room',
+        nl: 'Selecteer een kamer',
+        de: 'Zimmer auswählen',
+      },
+      message: {
+        fr: 'Votre message (optionnel)',
+        en: 'Your message (optional)',
+        nl: 'Uw bericht (optioneel)',
+        de: 'Ihre Nachricht (optional)',
+      },
+      messagePlaceholder: {
+        fr: 'Présentez-vous et expliquez pourquoi ce logement vous intéresse...',
+        en: 'Introduce yourself and explain why you\'re interested in this property...',
+        nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in dit eigendom...',
+        de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
+      },
+      submit: {
+        fr: 'Envoyer ma candidature',
+        en: 'Submit my application',
+        nl: 'Mijn aanvraag verzenden',
+        de: 'Meine Bewerbung einreichen',
+      },
+      submitting: {
+        fr: 'Envoi en cours...',
+        en: 'Submitting...',
+        nl: 'Verzenden...',
+        de: 'Wird gesendet...',
+      },
+      success: {
+        fr: 'Candidature envoyée avec succès !',
+        en: 'Application submitted successfully!',
+        nl: 'Aanvraag succesvol verzonden!',
+        de: 'Bewerbung erfolgreich eingereicht!',
+      },
+      error: {
+        fr: 'Erreur lors de l\'envoi de la candidature',
+        en: 'Error submitting application',
+        nl: 'Fout bij het verzenden van de aanvraag',
+        de: 'Fehler beim Einreichen der Bewerbung',
+      },
+      submitDisclaimer: {
+        fr: 'En soumettant cette candidature, vous acceptez que vos informations soient partagées avec le propriétaire.',
+        en: 'By submitting this application, you agree that your information will be shared with the owner.',
+        nl: 'Door deze aanvraag in te dienen, gaat u ermee akkoord dat uw gegevens worden gedeeld met de eigenaar.',
+        de: 'Mit dem Absenden dieser Bewerbung stimmen Sie zu, dass Ihre Daten mit dem Eigentümer geteilt werden.',
+      },
+      errors: {
+        mustBeLoggedIn: {
+          fr: 'Vous devez être connecté pour postuler',
+          en: 'You must be logged in to apply',
+          nl: 'U moet ingelogd zijn om te solliciteren',
+          de: 'Sie müssen angemeldet sein, um sich zu bewerben',
+        },
+        propertyNotFound: {
+          fr: 'Propriété introuvable',
+          en: 'Property not found',
+          nl: 'Eigendom niet gevonden',
+          de: 'Immobilie nicht gefunden',
+        },
+        uploadError: {
+          fr: 'Erreur lors du téléchargement de',
+          en: 'Error uploading',
+          nl: 'Fout bij het uploaden van',
+          de: 'Fehler beim Hochladen von',
+        },
+        alreadyApplied: {
+          fr: 'Vous avez déjà postulé pour ce logement',
+          en: 'You have already applied for this property',
+          nl: 'U heeft al gesolliciteerd voor dit eigendom',
+          de: 'Sie haben sich bereits für diese Immobilie beworben',
+        },
+        submitError: {
+          fr: 'Erreur lors de l\'envoi de la candidature',
+          en: 'Error submitting application',
+          nl: 'Fout bij het verzenden van de aanvraag',
+          de: 'Fehler beim Einreichen der Bewerbung',
+        },
+      },
+      sections: {
+        personalInfo: {
+          fr: 'Informations personnelles',
+          en: 'Personal Information',
+          nl: 'Persoonlijke gegevens',
+          de: 'Persönliche Informationen',
+        },
+        moveInDetails: {
+          fr: 'Détails de l\'emménagement',
+          en: 'Move-in Details',
+          nl: 'Verhuisdetails',
+          de: 'Einzugsdetails',
+        },
+        professionalInfo: {
+          fr: 'Informations professionnelles',
+          en: 'Professional Information',
+          nl: 'Professionele gegevens',
+          de: 'Berufliche Informationen',
+        },
+        personalMessage: {
+          fr: 'Message personnel',
+          en: 'Personal Message',
+          nl: 'Persoonlijk bericht',
+          de: 'Persönliche Nachricht',
+        },
+        documents: {
+          fr: 'Documents justificatifs',
+          en: 'Supporting Documents',
+          nl: 'Ondersteunende documenten',
+          de: 'Nachweisdokumente',
+        },
+      },
+      fields: {
+        fullName: {
+          fr: 'Nom complet',
+          en: 'Full name',
+          nl: 'Volledige naam',
+          de: 'Vollständiger Name',
+        },
+        email: {
+          fr: 'Email',
+          en: 'Email',
+          nl: 'E-mail',
+          de: 'E-Mail',
+        },
+        phoneOptional: {
+          fr: 'Téléphone (optionnel)',
+          en: 'Phone (optional)',
+          nl: 'Telefoon (optioneel)',
+          de: 'Telefon (optional)',
+        },
+        desiredMoveInDate: {
+          fr: 'Date d\'emménagement souhaitée',
+          en: 'Desired move-in date',
+          nl: 'Gewenste verhuisdatum',
+          de: 'Gewünschtes Einzugsdatum',
+        },
+        leaseDuration: {
+          fr: 'Durée du bail',
+          en: 'Lease duration',
+          nl: 'Huurperiode',
+          de: 'Mietdauer',
+        },
+        occupation: {
+          fr: 'Profession',
+          en: 'Occupation',
+          nl: 'Beroep',
+          de: 'Beruf',
+        },
+        employerName: {
+          fr: 'Employeur',
+          en: 'Employer name',
+          nl: 'Werkgever',
+          de: 'Arbeitgeber',
+        },
+        monthlyIncome: {
+          fr: 'Revenu mensuel (€)',
+          en: 'Monthly income (€)',
+          nl: 'Maandelijks inkomen (€)',
+          de: 'Monatliches Einkommen (€)',
+        },
+        aboutYou: {
+          fr: 'Présentez-vous',
+          en: 'Tell us about yourself',
+          nl: 'Stel uzelf voor',
+          de: 'Stellen Sie sich vor',
+        },
+      },
+      leaseOptions: {
+        threeMonths: {
+          fr: '3 mois',
+          en: '3 months',
+          nl: '3 maanden',
+          de: '3 Monate',
+        },
+        sixMonths: {
+          fr: '6 mois',
+          en: '6 months',
+          nl: '6 maanden',
+          de: '6 Monate',
+        },
+        twelveMonths: {
+          fr: '12 mois',
+          en: '12 months',
+          nl: '12 maanden',
+          de: '12 Monate',
+        },
+        twentyFourMonths: {
+          fr: '24 mois',
+          en: '24 months',
+          nl: '24 maanden',
+          de: '24 Monate',
+        },
+      },
+      placeholders: {
+        occupation: {
+          fr: 'Ex: Étudiant, Développeur, Infirmier...',
+          en: 'E.g.: Student, Developer, Nurse...',
+          nl: 'Bijv.: Student, Ontwikkelaar, Verpleegkundige...',
+          de: 'Z.B.: Student, Entwickler, Krankenpfleger...',
+        },
+        employerName: {
+          fr: 'Ex: Google, Université de Paris...',
+          en: 'E.g.: Google, University of Paris...',
+          nl: 'Bijv.: Google, Universiteit van Amsterdam...',
+          de: 'Z.B.: Google, Universität Berlin...',
+        },
+        message: {
+          fr: 'Décrivez-vous brièvement : vos activités, vos centres d\'intérêt, pourquoi ce logement vous plaît...',
+          en: 'Briefly describe yourself: your activities, interests, why you like this property...',
+          nl: 'Beschrijf uzelf kort: uw activiteiten, interesses, waarom u dit eigendom leuk vindt...',
+          de: 'Beschreiben Sie sich kurz: Ihre Aktivitäten, Interessen, warum Ihnen diese Immobilie gefällt...',
+        },
+      },
+      documents: {
+        idDocument: {
+          fr: 'Pièce d\'identité (CNI, passeport)',
+          en: 'ID document (ID card, passport)',
+          nl: 'Identiteitsdocument (ID-kaart, paspoort)',
+          de: 'Ausweisdokument (Personalausweis, Reisepass)',
+        },
+        proofOfIncome: {
+          fr: 'Justificatif de revenus (3 derniers bulletins de salaire)',
+          en: 'Proof of income (last 3 pay slips)',
+          nl: 'Inkomensbewijs (laatste 3 loonstroken)',
+          de: 'Einkommensnachweis (letzte 3 Gehaltsabrechnungen)',
+        },
+        referenceLetter: {
+          fr: 'Lettre de recommandation (optionnel)',
+          en: 'Reference letter (optional)',
+          nl: 'Aanbevelingsbrief (optioneel)',
+          de: 'Empfehlungsschreiben (optional)',
+        },
+      },
+      documentsHelp: {
+        fr: 'Ces documents sont optionnels mais augmentent vos chances d\'être sélectionné. Formats acceptés : PDF, JPG, PNG.',
+        en: 'These documents are optional but increase your chances of being selected. Accepted formats: PDF, JPG, PNG.',
+        nl: 'Deze documenten zijn optioneel maar verhogen uw kansen om geselecteerd te worden. Geaccepteerde formaten: PDF, JPG, PNG.',
+        de: 'Diese Dokumente sind optional, erhöhen aber Ihre Chancen, ausgewählt zu werden. Akzeptierte Formate: PDF, JPG, PNG.',
+      },
+    },
+
+    // Compare Page
+    compare: {
+      title: {
+        fr: 'Comparer {count} propriétés',
+        en: 'Compare {count} properties',
+        nl: '{count} eigendommen vergelijken',
+        de: '{count} Immobilien vergleichen',
+      },
+      addProperty: {
+        fr: 'Ajouter une propriété',
+        en: 'Add a property',
+        nl: 'Een eigendom toevoegen',
+        de: 'Immobilie hinzufügen',
+      },
+      removeProperty: {
+        fr: 'Retirer',
+        en: 'Remove',
+        nl: 'Verwijderen',
+        de: 'Entfernen',
+      },
+      noProperties: {
+        fr: 'Aucune propriété à comparer',
+        en: 'No properties to compare',
+        nl: 'Geen eigendommen om te vergelijken',
+        de: 'Keine Immobilien zum Vergleichen',
+      },
+      selectPrompt: {
+        fr: 'Sélectionnez au moins 2 propriétés pour les comparer',
+        en: 'Select at least 2 properties to compare',
+        nl: 'Selecteer minimaal 2 eigendommen om te vergelijken',
+        de: 'Wählen Sie mindestens 2 Immobilien zum Vergleichen',
+      },
+      loading: {
+        fr: 'Chargement des propriétés...',
+        en: 'Loading properties...',
+        nl: 'Eigendommen laden...',
+        de: 'Immobilien werden geladen...',
+      },
+      backToSearch: {
+        fr: 'Retour à la recherche',
+        en: 'Back to search',
+        nl: 'Terug naar zoeken',
+        de: 'Zurück zur Suche',
+      },
+      save: {
+        fr: 'Sauvegarder',
+        en: 'Save',
+        nl: 'Opslaan',
+        de: 'Speichern',
+      },
+      saved: {
+        fr: 'Comparaison sauvegardée',
+        en: 'Comparison saved',
+        nl: 'Vergelijking opgeslagen',
+        de: 'Vergleich gespeichert',
+      },
+      share: {
+        fr: 'Partager',
+        en: 'Share',
+        nl: 'Delen',
+        de: 'Teilen',
+      },
+      feature: {
+        fr: 'Caractéristique',
+        en: 'Feature',
+        nl: 'Kenmerk',
+        de: 'Merkmal',
+      },
+      perMonth: {
+        fr: '/mois',
+        en: '/month',
+        nl: '/maand',
+        de: '/Monat',
+      },
+      bestPrice: {
+        fr: 'Meilleur prix',
+        en: 'Best price',
+        nl: 'Beste prijs',
+        de: 'Bester Preis',
+      },
+      largest: {
+        fr: 'Plus grand',
+        en: 'Largest',
+        nl: 'Grootste',
+        de: 'Größte',
+      },
+      immediately: {
+        fr: 'Immédiatement',
+        en: 'Immediately',
+        nl: 'Direct',
+        de: 'Sofort',
+      },
+      viewDetails: {
+        fr: 'Voir les détails',
+        en: 'View details',
+        nl: 'Details bekijken',
+        de: 'Details ansehen',
+      },
+      fields: {
+        monthlyPrice: {
+          fr: 'Prix mensuel',
+          en: 'Monthly price',
+          nl: 'Maandelijkse prijs',
+          de: 'Monatlicher Preis',
+        },
+        bedrooms: {
+          fr: 'Chambres',
+          en: 'Bedrooms',
+          nl: 'Slaapkamers',
+          de: 'Schlafzimmer',
+        },
+        surface: {
+          fr: 'Surface',
+          en: 'Surface area',
+          nl: 'Oppervlakte',
+          de: 'Fläche',
+        },
+        propertyType: {
+          fr: 'Type de bien',
+          en: 'Property type',
+          nl: 'Type eigendom',
+          de: 'Immobilientyp',
+        },
+        availableFrom: {
+          fr: 'Disponible à partir de',
+          en: 'Available from',
+          nl: 'Beschikbaar vanaf',
+          de: 'Verfügbar ab',
+        },
+        furnished: {
+          fr: 'Meublé',
+          en: 'Furnished',
+          nl: 'Gemeubileerd',
+          de: 'Möbliert',
+        },
+        parking: {
+          fr: 'Parking',
+          en: 'Parking',
+          nl: 'Parkeren',
+          de: 'Parken',
+        },
+        balcony: {
+          fr: 'Balcon',
+          en: 'Balcony',
+          nl: 'Balkon',
+          de: 'Balkon',
+        },
+        actions: {
+          fr: 'Actions',
+          en: 'Actions',
+          nl: 'Acties',
+          de: 'Aktionen',
+        },
+      },
+      legend: {
+        bestValue: {
+          fr: 'Meilleure valeur',
+          en: 'Best value',
+          nl: 'Beste waarde',
+          de: 'Bester Wert',
+        },
+        available: {
+          fr: 'Disponible',
+          en: 'Available',
+          nl: 'Beschikbaar',
+          de: 'Verfügbar',
+        },
+        notAvailable: {
+          fr: 'Non disponible',
+          en: 'Not available',
+          nl: 'Niet beschikbaar',
+          de: 'Nicht verfügbar',
+        },
+      },
+      errors: {
+        selectCount: {
+          fr: 'Sélectionnez entre 2 et 3 propriétés pour comparer',
+          en: 'Select between 2 and 3 properties to compare',
+          nl: 'Selecteer 2 tot 3 eigendommen om te vergelijken',
+          de: 'Wählen Sie 2 bis 3 Immobilien zum Vergleichen',
+        },
+        loadError: {
+          fr: 'Erreur lors du chargement des propriétés',
+          en: 'Error loading properties',
+          nl: 'Fout bij het laden van eigendommen',
+          de: 'Fehler beim Laden der Immobilien',
+        },
+        saveError: {
+          fr: 'Erreur lors de la sauvegarde de la comparaison',
+          en: 'Error saving comparison',
+          nl: 'Fout bij het opslaan van de vergelijking',
+          de: 'Fehler beim Speichern des Vergleichs',
+        },
+      },
+    },
+
+    // Property Card
+    card: {
+      viewDetails: {
+        fr: 'Voir les détails',
+        en: 'View details',
+        nl: 'Details bekijken',
+        de: 'Details ansehen',
+      },
+      available: {
+        fr: 'Disponible',
+        en: 'Available',
+        nl: 'Beschikbaar',
+        de: 'Verfügbar',
+      },
+      unavailable: {
+        fr: 'Indisponible',
+        en: 'Unavailable',
+        nl: 'Niet beschikbaar',
+        de: 'Nicht verfügbar',
+      },
+    },
+
+    // Common status
+    status: {
+      published: {
+        fr: 'Publié',
+        en: 'Published',
+        nl: 'Gepubliceerd',
+        de: 'Veröffentlicht',
+      },
+      draft: {
+        fr: 'Brouillon',
+        en: 'Draft',
+        nl: 'Concept',
+        de: 'Entwurf',
+      },
+      archived: {
+        fr: 'Archivé',
+        en: 'Archived',
+        nl: 'Gearchiveerd',
+        de: 'Archiviert',
+      },
+    },
+  },
+
+  // ============================================================================
+  // PAYMENTS PAGE
+  // ============================================================================
+  payments: {
+    title: {
+      fr: 'Paiements',
+      en: 'Payments',
+      nl: 'Betalingen',
+      de: 'Zahlungen',
+    },
+    subtitle: {
+      fr: 'Gérez vos paiements et échéanciers',
+      en: 'Manage your payments and schedules',
+      nl: 'Beheer uw betalingen en schema\'s',
+      de: 'Verwalten Sie Ihre Zahlungen und Zeitpläne',
+    },
+    loading: {
+      fr: 'Chargement...',
+      en: 'Loading...',
+      nl: 'Laden...',
+      de: 'Laden...',
+    },
+    newPayment: {
+      fr: 'Nouveau paiement',
+      en: 'New payment',
+      nl: 'Nieuwe betaling',
+      de: 'Neue Zahlung',
+    },
+
+    // Summary cards
+    summary: {
+      totalPaid: {
+        fr: 'Total payé',
+        en: 'Total paid',
+        nl: 'Totaal betaald',
+        de: 'Insgesamt bezahlt',
+      },
+      totalReceived: {
+        fr: 'Total reçu',
+        en: 'Total received',
+        nl: 'Totaal ontvangen',
+        de: 'Insgesamt erhalten',
+      },
+      pending: {
+        fr: 'En attente',
+        en: 'Pending',
+        nl: 'In afwachting',
+        de: 'Ausstehend',
+      },
+      transactions: {
+        fr: 'Transactions',
+        en: 'Transactions',
+        nl: 'Transacties',
+        de: 'Transaktionen',
+      },
+    },
+
+    // Upcoming payments
+    upcomingPayments: {
+      fr: 'Paiements à venir',
+      en: 'Upcoming payments',
+      nl: 'Komende betalingen',
+      de: 'Anstehende Zahlungen',
+    },
+    autoPay: {
+      fr: 'Auto-paiement',
+      en: 'Auto-pay',
+      nl: 'Automatische betaling',
+      de: 'Automatische Zahlung',
+    },
+
+    // Tabs
+    tabs: {
+      transactions: {
+        fr: 'Transactions',
+        en: 'Transactions',
+        nl: 'Transacties',
+        de: 'Transaktionen',
+      },
+      schedules: {
+        fr: 'Échéanciers',
+        en: 'Schedules',
+        nl: 'Schema\'s',
+        de: 'Zeitpläne',
+      },
+      accounts: {
+        fr: 'Moyens de paiement',
+        en: 'Payment methods',
+        nl: 'Betaalmethoden',
+        de: 'Zahlungsmethoden',
+      },
+    },
+
+    // Transaction status
+    status: {
+      completed: {
+        fr: 'Payé',
+        en: 'Paid',
+        nl: 'Betaald',
+        de: 'Bezahlt',
+      },
+      pending: {
+        fr: 'En attente',
+        en: 'Pending',
+        nl: 'In afwachting',
+        de: 'Ausstehend',
+      },
+      failed: {
+        fr: 'Échoué',
+        en: 'Failed',
+        nl: 'Mislukt',
+        de: 'Fehlgeschlagen',
+      },
+      cancelled: {
+        fr: 'Annulé',
+        en: 'Cancelled',
+        nl: 'Geannuleerd',
+        de: 'Storniert',
+      },
+      refunded: {
+        fr: 'Remboursé',
+        en: 'Refunded',
+        nl: 'Terugbetaald',
+        de: 'Erstattet',
+      },
+    },
+
+    // Transaction types
+    types: {
+      rent_payment: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      security_deposit: {
+        fr: 'Caution',
+        en: 'Security deposit',
+        nl: 'Waarborgsom',
+        de: 'Kaution',
+      },
+      application_fee: {
+        fr: 'Frais de dossier',
+        en: 'Application fee',
+        nl: 'Aanvraagkosten',
+        de: 'Antragsgebühr',
+      },
+      service_fee: {
+        fr: 'Frais de service',
+        en: 'Service fee',
+        nl: 'Servicekosten',
+        de: 'Servicegebühr',
+      },
+      refund: {
+        fr: 'Remboursement',
+        en: 'Refund',
+        nl: 'Terugbetaling',
+        de: 'Rückerstattung',
+      },
+      damage_charge: {
+        fr: 'Frais de dégâts',
+        en: 'Damage charge',
+        nl: 'Schadekosten',
+        de: 'Schadenskosten',
+      },
+      utility_payment: {
+        fr: 'Charges',
+        en: 'Utilities',
+        nl: 'Nutsvoorzieningen',
+        de: 'Nebenkosten',
+      },
+      other: {
+        fr: 'Autre',
+        en: 'Other',
+        nl: 'Overig',
+        de: 'Sonstiges',
+      },
+    },
+
+    // Payment frequency
+    frequency: {
+      weekly: {
+        fr: 'Hebdomadaire',
+        en: 'Weekly',
+        nl: 'Wekelijks',
+        de: 'Wöchentlich',
+      },
+      biweekly: {
+        fr: 'Bimensuel',
+        en: 'Biweekly',
+        nl: 'Tweewekelijks',
+        de: 'Zweiwöchentlich',
+      },
+      monthly: {
+        fr: 'Mensuel',
+        en: 'Monthly',
+        nl: 'Maandelijks',
+        de: 'Monatlich',
+      },
+      quarterly: {
+        fr: 'Trimestriel',
+        en: 'Quarterly',
+        nl: 'Driemaandelijks',
+        de: 'Vierteljährlich',
+      },
+      yearly: {
+        fr: 'Annuel',
+        en: 'Yearly',
+        nl: 'Jaarlijks',
+        de: 'Jährlich',
+      },
+    },
+
+    // Empty states
+    empty: {
+      transactions: {
+        fr: 'Aucune transaction',
+        en: 'No transactions',
+        nl: 'Geen transacties',
+        de: 'Keine Transaktionen',
+      },
+      schedules: {
+        fr: 'Aucun échéancier configuré',
+        en: 'No schedules configured',
+        nl: 'Geen schema\'s geconfigureerd',
+        de: 'Keine Zeitpläne konfiguriert',
+      },
+      accounts: {
+        fr: 'Aucun moyen de paiement',
+        en: 'No payment methods',
+        nl: 'Geen betaalmethoden',
+        de: 'Keine Zahlungsmethoden',
+      },
+      addPaymentMethod: {
+        fr: 'Ajouter un moyen de paiement',
+        en: 'Add payment method',
+        nl: 'Betaalmethode toevoegen',
+        de: 'Zahlungsmethode hinzufügen',
+      },
+    },
+
+    // Schedule labels
+    schedule: {
+      nextPayment: {
+        fr: 'Prochain paiement',
+        en: 'Next payment',
+        nl: 'Volgende betaling',
+        de: 'Nächste Zahlung',
+      },
+      autoPayEnabled: {
+        fr: 'Activé',
+        en: 'Enabled',
+        nl: 'Ingeschakeld',
+        de: 'Aktiviert',
+      },
+      autoPayDisabled: {
+        fr: 'Désactivé',
+        en: 'Disabled',
+        nl: 'Uitgeschakeld',
+        de: 'Deaktiviert',
+      },
+      active: {
+        fr: 'Actif',
+        en: 'Active',
+        nl: 'Actief',
+        de: 'Aktiv',
+      },
+      inactive: {
+        fr: 'Inactif',
+        en: 'Inactive',
+        nl: 'Inactief',
+        de: 'Inaktiv',
+      },
+    },
+
+    // Payment account
+    account: {
+      bankAccount: {
+        fr: 'Compte bancaire',
+        en: 'Bank account',
+        nl: 'Bankrekening',
+        de: 'Bankkonto',
+      },
+      default: {
+        fr: 'Par défaut',
+        en: 'Default',
+        nl: 'Standaard',
+        de: 'Standard',
+      },
+      verified: {
+        fr: 'Vérifié',
+        en: 'Verified',
+        nl: 'Geverifieerd',
+        de: 'Verifiziert',
+      },
+      pendingVerification: {
+        fr: 'En attente',
+        en: 'Pending',
+        nl: 'In afwachting',
+        de: 'Ausstehend',
+      },
+      expires: {
+        fr: 'Expire',
+        en: 'Expires',
+        nl: 'Verloopt',
+        de: 'Läuft ab',
+      },
+    },
+    addAccount: {
+      fr: 'Ajouter un moyen de paiement',
+      en: 'Add payment method',
+      nl: 'Betaalmethode toevoegen',
+      de: 'Zahlungsmethode hinzufügen',
+    },
+  },
+
+  // ============================================================================
+  // COMMUNITY PAGE
+  // ============================================================================
+  community: {
+    title: {
+      fr: 'Communauté',
+      en: 'Community',
+      nl: 'Gemeenschap',
+      de: 'Gemeinschaft',
+    },
+    subtitle: {
+      fr: 'Connectez-vous avec vos colocataires et voisins',
+      en: 'Connect with your roommates and neighbors',
+      nl: 'Verbind met je huisgenoten en buren',
+      de: 'Verbinde dich mit deinen Mitbewohnern und Nachbarn',
+    },
+    backToDashboard: {
+      fr: 'Retour au tableau de bord',
+      en: 'Back to Dashboard',
+      nl: 'Terug naar Dashboard',
+      de: 'Zurück zum Dashboard',
+    },
+
+    // Roommates section
+    roommates: {
+      title: {
+        fr: 'Vos colocataires',
+        en: 'Your Roommates',
+        nl: 'Je huisgenoten',
+        de: 'Deine Mitbewohner',
+      },
+      empty: {
+        fr: 'Pas encore de colocataires',
+        en: 'No roommates yet',
+        nl: 'Nog geen huisgenoten',
+        de: 'Noch keine Mitbewohner',
+      },
+      emptyHint: {
+        fr: 'Une fois installé, vous verrez vos colocataires ici',
+        en: 'Once you move in, you\'ll see your roommates here',
+        nl: 'Zodra je bent verhuisd, zie je hier je huisgenoten',
+        de: 'Sobald du eingezogen bist, siehst du hier deine Mitbewohner',
+      },
+      message: {
+        fr: 'Message',
+        en: 'Message',
+        nl: 'Bericht',
+        de: 'Nachricht',
+      },
+    },
+
+    // Events section
+    events: {
+      title: {
+        fr: 'Événements à venir',
+        en: 'Upcoming Events',
+        nl: 'Aankomende evenementen',
+        de: 'Bevorstehende Veranstaltungen',
+      },
+      empty: {
+        fr: 'Pas d\'événements à venir',
+        en: 'No upcoming events',
+        nl: 'Geen aankomende evenementen',
+        de: 'Keine bevorstehenden Veranstaltungen',
+      },
+      emptyHint: {
+        fr: 'Les événements de la communauté apparaîtront ici lorsqu\'ils seront planifiés',
+        en: 'Community events will appear here when scheduled',
+        nl: 'Gemeenschapsevenementen verschijnen hier wanneer ze zijn gepland',
+        de: 'Gemeinschaftsveranstaltungen erscheinen hier, wenn sie geplant sind',
+      },
+      createEvent: {
+        fr: 'Créer un événement',
+        en: 'Create Event',
+        nl: 'Evenement maken',
+        de: 'Veranstaltung erstellen',
+      },
+      join: {
+        fr: 'Rejoindre',
+        en: 'Join',
+        nl: 'Deelnemen',
+        de: 'Teilnehmen',
       },
     },
   },

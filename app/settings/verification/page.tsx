@@ -5,9 +5,12 @@ import { motion } from 'framer-motion';
 import { BadgeCheck, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import VerificationSettings from '@/components/settings/VerificationSettings';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function VerificationPage() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.verification;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50/30 via-white to-teal-50/30">
@@ -24,7 +27,7 @@ export default function VerificationPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -33,10 +36,10 @@ export default function VerificationPage() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Vérifications
+                {t?.title?.[language] || 'Vérifications'}
               </h1>
               <p className="text-gray-600">
-                Renforcez la confiance de votre profil
+                {t?.subtitle?.[language] || 'Renforcez la confiance de votre profil'}
               </p>
             </div>
           </div>

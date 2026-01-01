@@ -231,7 +231,7 @@ export default function HubMembersPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10 font-semibold"
+            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10 font-semibold"
           >
             ← {hub.members?.backToHub || 'Retour au hub'}
           </Button>
@@ -243,8 +243,8 @@ export default function HubMembersPage() {
                 whileTap={{ scale: 0.95 }}
                 className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #ee5736 0%, #ff8017 100%)',
-                  boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                 }}
               >
                 <Users className="w-6 h-6 text-white" />
@@ -264,8 +264,8 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                  boxShadow: '0 4px 16px rgba(238, 87, 54, 0.4)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
@@ -282,68 +282,68 @@ export default function HubMembersPage() {
           animate="visible"
           className="grid grid-cols-3 gap-4 mb-8"
         >
-          {/* Total Card - Orange Gradient */}
+          {/* Total Card - V3 Orange Official Palette */}
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
+              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #ff9014)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">{hub.members?.stats?.total || 'Total'}</span>
+              <span className="text-sm font-medium text-[#e05747]">{hub.members?.stats?.total || 'Total'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ee5736, #ff8017)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{members.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-1">
+            <p className="text-xs text-[#ff651e] font-medium mt-1">
               {members.length !== 1 ? (hub.members?.stats?.activeMembersPlural || 'membres actifs') : (hub.members?.stats?.activeMemberSingular || 'membre actif')}
             </p>
           </motion.div>
 
-          {/* Residents Card - Purple Gradient */}
+          {/* Residents Card - V3 Orange (Resident brand, not purple) */}
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
-              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
+              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+              style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">{hub.members?.stats?.residents || 'Résidents'}</span>
+              <span className="text-sm font-medium text-[#f8572b]">{hub.members?.stats?.residents || 'Résidents'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}
+                style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
               >
                 <Home className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{residentsCount}</p>
             <div className="flex items-center gap-2 mt-1">
-              <div className="flex-1 h-1.5 bg-purple-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-1.5 bg-orange-100 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${members.length > 0 ? (residentsCount / members.length) * 100 : 0}%` }}
                   transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
                   className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #8b5cf6, #a78bfa)' }}
+                  style={{ background: 'linear-gradient(90deg, #f8572b, #ff7b19)' }}
                 />
               </div>
-              <span className="text-xs text-purple-600 font-bold">
+              <span className="text-xs text-[#ff651e] font-bold">
                 {members.length > 0 ? Math.round((residentsCount / members.length) * 100) : 0}%
               </span>
             </div>
@@ -387,9 +387,10 @@ export default function HubMembersPage() {
         >
           {members.map((member) => {
             const isOwner = member.role === 'owner';
+            // V3 Option C: Orange for residents, amber for owners (semantic role distinction)
             const cardGradient = isOwner
-              ? { bg: '#f5f3ff', bgEnd: '#ede9fe', accent: '#8b5cf6', accentEnd: '#a78bfa', shadow: 'rgba(139, 92, 246, 0.2)' }
-              : { bg: '#fff5f3', bgEnd: '#ffe8e0', accent: '#ee5736', accentEnd: '#ff8017', shadow: 'rgba(238, 87, 54, 0.2)' };
+              ? { bg: '#fffbeb', bgEnd: '#fef3c7', accent: '#f59e0b', accentEnd: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.2)' }
+              : { bg: '#FFF5F0', bgEnd: '#FFEDE5', accent: '#ff651e', accentEnd: '#ff9014', shadow: 'rgba(255, 101, 30, 0.2)' };
 
             return (
               <motion.div
@@ -488,9 +489,9 @@ export default function HubMembersPage() {
                       <div className="flex items-center gap-2.5 text-sm">
                         <div
                           className="w-7 h-7 rounded-lg flex items-center justify-center"
-                          style={{ background: 'rgba(59, 130, 246, 0.1)' }}
+                          style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                         >
-                          <Briefcase className="w-3.5 h-3.5 text-blue-500" />
+                          <Briefcase className="w-3.5 h-3.5 text-[#ff651e]" />
                         </div>
                         <span className="text-gray-700 font-medium text-sm">{member.occupation}</span>
                       </div>
@@ -499,9 +500,9 @@ export default function HubMembersPage() {
                     <div className="flex items-center gap-2.5 text-sm">
                       <div
                         className="w-7 h-7 rounded-lg flex items-center justify-center"
-                        style={{ background: 'rgba(168, 85, 247, 0.1)' }}
+                        style={{ background: 'rgba(255, 123, 25, 0.1)' }}
                       >
-                        <Calendar className="w-3.5 h-3.5 text-purple-500" />
+                        <Calendar className="w-3.5 h-3.5 text-[#ff7b19]" />
                       </div>
                       <span className="text-gray-700 font-medium text-sm">
                         {hub.members?.since || 'Depuis'}{' '}
@@ -583,8 +584,8 @@ export default function HubMembersPage() {
               whileHover={{ scale: 1.05, rotate: 5 }}
               className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
               style={{
-                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
               }}
             >
               <Users className="w-10 h-10 text-white" />
@@ -607,8 +608,8 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                  boxShadow: '0 4px 16px rgba(238, 87, 54, 0.4)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />

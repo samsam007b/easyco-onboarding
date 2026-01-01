@@ -69,11 +69,11 @@ const variantStyles = {
   },
   hub: {
     gradient: 'from-orange-50/30 via-white to-orange-50/30',
-    accent: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+    accent: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
     accentLight: 'from-orange-50 to-red-50',
     border: 'border-orange-200',
     text: 'text-orange-600',
-    shadow: 'rgba(238, 87, 54, 0.35)',
+    shadow: 'rgba(255, 101, 30, 0.35)',
   },
 };
 
@@ -175,7 +175,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
           className="absolute inset-0 rounded-3xl opacity-30"
           style={{
             background: isHub
-              ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+              ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
               : styles.accent,
             filter: 'blur(20px)',
           }}
@@ -188,7 +188,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
           className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
           style={{
             background: isHub
-              ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)'
+              ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
               : undefined,
             boxShadow: `0 8px 24px ${styles.shadow}`,
           }}
@@ -246,7 +246,7 @@ export function MobileBackButton({
         size="icon"
         onClick={onBack}
         className={cn(
-          'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#d9574f]/10 hover:to-[#ff8017]/10',
+          'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10',
           className
         )}
         aria-label="Retour"

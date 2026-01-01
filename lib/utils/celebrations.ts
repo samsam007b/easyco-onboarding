@@ -15,7 +15,7 @@ interface ToastOptions {
 // Color schemes
 const COLORS = {
   searcher: ['#9c5698', '#9D7EE5', '#FFA040', '#FFD700'],
-  resident: ['#d9574f', '#ff5b21', '#ff8017', '#FFD700'],
+  resident: ['#e05747', '#ff651e', '#ff9014', '#FFD700'], // Option C palette
 };
 
 // Current variant (can be set from context)

@@ -285,7 +285,7 @@ export default function ModernTasksPage() {
             className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.15)',
+              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
@@ -455,7 +455,7 @@ export default function ModernTasksPage() {
                       )}
                       style={isMyTask ? {
                         background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
-                        boxShadow: '0 4px 16px rgba(238, 87, 54, 0.1)',
+                        boxShadow: '0 4px 16px rgba(255, 101, 30, 0.1)',
                       } : undefined}
                     >
                       <div className="flex items-center gap-4 flex-1">

@@ -11,14 +11,17 @@ import { Badge } from '@/components/ui/badge';
 import { Bell, Check, Trash2, Filter, ArrowLeft, Home, DollarSign, FileText, Heart, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enGB, de, nl } from 'date-fns/locale';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 // Removed Select imports - using button filters instead
 
 export default function NotificationsPage() {
   const router = useRouter();
   const supabase = createClient();
   const alertsService = new AlertsService(supabase);
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.notifications;
 
   const [notifications, setNotifications] = useState<PropertyNotification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +47,7 @@ export default function NotificationsPage() {
       setNotifications(data);
     } catch (error) {
       console.error('Error loading notifications:', error);
-      toast.error('Erreur lors du chargement des notifications');
+      toast.error(t?.messages?.loadError?.[language] || 'Erreur lors du chargement des notifications');
     } finally {
       setIsLoading(false);
     }
@@ -70,10 +73,10 @@ export default function NotificationsPage() {
       setNotifications((prev) =>
         prev.map((n) => ({ ...n, is_read: true, read_at: new Date().toISOString() }))
       );
-      toast.success('Toutes les notifications ont été marquées comme lues');
+      toast.success(t?.messages?.allMarkedRead?.[language] || 'Toutes les notifications ont été marquées comme lues');
     } catch (error) {
       console.error('Error marking all as read:', error);
-      toast.error('Erreur lors du marquage');
+      toast.error(t?.messages?.markError?.[language] || 'Erreur lors du marquage');
     }
   };
 
@@ -81,10 +84,10 @@ export default function NotificationsPage() {
     try {
       await alertsService.deleteNotification(notificationId);
       setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
-      toast.success('Notification supprimée');
+      toast.success(t?.messages?.deleted?.[language] || 'Notification supprimée');
     } catch (error) {
       console.error('Error deleting notification:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t?.messages?.deleteError?.[language] || 'Erreur lors de la suppression');
     }
   };
 
@@ -106,13 +109,13 @@ export default function NotificationsPage() {
   const getNotificationBadge = (type: PropertyNotification['type']) => {
     switch (type) {
       case 'new_property':
-        return { label: 'Nouvelle propriété', color: 'bg-green-100 text-green-700' };
+        return { label: t?.types?.newProperty?.[language] || 'Nouvelle propriété', color: 'bg-green-100 text-green-700' };
       case 'price_drop':
-        return { label: 'Baisse de prix', color: 'bg-blue-100 text-blue-700' };
+        return { label: t?.types?.priceDrop?.[language] || 'Baisse de prix', color: 'bg-blue-100 text-blue-700' };
       case 'status_change':
-        return { label: 'Changement', color: 'bg-gray-100 text-gray-700' };
+        return { label: t?.types?.statusChange?.[language] || 'Changement', color: 'bg-gray-100 text-gray-700' };
       case 'new_match':
-        return { label: 'Nouveau match', color: 'bg-pink-100 text-pink-700' };
+        return { label: t?.types?.newMatch?.[language] || 'Nouveau match', color: 'bg-pink-100 text-pink-700' };
       default:
         return { label: type, color: 'bg-gray-100 text-gray-700' };
     }
@@ -126,13 +129,22 @@ export default function NotificationsPage() {
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
+  const getDateLocale = () => {
+    switch (language) {
+      case 'fr': return fr;
+      case 'de': return de;
+      case 'nl': return nl;
+      default: return enGB;
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <LoadingHouse size={64} />
-            <p className="text-gray-600">Chargement des notifications...</p>
+            <p className="text-gray-600">{t?.loading?.[language] || 'Chargement des notifications...'}</p>
           </div>
         </div>
       </div>
@@ -149,7 +161,7 @@ export default function NotificationsPage() {
           className="mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Retour
+          {t?.back?.[language] || 'Retour'}
         </Button>
 
         <div className="flex items-center justify-between mb-4">
@@ -158,13 +170,15 @@ export default function NotificationsPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
                 <Bell className="w-6 h-6 text-white" />
               </div>
-              Notifications
+              {t?.title?.[language] || 'Notifications'}
             </h1>
             <p className="text-gray-600">
               {unreadCount > 0 ? (
-                <>{unreadCount} notification{unreadCount > 1 ? 's' : ''} non lue{unreadCount > 1 ? 's' : ''}</>
+                <>{unreadCount} {unreadCount > 1
+                  ? (t?.unreadCount?.plural?.[language] || 'notifications non lues')
+                  : (t?.unreadCount?.singular?.[language] || 'notification non lue')}</>
               ) : (
-                <>Aucune notification non lue</>
+                <>{t?.noUnread?.[language] || 'Aucune notification non lue'}</>
               )}
             </p>
           </div>
@@ -176,7 +190,7 @@ export default function NotificationsPage() {
               className="text-orange-600 border-orange-300 hover:bg-orange-50"
             >
               <Check className="w-4 h-4 mr-2" />
-              Tout marquer comme lu
+              {t?.markAllRead?.[language] || 'Tout marquer comme lu'}
             </Button>
           )}
         </div>
@@ -193,7 +207,7 @@ export default function NotificationsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Toutes
+              {t?.filters?.all?.[language] || 'Toutes'}
             </button>
             <button
               onClick={() => setFilter('unread')}
@@ -203,7 +217,7 @@ export default function NotificationsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Non lues
+              {t?.filters?.unread?.[language] || 'Non lues'}
             </button>
             <button
               onClick={() => setFilter('read')}
@@ -213,7 +227,7 @@ export default function NotificationsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Lues
+              {t?.filters?.read?.[language] || 'Lues'}
             </button>
           </div>
         </div>
@@ -231,19 +245,21 @@ export default function NotificationsPage() {
                 <Bell className="w-12 h-12 text-white" />
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                {filter === 'unread' ? 'Aucune notification non lue' : 'Aucune notification'}
+                {filter === 'unread'
+                  ? (t?.empty?.unreadTitle?.[language] || 'Aucune notification non lue')
+                  : (t?.empty?.title?.[language] || 'Aucune notification')}
               </h3>
               <p className="text-lg text-gray-600 text-center max-w-md mb-8">
                 {filter === 'unread'
-                  ? 'Tu es à jour !'
-                  : 'Tu recevras des notifications quand de nouvelles propriétés correspondent à tes alertes'}
+                  ? (t?.empty?.unreadDescription?.[language] || 'Tu es à jour !')
+                  : (t?.empty?.description?.[language] || 'Tu recevras des notifications quand de nouvelles propriétés correspondent à tes alertes')}
               </p>
               <Button
                 onClick={() => router.push('/dashboard/searcher/alerts')}
                 className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
               >
                 <Sparkles className="w-5 h-5 mr-2" />
-                Gérer mes alertes
+                {t?.empty?.button?.[language] || 'Gérer mes alertes'}
               </Button>
             </div>
           </div>
@@ -294,7 +310,7 @@ export default function NotificationsPage() {
                         <p className="text-xs text-gray-400">
                           {formatDistanceToNow(new Date(notification.created_at), {
                             addSuffix: true,
-                            locale: fr,
+                            locale: getDateLocale(),
                           })}
                         </p>
 

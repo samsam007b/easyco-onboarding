@@ -29,12 +29,12 @@ const GRADIENTS = {
     glowSoft: 'rgba(157, 126, 229, 0.25)',
   },
   resident: {
-    primary: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-    bg: 'from-red-500 via-orange-500 to-orange-400',
-    accent: '#ee5736',
-    accentLight: '#ff7a5c',
-    glow: 'rgba(238, 87, 54, 0.6)',
-    glowSoft: 'rgba(238, 87, 54, 0.25)',
+    primary: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    bg: 'from-orange-600 via-orange-500 to-orange-400',
+    accent: '#ff651e',
+    accentLight: '#ff7b19',
+    glow: 'rgba(255, 101, 30, 0.6)',
+    glowSoft: 'rgba(255, 101, 30, 0.25)',
   },
 };
 

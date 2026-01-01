@@ -19,10 +19,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import MFASettings from '@/components/settings/MFASettings';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function SecurityPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.security;
   const [isLoading, setIsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState('');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -61,12 +64,12 @@ export default function SecurityPage() {
     setMessage(null);
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setMessage({ type: 'error', text: 'Les nouveaux mots de passe ne correspondent pas' });
+      setMessage({ type: 'error', text: t?.errors?.mismatch?.[language] || 'Les nouveaux mots de passe ne correspondent pas' });
       return;
     }
 
     if (passwordForm.newPassword.length < 8) {
-      setMessage({ type: 'error', text: 'Le nouveau mot de passe doit contenir au moins 8 caractères' });
+      setMessage({ type: 'error', text: t?.errors?.minLength?.[language] || 'Le nouveau mot de passe doit contenir au moins 8 caractères' });
       return;
     }
 
@@ -77,10 +80,10 @@ export default function SecurityPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Mot de passe modifié avec succès' });
+      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Mot de passe modifié avec succès' });
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de la modification du mot de passe' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de la modification du mot de passe') });
     }
   };
 
@@ -89,7 +92,7 @@ export default function SecurityPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50/30 via-white to-rose-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -110,7 +113,7 @@ export default function SecurityPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -118,8 +121,8 @@ export default function SecurityPage() {
               <Shield className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Sécurité</h1>
-              <p className="text-gray-600">Gérer votre mot de passe et sécurité</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Sécurité'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Gérer votre mot de passe et sécurité'}</p>
             </div>
           </div>
         </motion.div>
@@ -155,8 +158,8 @@ export default function SecurityPage() {
               <Lock className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Changer le mot de passe</h2>
-              <p className="text-sm text-gray-600">Mettez à jour votre mot de passe</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.password?.title?.[language] || 'Changer le mot de passe'}</h2>
+              <p className="text-sm text-gray-600">{t?.password?.subtitle?.[language] || 'Mettez à jour votre mot de passe'}</p>
             </div>
           </div>
 
@@ -164,7 +167,7 @@ export default function SecurityPage() {
             {/* Current Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mot de passe actuel
+                {t?.password?.current?.[language] || 'Mot de passe actuel'}
               </label>
               <div className="relative">
                 <input
@@ -172,7 +175,7 @@ export default function SecurityPage() {
                   value={passwordForm.currentPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  placeholder="Entrez votre mot de passe actuel"
+                  placeholder={t?.password?.currentPlaceholder?.[language] || 'Entrez votre mot de passe actuel'}
                 />
                 <button
                   type="button"
@@ -187,7 +190,7 @@ export default function SecurityPage() {
             {/* New Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nouveau mot de passe
+                {t?.password?.new?.[language] || 'Nouveau mot de passe'}
               </label>
               <div className="relative">
                 <input
@@ -195,7 +198,7 @@ export default function SecurityPage() {
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  placeholder="Minimum 8 caractères"
+                  placeholder={t?.password?.newPlaceholder?.[language] || 'Minimum 8 caractères'}
                 />
                 <button
                   type="button"
@@ -210,7 +213,7 @@ export default function SecurityPage() {
             {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirmer le nouveau mot de passe
+                {t?.password?.confirm?.[language] || 'Confirmer le nouveau mot de passe'}
               </label>
               <div className="relative">
                 <input
@@ -218,7 +221,7 @@ export default function SecurityPage() {
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  placeholder="Répétez votre nouveau mot de passe"
+                  placeholder={t?.password?.confirmPlaceholder?.[language] || 'Répétez votre nouveau mot de passe'}
                 />
                 <button
                   type="button"
@@ -235,7 +238,7 @@ export default function SecurityPage() {
               className="w-full rounded-xl bg-gradient-to-r from-red-200/70 to-rose-200/70 text-gray-900 hover:from-red-300/70 hover:to-rose-300/70"
             >
               <Lock className="w-4 h-4 mr-2" />
-              Modifier le mot de passe
+              {t?.password?.button?.[language] || 'Modifier le mot de passe'}
             </Button>
           </form>
         </motion.div>
@@ -262,19 +265,19 @@ export default function SecurityPage() {
               <Key className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Informations du compte</h2>
-              <p className="text-sm text-gray-600">Détails de connexion</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.account?.title?.[language] || 'Informations du compte'}</h2>
+              <p className="text-sm text-gray-600">{t?.account?.subtitle?.[language] || 'Détails de connexion'}</p>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-center py-3 border-b border-gray-200">
-              <span className="text-gray-600">Email de connexion</span>
+              <span className="text-gray-600">{t?.account?.email?.[language] || 'Email de connexion'}</span>
               <span className="font-medium text-gray-900">{userEmail}</span>
             </div>
             <div className="flex justify-between items-center py-3">
-              <span className="text-gray-600">Dernière modification</span>
-              <span className="font-medium text-gray-900">Récemment</span>
+              <span className="text-gray-600">{t?.account?.lastChange?.[language] || 'Dernière modification'}</span>
+              <span className="font-medium text-gray-900">{t?.account?.recently?.[language] || 'Récemment'}</span>
             </div>
           </div>
         </motion.div>

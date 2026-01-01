@@ -125,17 +125,17 @@ const brandColors = {
     shadow: 'shadow-[#9c5698]/20',
   },
   resident: {
-    primary: '#ee5736',
-    secondary: '#d64a2d',
-    light: '#fef3f0',
-    gradient: 'from-[#ee5736] to-[#d64a2d]',
-    gradientLight: 'from-[#fef3f0] to-[#fde8e3]',
-    gradientVibrant: 'from-[#ee5736] via-[#f06a4d] to-[#ff8066]',
-    bg: 'bg-[#fef3f0]',
-    text: 'text-[#ee5736]',
-    border: 'border-[#ee5736]',
-    ring: 'ring-[#ee5736]/20',
-    shadow: 'shadow-[#ee5736]/20',
+    primary: '#ff651e',
+    secondary: '#e05747',
+    light: '#fff5f2',
+    gradient: 'from-[#e05747] to-[#ff9014]',
+    gradientLight: 'from-[#fff5f2] to-[#ffede5]',
+    gradientVibrant: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
+    bg: 'bg-[#fff5f2]',
+    text: 'text-[#ff651e]',
+    border: 'border-[#ff651e]',
+    ring: 'ring-[#ff651e]/20',
+    shadow: 'shadow-[#ff651e]/20',
   },
 };
 
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
           </p>
           <button
             onClick={() => router.push('/dashboard/subscription')}
-            className="px-6 py-3 bg-gradient-to-r from-[#ee5736] to-[#9c5698] text-white rounded-xl font-semibold hover:shadow-lg transition"
+            className="px-6 py-3 bg-gradient-to-r from-[#ff651e] to-[#9c5698] text-white rounded-xl font-semibold hover:shadow-lg transition"
           >
             Voir les plans disponibles
           </button>

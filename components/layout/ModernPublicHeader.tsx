@@ -146,7 +146,7 @@ export default function ModernPublicHeader({
                         borderTopColor: item.color === 'yellow'
                           ? '#FFB85C'
                           : item.color === 'orange'
-                          ? '#E8865D'
+                          ? '#ff651e'
                           : '#A67BB8'
                       }}
                       initial={{ opacity: 0, y: -5 }}

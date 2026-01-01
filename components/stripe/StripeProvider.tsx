@@ -26,8 +26,8 @@ export default function StripeProvider({
       light: '#F3F1FF',
     },
     resident: {
-      primary: '#ee5736',
-      hover: '#d94b2a',
+      primary: '#ff651e',
+      hover: '#e05747',
       light: '#FFF3EF',
     },
   };

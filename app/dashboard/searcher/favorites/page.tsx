@@ -9,6 +9,7 @@ import { ArrowLeft, Heart, MapPin, Trash2, Home, Users, Star, Sparkles } from 'l
 import PropertyCard from '@/components/PropertyCard';
 import { toast } from 'sonner';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { SkeletonGrid, SkeletonPropertyCard } from '@/components/ui/skeleton';
 import { logger } from '@/lib/utils/logger';
 
@@ -37,6 +38,8 @@ interface Favorite {
 export default function FavoritesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.favorites;
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
   const [residentsData, setResidentsData] = useState<Map<string, any[]>>(new Map());
@@ -82,7 +85,7 @@ export default function FavoritesPage() {
 
       if (error) {
         logger.error('Error loading favorites', error);
-        toast.error('Erreur lors du chargement des favoris');
+        toast.error(t?.messages?.loadError?.[language] || 'Erreur lors du chargement des favoris');
         return;
       }
 
@@ -104,7 +107,7 @@ export default function FavoritesPage() {
       }
     } catch (error) {
       logger.error('Error loading favorites', error);
-      toast.error('Une erreur est survenue');
+      toast.error(t?.messages?.error?.[language] || 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
@@ -119,15 +122,15 @@ export default function FavoritesPage() {
 
       if (error) {
         logger.error('Error removing favorite', error);
-        toast.error('Erreur lors de la suppression');
+        toast.error(t?.messages?.removeError?.[language] || 'Erreur lors de la suppression');
         return;
       }
 
       setFavorites(prev => prev.filter(f => f.id !== favoriteId));
-      toast.success(`"${propertyTitle}" retiré des favoris`);
+      toast.success(t?.messages?.removed?.[language]?.replace('{title}', propertyTitle) || `"${propertyTitle}" retiré des favoris`);
     } catch (error) {
       logger.error('Error removing favorite', error);
-      toast.error('Une erreur est survenue');
+      toast.error(t?.messages?.error?.[language] || 'Une erreur est survenue');
     }
   };
 
@@ -148,10 +151,10 @@ export default function FavoritesPage() {
               variant="ghost"
               onClick={() => router.back()}
               className="gap-2"
-              aria-label="Retour à la page précédente"
+              aria-label={t?.back?.[language] || 'Retour'}
             >
               <ArrowLeft className="w-4 h-4" />
-              Retour
+              {t?.back?.[language] || 'Retour'}
             </Button>
           </div>
 
@@ -160,9 +163,9 @@ export default function FavoritesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-searcher-400 to-searcher-600 rounded-2xl flex items-center justify-center shadow-md">
                 <Heart className="w-6 h-6 text-white fill-white" />
               </div>
-              Mes Favoris
+              {t?.title?.[language] || 'Mes Favoris'}
             </h1>
-            <p className="text-gray-600 mt-1">Chargement...</p>
+            <p className="text-gray-600 mt-1">{t?.loading?.[language] || 'Chargement...'}</p>
           </div>
 
           <SkeletonGrid columns={3} items={6} cardType="property" />
@@ -183,7 +186,7 @@ export default function FavoritesPage() {
               className="gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              Retour
+              {t?.back?.[language] || 'Retour'}
             </Button>
 
             <div>
@@ -191,10 +194,12 @@ export default function FavoritesPage() {
                 <div className="w-12 h-12 bg-gradient-to-br from-searcher-400 to-searcher-600 rounded-2xl flex items-center justify-center shadow-md">
                   <Heart className="w-6 h-6 text-white fill-white" />
                 </div>
-                Mes Favoris
+                {t?.title?.[language] || 'Mes Favoris'}
               </h1>
               <p className="text-gray-600 mt-1">
-                {favorites.length} {favorites.length === 1 ? 'propriété sauvegardée' : 'propriétés sauvegardées'}
+                {favorites.length} {favorites.length === 1
+                  ? (t?.count?.singular?.[language] || 'propriété sauvegardée')
+                  : (t?.count?.plural?.[language] || 'propriétés sauvegardées')}
               </p>
             </div>
           </div>
@@ -211,19 +216,19 @@ export default function FavoritesPage() {
                 <Heart className="w-12 h-12 text-white" />
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                Aucun favori pour le moment
+                {t?.empty?.title?.[language] || 'Aucun favori pour le moment'}
               </h3>
               <p className="text-lg text-gray-600 text-center max-w-md mb-8">
-                Sauvegarde tes propriétés préférées en cliquant sur le cœur
+                {t?.empty?.description?.[language] || 'Sauvegarde tes propriétés préférées en cliquant sur le cœur'}
                 <Heart className="w-4 h-4 inline-block mx-1 text-searcher-600" />
-                pour les retrouver facilement ici
+                {t?.empty?.descriptionSuffix?.[language] || 'pour les retrouver facilement ici'}
               </p>
               <Button
                 onClick={() => router.push('/properties/browse')}
                 className="bg-gradient-searcher text-white hover:opacity-90 px-8 py-6 text-lg rounded-2xl shadow-lg shadow-searcher-500/30 hover:shadow-xl hover:shadow-searcher-500/40 transition-all"
               >
                 <Sparkles className="w-5 h-5 mr-2" />
-                Découvrir des propriétés
+                {t?.empty?.button?.[language] || 'Découvrir des propriétés'}
               </Button>
             </div>
           </div>
@@ -238,7 +243,7 @@ export default function FavoritesPage() {
                       <Heart className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 font-medium">Total favoris</p>
+                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total favoris'}</p>
                       <p className="text-2xl font-bold text-gray-900">{favorites.length}</p>
                     </div>
                   </div>
@@ -252,7 +257,7 @@ export default function FavoritesPage() {
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 font-medium">Villes</p>
+                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.cities?.[language] || 'Villes'}</p>
                       <p className="text-2xl font-bold text-gray-900">
                         {new Set(favorites.map(f => f.property.city)).size}
                       </p>
@@ -268,7 +273,7 @@ export default function FavoritesPage() {
                       <Home className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 font-medium">Prix moyen</p>
+                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.averagePrice?.[language] || 'Prix moyen'}</p>
                       <p className="text-2xl font-bold text-gray-900">
                         €{Math.round(favorites.reduce((sum, f) => sum + f.property.monthly_rent, 0) / favorites.length)}
                       </p>
@@ -293,7 +298,7 @@ export default function FavoritesPage() {
                       onFavoriteClick={handleFavoriteClick}
                     />
                     <div className="mt-2 text-xs text-gray-500 text-center">
-                      Ajouté le {new Date(favorite.created_at).toLocaleDateString('fr-FR', {
+                      {t?.addedOn?.[language] || 'Ajouté le'} {new Date(favorite.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'

@@ -128,8 +128,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             whileHover={{ scale: 1.1, rotate: 5 }}
             className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-              boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+              background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
             }}
           >
             <MessageCircle className="w-6 h-6 text-white" />
@@ -146,7 +146,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             <p className="text-xs text-gray-500 flex items-center gap-2">
               <Badge
                 className="text-xs border-none text-white font-bold"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
               >
                 {pinnedConversations.length + conversations.length}
               </Badge>
@@ -233,8 +233,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                           onClick={() => onInviteClick?.('resident')}
                           className="h-8 text-xs rounded-full text-white font-semibold shadow-md"
                           style={{
-                            background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                            boxShadow: '0 4px 12px rgba(238, 87, 54, 0.3)',
+                            background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                            boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
                           }}
                         >
                           <UserPlus className="w-3 h-3 mr-1" />
@@ -345,7 +345,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               <motion.div
                 className="absolute inset-0 rounded-2xl opacity-40"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   filter: 'blur(15px)',
                 }}
                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -354,8 +354,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               <div
                 className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                  boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                 }}
               >
                 <MessageCircle className="w-10 h-10 text-white" />
@@ -458,8 +458,8 @@ function ConversationItem({
         <div
           className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
           style={{
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+            background: 'linear-gradient(135deg, #7CB89B 0%, #9ECDB5 100%)',
+            boxShadow: '0 4px 12px rgba(124, 184, 155, 0.35)',
           }}
         >
           <Users className="w-6 h-6 text-white" />
@@ -501,7 +501,7 @@ function ConversationItem({
           ? {
               background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
               borderColor: 'rgba(255, 91, 33, 0.3)',
-              boxShadow: '0 4px 12px rgba(238, 87, 54, 0.15)',
+              boxShadow: '0 4px 12px rgba(255, 101, 30, 0.15)',
             }
           : undefined
       }
@@ -624,8 +624,8 @@ function ConversationItem({
             <Badge
               className="text-white text-xs px-2.5 py-1 rounded-full flex-shrink-0 font-bold min-w-[22px] justify-center border-none shadow-md"
               style={{
-                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                boxShadow: '0 2px 8px rgba(238, 87, 54, 0.4)',
+                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                boxShadow: '0 2px 8px rgba(255, 101, 30, 0.4)',
               }}
             >
               {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}

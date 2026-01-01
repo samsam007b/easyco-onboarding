@@ -27,9 +27,12 @@ import {
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function MyVisitsPage() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.visits;
   const {
     visits,
     loading,
@@ -99,26 +102,26 @@ export default function MyVisitsPage() {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'confirmed':
-        return 'Confirmed';
+        return t?.status?.confirmed?.[language] || 'Confirmée';
       case 'pending':
-        return 'Pending';
+        return t?.status?.pending?.[language] || 'En attente';
       case 'completed':
-        return 'Completed';
+        return t?.status?.completed?.[language] || 'Terminée';
       case 'cancelled_by_visitor':
-        return 'Cancelled by You';
+        return t?.status?.cancelledByYou?.[language] || 'Annulée par vous';
       case 'cancelled_by_owner':
-        return 'Cancelled by Owner';
+        return t?.status?.cancelledByOwner?.[language] || 'Annulée par le propriétaire';
       case 'no_show':
-        return 'No Show';
+        return t?.status?.noShow?.[language] || 'Non présent';
       default:
         return status;
     }
   };
 
   const handleCancelVisit = async (visitId: string) => {
-    if (!confirm('Are you sure you want to cancel this visit?')) return;
+    if (!confirm(t?.confirmCancel?.[language] || 'Êtes-vous sûr de vouloir annuler cette visite ?')) return;
 
-    const reason = prompt('Please tell us why you\'re cancelling (optional):');
+    const reason = prompt(t?.cancelReason?.[language] || 'Dites-nous pourquoi vous annulez (optionnel) :');
     await cancelVisit(visitId, reason || undefined);
   };
 
@@ -184,20 +187,19 @@ export default function MyVisitsPage() {
                 <div className="flex items-center gap-2 text-gray-700">
                   <CalendarIcon className="h-5 w-5 text-orange-600" />
                   <div>
-                    <div className="text-xs text-gray-500">Date</div>
+                    <div className="text-xs text-gray-500">{t?.card?.date?.[language] || 'Date'}</div>
                     <div className="font-medium">
-                      {scheduledDate.toLocaleDateString('fr-FR', {
-                        weekday: 'short',
-                        day: 'numeric',
-                        month: 'short',
-                      })}
+                      {scheduledDate.toLocaleDateString(
+                        language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB',
+                        { weekday: 'short', day: 'numeric', month: 'short' }
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Clock className="h-5 w-5 text-orange-600" />
                   <div>
-                    <div className="text-xs text-gray-500">Time</div>
+                    <div className="text-xs text-gray-500">{t?.card?.time?.[language] || 'Heure'}</div>
                     <div className="font-medium">
                       {scheduledDate.toLocaleTimeString('fr-FR', {
                         hour: '2-digit',
@@ -216,20 +218,22 @@ export default function MyVisitsPage() {
                   <MapPin className="h-5 w-5 text-green-600" />
                 )}
                 <span className="text-sm font-medium text-gray-700">
-                  {visit.visit_type === 'virtual' ? 'Virtual Tour' : 'In-Person Visit'}
+                  {visit.visit_type === 'virtual'
+                    ? (t?.card?.virtualTour?.[language] || 'Visite virtuelle')
+                    : (t?.card?.inPerson?.[language] || 'Visite en personne')}
                 </span>
               </div>
 
               {/* Owner Info */}
               <div className="flex items-center gap-2 mb-4 text-gray-600 text-sm">
                 <User className="h-4 w-4" />
-                <span>Hosted by {visit.owner?.full_name || 'Owner'}</span>
+                <span>{t?.card?.hostedBy?.[language] || 'Organisé par'} {visit.owner?.full_name || (t?.card?.owner?.[language] || 'Propriétaire')}</span>
               </div>
 
               {/* Owner Response */}
               {visit.owner_response && (
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4">
-                  <div className="text-xs text-blue-600 font-medium mb-1">Owner's Message:</div>
+                  <div className="text-xs text-blue-600 font-medium mb-1">{t?.card?.ownerMessage?.[language] || 'Message du propriétaire :'}</div>
                   <div className="text-sm text-gray-700">{visit.owner_response}</div>
                 </div>
               )}
@@ -237,18 +241,18 @@ export default function MyVisitsPage() {
               {/* Meeting URL for virtual visits */}
               {visit.visit_type === 'virtual' && visit.meeting_url && visit.status === 'confirmed' && (
                 <div className="bg-green-50 border border-green-200 rounded-xl p-3 mb-4">
-                  <div className="text-xs text-green-600 font-medium mb-1">Virtual Meeting:</div>
+                  <div className="text-xs text-green-600 font-medium mb-1">{t?.card?.virtualMeeting?.[language] || 'Réunion virtuelle :'}</div>
                   <a
                     href={visit.meeting_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-blue-600 hover:underline"
                   >
-                    Join Video Call
+                    {t?.card?.joinCall?.[language] || 'Rejoindre l\'appel vidéo'}
                   </a>
                   {visit.meeting_password && (
                     <div className="text-xs text-gray-600 mt-1">
-                      Password: {visit.meeting_password}
+                      {t?.card?.password?.[language] || 'Mot de passe :'} {visit.meeting_password}
                     </div>
                   )}
                 </div>
@@ -258,7 +262,7 @@ export default function MyVisitsPage() {
               <div className="flex gap-2 mt-4">
                 <Link href={`/properties/${visit.property_id}`} className="flex-1">
                   <Button variant="outline" className="w-full rounded-xl">
-                    View Property
+                    {t?.actions?.viewProperty?.[language] || 'Voir la propriété'}
                   </Button>
                 </Link>
 
@@ -269,7 +273,7 @@ export default function MyVisitsPage() {
                     className="rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50"
                   >
                     <X className="h-4 w-4 mr-2" />
-                    Cancel
+                    {t?.actions?.cancel?.[language] || 'Annuler'}
                   </Button>
                 )}
 
@@ -282,7 +286,7 @@ export default function MyVisitsPage() {
                     className="rounded-xl bg-orange-600 hover:bg-orange-700"
                   >
                     <Star className="h-4 w-4 mr-2" />
-                    Leave Feedback
+                    {t?.actions?.leaveFeedback?.[language] || 'Laisser un avis'}
                   </Button>
                 )}
               </div>
@@ -298,7 +302,7 @@ export default function MyVisitsPage() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Loading your visits...</p>
+          <p className="text-gray-600">{t?.loading?.[language] || 'Chargement de vos visites...'}</p>
         </div>
       </div>
     );
@@ -311,14 +315,14 @@ export default function MyVisitsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Visits</h1>
-              <p className="text-gray-600 mt-1">Manage your property viewings</p>
+              <h1 className="text-3xl font-bold text-gray-900">{t?.title?.[language] || 'Mes Visites'}</h1>
+              <p className="text-gray-600 mt-1">{t?.subtitle?.[language] || 'Gérez vos visites de propriétés'}</p>
             </div>
             <Button
               onClick={() => router.push('/properties/browse')}
               className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl"
             >
-              Browse Properties
+              {t?.browseButton?.[language] || 'Parcourir les propriétés'}
             </Button>
           </div>
         </div>
@@ -332,7 +336,7 @@ export default function MyVisitsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total Visits</p>
+                  <p className="text-sm text-gray-600">{t?.stats?.total?.[language] || 'Total visites'}</p>
                   <p className="text-3xl font-bold text-orange-600">{visits.length}</p>
                 </div>
                 <CalendarIcon className="h-12 w-12 text-orange-200" />
@@ -344,7 +348,7 @@ export default function MyVisitsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Upcoming</p>
+                  <p className="text-sm text-gray-600">{t?.stats?.upcoming?.[language] || 'À venir'}</p>
                   <p className="text-3xl font-bold text-green-600">{upcomingVisits.length}</p>
                 </div>
                 <CheckCircle className="h-12 w-12 text-green-200" />
@@ -356,7 +360,7 @@ export default function MyVisitsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Completed</p>
+                  <p className="text-sm text-gray-600">{t?.stats?.completed?.[language] || 'Terminées'}</p>
                   <p className="text-3xl font-bold text-blue-600">
                     {visits.filter((v) => v.status === 'completed').length}
                   </p>
@@ -371,10 +375,10 @@ export default function MyVisitsPage() {
         <Tabs defaultValue="upcoming" className="space-y-6">
           <TabsList className="bg-white rounded-2xl p-1 shadow-lg">
             <TabsTrigger value="upcoming" className="rounded-xl">
-              Upcoming ({upcomingVisits.length})
+              {t?.tabs?.upcoming?.[language] || 'À venir'} ({upcomingVisits.length})
             </TabsTrigger>
             <TabsTrigger value="past" className="rounded-xl">
-              Past ({pastVisits.length})
+              {t?.tabs?.past?.[language] || 'Passées'} ({pastVisits.length})
             </TabsTrigger>
           </TabsList>
 
@@ -383,15 +387,15 @@ export default function MyVisitsPage() {
               <Card className="rounded-2xl shadow-lg">
                 <CardContent className="p-12 text-center">
                   <CalendarIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No upcoming visits</h3>
+                  <h3 className="text-xl font-semibold mb-2">{t?.empty?.upcoming?.title?.[language] || 'Aucune visite à venir'}</h3>
                   <p className="text-gray-600 mb-6">
-                    Book a visit to view properties you're interested in
+                    {t?.empty?.upcoming?.description?.[language] || 'Réservez une visite pour voir les propriétés qui vous intéressent'}
                   </p>
                   <Button
                     onClick={() => router.push('/properties/browse')}
                     className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] rounded-2xl"
                   >
-                    Browse Properties
+                    {t?.browseButton?.[language] || 'Parcourir les propriétés'}
                   </Button>
                 </CardContent>
               </Card>
@@ -405,8 +409,8 @@ export default function MyVisitsPage() {
               <Card className="rounded-2xl shadow-lg">
                 <CardContent className="p-12 text-center">
                   <Clock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">No past visits</h3>
-                  <p className="text-gray-600">Your visit history will appear here</p>
+                  <h3 className="text-xl font-semibold mb-2">{t?.empty?.past?.title?.[language] || 'Aucune visite passée'}</h3>
+                  <p className="text-gray-600">{t?.empty?.past?.description?.[language] || 'Votre historique de visites apparaîtra ici'}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -429,9 +433,9 @@ export default function MyVisitsPage() {
                   <CalendarIcon className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">Calendrier des visites</CardTitle>
+                  <CardTitle className="text-xl">{t?.calendar?.title?.[language] || 'Calendrier des visites'}</CardTitle>
                   <p className="text-sm text-gray-600 mt-1">
-                    Cliquez sur une date pour voir les détails des visites
+                    {t?.calendar?.subtitle?.[language] || 'Cliquez sur une date pour voir les détails des visites'}
                   </p>
                 </div>
               </div>
@@ -443,7 +447,7 @@ export default function MyVisitsPage() {
                   // Find the visit associated with this event
                   const visit = visits.find(v => v.id === event.id);
                   if (visit) {
-                    toast.info(`Visite: ${event.title}`);
+                    toast.info(`${t?.calendar?.visitLabel?.[language] || 'Visite'}: ${event.title}`);
                   }
                 }}
                 onDateClick={(date) => {
@@ -463,7 +467,7 @@ export default function MyVisitsPage() {
         >
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <Bell className="w-6 h-6 text-orange-600" />
-            Annonces importantes
+            {t?.announcements?.title?.[language] || 'Annonces importantes'}
           </h2>
 
           {/* Upcoming visits reminder */}
@@ -476,11 +480,12 @@ export default function MyVisitsPage() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Prochaines visites à venir
+                      {t?.announcements?.upcoming?.title?.[language] || 'Prochaines visites à venir'}
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      Vous avez {upcomingVisits.length} visite{upcomingVisits.length > 1 ? 's' : ''} programmée{upcomingVisits.length > 1 ? 's' : ''}.
-                      Pensez à bien noter les dates et heures !
+                      {t?.announcements?.upcoming?.description?.[language]
+                        ?.replace('{count}', String(upcomingVisits.length))
+                        || `Vous avez ${upcomingVisits.length} visite${upcomingVisits.length > 1 ? 's' : ''} programmée${upcomingVisits.length > 1 ? 's' : ''}. Pensez à bien noter les dates et heures !`}
                     </p>
                     <div className="space-y-2">
                       {upcomingVisits.slice(0, 3).map((visit) => {
@@ -492,18 +497,17 @@ export default function MyVisitsPage() {
                           >
                             <CalendarIcon className="w-4 h-4 text-orange-600" />
                             <span className="font-medium text-gray-900">
-                              {visitDate.toLocaleDateString('fr-FR', {
-                                weekday: 'long',
-                                day: 'numeric',
-                                month: 'long',
-                              })}
+                              {visitDate.toLocaleDateString(
+                                language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB',
+                                { weekday: 'long', day: 'numeric', month: 'long' }
+                              )}
                             </span>
                             <Clock className="w-4 h-4 text-orange-600 ml-2" />
                             <span className="text-gray-700">
-                              {visitDate.toLocaleTimeString('fr-FR', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
+                              {visitDate.toLocaleTimeString(
+                                language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB',
+                                { hour: '2-digit', minute: '2-digit' }
+                              )}
                             </span>
                             <span className="text-gray-600 ml-auto">
                               {visit.property?.title}
@@ -527,24 +531,24 @@ export default function MyVisitsPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Conseils pour vos visites
+                    {t?.tips?.title?.[language] || 'Conseils pour vos visites'}
                   </h3>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span>Préparez vos questions à l'avance pour ne rien oublier</span>
+                      <span>{t?.tips?.list?.questions?.[language] || 'Préparez vos questions à l\'avance pour ne rien oublier'}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span>Vérifiez l'état des équipements et des installations</span>
+                      <span>{t?.tips?.list?.equipment?.[language] || 'Vérifiez l\'état des équipements et des installations'}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span>N'hésitez pas à discuter avec les colocataires actuels</span>
+                      <span>{t?.tips?.list?.roommates?.[language] || 'N\'hésitez pas à discuter avec les colocataires actuels'}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span>Prenez des photos pour comparer les logements plus tard</span>
+                      <span>{t?.tips?.list?.photos?.[language] || 'Prenez des photos pour comparer les logements plus tard'}</span>
                     </li>
                   </ul>
                 </div>
@@ -562,12 +566,12 @@ export default function MyVisitsPage() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Partagez votre expérience
+                      {t?.announcements?.feedback?.title?.[language] || 'Partagez votre expérience'}
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      Vous avez {pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length} visite
-                      {pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length > 1 ? 's' : ''} en attente d'évaluation.
-                      Votre avis aide les autres chercheurs et améliore la qualité du service.
+                      {t?.announcements?.feedback?.description?.[language]
+                        ?.replace('{count}', String(pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length))
+                        || `Vous avez ${pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length} visite${pastVisits.filter(v => v.status === 'completed' && !v.visitor_rating).length > 1 ? 's' : ''} en attente d'évaluation. Votre avis aide les autres chercheurs et améliore la qualité du service.`}
                     </p>
                     <Button
                       onClick={() => {
@@ -582,7 +586,7 @@ export default function MyVisitsPage() {
                       className="bg-green-600 hover:bg-green-700 rounded-xl"
                     >
                       <Star className="w-4 h-4 mr-2" />
-                      Laisser un avis
+                      {t?.actions?.leaveFeedback?.[language] || 'Laisser un avis'}
                     </Button>
                   </div>
                 </div>
@@ -600,13 +604,13 @@ export default function MyVisitsPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
           >
-            <h2 className="text-2xl font-bold mb-4">How was your visit?</h2>
+            <h2 className="text-2xl font-bold mb-4">{t?.feedbackModal?.title?.[language] || 'Comment s\'est passée votre visite ?'}</h2>
 
             <div className="space-y-4">
               {/* Rating */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rate your experience
+                  {t?.feedbackModal?.rateLabel?.[language] || 'Évaluez votre expérience'}
                 </label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -628,12 +632,12 @@ export default function MyVisitsPage() {
               {/* Feedback */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Share your thoughts
+                  {t?.feedbackModal?.thoughtsLabel?.[language] || 'Partagez vos impressions'}
                 </label>
                 <textarea
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="What did you think about the property?"
+                  placeholder={t?.feedbackModal?.placeholder?.[language] || 'Qu\'avez-vous pensé de la propriété ?'}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-600/20 outline-none"
                 />
@@ -642,7 +646,7 @@ export default function MyVisitsPage() {
               {/* Was Helpful */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Did this visit help you make a decision?
+                  {t?.feedbackModal?.helpfulLabel?.[language] || 'Cette visite vous a-t-elle aidé à prendre une décision ?'}
                 </label>
                 <div className="flex gap-3">
                   <button
@@ -652,7 +656,7 @@ export default function MyVisitsPage() {
                     }`}
                   >
                     <CheckCircle className="h-6 w-6 mx-auto mb-1 text-green-600" />
-                    <div className="text-sm font-medium">Yes</div>
+                    <div className="text-sm font-medium">{t?.feedbackModal?.yes?.[language] || 'Oui'}</div>
                   </button>
                   <button
                     onClick={() => setWasHelpful(false)}
@@ -661,7 +665,7 @@ export default function MyVisitsPage() {
                     }`}
                   >
                     <X className="h-6 w-6 mx-auto mb-1 text-red-600" />
-                    <div className="text-sm font-medium">No</div>
+                    <div className="text-sm font-medium">{t?.feedbackModal?.no?.[language] || 'Non'}</div>
                   </button>
                 </div>
               </div>
@@ -676,13 +680,13 @@ export default function MyVisitsPage() {
                   }}
                   className="flex-1 rounded-xl"
                 >
-                  Cancel
+                  {t?.feedbackModal?.cancel?.[language] || 'Annuler'}
                 </Button>
                 <Button
                   onClick={handleAddFeedback}
                   className="flex-1 bg-orange-600 hover:bg-orange-700 rounded-xl"
                 >
-                  Submit Feedback
+                  {t?.feedbackModal?.submit?.[language] || 'Envoyer l\'avis'}
                 </Button>
               </div>
             </div>

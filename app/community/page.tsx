@@ -12,8 +12,7 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 export default function CommunityPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
-  const common = getSection('common');
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [roommates, setRoommates] = useState<any[]>([]);
@@ -67,7 +66,7 @@ export default function CommunityPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">{common.loading}</p>
+          <p className="text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -90,13 +89,13 @@ export default function CommunityPage() {
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
                 <Users className="w-8 h-8 text-[#4A148C]" />
-                Community
+                {t('community.title')}
               </h1>
-              <p className="text-gray-600">Connect with your roommates and neighbors</p>
+              <p className="text-gray-600">{t('community.subtitle')}</p>
             </div>
             <Button onClick={() => router.back()} variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+              {t('community.backToDashboard')}
             </Button>
           </div>
         </div>
@@ -105,15 +104,15 @@ export default function CommunityPage() {
         <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-4 flex items-center gap-2">
             <Users className="w-6 h-6" />
-            Your Roommates
+            {t('community.roommates.title')}
           </h2>
 
           {roommates.length === 0 ? (
             <div className="text-center py-8">
               <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4">No roommates yet</p>
+              <p className="text-gray-600 mb-4">{t('community.roommates.empty')}</p>
               <p className="text-sm text-gray-500">
-                Once you move in, you'll see your roommates here
+                {t('community.roommates.emptyHint')}
               </p>
             </div>
           ) : (
@@ -134,7 +133,7 @@ export default function CommunityPage() {
                   </div>
                   <Button size="sm" variant="outline" className="w-full">
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    Message
+                    {t('community.roommates.message')}
                   </Button>
                 </div>
               ))}
@@ -146,19 +145,19 @@ export default function CommunityPage() {
         <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8">
           <h2 className="text-xl sm:text-2xl font-bold text-[#4A148C] mb-4 flex items-center gap-2">
             <Calendar className="w-6 h-6" />
-            Upcoming Events
+            {t('community.events.title')}
           </h2>
 
           {events.length === 0 ? (
             <div className="text-center py-8">
               <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4">No upcoming events</p>
+              <p className="text-gray-600 mb-4">{t('community.events.empty')}</p>
               <p className="text-sm text-gray-500 mb-6">
-                Community events will appear here when scheduled
+                {t('community.events.emptyHint')}
               </p>
               <Button>
                 <Calendar className="w-4 h-4 mr-2" />
-                Create Event
+                {t('community.events.createEvent')}
               </Button>
             </div>
           ) : (
@@ -183,7 +182,7 @@ export default function CommunityPage() {
                       </div>
                       <p className="text-sm text-gray-600">{event.description}</p>
                     </div>
-                    <Button size="sm">Join</Button>
+                    <Button size="sm">{t('community.events.join')}</Button>
                   </div>
                 </div>
               ))}

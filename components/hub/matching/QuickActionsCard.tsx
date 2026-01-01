@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 
-// V2 Fun Design Colors
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-const RESIDENT_PRIMARY = '#ee5736';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)';
-const ACCENT_SHADOW = 'rgba(238, 87, 54, 0.2)';
+// V3 Option C - Official Resident Palette
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+const RESIDENT_PRIMARY = '#ff651e';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
+const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
 
 interface QuickActionsCardProps {
   matchCount?: number;
@@ -46,7 +46,7 @@ export default function QuickActionsCard({
       />
       <div
         className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-15"
-        style={{ background: 'linear-gradient(135deg, #ff8017 0%, #ff5b21 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
       />
 
       {/* Content */}
@@ -159,10 +159,10 @@ export default function QuickActionsCard({
             Fonctionnalités incluses
           </p>
           {[
-            { label: 'Matching basé sur compatibilité', color: RESIDENT_PRIMARY },
-            { label: 'Chat intégré après match', color: '#3b82f6' },
-            { label: 'Invitation à visiter la coloc', color: '#10b981' },
-            { label: 'Profils vérifiés', color: '#8b5cf6' },
+            { label: 'Matching basé sur compatibilité', color: '#e05747' },
+            { label: 'Chat intégré après match', color: '#f8572b' },
+            { label: 'Invitation à visiter la coloc', color: '#ff651e' },
+            { label: 'Profils vérifiés', color: '#ff7b19' },
           ].map((feature, index) => (
             <motion.div
               key={index}

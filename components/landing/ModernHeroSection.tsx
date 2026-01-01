@@ -283,8 +283,8 @@ export default function ModernHeroSection() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
                 style={{
-                  background: '#ee5736d9',
-                  boxShadow: '0 10px 30px -5px rgba(238, 87, 54, 0.4), 0 4px 10px -2px rgba(238, 87, 54, 0.3)'
+                  background: '#ff651ed9',
+                  boxShadow: '0 10px 30px -5px rgba(255, 101, 30, 0.4), 0 4px 10px -2px rgba(255, 101, 30, 0.3)'
                 }}
               >
                 <div className="flex items-center justify-center gap-3">

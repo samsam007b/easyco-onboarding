@@ -19,6 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface PropertyCodes {
   property_id: string;
@@ -31,6 +32,8 @@ interface PropertyCodes {
 export default function PrivateCodesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.privateCodes;
   const [isLoading, setIsLoading] = useState(true);
   const [codes, setCodes] = useState<PropertyCodes | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -93,10 +96,10 @@ export default function PrivateCodesPage() {
     try {
       await navigator.clipboard.writeText(code);
       setCopiedCode(code);
-      toast.success(`${label} copié !`);
+      toast.success(t?.messages?.copied?.[language]?.replace('{label}', label) || `${label} copié !`);
       setTimeout(() => setCopiedCode(null), 2000);
     } catch (error) {
-      toast.error('Erreur lors de la copie');
+      toast.error(t?.messages?.copyError?.[language] || 'Erreur lors de la copie');
     }
   };
 
@@ -105,7 +108,7 @@ export default function PrivateCodesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -119,16 +122,16 @@ export default function PrivateCodesPage() {
             <AlertCircle className="w-8 h-8 text-gray-400" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Aucune résidence trouvée
+            {t?.noResidence?.title?.[language] || 'Aucune résidence trouvée'}
           </h2>
           <p className="text-gray-600 mb-6">
-            Vous devez d'abord créer ou rejoindre une résidence pour accéder aux codes.
+            {t?.noResidence?.description?.[language] || 'Vous devez d\'abord créer ou rejoindre une résidence pour accéder aux codes.'}
           </p>
           <Button
             onClick={() => router.push('/onboarding/resident/property-setup')}
-            className="rounded-xl bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]"
+            className="rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
           >
-            Configurer ma résidence
+            {t?.noResidence?.button?.[language] || 'Configurer ma résidence'}
           </Button>
         </Card>
       </div>
@@ -145,7 +148,7 @@ export default function PrivateCodesPage() {
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Retour aux paramètres
+          {t?.back?.[language] || 'Retour aux paramètres'}
         </Button>
 
         <motion.div
@@ -156,14 +159,14 @@ export default function PrivateCodesPage() {
           <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600 shadow-xl">
             <Lock className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Codes Privés</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Codes Privés'}</h1>
           <p className="text-gray-600 text-lg">
-            Codes d'invitation pour {codes.property_title}
+            {t?.subtitle?.[language] || 'Codes d\'invitation pour'} {codes.property_title}
           </p>
           {codes.is_creator && (
             <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 font-medium">
               <Shield className="w-4 h-4" />
-              Vous êtes le créateur de cette résidence
+              {t?.creatorBadge?.[language] || 'Vous êtes le créateur de cette résidence'}
             </div>
           )}
         </motion.div>
@@ -184,10 +187,10 @@ export default function PrivateCodesPage() {
 
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Code Invitation Résidents
+                    {t?.residentCode?.title?.[language] || 'Code Invitation Résidents'}
                   </h3>
                   <p className="text-gray-600 text-sm mb-4">
-                    Partagez ce code avec vos colocataires pour qu'ils puissent rejoindre la résidence.
+                    {t?.residentCode?.description?.[language] || 'Partagez ce code avec vos colocataires pour qu\'ils puissent rejoindre la résidence.'}
                   </p>
 
                   <div className="flex items-center gap-3">
@@ -234,14 +237,14 @@ export default function PrivateCodesPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="text-xl font-bold text-gray-900">
-                        Code Propriétaire
+                        {t?.ownerCode?.title?.[language] || 'Code Propriétaire'}
                       </h3>
                       <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold">
-                        CONFIDENTIEL
+                        {t?.ownerCode?.confidential?.[language] || 'CONFIDENTIEL'}
                       </span>
                     </div>
                     <p className="text-gray-600 text-sm mb-4">
-                      Donnez ce code UNIQUEMENT au propriétaire légal pour qu'il puisse claim la résidence et accéder aux fonctionnalités propriétaire.
+                      {t?.ownerCode?.description?.[language] || 'Donnez ce code UNIQUEMENT au propriétaire légal pour qu\'il puisse claim la résidence et accéder aux fonctionnalités propriétaire.'}
                     </p>
 
                     <div className="flex items-center gap-3">
@@ -273,11 +276,10 @@ export default function PrivateCodesPage() {
                         <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                         <div>
                           <p className="font-semibold text-red-900 text-sm mb-1">
-                            ⚠️ Important - Sécurité
+                            {t?.ownerCode?.warning?.title?.[language] || '⚠️ Important - Sécurité'}
                           </p>
                           <p className="text-red-700 text-xs leading-relaxed">
-                            Ne partagez ce code qu'avec le propriétaire LÉGAL de la résidence.
-                            Ce code lui donnera accès à des fonctionnalités sensibles (documents, finances, etc.).
+                            {t?.ownerCode?.warning?.text?.[language] || 'Ne partagez ce code qu\'avec le propriétaire LÉGAL de la résidence. Ce code lui donnera accès à des fonctionnalités sensibles (documents, finances, etc.).'}
                           </p>
                         </div>
                       </div>
@@ -300,11 +302,10 @@ export default function PrivateCodesPage() {
                   <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-blue-900 mb-1">
-                      Vous n'êtes pas le créateur
+                      {t?.notCreator?.title?.[language] || 'Vous n\'êtes pas le créateur'}
                     </h4>
                     <p className="text-blue-700 text-sm">
-                      Seul le créateur de la résidence a accès au code propriétaire.
-                      Si vous avez besoin de ce code, demandez-le au créateur de votre résidence.
+                      {t?.notCreator?.description?.[language] || 'Seul le créateur de la résidence a accès au code propriétaire. Si vous avez besoin de ce code, demandez-le au créateur de votre résidence.'}
                     </p>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import { useRouter } from 'next/navigation';
 import { logger } from '@/lib/utils/logger';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface SearcherStats {
   favoritesCount: number;
@@ -18,6 +19,8 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
   const [stats, setStats] = useState<SearcherStats>({ favoritesCount: 0, matchesCount: 0, unreadMessages: 0 });
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('common');
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -92,7 +95,7 @@ export default function SearcherLayout({ children }: { children: React.ReactNode
     loadProfile();
   }, [router, supabase]);
 
-  if (!profile) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white"><div className="text-center"><LoadingHouse size={80} /><p className="text-gray-600 font-medium">Chargement...</p></div></div>;
+  if (!profile) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white"><div className="text-center"><LoadingHouse size={80} /><p className="text-gray-600 font-medium">{t?.loading?.[language] || 'Chargement...'}</p></div></div>;
 
   return (<><ModernSearcherHeader profile={profile} stats={stats} /><main id="main-content" className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30 pt-24">{children}</main></>);
 }

@@ -14,7 +14,7 @@ interface CelebrationOptions {
 // Color schemes matching app variants
 const COLORS = {
   searcher: ['#9c5698', '#9D7EE5', '#FFA040', '#FFD700'],
-  resident: ['#d9574f', '#ff5b21', '#ff8017', '#FFD700'],
+  resident: ['#e05747', '#ff651e', '#ff9014', '#FFD700'], // Option C palette
   default: ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d'],
 };
 

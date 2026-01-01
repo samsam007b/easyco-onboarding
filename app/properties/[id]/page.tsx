@@ -21,6 +21,7 @@ import { VirtualToursService } from '@/lib/services/virtual-tours-service';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import PropertyCTASidebar from '@/components/PropertyCTASidebar';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Lazy load heavy components
 const SafeSinglePropertyMap = dynamic(() => import('@/components/SafeSinglePropertyMap'), {
@@ -55,6 +56,7 @@ export default function PropertyDetailsPage() {
   const router = useRouter();
   const params = useParams();
   const propertyId = params.id as string;
+  const { t } = useLanguage();
 
   const [property, setProperty] = useState<Property | null>(null);
   const [rooms, setRooms] = useState<RoomWithTotal[]>([]);
@@ -163,7 +165,7 @@ export default function PropertyDetailsPage() {
         });
       }
     } else {
-      toast.error('Property not found');
+      toast.error(t('properties.toast.propertyNotFound'));
       router.push('/dashboard/searcher');
     }
 
@@ -179,7 +181,7 @@ export default function PropertyDetailsPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this property? This action cannot be undone.')) {
+    if (!confirm(t('properties.confirmations.deleteTitle'))) {
       return;
     }
 
@@ -187,10 +189,10 @@ export default function PropertyDetailsPage() {
     const result = await deleteProperty(propertyId);
 
     if (result.success) {
-      toast.success('Property deleted successfully');
+      toast.success(t('properties.toast.deleteSuccess'));
       router.push('/dashboard/owner');
     } else {
-      toast.error('Failed to delete property');
+      toast.error(t('properties.toast.deleteFailed'));
       setActionLoading(false);
     }
   };
@@ -200,10 +202,10 @@ export default function PropertyDetailsPage() {
     const result = await publishProperty(propertyId);
 
     if (result.success) {
-      toast.success('Property published successfully');
+      toast.success(t('properties.toast.publishSuccess'));
       loadProperty();
     } else {
-      toast.error('Failed to publish property');
+      toast.error(t('properties.toast.publishFailed'));
     }
     setActionLoading(false);
   };
@@ -213,10 +215,10 @@ export default function PropertyDetailsPage() {
     const result = await archiveProperty(propertyId);
 
     if (result.success) {
-      toast.success('Property archived successfully');
+      toast.success(t('properties.toast.archiveSuccess'));
       loadProperty();
     } else {
-      toast.error('Failed to archive property');
+      toast.error(t('properties.toast.archiveFailed'));
     }
     setActionLoading(false);
   };
@@ -246,7 +248,7 @@ export default function PropertyDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <LoadingHouse size={80} />
-            <p className="mt-4 text-gray-600">Chargement de la propriété...</p>
+            <p className="mt-4 text-gray-600">{t('properties.details.loading')}</p>
           </div>
         </div>
       </PageContainer>
@@ -257,9 +259,9 @@ export default function PropertyDetailsPage() {
     return (
       <PageContainer>
         <div className="text-center py-12">
-          <p className="text-gray-600">Propriété introuvable</p>
+          <p className="text-gray-600">{t('properties.details.notFound')}</p>
           <Button onClick={() => router.push('/dashboard/searcher')} className="mt-4">
-            Retour au tableau de bord
+            {t('properties.details.backToDashboard')}
           </Button>
         </div>
       </PageContainer>
@@ -296,7 +298,7 @@ export default function PropertyDetailsPage() {
               className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour
+              {t('properties.details.back')}
             </Button>
           </div>
 
@@ -310,7 +312,7 @@ export default function PropertyDetailsPage() {
                 className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
               >
                 <Edit className="w-4 h-4 mr-2" />
-                Modifier
+                {t('properties.details.edit')}
               </Button>
               {property.status === 'draft' && (
                 <Button
@@ -318,7 +320,7 @@ export default function PropertyDetailsPage() {
                   disabled={actionLoading}
                   className="bg-orange-600 hover:bg-orange-700"
                 >
-                  Publier
+                  {t('properties.details.publish')}
                 </Button>
               )}
               {property.status === 'published' && (
@@ -328,7 +330,7 @@ export default function PropertyDetailsPage() {
                   disabled={actionLoading}
                   className="bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
                 >
-                  Archiver
+                  {t('properties.details.archive')}
                 </Button>
               )}
               <Button
@@ -387,7 +389,7 @@ export default function PropertyDetailsPage() {
                           </div>
                         )}
                       </div>
-                      <span className="text-base font-medium text-white/90">{residents.length} colocataire{residents.length > 1 ? 's' : ''}</span>
+                      <span className="text-base font-medium text-white/90">{residents.length} {residents.length > 1 ? t('properties.details.roommates') : t('properties.details.roommate')}</span>
                     </div>
                   )}
                 </div>
@@ -395,12 +397,12 @@ export default function PropertyDetailsPage() {
                 {/* Price Highlight */}
                 {cheapestRoom && (
                   <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center min-w-[200px]">
-                    <p className="text-sm text-white/80 mb-1">À partir de</p>
+                    <p className="text-sm text-white/80 mb-1">{t('properties.details.startingFrom')}</p>
                     <p className="text-5xl font-bold text-white">€{cheapestRoom.price}</p>
-                    <p className="text-sm text-white/70 mt-1">/mois</p>
+                    <p className="text-sm text-white/70 mt-1">{t('properties.details.perMonth')}</p>
                     {rooms.length > 1 && (
                       <Badge className="mt-3 bg-orange-500 text-white border-0">
-                        {rooms.filter(r => r.is_available).length} chambre{rooms.filter(r => r.is_available).length > 1 ? 's' : ''} disponible{rooms.filter(r => r.is_available).length > 1 ? 's' : ''}
+                        {rooms.filter(r => r.is_available).length} {rooms.filter(r => r.is_available).length > 1 ? t('properties.details.roomsAvailable') : t('properties.details.roomAvailable')}
                       </Badge>
                     )}
                   </div>
@@ -449,7 +451,7 @@ export default function PropertyDetailsPage() {
                   className="flex-shrink-0 h-20 px-6 bg-gradient-searcher hover:opacity-90 text-white rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
                 >
                   <Expand className="w-5 h-5" />
-                  <span className="font-medium hidden sm:inline">Voir tout</span>
+                  <span className="font-medium hidden sm:inline">{t('properties.details.viewAll')}</span>
                 </button>
               </div>
             </div>
@@ -468,7 +470,7 @@ export default function PropertyDetailsPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Home className="w-5 h-5 text-orange-600" />
-                    Aperçu de la propriété
+                    {t('properties.overview.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -478,7 +480,7 @@ export default function PropertyDetailsPage() {
                         <Bed className="w-5 h-5 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Chambres</p>
+                        <p className="text-sm text-gray-600">{t('properties.overview.bedrooms')}</p>
                         <p className="font-semibold">{property.bedrooms}</p>
                       </div>
                     </div>
@@ -488,7 +490,7 @@ export default function PropertyDetailsPage() {
                         <Bath className="w-5 h-5 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Salles de bain</p>
+                        <p className="text-sm text-gray-600">{t('properties.overview.bathrooms')}</p>
                         <p className="font-semibold">{property.bathrooms}</p>
                       </div>
                     </div>
@@ -499,7 +501,7 @@ export default function PropertyDetailsPage() {
                           <Maximize className="w-5 h-5 text-orange-600" />
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Surface</p>
+                          <p className="text-sm text-gray-600">{t('properties.overview.surface')}</p>
                           <p className="font-semibold">{property.surface_area} m²</p>
                         </div>
                       </div>
@@ -510,15 +512,15 @@ export default function PropertyDetailsPage() {
                         <Calendar className="w-5 h-5 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Meublé</p>
-                        <p className="font-semibold">{property.furnished ? 'Oui' : 'Non'}</p>
+                        <p className="text-sm text-gray-600">{t('properties.overview.furnished')}</p>
+                        <p className="font-semibold">{property.furnished ? t('properties.overview.yes') : t('properties.overview.no')}</p>
                       </div>
                     </div>
                   </div>
 
                   {property.description && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-gray-900">Description</h4>
+                      <h4 className="font-semibold mb-2 text-gray-900">{t('properties.overview.description')}</h4>
                       <p className="text-gray-700 whitespace-pre-line leading-relaxed">{property.description}</p>
                     </div>
                   )}
@@ -536,10 +538,10 @@ export default function PropertyDetailsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="w-5 h-5 text-orange-600" />
-                      Vos futurs colocataires ({residents.length})
+                      {t('properties.residents.title')} ({residents.length})
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">
-                      Découvrez les personnes avec qui vous pourriez partager cette colocation
+                      {t('properties.residents.subtitle')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -560,7 +562,7 @@ export default function PropertyDetailsPage() {
               {property.amenities && property.amenities.length > 0 && (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Équipements</CardTitle>
+                    <CardTitle>{t('properties.amenities.title')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -590,7 +592,7 @@ export default function PropertyDetailsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <MapPin className="w-5 h-5 text-orange-600" />
-                      Localisation
+                      {t('properties.location.title')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0">
@@ -695,7 +697,7 @@ export default function PropertyDetailsPage() {
                   <img
                     key={index}
                     src={getImageUrl(image)}
-                    alt={`Miniature ${index + 1}`}
+                    alt={`${t('properties.lightbox.thumbnail')} ${index + 1}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       setLightboxIndex(index);

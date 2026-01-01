@@ -16,10 +16,13 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function EmailPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.email;
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -96,9 +99,9 @@ export default function EmailPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Préférences email enregistrées' });
+      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Préférences email enregistrées' });
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de l\'enregistrement' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de l\'enregistrement') });
     } finally {
       setIsSaving(false);
     }
@@ -109,7 +112,7 @@ export default function EmailPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50/30 via-white to-rose-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -130,7 +133,7 @@ export default function EmailPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -138,8 +141,8 @@ export default function EmailPage() {
               <Mail className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Emails</h1>
-              <p className="text-gray-600">Gérer vos préférences de communications</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Emails'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Gérer vos préférences de communications'}</p>
             </div>
           </div>
         </motion.div>
@@ -171,16 +174,16 @@ export default function EmailPage() {
               <MessageSquare className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Messages</h2>
-              <p className="text-sm text-gray-600">Notifications de messagerie</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.sections?.messages?.title?.[language] || 'Messages'}</h2>
+              <p className="text-sm text-gray-600">{t?.sections?.messages?.subtitle?.[language] || 'Notifications de messagerie'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Nouveau message</p>
-                <p className="text-sm text-gray-600">Recevoir un email pour chaque nouveau message</p>
+                <p className="font-semibold text-gray-900">{t?.options?.newMessage?.title?.[language] || 'Nouveau message'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.newMessage?.description?.[language] || 'Recevoir un email pour chaque nouveau message'}</p>
               </div>
               <input
                 type="checkbox"
@@ -192,8 +195,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Résumé quotidien</p>
-                <p className="text-sm text-gray-600">Un email par jour avec vos messages non lus</p>
+                <p className="font-semibold text-gray-900">{t?.options?.digest?.title?.[language] || 'Résumé quotidien'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.digest?.description?.[language] || 'Un email par jour avec vos messages non lus'}</p>
               </div>
               <input
                 type="checkbox"
@@ -217,16 +220,16 @@ export default function EmailPage() {
               <Calendar className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Événements & Tâches</h2>
-              <p className="text-sm text-gray-600">Calendrier et tâches de la résidence</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.sections?.events?.title?.[language] || 'Événements & Tâches'}</h2>
+              <p className="text-sm text-gray-600">{t?.sections?.events?.subtitle?.[language] || 'Calendrier et tâches de la résidence'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Nouvel événement</p>
-                <p className="text-sm text-gray-600">Notification pour les nouveaux événements</p>
+                <p className="font-semibold text-gray-900">{t?.options?.newEvent?.title?.[language] || 'Nouvel événement'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.newEvent?.description?.[language] || 'Notification pour les nouveaux événements'}</p>
               </div>
               <input
                 type="checkbox"
@@ -238,8 +241,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Rappel d'événement</p>
-                <p className="text-sm text-gray-600">Rappel 24h avant un événement</p>
+                <p className="font-semibold text-gray-900">{t?.options?.eventReminder?.title?.[language] || 'Rappel d\'événement'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.eventReminder?.description?.[language] || 'Rappel 24h avant un événement'}</p>
               </div>
               <input
                 type="checkbox"
@@ -251,8 +254,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Tâche assignée</p>
-                <p className="text-sm text-gray-600">Quand une tâche vous est assignée</p>
+                <p className="font-semibold text-gray-900">{t?.options?.taskAssigned?.title?.[language] || 'Tâche assignée'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.taskAssigned?.description?.[language] || 'Quand une tâche vous est assignée'}</p>
               </div>
               <input
                 type="checkbox"
@@ -276,16 +279,16 @@ export default function EmailPage() {
               <DollarSign className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Finances</h2>
-              <p className="text-sm text-gray-600">Paiements et dépenses</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.sections?.finances?.title?.[language] || 'Finances'}</h2>
+              <p className="text-sm text-gray-600">{t?.sections?.finances?.subtitle?.[language] || 'Paiements et dépenses'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Rappel de paiement</p>
-                <p className="text-sm text-gray-600">Rappel avant l'échéance du loyer</p>
+                <p className="font-semibold text-gray-900">{t?.options?.paymentReminder?.title?.[language] || 'Rappel de paiement'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.paymentReminder?.description?.[language] || 'Rappel avant l\'échéance du loyer'}</p>
               </div>
               <input
                 type="checkbox"
@@ -297,8 +300,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Paiement reçu</p>
-                <p className="text-sm text-gray-600">Confirmation de réception d'un paiement</p>
+                <p className="font-semibold text-gray-900">{t?.options?.paymentReceived?.title?.[language] || 'Paiement reçu'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.paymentReceived?.description?.[language] || 'Confirmation de réception d\'un paiement'}</p>
               </div>
               <input
                 type="checkbox"
@@ -310,8 +313,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Nouvelle dépense</p>
-                <p className="text-sm text-gray-600">Quand une dépense partagée est créée</p>
+                <p className="font-semibold text-gray-900">{t?.options?.newExpense?.title?.[language] || 'Nouvelle dépense'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.newExpense?.description?.[language] || 'Quand une dépense partagée est créée'}</p>
               </div>
               <input
                 type="checkbox"
@@ -335,16 +338,16 @@ export default function EmailPage() {
               <Bell className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Communauté</h2>
-              <p className="text-sm text-gray-600">Activités de la résidence</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.sections?.community?.title?.[language] || 'Communauté'}</h2>
+              <p className="text-sm text-gray-600">{t?.sections?.community?.subtitle?.[language] || 'Activités de la résidence'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Nouveau membre</p>
-                <p className="text-sm text-gray-600">Quand quelqu'un rejoint la résidence</p>
+                <p className="font-semibold text-gray-900">{t?.options?.newMember?.title?.[language] || 'Nouveau membre'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.newMember?.description?.[language] || 'Quand quelqu\'un rejoint la résidence'}</p>
               </div>
               <input
                 type="checkbox"
@@ -356,8 +359,8 @@ export default function EmailPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">Annonces importantes</p>
-                <p className="text-sm text-gray-600">Notifications importantes de la résidence</p>
+                <p className="font-semibold text-gray-900">{t?.options?.announcements?.title?.[language] || 'Annonces importantes'}</p>
+                <p className="text-sm text-gray-600">{t?.options?.announcements?.description?.[language] || 'Notifications importantes de la résidence'}</p>
               </div>
               <input
                 type="checkbox"
@@ -380,7 +383,7 @@ export default function EmailPage() {
             disabled={isSaving}
             className="w-full rounded-xl bg-gradient-to-r from-pink-200/70 to-rose-200/70 text-gray-900 hover:from-pink-300/70 hover:to-rose-300/70"
           >
-            {isSaving ? 'Enregistrement...' : 'Enregistrer les modifications'}
+            {isSaving ? (t?.buttons?.saving?.[language] || 'Enregistrement...') : (t?.buttons?.save?.[language] || 'Enregistrer les modifications')}
           </Button>
         </motion.div>
       </div>

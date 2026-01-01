@@ -173,8 +173,8 @@ export default function ExpenseHistoryModal({
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
-                    boxShadow: '0 8px 24px rgba(238, 87, 54, 0.35)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                   }}
                 >
                   <Receipt className="w-7 h-7 text-white" />
@@ -187,12 +187,12 @@ export default function ExpenseHistoryModal({
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     {history?.title || 'Historique des dépenses'}
-                    <DollarSign className="w-5 h-5" style={{ color: '#ee5736' }} />
+                    <DollarSign className="w-5 h-5" style={{ color: '#ff651e' }} />
                   </h2>
                   <p className="text-sm text-gray-500 flex items-center gap-2">
                     <Badge
                       className="text-xs border-none text-white font-bold"
-                      style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
                     >
                       {filteredExpenses.length}
                     </Badge>
@@ -227,8 +227,8 @@ export default function ExpenseHistoryModal({
                     style={
                       viewMode === 'list'
                         ? {
-                            background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                            boxShadow: '0 4px 12px rgba(238, 87, 54, 0.4)',
+                            background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                            boxShadow: '0 4px 12px rgba(255, 101, 30, 0.4)',
                           }
                         : {}
                     }
@@ -321,7 +321,7 @@ export default function ExpenseHistoryModal({
                   {selectedCategory !== 'all' && (
                     <Badge
                       className="ml-2 text-xs text-white border-none animate-pulse"
-                      style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
                     >
                       1
                     </Badge>
@@ -370,8 +370,8 @@ export default function ExpenseHistoryModal({
                         style={
                           selectedCategory === 'all'
                             ? {
-                                background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                                boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
+                                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                                boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)',
                               }
                             : {}
                         }
@@ -397,8 +397,8 @@ export default function ExpenseHistoryModal({
                             style={
                               selectedCategory === cat
                                 ? {
-                                    background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)',
-                                    boxShadow: '0 4px 12px rgba(238, 87, 54, 0.35)',
+                                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                                    boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)',
                                   }
                                 : {}
                             }

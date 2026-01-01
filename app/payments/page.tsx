@@ -21,10 +21,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import { useLanguage, type Language } from '@/lib/i18n/use-language';
 
 export default function PaymentsPage() {
   const { user } = useAuth();
+  const { t, language } = useLanguage();
   const {
     transactions,
     paymentSchedules,
@@ -35,6 +37,12 @@ export default function PaymentsPage() {
   } = usePayment();
 
   const [selectedTab, setSelectedTab] = useState<'transactions' | 'schedules' | 'accounts'>('transactions');
+
+  // Get date-fns locale based on current language
+  const getDateLocale = () => {
+    const locales: Record<Language, typeof fr> = { fr, en: enUS, nl, de };
+    return locales[language] || fr;
+  };
 
   // Get role-specific colors
   const getRoleColors = () => {
@@ -77,7 +85,8 @@ export default function PaymentsPage() {
 
   // Format date
   const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('fr-BE', {
+    const locale = language === 'en' ? 'en-US' : language === 'nl' ? 'nl-BE' : language === 'de' ? 'de-DE' : 'fr-BE';
+    return new Date(date).toLocaleDateString(locale, {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -86,47 +95,29 @@ export default function PaymentsPage() {
 
   // Get transaction status badge
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <Badge variant="success" className="text-xs">Payé</Badge>;
-      case 'pending':
-        return <Badge variant="warning" className="text-xs">En attente</Badge>;
-      case 'failed':
-        return <Badge variant="error" className="text-xs">Échoué</Badge>;
-      case 'cancelled':
-        return <Badge variant="default" className="text-xs">Annulé</Badge>;
-      case 'refunded':
-        return <Badge variant="info" className="text-xs">Remboursé</Badge>;
-      default:
-        return <Badge variant="default" className="text-xs">{status}</Badge>;
-    }
+    const statusKey = status as 'completed' | 'pending' | 'failed' | 'cancelled' | 'refunded';
+    const variants: Record<string, 'success' | 'warning' | 'error' | 'default' | 'info'> = {
+      completed: 'success',
+      pending: 'warning',
+      failed: 'error',
+      cancelled: 'default',
+      refunded: 'info',
+    };
+    return (
+      <Badge variant={variants[status] || 'default'} className="text-xs">
+        {t(`payments.status.${statusKey}`) || status}
+      </Badge>
+    );
   };
 
   // Get transaction type label
   const getTransactionTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      rent_payment: 'Loyer',
-      security_deposit: 'Caution',
-      application_fee: 'Frais de dossier',
-      service_fee: 'Frais de service',
-      refund: 'Remboursement',
-      damage_charge: 'Frais de dégâts',
-      utility_payment: 'Charges',
-      other: 'Autre',
-    };
-    return labels[type] || type;
+    return t(`payments.types.${type}`) || type;
   };
 
   // Get payment frequency label
   const getFrequencyLabel = (frequency: string) => {
-    const labels: Record<string, string> = {
-      weekly: 'Hebdomadaire',
-      biweekly: 'Bimensuel',
-      monthly: 'Mensuel',
-      quarterly: 'Trimestriel',
-      yearly: 'Annuel',
-    };
-    return labels[frequency] || frequency;
+    return t(`payments.frequency.${frequency}`) || frequency;
   };
 
   if (isLoading) {
@@ -134,7 +125,7 @@ export default function PaymentsPage() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center pt-20">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Chargement...</p>
+          <p className="text-gray-600">{t('payments.loading')}</p>
         </div>
       </div>
     );
@@ -159,14 +150,14 @@ export default function PaymentsPage() {
                 >
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
-                Paiements
+                {t('payments.title')}
               </h1>
-              <p className="text-gray-600">Gérez vos paiements et échéanciers</p>
+              <p className="text-gray-600">{t('payments.subtitle')}</p>
             </div>
 
             <Button className={`${colors.primary} ${colors.primaryHover} text-white`}>
               <Plus className="w-4 h-4 mr-2" />
-              Nouveau paiement
+              {t('payments.newPayment')}
             </Button>
           </div>
         </div>
@@ -189,7 +180,7 @@ export default function PaymentsPage() {
                 </div>
                 <TrendingUp className="w-5 h-5 text-orange-500" />
               </div>
-              <p className="text-sm text-gray-600 mb-1">Total payé</p>
+              <p className="text-sm text-gray-600 mb-1">{t('payments.summary.totalPaid')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {formatCurrency(transactionSummary.total_paid)}
               </p>
@@ -211,7 +202,7 @@ export default function PaymentsPage() {
                 </div>
                 <TrendingDown className="w-5 h-5 text-green-500" />
               </div>
-              <p className="text-sm text-gray-600 mb-1">Total reçu</p>
+              <p className="text-sm text-gray-600 mb-1">{t('payments.summary.totalReceived')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {formatCurrency(transactionSummary.total_received)}
               </p>
@@ -232,7 +223,7 @@ export default function PaymentsPage() {
                   <Clock className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <p className="text-sm text-gray-600 mb-1">En attente</p>
+              <p className="text-sm text-gray-600 mb-1">{t('payments.summary.pending')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {formatCurrency(transactionSummary.pending_amount)}
               </p>
@@ -253,7 +244,7 @@ export default function PaymentsPage() {
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <p className="text-sm text-gray-600 mb-1">Transactions</p>
+              <p className="text-sm text-gray-600 mb-1">{t('payments.summary.transactions')}</p>
               <p className="text-2xl font-bold text-gray-900">
                 {transactionSummary.transaction_count}
               </p>
@@ -266,7 +257,7 @@ export default function PaymentsPage() {
           <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-orange-500" />
-              Paiements à venir
+              {t('payments.upcomingPayments')}
             </h2>
             <div className="space-y-3">
               {upcomingPayments.slice(0, 5).map((payment) => (
@@ -290,7 +281,7 @@ export default function PaymentsPage() {
                       {formatCurrency(payment.amount)}
                     </p>
                     {payment.auto_pay_enabled && (
-                      <p className="text-xs text-green-600">Auto-paiement</p>
+                      <p className="text-xs text-green-600">{t('payments.autoPay')}</p>
                     )}
                   </div>
                 </div>
@@ -311,7 +302,7 @@ export default function PaymentsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Transactions ({transactions.length})
+              {t('payments.tabs.transactions')} ({transactions.length})
             </button>
             <button
               onClick={() => setSelectedTab('schedules')}
@@ -321,7 +312,7 @@ export default function PaymentsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Échéanciers ({paymentSchedules.length})
+              {t('payments.tabs.schedules')} ({paymentSchedules.length})
             </button>
             <button
               onClick={() => setSelectedTab('accounts')}
@@ -331,7 +322,7 @@ export default function PaymentsPage() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Moyens de paiement ({paymentAccounts.length})
+              {t('payments.tabs.accounts')} ({paymentAccounts.length})
             </button>
           </div>
 
@@ -350,7 +341,7 @@ export default function PaymentsPage() {
                     >
                       <CreditCard className="w-10 h-10 text-white" />
                     </div>
-                    <p className="text-gray-600">Aucune transaction</p>
+                    <p className="text-gray-600">{t('payments.empty.transactions')}</p>
                   </div>
                 ) : (
                   transactions.map((transaction) => (
@@ -409,7 +400,7 @@ export default function PaymentsPage() {
                     >
                       <Calendar className="w-10 h-10 text-white" />
                     </div>
-                    <p className="text-gray-600">Aucun échéancier configuré</p>
+                    <p className="text-gray-600">{t('payments.empty.schedules')}</p>
                   </div>
                 ) : (
                   paymentSchedules.map((schedule) => (
@@ -429,20 +420,20 @@ export default function PaymentsPage() {
                           </p>
                         </div>
                         <Badge variant={schedule.is_active ? 'success' : 'default'}>
-                          {schedule.is_active ? 'Actif' : 'Inactif'}
+                          {schedule.is_active ? t('payments.schedule.active') : t('payments.schedule.inactive')}
                         </Badge>
                       </div>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-gray-600">Prochain paiement</p>
+                          <p className="text-gray-600">{t('payments.schedule.nextPayment')}</p>
                           <p className="font-medium text-gray-900">
                             {formatDate(schedule.next_payment_date)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Auto-paiement</p>
+                          <p className="text-gray-600">{t('payments.autoPay')}</p>
                           <p className="font-medium text-gray-900">
-                            {schedule.auto_pay_enabled ? 'Activé' : 'Désactivé'}
+                            {schedule.auto_pay_enabled ? t('payments.schedule.autoPayEnabled') : t('payments.schedule.autoPayDisabled')}
                           </p>
                         </div>
                       </div>
@@ -465,10 +456,10 @@ export default function PaymentsPage() {
                     >
                       <CreditCard className="w-10 h-10 text-white" />
                     </div>
-                    <p className="text-gray-600 mb-4">Aucun moyen de paiement</p>
+                    <p className="text-gray-600 mb-4">{t('payments.empty.accounts')}</p>
                     <Button className={`${colors.primary} ${colors.primaryHover} text-white`}>
                       <Plus className="w-4 h-4 mr-2" />
-                      Ajouter un moyen de paiement
+                      {t('payments.addAccount')}
                     </Button>
                   </div>
                 ) : (
@@ -491,22 +482,22 @@ export default function PaymentsPage() {
                           </div>
                           <div>
                             <p className="font-medium text-gray-900">
-                              {account.card_brand || account.bank_name || 'Compte bancaire'}
+                              {account.card_brand || account.bank_name || t('payments.account.bankAccount')}
                               {account.last_four && ` •••• ${account.last_four}`}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
                               {account.is_default && (
-                                <Badge variant="primary" className="text-xs">Par défaut</Badge>
+                                <Badge variant="primary" className="text-xs">{t('payments.account.default')}</Badge>
                               )}
                               {account.is_verified ? (
                                 <Badge variant="success" className="text-xs">
                                   <CheckCircle2 className="w-3 h-3 mr-1" />
-                                  Vérifié
+                                  {t('payments.account.verified')}
                                 </Badge>
                               ) : (
                                 <Badge variant="warning" className="text-xs">
                                   <Clock className="w-3 h-3 mr-1" />
-                                  En attente
+                                  {t('payments.account.pending')}
                                 </Badge>
                               )}
                             </div>
@@ -514,7 +505,7 @@ export default function PaymentsPage() {
                         </div>
                         {account.expiry_month && account.expiry_year && (
                           <p className="text-sm text-gray-600">
-                            Expire {account.expiry_month}/{account.expiry_year}
+                            {t('payments.account.expires')} {account.expiry_month}/{account.expiry_year}
                           </p>
                         )}
                       </div>

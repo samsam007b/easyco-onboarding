@@ -35,9 +35,9 @@ export const enhanceThemes = {
     borderLight: 'border-purple-200',
   },
   resident: {
-    gradient: 'from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
+    gradient: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
     gradientBg: 'from-orange-50 to-red-50',
-    primary: '#D97B6F',
+    primary: '#ff651e',
     focusRing: 'focus:ring-orange-500',
     selectedBorder: 'border-orange-500',
     selectedBg: 'bg-orange-50',

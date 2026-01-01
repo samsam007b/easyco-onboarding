@@ -139,14 +139,14 @@ export default function ResidentPersonalityPage() {
             <span className="text-sm text-gray-500">{resident.personality.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] h-2 rounded-full transition-all" style={{ width: '75%' }} />
+            <div className="bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] h-2 rounded-full transition-all" style={{ width: '75%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
               {resident.personality.heading}
             </h1>
             <p className="text-gray-600">
@@ -172,7 +172,7 @@ export default function ResidentPersonalityPage() {
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">Introvert</span>
-                  <span className="text-xl font-bold bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">{getPersonalityLabel()}</span>
+                  <span className="text-xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent">{getPersonalityLabel()}</span>
                   <span className="text-sm text-gray-500">Extrovert</span>
                 </div>
               </div>
@@ -285,7 +285,7 @@ export default function ResidentPersonalityPage() {
               disabled={!canContinue}
               className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
                 canContinue
-                  ? 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:opacity-90 text-white'
+                  ? 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

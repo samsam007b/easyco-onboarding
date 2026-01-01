@@ -303,7 +303,7 @@ function AuthContent() {
             });
             toast.success(t('auth.signup.success.accountCreated'), {
               description: referrerName
-                ? `Parrainé par ${referrerName}! Vous recevrez 1 mois gratuit après avoir complété votre profil.`
+                ? t('auth.signup.referral.successMessage').replace('{name}', referrerName)
                 : t('auth.signup.success.checkEmail'),
             });
           } catch {
@@ -409,7 +409,7 @@ function AuthContent() {
               {isGoogleLoading ? (
                 <>
                   <LoadingHouse size={20} />
-                  {mode === 'login' ? t('auth.login.signingInGoogle') : 'Signing up with Google...'}
+                  {mode === 'login' ? t('auth.login.signingInGoogle') : t('auth.signup.signingUpGoogle')}
                 </>
               ) : (
                 <>
@@ -419,7 +419,7 @@ function AuthContent() {
                     <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                     <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                   </svg>
-                  {mode === 'login' ? t('auth.login.googleButton') : 'Sign up with Google'}
+                  {mode === 'login' ? t('auth.login.googleButton') : t('auth.signup.googleButton')}
                 </>
               )}
             </Button>
@@ -469,12 +469,12 @@ function AuthContent() {
                       className="flex items-center gap-2 text-sm text-owner-600 hover:text-owner-800 transition-colors"
                     >
                       <Gift className="w-4 h-4" />
-                      <span>J&apos;ai un code parrainage</span>
+                      <span>{t('auth.signup.referral.haveCode')}</span>
                     </button>
                   ) : (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Code de parrainage (optionnel)
+                        {t('auth.signup.referral.codeLabel')}
                       </label>
                       <div className="relative">
                         <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -508,13 +508,13 @@ function AuthContent() {
                       {referralCodeStatus === 'valid' && referrerName && (
                         <p className="mt-2 text-sm text-green-600 flex items-center gap-1">
                           <CheckCircle className="w-4 h-4" />
-                          Invité par {referrerName} - 1 mois offert !
+                          {t('auth.signup.referral.invitedBy').replace('{name}', referrerName)}
                         </p>
                       )}
                       {referralCodeStatus === 'invalid' && referralCode.length >= 4 && (
                         <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
                           <AlertCircle className="w-4 h-4" />
-                          Code invalide ou expiré
+                          {t('auth.signup.referral.invalidCode')}
                         </p>
                       )}
                     </div>

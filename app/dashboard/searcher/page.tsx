@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
+import { useLanguage } from '@/lib/i18n/use-language';
 import SearcherDashboardCompact from '@/components/dashboard/SearcherDashboardCompact';
 import ModernSearcherHeader from '@/components/layout/ModernSearcherHeader';
 import dynamic from 'next/dynamic';
@@ -25,6 +26,8 @@ export default function SearcherDashboardPage() {
   const router = useRouter();
   const supabase = createClient();
   const { setActiveRole } = useRole();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher;
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState<{
@@ -62,7 +65,7 @@ export default function SearcherDashboardPage() {
       if (usersData) {
         setUserData({
           id: user.id,
-          full_name: usersData.full_name || 'User',
+          full_name: usersData.full_name || (t?.defaultUser?.[language] || 'Utilisateur'),
           email: usersData.email || '',
           avatar_url: usersData.avatar_url,
         });

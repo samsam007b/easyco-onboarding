@@ -13,38 +13,40 @@ import { Card, CardContent } from '@/components/ui/card';
 import { createProperty } from '@/lib/property-helpers';
 import { toast } from 'sonner';
 import type { PropertyType, PropertyAmenity } from '@/lib/types/property';
+import { useLanguage } from '@/lib/i18n/use-language';
 
-const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
-  { value: 'apartment', label: 'Apartment' },
-  { value: 'house', label: 'House' },
-  { value: 'studio', label: 'Studio' },
-  { value: 'coliving', label: 'Coliving Space' },
-  { value: 'shared_room', label: 'Shared Room' },
-  { value: 'private_room', label: 'Private Room' },
-  { value: 'entire_place', label: 'Entire Place' },
+const PROPERTY_TYPES: PropertyType[] = [
+  'apartment',
+  'house',
+  'studio',
+  'coliving',
+  'shared_room',
+  'private_room',
+  'entire_place',
 ];
 
-const AMENITIES: { value: PropertyAmenity; label: string }[] = [
-  { value: 'wifi', label: 'WiFi' },
-  { value: 'parking', label: 'Parking' },
-  { value: 'elevator', label: 'Elevator' },
-  { value: 'balcony', label: 'Balcony' },
-  { value: 'garden', label: 'Garden' },
-  { value: 'gym', label: 'Gym' },
-  { value: 'laundry', label: 'Laundry' },
-  { value: 'dishwasher', label: 'Dishwasher' },
-  { value: 'washing_machine', label: 'Washing Machine' },
-  { value: 'dryer', label: 'Dryer' },
-  { value: 'air_conditioning', label: 'Air Conditioning' },
-  { value: 'heating', label: 'Heating' },
-  { value: 'kitchen', label: 'Kitchen' },
-  { value: 'furnished', label: 'Furnished' },
-  { value: 'pets_allowed', label: 'Pets Allowed' },
-  { value: 'smoking_allowed', label: 'Smoking Allowed' },
+const AMENITIES: PropertyAmenity[] = [
+  'wifi',
+  'parking',
+  'elevator',
+  'balcony',
+  'garden',
+  'gym',
+  'laundry',
+  'dishwasher',
+  'washing_machine',
+  'dryer',
+  'air_conditioning',
+  'heating',
+  'kitchen',
+  'furnished',
+  'pets_allowed',
+  'smoking_allowed',
 ];
 
 export default function AddPropertyPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form state
@@ -90,19 +92,19 @@ export default function AddPropertyPage() {
     try {
       // Validation
       if (!formData.title.trim()) {
-        toast.error('Please enter a property title');
+        toast.error(t('properties.add.errors.titleRequired'));
         setIsSubmitting(false);
         return;
       }
 
       if (!formData.city.trim() || !formData.postal_code.trim()) {
-        toast.error('Please enter location details');
+        toast.error(t('properties.add.errors.locationRequired'));
         setIsSubmitting(false);
         return;
       }
 
       if (formData.monthly_rent <= 0) {
-        toast.error('Please enter a valid monthly rent');
+        toast.error(t('properties.add.errors.rentRequired'));
         setIsSubmitting(false);
         return;
       }
@@ -114,14 +116,14 @@ export default function AddPropertyPage() {
       });
 
       if (!result.success) {
-        throw new Error(result.error || 'Failed to create property');
+        throw new Error(result.error || t('properties.add.errors.createFailed'));
       }
 
-      toast.success('Property created successfully!');
+      toast.success(t('properties.add.success'));
       router.push('/dashboard/owner');
     } catch (error: any) {
       // FIXME: Use logger.error('Error creating property:', error);
-      toast.error(error.message || 'Failed to create property');
+      toast.error(error.message || t('properties.add.errors.createFailed'));
       setIsSubmitting(false);
     }
   };
@@ -135,12 +137,12 @@ export default function AddPropertyPage() {
           className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors mb-4"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
+          <span>{t('common.back')}</span>
         </button>
 
         <PageHeader
-          title="Add New Property"
-          description="List your property and find compatible tenants"
+          title={t('properties.add.title')}
+          description={t('properties.add.description')}
         />
       </div>
 
@@ -150,31 +152,34 @@ export default function AddPropertyPage() {
           <CardContent>
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Home className="w-5 h-5 text-[#4A148C]" />
-              Basic Information
+              {t('properties.add.sections.basicInfo')}
             </h3>
 
             <div className="space-y-4">
               <Input
-                label="Property Title"
+                label={t('properties.add.fields.propertyTitle')}
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
-                placeholder="e.g., Cozy 2-bedroom apartment in Paris"
+                placeholder={t('properties.add.fields.titlePlaceholder')}
                 required
               />
 
               <Textarea
-                label="Description"
+                label={t('properties.add.fields.description')}
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
-                placeholder="Describe your property, its features, and the neighborhood..."
+                placeholder={t('properties.add.fields.descriptionPlaceholder')}
                 rows={4}
               />
 
               <Select
-                label="Property Type"
+                label={t('properties.add.fields.propertyType')}
                 value={formData.property_type}
                 onChange={(e) => handleInputChange('property_type', e.target.value as PropertyType)}
-                options={PROPERTY_TYPES}
+                options={PROPERTY_TYPES.map(type => ({
+                  value: type,
+                  label: t(`properties.add.propertyTypes.${type}`)
+                }))}
               />
             </div>
           </CardContent>
@@ -185,21 +190,21 @@ export default function AddPropertyPage() {
           <CardContent>
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-[#4A148C]" />
-              Location
+              {t('properties.add.sections.location')}
             </h3>
 
             <div className="space-y-4">
               <Input
-                label="Address"
+                label={t('properties.add.fields.address')}
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
-                placeholder="Street address"
+                placeholder={t('properties.add.fields.addressPlaceholder')}
                 required
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="City"
+                  label={t('properties.add.fields.city')}
                   value={formData.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
                   placeholder="Paris"
@@ -207,7 +212,7 @@ export default function AddPropertyPage() {
                 />
 
                 <Input
-                  label="Postal Code"
+                  label={t('properties.add.fields.postalCode')}
                   value={formData.postal_code}
                   onChange={(e) => handleInputChange('postal_code', e.target.value)}
                   placeholder="75001"
@@ -223,12 +228,12 @@ export default function AddPropertyPage() {
           <CardContent>
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Bed className="w-5 h-5 text-[#4A148C]" />
-              Property Details
+              {t('properties.add.sections.propertyDetails')}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <Input
-                label="Bedrooms"
+                label={t('properties.add.fields.bedrooms')}
                 type="number"
                 min="0"
                 value={formData.bedrooms}
@@ -237,7 +242,7 @@ export default function AddPropertyPage() {
               />
 
               <Input
-                label="Bathrooms"
+                label={t('properties.add.fields.bathrooms')}
                 type="number"
                 min="0"
                 value={formData.bathrooms}
@@ -246,17 +251,17 @@ export default function AddPropertyPage() {
               />
 
               <Input
-                label="Surface Area (m²)"
+                label={t('properties.add.fields.surfaceArea')}
                 type="number"
                 min="0"
                 value={formData.surface_area || ''}
                 onChange={(e) => handleInputChange('surface_area', parseInt(e.target.value) || undefined)}
-                placeholder="Optional"
+                placeholder={t('properties.add.fields.optional')}
               />
             </div>
 
             <Checkbox
-              label="Furnished"
+              label={t('properties.add.fields.furnished')}
               checked={formData.furnished}
               onChange={(e) => handleInputChange('furnished', e.target.checked)}
             />
@@ -268,12 +273,12 @@ export default function AddPropertyPage() {
           <CardContent>
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Euro className="w-5 h-5 text-[#4A148C]" />
-              Pricing
+              {t('properties.add.sections.pricing')}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input
-                label="Monthly Rent (€)"
+                label={t('properties.add.fields.monthlyRent')}
                 type="number"
                 min="0"
                 value={formData.monthly_rent}
@@ -283,7 +288,7 @@ export default function AddPropertyPage() {
               />
 
               <Input
-                label="Charges (€)"
+                label={t('properties.add.fields.charges')}
                 type="number"
                 min="0"
                 value={formData.charges}
@@ -292,7 +297,7 @@ export default function AddPropertyPage() {
               />
 
               <Input
-                label="Deposit (€)"
+                label={t('properties.add.fields.deposit')}
                 type="number"
                 min="0"
                 value={formData.deposit}
@@ -306,15 +311,15 @@ export default function AddPropertyPage() {
         {/* Amenities */}
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Amenities</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('properties.add.sections.amenities')}</h3>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {AMENITIES.map((amenity) => (
                 <Checkbox
-                  key={amenity.value}
-                  label={amenity.label}
-                  checked={selectedAmenities.includes(amenity.value)}
-                  onChange={() => toggleAmenity(amenity.value)}
+                  key={amenity}
+                  label={t(`properties.add.amenitiesLabels.${amenity}`)}
+                  checked={selectedAmenities.includes(amenity)}
+                  onChange={() => toggleAmenity(amenity)}
                 />
               ))}
             </div>
@@ -324,21 +329,21 @@ export default function AddPropertyPage() {
         {/* House Rules */}
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">House Rules</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('properties.add.sections.houseRules')}</h3>
 
             <div className="space-y-3">
               <Checkbox
-                label="Smoking allowed"
+                label={t('properties.add.fields.smokingAllowed')}
                 checked={formData.smoking_allowed}
                 onChange={(e) => handleInputChange('smoking_allowed', e.target.checked)}
               />
               <Checkbox
-                label="Pets allowed"
+                label={t('properties.add.fields.petsAllowed')}
                 checked={formData.pets_allowed}
                 onChange={(e) => handleInputChange('pets_allowed', e.target.checked)}
               />
               <Checkbox
-                label="Couples allowed"
+                label={t('properties.add.fields.couplesAllowed')}
                 checked={formData.couples_allowed}
                 onChange={(e) => handleInputChange('couples_allowed', e.target.checked)}
               />
@@ -349,18 +354,18 @@ export default function AddPropertyPage() {
         {/* Availability */}
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Availability</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('properties.add.sections.availability')}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label="Available From"
+                label={t('properties.add.fields.availableFrom')}
                 type="date"
                 value={formData.available_from}
                 onChange={(e) => handleInputChange('available_from', e.target.value)}
               />
 
               <Input
-                label="Minimum Stay (months)"
+                label={t('properties.add.fields.minimumStay')}
                 type="number"
                 min="1"
                 value={formData.minimum_stay_months}
@@ -379,14 +384,14 @@ export default function AddPropertyPage() {
             disabled={isSubmitting}
             className="flex-1"
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             type="submit"
             disabled={isSubmitting}
             className="flex-1"
           >
-            {isSubmitting ? 'Creating...' : 'Create Property'}
+            {isSubmitting ? t('properties.add.creating') : t('properties.add.createButton')}
           </Button>
         </div>
       </form>

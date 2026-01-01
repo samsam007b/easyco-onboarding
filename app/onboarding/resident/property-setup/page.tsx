@@ -281,7 +281,7 @@ export default function ResidentPropertySetupPage() {
         >
           <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
                style={{
-                 background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                }}>
             <Home className="w-10 h-10 text-white" />
           </div>
@@ -314,7 +314,7 @@ export default function ResidentPropertySetupPage() {
               <div className="text-center">
                 <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
                      style={{
-                       background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                       background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                      }}>
                   <Plus className="w-8 h-8 text-white" />
                 </div>
@@ -324,7 +324,7 @@ export default function ResidentPropertySetupPage() {
                 <p className="text-gray-600 mb-4">
                   Vous êtes le premier ? Créez une nouvelle colocation et invitez vos colocataires
                 </p>
-                <Button className="w-full rounded-xl bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]">
+                <Button className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]">
                   Créer
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -443,7 +443,7 @@ export default function ResidentPropertySetupPage() {
                 <Button
                   onClick={createProperty}
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:shadow-lg transition-shadow mt-6"
+                  className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:shadow-lg transition-shadow mt-6"
                 >
                   {isSubmitting ? 'Création...' : 'Créer et continuer'}
                 </Button>

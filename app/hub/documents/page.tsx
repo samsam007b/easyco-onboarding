@@ -268,7 +268,7 @@ export default function DocumentsPage() {
             variant="outline"
             onClick={() => router.push('/hub')}
             className="mb-4 rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#ee5736' }}
+            style={{ color: '#ff651e' }}
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
@@ -277,7 +277,7 @@ export default function DocumentsPage() {
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                 <FolderOpen className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -291,7 +291,7 @@ export default function DocumentsPage() {
             <Button
               onClick={() => setShowUploadModal(true)}
               className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               {t?.uploadDocument?.[language] || 'Upload document'}
@@ -311,7 +311,7 @@ export default function DocumentsPage() {
                     {stats?.total_documents || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 100%)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}>
                   <FileText className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -325,7 +325,7 @@ export default function DocumentsPage() {
                     {formatFileSize(stats?.total_size_bytes)}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff5b21 0%, #ff8017 100%)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}>
                   <FolderOpen className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -378,7 +378,7 @@ export default function DocumentsPage() {
                 variant={filterCategory === 'all' ? 'default' : 'outline'}
                 onClick={() => setFilterCategory('all')}
                 className="rounded-full flex-shrink-0 text-white border-none"
-                style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
+                style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
               >
                 {t?.filters?.all?.[language] || 'Tous'}
               </Button>
@@ -391,7 +391,7 @@ export default function DocumentsPage() {
                     variant={filterCategory === cat.value ? 'default' : 'outline'}
                     onClick={() => setFilterCategory(cat.value)}
                     className="rounded-full flex-shrink-0 text-white border-none"
-                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' } : undefined}
+                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
                   >
                     <Icon className="w-4 h-4 mr-1" />
                     {cat.label}
@@ -416,7 +416,7 @@ export default function DocumentsPage() {
               <Button
                 onClick={() => setShowUploadModal(true)}
                 className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 {t?.uploadDocument?.[language] || 'Upload document'}
@@ -536,7 +536,7 @@ export default function DocumentsPage() {
                     'mt-2 border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer',
                     dragActive ? 'bg-orange-50' : 'border-gray-300'
                   )}
-                  style={dragActive ? { borderColor: '#ee5736' } : undefined}
+                  style={dragActive ? { borderColor: '#ff651e' } : undefined}
                 >
                   {selectedFile ? (
                     <div className="space-y-2">
@@ -611,10 +611,10 @@ export default function DocumentsPage() {
                             ? 'bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         )}
-                        style={uploadForm.category === cat.value ? { borderColor: '#ee5736' } : undefined}
+                        style={uploadForm.category === cat.value ? { borderColor: '#ff651e' } : undefined}
                       >
                         <div className="mb-1 flex items-center justify-center">
-                          <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ee5736]" : "text-gray-500")} />
+                          <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ff651e]" : "text-gray-500")} />
                         </div>
                         <div className="text-xs font-medium text-gray-700">{cat.label}</div>
                       </button>
@@ -666,7 +666,7 @@ export default function DocumentsPage() {
                 onClick={handleUpload}
                 disabled={isUploading || !selectedFile || !uploadForm.title}
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
               >
                 {isUploading ? (
                   <>

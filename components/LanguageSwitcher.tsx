@@ -15,7 +15,7 @@ const languageLabels: Record<Language, string> = {
 };
 
 // Gradient constants
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
 
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
@@ -53,17 +53,17 @@ export default function LanguageSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition-all"
-        style={{ color: '#ee5736' }}
+        style={{ color: '#ff651e' }}
         onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         aria-label="Change language"
       >
-        <Globe className="w-4 h-4" style={{ color: '#ee5736' }} />
+        <Globe className="w-4 h-4" style={{ color: '#ff651e' }} />
         <span className="font-medium">{language.toUpperCase()}</span>
         <ChevronDown className={cn(
           "w-3 h-3 transition-transform",
           isOpen && "rotate-180"
-        )} style={{ color: '#ee5736' }} />
+        )} style={{ color: '#ff651e' }} />
       </button>
 
       {/* Dropdown */}
@@ -111,7 +111,7 @@ export default function LanguageSwitcher() {
                       {label}
                     </span>
                     {isActive && (
-                      <span style={{ color: '#ee5736' }} className="text-xs">✓</span>
+                      <span style={{ color: '#ff651e' }} className="text-xs">✓</span>
                     )}
                   </button>
                   {index < Object.keys(languageLabels).length - 1 && (

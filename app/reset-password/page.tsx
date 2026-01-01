@@ -9,10 +9,12 @@ import { Input } from '@/components/ui/input'
 import { ArrowLeft, Lock, Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 function ResetPasswordContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useLanguage()
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -33,8 +35,8 @@ function ResetPasswordContent() {
 
         if (error || !session) {
           setIsValidToken(false)
-          toast.error('Invalid or expired reset link', {
-            description: 'Please request a new password reset',
+          toast.error(t('auth.resetPassword.errors.invalidOrExpired'), {
+            description: t('auth.resetPassword.errors.requestNew'),
           })
         } else {
           setIsValidToken(true)
@@ -61,19 +63,19 @@ function ResetPasswordContent() {
     if (/[0-9]/.test(pwd)) strength++
     if (/[^A-Za-z0-9]/.test(pwd)) strength++
 
-    if (strength <= 2) return { strength, label: 'Weak', color: 'bg-red-500' }
-    if (strength <= 3) return { strength, label: 'Medium', color: 'bg-yellow-500' }
-    return { strength, label: 'Strong', color: 'bg-green-500' }
+    if (strength <= 2) return { strength, label: t('auth.resetPassword.weak'), color: 'bg-red-500' }
+    if (strength <= 3) return { strength, label: t('auth.resetPassword.medium'), color: 'bg-yellow-500' }
+    return { strength, label: t('auth.resetPassword.strong'), color: 'bg-green-500' }
   }
 
   const passwordStrength = getPasswordStrength(password)
 
   // Password requirements
   const requirements = [
-    { met: password.length >= 8, text: 'At least 8 characters' },
-    { met: /[A-Z]/.test(password), text: 'One uppercase letter' },
-    { met: /[a-z]/.test(password), text: 'One lowercase letter' },
-    { met: /[0-9]/.test(password), text: 'One number' },
+    { met: password.length >= 8, text: t('auth.resetPassword.requirements.minLength') },
+    { met: /[A-Z]/.test(password), text: t('auth.resetPassword.requirements.uppercase') },
+    { met: /[a-z]/.test(password), text: t('auth.resetPassword.requirements.lowercase') },
+    { met: /[0-9]/.test(password), text: t('auth.resetPassword.requirements.number') },
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,17 +83,17 @@ function ResetPasswordContent() {
 
     // Validation
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters')
+      toast.error(t('auth.resetPassword.errors.minLength'))
       return
     }
 
     if (!requirements.every(req => req.met)) {
-      toast.error('Please meet all password requirements')
+      toast.error(t('auth.resetPassword.errors.meetRequirements'))
       return
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('auth.resetPassword.errors.noMatch'))
       return
     }
 
@@ -104,13 +106,13 @@ function ResetPasswordContent() {
 
       if (error) {
         // FIXME: Use logger.error('Password update error:', error)
-        toast.error(error.message || 'Failed to update password')
+        toast.error(error.message || t('auth.resetPassword.errors.updateFailed'))
         return
       }
 
       setResetSuccess(true)
-      toast.success('Password updated successfully!', {
-        description: 'You can now log in with your new password',
+      toast.success(t('auth.resetPassword.toast.success'), {
+        description: t('auth.resetPassword.toast.successDescription'),
       })
 
       // Redirect to login after 2 seconds
@@ -119,7 +121,7 @@ function ResetPasswordContent() {
       }, 2000)
     } catch (error: any) {
       // FIXME: Use logger.error('Unexpected error:', error)
-      toast.error('An unexpected error occurred')
+      toast.error(t('auth.resetPassword.errors.unexpected'))
     } finally {
       setIsLoading(false)
     }
@@ -131,7 +133,7 @@ function ResetPasswordContent() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Verifying reset link...</p>
+          <p className="text-gray-600">{t('auth.resetPassword.verifying')}</p>
         </div>
       </div>
     )
@@ -155,16 +157,16 @@ function ResetPasswordContent() {
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Invalid Reset Link
+              {t('auth.resetPassword.invalidLink.title')}
             </h1>
             <p className="text-gray-600 mb-6">
-              This password reset link is invalid or has expired. Please request a new one.
+              {t('auth.resetPassword.invalidLink.description')}
             </p>
             <Link
               href="/forgot-password"
               className="inline-block w-full px-6 py-3 bg-[#FFD600] hover:bg-[#F57F17] text-black font-semibold rounded-full transition-colors"
             >
-              Request New Link
+              {t('auth.resetPassword.invalidLink.requestNew')}
             </Link>
           </div>
         </main>
@@ -190,16 +192,16 @@ function ResetPasswordContent() {
               <Check className="w-8 h-8 text-green-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Password Updated!
+              {t('auth.resetPassword.success.title')}
             </h1>
             <p className="text-gray-600 mb-6">
-              Your password has been successfully updated. You can now log in with your new password.
+              {t('auth.resetPassword.success.description')}
             </p>
             <Link
               href="/auth"
               className="inline-block w-full px-6 py-3 bg-[#FFD600] hover:bg-[#F57F17] text-black font-semibold rounded-full transition-colors"
             >
-              Go to Login
+              {t('auth.resetPassword.success.goToLogin')}
             </Link>
           </div>
         </main>
@@ -214,7 +216,7 @@ function ResetPasswordContent() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/auth" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to login</span>
+            <span>{t('auth.resetPassword.backToLogin')}</span>
           </Link>
           <div className="text-2xl font-bold">
             <span className="text-[#4A148C]">EASY</span>
@@ -233,10 +235,10 @@ function ResetPasswordContent() {
                 <Lock className="w-8 h-8 text-[#4A148C]" />
               </div>
               <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
-                Reset Password
+                {t('auth.resetPassword.title')}
               </h1>
               <p className="text-gray-600">
-                Enter your new password below
+                {t('auth.resetPassword.subtitle')}
               </p>
             </div>
 
@@ -245,14 +247,14 @@ function ResetPasswordContent() {
               {/* New Password Field */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  New Password
+                  {t('auth.resetPassword.newPassword')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter new password"
+                    placeholder={t('auth.resetPassword.newPasswordPlaceholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -272,7 +274,7 @@ function ResetPasswordContent() {
                 {password && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-gray-600">Password strength</span>
+                      <span className="text-xs text-gray-600">{t('auth.resetPassword.passwordStrength')}</span>
                       <span className={`text-xs font-semibold ${
                         passwordStrength.strength <= 2 ? 'text-red-600' :
                         passwordStrength.strength <= 3 ? 'text-yellow-600' : 'text-green-600'
@@ -297,7 +299,7 @@ function ResetPasswordContent() {
               {/* Password Requirements */}
               {password && (
                 <div className="bg-gray-50 rounded-2xl p-4">
-                  <p className="text-xs font-medium text-gray-700 mb-2">Password must contain:</p>
+                  <p className="text-xs font-medium text-gray-700 mb-2">{t('auth.resetPassword.requirements.title')}</p>
                   <ul className="space-y-1.5">
                     {requirements.map((req, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
@@ -318,14 +320,14 @@ function ResetPasswordContent() {
               {/* Confirm Password Field */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm New Password
+                  {t('auth.resetPassword.confirmPassword')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Confirm new password"
+                    placeholder={t('auth.resetPassword.confirmPasswordPlaceholder')}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
@@ -346,12 +348,12 @@ function ResetPasswordContent() {
                     {password === confirmPassword ? (
                       <>
                         <Check className="w-4 h-4 text-green-600" />
-                        <span className="text-xs text-green-700">Passwords match</span>
+                        <span className="text-xs text-green-700">{t('auth.resetPassword.passwordsMatch')}</span>
                       </>
                     ) : (
                       <>
                         <X className="w-4 h-4 text-red-600" />
-                        <span className="text-xs text-red-700">Passwords do not match</span>
+                        <span className="text-xs text-red-700">{t('auth.resetPassword.passwordsNoMatch')}</span>
                       </>
                     )}
                   </div>
@@ -367,10 +369,10 @@ function ResetPasswordContent() {
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
                     <LoadingHouse size={20} />
-                    <span>Updating password...</span>
+                    <span>{t('auth.resetPassword.updating')}</span>
                   </div>
                 ) : (
-                  'Update Password'
+                  t('auth.resetPassword.updateButton')
                 )}
               </Button>
             </form>

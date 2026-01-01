@@ -41,18 +41,18 @@ export const roleThemes = {
     },
   },
   resident: {
-    // Warm orange/coral theme for residents
-    gradient: 'from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
+    // V3 Option C Orange theme for residents
+    gradient: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
     gradientBg: 'from-orange-50 to-orange-100',
-    primary: '#E8865D',
+    primary: '#ff651e',
     primaryLight: 'orange-50',
     focusRing: 'focus:ring-orange-500',
     selectedBorder: 'border-orange-500',
     selectedBg: 'bg-orange-50',
     accent: 'accent-orange-500',
     logoColors: {
-      easy: 'text-[#D97B6F]',
-      co: 'text-[#FF8C4B]',
+      easy: 'text-[#e05747]',
+      co: 'text-[#ff9014]',
     },
   },
 } as const;

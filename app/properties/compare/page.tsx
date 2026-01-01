@@ -30,10 +30,12 @@ import {
 import { toast } from 'sonner';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function PropertyComparePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useLanguage();
   const supabase = createClient();
   const comparisonService = new ComparisonService(supabase);
 
@@ -50,7 +52,7 @@ export default function PropertyComparePage() {
       const ids = searchParams.get('ids')?.split(',') || [];
 
       if (ids.length < 2 || ids.length > 3) {
-        toast.error('Sélectionne 2 ou 3 propriétés à comparer');
+        toast.error(t('properties.compare.errors.selectCount'));
         router.push('/properties/browse');
         return;
       }
@@ -59,7 +61,7 @@ export default function PropertyComparePage() {
       setProperties(data);
     } catch (error) {
       console.error('Error loading properties:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error(t('properties.compare.errors.loadError'));
     } finally {
       setIsLoading(false);
     }
@@ -69,10 +71,10 @@ export default function PropertyComparePage() {
     try {
       const propertyIds = properties.map((p) => p.id);
       await comparisonService.createComparison({ property_ids: propertyIds });
-      toast.success('Comparaison sauvegardée !');
+      toast.success(t('properties.compare.saved'));
     } catch (error) {
       console.error('Error saving comparison:', error);
-      toast.error('Erreur lors de la sauvegarde');
+      toast.error(t('properties.compare.errors.saveError'));
     }
   };
 
@@ -103,7 +105,7 @@ export default function PropertyComparePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Chargement de la comparaison...</p>
+          <p className="text-gray-600">{t('properties.compare.loading')}</p>
         </div>
       </div>
     );
@@ -114,9 +116,9 @@ export default function PropertyComparePage() {
       <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6 text-center">
-            <p className="text-gray-600 mb-4">Aucune propriété à comparer</p>
+            <p className="text-gray-600 mb-4">{t('properties.compare.noProperties')}</p>
             <Button onClick={() => router.push('/properties/browse')}>
-              Retour à la recherche
+              {t('properties.compare.backToSearch')}
             </Button>
           </CardContent>
         </Card>
@@ -133,21 +135,21 @@ export default function PropertyComparePage() {
             <div className="flex items-center gap-4">
               <Button variant="ghost" onClick={() => router.back()}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour
+                {t('common.back')}
               </Button>
               <h1 className="text-2xl font-bold text-gray-900">
-                Comparaison de {properties.length} propriétés
+                {t('properties.compare.title').replace('{count}', String(properties.length))}
               </h1>
             </div>
 
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={handleSaveComparison}>
                 <Save className="w-4 h-4 mr-2" />
-                Sauvegarder
+                {t('properties.compare.save')}
               </Button>
               <Button variant="outline">
                 <Share2 className="w-4 h-4 mr-2" />
-                Partager
+                {t('properties.compare.share')}
               </Button>
             </div>
           </div>
@@ -161,7 +163,7 @@ export default function PropertyComparePage() {
             <thead>
               <tr className="border-b">
                 <th className="p-4 text-left font-semibold text-gray-700 bg-gray-50 w-48">
-                  Caractéristique
+                  {t('properties.compare.feature')}
                 </th>
                 {properties.map((property) => (
                   <th key={property.id} className="p-4 text-center w-80">
@@ -200,7 +202,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Euro className="w-4 h-4" />
-                    Prix mensuel
+                    {t('properties.compare.fields.monthlyPrice')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -215,10 +217,10 @@ export default function PropertyComparePage() {
                     <div className="text-2xl font-bold text-gray-900">
                       {property.monthly_rent}€
                     </div>
-                    <div className="text-xs text-gray-500">par mois</div>
+                    <div className="text-xs text-gray-500">{t('properties.compare.perMonth')}</div>
                     {isFieldBest(property, 'monthly_rent', 'lowest') && (
                       <Badge variant="success" className="mt-2">
-                        Meilleur prix
+                        {t('properties.compare.bestPrice')}
                       </Badge>
                     )}
                   </td>
@@ -230,7 +232,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    Chambres
+                    {t('properties.compare.fields.bedrooms')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -247,7 +249,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Maximize className="w-4 h-4" />
-                    Surface
+                    {t('properties.compare.fields.surface')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -264,7 +266,7 @@ export default function PropertyComparePage() {
                     </div>
                     {isFieldBest(property, 'surface_area', 'highest') && (
                       <Badge variant="success" className="mt-2">
-                        Plus grand
+                        {t('properties.compare.largest')}
                       </Badge>
                     )}
                   </td>
@@ -276,7 +278,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Home className="w-4 h-4" />
-                    Type de propriété
+                    {t('properties.compare.fields.propertyType')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -291,21 +293,21 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    Disponible à partir de
+                    {t('properties.compare.fields.availableFrom')}
                   </div>
                 </td>
                 {properties.map((property) => (
                   <td key={property.id} className="p-4 text-center text-gray-700">
                     {property.available_from
                       ? new Date(property.available_from).toLocaleDateString('fr-FR')
-                      : 'Immédiatement'}
+                      : t('properties.compare.immediately')}
                   </td>
                 ))}
               </tr>
 
               {/* Meublé */}
               <tr className="border-b hover:bg-gray-50">
-                <td className="p-4 font-medium text-gray-700 bg-gray-50">Meublé</td>
+                <td className="p-4 font-medium text-gray-700 bg-gray-50">{t('properties.compare.fields.furnished')}</td>
                 {properties.map((property) => (
                   <td key={property.id} className="p-4 text-center">
                     {property.furnished ? (
@@ -322,7 +324,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <Car className="w-4 h-4" />
-                    Parking
+                    {t('properties.compare.fields.parking')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -341,7 +343,7 @@ export default function PropertyComparePage() {
                 <td className="p-4 font-medium text-gray-700 bg-gray-50">
                   <div className="flex items-center gap-2">
                     <TreePine className="w-4 h-4" />
-                    Balcon
+                    {t('properties.compare.fields.balcony')}
                   </div>
                 </td>
                 {properties.map((property) => (
@@ -357,12 +359,12 @@ export default function PropertyComparePage() {
 
               {/* Actions */}
               <tr>
-                <td className="p-4 font-medium text-gray-700 bg-gray-50">Actions</td>
+                <td className="p-4 font-medium text-gray-700 bg-gray-50">{t('properties.compare.fields.actions')}</td>
                 {properties.map((property) => (
                   <td key={property.id} className="p-4 text-center">
                     <Link href={`/properties/${property.id}`}>
                       <Button className="w-full bg-gradient-to-r from-yellow-600 to-orange-600">
-                        Voir les détails
+                        {t('properties.compare.viewDetails')}
                       </Button>
                     </Link>
                   </td>
@@ -378,15 +380,15 @@ export default function PropertyComparePage() {
             <div className="flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-green-50 border-2 border-green-500 rounded" />
-                <span className="text-gray-700">Meilleure valeur</span>
+                <span className="text-gray-700">{t('properties.compare.legend.bestValue')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-600" />
-                <span className="text-gray-700">Disponible</span>
+                <span className="text-gray-700">{t('properties.compare.legend.available')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <X className="w-4 h-4 text-red-600" />
-                <span className="text-gray-700">Non disponible</span>
+                <span className="text-gray-700">{t('properties.compare.legend.notAvailable')}</span>
               </div>
             </div>
           </CardContent>

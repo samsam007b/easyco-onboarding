@@ -126,8 +126,8 @@ function GuestPageContent() {
       label: 'Je vis en coloc',
       icon: Home,
       description: 'Gère ta vie en colocation',
-      color: '#ee5736',
-      bgColor: 'bg-rose-50',
+      color: '#ff651e',
+      bgColor: 'bg-orange-50',
     },
     {
       id: 'owner' as GuestView,
@@ -195,7 +195,7 @@ function GuestPageContent() {
               <motion.div
                 className="absolute top-1.5 bottom-1.5 rounded-xl shadow-lg"
                 style={{
-                  background: activeView === 'searcher' ? '#ff9811' : activeView === 'resident' ? '#ee5736' : '#ad5684'
+                  background: activeView === 'searcher' ? '#ff9811' : activeView === 'resident' ? '#ff651e' : '#ad5684'
                 }}
                 initial={false}
                 animate={{
@@ -623,13 +623,13 @@ function SearcherGuestView({
       </div>
 
       {/* Matching Section - Teaser */}
-      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #ee573615)', borderColor: '#ff981140', border: '1px solid' }}>
+      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #ff651e15)', borderColor: '#ff981140', border: '1px solid' }}>
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #ee5736, #ff9811)' }}
+                style={{ background: 'linear-gradient(135deg, #ff651e, #ff9811)' }}
               >
                 <Users className="w-5 h-5 text-white" />
               </div>
@@ -643,7 +643,7 @@ function SearcherGuestView({
             <Button
               onClick={() => onLockedFeature('Crée ton compte pour accéder au matching intelligent')}
               className="text-white font-semibold hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg, #ee5736, #ff9811)' }}
+              style={{ background: 'linear-gradient(135deg, #ff651e, #ff9811)' }}
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Découvrir le matching
@@ -757,11 +757,11 @@ function ResidentGuestView({
               className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
-                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ee5736' }} />
+                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ff651e' }} />
               </div>
 
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ee573620' }}>
-                <Icon className="w-5 h-5" style={{ color: '#ee5736' }} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ff651e20' }}>
+                <Icon className="w-5 h-5" style={{ color: '#ff651e' }} />
               </div>
 
               <p className="text-xs font-medium text-gray-500 mb-1">{card.title}</p>
@@ -783,16 +783,16 @@ function ResidentGuestView({
               transition={{ delay: 0.2 + idx * 0.1 }}
               onClick={() => onLockedFeature(`Crée ton compte pour accéder à "${feature.title}"`)}
               className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
-              style={{ borderColor: '#ee573640' }}
+              style={{ borderColor: '#ff651e40' }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ee573620' }}>
-                  <Icon className="w-6 h-6" style={{ color: '#ee5736' }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ff651e20' }}>
+                  <Icon className="w-6 h-6" style={{ color: '#ff651e' }} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-bold text-gray-900">{feature.title}</h3>
-                    <Lock className="w-4 h-4" style={{ color: '#ee5736' }} />
+                    <Lock className="w-4 h-4" style={{ color: '#ff651e' }} />
                   </div>
                   <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
@@ -803,11 +803,11 @@ function ResidentGuestView({
       </div>
 
       {/* Mock Residence Card */}
-      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: '#ee573610', borderColor: '#ee573640', border: '1px solid' }}>
+      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: '#ff651e10', borderColor: '#ff651e40', border: '1px solid' }}>
         <div className="flex flex-col md:flex-row gap-6 items-center">
           {/* Property preview */}
-          <div className="w-full md:w-64 h-40 rounded-2xl flex items-center justify-center" style={{ background: '#ee573640' }}>
-            <Home className="w-16 h-16" style={{ color: '#ee5736' }} />
+          <div className="w-full md:w-64 h-40 rounded-2xl flex items-center justify-center" style={{ background: '#ff651e40' }}>
+            <Home className="w-16 h-16" style={{ color: '#ff651e' }} />
           </div>
 
           <div className="flex-1 text-center md:text-left">
@@ -818,7 +818,7 @@ function ResidentGuestView({
             </p>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
               {['Gestion loyer', 'Tâches partagées', 'Chat groupe', 'Événements'].map((tag) => (
-                <Badge key={tag} variant="default" style={{ background: '#ee573620', color: '#ee5736', borderColor: '#ee573640' }}>
+                <Badge key={tag} variant="default" style={{ background: '#ff651e20', color: '#ff651e', borderColor: '#ff651e40' }}>
                   {tag}
                 </Badge>
               ))}

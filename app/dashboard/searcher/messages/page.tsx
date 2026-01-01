@@ -25,6 +25,7 @@ import {
   type Message,
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 /**
  * Searcher Messages Page
@@ -39,6 +40,8 @@ function SearcherMessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.messages;
 
   // User state
   const [isLoading, setIsLoading] = useState(true);
@@ -110,18 +113,18 @@ function SearcherMessagesContent() {
 
       const role = getUserRole(userData?.user_type);
       setUserRole(role);
-      setUserName(userData?.full_name || 'Utilisateur');
+      setUserName(userData?.full_name || (t?.defaultUser?.[language] || 'Utilisateur'));
 
       // Load conversations
       const result = await getUnifiedConversations(user.id, role);
       if (result.success && result.data) {
         setMessagingState(result.data);
       } else {
-        toast.error('Erreur lors du chargement des conversations');
+        toast.error(t?.errors?.loadConversations?.[language] || 'Erreur lors du chargement des conversations');
       }
     } catch (error) {
       console.error('Error loading user:', error);
-      toast.error('Erreur de chargement');
+      toast.error(t?.errors?.loading?.[language] || 'Erreur de chargement');
     } finally {
       setIsLoading(false);
     }
@@ -192,7 +195,7 @@ function SearcherMessagesContent() {
     });
 
     if (!result.success) {
-      toast.error('Échec de l\'envoi du message');
+      toast.error(t?.errors?.sendFailed?.[language] || 'Échec de l\'envoi du message');
       throw new Error(result.error);
     }
 
@@ -221,11 +224,11 @@ function SearcherMessagesContent() {
     );
 
     if (result.success) {
-      toast.success('Conversation archivée');
+      toast.success(t?.toast?.archived?.[language] || 'Conversation archivée');
       setSelectedConversation(null);
       loadUserAndConversations();
     } else {
-      toast.error('Échec de l\'archivage');
+      toast.error(t?.errors?.archiveFailed?.[language] || 'Échec de l\'archivage');
     }
   };
 
@@ -255,9 +258,9 @@ function SearcherMessagesContent() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
-            Chargement des messages...
+            {t?.loading?.title?.[language] || 'Chargement des messages...'}
           </h3>
-          <p className="text-gray-600">Préparation de vos conversations</p>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Préparation de vos conversations'}</p>
         </div>
       </div>
     );
@@ -280,7 +283,7 @@ function SearcherMessagesContent() {
             {selectedConversation.name}
           </h3>
           <p className="text-gray-500 max-w-sm mx-auto">
-            Soyez le premier à envoyer un message dans cette conversation !
+            {t?.empty?.firstMessage?.[language] || 'Soyez le premier à envoyer un message dans cette conversation !'}
           </p>
         </div>
       );
@@ -333,18 +336,23 @@ function SearcherMessagesContent() {
   );
 }
 
+function SuspenseFallback() {
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.messages;
+
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="text-center">
+        <LoadingHouse size={80} />
+        <p className="text-gray-600 font-medium mt-4">{t?.loading?.simple?.[language] || 'Chargement...'}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function SearcherMessagesPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <LoadingHouse size={80} />
-            <p className="text-gray-600 font-medium mt-4">Chargement...</p>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<SuspenseFallback />}>
       <SearcherMessagesContent />
     </Suspense>
   );

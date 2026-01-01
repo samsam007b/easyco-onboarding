@@ -245,7 +245,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                         : "text-gray-600 hover:bg-orange-50/50"
                     )}
                     style={isActive ? {
-                      background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                      background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text'
@@ -254,9 +254,9 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                     <Icon
                       className={cn(
                         "w-4 h-4 transition-all",
-                        isActive ? "" : "group-hover:text-[#E8865D]"
+                        isActive ? "" : "group-hover:text-[#ff651e]"
                       )}
-                      style={isActive ? { color: '#ee5736' } : undefined}
+                      style={isActive ? { color: '#ff651e' } : undefined}
                     />
                     <span>{item.label}</span>
                     {item.badge && (
@@ -303,32 +303,32 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                 onClick={() => setShowQuickActions(!showQuickActions)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
                 style={{
-                  background: showQuickActions ? 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' : 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)',
-                  borderColor: 'rgba(217, 87, 79, 0.2)',
-                  color: showQuickActions ? 'white' : '#ee5736'
+                  background: showQuickActions ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' : 'linear-gradient(135deg, rgba(224, 87, 71, 0.06) 0%, rgba(255, 144, 20, 0.06) 100%)',
+                  borderColor: 'rgba(224, 87, 71, 0.2)',
+                  color: showQuickActions ? 'white' : '#ff651e'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)';
-                  e.currentTarget.style.borderColor = '#ee5736';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+                  e.currentTarget.style.borderColor = '#ff651e';
                   e.currentTarget.style.color = 'white';
                 }}
                 onMouseLeave={(e) => {
                   if (!showQuickActions) {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)';
-                    e.currentTarget.style.borderColor = 'rgba(217, 87, 79, 0.2)';
-                    e.currentTarget.style.color = '#ee5736';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(224, 87, 71, 0.06) 0%, rgba(255, 144, 20, 0.06) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(224, 87, 71, 0.2)';
+                    e.currentTarget.style.color = '#ff651e';
                   }
                 }}
                 aria-label="Menu actions rapides"
                 aria-expanded={showQuickActions}
                 aria-haspopup="true"
               >
-                <Zap className="w-4 h-4" style={{ color: showQuickActions ? 'white' : '#ee5736' }} />
+                <Zap className="w-4 h-4" style={{ color: showQuickActions ? 'white' : '#ff651e' }} />
                 <span>{header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}</span>
                 <ChevronDown className={cn(
                   "w-4 h-4 transition-transform",
                   showQuickActions && "rotate-180"
-                )} style={{ color: showQuickActions ? 'white' : '#ee5736' }} />
+                )} style={{ color: showQuickActions ? 'white' : '#ff651e' }} />
               </button>
 
               {/* Quick Actions Dropdown */}
@@ -348,7 +348,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                     >
                       <div className="px-4 py-3 border-b border-gray-100">
                         <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Zap className="w-4 h-4" style={{ color: '#ee5736' }} />
+                          <Zap className="w-4 h-4" style={{ color: '#ff651e' }} />
                           {header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}
                         </h3>
                       </div>
@@ -361,13 +361,13 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                               href={action.href}
                               className="flex items-start gap-3 px-3 py-3 rounded-xl transition group"
                               style={{ background: 'transparent' }}
-                              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.06) 0%, rgba(255, 128, 23, 0.06) 100%)'}
+                              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(224, 87, 71, 0.06) 0%, rgba(255, 144, 20, 0.06) 100%)'}
                               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               onClick={() => setShowQuickActions(false)}
                             >
                               <div
                                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
-                                style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                               >
                                 <Icon className="w-5 h-5 text-white" />
                               </div>
@@ -471,11 +471,11 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                 {/* Avatar rond avec icône key */}
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-gray-200 group-hover:border-gray-300 transition-colors shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                 >
                   <Key className="w-4 h-4 text-white" />
                 </div>
-                <ChevronDown className="w-4 h-4 text-gray-600 transition-colors hidden md:block" style={{ color: showProfileMenu ? '#ee5736' : undefined }} />
+                <ChevronDown className="w-4 h-4 text-gray-600 transition-colors hidden md:block" style={{ color: showProfileMenu ? '#ff651e' : undefined }} />
               </button>
 
               {/* Profile Dropdown */}
@@ -494,7 +494,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 text-white" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                      <div className="relative px-6 py-5 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                         <div className="relative flex items-center gap-4">
                           {/* Avatar with Progress Ring */}
                           <div className="relative">
@@ -535,19 +535,19 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       <div className="px-4 py-3 border-b border-gray-100" style={{ background: '#fff5f3' }}>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
-                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
+                            <div className="text-lg font-bold" style={{ color: '#ff651e' }}>
                               {pendingTasks || 0}
                             </div>
                             <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.tasks || 'Tâches'}</div>
                           </div>
                           <div className="text-center border-x border-gray-200">
-                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
+                            <div className="text-lg font-bold" style={{ color: '#ff651e' }}>
                               {activeMembersCount || 0}
                             </div>
                             <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.members || 'Membres'}</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-lg font-bold" style={{ color: '#ee5736' }}>
+                            <div className="text-lg font-bold" style={{ color: '#ff651e' }}>
                               {unreadMessages || 0}
                             </div>
                             <div className="text-xs font-medium" style={{ color: '#c23f21' }}>{header?.stats?.messages || 'Messages'}</div>
@@ -565,7 +565,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <User className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
@@ -583,7 +583,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <DollarSign className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
@@ -601,7 +601,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <Settings className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1">
@@ -675,7 +675,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                           : "text-gray-700 hover:bg-gray-100"
                       )}
                       style={isActive ? {
-                        background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)',
+                        background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
@@ -684,14 +684,14 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       <div className="flex items-center gap-3">
                         <Icon className={cn(
                           "w-5 h-5 transition-all",
-                          isActive ? "" : "group-hover:text-[#ff5b21]"
+                          isActive ? "" : "group-hover:text-[#ff651e]"
                         )} />
                         <span className={cn(
-                          isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#d9574f] group-hover:via-[#ff5b21] group-hover:to-[#ff8017] group-hover:bg-clip-text group-hover:text-transparent"
+                          isActive ? "" : "group-hover:bg-gradient-to-r group-hover:from-[#e05747] group-hover:via-[#ff651e] group-hover:to-[#ff9014] group-hover:bg-clip-text group-hover:text-transparent"
                         )}>{item.label}</span>
                       </div>
                       {item.badge && (
-                        <Badge className="text-white border-0" style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
+                        <Badge className="text-white border-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                           {item.badge}
                         </Badge>
                       )}

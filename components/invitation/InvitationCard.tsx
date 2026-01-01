@@ -237,7 +237,7 @@ export function InvitationCard({
             className={`flex-1 rounded-xl text-white ${
               isOwner
                 ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
-                : 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] hover:opacity-90'
+                : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90'
             }`}
           >
             <Check className="w-4 h-4 mr-2" />

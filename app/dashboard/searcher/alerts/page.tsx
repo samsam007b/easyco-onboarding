@@ -12,6 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Bell, Trash2, Edit, Plus, BellOff, MapPin, Euro, Home, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +28,8 @@ export default function AlertsPage() {
   const router = useRouter();
   const supabase = createClient();
   const alertsService = new AlertsService(supabase);
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.alerts;
 
   const [alerts, setAlerts] = useState<PropertyAlert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +46,7 @@ export default function AlertsPage() {
       setAlerts(data);
     } catch (error) {
       console.error('Error loading alerts:', error);
-      toast.error('Erreur lors du chargement des alertes');
+      toast.error(t?.messages?.loadError?.[language] || 'Erreur lors du chargement des alertes');
     } finally {
       setIsLoading(false);
     }
@@ -57,10 +60,12 @@ export default function AlertsPage() {
           alert.id === alertId ? { ...alert, is_active: !currentStatus } : alert
         )
       );
-      toast.success(!currentStatus ? 'Alerte activée' : 'Alerte désactivée');
+      toast.success(!currentStatus
+        ? (t?.messages?.activated?.[language] || 'Alerte activée')
+        : (t?.messages?.deactivated?.[language] || 'Alerte désactivée'));
     } catch (error) {
       console.error('Error toggling alert:', error);
-      toast.error('Erreur lors de la modification');
+      toast.error(t?.messages?.modifyError?.[language] || 'Erreur lors de la modification');
     }
   };
 
@@ -70,11 +75,11 @@ export default function AlertsPage() {
     try {
       await alertsService.deleteAlert(alertToDelete);
       setAlerts((prev) => prev.filter((alert) => alert.id !== alertToDelete));
-      toast.success('Alerte supprimée');
+      toast.success(t?.messages?.deleted?.[language] || 'Alerte supprimée');
       setAlertToDelete(null);
     } catch (error) {
       console.error('Error deleting alert:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t?.messages?.deleteError?.[language] || 'Erreur lors de la suppression');
     }
   };
 
@@ -92,7 +97,7 @@ export default function AlertsPage() {
     }
 
     if (alert.criteria.bedrooms) {
-      parts.push(`🛏️ ${alert.criteria.bedrooms} chambres`);
+      parts.push(`🛏️ ${alert.criteria.bedrooms} ${t?.criteria?.bedrooms?.[language] || 'chambres'}`);
     }
 
     if (alert.criteria.propertyType && alert.criteria.propertyType !== 'all') {
@@ -100,7 +105,9 @@ export default function AlertsPage() {
     }
 
     if (alert.criteria.furnished !== null && alert.criteria.furnished !== undefined) {
-      parts.push(alert.criteria.furnished ? '✅ Meublé' : '❌ Non meublé');
+      parts.push(alert.criteria.furnished
+        ? `✅ ${t?.criteria?.furnished?.[language] || 'Meublé'}`
+        : `❌ ${t?.criteria?.unfurnished?.[language] || 'Non meublé'}`);
     }
 
     return parts;
@@ -109,11 +116,11 @@ export default function AlertsPage() {
   const getFrequencyLabel = (frequency: string) => {
     switch (frequency) {
       case 'instant':
-        return 'Instantané';
+        return t?.frequency?.instant?.[language] || 'Instantané';
       case 'daily':
-        return 'Quotidien';
+        return t?.frequency?.daily?.[language] || 'Quotidien';
       case 'weekly':
-        return 'Hebdomadaire';
+        return t?.frequency?.weekly?.[language] || 'Hebdomadaire';
       default:
         return frequency;
     }
@@ -125,7 +132,7 @@ export default function AlertsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <LoadingHouse size={64} />
-            <p className="text-gray-600">Chargement des alertes...</p>
+            <p className="text-gray-600">{t?.loading?.[language] || 'Chargement des alertes...'}</p>
           </div>
         </div>
       </div>
@@ -138,14 +145,14 @@ export default function AlertsPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Mes Alertes</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Mes Alertes'}</h1>
             <p className="text-gray-600">
-              Recevez des notifications lorsqu'une propriété correspond à vos critères
+              {t?.subtitle?.[language] || 'Recevez des notifications lorsqu\'une propriété correspond à vos critères'}
             </p>
           </div>
           <Button onClick={() => router.push('/properties/browse')} className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]">
             <Plus className="w-4 h-4 mr-2" />
-            Créer une alerte
+            {t?.createButton?.[language] || 'Créer une alerte'}
           </Button>
         </div>
 
@@ -172,7 +179,7 @@ export default function AlertsPage() {
                   <Bell className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Actives</p>
+                  <p className="text-sm text-gray-600">{t?.stats?.active?.[language] || 'Actives'}</p>
                   <p className="text-2xl font-bold">{alerts.filter((a) => a.is_active).length}</p>
                 </div>
               </div>
@@ -186,7 +193,7 @@ export default function AlertsPage() {
                   <BellOff className="w-6 h-6 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Inactives</p>
+                  <p className="text-sm text-gray-600">{t?.stats?.inactive?.[language] || 'Inactives'}</p>
                   <p className="text-2xl font-bold">{alerts.filter((a) => !a.is_active).length}</p>
                 </div>
               </div>
@@ -201,13 +208,13 @@ export default function AlertsPage() {
           <Card>
             <CardContent className="py-12 text-center">
               <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucune alerte</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t?.empty?.title?.[language] || 'Aucune alerte'}</h3>
               <p className="text-gray-600 mb-6">
-                Créez votre première alerte pour être notifié des nouvelles propriétés
+                {t?.empty?.description?.[language] || 'Créez votre première alerte pour être notifié des nouvelles propriétés'}
               </p>
               <Button onClick={() => router.push('/properties/browse')}>
                 <Plus className="w-4 h-4 mr-2" />
-                Créer une alerte
+                {t?.createButton?.[language] || 'Créer une alerte'}
               </Button>
             </CardContent>
           </Card>
@@ -220,15 +227,15 @@ export default function AlertsPage() {
                     <div className="flex items-center gap-3 mb-2">
                       <CardTitle className="text-xl">{alert.name}</CardTitle>
                       {alert.is_active ? (
-                        <Badge className="bg-green-100 text-green-700">Active</Badge>
+                        <Badge className="bg-green-100 text-green-700">{t?.badge?.active?.[language] || 'Active'}</Badge>
                       ) : (
-                        <Badge variant="secondary">Inactive</Badge>
+                        <Badge variant="secondary">{t?.badge?.inactive?.[language] || 'Inactive'}</Badge>
                       )}
                     </div>
                     <CardDescription>
-                      Créée {new Date(alert.created_at).toLocaleDateString('fr-FR')}
+                      {t?.card?.created?.[language] || 'Créée'} {new Date(alert.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}
                       {alert.last_notified_at && (
-                        <> • Dernière notification {new Date(alert.last_notified_at).toLocaleDateString('fr-FR')}</>
+                        <> • {t?.card?.lastNotification?.[language] || 'Dernière notification'} {new Date(alert.last_notified_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}</>
                       )}
                     </CardDescription>
                   </div>
@@ -241,7 +248,7 @@ export default function AlertsPage() {
               <CardContent>
                 {/* Criteria */}
                 <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Critères de recherche</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.searchCriteria?.[language] || 'Critères de recherche'}</h4>
                   <div className="flex flex-wrap gap-2">
                     {formatCriteria(alert).map((criterion, index) => (
                       <Badge key={index} variant="default" className="text-sm">
@@ -253,7 +260,7 @@ export default function AlertsPage() {
 
                 {/* Notification Settings */}
                 <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Notifications</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.notifications?.[language] || 'Notifications'}</h4>
                   <div className="flex flex-wrap gap-2">
                     {alert.email_notifications && (
                       <Badge variant="default" className="text-sm">
@@ -275,11 +282,11 @@ export default function AlertsPage() {
                 <div className="flex gap-2 pt-4 border-t">
                   <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/searcher/alerts/${alert.id}/edit`)}>
                     <Edit className="w-4 h-4 mr-2" />
-                    Modifier
+                    {t?.actions?.edit?.[language] || 'Modifier'}
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => setAlertToDelete(alert.id)} className="text-red-600 hover:text-red-700">
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Supprimer
+                    {t?.actions?.delete?.[language] || 'Supprimer'}
                   </Button>
                 </div>
               </CardContent>
@@ -292,15 +299,15 @@ export default function AlertsPage() {
       <AlertDialog open={!!alertToDelete} onOpenChange={() => setAlertToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer l'alerte ?</AlertDialogTitle>
+            <AlertDialogTitle>{t?.deleteDialog?.title?.[language] || 'Supprimer l\'alerte ?'}</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. Vous ne recevrez plus de notifications pour cette alerte.
+              {t?.deleteDialog?.description?.[language] || 'Cette action est irréversible. Vous ne recevrez plus de notifications pour cette alerte.'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t?.deleteDialog?.cancel?.[language] || 'Annuler'}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteAlert} className="bg-red-600 hover:bg-red-700">
-              Supprimer
+              {t?.deleteDialog?.confirm?.[language] || 'Supprimer'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

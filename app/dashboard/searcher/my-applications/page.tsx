@@ -12,6 +12,7 @@ import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
 import type { Application } from '@/lib/hooks/use-applications';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   CheckCircle,
   XCircle,
@@ -30,6 +31,8 @@ import { toast } from 'sonner';
 
 export default function MyApplicationsPage() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.searcher?.applications;
   const [userId, setUserId] = useState<string | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,37 +68,37 @@ export default function MyApplicationsPage() {
   };
 
   const handleWithdraw = async (applicationId: string) => {
-    if (!confirm('Are you sure you want to withdraw this application?')) {
+    if (!confirm(t?.confirmWithdraw?.[language] || 'Êtes-vous sûr de vouloir retirer cette candidature ?')) {
       return;
     }
 
     const success = await withdrawApplication(applicationId);
     if (success) {
-      toast.success('Application withdrawn');
+      toast.success(t?.messages?.withdrawn?.[language] || 'Candidature retirée');
       await loadApplicationsData();
     }
   };
 
   const handleDelete = async (applicationId: string) => {
-    if (!confirm('Are you sure you want to delete this application from your history?')) {
+    if (!confirm(t?.confirmDelete?.[language] || 'Êtes-vous sûr de vouloir supprimer cette candidature de votre historique ?')) {
       return;
     }
 
     const success = await deleteApplication(applicationId);
     if (success) {
-      toast.success('Application deleted');
+      toast.success(t?.messages?.deleted?.[language] || 'Candidature supprimée');
       await loadApplicationsData();
     }
   };
 
   const getStatusBadge = (status: Application['status']) => {
     const config = {
-      pending: { variant: 'warning' as const, icon: Clock, label: 'Pending Review' },
-      reviewing: { variant: 'default' as const, icon: Eye, label: 'Under Review' },
-      approved: { variant: 'success' as const, icon: CheckCircle, label: 'Approved' },
-      rejected: { variant: 'default' as const, icon: XCircle, label: 'Not Accepted' },
-      withdrawn: { variant: 'default' as const, icon: XCircle, label: 'Withdrawn' },
-      expired: { variant: 'default' as const, icon: Clock, label: 'Expired' },
+      pending: { variant: 'warning' as const, icon: Clock, label: t?.status?.pending?.[language] || 'En attente' },
+      reviewing: { variant: 'default' as const, icon: Eye, label: t?.status?.reviewing?.[language] || 'En cours d\'examen' },
+      approved: { variant: 'success' as const, icon: CheckCircle, label: t?.status?.approved?.[language] || 'Approuvée' },
+      rejected: { variant: 'default' as const, icon: XCircle, label: t?.status?.rejected?.[language] || 'Non acceptée' },
+      withdrawn: { variant: 'default' as const, icon: XCircle, label: t?.status?.withdrawn?.[language] || 'Retirée' },
+      expired: { variant: 'default' as const, icon: Clock, label: t?.status?.expired?.[language] || 'Expirée' },
     };
 
     const { variant, icon: Icon, label } = config[status];
@@ -124,7 +127,7 @@ export default function MyApplicationsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <LoadingHouse size={64} />
-            <p className="mt-4 text-gray-600">Loading your applications...</p>
+            <p className="mt-4 text-gray-600">{t?.loading?.[language] || 'Chargement de vos candidatures...'}</p>
           </div>
         </div>
       </PageContainer>
@@ -139,8 +142,8 @@ export default function MyApplicationsPage() {
             <FileText className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Mes Candidatures</h1>
-            <p className="text-gray-600">Suis l'état de tes candidatures</p>
+            <h1 className="text-3xl font-bold text-gray-900">{t?.title?.[language] || 'Mes Candidatures'}</h1>
+            <p className="text-gray-600">{t?.subtitle?.[language] || 'Suis l\'état de tes candidatures'}</p>
           </div>
         </div>
       </div>
@@ -155,19 +158,19 @@ export default function MyApplicationsPage() {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Pending</p>
+            <p className="text-sm text-gray-600">{t?.stats?.pending?.[language] || 'En attente'}</p>
             <p className="text-2xl font-bold text-orange-600">{stats.pending}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Approved</p>
+            <p className="text-sm text-gray-600">{t?.stats?.approved?.[language] || 'Approuvées'}</p>
             <p className="text-2xl font-bold text-green-600">{stats.approved}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-600">Rejected</p>
+            <p className="text-sm text-gray-600">{t?.stats?.rejected?.[language] || 'Refusées'}</p>
             <p className="text-2xl font-bold text-red-600">{stats.rejected}</p>
           </CardContent>
         </Card>
@@ -181,7 +184,7 @@ export default function MyApplicationsPage() {
           size="sm"
           className={filterStatus === 'all' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Toutes ({stats.total})
+          {t?.filters?.all?.[language] || 'Toutes'} ({stats.total})
         </Button>
         <Button
           variant={filterStatus === 'pending' || filterStatus === 'reviewing' ? 'default' : 'outline'}
@@ -189,7 +192,7 @@ export default function MyApplicationsPage() {
           size="sm"
           className={filterStatus === 'pending' || filterStatus === 'reviewing' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          En attente ({stats.pending})
+          {t?.filters?.pending?.[language] || 'En attente'} ({stats.pending})
         </Button>
         <Button
           variant={filterStatus === 'approved' ? 'default' : 'outline'}
@@ -197,7 +200,7 @@ export default function MyApplicationsPage() {
           size="sm"
           className={filterStatus === 'approved' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Approuvées ({stats.approved})
+          {t?.filters?.approved?.[language] || 'Approuvées'} ({stats.approved})
         </Button>
         <Button
           variant={filterStatus === 'rejected' ? 'default' : 'outline'}
@@ -205,7 +208,7 @@ export default function MyApplicationsPage() {
           size="sm"
           className={filterStatus === 'rejected' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}
         >
-          Rejetées ({stats.rejected})
+          {t?.filters?.rejected?.[language] || 'Refusées'} ({stats.rejected})
         </Button>
       </div>
 
@@ -220,12 +223,14 @@ export default function MyApplicationsPage() {
               <FileText className="w-12 h-12 text-white" />
             </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-3">
-              {filterStatus === 'all' ? 'Aucune candidature pour le moment' : `Aucune candidature ${filterStatus === 'pending' ? 'en attente' : filterStatus}`}
+              {filterStatus === 'all'
+                ? (t?.empty?.noApplications?.[language] || 'Aucune candidature pour le moment')
+                : (t?.empty?.filtered?.[language] || `Aucune candidature ${filterStatus === 'pending' ? 'en attente' : filterStatus}`)}
             </h3>
             <p className="text-lg text-gray-600 text-center max-w-md mb-8">
               {filterStatus === 'all'
-                ? 'Commence à explorer les propriétés et postule à celles qui te plaisent'
-                : 'Essaie de sélectionner un autre filtre'}
+                ? (t?.empty?.startExploring?.[language] || 'Commence à explorer les propriétés et postule à celles qui te plaisent')
+                : (t?.empty?.tryOtherFilter?.[language] || 'Essaie de sélectionner un autre filtre')}
             </p>
             {filterStatus === 'all' && (
               <Button
@@ -233,7 +238,7 @@ export default function MyApplicationsPage() {
                 className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
               >
                 <Sparkles className="w-5 h-5 mr-2" />
-                Explorer les propriétés
+                {t?.empty?.exploreButton?.[language] || 'Explorer les propriétés'}
               </Button>
             )}
           </div>
@@ -295,7 +300,7 @@ export default function MyApplicationsPage() {
                             <div className="flex items-center gap-2 text-gray-700">
                               <Euro className="w-4 h-4" />
                               <span className="font-semibold">
-                                €{application.property.monthly_rent.toLocaleString()}/month
+                                €{application.property.monthly_rent.toLocaleString()}/{t?.card?.month?.[language] || 'mois'}
                               </span>
                             </div>
                           </div>
@@ -305,7 +310,7 @@ export default function MyApplicationsPage() {
                           <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
                             <Calendar className="w-4 h-4" />
                             <span>
-                              Move-in: {new Date(application.desired_move_in_date).toLocaleDateString()}
+                              {t?.card?.moveIn?.[language] || 'Emménagement'}: {new Date(application.desired_move_in_date).toLocaleDateString()}
                             </span>
                           </div>
                         )}
@@ -314,14 +319,14 @@ export default function MyApplicationsPage() {
                           <div className="mt-3 p-3 bg-gray-50 rounded-lg">
                             <div className="flex items-center gap-2 mb-1">
                               <MessageSquare className="w-4 h-4 text-gray-500" />
-                              <span className="text-sm font-medium text-gray-700">Your message:</span>
+                              <span className="text-sm font-medium text-gray-700">{t?.card?.yourMessage?.[language] || 'Ton message'}:</span>
                             </div>
                             <p className="text-sm text-gray-600 line-clamp-2">{application.message}</p>
                           </div>
                         )}
 
                         <p className="text-xs text-gray-500 mt-3">
-                          Applied on {new Date(application.created_at).toLocaleDateString()}
+                          {t?.card?.appliedOn?.[language] || 'Candidature envoyée le'} {new Date(application.created_at).toLocaleDateString()}
                         </p>
 
                         {/* Approval/Rejection Message */}
@@ -330,12 +335,12 @@ export default function MyApplicationsPage() {
                             <div className="flex items-center gap-2">
                               <CheckCircle className="w-5 h-5 text-green-600" />
                               <p className="text-sm font-medium text-green-800">
-                                Congratulations! Your application has been approved.
+                                {t?.card?.approved?.message?.[language] || 'Félicitations ! Ta candidature a été approuvée.'}
                               </p>
                             </div>
                             {application.reviewed_at && (
                               <p className="text-xs text-green-700 mt-1">
-                                Approved on {new Date(application.reviewed_at).toLocaleDateString()}
+                                {t?.card?.approved?.on?.[language] || 'Approuvée le'} {new Date(application.reviewed_at).toLocaleDateString()}
                               </p>
                             )}
                           </div>
@@ -346,17 +351,17 @@ export default function MyApplicationsPage() {
                             <div className="flex items-center gap-2">
                               <XCircle className="w-5 h-5 text-red-600" />
                               <p className="text-sm font-medium text-red-800">
-                                Your application was not accepted.
+                                {t?.card?.rejected?.message?.[language] || 'Ta candidature n\'a pas été acceptée.'}
                               </p>
                             </div>
                             {application.rejection_reason && (
                               <p className="text-sm text-red-700 mt-2">
-                                Reason: {application.rejection_reason}
+                                {t?.card?.rejected?.reason?.[language] || 'Raison'}: {application.rejection_reason}
                               </p>
                             )}
                             {application.reviewed_at && (
                               <p className="text-xs text-red-700 mt-1">
-                                Reviewed on {new Date(application.reviewed_at).toLocaleDateString()}
+                                {t?.card?.rejected?.on?.[language] || 'Examinée le'} {new Date(application.reviewed_at).toLocaleDateString()}
                               </p>
                             )}
                           </div>
@@ -374,7 +379,7 @@ export default function MyApplicationsPage() {
                         onClick={() => router.push(`/properties/${application.property.id}`)}
                       >
                         <Eye className="w-4 h-4 mr-1" />
-                        View Property
+                        {t?.actions?.viewProperty?.[language] || 'Voir la propriété'}
                       </Button>
                     )}
 
@@ -386,7 +391,7 @@ export default function MyApplicationsPage() {
                         className="text-orange-600 hover:text-orange-700"
                       >
                         <XCircle className="w-4 h-4 mr-1" />
-                        Withdraw
+                        {t?.actions?.withdraw?.[language] || 'Retirer'}
                       </Button>
                     )}
 
@@ -398,7 +403,7 @@ export default function MyApplicationsPage() {
                         className="text-red-600 hover:text-red-700"
                       >
                         <Trash2 className="w-4 h-4 mr-1" />
-                        Delete
+                        {t?.actions?.delete?.[language] || 'Supprimer'}
                       </Button>
                     )}
                   </div>

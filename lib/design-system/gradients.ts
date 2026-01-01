@@ -47,16 +47,16 @@ export const GRADIENTS = {
     }
   },
 
-  // Gradient RESIDENT (terracotta → corail → orange)
+  // Gradient RESIDENT (Option C - Palette officielle V3)
   // Utilisé pour: Interface résidents/colocataires
-  // Source: IZZICO_GRADIENTS_FIGMA.md - Gradient CTA Resident
+  // Palette: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014
   resident: {
-    css: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)',
-    tailwind: 'from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]',
+    css: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    tailwind: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
     colors: {
-      start: '#D97B6F',  // Terracotta
-      mid: '#E8865D',    // Corail doux
-      end: '#FF8C4B'     // Orange vif
+      start: '#e05747',  // Dark orange
+      mid: '#ff651e',    // Primary orange
+      end: '#ff9014'     // Light orange/gold
     }
   },
 

@@ -332,8 +332,8 @@ html::before {
     #7B5FB8 0%,     /* Owner - Mauve */
     #A67BB8 15%,
     #C98B9E 30%,
-    #E8865D 45%,    /* Resident - Orange/Coral */
-    #FF8C4B 60%,
+    #ff651e 45%,    /* Resident - Orange (Option C) */
+    #ff9014 60%,
     #FFD080 85%,    /* Searcher - Jaune doré */
     #FFB10B 100%    /* Searcher primary */
   );
@@ -889,7 +889,7 @@ body.theme-resident ::selection {
 }
 
 .text-hover-resident:hover {
-  background: linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%);
+  background: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -916,7 +916,7 @@ body.theme-resident ::selection {
 }
 
 .text-active-resident {
-  background: linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%);
+  background: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1140,7 +1140,7 @@ body.theme-resident ::selection {
 
 /* Text gradients for demo */
 .text-gradient-brand-demo {
-  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 50%, #FFD080 100%);
+  background: linear-gradient(135deg, #7B5FB8 0%, #ff651e 50%, #FFD080 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1248,7 +1248,7 @@ body.theme-resident ::selection {
 
 /* CTA Buttons - Brand (Tricolor) */
 .cta-brand-demo {
-  background: linear-gradient(135deg, #7B5FB8 0%, #E8865D 50%, #FFD080 100%);
+  background: linear-gradient(135deg, #7B5FB8 0%, #ff651e 50%, #FFD080 100%);
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(123, 95, 184, 0.3);

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface PaymentMethod {
   id: string;
@@ -31,6 +32,8 @@ interface PaymentMethod {
 export default function PaymentPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.payment;
   const [isLoading, setIsLoading] = useState(true);
   const [showAddCard, setShowAddCard] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -93,17 +96,17 @@ export default function PaymentPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Carte ajoutée avec succès' });
+      setMessage({ type: 'success', text: t?.messages?.cardAdded?.[language] || 'Carte ajoutée avec succès' });
       setShowAddCard(false);
       setNewCard({ cardNumber: '', expiryDate: '', cvv: '', name: '' });
       loadPaymentMethods();
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de l\'ajout de la carte' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.addError?.[language] || 'Erreur lors de l\'ajout de la carte') });
     }
   };
 
   const handleDeleteMethod = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce moyen de paiement ?')) return;
+    if (!confirm(t?.confirmDelete?.[language] || 'Êtes-vous sûr de vouloir supprimer ce moyen de paiement ?')) return;
 
     try {
       const { error } = await supabase
@@ -113,10 +116,10 @@ export default function PaymentPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Moyen de paiement supprimé' });
+      setMessage({ type: 'success', text: t?.messages?.deleted?.[language] || 'Moyen de paiement supprimé' });
       loadPaymentMethods();
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de la suppression' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.deleteError?.[language] || 'Erreur lors de la suppression') });
     }
   };
 
@@ -139,10 +142,10 @@ export default function PaymentPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Moyen de paiement par défaut mis à jour' });
+      setMessage({ type: 'success', text: t?.messages?.defaultUpdated?.[language] || 'Moyen de paiement par défaut mis à jour' });
       loadPaymentMethods();
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Erreur lors de la mise à jour' });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.updateError?.[language] || 'Erreur lors de la mise à jour') });
     }
   };
 
@@ -151,7 +154,7 @@ export default function PaymentPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50/30 via-white to-purple-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -172,7 +175,7 @@ export default function PaymentPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux paramètres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -180,8 +183,8 @@ export default function PaymentPage() {
               <CreditCard className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Paiement</h1>
-              <p className="text-gray-600">Gérer vos moyens de paiement</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Paiement'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Gérer vos moyens de paiement'}</p>
             </div>
           </div>
         </motion.div>
@@ -218,7 +221,7 @@ export default function PaymentPage() {
               className="w-full rounded-xl bg-gradient-to-r from-indigo-200/70 to-purple-200/70 text-gray-900 hover:from-indigo-300/70 hover:to-purple-300/70"
             >
               <Plus className="w-5 h-5 mr-2" />
-              Ajouter un moyen de paiement
+              {t?.addButton?.[language] || 'Ajouter un moyen de paiement'}
             </Button>
           </motion.div>
         )}
@@ -231,20 +234,20 @@ export default function PaymentPage() {
             className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Ajouter une carte</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t?.form?.title?.[language] || 'Ajouter une carte'}</h2>
               <Button
                 onClick={() => setShowAddCard(false)}
                 variant="ghost"
                 size="sm"
               >
-                Annuler
+                {t?.form?.cancel?.[language] || 'Annuler'}
               </Button>
             </div>
 
             <form onSubmit={handleAddCard} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Numéro de carte
+                  {t?.form?.cardNumber?.[language] || 'Numéro de carte'}
                 </label>
                 <input
                   type="text"
@@ -260,7 +263,7 @@ export default function PaymentPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Date d'expiration
+                    {t?.form?.expiry?.[language] || 'Date d\'expiration'}
                   </label>
                   <input
                     type="text"
@@ -291,7 +294,7 @@ export default function PaymentPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom sur la carte
+                  {t?.form?.name?.[language] || 'Nom sur la carte'}
                 </label>
                 <input
                   type="text"
@@ -308,7 +311,7 @@ export default function PaymentPage() {
                 className="w-full rounded-xl bg-gradient-to-r from-indigo-200/70 to-purple-200/70 text-gray-900 hover:from-indigo-300/70 hover:to-purple-300/70"
               >
                 <CreditCard className="w-4 h-4 mr-2" />
-                Ajouter la carte
+                {t?.form?.submit?.[language] || 'Ajouter la carte'}
               </Button>
             </form>
           </motion.div>
@@ -324,7 +327,7 @@ export default function PaymentPage() {
           {paymentMethods.length === 0 ? (
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 text-center">
               <CreditCard className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">Aucun moyen de paiement enregistré</p>
+              <p className="text-gray-600">{t?.empty?.[language] || 'Aucun moyen de paiement enregistré'}</p>
             </div>
           ) : (
             paymentMethods.map((method, index) => (
@@ -348,13 +351,13 @@ export default function PaymentPage() {
                         {method.isDefault && (
                           <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-indigo-100 text-indigo-800 text-xs font-semibold">
                             <Star className="w-3 h-3 fill-current" />
-                            Par défaut
+                            {t?.default?.[language] || 'Par défaut'}
                           </span>
                         )}
                       </div>
                       {method.expiryMonth && method.expiryYear && (
                         <p className="text-sm text-gray-600">
-                          Expire {method.expiryMonth}/{method.expiryYear}
+                          {t?.expires?.[language] || 'Expire'} {method.expiryMonth}/{method.expiryYear}
                         </p>
                       )}
                     </div>
@@ -368,7 +371,7 @@ export default function PaymentPage() {
                         size="sm"
                         className="rounded-xl"
                       >
-                        Définir par défaut
+                        {t?.setDefault?.[language] || 'Définir par défaut'}
                       </Button>
                     )}
                     <Button
@@ -396,9 +399,9 @@ export default function PaymentPage() {
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-900">
-              <p className="font-semibold mb-1">Paiement sécurisé</p>
+              <p className="font-semibold mb-1">{t?.info?.title?.[language] || 'Paiement sécurisé'}</p>
               <p className="text-blue-700">
-                Vos informations de paiement sont chiffrées et sécurisées. Nous ne stockons jamais vos données de carte complètes.
+                {t?.info?.description?.[language] || 'Vos informations de paiement sont chiffrées et sécurisées. Nous ne stockons jamais vos données de carte complètes.'}
               </p>
             </div>
           </div>

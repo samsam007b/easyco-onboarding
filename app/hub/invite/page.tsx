@@ -194,7 +194,7 @@ export default function InvitePage() {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
                  style={{
-                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                  }}>
               <Users className="w-7 h-7 text-white" />
             </div>
@@ -215,23 +215,23 @@ export default function InvitePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+          <Card className="p-4 mb-6 bg-gradient-to-r from-[#F0F7F4] to-[#E8F5EE] border-[#7CB89B]/30">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-green-600" />
-              <span className="font-semibold text-green-800">{t?.rewards?.title?.[language] || 'Recompenses automatiques'}</span>
+              <Sparkles className="w-5 h-5 text-[#7CB89B]" />
+              <span className="font-semibold text-[#5A9A7C]">{t?.rewards?.title?.[language] || 'Recompenses automatiques'}</span>
             </div>
-            <p className="text-sm text-green-700 mb-3">
+            <p className="text-sm text-[#7CB89B] mb-3">
               {t?.rewards?.description?.[language] || 'Quand quelqu\'un rejoint avec votre lien, vous gagnez tous les deux des mois gratuits !'}
             </p>
             <div className="flex gap-3">
-              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
+              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
-                  <Home className="w-3.5 h-3.5 text-orange-600" />
+                  <Home className="w-3.5 h-3.5 text-[#ff651e]" />
                   <span className="text-xs text-gray-600">{t?.rewards?.resident?.[language] || 'Resident'}</span>
                 </div>
-                <p className="font-bold text-orange-600">{t?.rewards?.residentMonths?.[language] || '+2 mois'}</p>
+                <p className="font-bold text-[#ff651e]">{t?.rewards?.residentMonths?.[language] || '+2 mois'}</p>
               </div>
-              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
+              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
                   <Building2 className="w-3.5 h-3.5 text-purple-600" />
                   <span className="text-xs text-gray-600">{t?.rewards?.owner?.[language] || 'Proprio'}</span>
@@ -313,7 +313,7 @@ export default function InvitePage() {
                 className={`w-full rounded-xl py-6 text-white ${
                   selectedRole === 'owner'
                     ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
-                    : 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]'
+                    : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
                 }`}
               >
                 {isGenerating ? (
@@ -351,7 +351,7 @@ export default function InvitePage() {
                     className={`flex-1 rounded-xl ${
                       selectedRole === 'owner'
                         ? 'bg-gradient-to-r from-purple-500 to-indigo-600'
-                        : 'bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]'
+                        : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
                     }`}
                   >
                     {copiedType === 'link' ? (
@@ -391,7 +391,7 @@ export default function InvitePage() {
                   <Button
                     onClick={handleShareEmail}
                     variant="outline"
-                    className="flex-1 rounded-xl border-blue-200 text-blue-600 hover:bg-blue-50"
+                    className="flex-1 rounded-xl border-[#ff651e]/30 text-[#ff651e] hover:bg-[#FFF5F0]"
                   >
                     <Mail className="w-5 h-5 mr-2" />
                     Email
@@ -432,7 +432,7 @@ export default function InvitePage() {
                       className="w-12 h-12 rounded-xl object-cover"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                       {member.user_profiles?.first_name?.charAt(0) || '?'}
                     </div>
                   )}

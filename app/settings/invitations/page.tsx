@@ -17,9 +17,12 @@ import { Badge } from '@/components/ui/badge';
 import { InvitationCard } from '@/components/invitation';
 import { getMyInvitations } from '@/lib/services/invitation-service';
 import type { ReceivedInvitation } from '@/types/invitation.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function InvitationsPage() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const t = getSection('settings')?.invitations;
   const [isLoading, setIsLoading] = useState(true);
   const [invitations, setInvitations] = useState<ReceivedInvitation[]>([]);
   const [pendingCount, setPendingCount] = useState(0);
@@ -62,7 +65,7 @@ export default function InvitationsPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
         </div>
       </div>
     );
@@ -83,22 +86,22 @@ export default function InvitationsPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour aux parametres
+            {t?.back?.[language] || 'Retour aux paramètres'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm"
                  style={{
-                   background: 'linear-gradient(135deg, #D97B6F 0%, #E8865D 50%, #FF8C4B 100%)'
+                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                  }}>
               <Mail className="w-8 h-8 text-white" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Mes invitations
+                {t?.title?.[language] || 'Mes invitations'}
               </h1>
               <p className="text-gray-600">
-                Gerez vos invitations a rejoindre des colocations
+                {t?.subtitle?.[language] || 'Gérez vos invitations à rejoindre des colocations'}
               </p>
             </div>
           </div>
@@ -123,7 +126,7 @@ export default function InvitationsPage() {
               <Inbox className="w-5 h-5 text-gray-600" />
             </div>
             <p className="font-bold text-2xl text-gray-900">{counts.all}</p>
-            <p className="text-xs text-gray-600">Toutes</p>
+            <p className="text-xs text-gray-600">{t?.filters?.all?.[language] || 'Toutes'}</p>
           </button>
 
           <button
@@ -138,7 +141,7 @@ export default function InvitationsPage() {
               <Clock className="w-5 h-5 text-yellow-600" />
             </div>
             <p className="font-bold text-2xl text-yellow-700">{counts.pending}</p>
-            <p className="text-xs text-gray-600">En attente</p>
+            <p className="text-xs text-gray-600">{t?.filters?.pending?.[language] || 'En attente'}</p>
           </button>
 
           <button
@@ -153,7 +156,7 @@ export default function InvitationsPage() {
               <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
             <p className="font-bold text-2xl text-green-700">{counts.accepted}</p>
-            <p className="text-xs text-gray-600">Acceptees</p>
+            <p className="text-xs text-gray-600">{t?.filters?.accepted?.[language] || 'Acceptées'}</p>
           </button>
 
           <button
@@ -168,7 +171,7 @@ export default function InvitationsPage() {
               <XCircle className="w-5 h-5 text-red-600" />
             </div>
             <p className="font-bold text-2xl text-red-700">{counts.refused}</p>
-            <p className="text-xs text-gray-600">Refusees</p>
+            <p className="text-xs text-gray-600">{t?.filters?.refused?.[language] || 'Refusées'}</p>
           </button>
         </motion.div>
 
@@ -186,10 +189,10 @@ export default function InvitationsPage() {
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-yellow-800">
-                  {pendingCount} invitation{pendingCount > 1 ? 's' : ''} en attente
+                  {pendingCount} {t?.alert?.invitation?.[language] || 'invitation'}{pendingCount > 1 ? 's' : ''} {t?.alert?.pending?.[language] || 'en attente'}
                 </p>
                 <p className="text-sm text-yellow-700">
-                  Repondez pour rejoindre une colocation
+                  {t?.alert?.respond?.[language] || 'Répondez pour rejoindre une colocation'}
                 </p>
               </div>
               <Button
@@ -197,7 +200,7 @@ export default function InvitationsPage() {
                 variant="outline"
                 className="border-yellow-300 text-yellow-700 hover:bg-yellow-100"
               >
-                Voir
+                {t?.alert?.view?.[language] || 'Voir'}
               </Button>
             </div>
           </motion.div>
@@ -216,17 +219,17 @@ export default function InvitationsPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-700 mb-2">
                 {filter === 'all'
-                  ? 'Aucune invitation'
+                  ? (t?.empty?.all?.[language] || 'Aucune invitation')
                   : filter === 'pending'
-                  ? 'Aucune invitation en attente'
+                  ? (t?.empty?.pending?.[language] || 'Aucune invitation en attente')
                   : filter === 'accepted'
-                  ? 'Aucune invitation acceptee'
-                  : 'Aucune invitation refusee'}
+                  ? (t?.empty?.accepted?.[language] || 'Aucune invitation acceptée')
+                  : (t?.empty?.refused?.[language] || 'Aucune invitation refusée')}
               </h3>
               <p className="text-gray-500">
                 {filter === 'all'
-                  ? 'Vous n\'avez pas encore recu d\'invitation'
-                  : 'Aucune invitation dans cette categorie'}
+                  ? (t?.empty?.noInvitations?.[language] || 'Vous n\'avez pas encore reçu d\'invitation')
+                  : (t?.empty?.noCategory?.[language] || 'Aucune invitation dans cette catégorie')}
               </p>
             </div>
           ) : (

@@ -36,16 +36,16 @@ const getNotificationIcon = (type: NotificationType) => {
 };
 
 const getNotificationColor = (type: NotificationType) => {
-  // Use V1 gradient colors for all notification types
+  // Use V3 Option C gradient colors for all notification types
   switch (type) {
-    case 'message': return 'from-[#d9574f] to-[#ff5b21]';
-    case 'payment': return 'from-[#ff5b21] to-[#ff8017]';
-    case 'member': return 'from-[#d9574f] via-[#ff5b21] to-[#ff8017]';
-    case 'property': return 'from-[#ee5736] to-[#ff6e1c]';
-    case 'application': return 'from-[#ff5b21] to-[#ff8017]';
-    case 'task': return 'from-[#d9574f] to-[#ff8017]';
-    case 'system': return 'from-[#d9574f] to-[#ff5b21]';
-    default: return 'from-[#d9574f] to-[#ff8017]';
+    case 'message': return 'from-[#e05747] to-[#ff651e]';
+    case 'payment': return 'from-[#ff651e] to-[#ff9014]';
+    case 'member': return 'from-[#e05747] via-[#ff651e] to-[#ff9014]';
+    case 'property': return 'from-[#e05747] to-[#ff651e]';
+    case 'application': return 'from-[#ff651e] to-[#ff9014]';
+    case 'task': return 'from-[#e05747] to-[#ff9014]';
+    case 'system': return 'from-[#e05747] to-[#ff651e]';
+    default: return 'from-[#e05747] to-[#ff9014]';
   }
 };
 
@@ -86,13 +86,13 @@ export default function NotificationBell() {
         onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
       >
-        <Bell className="w-5 h-5" style={{ color: '#ee5736' }} />
+        <Bell className="w-5 h-5" style={{ color: '#ff651e' }} />
         {stats.unreadCount > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="absolute -top-1 -right-1 w-5 h-5 text-white text-xs font-bold rounded-full flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
           >
             {stats.unreadCount > 9 ? '9+' : stats.unreadCount}
           </motion.span>
@@ -119,7 +119,7 @@ export default function NotificationBell() {
                     variant="ghost"
                     size="sm"
                     className="text-xs rounded-full hover:bg-white/60"
-                    style={{ color: '#ee5736' }}
+                    style={{ color: '#ff651e' }}
                   >
                     <CheckCheck className="w-3 h-3 mr-1" />
                     Tout marquer lu
@@ -180,7 +180,7 @@ export default function NotificationBell() {
                                 {notification.title}
                               </p>
                               {!notification.isRead && (
-                                <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: '#ff5b21' }} />
+                                <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: '#ff651e' }} />
                               )}
                             </div>
                             <p className="text-xs text-gray-600 line-clamp-2 mb-2">
@@ -194,7 +194,7 @@ export default function NotificationBell() {
                                 })}
                               </span>
                               {notification.actionLabel && (
-                                <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#ee5736' }}>
+                                <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#ff651e' }}>
                                   {notification.actionLabel} →
                                 </span>
                               )}
@@ -223,7 +223,7 @@ export default function NotificationBell() {
                               className="p-1 hover:bg-white rounded-lg transition-colors"
                               title="Supprimer"
                             >
-                              <X className="w-4 h-4" style={{ color: '#ee5736' }} />
+                              <X className="w-4 h-4" style={{ color: '#ff651e' }} />
                             </button>
                           </div>
                         </div>
@@ -234,7 +234,7 @@ export default function NotificationBell() {
               ) : (
                 <div className="p-8 text-center">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(217, 87, 79, 0.12)' }}>
-                    <Bell className="w-8 h-8" style={{ color: '#ee5736' }} />
+                    <Bell className="w-8 h-8" style={{ color: '#ff651e' }} />
                   </div>
                   <p className="text-sm font-medium text-gray-900 mb-1">
                     Aucune notification
@@ -256,7 +256,7 @@ export default function NotificationBell() {
                   }}
                   variant="ghost"
                   className="w-full rounded-full text-sm font-medium hover:bg-white/60"
-                  style={{ color: '#ee5736' }}
+                  style={{ color: '#ff651e' }}
                 >
                   Voir toutes les notifications
                   <ArrowRight className="w-4 h-4 ml-2" />
