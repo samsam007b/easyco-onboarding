@@ -6,6 +6,7 @@ import { FileText } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -18,6 +19,7 @@ import {
 
 export default function OwnerBioPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [ownerBio, setOwnerBio] = useState('');
@@ -50,7 +52,7 @@ export default function OwnerBioPage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading bio data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('enhanceOwner.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +63,7 @@ export default function OwnerBioPage() {
       ownerBio,
       primaryMotivation,
     });
-    toast.success('Bio saved!');
+    toast.success(t('enhanceOwner.bio.saved'));
     router.push('/dashboard/my-profile-owner');
   };
 
@@ -73,14 +75,14 @@ export default function OwnerBioPage() {
     <EnhanceProfileLayout
       role="owner"
       backUrl="/dashboard/my-profile-owner"
-      backLabel="Back to Profile"
+      backLabel={t('enhanceOwner.common.backToProfile')}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceOwner.common.loading')}
     >
       <EnhanceProfileHeading
         role="owner"
-        title="Owner Bio & Story"
-        description="Share your hosting philosophy and what makes you a great landlord"
+        title={t('enhanceOwner.bio.title')}
+        description={t('enhanceOwner.bio.description')}
         icon={<FileText className="w-8 h-8 text-purple-600" />}
       />
 
@@ -88,15 +90,15 @@ export default function OwnerBioPage() {
         {/* Primary Motivation */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            What motivated you to become a property owner?
+            {t('enhanceOwner.bio.motivationLabel')}
           </label>
           <div className="space-y-2">
             {[
-              { value: 'investment', label: 'Investment & passive income' },
-              { value: 'community', label: 'Building community' },
-              { value: 'help_others', label: 'Helping people find homes' },
-              { value: 'business', label: 'Property management business' },
-              { value: 'other', label: 'Other' },
+              { value: 'investment', key: 'investment' },
+              { value: 'community', key: 'community' },
+              { value: 'help_others', key: 'helpOthers' },
+              { value: 'business', key: 'business' },
+              { value: 'other', key: 'other' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -105,7 +107,7 @@ export default function OwnerBioPage() {
                 onClick={() => setPrimaryMotivation(option.value)}
                 className="text-left"
               >
-                {option.label}
+                {t(`enhanceOwner.bio.motivations.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -115,22 +117,22 @@ export default function OwnerBioPage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="owner"
-            label="Tell your story"
+            label={t('enhanceOwner.bio.storyLabel')}
             value={ownerBio}
             onChange={(e) => setOwnerBio(e.target.value)}
             rows={6}
             maxLength={500}
-            placeholder="Share your hosting philosophy, what makes your property special, and what you're looking for in ideal tenants..."
+            placeholder={t('enhanceOwner.bio.storyPlaceholder')}
           />
         </EnhanceProfileSection>
 
         {/* Tips */}
-        <EnhanceProfileInfoBox role="owner" title="Tips for a great bio:">
+        <EnhanceProfileInfoBox role="owner" title={t('enhanceOwner.bio.tipsTitle')}>
           <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-            <li>Describe your property management style</li>
-            <li>Mention what makes your property unique</li>
-            <li>Share what you value in tenants</li>
-            <li>Be authentic and personable</li>
+            <li>{t('enhanceOwner.bio.tips.managementStyle')}</li>
+            <li>{t('enhanceOwner.bio.tips.unique')}</li>
+            <li>{t('enhanceOwner.bio.tips.values')}</li>
+            <li>{t('enhanceOwner.bio.tips.authentic')}</li>
           </ul>
         </EnhanceProfileInfoBox>
       </div>
@@ -141,13 +143,13 @@ export default function OwnerBioPage() {
           onClick={handleSave}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save Changes
+          {t('enhanceOwner.common.saveChanges')}
         </button>
         <button
           onClick={handleCancel}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

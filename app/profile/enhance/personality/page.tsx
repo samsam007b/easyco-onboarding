@@ -6,6 +6,7 @@ import { Heart, Music, Book, Coffee } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 export default function ExtendedPersonalityPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [hobbyInput, setHobbyInput] = useState('');
@@ -53,7 +55,7 @@ export default function ExtendedPersonalityPage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading personality data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('profileEnhance.personality.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -104,10 +106,10 @@ export default function ExtendedPersonalityPage() {
           data: { hobbies, interests, personalityTraits }
         })
       });
-      toast.success('Personality details saved!');
+      toast.success(t('profileEnhance.personality.saved'));
     } catch (error) {
       console.error('Failed to save to database:', error);
-      toast.error('Failed to save changes');
+      toast.error(t('profileEnhance.personality.saveFailed'));
     }
 
     router.push('/profile');
@@ -127,19 +129,47 @@ export default function ExtendedPersonalityPage() {
     'Relaxed', 'Ambitious', 'Friendly', 'Independent', 'Team Player'
   ];
 
+  // Get translated interest name
+  const getInterestLabel = (interest: string): string => {
+    const key = interest.toLowerCase();
+    const translationKey = `profileEnhance.personality.interests.${key}`;
+    const translated = t(translationKey);
+    return translated !== translationKey ? translated : interest;
+  };
+
+  // Get translated trait name
+  const getTraitLabel = (trait: string): string => {
+    const key = trait.toLowerCase().replace(' ', '');
+    const keyMap: Record<string, string> = {
+      'outgoing': 'outgoing',
+      'introverted': 'introverted',
+      'creative': 'creative',
+      'organized': 'organized',
+      'spontaneous': 'spontaneous',
+      'relaxed': 'relaxed',
+      'ambitious': 'ambitious',
+      'friendly': 'friendly',
+      'independent': 'independent',
+      'teamplayer': 'teamPlayer'
+    };
+    const translationKey = `profileEnhance.personality.traits.${keyMap[key] || key}`;
+    const translated = t(translationKey);
+    return translated !== translationKey ? translated : trait;
+  };
+
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('profileEnhance.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Extended Personality"
-        description="Share more about yourself to help find compatible roommates"
+        title={t('profileEnhance.personality.title')}
+        description={t('profileEnhance.personality.description')}
         icon={<Heart className="w-8 h-8 text-orange-600" />}
       />
 
@@ -147,7 +177,7 @@ export default function ExtendedPersonalityPage() {
         {/* Hobbies */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Your Hobbies
+            {t('profileEnhance.personality.yourHobbies')}
           </label>
           <div className="flex gap-2 mb-3">
             <input
@@ -156,14 +186,14 @@ export default function ExtendedPersonalityPage() {
               onChange={(e) => setHobbyInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHobby())}
               className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
-              placeholder="Add a hobby"
+              placeholder={t('profileEnhance.personality.addHobbyPlaceholder')}
             />
             <EnhanceProfileButton
               role="searcher"
               onClick={addHobby}
               className="px-6"
             >
-              Add
+              {t('profileEnhance.common.add')}
             </EnhanceProfileButton>
           </div>
 
@@ -186,7 +216,7 @@ export default function ExtendedPersonalityPage() {
         {/* Interests */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Your Interests
+            {t('profileEnhance.personality.yourInterests')}
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {interestOptions.map((interest) => (
@@ -196,7 +226,7 @@ export default function ExtendedPersonalityPage() {
                 selected={interests.includes(interest)}
                 onClick={() => toggleInterest(interest)}
               >
-                {interest}
+                {getInterestLabel(interest)}
               </EnhanceProfileTag>
             ))}
           </div>
@@ -205,7 +235,7 @@ export default function ExtendedPersonalityPage() {
         {/* Personality Traits */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Personality Traits
+            {t('profileEnhance.personality.personalityTraits')}
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {traitOptions.map((trait) => (
@@ -215,7 +245,7 @@ export default function ExtendedPersonalityPage() {
                 selected={personalityTraits.includes(trait)}
                 onClick={() => toggleTrait(trait)}
               >
-                {trait}
+                {getTraitLabel(trait)}
               </EnhanceProfileTag>
             ))}
           </div>
@@ -228,14 +258,14 @@ export default function ExtendedPersonalityPage() {
           onClick={handleCancel}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleSave}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

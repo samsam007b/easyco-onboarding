@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, Euro, Heart, Sparkles, ShieldCheck, Home, Users, Cal
 import { toast } from 'sonner'
 import LoadingHouse from '@/components/ui/LoadingHouse'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 interface UserData {
   id: string
@@ -40,6 +41,7 @@ interface UserProfile {
 
 export default function PublicViewPage() {
   const router = useRouter()
+  const { t, language } = useLanguage()
   const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
@@ -64,7 +66,7 @@ export default function PublicViewPage() {
           .single()
 
         if (error) {
-          toast.error('Failed to load profile')
+          toast.error(t('publicView.errors.loadFailed'))
           return
         }
 
@@ -81,7 +83,7 @@ export default function PublicViewPage() {
           setUserProfile(profileData)
         }
       } catch (error) {
-        toast.error('An unexpected error occurred')
+        toast.error(t('publicView.errors.unexpected'))
       } finally {
         setIsLoading(false)
       }
@@ -147,10 +149,10 @@ export default function PublicViewPage() {
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium">Retour</span>
+            <span className="font-medium">{t('common.back')}</span>
           </button>
           <div className={`px-3 py-1 ${colors.bg} ${colors.text} text-sm font-semibold rounded-full`}>
-            Vue publique
+            {t('publicView.badge')}
           </div>
         </div>
       </div>
@@ -190,7 +192,7 @@ export default function PublicViewPage() {
             {/* Name & Title */}
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {userData.full_name || 'Nom non renseigné'}
+                {userData.full_name || t('publicView.namePlaceholder')}
               </h1>
               <div className="flex items-center gap-3 text-gray-600 flex-wrap">
                 {(userProfile?.current_city || (userProfile?.preferred_cities && userProfile.preferred_cities.length > 0)) && (
@@ -215,7 +217,7 @@ export default function PublicViewPage() {
                   <div className="bg-gray-50 rounded-xl p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <Euro className="w-4 h-4 text-gray-600" />
-                      <span className="text-xs font-semibold text-gray-600">Budget</span>
+                      <span className="text-xs font-semibold text-gray-600">{t('publicView.stats.budget')}</span>
                     </div>
                     <p className="text-sm font-bold text-gray-900">
                       {userProfile?.budget_min || userProfile?.min_budget}-{userProfile?.budget_max || userProfile?.max_budget}€
@@ -226,10 +228,10 @@ export default function PublicViewPage() {
                   <div className="bg-gray-50 rounded-xl p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <Calendar className="w-4 h-4 text-gray-600" />
-                      <span className="text-xs font-semibold text-gray-600">Emménagement</span>
+                      <span className="text-xs font-semibold text-gray-600">{t('publicView.stats.moveIn')}</span>
                     </div>
                     <p className="text-sm font-bold text-gray-900">
-                      {new Date(userProfile?.move_in_date || userProfile?.preferred_move_in_date!).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })}
+                      {new Date(userProfile?.move_in_date || userProfile?.preferred_move_in_date!).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-US', { month: 'short', year: 'numeric' })}
                     </p>
                   </div>
                 )}
@@ -241,7 +243,7 @@ export default function PublicViewPage() {
               <div className="mb-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#FFA040]" />
-                  À propos
+                  {t('publicView.sections.about')}
                 </h2>
                 <p className="text-gray-700 leading-relaxed">
                   {userProfile.about_me}
@@ -254,7 +256,7 @@ export default function PublicViewPage() {
               <div className="mb-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <Home className="w-5 h-5 text-[#FFA040]" />
-                  Ce que je recherche
+                  {t('publicView.sections.lookingFor')}
                 </h2>
                 <p className="text-gray-700 leading-relaxed">
                   {userProfile.looking_for}
@@ -266,7 +268,7 @@ export default function PublicViewPage() {
             {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
               <div className="mb-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  🎨 Loisirs
+                  🎨 {t('publicView.sections.hobbies')}
                 </h2>
                 <div className="flex flex-wrap gap-2">
                   {userProfile.hobbies.map((hobby, idx) => (
@@ -283,7 +285,7 @@ export default function PublicViewPage() {
               <div className="mb-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Heart className="w-5 h-5 text-pink-500" />
-                  Valeurs
+                  {t('publicView.sections.values')}
                 </h2>
                 <div className="flex flex-wrap gap-2">
                   {userProfile.core_values.map((value, idx) => (
@@ -301,7 +303,7 @@ export default function PublicViewPage() {
                 onClick={() => router.push('/profile')}
                 className={`w-full bg-gradient-to-r ${colors.gradient} text-white hover:shadow-lg transition-all`}
               >
-                Modifier mon profil
+                {t('publicView.editProfile')}
               </Button>
             </div>
           </div>
@@ -312,8 +314,7 @@ export default function PublicViewPage() {
           <p className="flex items-start gap-2">
             <Users className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <span>
-              <strong>Vue publique :</strong> C'est ce que les autres utilisateurs voient sur votre profil.
-              Complétez votre profil pour augmenter vos chances de trouver le coloc idéal !
+              <strong>{t('publicView.infoNote.title')}</strong> {t('publicView.infoNote.description')}
             </span>
           </p>
         </div>

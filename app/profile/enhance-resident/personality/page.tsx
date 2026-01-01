@@ -20,7 +20,7 @@ import {
 export default function PersonalityResidentPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
+  const { t, getSection } = useLanguage();
   const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -119,7 +119,7 @@ export default function PersonalityResidentPage() {
 
       if (error) throw error;
 
-      toast.success('Personality details saved!');
+      toast.success(t('enhanceResident.personality.saved'));
       router.push('/dashboard/resident');
     } catch (error) {
       // FIXME: Use logger.error('Error saving personality:', error);
@@ -130,41 +130,59 @@ export default function PersonalityResidentPage() {
   };
 
   const interestOptions = [
-    'Music', 'Sports', 'Reading', 'Cooking', 'Gaming', 'Travel',
-    'Art', 'Photography', 'Fitness', 'Movies', 'Technology', 'Nature'
+    { value: 'Music', key: 'music' },
+    { value: 'Sports', key: 'sports' },
+    { value: 'Reading', key: 'reading' },
+    { value: 'Cooking', key: 'cooking' },
+    { value: 'Gaming', key: 'gaming' },
+    { value: 'Travel', key: 'travel' },
+    { value: 'Art', key: 'art' },
+    { value: 'Photography', key: 'photography' },
+    { value: 'Fitness', key: 'fitness' },
+    { value: 'Movies', key: 'movies' },
+    { value: 'Technology', key: 'technology' },
+    { value: 'Nature', key: 'nature' },
   ];
 
   const traitOptions = [
-    'Outgoing', 'Introverted', 'Creative', 'Organized', 'Spontaneous',
-    'Relaxed', 'Ambitious', 'Friendly', 'Independent', 'Team Player'
+    { value: 'Outgoing', key: 'outgoing' },
+    { value: 'Introverted', key: 'introverted' },
+    { value: 'Creative', key: 'creative' },
+    { value: 'Organized', key: 'organized' },
+    { value: 'Spontaneous', key: 'spontaneous' },
+    { value: 'Relaxed', key: 'relaxed' },
+    { value: 'Ambitious', key: 'ambitious' },
+    { value: 'Friendly', key: 'friendly' },
+    { value: 'Independent', key: 'independent' },
+    { value: 'Team Player', key: 'teamPlayer' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="resident"
       backUrl="/dashboard/resident"
-      backLabel="Back to Dashboard"
+      backLabel={t('enhanceResident.common.backToDashboard')}
       isLoading={isLoading}
-      loadingText="Loading your personality details..."
+      loadingText={t('enhanceResident.personality.loading')}
     >
       {/* Header */}
       <EnhanceProfileHeading
         role="resident"
-        title="Personality & Interests"
-        description="Share more about yourself to connect with like-minded neighbors"
+        title={t('enhanceResident.personality.title')}
+        description={t('enhanceResident.personality.description')}
         icon={<Heart className="w-8 h-8 text-orange-600" />}
       />
 
       <div className="space-y-6">
         {/* Hobbies */}
-        <EnhanceProfileSection title="Your Hobbies">
+        <EnhanceProfileSection title={t('enhanceResident.personality.hobbiesTitle')}>
           <div className="flex gap-2 mb-4">
             <Input
               type="text"
               value={hobbyInput}
               onChange={(e) => setHobbyInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addHobby()}
-              placeholder="Add a hobby..."
+              placeholder={t('enhanceResident.personality.hobbiesPlaceholder')}
               className="flex-1 focus:ring-orange-500"
             />
             <button
@@ -190,40 +208,40 @@ export default function PersonalityResidentPage() {
         </EnhanceProfileSection>
 
         {/* Interests */}
-        <EnhanceProfileSection title="Interests">
+        <EnhanceProfileSection title={t('enhanceResident.personality.interestsTitle')}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {interestOptions.map((interest) => (
               <EnhanceProfileTag
-                key={interest}
+                key={interest.value}
                 role="resident"
-                selected={interests.includes(interest)}
-                onClick={() => toggleInterest(interest)}
+                selected={interests.includes(interest.value)}
+                onClick={() => toggleInterest(interest.value)}
               >
-                {interest}
+                {t(`enhanceResident.personality.interests.${interest.key}`)}
               </EnhanceProfileTag>
             ))}
           </div>
         </EnhanceProfileSection>
 
         {/* Personality Traits */}
-        <EnhanceProfileSection title="Personality Traits">
+        <EnhanceProfileSection title={t('enhanceResident.personality.traitsTitle')}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {traitOptions.map((trait) => (
               <EnhanceProfileTag
-                key={trait}
+                key={trait.value}
                 role="resident"
-                selected={personalityTraits.includes(trait)}
-                onClick={() => toggleTrait(trait)}
+                selected={personalityTraits.includes(trait.value)}
+                onClick={() => toggleTrait(trait.value)}
               >
-                {trait}
+                {t(`enhanceResident.personality.traits.${trait.key}`)}
               </EnhanceProfileTag>
             ))}
           </div>
         </EnhanceProfileSection>
 
         {/* Info callout */}
-        <EnhanceProfileInfoBox role="resident" title="Tip" icon="💡">
-          Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!
+        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.personality.tip')} icon="💡">
+          {t('enhanceResident.personality.tipContent')}
         </EnhanceProfileInfoBox>
       </div>
 
@@ -238,14 +256,14 @@ export default function PersonalityResidentPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          {isSaving ? 'Saving...' : 'Save Changes'}
+          {isSaving ? t('enhanceResident.common.saving') : t('enhanceResident.common.saveChanges')}
         </button>
         <button
           onClick={() => router.push('/dashboard/resident')}
           disabled={isSaving}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
         >
-          Cancel
+          {t('enhanceResident.common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -18,7 +18,7 @@ import {
 export default function CommunityEventsResidentPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
+  const { t, getSection } = useLanguage();
   const common = getSection('common');
   const [eventInterest, setEventInterest] = useState<'low' | 'medium' | 'high' | ''>('');
   const [enjoySharedMeals, setEnjoySharedMeals] = useState(false);
@@ -53,7 +53,7 @@ export default function CommunityEventsResidentPage() {
 
   const handleSave = async () => {
     if (!eventInterest) {
-      toast.error('Please select your event interest level');
+      toast.error(t('enhanceResident.errors.selectEventInterest'));
       return;
     }
 
@@ -79,7 +79,7 @@ export default function CommunityEventsResidentPage() {
 
       if (error) throw error;
 
-      toast.success('Community preferences saved!');
+      toast.success(t('enhanceResident.community.saved'));
       router.push('/dashboard/resident');
     } catch (error) {
       // FIXME: Use logger.error('Error saving community preferences:', error);
@@ -92,22 +92,22 @@ export default function CommunityEventsResidentPage() {
   const canContinue = eventInterest !== '';
 
   const interestLevels = [
-    { value: 'low' as const, emoji: '😐', label: 'Low', description: 'Prefer quiet independence' },
-    { value: 'medium' as const, emoji: '😊', label: 'Medium', description: 'Occasional socializing' },
-    { value: 'high' as const, emoji: '🎉', label: 'High', description: 'Love community events!' },
+    { value: 'low' as const, emoji: '😐', labelKey: 'low', descKey: 'lowDesc' },
+    { value: 'medium' as const, emoji: '😊', labelKey: 'medium', descKey: 'mediumDesc' },
+    { value: 'high' as const, emoji: '🎉', labelKey: 'high', descKey: 'highDesc' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="resident"
       backUrl="/dashboard/resident"
-      backLabel="Back to Dashboard"
+      backLabel={t('enhanceResident.common.backToDashboard')}
     >
       {/* Header */}
       <EnhanceProfileHeading
         role="resident"
-        title="Community & Events"
-        description="How interested are you in community events, parties, and social gatherings?"
+        title={t('enhanceResident.community.title')}
+        description={t('enhanceResident.community.description')}
         icon={<PartyPopper className="w-8 h-8 text-orange-600" />}
       />
 
@@ -119,7 +119,7 @@ export default function CommunityEventsResidentPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <PartyPopper className="w-4 h-4 text-orange-600" />
             </div>
-            Event participation interest
+            {t('enhanceResident.community.eventInterest.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
             {interestLevels.map((level) => (
@@ -131,9 +131,9 @@ export default function CommunityEventsResidentPage() {
               >
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-3xl">{level.emoji}</span>
-                  <span className="font-semibold text-sm">{level.label}</span>
+                  <span className="font-semibold text-sm">{t(`enhanceResident.community.eventInterest.${level.labelKey}`)}</span>
                   <span className="text-xs text-center text-gray-500">
-                    {level.description}
+                    {t(`enhanceResident.community.eventInterest.${level.descKey}`)}
                   </span>
                 </div>
               </EnhanceProfileSelectionCard>
@@ -149,8 +149,8 @@ export default function CommunityEventsResidentPage() {
                 <UtensilsCrossed className="w-4 h-4 text-orange-600" />
               </div>
               <div>
-                <span className="font-medium text-gray-700 block">I'd enjoy shared meals</span>
-                <span className="text-sm text-gray-500">Cook and eat together with flatmates</span>
+                <span className="font-medium text-gray-700 block">{t('enhanceResident.community.sharedMeals.title')}</span>
+                <span className="text-sm text-gray-500">{t('enhanceResident.community.sharedMeals.description')}</span>
               </div>
             </div>
             <button
@@ -176,8 +176,8 @@ export default function CommunityEventsResidentPage() {
                 <Users className="w-4 h-4 text-orange-600" />
               </div>
               <div>
-                <span className="font-medium text-gray-700 block">Open to flatmate meetups</span>
-                <span className="text-sm text-gray-500">Hang out, watch movies, game nights</span>
+                <span className="font-medium text-gray-700 block">{t('enhanceResident.community.meetups.title')}</span>
+                <span className="text-sm text-gray-500">{t('enhanceResident.community.meetups.description')}</span>
               </div>
             </div>
             <button
@@ -196,19 +196,19 @@ export default function CommunityEventsResidentPage() {
         </div>
 
         {/* Community perks callout */}
-        <EnhanceProfileInfoBox role="resident" title="Community Perks" icon="✨">
+        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.community.perks.title')} icon="✨">
           <ul className="space-y-1">
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              Connect with neighbors who share your interests
+              {t('enhanceResident.community.perks.connect')}
             </li>
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              Get invited to building events that match your style
+              {t('enhanceResident.community.perks.invited')}
             </li>
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              Build lasting friendships in your community
+              {t('enhanceResident.community.perks.friendships')}
             </li>
           </ul>
         </EnhanceProfileInfoBox>
@@ -225,14 +225,14 @@ export default function CommunityEventsResidentPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          {isSaving ? 'Saving...' : 'Save Changes'}
+          {isSaving ? t('enhanceResident.common.saving') : t('enhanceResident.common.saveChanges')}
         </button>
         <button
           onClick={() => router.push('/dashboard/resident')}
           disabled={isSaving}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
         >
-          Cancel
+          {t('enhanceResident.common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

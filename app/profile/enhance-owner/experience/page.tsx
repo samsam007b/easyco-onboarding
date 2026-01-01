@@ -6,6 +6,7 @@ import { Award, Building, Heart } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OwnerExperiencePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [experienceYears, setExperienceYears] = useState('');
@@ -55,7 +57,7 @@ export default function OwnerExperiencePage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading experience data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('enhanceOwner.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +70,7 @@ export default function OwnerExperiencePage() {
       primaryMotivation,
       bio,
     });
-    toast.success('Experience saved!');
+    toast.success(t('enhanceOwner.experience.saved'));
     router.push('/dashboard/my-profile-owner');
   };
 
@@ -82,14 +84,14 @@ export default function OwnerExperiencePage() {
     <EnhanceProfileLayout
       role="owner"
       backUrl="/dashboard/my-profile-owner"
-      backLabel="Back to Profile"
+      backLabel={t('enhanceOwner.common.backToProfile')}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceOwner.common.loading')}
     >
       <EnhanceProfileHeading
         role="owner"
-        title="Your Hosting Journey"
-        description="Share your experience and what drives you as a landlord"
+        title={t('enhanceOwner.experience.title')}
+        description={t('enhanceOwner.experience.description')}
         icon={<Award className="w-8 h-8 text-purple-600" />}
       />
 
@@ -100,15 +102,15 @@ export default function OwnerExperiencePage() {
             <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
               <Award className="w-4 h-4 text-purple-600" />
             </div>
-            Years of landlord experience
+            {t('enhanceOwner.experience.yearsLabel')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: '0', label: 'Less than 1 year' },
-              { value: '1-2', label: '1-2 years' },
-              { value: '3-5', label: '3-5 years' },
-              { value: '5-10', label: '5-10 years' },
-              { value: '10+', label: '10+ years' },
+              { value: '0', key: 'lessThan1Year' },
+              { value: '1-2', key: 'years1to2' },
+              { value: '3-5', key: 'years3to5' },
+              { value: '5-10', key: 'years5to10' },
+              { value: '10+', key: 'years10Plus' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -116,7 +118,7 @@ export default function OwnerExperiencePage() {
                 selected={experienceYears === option.value}
                 onClick={() => setExperienceYears(option.value)}
               >
-                {option.label}
+                {t(`enhanceOwner.experience.years.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -128,13 +130,13 @@ export default function OwnerExperiencePage() {
             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
               <Building className="w-4 h-4 text-blue-600" />
             </div>
-            Property management style
+            {t('enhanceOwner.experience.managementLabel')}
           </label>
           <div className="space-y-2">
             {[
-              { value: 'self-managed', label: 'Self-managed', desc: 'I handle everything personally' },
-              { value: 'agency', label: 'Via Agency', desc: 'Professional property management' },
-              { value: 'hybrid', label: 'Hybrid', desc: 'Mix of personal and agency management' },
+              { value: 'self-managed', key: 'selfManaged' },
+              { value: 'agency', key: 'agency' },
+              { value: 'hybrid', key: 'hybrid' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -143,8 +145,8 @@ export default function OwnerExperiencePage() {
                 onClick={() => setManagementStyle(option.value)}
                 className="text-left"
               >
-                <div className="font-semibold text-gray-900">{option.label}</div>
-                <div className="text-sm text-gray-500">{option.desc}</div>
+                <div className="font-semibold text-gray-900">{t(`enhanceOwner.experience.management.${option.key}.label`)}</div>
+                <div className="text-sm text-gray-500">{t(`enhanceOwner.experience.management.${option.key}.desc`)}</div>
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -156,14 +158,14 @@ export default function OwnerExperiencePage() {
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <Heart className="w-4 h-4 text-green-600" />
             </div>
-            What drives you as a landlord?
+            {t('enhanceOwner.experience.motivationLabel')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'income', label: 'Rental Income', emoji: '💰' },
-              { value: 'community', label: 'Building Community', emoji: '🤝' },
-              { value: 'investment', label: 'Investment Growth', emoji: '📈' },
-              { value: 'other', label: 'Other', emoji: '✨' },
+              { value: 'income', key: 'income', emoji: '💰' },
+              { value: 'community', key: 'community', emoji: '🤝' },
+              { value: 'investment', key: 'investment', emoji: '📈' },
+              { value: 'other', key: 'other', emoji: '✨' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -172,7 +174,7 @@ export default function OwnerExperiencePage() {
                 onClick={() => setPrimaryMotivation(option.value)}
               >
                 <div className="text-2xl mb-1">{option.emoji}</div>
-                <div className="text-sm font-semibold">{option.label}</div>
+                <div className="text-sm font-semibold">{t(`enhanceOwner.experience.motivation.${option.key}`)}</div>
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -182,12 +184,12 @@ export default function OwnerExperiencePage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="owner"
-            label="Tell tenants about yourself (optional)"
+            label={t('enhanceOwner.experience.bioLabel')}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={4}
             maxLength={500}
-            placeholder="e.g., I'm a passionate landlord who values creating comfortable, welcoming spaces for tenants..."
+            placeholder={t('enhanceOwner.experience.bioPlaceholder')}
           />
         </EnhanceProfileSection>
       </div>
@@ -203,13 +205,13 @@ export default function OwnerExperiencePage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          Save Changes
+          {t('enhanceOwner.common.saveChanges')}
         </button>
         <button
           onClick={handleCancel}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

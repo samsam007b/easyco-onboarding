@@ -17,7 +17,7 @@ import {
 export default function LifestyleResidentPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
+  const { t, getSection } = useLanguage();
   const common = getSection('common');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -61,7 +61,7 @@ export default function LifestyleResidentPage() {
 
   const handleSave = async () => {
     if (!sleepSchedule || !cleanliness || !noiseTolerance) {
-      toast.error('Please answer all required questions');
+      toast.error(t('enhanceResident.errors.requiredFields'));
       return;
     }
 
@@ -89,7 +89,7 @@ export default function LifestyleResidentPage() {
 
       if (error) throw error;
 
-      toast.success('Lifestyle preferences saved!');
+      toast.success(t('enhanceResident.lifestyle.saved'));
       router.push('/dashboard/resident');
     } catch (error) {
       // FIXME: Use logger.error('Error saving lifestyle preferences:', error);
@@ -103,15 +103,15 @@ export default function LifestyleResidentPage() {
     <EnhanceProfileLayout
       role="resident"
       backUrl="/dashboard/resident"
-      backLabel="Back to Dashboard"
+      backLabel={t('enhanceResident.common.backToDashboard')}
       isLoading={isLoading}
-      loadingText="Loading your lifestyle preferences..."
+      loadingText={t('enhanceResident.lifestyle.loadingText')}
     >
       {/* Header */}
       <EnhanceProfileHeading
         role="resident"
-        title="Lifestyle Preferences"
-        description="Help us understand your daily lifestyle and living habits"
+        title={t('enhanceResident.lifestyle.title')}
+        description={t('enhanceResident.lifestyle.description')}
         icon={<Coffee className="w-8 h-8 text-orange-600" />}
       />
 
@@ -123,15 +123,15 @@ export default function LifestyleResidentPage() {
               <Moon className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Sleep Schedule *</h3>
-              <p className="text-sm text-gray-500">When do you typically sleep?</p>
+              <h3 className="font-semibold text-gray-900">{t('enhanceResident.lifestyle.sleep.title')}</h3>
+              <p className="text-sm text-gray-500">{t('enhanceResident.lifestyle.sleep.subtitle')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'early-bird', emoji: '🌅', label: 'Early Bird', desc: 'Sleep before 11pm' },
-              { value: 'night-owl', emoji: '🦉', label: 'Night Owl', desc: 'Sleep after 1am' },
-              { value: 'flexible', emoji: '⏰', label: 'Flexible', desc: 'Varies by day' }
+              { value: 'early-bird', emoji: '🌅', labelKey: 'earlyBird', descKey: 'earlyBirdDesc' },
+              { value: 'night-owl', emoji: '🦉', labelKey: 'nightOwl', descKey: 'nightOwlDesc' },
+              { value: 'flexible', emoji: '⏰', labelKey: 'flexible', descKey: 'flexibleDesc' }
             ].map(option => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -141,8 +141,8 @@ export default function LifestyleResidentPage() {
               >
                 <div className="text-center">
                   <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`enhanceResident.lifestyle.sleep.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.sleep.${option.descKey}`)}</div>
                 </div>
               </EnhanceProfileSelectionCard>
             ))}
@@ -156,15 +156,15 @@ export default function LifestyleResidentPage() {
               <Coffee className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Cleanliness Level *</h3>
-              <p className="text-sm text-gray-500">How clean do you keep your space?</p>
+              <h3 className="font-semibold text-gray-900">{t('enhanceResident.lifestyle.cleanliness.title')}</h3>
+              <p className="text-sm text-gray-500">{t('enhanceResident.lifestyle.cleanliness.subtitle')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'very-clean', emoji: '✨', label: 'Very Clean', desc: 'Everything spotless' },
-              { value: 'moderately-clean', emoji: '👍', label: 'Moderate', desc: 'Tidy most times' },
-              { value: 'relaxed', emoji: '😌', label: 'Relaxed', desc: 'Lived-in feel' }
+              { value: 'very-clean', emoji: '✨', labelKey: 'veryClean', descKey: 'veryCleanDesc' },
+              { value: 'moderately-clean', emoji: '👍', labelKey: 'moderate', descKey: 'moderateDesc' },
+              { value: 'relaxed', emoji: '😌', labelKey: 'relaxed', descKey: 'relaxedDesc' }
             ].map(option => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -174,8 +174,8 @@ export default function LifestyleResidentPage() {
               >
                 <div className="text-center">
                   <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`enhanceResident.lifestyle.cleanliness.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.cleanliness.${option.descKey}`)}</div>
                 </div>
               </EnhanceProfileSelectionCard>
             ))}
@@ -189,15 +189,15 @@ export default function LifestyleResidentPage() {
               <Music className="w-5 h-5 text-pink-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Noise Preference *</h3>
-              <p className="text-sm text-gray-500">What's your ideal noise level?</p>
+              <h3 className="font-semibold text-gray-900">{t('enhanceResident.lifestyle.noise.title')}</h3>
+              <p className="text-sm text-gray-500">{t('enhanceResident.lifestyle.noise.subtitle')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'quiet', emoji: '🤫', label: 'Quiet', desc: 'Peace & tranquility' },
-              { value: 'moderate', emoji: '🔉', label: 'Moderate', desc: 'Normal sounds OK' },
-              { value: 'lively', emoji: '🔊', label: 'Lively', desc: 'Energy & vibes' }
+              { value: 'quiet', emoji: '🤫', labelKey: 'quiet', descKey: 'quietDesc' },
+              { value: 'moderate', emoji: '🔉', labelKey: 'moderate', descKey: 'moderateDesc' },
+              { value: 'lively', emoji: '🔊', labelKey: 'lively', descKey: 'livelyDesc' }
             ].map(option => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -207,8 +207,8 @@ export default function LifestyleResidentPage() {
               >
                 <div className="text-center">
                   <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`enhanceResident.lifestyle.noise.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.noise.${option.descKey}`)}</div>
                 </div>
               </EnhanceProfileSelectionCard>
             ))}
@@ -222,15 +222,15 @@ export default function LifestyleResidentPage() {
               <Utensils className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Cooking Frequency</h3>
-              <p className="text-sm text-gray-500">How often do you cook at home?</p>
+              <h3 className="font-semibold text-gray-900">{t('enhanceResident.lifestyle.cooking.title')}</h3>
+              <p className="text-sm text-gray-500">{t('enhanceResident.lifestyle.cooking.subtitle')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'daily', label: 'Daily', emoji: '👨‍🍳' },
-              { value: 'often', label: 'Often', emoji: '🍳' },
-              { value: 'rarely', label: 'Rarely', emoji: '🍕' }
+              { value: 'daily', key: 'daily', emoji: '👨‍🍳' },
+              { value: 'often', key: 'often', emoji: '🍳' },
+              { value: 'rarely', key: 'rarely', emoji: '🍕' }
             ].map(option => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -240,7 +240,7 @@ export default function LifestyleResidentPage() {
               >
                 <div className="text-center">
                   <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{option.label}</div>
+                  <div className="font-medium">{t(`enhanceResident.lifestyle.cooking.${option.key}`)}</div>
                 </div>
               </EnhanceProfileSelectionCard>
             ))}
@@ -254,16 +254,16 @@ export default function LifestyleResidentPage() {
               <Calendar className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Having Guests Over</h3>
-              <p className="text-sm text-gray-500">How often do you have visitors?</p>
+              <h3 className="font-semibold text-gray-900">{t('enhanceResident.lifestyle.guests.title')}</h3>
+              <p className="text-sm text-gray-500">{t('enhanceResident.lifestyle.guests.subtitle')}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { value: 'never', label: 'Never' },
-              { value: 'rarely', label: 'Rarely' },
-              { value: 'sometimes', label: 'Sometimes' },
-              { value: 'often', label: 'Often' }
+              { value: 'never', key: 'never' },
+              { value: 'rarely', key: 'rarely' },
+              { value: 'sometimes', key: 'sometimes' },
+              { value: 'often', key: 'often' }
             ].map(option => (
               <EnhanceProfileSelectionCard
                 key={option.value}
@@ -271,7 +271,7 @@ export default function LifestyleResidentPage() {
                 selected={guestsFrequency === option.value}
                 onClick={() => setGuestsFrequency(option.value as any)}
               >
-                <div className="text-center font-medium">{option.label}</div>
+                <div className="text-center font-medium">{t(`enhanceResident.lifestyle.guests.${option.key}`)}</div>
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -289,14 +289,14 @@ export default function LifestyleResidentPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          {isSaving ? 'Saving...' : 'Save Changes'}
+          {isSaving ? t('enhanceResident.common.saving') : t('enhanceResident.common.saveChanges')}
         </button>
         <button
           onClick={() => router.push('/dashboard/resident')}
           disabled={isSaving}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
         >
-          Cancel
+          {t('enhanceResident.common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

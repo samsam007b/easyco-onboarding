@@ -6,6 +6,7 @@ import { Settings, Home, Calendar } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -18,6 +19,7 @@ import {
 export default function AdvancedPreferencesPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [roomType, setRoomType] = useState('');
   const [bathroomType, setBathroomType] = useState('');
@@ -68,7 +70,7 @@ export default function AdvancedPreferencesPage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading preferences data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('profileEnhance.preferences.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +87,7 @@ export default function AdvancedPreferencesPage() {
       quietHours,
       guestsAllowed,
     });
-    toast.success('Preferences saved!');
+    toast.success(t('profileEnhance.preferences.saved'));
     router.push('/dashboard/my-profile');
   };
 
@@ -93,19 +95,57 @@ export default function AdvancedPreferencesPage() {
     router.push('/dashboard/my-profile');
   };
 
+  // Options with translation keys
+  const roomTypeOptions = [
+    { value: 'private', key: 'private' },
+    { value: 'shared', key: 'shared' },
+    { value: 'studio', key: 'studio' },
+    { value: 'flexible', key: 'flexible' },
+  ];
+
+  const bathroomOptions = [
+    { value: 'private', key: 'private' },
+    { value: 'shared', key: 'shared' },
+  ];
+
+  const leaseDurationOptions = [
+    { value: '1-3-months', key: 'oneToThree' },
+    { value: '3-6-months', key: 'threeToSix' },
+    { value: '6-12-months', key: 'sixToTwelve' },
+    { value: '12-months-plus', key: 'twelvePlus' },
+    { value: 'flexible', key: 'flexible' },
+  ];
+
+  const moveInFlexibilityOptions = [
+    { value: 'exact', key: 'exact' },
+    { value: 'within 1 week', key: 'withinWeek' },
+    { value: 'flexible', key: 'flexible' },
+  ];
+
+  const petsOptions = [
+    { value: 'i have pets', key: 'havePets' },
+    { value: 'no pets', key: 'noPets' },
+    { value: 'open to pets', key: 'openToPets' },
+  ];
+
+  const smokingOptions = [
+    { value: 'non-smoking only', key: 'nonSmoking' },
+    { value: 'smoking outside ok', key: 'smokingOutside' },
+  ];
+
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/dashboard/my-profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('profileEnhance.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Advanced Preferences"
-        description="Fine-tune your living preferences for better matches"
+        title={t('profileEnhance.preferences.title')}
+        description={t('profileEnhance.preferences.description')}
         icon={<Settings className="w-8 h-8 text-orange-600" />}
       />
 
@@ -114,17 +154,17 @@ export default function AdvancedPreferencesPage() {
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <Home className="w-5 h-5 text-orange-600" />
-            Preferred Room Type
+            {t('profileEnhance.preferences.roomType.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {['Private', 'Shared', 'Studio', 'Flexible'].map((type) => (
+            {roomTypeOptions.map((option) => (
               <EnhanceProfileSelectionCard
-                key={type}
+                key={option.value}
                 role="searcher"
-                selected={roomType === type.toLowerCase()}
-                onClick={() => setRoomType(type.toLowerCase())}
+                selected={roomType === option.value}
+                onClick={() => setRoomType(option.value)}
               >
-                {type}
+                {t(`profileEnhance.preferences.roomType.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -133,17 +173,17 @@ export default function AdvancedPreferencesPage() {
         {/* Bathroom Type */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Bathroom Preference
+            {t('profileEnhance.preferences.bathroom.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {['Private', 'Shared'].map((type) => (
+            {bathroomOptions.map((option) => (
               <EnhanceProfileSelectionCard
-                key={type}
+                key={option.value}
                 role="searcher"
-                selected={bathroomType === type.toLowerCase()}
-                onClick={() => setBathroomType(type.toLowerCase())}
+                selected={bathroomType === option.value}
+                onClick={() => setBathroomType(option.value)}
               >
-                {type}
+                {t(`profileEnhance.preferences.bathroom.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -153,36 +193,36 @@ export default function AdvancedPreferencesPage() {
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-orange-600" />
-            Preferred Lease Duration
+            {t('profileEnhance.preferences.leaseDuration.label')}
           </label>
           <select
             value={leaseDuration}
             onChange={(e) => setLeaseDuration(e.target.value)}
             className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
           >
-            <option value="">Select...</option>
-            <option value="1-3-months">1-3 months</option>
-            <option value="3-6-months">3-6 months</option>
-            <option value="6-12-months">6-12 months</option>
-            <option value="12-months-plus">12+ months</option>
-            <option value="flexible">Flexible</option>
+            <option value="">{t('profileEnhance.preferences.leaseDuration.select')}</option>
+            {leaseDurationOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(`profileEnhance.preferences.leaseDuration.${option.key}`)}
+              </option>
+            ))}
           </select>
         </EnhanceProfileSection>
 
         {/* Move-in Flexibility */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Move-in Date Flexibility
+            {t('profileEnhance.preferences.moveInFlexibility.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
-            {['Exact', 'Within 1 week', 'Flexible'].map((flex) => (
+            {moveInFlexibilityOptions.map((option) => (
               <EnhanceProfileSelectionCard
-                key={flex}
+                key={option.value}
                 role="searcher"
-                selected={moveInFlexibility === flex.toLowerCase()}
-                onClick={() => setMoveInFlexibility(flex.toLowerCase())}
+                selected={moveInFlexibility === option.value}
+                onClick={() => setMoveInFlexibility(option.value)}
               >
-                {flex}
+                {t(`profileEnhance.preferences.moveInFlexibility.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -191,17 +231,17 @@ export default function AdvancedPreferencesPage() {
         {/* Pets Preference */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Pets Preference
+            {t('profileEnhance.preferences.pets.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
-            {['I have pets', 'No pets', 'Open to pets'].map((pref) => (
+            {petsOptions.map((option) => (
               <EnhanceProfileSelectionCard
-                key={pref}
+                key={option.value}
                 role="searcher"
-                selected={petsPreference === pref.toLowerCase()}
-                onClick={() => setPetsPreference(pref.toLowerCase())}
+                selected={petsPreference === option.value}
+                onClick={() => setPetsPreference(option.value)}
               >
-                {pref}
+                {t(`profileEnhance.preferences.pets.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -210,17 +250,17 @@ export default function AdvancedPreferencesPage() {
         {/* Smoking Preference */}
         <EnhanceProfileSection>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Smoking Preference
+            {t('profileEnhance.preferences.smoking.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {['Non-smoking only', 'Smoking outside OK'].map((pref) => (
+            {smokingOptions.map((option) => (
               <EnhanceProfileSelectionCard
-                key={pref}
+                key={option.value}
                 role="searcher"
-                selected={smokingPreference === pref.toLowerCase()}
-                onClick={() => setSmokingPreference(pref.toLowerCase())}
+                selected={smokingPreference === option.value}
+                onClick={() => setSmokingPreference(option.value)}
               >
-                {pref}
+                {t(`profileEnhance.preferences.smoking.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -231,8 +271,8 @@ export default function AdvancedPreferencesPage() {
           {/* Quiet Hours */}
           <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl mb-4">
             <div>
-              <span className="font-medium text-gray-700 block">Quiet hours important</span>
-              <span className="text-sm text-gray-500">Prefer designated quiet times</span>
+              <span className="font-medium text-gray-700 block">{t('profileEnhance.preferences.quietHours.label')}</span>
+              <span className="text-sm text-gray-500">{t('profileEnhance.preferences.quietHours.description')}</span>
             </div>
             <button
               onClick={() => setQuietHours(!quietHours)}
@@ -251,8 +291,8 @@ export default function AdvancedPreferencesPage() {
           {/* Guests Allowed */}
           <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
             <div>
-              <span className="font-medium text-gray-700 block">Guests allowed</span>
-              <span className="text-sm text-gray-500">OK with occasional visitors</span>
+              <span className="font-medium text-gray-700 block">{t('profileEnhance.preferences.guests.label')}</span>
+              <span className="text-sm text-gray-500">{t('profileEnhance.preferences.guests.description')}</span>
             </div>
             <button
               onClick={() => setGuestsAllowed(!guestsAllowed)}
@@ -278,14 +318,14 @@ export default function AdvancedPreferencesPage() {
           onClick={handleCancel}
           className="flex-1"
         >
-          Cancel
+          {t('profileEnhance.common.cancel')}
         </EnhanceProfileButton>
         <EnhanceProfileButton
           role="searcher"
           onClick={handleSave}
           className="flex-1"
         >
-          Save Changes
+          {t('profileEnhance.common.saveChanges')}
         </EnhanceProfileButton>
       </div>
     </EnhanceProfileLayout>

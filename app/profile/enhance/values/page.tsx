@@ -6,6 +6,7 @@ import { Sparkles, ThumbsUp, AlertTriangle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -16,25 +17,49 @@ import {
 
 export default function EnhanceValuesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [coreValues, setCoreValues] = useState<string[]>([]);
   const [importantQualities, setImportantQualities] = useState<string[]>([]);
   const [dealBreakers, setDealBreakers] = useState<string[]>([]);
 
+  // Options with translation keys (English values stored in DB)
   const valueOptions = [
-    'Honesty', 'Respect', 'Communication', 'Sustainability', 'Diversity',
-    'Collaboration', 'Independence', 'Growth', 'Community', 'Creativity'
+    { value: 'Honesty', key: 'honesty' },
+    { value: 'Respect', key: 'respect' },
+    { value: 'Communication', key: 'communication' },
+    { value: 'Sustainability', key: 'sustainability' },
+    { value: 'Diversity', key: 'diversity' },
+    { value: 'Collaboration', key: 'collaboration' },
+    { value: 'Independence', key: 'independence' },
+    { value: 'Growth', key: 'growth' },
+    { value: 'Community', key: 'community' },
+    { value: 'Creativity', key: 'creativity' },
   ];
 
   const qualityOptions = [
-    'Cleanliness', 'Punctuality', 'Friendliness', 'Quietness', 'Flexibility',
-    'Organization', 'Openness', 'Reliability', 'Humor', 'Empathy'
+    { value: 'Cleanliness', key: 'cleanliness' },
+    { value: 'Punctuality', key: 'punctuality' },
+    { value: 'Friendliness', key: 'friendliness' },
+    { value: 'Quietness', key: 'quietness' },
+    { value: 'Flexibility', key: 'flexibility' },
+    { value: 'Organization', key: 'organization' },
+    { value: 'Openness', key: 'openness' },
+    { value: 'Reliability', key: 'reliability' },
+    { value: 'Humor', key: 'humor' },
+    { value: 'Empathy', key: 'empathy' },
   ];
 
   const dealBreakerOptions = [
-    'Smoking indoors', 'Loud noise late night', 'Messiness', 'No cleaning',
-    'Bringing strangers often', 'Not respecting boundaries', 'Pets (if allergic)',
-    'No communication', 'Invasion of privacy'
+    { value: 'Smoking indoors', key: 'smokingIndoors' },
+    { value: 'Loud noise late night', key: 'loudNoise' },
+    { value: 'Messiness', key: 'messiness' },
+    { value: 'No cleaning', key: 'noCleaning' },
+    { value: 'Bringing strangers often', key: 'bringingStrangers' },
+    { value: 'Not respecting boundaries', key: 'notRespectingBoundaries' },
+    { value: 'Pets (if allergic)', key: 'petsAllergic' },
+    { value: 'No communication', key: 'noCommunication' },
+    { value: 'Invasion of privacy', key: 'privacyInvasion' },
   ];
 
   useEffect(() => {
@@ -73,11 +98,11 @@ export default function EnhanceValuesPage() {
     loadData();
   }, [router]);
 
-  const handleToggleValue = (value: string) => {
-    if (coreValues.includes(value)) {
-      setCoreValues(coreValues.filter(v => v !== value));
+  const handleToggleValue = (valueStr: string) => {
+    if (coreValues.includes(valueStr)) {
+      setCoreValues(coreValues.filter(v => v !== valueStr));
     } else if (coreValues.length < 5) {
-      setCoreValues([...coreValues, value]);
+      setCoreValues([...coreValues, valueStr]);
     }
   };
 
@@ -126,20 +151,20 @@ export default function EnhanceValuesPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile/enhance/hobbies"
-      backLabel="Back"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={{
         current: 3,
         total: 6,
-        label: 'Step 3 of 6',
-        stepName: 'Values & Preferences',
+        label: `${t('profileEnhance.values.progress.step')} 3 ${t('profileEnhance.values.progress.of')} 6`,
+        stepName: t('profileEnhance.values.progress.stepName'),
       }}
       isLoading={isLoading}
-      loadingText="Loading your values..."
+      loadingText={t('profileEnhance.values.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Your Values & Preferences"
-        description="Help us understand what matters most to you"
+        title={t('profileEnhance.values.title')}
+        description={t('profileEnhance.values.description')}
         icon={<Sparkles className="w-8 h-8 text-orange-600" />}
       />
 
@@ -148,46 +173,46 @@ export default function EnhanceValuesPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Core Values</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('profileEnhance.values.coreValues.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">Select what matters most to you (choose up to 5):</p>
+          <p className="text-sm text-gray-600 mb-4">{t('profileEnhance.values.coreValues.description')}</p>
           <div className="flex flex-wrap gap-2">
-            {valueOptions.map((value) => (
+            {valueOptions.map((option) => (
               <EnhanceProfileTag
-                key={value}
+                key={option.value}
                 role="searcher"
-                selected={coreValues.includes(value)}
-                onClick={() => handleToggleValue(value)}
-                disabled={!coreValues.includes(value) && coreValues.length >= 5}
+                selected={coreValues.includes(option.value)}
+                onClick={() => handleToggleValue(option.value)}
+                disabled={!coreValues.includes(option.value) && coreValues.length >= 5}
               >
-                {value}
+                {t(`profileEnhance.values.coreValues.options.${option.key}`)}
               </EnhanceProfileTag>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 selected</p>
+          <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 {t('profileEnhance.values.coreValues.selected')}</p>
         </EnhanceProfileSection>
 
         {/* Important Qualities */}
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <ThumbsUp className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Important Qualities in a Roommate</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('profileEnhance.values.qualities.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">What qualities do you value in a roommate?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('profileEnhance.values.qualities.description')}</p>
           <div className="flex flex-wrap gap-2">
-            {qualityOptions.map((quality) => (
+            {qualityOptions.map((option) => (
               <EnhanceProfileTag
-                key={quality}
+                key={option.value}
                 role="searcher"
-                selected={importantQualities.includes(quality)}
-                onClick={() => handleToggleQuality(quality)}
+                selected={importantQualities.includes(option.value)}
+                onClick={() => handleToggleQuality(option.value)}
               >
-                {quality}
+                {t(`profileEnhance.values.qualities.options.${option.key}`)}
               </EnhanceProfileTag>
             ))}
           </div>
           {importantQualities.length > 0 && (
-            <p className="text-xs text-gray-500 mt-3">{importantQualities.length} selected</p>
+            <p className="text-xs text-gray-500 mt-3">{importantQualities.length} {t('profileEnhance.values.qualities.selected')}</p>
           )}
         </EnhanceProfileSection>
 
@@ -196,26 +221,26 @@ export default function EnhanceValuesPage() {
           <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
-              <h2 className="text-lg font-semibold text-orange-600">Deal Breakers</h2>
+              <h2 className="text-lg font-semibold text-orange-600">{t('profileEnhance.values.dealBreakers.title')}</h2>
             </div>
-            <p className="text-sm text-gray-600 mb-4">Select behaviors or situations you absolutely cannot tolerate:</p>
+            <p className="text-sm text-gray-600 mb-4">{t('profileEnhance.values.dealBreakers.description')}</p>
             <div className="flex flex-wrap gap-2">
-              {dealBreakerOptions.map((dealBreaker) => (
+              {dealBreakerOptions.map((option) => (
                 <button
-                  key={dealBreaker}
-                  onClick={() => handleToggleDealBreaker(dealBreaker)}
+                  key={option.value}
+                  onClick={() => handleToggleDealBreaker(option.value)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    dealBreakers.includes(dealBreaker)
+                    dealBreakers.includes(option.value)
                       ? 'bg-orange-500 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {dealBreaker}
+                  {t(`profileEnhance.values.dealBreakers.options.${option.key}`)}
                 </button>
               ))}
             </div>
             {dealBreakers.length > 0 && (
-              <p className="text-xs text-gray-500 mt-3">{dealBreakers.length} selected</p>
+              <p className="text-xs text-gray-500 mt-3">{dealBreakers.length} {t('profileEnhance.values.dealBreakers.selected')}</p>
             )}
           </div>
         </EnhanceProfileSection>
@@ -227,14 +252,14 @@ export default function EnhanceValuesPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleNext}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -6,6 +6,7 @@ import { Shield, PawPrint, Cigarette, Calendar, Euro } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OwnerPoliciesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [petsAllowed, setPetsAllowed] = useState<boolean | null>(null);
@@ -58,7 +60,7 @@ export default function OwnerPoliciesPage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading policies data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('enhanceOwner.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +74,7 @@ export default function OwnerPoliciesPage() {
       depositAmount,
       noticePeriod,
     });
-    toast.success('Policies saved!');
+    toast.success(t('enhanceOwner.policies.saved'));
     router.push('/dashboard/my-profile-owner');
   };
 
@@ -86,14 +88,14 @@ export default function OwnerPoliciesPage() {
     <EnhanceProfileLayout
       role="owner"
       backUrl="/dashboard/my-profile-owner"
-      backLabel="Back to Profile"
+      backLabel={t('enhanceOwner.common.backToProfile')}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceOwner.common.loading')}
     >
       <EnhanceProfileHeading
         role="owner"
-        title="Your Rental Policies"
-        description="Set clear expectations for potential tenants"
+        title={t('enhanceOwner.policies.title')}
+        description={t('enhanceOwner.policies.description')}
         icon={<Shield className="w-8 h-8 text-purple-600" />}
       />
 
@@ -104,7 +106,7 @@ export default function OwnerPoliciesPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <PawPrint className="w-4 h-4 text-orange-600" />
             </div>
-            Do you allow pets?
+            {t('enhanceOwner.policies.pets.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             <EnhanceProfileSelectionCard
@@ -113,7 +115,7 @@ export default function OwnerPoliciesPage() {
               onClick={() => setPetsAllowed(true)}
             >
               <div className="text-2xl mb-1">🐕</div>
-              <div className="text-sm font-semibold">Yes, pets allowed</div>
+              <div className="text-sm font-semibold">{t('enhanceOwner.policies.pets.yes')}</div>
             </EnhanceProfileSelectionCard>
             <EnhanceProfileSelectionCard
               role="owner"
@@ -121,7 +123,7 @@ export default function OwnerPoliciesPage() {
               onClick={() => setPetsAllowed(false)}
             >
               <div className="text-2xl mb-1">🚫</div>
-              <div className="text-sm font-semibold">No pets</div>
+              <div className="text-sm font-semibold">{t('enhanceOwner.policies.pets.no')}</div>
             </EnhanceProfileSelectionCard>
           </div>
         </EnhanceProfileSection>
@@ -132,7 +134,7 @@ export default function OwnerPoliciesPage() {
             <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
               <Cigarette className="w-4 h-4 text-red-600" />
             </div>
-            Do you allow smoking?
+            {t('enhanceOwner.policies.smoking.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             <EnhanceProfileSelectionCard
@@ -141,7 +143,7 @@ export default function OwnerPoliciesPage() {
               onClick={() => setSmokingAllowed(true)}
             >
               <div className="text-2xl mb-1">✅</div>
-              <div className="text-sm font-semibold">Smoking allowed</div>
+              <div className="text-sm font-semibold">{t('enhanceOwner.policies.smoking.yes')}</div>
             </EnhanceProfileSelectionCard>
             <EnhanceProfileSelectionCard
               role="owner"
@@ -149,7 +151,7 @@ export default function OwnerPoliciesPage() {
               onClick={() => setSmokingAllowed(false)}
             >
               <div className="text-2xl mb-1">🚭</div>
-              <div className="text-sm font-semibold">Non-smoking</div>
+              <div className="text-sm font-semibold">{t('enhanceOwner.policies.smoking.no')}</div>
             </EnhanceProfileSelectionCard>
           </div>
         </EnhanceProfileSection>
@@ -160,15 +162,15 @@ export default function OwnerPoliciesPage() {
             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
               <Calendar className="w-4 h-4 text-blue-600" />
             </div>
-            Minimum lease duration (optional)
+            {t('enhanceOwner.policies.leaseDuration.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: '', label: 'No preference' },
-              { value: '1', label: '1 month' },
-              { value: '3', label: '3 months' },
-              { value: '6', label: '6 months' },
-              { value: '12', label: '12 months' },
+              { value: '', key: 'noPreference' },
+              { value: '1', key: 'month1' },
+              { value: '3', key: 'months3' },
+              { value: '6', key: 'months6' },
+              { value: '12', key: 'months12' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value || 'none'}
@@ -176,7 +178,7 @@ export default function OwnerPoliciesPage() {
                 selected={minimumLeaseDuration === option.value}
                 onClick={() => setMinimumLeaseDuration(option.value)}
               >
-                {option.label}
+                {t(`enhanceOwner.policies.leaseDuration.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -188,15 +190,15 @@ export default function OwnerPoliciesPage() {
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <Euro className="w-4 h-4 text-green-600" />
             </div>
-            Typical deposit (optional)
+            {t('enhanceOwner.policies.deposit.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: '', label: 'Not specified' },
-              { value: 'half-month', label: 'Half month\'s rent' },
-              { value: '1-month', label: '1 month\'s rent' },
-              { value: '2-months', label: '2 months\' rent' },
-              { value: 'negotiable', label: 'Negotiable' },
+              { value: '', key: 'notSpecified' },
+              { value: 'half-month', key: 'halfMonth' },
+              { value: '1-month', key: 'oneMonth' },
+              { value: '2-months', key: 'twoMonths' },
+              { value: 'negotiable', key: 'negotiable' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value || 'none'}
@@ -204,7 +206,7 @@ export default function OwnerPoliciesPage() {
                 selected={depositAmount === option.value}
                 onClick={() => setDepositAmount(option.value)}
               >
-                {option.label}
+                {t(`enhanceOwner.policies.deposit.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -216,14 +218,14 @@ export default function OwnerPoliciesPage() {
             <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
               <Shield className="w-4 h-4 text-yellow-600" />
             </div>
-            Notice period for move-out (optional)
+            {t('enhanceOwner.policies.noticePeriod.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: '', label: 'Not specified' },
-              { value: '1-month', label: '1 month' },
-              { value: '2-months', label: '2 months' },
-              { value: '3-months', label: '3 months' },
+              { value: '', key: 'notSpecified' },
+              { value: '1-month', key: 'month1' },
+              { value: '2-months', key: 'months2' },
+              { value: '3-months', key: 'months3' },
             ].map((option) => (
               <EnhanceProfileSelectionCard
                 key={option.value || 'none'}
@@ -231,16 +233,16 @@ export default function OwnerPoliciesPage() {
                 selected={noticePeriod === option.value}
                 onClick={() => setNoticePeriod(option.value)}
               >
-                {option.label}
+                {t(`enhanceOwner.policies.noticePeriod.${option.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
         </EnhanceProfileSection>
 
         {/* Info box */}
-        <EnhanceProfileInfoBox role="owner" title="Tip:">
+        <EnhanceProfileInfoBox role="owner" title={t('enhanceOwner.policies.tip')}>
           <p className="text-sm text-gray-700">
-            Clear policies help attract the right tenants and avoid misunderstandings later.
+            {t('enhanceOwner.policies.tipContent')}
           </p>
         </EnhanceProfileInfoBox>
       </div>
@@ -256,13 +258,13 @@ export default function OwnerPoliciesPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          Save Changes
+          {t('enhanceOwner.common.saveChanges')}
         </button>
         <button
           onClick={handleCancel}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

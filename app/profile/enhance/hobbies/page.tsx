@@ -125,22 +125,22 @@ export default function EnhanceHobbiesPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your hobbies..."
+      loadingText={t('profileEnhance.hobbies.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Your Hobbies & Interests"
-        description="Help us find roommates who share your passions"
+        title={t('profileEnhance.hobbies.title')}
+        description={t('profileEnhance.hobbies.description')}
         icon={<Heart className="w-8 h-8 text-orange-600" />}
       />
 
       <div className="space-y-6">
         {/* Common Hobbies */}
         <EnhanceProfileSection>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Select from common hobbies:</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{t('profileEnhance.hobbies.selectCommon')}</h2>
           <div className="flex flex-wrap gap-2">
             {commonHobbies.map((hobby) => (
               <EnhanceProfileTag
@@ -149,7 +149,7 @@ export default function EnhanceHobbiesPage() {
                 selected={hobbies.includes(hobby)}
                 onClick={() => handleToggleCommonHobby(hobby)}
               >
-                {hobby}
+                {getHobbyLabel(hobby)}
               </EnhanceProfileTag>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function EnhanceHobbiesPage() {
 
         {/* Custom Hobbies */}
         <EnhanceProfileSection>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Add your own hobbies:</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{t('profileEnhance.hobbies.addOwn')}</h2>
           <div className="flex gap-2">
             <input
               type="text"
@@ -165,7 +165,7 @@ export default function EnhanceHobbiesPage() {
               onChange={(e) => setNewHobby(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleAddHobby()}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Add a hobby..."
+              placeholder={t('profileEnhance.hobbies.addPlaceholder')}
             />
             <EnhanceProfileButton
               role="searcher"
@@ -173,13 +173,13 @@ export default function EnhanceHobbiesPage() {
               onClick={handleAddHobby}
               className="px-6"
             >
-              Add
+              {t('profileEnhance.common.add')}
             </EnhanceProfileButton>
           </div>
 
           {hobbies.filter(h => !commonHobbies.includes(h)).length > 0 && (
             <div className="mt-4">
-              <p className="text-sm text-gray-600 mb-2">Your custom hobbies:</p>
+              <p className="text-sm text-gray-600 mb-2">{t('profileEnhance.hobbies.customHobbies')}</p>
               <div className="flex flex-wrap gap-2">
                 {hobbies.filter(h => !commonHobbies.includes(h)).map((hobby) => (
                   <EnhanceProfileTag
@@ -200,7 +200,7 @@ export default function EnhanceHobbiesPage() {
         {hobbies.length > 0 && (
           <EnhanceProfileInfoBox role="searcher">
             <p className="text-sm font-medium">
-              {hobbies.length} {hobbies.length === 1 ? 'hobby' : 'hobbies'} selected
+              {hobbies.length} {hobbies.length === 1 ? t('profileEnhance.hobbies.selected') : t('profileEnhance.hobbies.selectedPlural')}
             </p>
           </EnhanceProfileInfoBox>
         )}
@@ -212,14 +212,14 @@ export default function EnhanceHobbiesPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleNext}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -6,6 +6,7 @@ import { Wifi, Car, Dumbbell, Tv, Shirt, Coffee, Sparkles } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OwnerServicesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [amenities, setAmenities] = useState<string[]>([]);
@@ -49,7 +51,7 @@ export default function OwnerServicesPage() {
       }
     } catch (error) {
       // FIXME: Use logger.error('Error loading services data:', error);
-      toast.error('Failed to load existing data');
+      toast.error(t('enhanceOwner.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +62,7 @@ export default function OwnerServicesPage() {
       amenities,
       includedServices,
     });
-    toast.success('Services saved!');
+    toast.success(t('enhanceOwner.services.saved'));
     router.push('/dashboard/my-profile-owner');
   };
 
@@ -85,40 +87,40 @@ export default function OwnerServicesPage() {
   };
 
   const amenitiesList = [
-    { value: 'wifi', label: 'WiFi', icon: Wifi },
-    { value: 'parking', label: 'Parking', icon: Car },
-    { value: 'gym', label: 'Gym/Fitness', icon: Dumbbell },
-    { value: 'tv', label: 'TV/Streaming', icon: Tv },
-    { value: 'laundry', label: 'Laundry', icon: Shirt },
-    { value: 'kitchen', label: 'Full Kitchen', icon: Coffee },
+    { value: 'wifi', key: 'wifi', icon: Wifi },
+    { value: 'parking', key: 'parking', icon: Car },
+    { value: 'gym', key: 'gym', icon: Dumbbell },
+    { value: 'tv', key: 'tv', icon: Tv },
+    { value: 'laundry', key: 'laundry', icon: Shirt },
+    { value: 'kitchen', key: 'kitchen', icon: Coffee },
   ];
 
   const servicesList = [
-    { value: 'utilities', label: 'Utilities Included', emoji: '💡' },
-    { value: 'cleaning', label: 'Cleaning Service', emoji: '🧹' },
-    { value: 'maintenance', label: '24/7 Maintenance', emoji: '🔧' },
-    { value: 'insurance', label: 'Property Insurance', emoji: '🛡️' },
+    { value: 'utilities', key: 'utilities', emoji: '💡' },
+    { value: 'cleaning', key: 'cleaning', emoji: '🧹' },
+    { value: 'maintenance', key: 'maintenance', emoji: '🔧' },
+    { value: 'insurance', key: 'insurance', emoji: '🛡️' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="owner"
       backUrl="/dashboard/my-profile-owner"
-      backLabel="Back to Profile"
+      backLabel={t('enhanceOwner.common.backToProfile')}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceOwner.common.loading')}
     >
       <EnhanceProfileHeading
         role="owner"
-        title="What You Offer"
-        description="Highlight amenities and services to attract tenants"
+        title={t('enhanceOwner.services.title')}
+        description={t('enhanceOwner.services.description')}
         icon={<Sparkles className="w-8 h-8 text-purple-600" />}
       />
 
       <div className="space-y-8">
         {/* Amenities */}
         <EnhanceProfileSection>
-          <h3 className="font-semibold text-gray-900 mb-4">Available Amenities</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">{t('enhanceOwner.services.amenitiesTitle')}</h3>
           <div className="grid grid-cols-2 gap-3">
             {amenitiesList.map((amenity) => {
               const Icon = amenity.icon;
@@ -134,7 +136,7 @@ export default function OwnerServicesPage() {
                     isSelected ? 'text-purple-600' : 'text-gray-400'
                   }`} />
                   <div className="text-sm font-semibold">
-                    {amenity.label}
+                    {t(`enhanceOwner.services.amenities.${amenity.key}`)}
                   </div>
                 </EnhanceProfileSelectionCard>
               );
@@ -144,7 +146,7 @@ export default function OwnerServicesPage() {
 
         {/* Included Services */}
         <EnhanceProfileSection>
-          <h3 className="font-semibold text-gray-900 mb-4">Included Services</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">{t('enhanceOwner.services.servicesTitle')}</h3>
           <div className="space-y-2">
             {servicesList.map((service) => {
               const isSelected = includedServices.includes(service.value);
@@ -158,7 +160,7 @@ export default function OwnerServicesPage() {
                 >
                   <span className="text-2xl">{service.emoji}</span>
                   <span className="font-semibold flex-1">
-                    {service.label}
+                    {t(`enhanceOwner.services.servicesList.${service.key}`)}
                   </span>
                   {isSelected && (
                     <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
@@ -172,9 +174,9 @@ export default function OwnerServicesPage() {
         </EnhanceProfileSection>
 
         {/* Info box */}
-        <EnhanceProfileInfoBox role="owner" title="Pro Tip:">
+        <EnhanceProfileInfoBox role="owner" title={t('enhanceOwner.services.proTip')}>
           <p className="text-sm text-gray-700">
-            Listings with amenities listed get 2x more inquiries than those without.
+            {t('enhanceOwner.services.proTipContent')}
           </p>
         </EnhanceProfileInfoBox>
       </div>
@@ -185,13 +187,13 @@ export default function OwnerServicesPage() {
           onClick={handleContinue}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save Changes
+          {t('enhanceOwner.common.saveChanges')}
         </button>
         <button
           onClick={handleCancel}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </EnhanceProfileLayout>

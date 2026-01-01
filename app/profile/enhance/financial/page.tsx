@@ -6,6 +6,7 @@ import { Euro, Shield, Briefcase } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function FinancialInfoPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [incomeRange, setIncomeRange] = useState('');
   const [hasGuarantor, setHasGuarantor] = useState(false);
@@ -90,27 +92,37 @@ export default function FinancialInfoPage() {
   const canContinue = incomeRange && employmentType;
 
   const incomeRanges = [
-    { value: 'under-1000', label: '< €1,000' },
-    { value: '1000-1500', label: '€1,000 - €1,500' },
-    { value: '1500-2000', label: '€1,500 - €2,000' },
-    { value: '2000-3000', label: '€2,000 - €3,000' },
-    { value: '3000-5000', label: '€3,000 - €5,000' },
-    { value: 'over-5000', label: '> €5,000' },
+    { value: 'under-1000', key: 'under1000' },
+    { value: '1000-1500', key: 'range1000to1500' },
+    { value: '1500-2000', key: 'range1500to2000' },
+    { value: '2000-3000', key: 'range2000to3000' },
+    { value: '3000-5000', key: 'range3000to5000' },
+    { value: 'over-5000', key: 'over5000' },
+  ];
+
+  const employmentTypes = [
+    { value: 'full-time', key: 'fullTime' },
+    { value: 'part-time', key: 'partTime' },
+    { value: 'freelance', key: 'freelance' },
+    { value: 'contract', key: 'contract' },
+    { value: 'internship', key: 'internship' },
+    { value: 'student', key: 'student' },
+    { value: 'unemployed', key: 'unemployed' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('profileEnhance.financial.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Financial Information"
-        description="Optional information to help landlords understand your financial situation"
+        title={t('profileEnhance.financial.title')}
+        description={t('profileEnhance.financial.description')}
         icon={<Euro className="w-8 h-8 text-orange-600" />}
       />
 
@@ -121,7 +133,7 @@ export default function FinancialInfoPage() {
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <Euro className="w-4 h-4 text-green-600" />
             </div>
-            Monthly income range
+            {t('profileEnhance.financial.incomeRange.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {incomeRanges.map((range) => (
@@ -131,7 +143,7 @@ export default function FinancialInfoPage() {
                 selected={incomeRange === range.value}
                 onClick={() => setIncomeRange(range.value)}
               >
-                {range.label}
+                {t(`profileEnhance.financial.incomeRange.${range.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -146,8 +158,8 @@ export default function FinancialInfoPage() {
                   <Shield className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">I have a guarantor available</span>
-                  <span className="text-sm text-gray-500">Someone who can vouch for rent payments</span>
+                  <span className="font-medium text-gray-700 block">{t('profileEnhance.financial.guarantor.title')}</span>
+                  <span className="text-sm text-gray-500">{t('profileEnhance.financial.guarantor.description')}</span>
                 </div>
               </div>
               <button
@@ -172,25 +184,17 @@ export default function FinancialInfoPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <Briefcase className="w-4 h-4 text-orange-600" />
             </div>
-            Employment type
+            {t('profileEnhance.financial.employment.label')}
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {[
-              { value: 'full-time', label: 'Full-time' },
-              { value: 'part-time', label: 'Part-time' },
-              { value: 'freelance', label: 'Freelance' },
-              { value: 'contract', label: 'Contract' },
-              { value: 'internship', label: 'Internship' },
-              { value: 'student', label: 'Student' },
-              { value: 'unemployed', label: 'Unemployed' }
-            ].map((type) => (
+            {employmentTypes.map((type) => (
               <EnhanceProfileSelectionCard
                 key={type.value}
                 role="searcher"
                 selected={employmentType === type.value}
                 onClick={() => setEmploymentType(type.value)}
               >
-                {type.label}
+                {t(`profileEnhance.financial.employment.${type.key}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -203,10 +207,9 @@ export default function FinancialInfoPage() {
               <Shield className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 mb-1">Your privacy matters</h3>
+              <h3 className="font-medium text-gray-900 mb-1">{t('profileEnhance.financial.privacy.title')}</h3>
               <p className="text-sm text-gray-600">
-                This information is only shared with verified landlords when you express interest in their properties.
-                You can update or remove it anytime from your profile settings.
+                {t('profileEnhance.financial.privacy.description')}
               </p>
             </div>
           </div>
@@ -219,7 +222,7 @@ export default function FinancialInfoPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
@@ -227,7 +230,7 @@ export default function FinancialInfoPage() {
           disabled={!canContinue}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

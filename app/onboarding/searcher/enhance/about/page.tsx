@@ -6,6 +6,7 @@ import { User, MessageCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -15,6 +16,7 @@ import {
 
 export default function OnboardingEnhanceAboutPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [bio, setBio] = useState('');
   const [aboutMe, setAboutMe] = useState('');
@@ -71,15 +73,15 @@ export default function OnboardingEnhanceAboutPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Tell Us About Yourself"
-        description="Share a bit about who you are (all fields are optional)"
+        title={t('enhanceSearcher.about.title')}
+        description={t('enhanceSearcher.about.description')}
         icon={<User className="w-8 h-8 text-orange-600" />}
       />
 
@@ -88,13 +90,13 @@ export default function OnboardingEnhanceAboutPage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="searcher"
-            label="Short Bio"
-            helperText="A brief introduction that appears at the top of your profile"
+            label={t('enhanceSearcher.about.bio.label')}
+            helperText={t('enhanceSearcher.about.bio.helper')}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={2}
             maxLength={200}
-            placeholder="e.g., Tech student passionate about sustainability and outdoor activities..."
+            placeholder={t('enhanceSearcher.about.bio.placeholder')}
           />
         </EnhanceProfileSection>
 
@@ -102,13 +104,13 @@ export default function OnboardingEnhanceAboutPage() {
         <EnhanceProfileSection>
           <EnhanceProfileTextarea
             role="searcher"
-            label="More About Me"
-            helperText="Share more details about your lifestyle, interests, or what makes you unique"
+            label={t('enhanceSearcher.about.aboutMe.label')}
+            helperText={t('enhanceSearcher.about.aboutMe.helper')}
             value={aboutMe}
             onChange={(e) => setAboutMe(e.target.value)}
             rows={4}
             maxLength={500}
-            placeholder="e.g., I'm a communication student who loves techno and dancing. I work from home sometimes, enjoy cooking healthy meals, and like to keep a tidy space..."
+            placeholder={t('enhanceSearcher.about.aboutMe.placeholder')}
           />
         </EnhanceProfileSection>
 
@@ -117,11 +119,11 @@ export default function OnboardingEnhanceAboutPage() {
           <div className="flex items-center gap-2 mb-2">
             <MessageCircle className="w-5 h-5 text-orange-600" />
             <label className="block text-sm font-medium text-gray-700">
-              What I'm Looking For
+              {t('enhanceSearcher.about.lookingFor.label')}
             </label>
           </div>
           <p className="text-xs text-gray-500 mb-3">
-            Describe your ideal living situation and the kind of people you'd like to live with
+            {t('enhanceSearcher.about.lookingFor.helper')}
           </p>
           <EnhanceProfileTextarea
             role="searcher"
@@ -130,7 +132,7 @@ export default function OnboardingEnhanceAboutPage() {
             onChange={(e) => setLookingFor(e.target.value)}
             rows={3}
             maxLength={300}
-            placeholder="e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities..."
+            placeholder={t('enhanceSearcher.about.lookingFor.placeholder')}
           />
         </EnhanceProfileSection>
       </div>
@@ -141,13 +143,13 @@ export default function OnboardingEnhanceAboutPage() {
           onClick={handleNext}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

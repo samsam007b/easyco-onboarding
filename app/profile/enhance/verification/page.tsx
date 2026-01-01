@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Shield, Mail, Phone, CheckCircle, XCircle, Clock, AlertCircle, Award, Camera, Linkedin } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -15,6 +16,7 @@ import VerificationBadge, { getVerificationLevel, type VerificationLevel } from 
 
 export default function VerificationPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [emailVerified, setEmailVerified] = useState(false);
@@ -57,7 +59,7 @@ export default function VerificationPage() {
         setEmailVerified(profileData.email_verified || false);
       }
     } catch (error) {
-      toast.error('Failed to load verification status');
+      toast.error(t('profileEnhance.verification.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -80,39 +82,39 @@ export default function VerificationPage() {
   const getBadgeInfo = (level: VerificationLevel) => {
     const badges: Record<VerificationLevel, { name: string; color: string; bg: string; border: string; description: string }> = {
       starter: {
-        name: 'Starter',
+        name: t('profileEnhance.verification.badges.starter.name'),
         color: 'text-gray-600',
         bg: 'bg-gray-50',
         border: 'border-gray-200',
-        description: 'Aucune vérification'
+        description: t('profileEnhance.verification.badges.starter.description')
       },
       basic: {
-        name: 'Basic',
+        name: t('profileEnhance.verification.badges.basic.name'),
         color: 'text-blue-600',
         bg: 'bg-blue-50',
         border: 'border-blue-200',
-        description: 'Email ou téléphone vérifié'
+        description: t('profileEnhance.verification.badges.basic.description')
       },
       verified: {
-        name: 'Verified',
+        name: t('profileEnhance.verification.badges.verified.name'),
         color: 'text-blue-700',
         bg: 'bg-blue-100',
         border: 'border-blue-300',
-        description: 'Email + Téléphone vérifiés'
+        description: t('profileEnhance.verification.badges.verified.description')
       },
       itsme: {
-        name: 'ITSME',
+        name: t('profileEnhance.verification.badges.itsme.name'),
         color: 'text-orange-600',
         bg: 'bg-orange-50',
         border: 'border-orange-200',
-        description: 'Identité vérifiée via ITSME'
+        description: t('profileEnhance.verification.badges.itsme.description')
       },
       premium: {
-        name: 'Premium',
+        name: t('profileEnhance.verification.badges.premium.name'),
         color: 'text-purple-700',
         bg: 'bg-gradient-to-r from-purple-50 to-orange-50',
         border: 'border-purple-300',
-        description: 'ITSME + Email vérifiés'
+        description: t('profileEnhance.verification.badges.premium.description')
       }
     };
     return badges[level];
@@ -120,23 +122,23 @@ export default function VerificationPage() {
 
   const handleResendEmailVerification = async () => {
     try {
-      toast.success('Verification email sent! Please check your inbox.');
+      toast.success(t('profileEnhance.verification.email.sent'));
     } catch (error) {
-      toast.error('Failed to send verification email');
+      toast.error(t('profileEnhance.verification.email.sendFailed'));
     }
   };
 
   const handlePhoneVerification = async () => {
     if (!phoneNumber || phoneNumber.length < 10) {
-      toast.error('Please enter a valid phone number');
+      toast.error(t('profileEnhance.verification.phone.invalid'));
       return;
     }
 
     setIsSubmittingPhone(true);
     try {
-      toast.info('Phone verification is coming soon!');
+      toast.info(t('profileEnhance.verification.phone.comingSoon'));
     } catch (error) {
-      toast.error('Failed to verify phone number');
+      toast.error(t('profileEnhance.verification.phone.verifyFailed'));
     } finally {
       setIsSubmittingPhone(false);
     }
@@ -159,15 +161,15 @@ export default function VerificationPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading verification status..."
+      loadingText={t('profileEnhance.verification.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Profile Verification"
-        description="Build trust and unlock benefits with each verification"
+        title={t('profileEnhance.verification.title')}
+        description={t('profileEnhance.verification.description')}
         icon={<Shield className="w-8 h-8 text-orange-600" />}
       />
 
@@ -186,7 +188,7 @@ export default function VerificationPage() {
             </div>
             <div className="text-right">
               <div className={`text-3xl font-bold ${badgeInfo.color}`}>{progress}%</div>
-              <p className="text-xs text-gray-500">Complete</p>
+              <p className="text-xs text-gray-500">{t('profileEnhance.verification.progress.complete')}</p>
             </div>
           </div>
 
@@ -202,9 +204,9 @@ export default function VerificationPage() {
           {badgeLevel !== 'premium' && (
             <div className="mt-4 p-3 bg-white/50 rounded-lg border border-gray-200">
               <p className="text-xs font-medium text-gray-700">
-                {badgeLevel === 'starter' && '✨ Complète 1 vérification pour débloquer le badge Basic (bleu clair)'}
-                {badgeLevel === 'basic' && '✨ Complète 2 vérifications pour débloquer le badge Verified (bleu)'}
-                {badgeLevel === 'verified' && '✨ Complète les 4 vérifications pour débloquer le badge Premium (bleu foncé)'}
+                {badgeLevel === 'starter' && `✨ ${t('profileEnhance.verification.progress.nextBadge.starter')}`}
+                {badgeLevel === 'basic' && `✨ ${t('profileEnhance.verification.progress.nextBadge.basic')}`}
+                {badgeLevel === 'verified' && `✨ ${t('profileEnhance.verification.progress.nextBadge.verified')}`}
               </p>
             </div>
           )}
@@ -223,7 +225,7 @@ export default function VerificationPage() {
                   <Mail className={`w-6 h-6 ${emailVerified ? 'text-green-600' : 'text-orange-600'}`} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Email Verification</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{t('profileEnhance.verification.email.title')}</h3>
                   <p className="text-sm text-gray-600">{userEmail}</p>
                 </div>
               </div>
@@ -237,19 +239,19 @@ export default function VerificationPage() {
             {emailVerified ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>Your email has been verified</span>
+                <span>{t('profileEnhance.verification.email.verified')}</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-orange-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Please verify your email address</span>
+                  <span>{t('profileEnhance.verification.email.pleaseVerify')}</span>
                 </div>
                 <button
                   onClick={handleResendEmailVerification}
                   className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
                 >
-                  Resend Verification Email
+                  {t('profileEnhance.verification.email.resend')}
                 </button>
               </div>
             )}
@@ -269,8 +271,8 @@ export default function VerificationPage() {
                   <Phone className={`w-6 h-6 ${phoneVerified ? 'text-green-600' : 'text-blue-600'}`} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Phone Verification</h3>
-                  <p className="text-sm text-gray-600">Quick SMS verification</p>
+                  <h3 className="text-lg font-semibold text-gray-900">{t('profileEnhance.verification.phone.title')}</h3>
+                  <p className="text-sm text-gray-600">{t('profileEnhance.verification.phone.quickSms')}</p>
                 </div>
               </div>
               {phoneVerified ? (
@@ -283,13 +285,13 @@ export default function VerificationPage() {
             {phoneVerified ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>Phone verified: {phoneNumber}</span>
+                <span>{t('profileEnhance.verification.phone.verified')}: {phoneNumber}</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-blue-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Coming soon: Verify via SMS</span>
+                  <span>{t('profileEnhance.verification.phone.comingSoon')}</span>
                 </div>
                 <div className="flex gap-2">
                   <input
@@ -305,7 +307,7 @@ export default function VerificationPage() {
                     disabled
                     className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium"
                   >
-                    Verify
+                    {t('profileEnhance.verification.phone.verify')}
                   </button>
                 </div>
               </div>
@@ -326,8 +328,8 @@ export default function VerificationPage() {
                   <Shield className={`w-6 h-6 ${idVerified ? 'text-green-600' : 'text-purple-600'}`} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">ID Verification</h3>
-                  <p className="text-sm text-gray-600">Vérifie ton identité avec itsme®</p>
+                  <h3 className="text-lg font-semibold text-gray-900">{t('profileEnhance.verification.id.title')}</h3>
+                  <p className="text-sm text-gray-600">{t('profileEnhance.verification.id.itsmeDescription')}</p>
                 </div>
               </div>
               {idVerified ? (
@@ -340,20 +342,20 @@ export default function VerificationPage() {
             {idVerified ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>Identité vérifiée</span>
+                <span>{t('profileEnhance.verification.id.verified')}</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-purple-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Bientôt disponible : Vérification d'identité avec itsme®</span>
+                  <span>{t('profileEnhance.verification.id.comingSoon')}</span>
                 </div>
                 <button
                   disabled
                   className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
                   <Shield className="w-4 h-4" />
-                  Vérifier avec itsme®
+                  {t('profileEnhance.verification.id.verifyWithItsme')}
                 </button>
               </div>
             )}
@@ -374,10 +376,10 @@ export default function VerificationPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    Background Check
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Premium</span>
+                    {t('profileEnhance.verification.backgroundCheck.title')}
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">{t('profileEnhance.verification.backgroundCheck.premium')}</span>
                   </h3>
-                  <p className="text-sm text-gray-600">Vérification des antécédents</p>
+                  <p className="text-sm text-gray-600">{t('profileEnhance.verification.backgroundCheck.description')}</p>
                 </div>
               </div>
               {backgroundCheck ? (
@@ -390,20 +392,20 @@ export default function VerificationPage() {
             {backgroundCheck ? (
               <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-4 h-4" />
-                <span>Vérification des antécédents complétée - Badge Premium débloqué !</span>
+                <span>{t('profileEnhance.verification.backgroundCheck.verified')}</span>
               </div>
             ) : (
               <div>
                 <div className="flex items-center gap-2 text-sm text-indigo-700 mb-3">
                   <AlertCircle className="w-4 h-4" />
-                  <span>Bientôt disponible : Vérification approfondie des antécédents</span>
+                  <span>{t('profileEnhance.verification.backgroundCheck.comingSoon')}</span>
                 </div>
                 <button
                   disabled
                   className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
                   <Award className="w-4 h-4" />
-                  Demander une vérification
+                  {t('profileEnhance.verification.backgroundCheck.request')}
                 </button>
               </div>
             )}
@@ -417,14 +419,14 @@ export default function VerificationPage() {
               <Award className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Débloque des avantages avec chaque badge</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{t('profileEnhance.verification.benefits.title')}</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
                     <VerificationBadge level="starter" size="sm" />
                   </div>
                   <div>
-                    <span className="font-medium">Starter (V gris):</span> Créer un profil & parcourir
+                    {t('profileEnhance.verification.benefits.starter')}
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -432,7 +434,7 @@ export default function VerificationPage() {
                     <VerificationBadge level="basic" size="sm" />
                   </div>
                   <div>
-                    <span className="font-medium">Basic (V bleu clair):</span> Apparaître dans les recherches + badge vérifié
+                    {t('profileEnhance.verification.benefits.basic')}
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -440,7 +442,7 @@ export default function VerificationPage() {
                     <VerificationBadge level="verified" size="sm" />
                   </div>
                   <div>
-                    <span className="font-medium">Verified (V bleu):</span> Priorité dans les résultats + réponses plus rapides
+                    {t('profileEnhance.verification.benefits.verified')}
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -448,7 +450,7 @@ export default function VerificationPage() {
                     <VerificationBadge level="premium" size="sm" />
                   </div>
                   <div>
-                    <span className="font-medium">Premium (V bleu foncé):</span> Meilleures offres + candidatures instantanées
+                    {t('profileEnhance.verification.benefits.premium')}
                   </div>
                 </div>
               </div>
@@ -463,14 +465,14 @@ export default function VerificationPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleSave}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Done
+          {t('profileEnhance.verification.done')}
         </button>
       </div>
     </EnhanceProfileLayout>

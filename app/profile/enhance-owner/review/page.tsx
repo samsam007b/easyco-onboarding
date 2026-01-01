@@ -7,6 +7,7 @@ import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { saveOnboardingData } from '@/lib/onboarding-helpers';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -19,6 +20,7 @@ export const dynamic = 'force-dynamic';
 
 export default function OwnerEnhanceReviewPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [userType, setUserType] = useState<string>('');
@@ -73,7 +75,7 @@ export default function OwnerEnhanceReviewPage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('Please log in to continue');
+        toast.error(t('enhanceOwner.review.errors.loginRequired'));
         return;
       }
 
@@ -103,17 +105,17 @@ export default function OwnerEnhanceReviewPage() {
         safeLocalStorage.remove('ownerPolicies');
         safeLocalStorage.remove('ownerServices');
 
-        toast.success('Enhanced profile saved successfully!');
+        toast.success(t('enhanceOwner.review.success'));
 
         setTimeout(() => {
           router.push(`/dashboard/${userType}`);
         }, 1000);
       } else {
-        throw new Error('Failed to save enhanced profile');
+        throw new Error(t('enhanceOwner.review.errors.saveFailed'));
       }
     } catch (error: any) {
       // FIXME: Use logger.error('Save error:', error);
-      toast.error(error.message || 'Failed to save');
+      toast.error(error.message || t('enhanceOwner.review.errors.saveFailed'));
       setIsSaving(false);
     }
   };
@@ -122,14 +124,14 @@ export default function OwnerEnhanceReviewPage() {
     <EnhanceProfileLayout
       role="owner"
       backUrl="/dashboard/my-profile-owner"
-      backLabel="Back to Profile"
+      backLabel={t('enhanceOwner.common.backToProfile')}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceOwner.common.loading')}
     >
       <EnhanceProfileHeading
         role="owner"
-        title="Review Your Enhanced Profile"
-        description="Make sure everything looks good before saving"
+        title={t('enhanceOwner.review.title')}
+        description={t('enhanceOwner.review.description')}
         icon={<CheckCircle className="w-8 h-8 text-purple-600" />}
       />
 
@@ -137,77 +139,77 @@ export default function OwnerEnhanceReviewPage() {
         {/* Experience & Motivation */}
         <EnhanceProfileSection>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Experience & Motivation</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('enhanceOwner.review.experienceSection')}</h2>
             <button
               onClick={() => router.push('/profile/enhance-owner/experience')}
               className="text-sm text-purple-600 hover:opacity-70"
             >
-              Edit
+              {t('enhanceOwner.review.edit')}
             </button>
           </div>
           <div className="space-y-2 text-sm">
             {data.experience?.experienceYears && (
-              <div><span className="text-gray-600">Experience:</span> <span className="font-medium">{data.experience.experienceYears} years</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.experience')}</span> <span className="font-medium">{data.experience.experienceYears} {t('enhanceOwner.review.labels.years')}</span></div>
             )}
             {data.experience?.managementStyle && (
-              <div><span className="text-gray-600">Management:</span> <span className="font-medium">{data.experience.managementStyle}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.management')}</span> <span className="font-medium">{data.experience.managementStyle}</span></div>
             )}
             {data.experience?.primaryMotivation && (
-              <div><span className="text-gray-600">Motivation:</span> <span className="font-medium">{data.experience.primaryMotivation}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.motivation')}</span> <span className="font-medium">{data.experience.primaryMotivation}</span></div>
             )}
             {data.experience?.bio && (
-              <div className="pt-2 border-t"><span className="text-gray-600">Bio:</span> <p className="text-gray-900 mt-1">{data.experience.bio}</p></div>
+              <div className="pt-2 border-t"><span className="text-gray-600">{t('enhanceOwner.review.labels.bio')}</span> <p className="text-gray-900 mt-1">{data.experience.bio}</p></div>
             )}
-            {!data.experience?.experienceYears && <p className="text-gray-400 italic">No data entered</p>}
+            {!data.experience?.experienceYears && <p className="text-gray-400 italic">{t('enhanceOwner.review.labels.noData')}</p>}
           </div>
         </EnhanceProfileSection>
 
         {/* Policies */}
         <EnhanceProfileSection>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Tenant Policies</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('enhanceOwner.review.policiesSection')}</h2>
             <button
               onClick={() => router.push('/profile/enhance-owner/policies')}
               className="text-sm text-purple-600 hover:opacity-70"
             >
-              Edit
+              {t('enhanceOwner.review.edit')}
             </button>
           </div>
           <div className="space-y-2 text-sm">
             {data.policies?.petsAllowed !== null && data.policies?.petsAllowed !== undefined && (
-              <div><span className="text-gray-600">Pets:</span> <span className="font-medium">{data.policies.petsAllowed ? 'Allowed' : 'Not allowed'}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.pets')}</span> <span className="font-medium">{data.policies.petsAllowed ? t('enhanceOwner.review.labels.allowed') : t('enhanceOwner.review.labels.notAllowed')}</span></div>
             )}
             {data.policies?.smokingAllowed !== null && data.policies?.smokingAllowed !== undefined && (
-              <div><span className="text-gray-600">Smoking:</span> <span className="font-medium">{data.policies.smokingAllowed ? 'Allowed' : 'Not allowed'}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.smoking')}</span> <span className="font-medium">{data.policies.smokingAllowed ? t('enhanceOwner.review.labels.allowed') : t('enhanceOwner.review.labels.notAllowed')}</span></div>
             )}
             {data.policies?.minimumLeaseDuration && (
-              <div><span className="text-gray-600">Min lease:</span> <span className="font-medium">{data.policies.minimumLeaseDuration} months</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.minLease')}</span> <span className="font-medium">{data.policies.minimumLeaseDuration} {t('enhanceOwner.review.labels.months')}</span></div>
             )}
             {data.policies?.depositAmount && (
-              <div><span className="text-gray-600">Deposit:</span> <span className="font-medium">{data.policies.depositAmount}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.deposit')}</span> <span className="font-medium">{data.policies.depositAmount}</span></div>
             )}
             {data.policies?.noticePeriod && (
-              <div><span className="text-gray-600">Notice period:</span> <span className="font-medium">{data.policies.noticePeriod}</span></div>
+              <div><span className="text-gray-600">{t('enhanceOwner.review.labels.noticePeriod')}</span> <span className="font-medium">{data.policies.noticePeriod}</span></div>
             )}
-            {(!data.policies || (data.policies.petsAllowed === null && data.policies.smokingAllowed === null)) && <p className="text-gray-400 italic">No data entered</p>}
+            {(!data.policies || (data.policies.petsAllowed === null && data.policies.smokingAllowed === null)) && <p className="text-gray-400 italic">{t('enhanceOwner.review.labels.noData')}</p>}
           </div>
         </EnhanceProfileSection>
 
         {/* Services */}
         <EnhanceProfileSection>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Services & Amenities</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('enhanceOwner.review.servicesSection')}</h2>
             <button
               onClick={() => router.push('/profile/enhance-owner/services')}
               className="text-sm text-purple-600 hover:opacity-70"
             >
-              Edit
+              {t('enhanceOwner.review.edit')}
             </button>
           </div>
           <div className="space-y-3 text-sm">
             {data.services?.amenities?.length > 0 && (
               <div>
-                <span className="text-gray-600 block mb-1">Amenities:</span>
+                <span className="text-gray-600 block mb-1">{t('enhanceOwner.review.labels.amenities')}</span>
                 <div className="flex flex-wrap gap-2">
                   {data.services.amenities.map((amenity: string) => (
                     <EnhanceProfileTag key={amenity} role="owner">
@@ -219,7 +221,7 @@ export default function OwnerEnhanceReviewPage() {
             )}
             {data.services?.includedServices?.length > 0 && (
               <div>
-                <span className="text-gray-600 block mb-1">Services:</span>
+                <span className="text-gray-600 block mb-1">{t('enhanceOwner.review.labels.services')}</span>
                 <div className="flex flex-wrap gap-2">
                   {data.services.includedServices.map((service: string) => (
                     <span key={service} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
@@ -230,7 +232,7 @@ export default function OwnerEnhanceReviewPage() {
               </div>
             )}
             {(!data.services?.amenities?.length && !data.services?.includedServices?.length) && (
-              <p className="text-gray-400 italic">No data entered</p>
+              <p className="text-gray-400 italic">{t('enhanceOwner.review.labels.noData')}</p>
             )}
           </div>
         </EnhanceProfileSection>
@@ -250,12 +252,12 @@ export default function OwnerEnhanceReviewPage() {
           {isSaving ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Saving...
+              {t('enhanceOwner.review.saving')}
             </>
           ) : (
             <>
               <Save className="w-5 h-5" />
-              Save Enhanced Profile
+              {t('enhanceOwner.review.saveProfile')}
             </>
           )}
         </button>
@@ -264,7 +266,7 @@ export default function OwnerEnhanceReviewPage() {
           disabled={isSaving}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2 disabled:opacity-50"
         >
-          Skip for now
+          {t('enhanceOwner.review.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

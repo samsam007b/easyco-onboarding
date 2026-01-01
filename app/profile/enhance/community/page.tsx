@@ -6,6 +6,7 @@ import { PartyPopper, Users, UtensilsCrossed, Sparkles } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function CommunityEventsPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [eventInterest, setEventInterest] = useState<'low' | 'medium' | 'high' | ''>('');
   const [enjoySharedMeals, setEnjoySharedMeals] = useState(false);
@@ -90,24 +92,24 @@ export default function CommunityEventsPage() {
   const canContinue = eventInterest !== '';
 
   const interestLevels = [
-    { value: 'low' as const, label: 'Low', description: 'Prefer quiet independence' },
-    { value: 'medium' as const, label: 'Medium', description: 'Occasional socializing' },
-    { value: 'high' as const, label: 'High', description: 'Love community events!' },
+    { value: 'low' as const, labelKey: 'low', descriptionKey: 'low' },
+    { value: 'medium' as const, labelKey: 'medium', descriptionKey: 'medium' },
+    { value: 'high' as const, labelKey: 'high', descriptionKey: 'high' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/profile"
-      backLabel="Back to Profile"
+      backLabel={t('profileEnhance.common.backToProfile')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your preferences..."
+      loadingText={t('profileEnhance.community.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Community & Events"
-        description="How interested are you in community events, parties, and social gatherings?"
+        title={t('profileEnhance.community.title')}
+        description={t('profileEnhance.community.description')}
         icon={<PartyPopper className="w-8 h-8 text-orange-600" />}
       />
 
@@ -118,7 +120,7 @@ export default function CommunityEventsPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <PartyPopper className="w-4 h-4 text-orange-600" />
             </div>
-            Event participation interest
+            {t('profileEnhance.community.eventInterest.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
             {interestLevels.map((level) => (
@@ -131,11 +133,11 @@ export default function CommunityEventsPage() {
                     : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
                 }`}
               >
-                <span className="font-semibold text-sm">{level.label}</span>
+                <span className="font-semibold text-sm">{t(`profileEnhance.community.eventInterest.${level.labelKey}.label`)}</span>
                 <span className={`text-xs text-center ${
                   eventInterest === level.value ? 'text-orange-100' : 'text-gray-500'
                 }`}>
-                  {level.description}
+                  {t(`profileEnhance.community.eventInterest.${level.descriptionKey}.description`)}
                 </span>
               </button>
             ))}
@@ -151,8 +153,8 @@ export default function CommunityEventsPage() {
                   <UtensilsCrossed className="w-4 h-4 text-orange-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">I'd enjoy shared meals</span>
-                  <span className="text-sm text-gray-500">Cook and eat together with flatmates</span>
+                  <span className="font-medium text-gray-700 block">{t('profileEnhance.community.sharedMeals.title')}</span>
+                  <span className="text-sm text-gray-500">{t('profileEnhance.community.sharedMeals.description')}</span>
                 </div>
               </div>
               <button
@@ -180,8 +182,8 @@ export default function CommunityEventsPage() {
                   <Users className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">Open to flatmate meetups</span>
-                  <span className="text-sm text-gray-500">Hang out, watch movies, game nights</span>
+                  <span className="font-medium text-gray-700 block">{t('profileEnhance.community.openToMeetups.title')}</span>
+                  <span className="text-sm text-gray-500">{t('profileEnhance.community.openToMeetups.description')}</span>
                 </div>
               </div>
               <button
@@ -207,19 +209,19 @@ export default function CommunityEventsPage() {
               <Sparkles className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Community Perks</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{t('profileEnhance.community.perks.title')}</h3>
               <ul className="space-y-1 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Find flatmates with similar social energy
+                  {t('profileEnhance.community.perks.perk1')}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Get matched with compatible living styles
+                  {t('profileEnhance.community.perks.perk2')}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Discover coliving spaces that fit your vibe
+                  {t('profileEnhance.community.perks.perk3')}
                 </li>
               </ul>
             </div>
@@ -233,7 +235,7 @@ export default function CommunityEventsPage() {
           onClick={handleSkip}
           className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          Skip
+          {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
@@ -241,7 +243,7 @@ export default function CommunityEventsPage() {
           disabled={!canContinue}
           className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Save
+          {t('profileEnhance.common.save')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 /**
  * Redirect page - /dashboard/my-profile now redirects to /profile
@@ -10,6 +11,7 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
  */
 export default function MyProfileRedirect() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Redirect to the new unified profile page
@@ -20,7 +22,7 @@ export default function MyProfileRedirect() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
       <div className="text-center">
         <LoadingHouse size={80} />
-        <p className="text-gray-600 mt-4">Redirection vers votre profil...</p>
+        <p className="text-gray-600 mt-4">{t('dashboard.myProfile.redirecting')}</p>
       </div>
     </div>
   );
