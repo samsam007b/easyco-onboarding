@@ -5,20 +5,10 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
-import {
-  Lock,
-  Key,
-  Users,
-  UserCheck,
-  Copy,
-  Check,
-  AlertCircle,
-  ArrowLeft,
-  Shield
-} from 'lucide-react';
+import { Lock, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { toast } from 'sonner';
+import PropertyCodesCard from '@/components/settings/PropertyCodesCard';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 interface PropertyCodes {
@@ -36,7 +26,6 @@ export default function PrivateCodesPage() {
   const t = getSection('settings')?.privateCodes;
   const [isLoading, setIsLoading] = useState(true);
   const [codes, setCodes] = useState<PropertyCodes | null>(null);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   useEffect(() => {
     loadCodes();
@@ -89,17 +78,6 @@ export default function PrivateCodesPage() {
     } catch (error) {
       console.error('Error loading codes:', error);
       setIsLoading(false);
-    }
-  };
-
-  const copyToClipboard = async (code: string, label: string) => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopiedCode(code);
-      toast.success(t?.messages?.copied?.[language]?.replace('{label}', label) || `${label} copié !`);
-      setTimeout(() => setCopiedCode(null), 2000);
-    } catch (error) {
-      toast.error(t?.messages?.copyError?.[language] || 'Erreur lors de la copie');
     }
   };
 
@@ -163,156 +141,17 @@ export default function PrivateCodesPage() {
           <p className="text-gray-600 text-lg">
             {t?.subtitle?.[language] || 'Codes d\'invitation pour'} {codes.property_title}
           </p>
-          {codes.is_creator && (
-            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 font-medium">
-              <Shield className="w-4 h-4" />
-              {t?.creatorBadge?.[language] || 'Vous êtes le créateur de cette résidence'}
-            </div>
-          )}
         </motion.div>
 
-        {/* Codes Cards */}
-        <div className="space-y-6">
-          {/* Invitation Code for Residents */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-orange-200 hover:border-orange-300 transition-all">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <Users className="w-7 h-7 text-white" />
-                </div>
-
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {t?.residentCode?.title?.[language] || 'Code Invitation Résidents'}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {t?.residentCode?.description?.[language] || 'Partagez ce code avec vos colocataires pour qu\'ils puissent rejoindre la résidence.'}
-                  </p>
-
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 px-6 py-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
-                      <p className="text-3xl font-bold text-gray-900 tracking-wider text-center font-mono">
-                        {codes.invitation_code}
-                      </p>
-                    </div>
-
-                    <Button
-                      onClick={() => copyToClipboard(codes.invitation_code, 'Code résidents')}
-                      variant="outline"
-                      className="rounded-xl border-2 border-orange-300 hover:bg-orange-50 h-14 px-6"
-                    >
-                      {copiedCode === codes.invitation_code ? (
-                        <>
-                          <Check className="w-5 h-5 text-green-600" />
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-5 h-5" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Owner Code (Only for creators) */}
-          {codes.is_creator && codes.owner_code && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200 hover:border-purple-300 transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <UserCheck className="w-7 h-7 text-white" />
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold text-gray-900">
-                        {t?.ownerCode?.title?.[language] || 'Code Propriétaire'}
-                      </h3>
-                      <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold">
-                        {t?.ownerCode?.confidential?.[language] || 'CONFIDENTIEL'}
-                      </span>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-4">
-                      {t?.ownerCode?.description?.[language] || 'Donnez ce code UNIQUEMENT au propriétaire légal pour qu\'il puisse claim la résidence et accéder aux fonctionnalités propriétaire.'}
-                    </p>
-
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border-2 border-purple-200">
-                        <p className="text-2xl font-bold text-gray-900 tracking-wider text-center font-mono">
-                          {codes.owner_code}
-                        </p>
-                      </div>
-
-                      <Button
-                        onClick={() => copyToClipboard(codes.owner_code!, 'Code propriétaire')}
-                        variant="outline"
-                        className="rounded-xl border-2 border-purple-300 hover:bg-purple-50 h-14 px-6"
-                      >
-                        {copiedCode === codes.owner_code ? (
-                          <>
-                            <Check className="w-5 h-5 text-green-600" />
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-5 h-5" />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-
-                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
-                      <div className="flex gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-semibold text-red-900 text-sm mb-1">
-                            {t?.ownerCode?.warning?.title?.[language] || '⚠️ Important - Sécurité'}
-                          </p>
-                          <p className="text-red-700 text-xs leading-relaxed">
-                            {t?.ownerCode?.warning?.text?.[language] || 'Ne partagez ce code qu\'avec le propriétaire LÉGAL de la résidence. Ce code lui donnera accès à des fonctionnalités sensibles (documents, finances, etc.).'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          )}
-
-          {/* Info for non-creators */}
-          {!codes.is_creator && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card className="p-6 bg-blue-50/50 border-2 border-blue-200">
-                <div className="flex gap-3">
-                  <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-blue-900 mb-1">
-                      {t?.notCreator?.title?.[language] || 'Vous n\'êtes pas le créateur'}
-                    </h4>
-                    <p className="text-blue-700 text-sm">
-                      {t?.notCreator?.description?.[language] || 'Seul le créateur de la résidence a accès au code propriétaire. Si vous avez besoin de ce code, demandez-le au créateur de votre résidence.'}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          )}
-        </div>
+        {/* Codes Cards - Using shared component */}
+        <PropertyCodesCard
+          invitationCode={codes.invitation_code}
+          ownerCode={codes.owner_code}
+          isCreator={codes.is_creator}
+          propertyTitle={codes.property_title}
+          variant="default"
+          showCreatorBadge={true}
+        />
       </div>
     </div>
   );

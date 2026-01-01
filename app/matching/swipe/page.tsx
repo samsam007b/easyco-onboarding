@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { SwipeCard } from '@/components/matching/SwipeCard';
 import { CardPile } from '@/components/matching/CardPile';
@@ -23,11 +23,17 @@ interface SwipedCard {
 
 export default function SwipePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const { getSection } = useLanguage();
   const matching = getSection('matching');
   const [user, setUser] = useState<any>(null);
-  const [context, setContext] = useState<SwipeContext>('searcher_matching');
+
+  // Read context from URL params, default to 'searcher_matching'
+  const urlContext = searchParams.get('context') as SwipeContext | null;
+  const [context, setContext] = useState<SwipeContext>(
+    urlContext === 'resident_matching' ? 'resident_matching' : 'searcher_matching'
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeHistory, setSwipeHistory] = useState<SwipedCard[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -114,6 +120,15 @@ export default function SwipePage() {
     }
   }, [user?.id, context, loadSwipeHistory]);
 
+  // Sync context state with URL params when they change
+  useEffect(() => {
+    const newContext = urlContext === 'resident_matching' ? 'resident_matching' : 'searcher_matching';
+    if (newContext !== context) {
+      setContext(newContext);
+      setCurrentIndex(0);
+    }
+  }, [urlContext]);
+
   const handleSwipe = async (direction: 'left' | 'right') => {
     const currentUser = potentialMatches[currentIndex];
     if (!currentUser || isAnimating) return;
@@ -192,6 +207,15 @@ export default function SwipePage() {
       toast.error(matching.swipe?.toasts?.undoErrorGeneric || "Erreur lors de l'annulation");
       setIsAnimating(false);
     }
+  };
+
+  // Change context and update URL to keep them in sync
+  const handleContextChange = (newContext: SwipeContext) => {
+    if (newContext === context) return;
+    setContext(newContext);
+    setCurrentIndex(0);
+    // Update URL without full navigation
+    router.push(`/matching/swipe?context=${newContext}`, { scroll: false });
   };
 
   const handleReload = async () => {
@@ -382,7 +406,7 @@ export default function SwipePage() {
         <div className="flex gap-2 mb-4">
           <Button
             variant={context === 'searcher_matching' ? 'default' : 'outline'}
-            onClick={() => setContext('searcher_matching')}
+            onClick={() => handleContextChange('searcher_matching')}
             className={`flex-1 ${context === 'searcher_matching' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}`}
           >
             <Users className="w-4 h-4 mr-2" />
@@ -390,7 +414,7 @@ export default function SwipePage() {
           </Button>
           <Button
             variant={context === 'resident_matching' ? 'default' : 'outline'}
-            onClick={() => setContext('resident_matching')}
+            onClick={() => handleContextChange('resident_matching')}
             className={`flex-1 ${context === 'resident_matching' ? 'bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]' : ''}`}
           >
             <Heart className="w-4 h-4 mr-2" />

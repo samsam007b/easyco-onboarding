@@ -32,8 +32,13 @@ import {
   FileText,
   AlertCircle,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
+
+// V3 Owner gradient palette
+const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 
 type ApplicationType = 'individual' | 'group';
 type CombinedStatus = Application['status'] | GroupApplication['status'];
@@ -313,8 +318,15 @@ export default function OwnerApplicationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
-        <div className="text-center">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
+      >
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
@@ -324,129 +336,207 @@ export default function OwnerApplicationsPage() {
           <p className="text-gray-600">
             {t?.loading?.subtitle?.[language] || 'Préparation de vos données'}
           </p>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
+    <div
+      className="min-h-screen"
+      style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
+    >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
+          className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
         >
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
-                  <FileText className="w-6 h-6 text-gray-700" />
+          {/* Decorative circles */}
+          <div
+            className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-10"
+            style={{ background: ownerGradient }}
+          />
+          <div
+            className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full opacity-10"
+            style={{ background: ownerGradient }}
+          />
+
+          <div className="relative flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              {/* V3 Animated Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-14 h-14"
+              >
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{ background: ownerGradient, filter: 'blur(12px)' }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon */}
+                <div
+                  className="relative w-full h-full rounded-2xl flex items-center justify-center"
+                  style={{ background: ownerGradient, boxShadow: '0 8px 24px rgba(156, 86, 152, 0.3)' }}
+                >
+                  <FileText className="w-7 h-7 text-white" />
                 </div>
-                {t?.header?.title?.[language] || 'Candidatures'}
-              </h1>
-              <p className="text-gray-600">
-                {t?.header?.subtitle?.[language] || 'Gérer les candidatures individuelles et de groupe pour vos propriétés'}
-              </p>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-5 h-5" style={{ color: '#c2566b' }} />
+                </motion.div>
+              </motion.div>
+
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                  {t?.header?.title?.[language] || 'Candidatures'}
+                </h1>
+                <p className="text-gray-600">
+                  {t?.header?.subtitle?.[language] || 'Gérer les candidatures individuelles et de groupe pour vos propriétés'}
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+          {/* Stats - V3 Fun Style */}
+          <div className="relative grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+            {/* Total - Owner Primary */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-purple-50/50 to-indigo-50/50 p-4 rounded-xl border border-purple-200/50"
+              className="relative overflow-hidden p-3 rounded-xl border border-purple-200/50"
+              style={{ background: ownerGradientLight }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Building2 className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full opacity-20" style={{ background: ownerGradient }} />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: ownerGradient }}>
+                  <Building2 className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total'}</p>
               </div>
-              <p className="text-2xl font-bold text-purple-900">{stats.total}</p>
+              <p className="text-xl font-bold" style={{ color: '#9c5698' }}>{stats.total}</p>
             </motion.div>
 
+            {/* Individual - Blue */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.15 }}
-              className="bg-gradient-to-br from-blue-50/50 to-cyan-50/50 p-4 rounded-xl border border-blue-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 p-3 rounded-xl border border-blue-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <UserCircle className="w-4 h-4 text-blue-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.individual?.[language] || 'Individuel'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-blue-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                  <UserCircle className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.individual?.[language] || 'Individuel'}</p>
               </div>
-              <p className="text-2xl font-bold text-blue-700">{stats.individual}</p>
+              <p className="text-xl font-bold text-blue-700">{stats.individual}</p>
             </motion.div>
 
+            {/* Groups - Owner Variant */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 p-4 rounded-xl border border-purple-200/50"
+              className="relative overflow-hidden p-3 rounded-xl border border-pink-200/50"
+              style={{ background: 'linear-gradient(135deg, #FDF5F9 0%, #FAE8F0 100%)' }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Users className="w-4 h-4 text-purple-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.groups?.[language] || 'Groupes'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full opacity-20" style={{ background: 'linear-gradient(135deg, #af5682 0%, #c2566b 100%)' }} />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #af5682 0%, #c2566b 100%)' }}>
+                  <Users className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.groups?.[language] || 'Groupes'}</p>
               </div>
-              <p className="text-2xl font-bold text-purple-700">{stats.groups}</p>
+              <p className="text-xl font-bold" style={{ color: '#af5682' }}>{stats.groups}</p>
             </motion.div>
 
+            {/* Pending - Amber Semantic */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.25 }}
-              className="bg-gradient-to-br from-orange-50/50 to-amber-50/50 p-4 rounded-xl border border-orange-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 p-3 rounded-xl border border-amber-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-4 h-4 text-orange-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.pending?.[language] || 'En attente'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-amber-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
+                  <Clock className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.pending?.[language] || 'En attente'}</p>
               </div>
-              <p className="text-2xl font-bold text-orange-700">{stats.pending}</p>
+              <p className="text-xl font-bold text-amber-700">{stats.pending}</p>
             </motion.div>
 
+            {/* Reviewing - Blue */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.3 }}
-              className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-4 rounded-xl border border-blue-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Eye className="w-4 h-4 text-blue-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.reviewing?.[language] || 'En révision'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-blue-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
+                  <Eye className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.reviewing?.[language] || 'En révision'}</p>
               </div>
-              <p className="text-2xl font-bold text-blue-700">{stats.reviewing}</p>
+              <p className="text-xl font-bold text-blue-700">{stats.reviewing}</p>
             </motion.div>
 
+            {/* Approved - Green Semantic */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.35 }}
-              className="bg-gradient-to-br from-green-50/50 to-emerald-50/50 p-4 rounded-xl border border-green-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 p-3 rounded-xl border border-green-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.approved?.[language] || 'Approuvées'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-green-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <CheckCircle className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.approved?.[language] || 'Approuvées'}</p>
               </div>
-              <p className="text-2xl font-bold text-green-700">{stats.approved}</p>
+              <p className="text-xl font-bold text-green-700">{stats.approved}</p>
             </motion.div>
 
+            {/* Rejected - Red Semantic */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.4 }}
-              className="bg-gradient-to-br from-red-50/50 to-pink-50/50 p-4 rounded-xl border border-red-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-red-50 to-pink-50 p-3 rounded-xl border border-red-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <XCircle className="w-4 h-4 text-red-600" />
-                <p className="text-sm text-gray-600 font-medium">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-red-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
+                  <XCircle className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-xs text-gray-600 font-medium">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
               </div>
-              <p className="text-2xl font-bold text-red-700">{stats.rejected}</p>
+              <p className="text-xl font-bold text-red-700">{stats.rejected}</p>
             </motion.div>
           </div>
 
-          {/* Filters */}
+          {/* Filters - V3 Fun Style */}
           <div className="mt-6 space-y-4">
             {/* Type Filters */}
             <div className="flex flex-wrap gap-2">
@@ -455,20 +545,29 @@ export default function OwnerApplicationsPage() {
                 { value: 'individual', label: t?.filters?.individual?.[language] || 'Individuel', count: stats.individual },
                 { value: 'group', label: t?.filters?.groups?.[language] || 'Groupes', count: stats.groups }
               ].map((filter) => (
-                <Button
+                <motion.div
                   key={filter.value}
-                  variant={filterType === filter.value ? 'default' : 'outline'}
-                  onClick={() => setFilterType(filter.value as typeof filterType)}
-                  size="sm"
-                  className={cn(
-                    "rounded-full transition-all",
-                    filterType === filter.value
-                      ? 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
-                      : 'hover:border-purple-300'
-                  )}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  {filter.label} ({filter.count})
-                </Button>
+                  <Button
+                    variant={filterType === filter.value ? 'default' : 'outline'}
+                    onClick={() => setFilterType(filter.value as typeof filterType)}
+                    size="sm"
+                    className={cn(
+                      "rounded-full transition-all border",
+                      filterType === filter.value
+                        ? 'text-white border-transparent shadow-md'
+                        : 'hover:border-purple-400 bg-white/80'
+                    )}
+                    style={filterType === filter.value ? {
+                      background: ownerGradient,
+                      boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)'
+                    } : undefined}
+                  >
+                    {filter.label} ({filter.count})
+                  </Button>
+                </motion.div>
               ))}
             </div>
 
@@ -481,20 +580,29 @@ export default function OwnerApplicationsPage() {
                 { value: 'approved', label: t?.status?.approved?.[language] || 'Approuvées', count: stats.approved },
                 { value: 'rejected', label: t?.status?.rejected?.[language] || 'Rejetées', count: stats.rejected }
               ].map((filter) => (
-                <Button
+                <motion.div
                   key={filter.value}
-                  variant={filterStatus === filter.value ? 'default' : 'outline'}
-                  onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
-                  size="sm"
-                  className={cn(
-                    "rounded-full transition-all",
-                    filterStatus === filter.value
-                      ? 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
-                      : 'hover:border-purple-300'
-                  )}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  {filter.label} {filter.value !== 'all' && `(${filter.count})`}
-                </Button>
+                  <Button
+                    variant={filterStatus === filter.value ? 'default' : 'outline'}
+                    onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
+                    size="sm"
+                    className={cn(
+                      "rounded-full transition-all border",
+                      filterStatus === filter.value
+                        ? 'text-white border-transparent shadow-md'
+                        : 'hover:border-purple-400 bg-white/80'
+                    )}
+                    style={filterStatus === filter.value ? {
+                      background: ownerGradient,
+                      boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)'
+                    } : undefined}
+                  >
+                    {filter.label} {filter.value !== 'all' && `(${filter.count})`}
+                  </Button>
+                </motion.div>
               ))}
             </div>
 
@@ -504,7 +612,8 @@ export default function OwnerApplicationsPage() {
                 <select
                   value={filterProperty}
                   onChange={(e) => setFilterProperty(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                  className="px-4 py-2 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white/80 backdrop-blur-sm transition-all hover:border-purple-400"
+                  style={{ boxShadow: '0 2px 8px rgba(156, 86, 152, 0.1)' }}
                 >
                   <option value="all">{t?.filters?.allProperties?.[language] || 'Toutes les propriétés'}</option>
                   {properties.map((property) => (
@@ -524,11 +633,49 @@ export default function OwnerApplicationsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+            className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-              <FileText className="w-10 h-10 text-gray-700" />
-            </div>
+            {/* Decorative circles */}
+            <div
+              className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-10"
+              style={{ background: ownerGradient }}
+            />
+            <div
+              className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full opacity-10"
+              style={{ background: ownerGradient }}
+            />
+
+            {/* V3 Animated Icon */}
+            <motion.div
+              className="relative w-20 h-20 mx-auto mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl opacity-30"
+                style={{ background: ownerGradient, filter: 'blur(12px)' }}
+                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              />
+              {/* Main icon */}
+              <div
+                className="relative w-full h-full rounded-2xl flex items-center justify-center"
+                style={{ background: ownerGradient, boxShadow: '0 8px 24px rgba(156, 86, 152, 0.3)' }}
+              >
+                <FileText className="w-10 h-10 text-white" />
+              </div>
+              {/* Floating sparkle */}
+              <motion.div
+                className="absolute -top-2 -right-2"
+                animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              >
+                <Sparkles className="w-6 h-6" style={{ color: '#c2566b' }} />
+              </motion.div>
+            </motion.div>
+
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               {t?.empty?.noApplications?.[language] || 'Aucune candidature trouvée'}
             </h3>
@@ -544,22 +691,37 @@ export default function OwnerApplicationsPage() {
                 key={`group-${groupApp.id}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.01, y: -2 }}
                 transition={{ delay: 0.3 + index * 0.05 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border-l-4 border-l-purple-500 border border-gray-200 hover:shadow-md transition-all duration-300 p-6"
+                className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6"
+                style={{ borderLeftWidth: '4px', borderLeftColor: '#9c5698' }}
               >
-                <div className="flex flex-col lg:flex-row gap-6">
+                {/* Decorative circle */}
+                <div
+                  className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-10"
+                  style={{ background: ownerGradient }}
+                />
+
+                <div className="relative flex flex-col lg:flex-row gap-6">
                   {/* Group Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
-                        <Users className="w-5 h-5 text-purple-600" />
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.05, rotate: 3 }}
+                        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: ownerGradient, boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)' }}
+                      >
+                        <Users className="w-5 h-5 text-white" />
+                      </motion.div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <h3 className="text-lg font-bold text-gray-900">
                             {groupApp.group?.name || 'Groupe'}
                           </h3>
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                          <Badge
+                            className="text-white border-transparent"
+                            style={{ background: ownerGradient }}
+                          >
                             {t?.card?.group?.[language] || 'Groupe'}
                           </Badge>
                           {getStatusBadge(groupApp.status)}
@@ -572,20 +734,32 @@ export default function OwnerApplicationsPage() {
 
                     {/* Group Members */}
                     {groupApp.group?.members && groupApp.group.members.length > 0 && (
-                      <div className="mb-4 p-4 bg-purple-50/50 rounded-xl border border-purple-200/30">
+                      <div
+                        className="mb-4 p-4 rounded-xl border border-purple-200/50"
+                        style={{ background: ownerGradientLight }}
+                      >
                         <p className="text-sm font-semibold text-gray-900 mb-3">
                           {t?.card?.members?.[language] || 'Membres'} ({groupApp.group.members.length}/{groupApp.group.max_members})
                         </p>
                         <div className="space-y-2">
                           {groupApp.group.members.map((member, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-sm">
-                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-xs font-semibold text-gray-700">
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 * idx }}
+                              className="flex items-center gap-2 text-sm"
+                            >
+                              <div
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white"
+                                style={{ background: ownerGradient }}
+                              >
                                 {member.user.full_name?.charAt(0).toUpperCase() || '?'}
                               </div>
                               <span className="font-medium text-gray-900">{member.user.full_name}</span>
                               <span className="text-gray-400">•</span>
                               <span className="text-gray-600">{member.user.email}</span>
-                            </div>
+                            </motion.div>
                           ))}
                         </div>
                       </div>
@@ -695,16 +869,25 @@ export default function OwnerApplicationsPage() {
                 key={`individual-${application.id}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.01, y: -2 }}
                 transition={{ delay: 0.3 + (filteredGroupApps.length + index) * 0.05 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 p-6"
+                className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6"
+                style={{ borderLeftWidth: '4px', borderLeftColor: '#3b82f6' }}
               >
-                <div className="flex flex-col lg:flex-row gap-6">
+                {/* Decorative circle */}
+                <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-blue-400 opacity-10" />
+
+                <div className="relative flex flex-col lg:flex-row gap-6">
                   {/* Application Info */}
                   <div className="flex-1">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center flex-shrink-0">
-                        <UserCircle className="w-5 h-5 text-blue-600" />
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.05, rotate: 3 }}
+                        className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0"
+                        style={{ boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)' }}
+                      >
+                        <UserCircle className="w-5 h-5 text-white" />
+                      </motion.div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <h3 className="text-lg font-bold text-gray-900">
@@ -719,35 +902,47 @@ export default function OwnerApplicationsPage() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                      <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                        <Mail className="w-4 h-4 text-gray-500" />
+                      <div
+                        className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-blue-100"
+                        style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                      >
+                        <Mail className="w-4 h-4 text-blue-500" />
                         <span className="text-gray-700">{application.applicant_email}</span>
                       </div>
 
                       {application.applicant_phone && (
-                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                          <Phone className="w-4 h-4 text-gray-500" />
+                        <div
+                          className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-blue-100"
+                          style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                        >
+                          <Phone className="w-4 h-4 text-blue-500" />
                           <span className="text-gray-700">{application.applicant_phone}</span>
                         </div>
                       )}
 
                       {application.occupation && (
-                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                          <Briefcase className="w-4 h-4 text-gray-500" />
+                        <div
+                          className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-blue-100"
+                          style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                        >
+                          <Briefcase className="w-4 h-4 text-blue-500" />
                           <span className="text-gray-700">{application.occupation}</span>
                         </div>
                       )}
 
                       {application.monthly_income && (
-                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
+                        <div className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
                           <DollarSign className="w-4 h-4 text-green-600" />
                           <span className="text-gray-700">{application.monthly_income.toLocaleString()}€/mois</span>
                         </div>
                       )}
 
                       {application.desired_move_in_date && (
-                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                          <Calendar className="w-4 h-4 text-gray-500" />
+                        <div
+                          className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-blue-100"
+                          style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                        >
+                          <Calendar className="w-4 h-4 text-blue-500" />
                           <span className="text-gray-700">
                             {t?.card?.moveIn?.[language] || 'Emménagement'}: {new Date(application.desired_move_in_date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-US')}
                           </span>
@@ -755,17 +950,23 @@ export default function OwnerApplicationsPage() {
                       )}
 
                       {application.lease_duration_months && (
-                        <div className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                          <Clock className="w-4 h-4 text-gray-500" />
+                        <div
+                          className="flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-blue-100"
+                          style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                        >
+                          <Clock className="w-4 h-4 text-blue-500" />
                           <span className="text-gray-700">{application.lease_duration_months} {t?.card?.months?.[language] || 'mois'}</span>
                         </div>
                       )}
                     </div>
 
                     {application.message && (
-                      <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 mb-3">
+                      <div
+                        className="p-3 rounded-xl border border-blue-200/50 mb-3"
+                        style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%)' }}
+                      >
                         <div className="flex items-center gap-2 mb-1">
-                          <MessageSquare className="w-4 h-4 text-gray-500" />
+                          <MessageSquare className="w-4 h-4 text-blue-500" />
                           <span className="text-sm font-medium text-gray-700">{t?.card?.message?.[language] || 'Message'} :</span>
                         </div>
                         <p className="text-sm text-gray-600">{application.message}</p>

@@ -19,7 +19,8 @@ import {
   Calendar,
   Users,
   TrendingUp,
-  Home
+  Home,
+  Sparkles
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Property } from '@/types/property.types';
@@ -28,6 +29,10 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
+
+// V3 Owner gradient palette
+const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 
 interface UserProfile {
   full_name: string;
@@ -172,8 +177,15 @@ export default function PropertiesManagement() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
-        <div className="text-center">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
+      >
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
@@ -183,7 +195,7 @@ export default function PropertiesManagement() {
           <p className="text-gray-600">
             {t?.loading?.subtitle?.[language] || 'Préparation de vos annonces'}
           </p>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -191,59 +203,120 @@ export default function PropertiesManagement() {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30">
+    <div
+      className="min-h-screen"
+      style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
+    >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
+          className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
         >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center shadow-sm">
-                  <Building2 className="w-6 h-6 text-gray-700" />
+          {/* Decorative circles */}
+          <div
+            className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-10"
+            style={{ background: ownerGradient }}
+          />
+          <div
+            className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full opacity-10"
+            style={{ background: ownerGradient }}
+          />
+
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              {/* V3 Animated Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-14 h-14"
+              >
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{ background: ownerGradient, filter: 'blur(12px)' }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon */}
+                <div
+                  className="relative w-full h-full rounded-2xl flex items-center justify-center"
+                  style={{ background: ownerGradient, boxShadow: '0 8px 24px rgba(156, 86, 152, 0.3)' }}
+                >
+                  <Building2 className="w-7 h-7 text-white" />
                 </div>
-                {t?.header?.title?.[language] || 'Mes Propriétés'}
-              </h1>
-              <p className="text-gray-600">
-                {t?.header?.subtitle?.[language] || 'Gérer et suivre toutes vos annonces immobilières'}
-              </p>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-5 h-5" style={{ color: '#c2566b' }} />
+                </motion.div>
+              </motion.div>
+
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                  {t?.header?.title?.[language] || 'Mes Propriétés'}
+                </h1>
+                <p className="text-gray-600">
+                  {t?.header?.subtitle?.[language] || 'Gérer et suivre toutes vos annonces immobilières'}
+                </p>
+              </div>
             </div>
-            <Button
-              onClick={() => router.push('/properties/add')}
-              className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 shadow-sm hover:shadow-md hover:scale-105 transition-all"
-              size="lg"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              {t?.header?.addButton?.[language] || 'Ajouter'}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                onClick={() => router.push('/properties/add')}
+                className="rounded-full text-white shadow-md hover:shadow-lg transition-all"
+                style={{ background: ownerGradient }}
+                size="lg"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                {t?.header?.addButton?.[language] || 'Ajouter'}
+              </Button>
+            </motion.div>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {/* Total - Owner Primary */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-purple-50/50 to-indigo-50/50 p-4 rounded-xl border border-purple-200/50"
+              className="relative overflow-hidden p-4 rounded-xl border border-purple-200/50"
+              style={{ background: ownerGradientLight }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Home className="w-4 h-4 text-purple-600" />
+              <div
+                className="absolute -top-6 -right-6 w-16 h-16 rounded-full opacity-20"
+                style={{ background: ownerGradient }}
+              />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: ownerGradient }}
+                >
+                  <Home className="w-4 h-4 text-white" />
+                </div>
                 <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total'}</p>
               </div>
-              <p className="text-2xl font-bold text-purple-900">{properties.length}</p>
+              <p className="text-2xl font-bold" style={{ color: '#9c5698' }}>{properties.length}</p>
             </motion.div>
 
+            {/* Published - Green Semantic */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.15 }}
-              className="bg-gradient-to-br from-green-50/50 to-emerald-50/50 p-4 rounded-xl border border-green-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4 text-green-600" />
+              <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-green-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-white" />
+                </div>
                 <p className="text-sm text-gray-600 font-medium">{t?.stats?.published?.[language] || 'Publiées'}</p>
               </div>
               <p className="text-2xl font-bold text-green-700">
@@ -251,29 +324,39 @@ export default function PropertiesManagement() {
               </p>
             </motion.div>
 
+            {/* Drafts - Amber Semantic */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-yellow-50/50 to-amber-50/50 p-4 rounded-xl border border-yellow-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Edit className="w-4 h-4 text-yellow-600" />
+              <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-amber-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
+                  <Edit className="w-4 h-4 text-white" />
+                </div>
                 <p className="text-sm text-gray-600 font-medium">{t?.stats?.drafts?.[language] || 'Brouillons'}</p>
               </div>
-              <p className="text-2xl font-bold text-yellow-700">
+              <p className="text-2xl font-bold text-amber-700">
                 {properties.filter(p => p.status === 'draft').length}
               </p>
             </motion.div>
 
+            {/* Archived - Gray */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               transition={{ delay: 0.25 }}
-              className="bg-gradient-to-br from-gray-50/50 to-slate-50/50 p-4 rounded-xl border border-gray-200/50"
+              className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-slate-50 p-4 rounded-xl border border-gray-200/50"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Building2 className="w-4 h-4 text-gray-600" />
+              <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-gray-400 opacity-20" />
+              <div className="relative flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-500 to-slate-500 flex items-center justify-center">
+                  <Building2 className="w-4 h-4 text-white" />
+                </div>
                 <p className="text-sm text-gray-600 font-medium">{t?.stats?.archived?.[language] || 'Archivées'}</p>
               </div>
               <p className="text-2xl font-bold text-gray-700">
@@ -283,31 +366,33 @@ export default function PropertiesManagement() {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap gap-2 mt-6">
+          <div className="relative flex flex-wrap gap-2 mt-6">
             {[
               { value: 'all', label: t?.filters?.all?.[language] || 'Toutes' },
               { value: 'published', label: t?.filters?.published?.[language] || 'Publiées' },
               { value: 'draft', label: t?.filters?.drafts?.[language] || 'Brouillons' },
               { value: 'archived', label: t?.filters?.archived?.[language] || 'Archivées' }
             ].map((filter) => (
-              <Button
-                key={filter.value}
-                variant={filterStatus === filter.value ? 'default' : 'outline'}
-                onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
-                size="sm"
-                className={cn(
-                  "rounded-full transition-all",
-                  filterStatus === filter.value
-                    ? 'bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 border-purple-300 hover:from-purple-300/70 hover:to-indigo-300/70'
-                    : 'hover:border-purple-300'
-                )}
-              >
-                {filter.label} ({
-                  filter.value === 'all'
-                    ? properties.length
-                    : properties.filter(p => p.status === filter.value).length
-                })
-              </Button>
+              <motion.div key={filter.value} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  variant={filterStatus === filter.value ? 'default' : 'outline'}
+                  onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
+                  size="sm"
+                  className={cn(
+                    "rounded-full transition-all",
+                    filterStatus === filter.value
+                      ? 'text-white border-transparent shadow-md'
+                      : 'hover:border-purple-300 hover:bg-purple-50/50'
+                  )}
+                  style={filterStatus === filter.value ? { background: ownerGradient } : undefined}
+                >
+                  {filter.label} ({
+                    filter.value === 'all'
+                      ? properties.length
+                      : properties.filter(p => p.status === filter.value).length
+                  })
+                </Button>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -318,11 +403,48 @@ export default function PropertiesManagement() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="relative overflow-hidden bg-gradient-to-br from-purple-50/50 via-white to-indigo-50/50 rounded-3xl p-12 text-center border border-purple-200/50"
+            className="relative overflow-hidden rounded-3xl p-12 text-center border border-purple-200/50"
+            style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-200/70 to-indigo-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-              <Building2 className="w-10 h-10 text-gray-700" />
-            </div>
+            {/* Decorative circles */}
+            <div
+              className="absolute top-10 right-10 w-32 h-32 rounded-full opacity-10"
+              style={{ background: ownerGradient }}
+            />
+            <div
+              className="absolute bottom-10 left-10 w-24 h-24 rounded-full opacity-10"
+              style={{ background: ownerGradient }}
+            />
+
+            {/* V3 Animated Icon */}
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              className="relative w-20 h-20 mx-auto mb-6"
+            >
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl opacity-30"
+                style={{ background: ownerGradient, filter: 'blur(16px)' }}
+                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              />
+              {/* Main icon */}
+              <div
+                className="relative w-full h-full rounded-2xl flex items-center justify-center"
+                style={{ background: ownerGradient, boxShadow: '0 12px 32px rgba(156, 86, 152, 0.35)' }}
+              >
+                <Building2 className="w-10 h-10 text-white" />
+              </div>
+              {/* Floating sparkle */}
+              <motion.div
+                className="absolute -top-2 -right-2"
+                animate={{ y: [-3, 3, -3], rotate: [0, 15, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              >
+                <Sparkles className="w-6 h-6" style={{ color: '#c2566b' }} />
+              </motion.div>
+            </motion.div>
+
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               {filterStatus === 'all'
                 ? (t?.empty?.noProperties?.[language] || 'Aucune propriété')
@@ -340,13 +462,16 @@ export default function PropertiesManagement() {
               }
             </p>
             {filterStatus === 'all' && (
-              <Button
-                onClick={() => router.push('/properties/add')}
-                className="rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 hover:from-purple-300/70 hover:to-indigo-300/70 px-8 py-6 text-lg shadow-sm hover:shadow-md transition-all hover:scale-105"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                {t?.empty?.addFirstButton?.[language] || 'Ajouter ma première propriété'}
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  onClick={() => router.push('/properties/add')}
+                  className="rounded-full text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+                  style={{ background: ownerGradient }}
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  {t?.empty?.addFirstButton?.[language] || 'Ajouter ma première propriété'}
+                </Button>
+              </motion.div>
             )}
           </motion.div>
         ) : (
@@ -359,10 +484,18 @@ export default function PropertiesManagement() {
                   key={property.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.01, y: -2 }}
                   transition={{ delay: 0.3 + index * 0.05 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 hover:scale-[1.01] p-6"
+                  className="relative overflow-hidden bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6"
+                  style={{ boxShadow: '0 4px 20px rgba(156, 86, 152, 0.08)' }}
                 >
-                  <div className="flex flex-col lg:flex-row gap-6">
+                  {/* Decorative accent */}
+                  <div
+                    className="absolute top-0 left-0 w-1 h-full"
+                    style={{ background: ownerGradient }}
+                  />
+
+                  <div className="flex flex-col lg:flex-row gap-6 pl-3">
                     {/* Property Info */}
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
@@ -371,7 +504,7 @@ export default function PropertiesManagement() {
                             {property.title}
                           </h3>
                           <div className="flex items-center gap-2 text-gray-600 mb-3">
-                            <MapPin className="w-4 h-4" />
+                            <MapPin className="w-4 h-4" style={{ color: '#9c5698' }} />
                             <span>{property.city}, {property.postal_code}</span>
                           </div>
                         </div>
@@ -380,26 +513,29 @@ export default function PropertiesManagement() {
                         </Badge>
                       </div>
 
-                      <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
-                        <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
-                          <Bed className="w-4 h-4 text-purple-600" />
+                      <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
+                        <div
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border"
+                          style={{ background: ownerGradientLight, borderColor: 'rgba(156, 86, 152, 0.2)' }}
+                        >
+                          <Bed className="w-4 h-4" style={{ color: '#9c5698' }} />
                           <span className="font-medium">
                             {property.bedrooms} {property.bedrooms > 1
                               ? (t?.card?.bedrooms?.[language] || 'chambres')
                               : (t?.card?.bedroom?.[language] || 'chambre')}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
+                        <div className="flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200/50">
                           <Bath className="w-4 h-4 text-blue-600" />
                           <span className="font-medium">{property.bathrooms} {t?.card?.bathroom?.[language] || 'SDB'}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
+                        <div className="flex items-center gap-1.5 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200/50">
                           <DollarSign className="w-4 h-4 text-green-600" />
                           <span className="font-medium">{property.monthly_rent}€{t?.card?.perMonth?.[language] || '/mois'}</span>
                         </div>
                         {property.created_at && (
-                          <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
-                            <Calendar className="w-4 h-4 text-gray-600" />
+                          <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200/50">
+                            <Calendar className="w-4 h-4 text-gray-500" />
                             <span className="font-medium">{new Date(property.created_at).toLocaleDateString('fr-FR')}</span>
                           </div>
                         )}
@@ -412,44 +548,53 @@ export default function PropertiesManagement() {
 
                     {/* Actions */}
                     <div className="flex lg:flex-col gap-2 lg:w-48">
-                      <Button
-                        variant="outline"
-                        className="flex-1 rounded-xl hover:bg-purple-50 hover:border-purple-300"
-                        onClick={() => router.push(`/properties/${property.id}`)}
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        {t?.actions?.view?.[language] || 'Voir'}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="flex-1 rounded-xl hover:bg-blue-50 hover:border-blue-300"
-                        onClick={() => router.push(`/properties/edit/${property.id}`)}
-                      >
-                        <Edit className="w-4 h-4 mr-2" />
-                        {t?.actions?.edit?.[language] || 'Modifier'}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "flex-1 rounded-xl",
-                          property.status === 'published'
-                            ? 'hover:bg-yellow-50 hover:border-yellow-300'
-                            : 'hover:bg-green-50 hover:border-green-300'
-                        )}
-                        onClick={() => handleToggleStatus(property.id, property.status)}
-                      >
-                        {property.status === 'published'
-                          ? (t?.actions?.unpublish?.[language] || 'Dépublier')
-                          : (t?.actions?.publish?.[language] || 'Publier')}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="flex-1 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
-                        onClick={() => setDeleteModal({ open: true, propertyId: property.id, propertyTitle: property.title })}
-                      >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        {t?.actions?.delete?.[language] || 'Supprimer'}
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-xl hover:border-purple-300"
+                          style={{ background: 'transparent' }}
+                          onClick={() => router.push(`/properties/${property.id}`)}
+                        >
+                          <Eye className="w-4 h-4 mr-2" style={{ color: '#9c5698' }} />
+                          {t?.actions?.view?.[language] || 'Voir'}
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-xl hover:bg-blue-50 hover:border-blue-300"
+                          onClick={() => router.push(`/properties/edit/${property.id}`)}
+                        >
+                          <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                          {t?.actions?.edit?.[language] || 'Modifier'}
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full rounded-xl",
+                            property.status === 'published'
+                              ? 'hover:bg-amber-50 hover:border-amber-300'
+                              : 'hover:bg-green-50 hover:border-green-300'
+                          )}
+                          onClick={() => handleToggleStatus(property.id, property.status)}
+                        >
+                          {property.status === 'published'
+                            ? (t?.actions?.unpublish?.[language] || 'Dépublier')
+                            : (t?.actions?.publish?.[language] || 'Publier')}
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300"
+                          onClick={() => setDeleteModal({ open: true, propertyId: property.id, propertyTitle: property.title })}
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          {t?.actions?.delete?.[language] || 'Supprimer'}
+                        </Button>
+                      </motion.div>
                     </div>
                   </div>
                 </motion.div>
@@ -476,13 +621,31 @@ export default function PropertiesManagement() {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+            className="relative overflow-hidden bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
           >
+            {/* Decorative top accent */}
+            <div
+              className="absolute top-0 left-0 right-0 h-1"
+              style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)' }}
+            />
+
             <div className="text-center">
-              {/* Icon */}
-              <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                <Trash2 className="w-8 h-8 text-red-600" />
-              </div>
+              {/* Animated Icon */}
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                className="relative w-16 h-16 mx-auto mb-4"
+              >
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-red-400 opacity-30"
+                  style={{ filter: 'blur(12px)' }}
+                  animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                />
+                <div className="relative w-full h-full rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg">
+                  <Trash2 className="w-8 h-8 text-white" />
+                </div>
+              </motion.div>
 
               {/* Title */}
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -502,19 +665,23 @@ export default function PropertiesManagement() {
 
               {/* Actions */}
               <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1 rounded-xl"
-                  onClick={() => setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })}
-                >
-                  {t?.deleteModal?.cancel?.[language] || 'Annuler'}
-                </Button>
-                <Button
-                  className="flex-1 rounded-xl bg-red-600 hover:bg-red-700 text-white"
-                  onClick={handleDeleteProperty}
-                >
-                  {t?.deleteModal?.deleteButton?.[language] || 'Supprimer'}
-                </Button>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button
+                    variant="outline"
+                    className="w-full rounded-xl hover:border-gray-400"
+                    onClick={() => setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })}
+                  >
+                    {t?.deleteModal?.cancel?.[language] || 'Annuler'}
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button
+                    className="w-full rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-md"
+                    onClick={handleDeleteProperty}
+                  >
+                    {t?.deleteModal?.deleteButton?.[language] || 'Supprimer'}
+                  </Button>
+                </motion.div>
               </div>
             </div>
           </motion.div>

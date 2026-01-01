@@ -41,6 +41,7 @@ interface SettingsSection {
   badge?: string;
   color: string;
   category: 'account' | 'preferences' | 'advanced';
+  requiresResidence?: boolean; // If true, hide for users without a residence
 }
 
 export default function SettingsPage() {
@@ -48,14 +49,16 @@ export default function SettingsPage() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState<string>('');
+  const [isCreator, setIsCreator] = useState(false);
+  const [hasResidence, setHasResidence] = useState(false);
   const { getSection } = useLanguage();
   const settings = getSection('settings');
 
   useEffect(() => {
-    loadUserType();
+    loadUserData();
   }, []);
 
-  const loadUserType = async () => {
+  const loadUserData = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -63,6 +66,7 @@ export default function SettingsPage() {
         return;
       }
 
+      // Get user type
       const { data: userData } = await supabase
         .from('users')
         .select('user_type')
@@ -72,8 +76,21 @@ export default function SettingsPage() {
       if (userData) {
         setUserType(userData.user_type);
       }
+
+      // Check if user has a residence and if they are the creator
+      const { data: membership } = await supabase
+        .from('property_members')
+        .select('property_id, is_creator')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .maybeSingle();
+
+      if (membership) {
+        setHasResidence(true);
+        setIsCreator(membership.is_creator || false);
+      }
     } catch (error) {
-      console.error('Error loading user type:', error);
+      console.error('Error loading user data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -148,8 +165,9 @@ export default function SettingsPage() {
       icon: Lock,
       href: '/settings/private-codes',
       color: 'bg-purple-100',
-      badge: userType === 'resident' ? 'Creator' : undefined,
+      badge: isCreator ? (settings.badges?.creator || 'Créateur') : undefined,
       category: 'account',
+      requiresResidence: true, // Hide for searchers without residence
     },
     {
       id: 'residence-profile',
@@ -158,8 +176,9 @@ export default function SettingsPage() {
       icon: Home,
       href: '/settings/residence-profile',
       color: 'bg-pink-100',
-      badge: userType === 'resident' ? (settings.badges?.new || 'New') : undefined,
+      badge: settings.badges?.new || 'New',
       category: 'account',
+      requiresResidence: true, // Hide for searchers without residence
     },
     {
       id: 'referrals',
@@ -179,13 +198,14 @@ export default function SettingsPage() {
       href: '/settings/invitations',
       color: 'bg-amber-100',
       category: 'account',
+      // Note: Invitations visible to all - searchers may receive invitations
     },
     {
       id: 'notifications',
       title: settings.sections?.notifications?.title || 'Notifications',
       description: settings.sections?.notifications?.description || 'Configurer vos préférences',
       icon: Bell,
-      href: '/dashboard/settings/preferences',
+      href: '/settings/notifications',
       color: 'bg-yellow-100',
       category: 'preferences',
     },
@@ -341,7 +361,13 @@ export default function SettingsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {categories.map((category, categoryIndex) => {
           const CategoryIcon = category.icon;
-          const categorySections = settingsSections.filter(s => s.category === category.id);
+          // Filter sections by category and by residence requirement
+          const categorySections = settingsSections.filter(s => {
+            if (s.category !== category.id) return false;
+            // Hide residence-related sections for users without a residence
+            if (s.requiresResidence && !hasResidence) return false;
+            return true;
+          });
 
           return (
             <motion.div

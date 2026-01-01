@@ -7,17 +7,11 @@ import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import {
   Home,
-  MapPin,
   Users,
   Camera,
-  Copy,
-  Check,
   Edit2,
   Save,
   X,
-  Lock,
-  UserPlus,
-  Sparkles,
   FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import PropertyCodesCard from '@/components/settings/PropertyCodesCard';
 
 interface ResidenceData {
   id: string;
@@ -51,7 +46,6 @@ export default function ResidenceProfilePage() {
   const [residence, setResidence] = useState<ResidenceData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({
     title: '',
     address: '',
@@ -129,13 +123,6 @@ export default function ResidenceProfilePage() {
       console.error('Error loading residence data:', error);
       setIsLoading(false);
     }
-  };
-
-  const copyToClipboard = (code: string, type: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(type);
-    toast.success(t?.messages?.codeCopied?.[language] || 'Code copié!');
-    setTimeout(() => setCopiedCode(null), 2000);
   };
 
   const handleSave = async () => {
@@ -395,57 +382,14 @@ export default function ResidenceProfilePage() {
           </div>
         </Card>
 
-        {/* Invitation Codes Card */}
-        <Card className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Lock className="w-5 h-5 text-purple-600" />
-            {t?.sections?.codes?.[language] || 'Codes d\'invitation'}
-          </h2>
-
-          {/* Invitation Code for Residents */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t?.codes?.resident?.label?.[language] || 'Code pour les colocataires'}
-            </label>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
-                {residence.invitation_code || 'N/A'}
-              </div>
-              <button
-                onClick={() => residence.invitation_code && copyToClipboard(residence.invitation_code, 'invitation')}
-                className="p-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white transition-colors"
-              >
-                {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              {t?.codes?.resident?.hint?.[language] || 'Partagez ce code avec vos futurs colocataires'}
-            </p>
-          </div>
-
-          {/* Owner Code (only for creators) */}
-          {residence.isCreator && residence.owner_code && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t?.codes?.owner?.label?.[language] || 'Code propriétaire'}
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
-                  {residence.owner_code}
-                </div>
-                <button
-                  onClick={() => copyToClipboard(residence.owner_code!, 'owner')}
-                  className="p-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
-                >
-                  {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {t?.codes?.owner?.hint?.[language] || 'Code réservé au propriétaire légal pour revendiquer la résidence'}
-              </p>
-            </div>
-          )}
-        </Card>
+        {/* Invitation Codes Card - Using shared component */}
+        <PropertyCodesCard
+          invitationCode={residence.invitation_code || ''}
+          ownerCode={residence.owner_code || null}
+          isCreator={residence.isCreator}
+          variant="compact"
+          showHeader={true}
+        />
       </div>
     </div>
   );

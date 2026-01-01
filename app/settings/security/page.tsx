@@ -63,6 +63,12 @@ export default function SecurityPage() {
     e.preventDefault();
     setMessage(null);
 
+    // Validate current password is provided
+    if (!passwordForm.currentPassword) {
+      setMessage({ type: 'error', text: t?.errors?.currentRequired?.[language] || 'Veuillez entrer votre mot de passe actuel' });
+      return;
+    }
+
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setMessage({ type: 'error', text: t?.errors?.mismatch?.[language] || 'Les nouveaux mots de passe ne correspondent pas' });
       return;
@@ -74,6 +80,18 @@ export default function SecurityPage() {
     }
 
     try {
+      // First, verify the current password by attempting to sign in
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: userEmail,
+        password: passwordForm.currentPassword
+      });
+
+      if (signInError) {
+        setMessage({ type: 'error', text: t?.errors?.wrongPassword?.[language] || 'Le mot de passe actuel est incorrect' });
+        return;
+      }
+
+      // If current password is correct, update to new password
       const { error } = await supabase.auth.updateUser({
         password: passwordForm.newPassword
       });

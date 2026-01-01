@@ -72,7 +72,7 @@ export default function QuickActionsCard({
         {/* Main CTA */}
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
-            onClick={() => router.push('/matching/swipe?context=resident_matching')}
+            onClick={() => router.push('/hub/matching')}
             className="w-full rounded-2xl text-white font-bold py-6 text-base border-none"
             style={{
               background: RESIDENT_GRADIENT,
@@ -89,7 +89,7 @@ export default function QuickActionsCard({
           {/* Voir mes matchs */}
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
-              onClick={() => router.push('/matching/matches')}
+              onClick={() => router.push('/hub/matching')}
               variant="outline"
               className="w-full rounded-2xl border-2 py-5 font-semibold transition-all"
               style={{
@@ -120,7 +120,7 @@ export default function QuickActionsCard({
             >
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
-                  onClick={() => router.push('/matching/matches?tab=invitations')}
+                  onClick={() => router.push('/hub/matching')}
                   variant="outline"
                   className="w-full rounded-2xl border-2 py-5 font-semibold"
                   style={{
