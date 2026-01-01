@@ -254,7 +254,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium">{settings.loading || 'Chargement...'}</p>
@@ -264,8 +264,8 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className={cn("min-h-screen bg-gradient-to-br", colors.light)}>
-      {/* Premium Header */}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+      {/* V3 Fun Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -274,10 +274,9 @@ export default function SettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            {/* Back Button */}
+            {/* Back Button - V3 Style */}
             <Button
               onClick={() => {
-                // Navigation explicite pour éviter la boucle avec router.back()
                 if (userType === 'owner') {
                   router.push('/dashboard/owner');
                 } else if (userType === 'resident') {
@@ -286,29 +285,51 @@ export default function SettingsPage() {
                   router.push('/dashboard/searcher');
                 }
               }}
-              variant="ghost"
-              className="mb-6 rounded-full"
+              variant="outline"
+              className="mb-6 rounded-full border-gray-200 hover:border-transparent"
+              style={{ color: '#ff651e' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(224, 87, 71, 0.08) 0%, rgba(255, 144, 20, 0.08) 100%)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               {settings.back || 'Retour'}
             </Button>
 
             <div className="text-center">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <div className={cn(
-                  "w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-gray-200",
-                  userType === 'owner' ? 'bg-purple-100' :
-                  userType === 'resident' ? 'bg-orange-100' :
-                  'bg-orange-100'
-                )}>
-                  <SettingsIcon className={cn(
-                    "w-8 h-8",
-                    userType === 'owner' ? 'text-purple-600' :
-                    userType === 'resident' ? 'text-orange-600' :
-                    'text-orange-600'
-                  )} />
+              {/* V3 Fun Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-20 h-20 mx-auto mb-4"
+              >
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    filter: 'blur(15px)',
+                  }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon container */}
+                <div
+                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.3)',
+                  }}
+                >
+                  <SettingsIcon className="w-10 h-10 text-white" />
                 </div>
-              </div>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-5 h-5 text-amber-400" />
+                </motion.div>
+              </motion.div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">{settings.title || 'Paramètres'}</h1>
               <p className="text-gray-600 text-lg">{settings.subtitle || 'Gérer votre compte et vos préférences'}</p>
             </div>
@@ -330,28 +351,49 @@ export default function SettingsPage() {
               transition={{ delay: categoryIndex * 0.1 }}
               className="mb-8"
             >
-              {/* Category Header */}
+              {/* Category Header - V3 Style */}
               <div className="flex items-center gap-3 mb-4">
-                <div className={cn(
-                  "w-10 h-10 rounded-xl flex items-center justify-center border border-gray-200",
-                  category.id === 'account' ? 'bg-orange-100' :
-                  category.id === 'preferences' ? 'bg-blue-100' :
-                  'bg-purple-100'
-                )}>
-                  <CategoryIcon className={cn(
-                    "w-5 h-5",
-                    category.id === 'account' ? 'text-orange-600' :
-                    category.id === 'preferences' ? 'text-blue-600' :
-                    'text-purple-600'
-                  )} />
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  style={{
+                    background: category.id === 'account'
+                      ? 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)'
+                      : category.id === 'preferences'
+                      ? 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)'
+                      : 'linear-gradient(135deg, #ff9014 0%, #FFB85C 100%)',
+                  }}
+                >
+                  <CategoryIcon className="w-5 h-5 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
               </div>
 
-              {/* Category Cards */}
+              {/* Category Cards - V3 Fun Style */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categorySections.map((section, index) => {
                   const Icon = section.icon;
+
+                  // Get gradient colors based on section
+                  const getIconGradient = () => {
+                    switch (section.id) {
+                      case 'profile': return 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)';
+                      case 'security': return 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)';
+                      case 'verification': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
+                      case 'privacy': return 'linear-gradient(135deg, #5B8BD9 0%, #7BA3E0 100%)';
+                      case 'private-codes': return 'linear-gradient(135deg, #9B7BD9 0%, #B59BE0 100%)';
+                      case 'residence-profile': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)';
+                      case 'referrals': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
+                      case 'invitations': return 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)';
+                      case 'notifications': return 'linear-gradient(135deg, #D9A706 0%, #F5C30B 100%)';
+                      case 'language': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
+                      case 'email': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)';
+                      case 'subscription': return 'linear-gradient(135deg, #9B7BD9 0%, #E07BAD 100%)';
+                      case 'payment': return 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)';
+                      case 'invoices': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
+                      case 'devices': return 'linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%)';
+                      default: return 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)';
+                    }
+                  };
 
                   return (
                     <motion.button
@@ -359,43 +401,37 @@ export default function SettingsPage() {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: categoryIndex * 0.1 + index * 0.05 }}
+                      whileHover={{ scale: 1.02, y: -4 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => router.push(section.href)}
-                      className="group relative cursor-pointer bg-white rounded-2xl p-6 border-2 border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 text-left w-full"
+                      className="group relative cursor-pointer bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 text-left w-full overflow-hidden"
+                      style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)' }}
                     >
+                      {/* Decorative circle */}
+                      <div
+                        className="absolute -right-6 -top-6 w-24 h-24 rounded-full opacity-10"
+                        style={{ background: getIconGradient() }}
+                      />
+
                       <div className="relative">
                         {/* Icon with Badge */}
                         <div className="flex items-start justify-between mb-3">
-                          <div className={cn(
-                            "w-12 h-12 rounded-xl flex items-center justify-center",
-                            section.color
-                          )}>
-                            <Icon className={cn(
-                              "w-6 h-6",
-                              section.id === 'profile' ? 'text-orange-600' :
-                              section.id === 'security' ? 'text-red-600' :
-                              section.id === 'verification' ? 'text-emerald-600' :
-                              section.id === 'privacy' ? 'text-blue-600' :
-                              section.id === 'private-codes' ? 'text-purple-600' :
-                              section.id === 'residence-profile' ? 'text-pink-600' :
-                              section.id === 'notifications' ? 'text-yellow-600' :
-                              section.id === 'language' ? 'text-emerald-600' :
-                              section.id === 'email' ? 'text-pink-600' :
-                              section.id === 'subscription' ? 'text-purple-600' :
-                              section.id === 'payment' ? 'text-indigo-600' :
-                              section.id === 'invoices' ? 'text-emerald-600' :
-                              section.id === 'devices' ? 'text-cyan-600' :
-                              section.id === 'referrals' ? 'text-green-600' :
-                              section.id === 'invitations' ? 'text-amber-600' :
-                              'text-gray-700'
-                            )} />
+                          <div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                            style={{ background: getIconGradient() }}
+                          >
+                            <Icon className="w-6 h-6 text-white" />
                           </div>
                           {section.badge && (
-                            <span className={cn(
-                              "px-2.5 py-1 rounded-lg text-xs font-semibold border",
-                              section.badge === 'Premium'
-                                ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200'
-                                : 'bg-orange-100 text-orange-700 border-orange-200'
-                            )}>
+                            <span
+                              className="px-2.5 py-1 rounded-lg text-xs font-semibold"
+                              style={{
+                                background: section.badge === 'Premium'
+                                  ? 'linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 100%)'
+                                  : 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)',
+                                color: section.badge === 'Premium' ? '#7C3AED' : '#ff651e',
+                              }}
+                            >
                               {section.badge}
                             </span>
                           )}
@@ -405,16 +441,14 @@ export default function SettingsPage() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 mb-1">{section.title}</h3>
-                            <p className="text-sm text-gray-600 leading-relaxed">{section.description}</p>
+                            <p className="text-sm text-gray-500 leading-relaxed">{section.description}</p>
                           </div>
-                          <svg
-                            className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                          <div
+                            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all group-hover:translate-x-1"
+                            style={{ background: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)' }}
                           >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
+                            <ChevronRight className="w-4 h-4" style={{ color: '#ff651e' }} />
+                          </div>
                         </div>
                       </div>
                     </motion.button>
@@ -425,36 +459,64 @@ export default function SettingsPage() {
           );
         })}
 
-        {/* Help Section */}
+        {/* Help Section - V3 Fun Style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 rounded-3xl p-8 bg-white border-2 border-orange-100 relative overflow-hidden shadow-sm"
+          whileHover={{ scale: 1.01 }}
+          className="mt-8 rounded-3xl p-8 bg-white relative overflow-hidden shadow-lg"
+          style={{ boxShadow: '0 8px 32px rgba(255, 101, 30, 0.12)' }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Decorative background */}
+          <div
+            className="absolute -right-12 -top-12 w-48 h-48 rounded-full opacity-10"
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+          />
+          <div
+            className="absolute -left-8 -bottom-8 w-32 h-32 rounded-full opacity-10"
+            style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}
+          />
+
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200">
-                <HelpCircle className="w-7 h-7 text-orange-600" />
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 6px 20px rgba(255, 101, 30, 0.3)',
+                }}
+              >
+                <HelpCircle className="w-7 h-7 text-white" />
+              </motion.div>
               <div>
                 <h3 className="text-xl font-bold mb-1 text-gray-900">{settings.help?.title || 'Besoin d\'aide ?'}</h3>
-                <p className="text-gray-600">{settings.help?.description || 'Consultez notre centre d\'aide ou contactez le support'}</p>
+                <p className="text-gray-500">{settings.help?.description || 'Consultez notre centre d\'aide ou contactez le support'}</p>
               </div>
             </div>
             <div className="flex gap-3">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/help')}
-                className="px-4 py-2 rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-50 transition-all duration-300 font-medium"
+                className="px-5 py-2.5 rounded-full border-2 border-gray-200 text-gray-700 hover:border-orange-200 transition-all duration-300 font-medium"
+                style={{ background: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)' }}
               >
                 {settings.help?.helpCenter || 'Centre d\'aide'}
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/contact')}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all duration-300 font-semibold"
+                className="px-5 py-2.5 rounded-full text-white font-semibold shadow-lg transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                }}
               >
                 {settings.help?.contactSupport || 'Contacter le support'}
-              </button>
+              </motion.button>
             </div>
           </div>
         </motion.div>
