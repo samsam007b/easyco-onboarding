@@ -24,6 +24,7 @@ import {
   User,
   Camera,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -270,24 +271,32 @@ export default function MaintenancePage() {
               </div>
             </motion.button>
 
+            {/* Open - V3 Amber Pastel */}
             <motion.button
               onClick={() => setFilter('open')}
-              className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'open' && 'ring-2 ring-yellow-500'
-              )}
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+                boxShadow: filter === 'open' ? '0 8px 24px rgba(217, 119, 6, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
+              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #D97706, #F59E0B)' }}
+              />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.open?.[language] || 'Ouverts'}</p>
+                  <p className="text-sm font-medium text-amber-700">{t?.stats?.open?.[language] || 'Ouverts'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.open_count || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-                  <AlertCircle className="w-6 h-6 text-yellow-600" />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)' }}
+                >
+                  <AlertCircle className="w-6 h-6 text-white" />
                 </div>
               </div>
             </motion.button>
@@ -345,23 +354,71 @@ export default function MaintenancePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white rounded-3xl shadow-lg p-12 text-center"
+              style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
             >
-              <Wrench className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              {/* V3 Fun Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-24 h-24 mx-auto mb-6"
+              >
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    filter: 'blur(20px)',
+                  }}
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon container */}
+                <div
+                  className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                  }}
+                >
+                  <Wrench className="w-12 h-12 text-white" />
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-2xl bg-white/20"
+                    animate={{ opacity: [0, 0.3, 0] }}
+                    transition={{ repeat: Infinity, duration: 2.5 }}
+                  />
+                </div>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-2 -right-2"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-6 h-6 text-amber-400" />
+                </motion.div>
+              </motion.div>
+
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {filter === 'all'
                   ? (t?.empty?.noRequests?.[language] || 'Aucune demande')
                   : (t?.empty?.noRequestsFiltered?.[language] || `Aucune demande ${filter}`)}
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-500 mb-6 max-w-sm mx-auto">
                 {t?.empty?.createFirst?.[language] || 'Créez votre première demande de maintenance'}
               </p>
-              <Button
-                onClick={() => setShowCreateModal(true)}
-                className="rounded-full bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                {t?.empty?.newRequest?.[language] || 'Nouvelle demande'}
-              </Button>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowCreateModal(true)}
+                  className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t?.empty?.newRequest?.[language] || 'Nouvelle demande'}
+                </Button>
+              </motion.div>
             </motion.div>
           ) : (
             <AnimatePresence>

@@ -31,6 +31,7 @@ import {
   Wrench,
   FileSignature,
   Paperclip,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -298,65 +299,106 @@ export default function DocumentsPage() {
             </Button>
           </div>
 
-          {/* Stats Cards */}
+          {/* Stats Cards - V3 Option C Fun Design */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Total Documents - Orange Gradient */}
             <motion.div
-              className="bg-white rounded-2xl p-4 shadow-lg"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.03, y: -4 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
+                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+              }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.total_documents || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}>
-                  <FileText className="w-6 h-6 text-white" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-orange-700">{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</span>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+                >
+                  <FileText className="w-5 h-5 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.total_documents || 0}</p>
+              <p className="text-xs text-orange-600 font-medium mt-2">{t?.stats?.documentsLabel?.[language] || 'documents'}</p>
             </motion.div>
 
-            <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.storageUsed?.[language] || 'Stockage utilisé'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {formatFileSize(stats?.total_size_bytes)}
-                  </p>
-                </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}>
-                  <FolderOpen className="w-6 h-6 text-white" />
+            {/* Storage Used - Orange Gradient Variant */}
+            <motion.div
+              whileHover={{ scale: 1.03, y: -4 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #fff5f3 0%, #ffede5 100%)',
+                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.12)',
+              }}
+            >
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+                style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-orange-600">{t?.stats?.storageUsed?.[language] || 'Stockage utilisé'}</span>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}
+                >
+                  <FolderOpen className="w-5 h-5 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{formatFileSize(stats?.total_size_bytes)}</p>
+              <p className="text-xs text-orange-500 font-medium mt-2">{t?.stats?.usedLabel?.[language] || 'utilisé'}</p>
             </motion.div>
 
-            <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.expiringSoon?.[language] || 'Expirent bientôt'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.expiring_soon || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-                  <AlertTriangle className="w-6 h-6 text-yellow-600" />
+            {/* Expiring Soon - Amber Pastel (Semantic Warning) */}
+            <motion.div
+              whileHover={{ scale: 1.03, y: -4 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+                boxShadow: '0 8px 24px rgba(217, 119, 6, 0.12)',
+              }}
+            >
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+                style={{ background: 'linear-gradient(135deg, #D97706, #F59E0B)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-amber-700">{t?.stats?.expiringSoon?.[language] || 'Expirent bientôt'}</span>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)' }}
+                >
+                  <AlertTriangle className="w-5 h-5 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.expiring_soon || 0}</p>
+              <p className="text-xs text-amber-600 font-medium mt-2">{t?.stats?.attentionLabel?.[language] || 'à surveiller'}</p>
             </motion.div>
 
-            <motion.div className="bg-white rounded-2xl p-4 shadow-lg" whileHover={{ scale: 1.02 }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.expired?.[language] || 'Expirés'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.expired || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-red-600" />
+            {/* Expired - Red Pastel (Semantic Error) */}
+            <motion.div
+              whileHover={{ scale: 1.03, y: -4 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
+                boxShadow: '0 8px 24px rgba(208, 128, 128, 0.12)',
+              }}
+            >
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
+                style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-[#B06060]">{t?.stats?.expired?.[language] || 'Expirés'}</span>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)' }}
+                >
+                  <Calendar className="w-5 h-5 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.expired || 0}</p>
+              <p className="text-xs text-[#C07070] font-medium mt-2">{t?.stats?.toRenewLabel?.[language] || 'à renouveler'}</p>
             </motion.div>
           </div>
 
@@ -409,18 +451,65 @@ export default function DocumentsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="col-span-full bg-white rounded-3xl shadow-lg p-12 text-center"
+              style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
             >
-              <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.emptyState?.noDocuments?.[language] || 'Aucun document'}</h3>
-              <p className="text-gray-600 mb-6">{t?.emptyState?.uploadFirst?.[language] || 'Uploadez votre premier document'}</p>
-              <Button
-                onClick={() => setShowUploadModal(true)}
-                className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+              {/* V3 Fun Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-24 h-24 mx-auto mb-6"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                {t?.uploadDocument?.[language] || 'Upload document'}
-              </Button>
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    filter: 'blur(20px)',
+                  }}
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon container */}
+                <div
+                  className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                  }}
+                >
+                  <FileText className="w-12 h-12 text-white" />
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-2xl bg-white/20"
+                    animate={{ opacity: [0, 0.3, 0] }}
+                    transition={{ repeat: Infinity, duration: 2.5 }}
+                  />
+                </div>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-2 -right-2"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-6 h-6 text-amber-400" />
+                </motion.div>
+              </motion.div>
+
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.emptyState?.noDocuments?.[language] || 'Aucun document'}</h3>
+              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.uploadFirst?.[language] || 'Uploadez votre premier document'}</p>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowUploadModal(true)}
+                  className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t?.uploadDocument?.[language] || 'Upload document'}
+                </Button>
+              </motion.div>
             </motion.div>
           ) : (
             <AnimatePresence>

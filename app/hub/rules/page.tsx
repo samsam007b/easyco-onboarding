@@ -22,6 +22,7 @@ import {
   MessageSquare,
   Archive,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -312,40 +313,62 @@ export default function RulesPage() {
               </div>
             </motion.button>
 
+            {/* Active - V3 Green Pastel */}
             <motion.button
               onClick={() => setFilter('active')}
-              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
+                boxShadow: filter === 'active' ? '0 8px 24px rgba(124, 184, 155, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
+              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9FCFB5)' }}
+              />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.active?.[language] || 'Actives'}</p>
+                  <p className="text-sm font-medium text-[#5A9A7A]">{t?.stats?.active?.[language] || 'Actives'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_active || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)' }}
+                >
+                  <CheckCircle className="w-6 h-6 text-white" />
                 </div>
               </div>
             </motion.button>
 
+            {/* Rejected - V3 Red Pastel */}
             <motion.button
               onClick={() => setFilter('rejected')}
-              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
+                boxShadow: filter === 'rejected' ? '0 8px 24px rgba(208, 128, 128, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
+              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
+              />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
+                  <p className="text-sm font-medium text-[#B06060]">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_rejected || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-                  <XCircle className="w-6 h-6 text-red-600" />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)' }}
+                >
+                  <XCircle className="w-6 h-6 text-white" />
                 </div>
               </div>
             </motion.button>
@@ -359,22 +382,69 @@ export default function RulesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white rounded-3xl shadow-lg p-12 text-center"
+              style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
             >
-              <Vote className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              {/* V3 Fun Icon with Glow */}
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 3 }}
+                className="relative w-24 h-24 mx-auto mb-6"
+              >
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-30"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    filter: 'blur(20px)',
+                  }}
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                />
+                {/* Main icon container */}
+                <div
+                  className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                  }}
+                >
+                  <Vote className="w-12 h-12 text-white" />
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-2xl bg-white/20"
+                    animate={{ opacity: [0, 0.3, 0] }}
+                    transition={{ repeat: Infinity, duration: 2.5 }}
+                  />
+                </div>
+                {/* Floating sparkle */}
+                <motion.div
+                  className="absolute -top-2 -right-2"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <Sparkles className="w-6 h-6 text-amber-400" />
+                </motion.div>
+              </motion.div>
+
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {filter === 'all'
                   ? (t?.emptyState?.noRules?.[language] || 'Aucune règle')
                   : (t?.emptyState?.noRulesFiltered?.[language]?.replace('{filter}', filter) || `Aucune règle ${filter}`)}
               </h3>
-              <p className="text-gray-600 mb-6">{t?.emptyState?.proposeFirst?.[language] || 'Proposez la première règle de la maison'}</p>
-              <Button
-                onClick={() => setShowCreateModal(true)}
-                className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                {t?.proposeRule?.[language] || 'Proposer une règle'}
-              </Button>
+              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.proposeFirst?.[language] || 'Proposez la première règle de la maison'}</p>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowCreateModal(true)}
+                  className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t?.proposeRule?.[language] || 'Proposer une règle'}
+                </Button>
+              </motion.div>
             </motion.div>
           ) : (
             <AnimatePresence>
