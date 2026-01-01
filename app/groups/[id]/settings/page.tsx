@@ -36,8 +36,7 @@ export default function GroupSettingsPage() {
   const params = useParams();
   const groupId = params?.id as string;
   const supabase = createClient();
-  const { getSection } = useLanguage();
-  const common = getSection('common');
+  const { t } = useLanguage();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -77,7 +76,7 @@ export default function GroupSettingsPage() {
         .single();
 
       if (groupError || !groupData) {
-        toast.error('Group not found');
+        toast.error(t('groupSettings.errors.groupNotFound'));
         router.push('/dashboard/searcher');
         return;
       }
@@ -92,14 +91,14 @@ export default function GroupSettingsPage() {
         .single();
 
       if (memberError || !membership) {
-        toast.error('You are not a member of this group');
+        toast.error(t('groupSettings.errors.notMember'));
         router.push('/dashboard/searcher');
         return;
       }
 
       // Only creator/admin can access settings
       if (membership.role !== 'creator' && membership.role !== 'admin') {
-        toast.error('Only group admins can access settings');
+        toast.error(t('groupSettings.errors.noAccess'));
         router.push('/dashboard/searcher');
         return;
       }
@@ -148,7 +147,7 @@ export default function GroupSettingsPage() {
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error loading group:', error);
-      toast.error('Failed to load group settings');
+      toast.error(t('groupSettings.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +155,7 @@ export default function GroupSettingsPage() {
 
   const handleSaveSettings = async () => {
     if (!groupName.trim()) {
-      toast.error('Group name is required');
+      toast.error(t('groupSettings.errors.nameRequired'));
       return;
     }
 
@@ -176,19 +175,19 @@ export default function GroupSettingsPage() {
 
       if (error) throw error;
 
-      toast.success('Settings saved successfully');
+      toast.success(t('groupSettings.toast.settingsSaved'));
       setGroup({ ...group!, name: groupName, description, max_members: maxMembers, is_open: isOpen, requires_approval: requiresApproval });
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error saving settings:', error);
-      toast.error(error.message || 'Failed to save settings');
+      toast.error(error.message || t('groupSettings.errors.saveFailed'));
     } finally {
       setIsSaving(false);
     }
   };
 
   const handleRemoveMember = async (memberId: string, memberUserId: string) => {
-    if (!confirm('Remove this member from the group?')) return;
+    if (!confirm(t('groupSettings.members.removeConfirm'))) return;
 
     try {
       const { error } = await supabase
@@ -198,12 +197,12 @@ export default function GroupSettingsPage() {
 
       if (error) throw error;
 
-      toast.success('Member removed');
+      toast.success(t('groupSettings.members.removed'));
       setMembers(members.filter(m => m.id !== memberId));
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error removing member:', error);
-      toast.error('Failed to remove member');
+      toast.error(t('groupSettings.members.removeFailed'));
     }
   };
 

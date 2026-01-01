@@ -4,6 +4,8 @@ import React from 'react';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, t as translate, getSection } from './translations';
 
+export type { Language };
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;

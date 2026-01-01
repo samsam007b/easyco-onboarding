@@ -25,8 +25,7 @@ function JoinGroupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
-  const { getSection } = useLanguage();
-  const common = getSection('common');
+  const { t } = useLanguage();
 
   const [inviteCode, setInviteCode] = useState(searchParams?.get('code') || '');
   const [isSearching, setIsSearching] = useState(false);
@@ -44,7 +43,7 @@ function JoinGroupContent() {
 
   const handleSearchByCode = async () => {
     if (!inviteCode.trim()) {
-      toast.error('Please enter an invite code');
+      toast.error(t('groupJoin.errors.enterCode'));
       return;
     }
 
@@ -67,7 +66,7 @@ function JoinGroupContent() {
         .single();
 
       if (existingMembership) {
-        toast.error('You are already in a group');
+        toast.error(t('groupJoin.errors.alreadyInGroup'));
         setIsSearching(false);
         return;
       }
@@ -80,14 +79,14 @@ function JoinGroupContent() {
         .single();
 
       if (inviteError || !invitation) {
-        toast.error('Invalid invite code');
+        toast.error(t('groupJoin.errors.invalidCode'));
         setIsSearching(false);
         return;
       }
 
       // Check if expired
       if (invitation.expires_at && new Date(invitation.expires_at) < new Date()) {
-        toast.error('This invite code has expired');
+        toast.error(t('groupJoin.errors.expiredCode'));
         setIsSearching(false);
         return;
       }
@@ -100,7 +99,7 @@ function JoinGroupContent() {
         .single();
 
       if (groupError || !group) {
-        toast.error('Group not found');
+        toast.error(t('groupJoin.errors.groupNotFound'));
         setIsSearching(false);
         return;
       }
@@ -116,7 +115,7 @@ function JoinGroupContent() {
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error searching group:', error);
-      toast.error(error.message || 'Failed to find group');
+      toast.error(error.message || t('groupJoin.errors.searchFailed'));
     } finally {
       setIsSearching(false);
     }
@@ -191,9 +190,9 @@ function JoinGroupContent() {
       if (memberError) throw memberError;
 
       if (group?.requires_approval) {
-        toast.success('Join request sent! Waiting for approval.');
+        toast.success(t('groupJoin.toast.requestSent'));
       } else {
-        toast.success('Successfully joined the group!');
+        toast.success(t('groupJoin.toast.joinSuccess'));
       }
 
       setTimeout(() => {
@@ -202,7 +201,7 @@ function JoinGroupContent() {
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error joining group:', error);
-      toast.error(error.message || 'Failed to join group');
+      toast.error(error.message || t('groupJoin.errors.joinFailed'));
     } finally {
       setIsJoining(false);
     }
@@ -217,7 +216,7 @@ function JoinGroupContent() {
           className="mb-6 text-[#4A148C] hover:opacity-70 transition flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
-          Back to Dashboard
+          {t('groupJoin.backToDashboard')}
         </button>
 
         {/* Header */}
@@ -227,25 +226,25 @@ function JoinGroupContent() {
               <UserPlus className="w-6 h-6 text-purple-600" />
             </div>
             <h1 className="text-3xl font-bold text-[#4A148C]">
-              Join a Group
+              {t('groupJoin.title')}
             </h1>
           </div>
           <p className="text-gray-600">
-            Enter an invite code or browse open groups
+            {t('groupJoin.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           {/* Join with Code */}
           <div className="bg-white rounded-3xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Join with Invite Code</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupJoin.inviteCode.title')}</h2>
 
             <div className="flex gap-2 mb-4">
               <Input
                 type="text"
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                placeholder="Enter invite code"
+                placeholder={t('groupJoin.inviteCode.placeholder')}
                 maxLength={8}
                 className="flex-1 uppercase"
               />
@@ -254,7 +253,7 @@ function JoinGroupContent() {
                 disabled={isSearching || !inviteCode.trim()}
                 className="bg-[#4A148C] hover:bg-[#4A148C]/90"
               >
-                {isSearching ? 'Searching...' : <Search className="w-5 h-5" />}
+                {isSearching ? t('groupJoin.inviteCode.searching') : <Search className="w-5 h-5" />}
               </Button>
             </div>
 
@@ -266,18 +265,18 @@ function JoinGroupContent() {
                       {foundGroup.name}
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">{foundGroup.description || 'No description'}</p>
+                    <p className="text-sm text-gray-600 mt-1">{foundGroup.description || t('groupJoin.group.noDescription')}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                   <span className="flex items-center gap-1">
                     <Users className="w-4 h-4" />
-                    {foundGroup.member_count} / {foundGroup.max_members} members
+                    {foundGroup.member_count} / {foundGroup.max_members} {t('groupJoin.group.members')}
                   </span>
                   {foundGroup.requires_approval && (
                     <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
-                      Requires approval
+                      {t('groupJoin.group.requiresApproval')}
                     </span>
                   )}
                 </div>
@@ -287,7 +286,7 @@ function JoinGroupContent() {
                   disabled={isJoining || (foundGroup.member_count || 0) >= foundGroup.max_members}
                   className="w-full bg-[#FFD600] text-black hover:bg-[#FFD600]/90"
                 >
-                  {isJoining ? 'Joining...' : (foundGroup.member_count || 0) >= foundGroup.max_members ? 'Group Full' : 'Join Group'}
+                  {isJoining ? t('groupJoin.group.joining') : (foundGroup.member_count || 0) >= foundGroup.max_members ? t('groupJoin.group.groupFull') : t('groupJoin.group.join')}
                 </Button>
               </div>
             )}
@@ -300,7 +299,7 @@ function JoinGroupContent() {
             </div>
             <div className="relative flex justify-center">
               <span className="px-4 bg-gradient-to-br from-purple-50 to-yellow-50 text-sm text-gray-500">
-                or browse open groups
+                {t('groupJoin.divider')}
               </span>
             </div>
           </div>
@@ -308,22 +307,22 @@ function JoinGroupContent() {
           {/* Open Groups */}
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Open Groups</h2>
+              <h2 className="text-xl font-semibold text-gray-900">{t('groupJoin.openGroups.title')}</h2>
               <Button
                 onClick={loadOpenGroups}
                 variant="outline"
                 size="sm"
                 disabled={isLoadingOpenGroups}
               >
-                {isLoadingOpenGroups ? 'Loading...' : 'Refresh'}
+                {isLoadingOpenGroups ? t('groupJoin.openGroups.loading') : t('groupJoin.openGroups.refresh')}
               </Button>
             </div>
 
             {openGroups.length === 0 && !isLoadingOpenGroups && (
               <div className="text-center py-8 text-gray-500">
                 <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                <p>No open groups available</p>
-                <p className="text-sm mt-1">Click refresh to check for new groups</p>
+                <p>{t('groupJoin.openGroups.empty')}</p>
+                <p className="text-sm mt-1">{t('groupJoin.openGroups.emptyHint')}</p>
               </div>
             )}
 
@@ -339,14 +338,14 @@ function JoinGroupContent() {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900">{group.name}</h3>
-                      <p className="text-sm text-gray-600 mt-1">{group.description || 'No description'}</p>
+                      <p className="text-sm text-gray-600 mt-1">{group.description || t('groupJoin.group.noDescription')}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600 flex items-center gap-1">
                       <Users className="w-4 h-4" />
-                      {group.member_count} / {group.max_members} members
+                      {group.member_count} / {group.max_members} {t('groupJoin.group.members')}
                     </span>
                     <Button
                       onClick={() => handleJoinGroup(group.id)}
@@ -354,7 +353,7 @@ function JoinGroupContent() {
                       size="sm"
                       className="bg-[#4A148C] hover:bg-[#4A148C]/90"
                     >
-                      {(group.member_count || 0) >= group.max_members ? 'Full' : 'Join'}
+                      {(group.member_count || 0) >= group.max_members ? t('groupJoin.group.full') : t('groupJoin.group.joinShort')}
                     </Button>
                   </div>
                 </div>
@@ -367,11 +366,11 @@ function JoinGroupContent() {
             <div className="flex gap-3">
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-gray-700">
-                <p className="font-medium mb-1">About joining groups</p>
+                <p className="font-medium mb-1">{t('groupJoin.info.title')}</p>
                 <ul className="space-y-1 text-gray-600">
-                  <li>• You can only be in one group at a time</li>
-                  <li>• Some groups require approval from the creator</li>
-                  <li>• Group search together and apply as one</li>
+                  <li>• {t('groupJoin.info.rule1')}</li>
+                  <li>• {t('groupJoin.info.rule2')}</li>
+                  <li>• {t('groupJoin.info.rule3')}</li>
                 </ul>
               </div>
             </div>

@@ -15228,6 +15228,509 @@ export const translations = {
       },
     },
   },
+
+  // ============================================================================
+  // GROUPS PAGES
+  // ============================================================================
+  groupJoin: {
+    backToDashboard: {
+      fr: 'Retour au tableau de bord',
+      en: 'Back to Dashboard',
+      nl: 'Terug naar dashboard',
+      de: 'Zurück zum Dashboard',
+    },
+    title: {
+      fr: 'Rejoindre un groupe',
+      en: 'Join a Group',
+      nl: 'Word lid van een groep',
+      de: 'Einer Gruppe beitreten',
+    },
+    subtitle: {
+      fr: 'Entrez un code d\'invitation ou parcourez les groupes ouverts',
+      en: 'Enter an invite code or browse open groups',
+      nl: 'Voer een uitnodigingscode in of blader door open groepen',
+      de: 'Geben Sie einen Einladungscode ein oder durchsuchen Sie offene Gruppen',
+    },
+    inviteCode: {
+      title: {
+        fr: 'Rejoindre avec un code d\'invitation',
+        en: 'Join with Invite Code',
+        nl: 'Lid worden met uitnodigingscode',
+        de: 'Mit Einladungscode beitreten',
+      },
+      placeholder: {
+        fr: 'Entrez le code d\'invitation',
+        en: 'Enter invite code',
+        nl: 'Voer uitnodigingscode in',
+        de: 'Einladungscode eingeben',
+      },
+      searching: {
+        fr: 'Recherche...',
+        en: 'Searching...',
+        nl: 'Zoeken...',
+        de: 'Suche...',
+      },
+    },
+    group: {
+      noDescription: {
+        fr: 'Pas de description',
+        en: 'No description',
+        nl: 'Geen beschrijving',
+        de: 'Keine Beschreibung',
+      },
+      members: {
+        fr: 'membres',
+        en: 'members',
+        nl: 'leden',
+        de: 'Mitglieder',
+      },
+      requiresApproval: {
+        fr: 'Approbation requise',
+        en: 'Requires approval',
+        nl: 'Goedkeuring vereist',
+        de: 'Genehmigung erforderlich',
+      },
+      joining: {
+        fr: 'Adhésion en cours...',
+        en: 'Joining...',
+        nl: 'Aan het toetreden...',
+        de: 'Beitritt läuft...',
+      },
+      groupFull: {
+        fr: 'Groupe complet',
+        en: 'Group Full',
+        nl: 'Groep vol',
+        de: 'Gruppe voll',
+      },
+      join: {
+        fr: 'Rejoindre le groupe',
+        en: 'Join Group',
+        nl: 'Lid worden van groep',
+        de: 'Gruppe beitreten',
+      },
+      joinShort: {
+        fr: 'Rejoindre',
+        en: 'Join',
+        nl: 'Toetreden',
+        de: 'Beitreten',
+      },
+      full: {
+        fr: 'Complet',
+        en: 'Full',
+        nl: 'Vol',
+        de: 'Voll',
+      },
+    },
+    divider: {
+      fr: 'ou parcourez les groupes ouverts',
+      en: 'or browse open groups',
+      nl: 'of blader door open groepen',
+      de: 'oder durchsuchen Sie offene Gruppen',
+    },
+    openGroups: {
+      title: {
+        fr: 'Groupes ouverts',
+        en: 'Open Groups',
+        nl: 'Open groepen',
+        de: 'Offene Gruppen',
+      },
+      refresh: {
+        fr: 'Actualiser',
+        en: 'Refresh',
+        nl: 'Vernieuwen',
+        de: 'Aktualisieren',
+      },
+      loading: {
+        fr: 'Chargement...',
+        en: 'Loading...',
+        nl: 'Laden...',
+        de: 'Laden...',
+      },
+      empty: {
+        fr: 'Aucun groupe ouvert disponible',
+        en: 'No open groups available',
+        nl: 'Geen open groepen beschikbaar',
+        de: 'Keine offenen Gruppen verfügbar',
+      },
+      emptyHint: {
+        fr: 'Cliquez sur actualiser pour vérifier les nouveaux groupes',
+        en: 'Click refresh to check for new groups',
+        nl: 'Klik op vernieuwen om te controleren op nieuwe groepen',
+        de: 'Klicken Sie auf Aktualisieren, um nach neuen Gruppen zu suchen',
+      },
+    },
+    info: {
+      title: {
+        fr: 'À propos des groupes',
+        en: 'About joining groups',
+        nl: 'Over het toetreden tot groepen',
+        de: 'Über den Beitritt zu Gruppen',
+      },
+      rule1: {
+        fr: 'Vous ne pouvez être que dans un seul groupe à la fois',
+        en: 'You can only be in one group at a time',
+        nl: 'Je kunt maar in één groep tegelijk zijn',
+        de: 'Sie können nur einer Gruppe gleichzeitig angehören',
+      },
+      rule2: {
+        fr: 'Certains groupes nécessitent l\'approbation du créateur',
+        en: 'Some groups require approval from the creator',
+        nl: 'Sommige groepen vereisen goedkeuring van de maker',
+        de: 'Einige Gruppen erfordern die Genehmigung des Erstellers',
+      },
+      rule3: {
+        fr: 'Les groupes cherchent ensemble et postulent en un',
+        en: 'Group search together and apply as one',
+        nl: 'Groepen zoeken samen en solliciteren als één',
+        de: 'Gruppen suchen gemeinsam und bewerben sich als eine',
+      },
+    },
+    errors: {
+      enterCode: {
+        fr: 'Veuillez entrer un code d\'invitation',
+        en: 'Please enter an invite code',
+        nl: 'Voer een uitnodigingscode in',
+        de: 'Bitte geben Sie einen Einladungscode ein',
+      },
+      alreadyInGroup: {
+        fr: 'Vous êtes déjà dans un groupe',
+        en: 'You are already in a group',
+        nl: 'Je bent al lid van een groep',
+        de: 'Sie sind bereits in einer Gruppe',
+      },
+      invalidCode: {
+        fr: 'Code d\'invitation invalide',
+        en: 'Invalid invite code',
+        nl: 'Ongeldige uitnodigingscode',
+        de: 'Ungültiger Einladungscode',
+      },
+      expiredCode: {
+        fr: 'Ce code d\'invitation a expiré',
+        en: 'This invite code has expired',
+        nl: 'Deze uitnodigingscode is verlopen',
+        de: 'Dieser Einladungscode ist abgelaufen',
+      },
+      groupNotFound: {
+        fr: 'Groupe non trouvé',
+        en: 'Group not found',
+        nl: 'Groep niet gevonden',
+        de: 'Gruppe nicht gefunden',
+      },
+      searchFailed: {
+        fr: 'Échec de la recherche du groupe',
+        en: 'Failed to find group',
+        nl: 'Kan groep niet vinden',
+        de: 'Gruppe konnte nicht gefunden werden',
+      },
+      joinFailed: {
+        fr: 'Échec de l\'adhésion au groupe',
+        en: 'Failed to join group',
+        nl: 'Kan niet toetreden tot groep',
+        de: 'Beitritt zur Gruppe fehlgeschlagen',
+      },
+    },
+    toast: {
+      requestSent: {
+        fr: 'Demande envoyée ! En attente d\'approbation.',
+        en: 'Join request sent! Waiting for approval.',
+        nl: 'Verzoek verzonden! Wachten op goedkeuring.',
+        de: 'Anfrage gesendet! Warten auf Genehmigung.',
+      },
+      joinSuccess: {
+        fr: 'Vous avez rejoint le groupe avec succès !',
+        en: 'Successfully joined the group!',
+        nl: 'Succesvol lid geworden van de groep!',
+        de: 'Erfolgreich der Gruppe beigetreten!',
+      },
+    },
+  },
+
+  groupSettings: {
+    backToDashboard: {
+      fr: 'Retour au tableau de bord',
+      en: 'Back to Dashboard',
+      nl: 'Terug naar dashboard',
+      de: 'Zurück zum Dashboard',
+    },
+    title: {
+      fr: 'Paramètres du groupe',
+      en: 'Group Settings',
+      nl: 'Groepsinstellingen',
+      de: 'Gruppeneinstellungen',
+    },
+    subtitle: {
+      fr: 'Gérez les paramètres et les membres de votre groupe',
+      en: 'Manage your group settings and members',
+      nl: 'Beheer je groepsinstellingen en leden',
+      de: 'Verwalten Sie Ihre Gruppeneinstellungen und Mitglieder',
+    },
+    basicInfo: {
+      title: {
+        fr: 'Informations de base',
+        en: 'Basic Information',
+        nl: 'Basisinformatie',
+        de: 'Grundlegende Informationen',
+      },
+      groupName: {
+        fr: 'Nom du groupe',
+        en: 'Group Name',
+        nl: 'Groepsnaam',
+        de: 'Gruppenname',
+      },
+      groupNamePlaceholder: {
+        fr: 'Nom du groupe',
+        en: 'Group name',
+        nl: 'Groepsnaam',
+        de: 'Gruppenname',
+      },
+      description: {
+        fr: 'Description',
+        en: 'Description',
+        nl: 'Beschrijving',
+        de: 'Beschreibung',
+      },
+      descriptionPlaceholder: {
+        fr: 'Description du groupe',
+        en: 'Group description',
+        nl: 'Groepsbeschrijving',
+        de: 'Gruppenbeschreibung',
+      },
+      maxMembers: {
+        fr: 'Nombre maximum de membres',
+        en: 'Maximum Members',
+        nl: 'Maximum aantal leden',
+        de: 'Maximale Mitglieder',
+      },
+      openToNewMembers: {
+        title: {
+          fr: 'Ouvert aux nouveaux membres',
+          en: 'Open to new members',
+          nl: 'Open voor nieuwe leden',
+          de: 'Offen für neue Mitglieder',
+        },
+        description: {
+          fr: 'Permettre aux gens de trouver et rejoindre',
+          en: 'Allow people to find and join',
+          nl: 'Sta mensen toe om te vinden en toe te treden',
+          de: 'Erlauben Sie Leuten, zu finden und beizutreten',
+        },
+      },
+      requireApproval: {
+        title: {
+          fr: 'Approbation requise',
+          en: 'Require approval',
+          nl: 'Goedkeuring vereist',
+          de: 'Genehmigung erforderlich',
+        },
+        description: {
+          fr: 'Vérifier avant que les membres rejoignent',
+          en: 'Review before members join',
+          nl: 'Controleren voordat leden toetreden',
+          de: 'Überprüfen, bevor Mitglieder beitreten',
+        },
+      },
+      saveButton: {
+        fr: 'Enregistrer les paramètres',
+        en: 'Save Settings',
+        nl: 'Instellingen opslaan',
+        de: 'Einstellungen speichern',
+      },
+      saving: {
+        fr: 'Enregistrement...',
+        en: 'Saving...',
+        nl: 'Opslaan...',
+        de: 'Speichern...',
+      },
+    },
+    inviteCode: {
+      title: {
+        fr: 'Code d\'invitation',
+        en: 'Invite Code',
+        nl: 'Uitnodigingscode',
+        de: 'Einladungscode',
+      },
+      shareHint: {
+        fr: 'Partagez ce code avec les personnes que vous souhaitez inviter',
+        en: 'Share this code with people you want to invite',
+        nl: 'Deel deze code met mensen die je wilt uitnodigen',
+        de: 'Teilen Sie diesen Code mit Personen, die Sie einladen möchten',
+      },
+      copied: {
+        fr: 'Code d\'invitation copié !',
+        en: 'Invite code copied!',
+        nl: 'Uitnodigingscode gekopieerd!',
+        de: 'Einladungscode kopiert!',
+      },
+    },
+    members: {
+      title: {
+        fr: 'Membres',
+        en: 'Members',
+        nl: 'Leden',
+        de: 'Mitglieder',
+      },
+      removeConfirm: {
+        fr: 'Supprimer ce membre du groupe ?',
+        en: 'Remove this member from the group?',
+        nl: 'Dit lid uit de groep verwijderen?',
+        de: 'Dieses Mitglied aus der Gruppe entfernen?',
+      },
+      removed: {
+        fr: 'Membre supprimé',
+        en: 'Member removed',
+        nl: 'Lid verwijderd',
+        de: 'Mitglied entfernt',
+      },
+      removeFailed: {
+        fr: 'Échec de la suppression du membre',
+        en: 'Failed to remove member',
+        nl: 'Kan lid niet verwijderen',
+        de: 'Mitglied konnte nicht entfernt werden',
+      },
+    },
+    dangerZone: {
+      title: {
+        fr: 'Zone de danger',
+        en: 'Danger Zone',
+        nl: 'Gevarenzone',
+        de: 'Gefahrenzone',
+      },
+      leaveGroup: {
+        description: {
+          fr: 'Quitter ce groupe',
+          en: 'Leave this group',
+          nl: 'Verlaat deze groep',
+          de: 'Diese Gruppe verlassen',
+        },
+        confirm: {
+          fr: 'Êtes-vous sûr de vouloir quitter ce groupe ?',
+          en: 'Are you sure you want to leave this group?',
+          nl: 'Weet je zeker dat je deze groep wilt verlaten?',
+          de: 'Sind Sie sicher, dass Sie diese Gruppe verlassen möchten?',
+        },
+        button: {
+          fr: 'Quitter le groupe',
+          en: 'Leave Group',
+          nl: 'Groep verlaten',
+          de: 'Gruppe verlassen',
+        },
+        success: {
+          fr: 'Vous avez quitté le groupe',
+          en: 'You left the group',
+          nl: 'Je hebt de groep verlaten',
+          de: 'Sie haben die Gruppe verlassen',
+        },
+        failed: {
+          fr: 'Échec de la sortie du groupe',
+          en: 'Failed to leave group',
+          nl: 'Kan groep niet verlaten',
+          de: 'Verlassen der Gruppe fehlgeschlagen',
+        },
+      },
+      deleteGroup: {
+        description: {
+          fr: 'Supprimer définitivement ce groupe et retirer tous les membres',
+          en: 'Permanently delete this group and remove all members',
+          nl: 'Verwijder deze groep permanent en verwijder alle leden',
+          de: 'Diese Gruppe dauerhaft löschen und alle Mitglieder entfernen',
+        },
+        button: {
+          fr: 'Supprimer le groupe',
+          en: 'Delete Group',
+          nl: 'Groep verwijderen',
+          de: 'Gruppe löschen',
+        },
+        confirmTitle: {
+          fr: 'Êtes-vous absolument sûr ?',
+          en: 'Are you absolutely sure?',
+          nl: 'Weet je het absoluut zeker?',
+          de: 'Sind Sie absolut sicher?',
+        },
+        confirmDescription: {
+          fr: 'Cette action ne peut pas être annulée.',
+          en: 'This action cannot be undone.',
+          nl: 'Deze actie kan niet ongedaan worden gemaakt.',
+          de: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+        },
+        confirmButton: {
+          fr: 'Oui, supprimer le groupe',
+          en: 'Yes, Delete Group',
+          nl: 'Ja, groep verwijderen',
+          de: 'Ja, Gruppe löschen',
+        },
+        deleting: {
+          fr: 'Suppression...',
+          en: 'Deleting...',
+          nl: 'Verwijderen...',
+          de: 'Löschen...',
+        },
+        success: {
+          fr: 'Groupe supprimé',
+          en: 'Group deleted',
+          nl: 'Groep verwijderd',
+          de: 'Gruppe gelöscht',
+        },
+        failed: {
+          fr: 'Échec de la suppression du groupe',
+          en: 'Failed to delete group',
+          nl: 'Kan groep niet verwijderen',
+          de: 'Gruppe konnte nicht gelöscht werden',
+        },
+      },
+      cancel: {
+        fr: 'Annuler',
+        en: 'Cancel',
+        nl: 'Annuleren',
+        de: 'Abbrechen',
+      },
+    },
+    errors: {
+      groupNotFound: {
+        fr: 'Groupe non trouvé',
+        en: 'Group not found',
+        nl: 'Groep niet gevonden',
+        de: 'Gruppe nicht gefunden',
+      },
+      notMember: {
+        fr: 'Vous n\'êtes pas membre de ce groupe',
+        en: 'You are not a member of this group',
+        nl: 'Je bent geen lid van deze groep',
+        de: 'Sie sind kein Mitglied dieser Gruppe',
+      },
+      noAccess: {
+        fr: 'Seuls les administrateurs du groupe peuvent accéder aux paramètres',
+        en: 'Only group admins can access settings',
+        nl: 'Alleen groepsbeheerders kunnen instellingen openen',
+        de: 'Nur Gruppenadministratoren können auf Einstellungen zugreifen',
+      },
+      nameRequired: {
+        fr: 'Le nom du groupe est requis',
+        en: 'Group name is required',
+        nl: 'Groepsnaam is vereist',
+        de: 'Gruppenname ist erforderlich',
+      },
+      loadFailed: {
+        fr: 'Échec du chargement des paramètres du groupe',
+        en: 'Failed to load group settings',
+        nl: 'Kan groepsinstellingen niet laden',
+        de: 'Gruppeneinstellungen konnten nicht geladen werden',
+      },
+      saveFailed: {
+        fr: 'Échec de l\'enregistrement des paramètres',
+        en: 'Failed to save settings',
+        nl: 'Kan instellingen niet opslaan',
+        de: 'Einstellungen konnten nicht gespeichert werden',
+      },
+    },
+    toast: {
+      settingsSaved: {
+        fr: 'Paramètres enregistrés avec succès',
+        en: 'Settings saved successfully',
+        nl: 'Instellingen succesvol opgeslagen',
+        de: 'Einstellungen erfolgreich gespeichert',
+      },
+    },
+  },
 };
 
 // Helper function to get translation
