@@ -14,6 +14,7 @@ import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion'
 import { calculateProfileCompletion } from '@/lib/profile/profile-completion'
+import { useLanguage } from '@/lib/i18n/use-language'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -126,6 +127,7 @@ type TabType = 'profile' | 'settings'
 
 export default function ProfilePage() {
   const router = useRouter()
+  const { t } = useLanguage()
   const { activeRole } = useRole()
   const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState<UserData | null>(null)
@@ -187,7 +189,7 @@ export default function ProfilePage() {
         .single()
 
       if (error) {
-        toast.error('Failed to load profile')
+        toast.error(t('profile.errors.loadFailed'))
         return
       }
 
@@ -210,7 +212,7 @@ export default function ProfilePage() {
         setUserProfile(profileData)
       }
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(t('profile.errors.unexpected'))
     } finally {
       setIsLoading(false)
       setIsRefreshing(false)
@@ -226,7 +228,7 @@ export default function ProfilePage() {
     if (!userData) return
 
     if (!fullName.trim()) {
-      toast.error('Name cannot be empty')
+      toast.error(t('profile.errors.nameEmpty'))
       return
     }
 
@@ -239,15 +241,15 @@ export default function ProfilePage() {
         .eq('id', userData.id)
 
       if (error) {
-        toast.error('Failed to update name')
+        toast.error(t('profile.errors.updateNameFailed'))
         return
       }
 
       setUserData({ ...userData, full_name: fullName })
       setIsEditingName(false)
-      toast.success('Name updated successfully')
+      toast.success(t('profile.success.nameUpdated'))
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(t('profile.errors.unexpected'))
     } finally {
       setIsSavingName(false)
     }
@@ -258,7 +260,7 @@ export default function ProfilePage() {
     if (!userData) return
 
     if (selectedUserType === userData.user_type) {
-      toast.error('Please select a different role')
+      toast.error(t('profile.errors.selectDifferentRole'))
       return
     }
 
@@ -271,8 +273,8 @@ export default function ProfilePage() {
 
     // 🔴 CLOSED BETA: Block switch to Searcher (except for super admins)
     if (selectedUserType === 'searcher' && !isSuperAdmin) {
-      toast.error('La fonction Chercheur arrive très prochainement !', {
-        description: 'Consultez /coming-soon/searcher pour plus d\'informations'
+      toast.error(t('profile.errors.searcherComingSoon'), {
+        description: t('profile.errors.searcherComingSoonDesc')
       })
       setShowRoleSwitchModal(false)
       return
@@ -306,11 +308,11 @@ export default function ProfilePage() {
         .eq('id', userData.id)
 
       if (error) {
-        toast.error('Failed to change role')
+        toast.error(t('profile.errors.changeRoleFailed'))
         return
       }
 
-      toast.success('Role switched successfully!')
+      toast.success(t('profile.success.roleSwitched'))
 
       setTimeout(() => {
         if (hasCompletedNewRoleOnboarding) {
@@ -324,7 +326,7 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(t('profile.errors.unexpected'))
     } finally {
       setIsChangingUserType(false)
       setShowRoleSwitchModal(false)
@@ -348,7 +350,7 @@ export default function ProfilePage() {
 
       if (error) throw error
 
-      toast.success('Onboarding reset! Redirecting...')
+      toast.success(t('profile.success.onboardingReset'))
       setShowResetOnboardingDialog(false)
 
       setTimeout(() => {
@@ -364,7 +366,7 @@ export default function ProfilePage() {
         }
       }, 1000)
     } catch (error) {
-      toast.error('Failed to reset onboarding')
+      toast.error(t('profile.errors.resetOnboardingFailed'))
     }
   }
 
@@ -379,9 +381,9 @@ export default function ProfilePage() {
     if (/[0-9]/.test(pwd)) strength++
     if (/[^A-Za-z0-9]/.test(pwd)) strength++
 
-    if (strength <= 2) return { strength, label: 'Weak', color: 'bg-red-500' }
-    if (strength <= 3) return { strength, label: 'Medium', color: 'bg-yellow-500' }
-    return { strength, label: 'Strong', color: 'bg-green-500' }
+    if (strength <= 2) return { strength, label: t('profile.password.weak'), color: 'bg-red-500' }
+    if (strength <= 3) return { strength, label: t('profile.password.medium'), color: 'bg-yellow-500' }
+    return { strength, label: t('profile.password.strong'), color: 'bg-green-500' }
   }
 
   const newPasswordStrength = getPasswordStrength(newPassword)
@@ -389,17 +391,17 @@ export default function ProfilePage() {
   // Change password
   const handleChangePassword = async () => {
     if (!currentPassword) {
-      toast.error('Please enter your current password')
+      toast.error(t('profile.errors.enterCurrentPassword'))
       return
     }
 
     if (newPassword.length < 8) {
-      toast.error('New password must be at least 8 characters')
+      toast.error(t('profile.errors.passwordMinLength'))
       return
     }
 
     if (newPassword !== confirmNewPassword) {
-      toast.error('New passwords do not match')
+      toast.error(t('profile.errors.passwordsNoMatch'))
       return
     }
 
@@ -412,7 +414,7 @@ export default function ProfilePage() {
       })
 
       if (signInError) {
-        toast.error('Current password is incorrect')
+        toast.error(t('profile.errors.currentPasswordIncorrect'))
         setIsChangingPassword(false)
         return
       }
@@ -422,17 +424,17 @@ export default function ProfilePage() {
       })
 
       if (updateError) {
-        toast.error('Failed to update password')
+        toast.error(t('profile.errors.updatePasswordFailed'))
         return
       }
 
-      toast.success('Password updated successfully')
+      toast.success(t('profile.success.passwordUpdated'))
       setShowChangePassword(false)
       setCurrentPassword('')
       setNewPassword('')
       setConfirmNewPassword('')
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(t('profile.errors.unexpected'))
     } finally {
       setIsChangingPassword(false)
     }
@@ -441,7 +443,7 @@ export default function ProfilePage() {
   // Delete account
   const handleDeleteAccount = async () => {
     if (deleteConfirmText !== 'DELETE') {
-      toast.error('Please type DELETE to confirm')
+      toast.error(t('profile.errors.typeDeleteToConfirm'))
       return
     }
 
@@ -455,13 +457,13 @@ export default function ProfilePage() {
       const data = await response.json()
 
       if (!data.success) {
-        throw new Error(data.error || 'Failed to delete account')
+        throw new Error(data.error || t('profile.errors.deleteAccountFailed'))
       }
 
-      toast.success('Account deleted successfully')
+      toast.success(t('profile.success.accountDeleted'))
       router.push('/')
     } catch (error: any) {
-      toast.error(error.message || 'An unexpected error occurred')
+      toast.error(error.message || t('profile.errors.unexpected'))
     } finally {
       setIsDeletingAccount(false)
     }
@@ -525,8 +527,8 @@ export default function ProfilePage() {
 
   // Tab content components
   const tabs = [
-    { id: 'profile' as TabType, label: 'Profil', icon: UserCircle },
-    { id: 'settings' as TabType, label: 'Rôle', icon: Settings },
+    { id: 'profile' as TabType, label: t('profile.tabs.profile'), icon: UserCircle },
+    { id: 'settings' as TabType, label: t('profile.tabs.role'), icon: Settings },
   ]
 
   return (
@@ -541,7 +543,7 @@ export default function ProfilePage() {
               className="flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              Retour
+              {t('common.back')}
             </Button>
             <Button
               onClick={handleLogout}
@@ -549,7 +551,7 @@ export default function ProfilePage() {
               className="flex items-center gap-2"
             >
               <LogOut className="w-4 h-4" />
-              Déconnexion
+              {t('profile.logout')}
             </Button>
           </div>
         </div>
@@ -636,7 +638,7 @@ export default function ProfilePage() {
 
           {/* Name and Role */}
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {userData.full_name || 'Unnamed User'}
+            {userData.full_name || t('profile.unnamedUser')}
           </h1>
           <p className={`text-lg ${colors.text} font-medium capitalize mb-4`}>
             {userData.user_type}
@@ -672,7 +674,7 @@ export default function ProfilePage() {
                 </span>
               </div>
               <span className="text-sm font-medium text-gray-700">
-                Profil complété
+                {t('profile.profileCompleted')}
               </span>
             </div>
           </div>
@@ -726,13 +728,13 @@ export default function ProfilePage() {
               <>
                 {/* Personal Information */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Informations Personnelles</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">{t('profile.personalInfo')}</h2>
 
                   <div className="space-y-4">
                     {/* Full Name */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nom Complet
+                        {t('profile.fullName')}
                       </label>
                       {isEditingName ? (
                         <div className="flex gap-2">
@@ -748,7 +750,7 @@ export default function ProfilePage() {
                             disabled={isSavingName}
                             className={`bg-gradient-to-r ${colors.gradient} text-white`}
                           >
-                            {isSavingName ? 'Saving...' : 'Save'}
+                            {isSavingName ? t('common.saving') : t('common.save')}
                           </Button>
                           <Button
                             onClick={() => {
@@ -758,18 +760,18 @@ export default function ProfilePage() {
                             variant="outline"
                             disabled={isSavingName}
                           >
-                            Cancel
+                            {t('common.cancel')}
                           </Button>
                         </div>
                       ) : (
                         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
-                          <span className="text-gray-900">{userData.full_name || 'Not set'}</span>
+                          <span className="text-gray-900">{userData.full_name || t('profile.notSet')}</span>
                           <Button
                             onClick={() => setIsEditingName(true)}
                             variant="ghost"
                             className={colors.text}
                           >
-                            Edit
+                            {t('common.edit')}
                           </Button>
                         </div>
                       )}
@@ -788,12 +790,12 @@ export default function ProfilePage() {
                         {userData.email_verified ? (
                           <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-3 py-1 rounded-full">
                             <Check className="w-4 h-4" />
-                            Vérifié
+                            {t('profile.verified')}
                           </span>
                         ) : (
                           <span className="flex items-center gap-1 text-xs text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
                             <AlertCircle className="w-4 h-4" />
-                            Non vérifié
+                            {t('profile.notVerified')}
                           </span>
                         )}
                       </div>
@@ -809,7 +811,7 @@ export default function ProfilePage() {
                 >
                   {/* Hero Message */}
                   <div className="text-center mb-4">
-                    <p className="text-sm text-gray-600 font-medium">Voici ce que les autres voient de toi</p>
+                    <p className="text-sm text-gray-600 font-medium">{t('profile.whatOthersSee')}</p>
                   </div>
 
                   {/* Large Profile Card */}
@@ -849,7 +851,7 @@ export default function ProfilePage() {
                         {/* Name + Quick Info */}
                         <div className="flex-1">
                           <h3 className="text-xl font-bold text-gray-900 mb-1">
-                            {userData.full_name || 'Nom non renseigné'}
+                            {userData.full_name || t('profile.namePlaceholder')}
                           </h3>
                           <div className="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
                             {/* City */}
@@ -872,7 +874,7 @@ export default function ProfilePage() {
                             {userData.email_verified && (
                               <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
                                 <ShieldCheck className="w-3 h-3" />
-                                Vérifié
+                                {t('profile.verified')}
                               </span>
                             )}
                             <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
@@ -880,7 +882,7 @@ export default function ProfilePage() {
                               profileCompletion >= 60 ? 'bg-[#FFF9E6] text-[#F9A825]' :
                               'bg-orange-100 text-orange-700'
                             }`}>
-                              {profileCompletion}% complet
+                              {profileCompletion}% {t('profile.complete')}
                             </span>
                           </div>
                         </div>
@@ -898,7 +900,7 @@ export default function ProfilePage() {
                         {/* Hobbies */}
                         {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">🎨 Loisirs:</span>
+                            <span className="text-xs font-semibold text-gray-600">🎨 {t('profile.sections.hobbies')}:</span>
                             {userProfile.hobbies.slice(0, 3).map((hobby, idx) => (
                               <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
                                 {hobby}
@@ -915,7 +917,7 @@ export default function ProfilePage() {
                         {/* Values */}
                         {userProfile?.core_values && userProfile.core_values.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">❤️ Valeurs:</span>
+                            <span className="text-xs font-semibold text-gray-600">❤️ {t('profile.sections.values')}:</span>
                             {userProfile.core_values.slice(0, 3).map((value, idx) => (
                               <span key={idx} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">
                                 {value}
@@ -937,7 +939,7 @@ export default function ProfilePage() {
                           onClick={() => router.push('/profile/public-view')}
                         >
                           <Eye className="w-4 h-4 inline mr-1" />
-                          Voir en mode public
+                          {t('profile.viewPublicMode')}
                         </button>
                         <button
                           className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
@@ -995,12 +997,12 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="text-left">
-                        <h3 className="text-sm font-semibold text-gray-900">Complétion du profil</h3>
+                        <h3 className="text-sm font-semibold text-gray-900">{t('profile.profileCompletion')}</h3>
                         <p className="text-xs text-gray-600">
                           {profileCompletion === 100 ? (
-                            "Profil complet"
+                            t('profile.profileComplete')
                           ) : (
-                            `${7 - Math.round((profileCompletion / 100) * 7)} section${7 - Math.round((profileCompletion / 100) * 7) > 1 ? 's' : ''} à compléter`
+                            `${7 - Math.round((profileCompletion / 100) * 7)} ${t('profile.sectionsToComplete')}`
                           )}
                         </p>
                       </div>
@@ -1019,11 +1021,11 @@ export default function ProfilePage() {
                     onClick={(e) => {
                       e.stopPropagation()
                       fetchUserData()
-                      toast.success('Données actualisées')
+                      toast.success(t('profile.dataRefreshed'))
                     }}
                     disabled={isRefreshing}
                     className="p-2 hover:bg-white/50 rounded-lg transition-colors disabled:opacity-50"
-                    title="Actualiser les données"
+                    title={t('profile.refreshData')}
                   >
                     <RefreshCw className={`w-4 h-4 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
                   </button>
@@ -1045,7 +1047,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <UserCircle className={`w-4 h-4 ${userData.full_name && userData.avatar_url ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Profil de base</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.basicProfile')}</span>
                               </div>
                               {userData.full_name && userData.avatar_url ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1066,7 +1068,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <User className={`w-4 h-4 ${userProfile?.about_me || userProfile?.looking_for ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">À propos</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.about')}</span>
                               </div>
                               {userProfile?.about_me || userProfile?.looking_for ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1087,7 +1089,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <Sparkles className={`w-4 h-4 ${userProfile?.hobbies && userProfile.hobbies.length > 0 ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Loisirs</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.hobbies')}</span>
                               </div>
                               {userProfile?.hobbies && userProfile.hobbies.length > 0 ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1108,7 +1110,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <Heart className={`w-4 h-4 ${userProfile?.extended_personality ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Personnalité</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.personality')}</span>
                               </div>
                               {userProfile?.extended_personality ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1129,7 +1131,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <Shield className={`w-4 h-4 ${userProfile?.core_values && userProfile.core_values.length > 0 ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Valeurs</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.values')}</span>
                               </div>
                               {userProfile?.core_values && userProfile.core_values.length > 0 ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1150,7 +1152,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <DollarSign className={`w-4 h-4 ${userProfile?.financial_info ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Informations financières</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.financial')}</span>
                               </div>
                               {userProfile?.financial_info ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1171,7 +1173,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <Users className={`w-4 h-4 ${userProfile?.community_preferences ? 'text-green-600' : 'text-gray-400'}`} />
-                                <span className="text-xs font-medium text-gray-700">Communauté & événements</span>
+                                <span className="text-xs font-medium text-gray-700">{t('profile.sections.community')}</span>
                               </div>
                               {userProfile?.community_preferences ? (
                                 <Check className="w-4 h-4 text-green-600" />
@@ -1191,7 +1193,7 @@ export default function ProfilePage() {
                           {profileCompletion < 100 && (
                             <div className="pt-2">
                               <p className="text-xs text-center text-gray-600 italic">
-                                Complète ton profil pour augmenter ta visibilité jusqu'à 3x
+                                {t('profile.completeForVisibility')}
                               </p>
                             </div>
                           )}
@@ -1204,8 +1206,8 @@ export default function ProfilePage() {
                 {/* Enhanced Profile Sections - Uniform Style */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">Améliorer mon profil</h2>
-                    <span className="text-sm text-gray-500">Augmentez vos chances de matching</span>
+                    <h2 className="text-xl font-semibold text-gray-900">{t('profile.enhance.title')}</h2>
+                    <span className="text-sm text-gray-500">{t('profile.enhance.subtitle')}</span>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1220,8 +1222,8 @@ export default function ProfilePage() {
                             <User className="w-6 h-6 text-blue-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">À propos</h3>
-                            <p className="text-sm text-gray-600">Parlez-nous de vous</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.about.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.about.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1239,8 +1241,8 @@ export default function ProfilePage() {
                             <Heart className="w-6 h-6 text-pink-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">Personnalité</h3>
-                            <p className="text-sm text-gray-600">Votre style de vie</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.personality.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.personality.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1258,8 +1260,8 @@ export default function ProfilePage() {
                             <Shield className="w-6 h-6 text-purple-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">Valeurs</h3>
-                            <p className="text-sm text-gray-600">Ce qui compte pour vous</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.values.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.values.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1277,8 +1279,8 @@ export default function ProfilePage() {
                             <Sparkles className="w-6 h-6 text-green-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">Loisirs</h3>
-                            <p className="text-sm text-gray-600">Vos passions et activités</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.hobbies.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.hobbies.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1296,8 +1298,8 @@ export default function ProfilePage() {
                             <Users className="w-6 h-6 text-orange-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">Communauté</h3>
-                            <p className="text-sm text-gray-600">Événements et repas partagés</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.community.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.community.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1315,8 +1317,8 @@ export default function ProfilePage() {
                             <DollarSign className="w-6 h-6 text-yellow-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">Financier</h3>
-                            <p className="text-sm text-gray-600">Situation professionnelle</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.financial.title')}</h3>
+                            <p className="text-sm text-gray-600">{t('profile.enhance.financial.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1335,15 +1337,15 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-gray-900">Vérification</h3>
+                              <h3 className="font-semibold text-gray-900">{t('profile.enhance.verification.title')}</h3>
                               {userProfile?.verification_status === 'verified' && (
                                 <span className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full font-semibold">
                                   <Check className="w-3 h-3" />
-                                  Vérifié
+                                  {t('profile.verified')}
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm text-gray-600 leading-relaxed">Vérifiez votre identité</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">{t('profile.enhance.verification.description')}</p>
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
@@ -1357,9 +1359,9 @@ export default function ProfilePage() {
                   <div className={`bg-gradient-to-r ${colors.gradient} rounded-3xl shadow-xl p-8 text-white`}>
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
+                        <h2 className="text-2xl font-bold mb-2">{t('profile.enhance.cta.title')}</h2>
                         <p className="text-white/90">
-                          Augmente tes chances de matching en complétant ton profil à 100%
+                          {t('profile.enhance.cta.description')}
                         </p>
                       </div>
                     </div>
@@ -1367,7 +1369,7 @@ export default function ProfilePage() {
                       onClick={() => router.push(`/profile/enhance-${userData.user_type}`)}
                       className="bg-white text-gray-900 hover:bg-white/90 rounded-full font-semibold"
                     >
-                      Perfectionner mon profil
+                      {t('profile.enhance.cta.button')}
                     </Button>
                   </div>
                 )}
@@ -1379,19 +1381,19 @@ export default function ProfilePage() {
               <>
                 {/* Role Management */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Gestion du Rôle</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('profile.settings.roleManagement')}</h2>
 
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Rôle Actuel
+                        {t('profile.settings.currentRole')}
                       </label>
                       <div className={`p-4 ${colors.bg} rounded-2xl`}>
                         <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
                         {userData.onboarding_completed && (
                           <span className="ml-3 text-xs text-green-600">
                             <Check className="w-3 h-3 inline mr-1" />
-                            Onboarding terminé
+                            {t('profile.settings.onboardingComplete')}
                           </span>
                         )}
                       </div>
@@ -1399,7 +1401,7 @@ export default function ProfilePage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Changer de Rôle
+                        {t('profile.settings.changeRole')}
                       </label>
                       <div className="flex gap-2">
                         <Select
@@ -1414,11 +1416,11 @@ export default function ProfilePage() {
                           disabled={isChangingUserType || selectedUserType === userData.user_type}
                           className={`bg-gradient-to-r ${colors.gradient} text-white`}
                         >
-                          Changer
+                          {t('profile.settings.change')}
                         </Button>
                       </div>
                       <p className="text-xs text-gray-500 mt-2">
-                        Vos données sont préservées lors du changement de rôle.
+                        {t('profile.settings.dataPreserved')}
                       </p>
                     </div>
 
@@ -1430,7 +1432,7 @@ export default function ProfilePage() {
                           className={`flex items-center gap-2 border-2 ${colors.border} ${colors.text} hover:bg-gray-50`}
                         >
                           <RefreshCw className="w-4 h-4" />
-                          Refaire l'Onboarding
+                          {t('profile.settings.redoOnboarding')}
                         </Button>
                       </div>
                     )}
@@ -1439,10 +1441,10 @@ export default function ProfilePage() {
 
                 {/* Account Status */}
                 <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
-                  <h3 className="font-bold text-gray-900 mb-4">Statut du Compte</h3>
+                  <h3 className="font-bold text-gray-900 mb-4">{t('profile.settings.accountStatus')}</h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-gray-600">Email vérifié</span>
+                      <span className="text-sm text-gray-600">{t('profile.settings.emailVerified')}</span>
                       {userData.email_verified ? (
                         <Check className="w-5 h-5 text-green-600" />
                       ) : (
@@ -1450,7 +1452,7 @@ export default function ProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-gray-600">Onboarding</span>
+                      <span className="text-sm text-gray-600">{t('profile.settings.onboarding')}</span>
                       {userData.onboarding_completed ? (
                         <Check className="w-5 h-5 text-green-600" />
                       ) : (
@@ -1458,7 +1460,7 @@ export default function ProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-gray-600">Photo de profil</span>
+                      <span className="text-sm text-gray-600">{t('profile.settings.profilePhoto')}</span>
                       {userData.avatar_url ? (
                         <Check className="w-5 h-5 text-green-600" />
                       ) : (
@@ -1488,19 +1490,18 @@ export default function ProfilePage() {
       <AlertDialog open={showResetOnboardingDialog} onOpenChange={setShowResetOnboardingDialog}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-gray-900">Réinitialiser l'Onboarding</AlertDialogTitle>
+            <AlertDialogTitle className="text-gray-900">{t('profile.resetOnboarding.title')}</AlertDialogTitle>
             <AlertDialogDescription className="text-gray-600">
-              Cela réinitialisera votre progression d'onboarding. Vos informations de profil seront préservées.
-              Êtes-vous sûr de vouloir continuer ?
+              {t('profile.resetOnboarding.description')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">Annuler</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmResetOnboarding}
               className={`bg-gradient-to-r ${colors.gradient} text-white`}
             >
-              Réinitialiser
+              {t('profile.resetOnboarding.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

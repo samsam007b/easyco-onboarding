@@ -6,9 +6,11 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { calculateProfileCompletion, type UserProfile, type ProfileCompletionResult } from '@/lib/profile/profile-completion';
 import { CheckCircle2, Circle, ChevronRight, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ProfileCompletionPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -50,11 +52,11 @@ export default function ProfileCompletionPage() {
   }
 
   const sections = [
-    { key: 'basic', title: 'Informations de base', icon: '👤', route: '/dashboard/my-profile' },
-    { key: 'preferences', title: 'Préférences de recherche', icon: '🔍', route: '/dashboard/my-profile' },
-    { key: 'lifestyle', title: 'Style de vie', icon: '🏠', route: '/dashboard/my-profile' },
-    { key: 'personality', title: 'Personnalité', icon: '✨', route: '/dashboard/my-profile' },
-    { key: 'verification', title: 'Vérification', icon: '✓', route: '/dashboard/my-profile' },
+    { key: 'basic', title: t('profileCompletion.sections.basic'), icon: '👤', route: '/dashboard/my-profile' },
+    { key: 'preferences', title: t('profileCompletion.sections.preferences'), icon: '🔍', route: '/dashboard/my-profile' },
+    { key: 'lifestyle', title: t('profileCompletion.sections.lifestyle'), icon: '🏠', route: '/dashboard/my-profile' },
+    { key: 'personality', title: t('profileCompletion.sections.personality'), icon: '✨', route: '/dashboard/my-profile' },
+    { key: 'verification', title: t('profileCompletion.sections.verification'), icon: '✓', route: '/dashboard/my-profile' },
   ];
 
   return (
@@ -66,20 +68,20 @@ export default function ProfileCompletionPage() {
             onClick={() => router.back()}
             className="text-sm text-gray-600 hover:text-gray-900 mb-4"
           >
-            ← Retour
+            ← {t('common.back')}
           </button>
 
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Complétion de votre profil
+            {t('profileCompletion.title')}
           </h1>
           <p className="text-gray-600 text-sm">
-            Complétez votre profil pour améliorer vos chances de trouver la colocation idéale
+            {t('profileCompletion.description')}
           </p>
 
           {/* Overall Progress */}
           <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-gray-700">Progression globale</span>
+              <span className="text-sm font-medium text-gray-700">{t('profileCompletion.overallProgress')}</span>
               <span className="text-2xl font-bold text-[#FFB10B]">{completion.percentage}%</span>
             </div>
 
@@ -96,7 +98,7 @@ export default function ProfileCompletionPage() {
             <div className="mt-3 flex items-center gap-2 text-xs text-gray-600">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
               <span>
-                {completion.completedFields} sur {completion.totalFields} champs complétés
+                {completion.completedFields} {t('profileCompletion.fieldsOf')} {completion.totalFields} {t('profileCompletion.fieldsCompleted')}
               </span>
             </div>
           </div>
@@ -164,7 +166,7 @@ export default function ProfileCompletionPage() {
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-semibold text-orange-900 mb-2">Champs manquants</h4>
+                <h4 className="font-semibold text-orange-900 mb-2">{t('profileCompletion.missingFields')}</h4>
                 <div className="space-y-1">
                   {completion.missingFields.slice(0, 5).map((field, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm text-orange-700">
@@ -174,7 +176,7 @@ export default function ProfileCompletionPage() {
                   ))}
                   {completion.missingFields.length > 5 && (
                     <p className="text-sm text-orange-600 italic mt-2">
-                      ... et {completion.missingFields.length - 5} autres champs
+                      ... +{completion.missingFields.length - 5} {t('profileCompletion.andMoreFields')}
                     </p>
                   )}
                 </div>
@@ -190,7 +192,7 @@ export default function ProfileCompletionPage() {
           onClick={() => router.push('/dashboard/my-profile')}
           className="w-full bg-[#FFB10B] hover:bg-[#F9A825] text-white font-semibold py-4 rounded-2xl transition-colors"
         >
-          Compléter mon profil
+          {t('profileCompletion.completeProfile')}
         </button>
       </div>
     </div>

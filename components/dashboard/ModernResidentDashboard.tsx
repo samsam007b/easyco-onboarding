@@ -10,16 +10,12 @@ import {
   Users,
   MessageCircle,
   DollarSign,
-  Calendar,
-  Wrench,
   Home,
   TrendingUp,
   TrendingDown,
   Check,
   Clock,
   ArrowRight,
-  Heart,
-  FileText,
   Plus,
   Sparkles
 } from 'lucide-react';
@@ -33,10 +29,6 @@ import {
   OnboardingTour,
   useOnboarding,
   OnboardingStep,
-  GettingStartedChecklist,
-  useGettingStarted,
-  RESIDENT_CHECKLIST_ITEMS,
-  celebrateToast,
 } from '@/components/onboarding';
 import { useLanguage } from '@/lib/i18n/use-language';
 
@@ -192,15 +184,6 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
   const onboarding = useOnboarding({
     tourId: 'resident-dashboard-tour',
     steps: residentOnboardingSteps,
-  });
-
-  // Getting Started checklist
-  const gettingStarted = useGettingStarted({
-    checklistId: 'resident-checklist',
-    items: RESIDENT_CHECKLIST_ITEMS,
-    onAllComplete: () => {
-      celebrateToast.checklistComplete();
-    },
   });
 
   useEffect(() => {
@@ -425,29 +408,13 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-6"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 mt-4"
       >
-        {/* Getting Started Checklist - Only show if not dismissed and loaded */}
-        {gettingStarted.isLoaded && !gettingStarted.isDismissed && !gettingStarted.isAllComplete && (
-          <motion.div variants={itemVariants} className="mb-6">
-            <GettingStartedChecklist
-              items={gettingStarted.items}
-              completedCount={gettingStarted.completedCount}
-              totalCount={gettingStarted.totalCount}
-              progress={gettingStarted.progress}
-              isAllComplete={gettingStarted.isAllComplete}
-              onDismiss={gettingStarted.dismissChecklist}
-              onCompleteItem={gettingStarted.completeItem}
-              variant="resident"
-            />
-          </motion.div>
-        )}
-
-        {/* KPI Cards Grid - V2 Fun Style */}
+        {/* KPI Cards Grid - Compact Style */}
         <motion.div
           data-onboarding="kpi-cards"
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6"
         >
           {kpiCards.map((card, index) => {
             const Icon = card.icon;
@@ -456,21 +423,21 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
               <motion.div
                 key={card.title}
                 variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -6 }}
+                whileHover={{ scale: 1.02, y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={card.action}
                 data-onboarding={card.onboardingId}
                 className={cn(
-                  "relative overflow-hidden rounded-2xl p-5 cursor-pointer transition-all",
+                  "relative overflow-hidden rounded-2xl p-4 cursor-pointer transition-all",
                   "bg-white"
                 )}
                 style={{
-                  boxShadow: `0 12px 32px ${card.shadowColor}`,
+                  boxShadow: `0 8px 24px ${card.shadowColor}`,
                 }}
               >
                 {/* Decorative circle */}
                 <div
-                  className="absolute -right-8 -top-8 w-28 h-28 rounded-full opacity-30"
+                  className="absolute -right-6 -top-6 w-20 h-20 rounded-full opacity-25"
                   style={{ background: card.iconGradient }}
                 />
 
@@ -478,26 +445,26 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   {/* Icon */}
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
                     style={{ background: card.iconGradient }}
                   >
-                    <Icon className="w-6 h-6 text-white" />
+                    <Icon className="w-5 h-5 text-white" />
                   </motion.div>
 
                   {/* Title */}
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">
+                  <h3 className="text-xs font-medium text-gray-500 mb-0.5">
                     {card.title}
                   </h3>
 
                   {/* Value */}
-                  <p className="text-2xl font-black text-gray-900 mb-2">
+                  <p className="text-xl font-black text-gray-900 mb-1">
                     {card.value}
                   </p>
 
                   {/* Subtitle or Progress */}
                   {card.progress !== undefined ? (
                     <>
-                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2 overflow-hidden">
+                      <div className="w-full bg-gray-100 rounded-full h-1.5 mb-1 overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${card.progress}%` }}
@@ -509,7 +476,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       <p className="text-xs text-gray-500">{card.subtitle}</p>
                     </>
                   ) : (
-                    <p className="text-sm text-gray-500">{card.subtitle}</p>
+                    <p className="text-xs text-gray-500">{card.subtitle}</p>
                   )}
                 </div>
               </motion.div>
@@ -517,30 +484,30 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
           })}
         </motion.div>
 
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Upcoming Tasks - V2 Fun Style */}
+        {/* Two Column Layout - Compact */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Upcoming Tasks - Compact Style */}
           <motion.div
             variants={itemVariants}
             data-onboarding="tasks-section"
-            className="relative overflow-hidden bg-white rounded-2xl p-6"
-            style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
+            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle */}
             <div
-              className="absolute -right-12 -top-12 w-36 h-36 rounded-full opacity-20"
+              className="absolute -right-10 -top-10 w-28 h-28 rounded-full opacity-20"
               style={{ background: RESIDENT_GRADIENT }}
             />
 
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
                     style={{ background: RESIDENT_GRADIENT }}
                   >
-                    <Clock className="w-5 h-5 text-white" />
+                    <Clock className="w-4 h-4 text-white" />
                   </motion.div>
                   {resident?.upcomingTasks || 'Tâches à Venir'}
                 </h3>
@@ -548,40 +515,40 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   onClick={() => router.push('/hub/tasks')}
                   variant="ghost"
                   size="sm"
-                  className="rounded-full font-medium"
+                  className="rounded-full font-medium text-xs h-8 px-3"
                   style={{ color: RESIDENT_PRIMARY }}
                 >
                   {resident?.viewAll || 'Tout voir'}
-                  <ArrowRight className="w-4 h-4 ml-1" />
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </Button>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {upcomingTasks.map((task, index) => (
                   <motion.div
                     key={task.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.08 }}
-                    whileHover={{ x: 4, backgroundColor: 'rgba(255, 101, 30, 0.04)' }}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl transition-all cursor-pointer"
+                    transition={{ delay: index * 0.06 }}
+                    whileHover={{ x: 3, backgroundColor: 'rgba(255, 101, 30, 0.04)' }}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-all cursor-pointer"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
                       <div className={cn(
-                        "w-10 h-10 rounded-xl flex items-center justify-center",
-                        task.priority === 'high' && "bg-[#FDF5F5]",  // Pastel red bg
-                        task.priority === 'medium' && "bg-[#FFF5F0]", // Orange brand bg
-                        task.priority === 'low' && "bg-gray-100"      // Neutral
+                        "w-8 h-8 rounded-lg flex items-center justify-center",
+                        task.priority === 'high' && "bg-[#FDF5F5]",
+                        task.priority === 'medium' && "bg-[#FFF5F0]",
+                        task.priority === 'low' && "bg-gray-100"
                       )}>
                         <Clock className={cn(
-                          "w-5 h-5",
-                          task.priority === 'high' && "text-[#D08080]",   // Pastel red
-                          task.priority === 'medium' && "text-[#ff7b19]", // Orange brand
-                          task.priority === 'low' && "text-gray-500"      // Neutral
+                          "w-4 h-4",
+                          task.priority === 'high' && "text-[#D08080]",
+                          task.priority === 'medium' && "text-[#ff7b19]",
+                          task.priority === 'low' && "text-gray-500"
                         )} />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{task.title}</p>
+                        <p className="font-semibold text-gray-900 text-sm">{task.title}</p>
                         <p className="text-xs text-gray-500">
                           {new Date(task.dueDate).toLocaleDateString(locale, {
                             day: 'numeric',
@@ -591,7 +558,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       </div>
                     </div>
                     <Badge
-                      className="border-none font-medium"
+                      className="border-none font-medium text-xs px-2 py-0.5"
                       style={{
                         background: task.priority === 'high' ? 'rgba(208, 128, 128, 0.15)' : task.priority === 'medium' ? 'rgba(255, 123, 25, 0.1)' : 'rgba(156, 163, 175, 0.15)',
                         color: task.priority === 'high' ? '#D08080' : task.priority === 'medium' ? '#ff7b19' : '#6B7280',
@@ -607,7 +574,8 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 <Button
                   onClick={() => router.push('/hub/tasks')}
                   variant="outline"
-                  className="w-full mt-4 rounded-xl border-2 py-5 font-semibold"
+                  size="sm"
+                  className="w-full mt-3 rounded-xl border-2 py-4 font-semibold"
                   style={{
                     borderColor: `${RESIDENT_PRIMARY}30`,
                     color: RESIDENT_PRIMARY,
@@ -620,31 +588,31 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
             </div>
           </motion.div>
 
-          {/* Recent Activity - V2 Fun Style */}
+          {/* Recent Activity - Compact Style */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-6"
-            style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
+            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle - V3 Orange */}
             <div
-              className="absolute -left-12 -bottom-12 w-36 h-36 rounded-full opacity-20"
+              className="absolute -left-10 -bottom-10 w-28 h-28 rounded-full opacity-20"
               style={{ background: RESIDENT_GRADIENT }}
             />
 
             <div className="relative z-10">
-              <h3 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-3">
+              <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: RESIDENT_GRADIENT }}
                 >
-                  <Sparkles className="w-5 h-5 text-white" />
+                  <Sparkles className="w-4 h-4 text-white" />
                 </motion.div>
                 {resident?.recentActivity || 'Activité Récente'}
               </h3>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {recentActivities.map((activity, index) => {
                   const Icon = activity.icon;
                   return (
@@ -652,15 +620,15 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       key={activity.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                      whileHover={{ x: 4 }}
-                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                      transition={{ delay: index * 0.06 }}
+                      whileHover={{ x: 3 }}
+                      className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
                     >
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: activity.iconBgColor }}
                       >
-                        <Icon className="w-5 h-5" style={{ color: activity.iconColor }} />
+                        <Icon className="w-4 h-4" style={{ color: activity.iconColor }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-gray-900 text-sm truncate">{activity.title}</p>
@@ -675,60 +643,6 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
           </motion.div>
         </div>
 
-        {/* Community Happiness - V2 Fun Style */}
-        <motion.div
-          variants={itemVariants}
-          whileHover={{ scale: 1.01 }}
-          className="relative overflow-hidden bg-white rounded-2xl p-6"
-          style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
-        >
-          {/* Decorative gradient background */}
-          <div
-            className="absolute inset-0 opacity-30"
-            style={{ background: CARD_BG_GRADIENT }}
-          />
-
-          {/* Decorative circles */}
-          <div
-            className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20"
-            style={{ background: RESIDENT_GRADIENT }}
-          />
-          <div
-            className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-15"
-            style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
-          />
-
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{ background: RESIDENT_GRADIENT }}
-              >
-                <Heart className="w-6 h-6 text-white" />
-              </motion.div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  {resident?.communityHappiness || 'Bonheur de la Coloc'}
-                </h3>
-                <p className="text-gray-500 text-sm">{resident?.happinessSubtitle || 'Basé sur l\'activité et les interactions'}</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <motion.p
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
-                className="text-5xl font-black"
-                style={{ color: RESIDENT_PRIMARY }}
-              >
-                {stats.communityHappiness}%
-              </motion.p>
-              <p className="text-gray-500 text-sm mt-1 font-medium">{resident?.excellent || 'Excellent!'}</p>
-            </div>
-          </div>
-        </motion.div>
       </motion.div>
 
       {/* Onboarding Tour */}
