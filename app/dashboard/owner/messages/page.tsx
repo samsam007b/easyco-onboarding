@@ -26,6 +26,12 @@ import {
   type Message,
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+import { Sparkles, MessageCircle } from 'lucide-react';
+
+// V3 Owner gradient constants
+const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 
 /**
  * Owner Messages Page
@@ -261,7 +267,10 @@ function OwnerMessagesContent() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div
+        className="flex items-center justify-center py-20"
+        style={{ background: ownerGradientLight }}
+      >
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
@@ -294,10 +303,34 @@ function OwnerMessagesContent() {
     // Virtual conversation without needing invitation (empty chat)
     if (selectedConversation.isVirtual) {
       return (
-        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <span className="text-4xl">👤</span>
+        <div className="relative flex flex-col items-center justify-center h-full p-8 text-center overflow-hidden">
+          {/* V3 Decorative circles */}
+          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-10" style={{ background: ownerGradient }} />
+          <div className="absolute -bottom-8 -left-8 w-28 h-28 rounded-full opacity-10" style={{ background: ownerGradient }} />
+
+          {/* V3 Animated Icon */}
+          <div className="relative w-24 h-24 mx-auto mb-6">
+            <motion.div
+              animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 rounded-3xl blur-lg"
+              style={{ background: ownerGradient }}
+            />
+            <div
+              className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
+              style={{ background: ownerGradient }}
+            >
+              <MessageCircle className="w-12 h-12 text-white" />
+            </div>
+            <motion.div
+              animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-2 -right-2"
+            >
+              <Sparkles className="w-6 h-6 text-amber-400" />
+            </motion.div>
           </div>
+
           <h3 className="text-xl font-bold text-gray-900 mb-2">
             {selectedConversation.name}
           </h3>
@@ -329,7 +362,10 @@ function OwnerMessagesContent() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-50/30 via-white to-indigo-50/30 px-4 sm:px-6 lg:px-8 pb-8">
+    <div
+      className="px-4 sm:px-6 lg:px-8 pb-8"
+      style={{ background: ownerGradientLight }}
+    >
       <MessagesLayout
         variant="owner"
         hasSelectedConversation={!!selectedConversation}
@@ -365,18 +401,23 @@ function OwnerMessagesContent() {
   );
 }
 
+function MessagesFallback() {
+  return (
+    <div
+      className="flex items-center justify-center py-20"
+      style={{ background: ownerGradientLight }}
+    >
+      <div className="text-center">
+        <LoadingHouse size={80} />
+        <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+      </div>
+    </div>
+  );
+}
+
 export default function OwnerMessagesPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <LoadingHouse size={80} />
-            <p className="text-gray-600 font-medium mt-4">Chargement...</p>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<MessagesFallback />}>
       <OwnerMessagesContent />
     </Suspense>
   );

@@ -1057,7 +1057,7 @@ export default function OwnerApplicationsPage() {
         )}
       </main>
 
-      {/* Action Confirmation Modal */}
+      {/* Action Confirmation Modal - V3 Fun Style */}
       <AnimatePresence>
         {actionModal.open && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -1075,22 +1075,65 @@ export default function OwnerApplicationsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+              className="relative overflow-hidden bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
             >
-              <div className="text-center">
-                {/* Icon */}
-                <div className={cn(
-                  "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4",
-                  actionModal.action === 'approve'
-                    ? 'bg-green-100'
-                    : 'bg-red-100'
-                )}>
-                  {actionModal.action === 'approve' ? (
-                    <ThumbsUp className="w-8 h-8 text-green-600" />
-                  ) : (
-                    <ThumbsDown className="w-8 h-8 text-red-600" />
-                  )}
-                </div>
+              {/* Decorative circles */}
+              <div
+                className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-10"
+                style={{ background: actionModal.action === 'approve' ? 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)' : 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)' }}
+              />
+              <div
+                className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full opacity-10"
+                style={{ background: ownerGradient }}
+              />
+
+              <div className="relative text-center">
+                {/* V3 Animated Icon */}
+                <motion.div
+                  className="relative w-16 h-16 mx-auto mb-4"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  {/* Glow effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full opacity-30"
+                    style={{
+                      background: actionModal.action === 'approve'
+                        ? 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)'
+                        : 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)',
+                      filter: 'blur(12px)'
+                    }}
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                  />
+                  {/* Main icon */}
+                  <div
+                    className="relative w-full h-full rounded-full flex items-center justify-center"
+                    style={{
+                      background: actionModal.action === 'approve'
+                        ? 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)'
+                        : 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)',
+                      boxShadow: actionModal.action === 'approve'
+                        ? '0 8px 24px rgba(34, 197, 94, 0.3)'
+                        : '0 8px 24px rgba(239, 68, 68, 0.3)'
+                    }}
+                  >
+                    {actionModal.action === 'approve' ? (
+                      <ThumbsUp className="w-8 h-8 text-white" />
+                    ) : (
+                      <ThumbsDown className="w-8 h-8 text-white" />
+                    )}
+                  </div>
+                  {/* Floating sparkle */}
+                  <motion.div
+                    className="absolute -top-1 -right-1"
+                    animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                  >
+                    <Sparkles className="w-5 h-5" style={{ color: actionModal.action === 'approve' ? '#22c55e' : '#ef4444' }} />
+                  </motion.div>
+                </motion.div>
 
                 {/* Title */}
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
