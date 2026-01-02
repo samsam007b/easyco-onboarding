@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Palette Generator (Style Coolors)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --panel: #12121a;
+            --control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .header-actions { display: flex; gap: 0.5rem; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+
+        .kbd {
+            background: var(--bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+
+        .palette-container {
+            flex: 1;
+            display: flex;
+        }
+
+        .color-slot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: flex 0.3s ease;
+        }
+
+        .color-slot:hover { flex: 1.1; }
+
+        .color-slot.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .color-info {
+            text-align: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .color-slot:hover .color-info { opacity: 1; }
+
+        .color-hex {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .color-name {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .color-actions { display: flex; gap: 0.5rem; }
+
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            background: rgba(0,0,0,0.2);
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.15s;
+        }
+
+        .color-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .role-indicator {
+            position: absolute;
+            bottom: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .bottom-panel {
+            border-top: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel);
+        }
+
+        .harmony-selector { display: flex; gap: 0.5rem; align-items: center; }
+
+        .harmony-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .harmony-btn {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--control);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .harmony-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .export-options { display: flex; gap: 0.5rem; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .modal h2 { margin-bottom: 1rem; }
+
+        .modal-content {
+            background: var(--control);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 200;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        input[type="color"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🎨 IzzIco Palette</div>
+        <div class="header-actions">
+            <button class="btn" id="generate-btn">
+                Générer <span class="kbd">Espace</span>
+            </button>
+            <button class="btn" id="undo-btn">↩️ Annuler</button>
+            <button class="btn primary" id="save-btn">💾 Sauvegarder</button>
+        </div>
+    </div>
+
+    <div class="palette-container" id="palette"></div>
+
+    <div class="bottom-panel">
+        <div class="harmony-selector">
+            <span class="harmony-label">Harmonie:</span>
+            <button class="harmony-btn active" data-harmony="analogous">Analogue</button>
+            <button class="harmony-btn" data-harmony="complementary">Complémentaire</button>
+            <button class="harmony-btn" data-harmony="triadic">Triadique</button>
+            <button class="harmony-btn" data-harmony="split">Split</button>
+            <button class="harmony-btn" data-harmony="tetradic">Tétradique</button>
+        </div>
+        <div class="export-options">
+            <button class="btn" id="export-css">Export CSS</button>
+            <button class="btn" id="export-tailwind">Export Tailwind</button>
+            <button class="btn" id="export-json">Export JSON</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="export-modal">
+        <div class="modal">
+            <h2 id="modal-title">Export</h2>
+            <div class="modal-content" id="modal-content"></div>
+            <div class="modal-actions">
+                <button class="btn" id="modal-close">Fermer</button>
+                <button class="btn primary" id="modal-copy">Copier</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Couleur copiée !</div>
+
+    <script>
+        // IzzIco Role Colors (locked)
+        var ROLE_COLORS = {
+            searcher: '#FFB10B',
+            owner: '#9B59B6',
+            resident: '#E67E22'
+        };
+
+        // State
+        var palette = [
+            { hex: ROLE_COLORS.searcher, locked: true, role: 'Searcher' },
+            { hex: ROLE_COLORS.owner, locked: true, role: 'Owner' },
+            { hex: ROLE_COLORS.resident, locked: true, role: 'Resident' },
+            { hex: '#2ECC71', locked: false, role: 'Accent 1' },
+            { hex: '#3498DB', locked: false, role: 'Accent 2' }
+        ];
+
+        var history = [];
+        var currentHarmony = 'analogous';
+
+        // Safe DOM helper
+        function clearElement(el) {
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
+
+        function createElement(tag, attrs, text) {
+            var el = document.createElement(tag);
+            if (attrs) {
+                Object.keys(attrs).forEach(function(k) {
+                    if (k === 'className') el.className = attrs[k];
+                    else if (k === 'style' && typeof attrs[k] === 'object') {
+                        Object.assign(el.style, attrs[k]);
+                    } else el.setAttribute(k, attrs[k]);
+                });
+            }
+            if (text !== undefined) el.textContent = text;
+            return el;
+        }
+
+        // Color utilities
+        function hexToHSL(hex) {
+            var r = parseInt(hex.slice(1, 3), 16) / 255;
+            var g = parseInt(hex.slice(3, 5), 16) / 255;
+            var b = parseInt(hex.slice(5, 7), 16) / 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; }
+            else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: h * 360, s: s * 100, l: l * 100 };
+        }
+
+        function hslToHex(h, s, l) {
+            h = h % 360; if (h < 0) h += 360;
+            s /= 100; l /= 100;
+            var c = (1 - Math.abs(2 * l - 1)) * s;
+            var x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            var m = l - c / 2;
+            var r = 0, g = 0, b = 0;
+            if (h < 60) { r = c; g = x; }
+            else if (h < 120) { r = x; g = c; }
+            else if (h < 180) { g = c; b = x; }
+            else if (h < 240) { g = x; b = c; }
+            else if (h < 300) { r = x; b = c; }
+            else { r = c; b = x; }
+            r = Math.round((r + m) * 255);
+            g = Math.round((g + m) * 255);
+            b = Math.round((b + m) * 255);
+            return '#' + [r, g, b].map(function(v) {
+                return v.toString(16).padStart(2, '0');
+            }).join('').toUpperCase();
+        }
+
+        function randomHex() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase();
+        }
+
+        function isLightColor(hex) {
+            var r = parseInt(hex.slice(1, 3), 16);
+            var g = parseInt(hex.slice(3, 5), 16);
+            var b = parseInt(hex.slice(5, 7), 16);
+            return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5;
+        }
+
+        function getColorName(hex) {
+            var hsl = hexToHSL(hex);
+            if (hsl.s < 10) {
+                if (hsl.l < 20) return 'Noir';
+                if (hsl.l > 80) return 'Blanc';
+                return 'Gris';
+            }
+            var names = [[0,'Rouge'],[30,'Orange'],[60,'Jaune'],[120,'Vert'],[180,'Cyan'],[240,'Bleu'],[300,'Violet'],[330,'Rose']];
+            for (var i = 0; i < names.length; i++) {
+                if (hsl.h < names[i][0] + 30) return names[i][1];
+            }
+            return 'Rouge';
+        }
+
+        // Harmony generators
+        function generateHarmony(baseHex, type) {
+            var hsl = hexToHSL(baseHex);
+            switch (type) {
+                case 'analogous': return [hslToHex(hsl.h - 30, hsl.s, hsl.l), hslToHex(hsl.h + 30, hsl.s, hsl.l)];
+                case 'complementary': return [hslToHex(hsl.h + 180, hsl.s, hsl.l), hslToHex(hsl.h + 180, hsl.s * 0.7, hsl.l * 1.2)];
+                case 'triadic': return [hslToHex(hsl.h + 120, hsl.s, hsl.l), hslToHex(hsl.h + 240, hsl.s, hsl.l)];
+                case 'split': return [hslToHex(hsl.h + 150, hsl.s, hsl.l), hslToHex(hsl.h + 210, hsl.s, hsl.l)];
+                case 'tetradic': return [hslToHex(hsl.h + 90, hsl.s, hsl.l), hslToHex(hsl.h + 180, hsl.s, hsl.l)];
+                default: return [randomHex(), randomHex()];
+            }
+        }
+
+        function generate() {
+            saveHistory();
+            var baseColor = palette.find(function(c) { return c.locked; });
+            var baseHex = baseColor ? baseColor.hex : randomHex();
+            var harmonyColors = generateHarmony(baseHex, currentHarmony);
+            var hi = 0;
+            palette.forEach(function(color) {
+                if (!color.locked) {
+                    color.hex = hi < harmonyColors.length ? harmonyColors[hi++] : randomHex();
+                }
+            });
+            render();
+        }
+
+        function saveHistory() {
+            history.push(JSON.stringify(palette));
+            if (history.length > 20) history.shift();
+        }
+
+        function undo() {
+            if (history.length > 0) {
+                palette = JSON.parse(history.pop());
+                render();
+            }
+        }
+
+        // Render using safe DOM methods
+        function render() {
+            var container = document.getElementById('palette');
+            clearElement(container);
+
+            palette.forEach(function(color, index) {
+                var slot = createElement('div', { className: 'color-slot' + (color.locked ? ' locked' : '') });
+                slot.style.backgroundColor = color.hex;
+                slot.style.color = isLightColor(color.hex) ? '#1a1a2e' : '#ffffff';
+
+                var info = createElement('div', { className: 'color-info' });
+                var hex = createElement('div', { className: 'color-hex' }, color.hex);
+                var name = createElement('div', { className: 'color-name' }, getColorName(color.hex));
+                var actions = createElement('div', { className: 'color-actions' });
+
+                var lockBtn = createElement('button', { className: 'color-btn', title: color.locked ? 'Déverrouiller' : 'Verrouiller' }, color.locked ? '🔓' : '🔒');
+                lockBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    color.locked = !color.locked;
+                    render();
+                });
+
+                var copyBtn = createElement('button', { className: 'color-btn', title: 'Copier' }, '📋');
+                copyBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navigator.clipboard.writeText(color.hex);
+                    showToast('Couleur ' + color.hex + ' copiée !');
+                });
+
+                var pickerBtn = createElement('button', { className: 'color-btn', title: 'Choisir couleur' }, '🎨');
+                var picker = createElement('input', { type: 'color', value: color.hex });
+                picker.addEventListener('input', function(e) {
+                    saveHistory();
+                    color.hex = e.target.value.toUpperCase();
+                    render();
+                });
+                pickerBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    picker.click();
+                });
+
+                actions.appendChild(lockBtn);
+                actions.appendChild(copyBtn);
+                actions.appendChild(pickerBtn);
+                slot.appendChild(picker);
+
+                info.appendChild(hex);
+                info.appendChild(name);
+                info.appendChild(actions);
+                slot.appendChild(info);
+
+                var role = createElement('div', { className: 'role-indicator' }, color.role);
+                slot.appendChild(role);
+
+                slot.addEventListener('click', function() {
+                    navigator.clipboard.writeText(color.hex);
+                    showToast('Couleur ' + color.hex + ' copiée !');
+                });
+
+                container.appendChild(slot);
+            });
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 2000);
+        }
+
+        function showExportModal(title, content) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-content').textContent = content;
+            document.getElementById('export-modal').classList.add('active');
+        }
+
+        function exportCSS() {
+            var css = ':root {\n';
+            palette.forEach(function(c) {
+                css += '  --color-' + c.role.toLowerCase().replace(' ', '-') + ': ' + c.hex + ';\n';
+            });
+            css += '\n  --gradient-brand: linear-gradient(135deg';
+            palette.forEach(function(c) { css += ', ' + c.hex; });
+            css += ');\n}';
+            showExportModal('Export CSS', css);
+        }
+
+        function exportTailwind() {
+            var config = 'module.exports = {\n  theme: {\n    extend: {\n      colors: {\n';
+            palette.forEach(function(c) {
+                config += "        '" + c.role.toLowerCase().replace(' ', '-') + "': '" + c.hex + "',\n";
+            });
+            config += '      }\n    }\n  }\n}';
+            showExportModal('Export Tailwind', config);
+        }
+
+        function exportJSON() {
+            var json = JSON.stringify(palette.map(function(c) {
+                return { name: c.role, hex: c.hex, locked: c.locked };
+            }), null, 2);
+            showExportModal('Export JSON', json);
+        }
+
+        // Event listeners
+        document.getElementById('generate-btn').addEventListener('click', generate);
+        document.getElementById('undo-btn').addEventListener('click', undo);
+        document.getElementById('export-css').addEventListener('click', exportCSS);
+        document.getElementById('export-tailwind').addEventListener('click', exportTailwind);
+        document.getElementById('export-json').addEventListener('click', exportJSON);
+
+        document.getElementById('modal-close').addEventListener('click', function() {
+            document.getElementById('export-modal').classList.remove('active');
+        });
+
+        document.getElementById('modal-copy').addEventListener('click', function() {
+            navigator.clipboard.writeText(document.getElementById('modal-content').textContent);
+            showToast('Contenu copié !');
+        });
+
+        document.querySelectorAll('.harmony-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.harmony-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                currentHarmony = btn.dataset.harmony;
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space' && !e.target.matches('input')) { e.preventDefault(); generate(); }
+            if (e.ctrlKey && e.code === 'KeyZ') { e.preventDefault(); undo(); }
+        });
+
+        render();
+    </script>
+</body>
+</html>

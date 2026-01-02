@@ -594,14 +594,14 @@ export default function FinancesHubPage() {
                 <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Paiements & Analytics</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t?.quickActions?.analytics?.title?.[language] || 'Payments & Analytics'}</h3>
                 <p className="text-white/70 text-sm mb-4">
-                  Suivez les encaissements et analysez vos revenus en détail
+                  {t?.quickActions?.analytics?.description?.[language] || 'Track collections and analyze your income in detail'}
                 </p>
                 <div className="flex items-center gap-4">
                   <div className="bg-white/20 rounded-lg px-3 py-1.5">
                     <span className="text-white text-sm font-semibold">
-                      {formatCurrency(overview?.paymentSummary.paid || 0)} encaissés
+                      {formatCurrency(overview?.paymentSummary.paid || 0)} {t?.quickActions?.collected?.[language] || 'collected'}
                     </span>
                   </div>
                   <ChevronRight className="w-5 h-5 text-white/60" />
@@ -629,9 +629,9 @@ export default function FinancesHubPage() {
                 >
                   <Home className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Portfolio</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.quickActions?.portfolio?.title?.[language] || 'Portfolio'}</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Consultez la performance de vos biens immobiliers
+                  {t?.quickActions?.portfolio?.description?.[language] || 'View the performance of your properties'}
                 </p>
                 <div className="flex items-center gap-3">
                   <div
@@ -639,7 +639,7 @@ export default function FinancesHubPage() {
                     style={{ background: `${ownerPalette.quaternary.main}15` }}
                   >
                     <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-semibold">
-                      {overview?.kpis.occupationRate || 0}% occupation
+                      {overview?.kpis.occupationRate || 0}% {t?.quickActions?.occupation?.[language] || 'occupation'}
                     </span>
                   </div>
                   <div
@@ -647,7 +647,7 @@ export default function FinancesHubPage() {
                     style={{ background: `${ownerPalette.quaternary.main}15` }}
                   >
                     <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-semibold">
-                      {formatCurrency(overview?.kpis.avgRentPerProperty || 0)} loyer moy.
+                      {formatCurrency(overview?.kpis.avgRentPerProperty || 0)} {t?.quickActions?.avgRent?.[language] || 'avg rent'}
                     </span>
                   </div>
                 </div>
@@ -672,25 +672,25 @@ export default function FinancesHubPage() {
                 <p className="text-3xl font-bold text-white">
                   {formatCurrency(overview?.paymentSummary.paid || 0)}
                 </p>
-                <p className="text-white/70 text-sm mt-1">Encaissé ce mois</p>
+                <p className="text-white/70 text-sm mt-1">{t?.summary?.collectedThisMonth?.[language] || 'Collected this month'}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-white">
                   {formatCurrency(overview?.paymentSummary.pending || 0)}
                 </p>
-                <p className="text-white/70 text-sm mt-1">En attente</p>
+                <p className="text-white/70 text-sm mt-1">{t?.summary?.pending?.[language] || 'Pending'}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-white">
                   {formatCurrency(overview?.paymentSummary.overdue || 0)}
                 </p>
-                <p className="text-white/70 text-sm mt-1">En retard</p>
+                <p className="text-white/70 text-sm mt-1">{t?.summary?.late?.[language] || 'Late'}</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-white">
                   {overview?.kpis.collectionRate || 100}%
                 </p>
-                <p className="text-white/70 text-sm mt-1">Taux d'encaissement</p>
+                <p className="text-white/70 text-sm mt-1">{t?.summary?.collectionRate?.[language] || 'Collection rate'}</p>
               </div>
             </div>
           </div>

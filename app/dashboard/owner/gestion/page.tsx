@@ -158,34 +158,30 @@ export default function GestionHubPage() {
           className="mt-6"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1: Tenants - PRIMARY gradient (hero card) */}
+            {/* Card 1: Tenants - PRIMARY Solid (hero card) */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/tenants')}
               className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
               style={{
-                background: `linear-gradient(135deg, ${ownerPalette.primary.main} 0%, ${ownerPalette.secondary.main} 100%)`,
+                background: ownerPalette.primary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
               }}
             >
-              {/* Decorative circles */}
+              {/* Decorative circle */}
               <div
-                className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-20"
-                style={{ background: 'white' }}
-              />
-              <div
-                className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full opacity-10"
-                style={{ background: 'white' }}
+                className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+                style={{ background: 'rgba(255,255,255,0.3)' }}
               />
 
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
-                    <Users className="w-5 h-5 text-white" />
+                    <Users className="w-6 h-6 text-white" />
                   </div>
                   {overview?.tenants.newThisMonth && overview.tenants.newThisMonth > 0 && (
                     <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
@@ -193,190 +189,178 @@ export default function GestionHubPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-3xl font-bold text-white mb-1">
+                <p className="text-4xl font-bold text-white mb-1">
                   {overview?.tenants.active || 0}
                 </p>
                 <p className="text-white/80 text-sm font-medium">
                   {t?.kpi?.activeTenants?.[language] || 'Active tenants'}
                 </p>
-                <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
+                <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-white/70 text-xs">
                   <UserCheck className="w-3.5 h-3.5" />
                   <span>{t?.kpi?.tenantsOccupying?.[language]?.replace('{count}', String(overview?.tenants.active || 0)) || `${overview?.tenants.active || 0} occupying your properties`}</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Card 2: Leases - TERTIARY light background */}
+            {/* Card 2: Leases - TERTIARY Solid */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/leases')}
               className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
               style={{
-                background: ownerPalette.tertiary.light,
-                border: `2px solid ${ownerPalette.tertiary.border}`,
-                boxShadow: `0 4px 16px ${ownerPalette.tertiary.shadow}`,
+                background: ownerPalette.tertiary.main,
+                boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
               }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: ownerPalette.tertiary.main }}
-                >
-                  <FileText className="w-5 h-5 text-white" />
-                </div>
-                {overview?.leases.expiringSoon && overview.leases.expiringSoon > 0 && (
-                  <span
-                    className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
-                    style={{ background: semanticColors.warning.gradient }}
+              {/* Decorative circle */}
+              <div
+                className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+                style={{ background: 'rgba(255,255,255,0.3)' }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
-                    {overview.leases.expiringSoon} {t?.kpi?.toRenew?.[language] || 'to renew'}
-                  </span>
-                )}
-              </div>
-              <p
-                className="text-3xl font-bold mb-1"
-                style={{ color: ownerPalette.tertiary.text }}
-              >
-                {overview?.leases.active || 0}
-              </p>
-              <p
-                className="text-sm font-medium"
-                style={{ color: ownerPalette.tertiary.text, opacity: 0.8 }}
-              >
-                {t?.kpi?.activeLeases?.[language] || 'Active leases'}
-              </p>
-              <div className="mt-3 flex items-center gap-3 text-xs" style={{ color: ownerPalette.tertiary.text }}>
-                <span className="flex items-center gap-1">
-                  <ClipboardCheck className="w-3.5 h-3.5" style={{ color: semanticColors.success.text }} />
-                  {t?.kpi?.currentContracts?.[language] || 'Current contracts'}
-                </span>
+                    <FileText className="w-6 h-6 text-white" />
+                  </div>
+                  {overview?.leases.expiringSoon && overview.leases.expiringSoon > 0 && (
+                    <span
+                      className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                      style={{ background: 'rgba(255,255,255,0.3)' }}
+                    >
+                      {overview.leases.expiringSoon} {t?.kpi?.toRenew?.[language] || 'to renew'}
+                    </span>
+                  )}
+                </div>
+                <p className="text-4xl font-bold text-white mb-1">
+                  {overview?.leases.active || 0}
+                </p>
+                <p className="text-white/80 text-sm font-medium">
+                  {t?.kpi?.activeLeases?.[language] || 'Active leases'}
+                </p>
+                <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-white/70 text-xs">
+                  <ClipboardCheck className="w-3.5 h-3.5" />
+                  <span>{t?.kpi?.currentContracts?.[language] || 'Current contracts'}</span>
+                </div>
               </div>
             </motion.div>
 
-            {/* Card 3: Maintenance Tickets - QUATERNARY (changes based on urgency) */}
+            {/* Card 3: Maintenance Tickets - White card with accent (danger when urgent) */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/maintenance')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
               style={{
-                background:
-                  (overview?.maintenance.urgent || 0) > 0
-                    ? `linear-gradient(135deg, ${ownerPalette.accent.main} 0%, #d63a52 100%)`
-                    : ownerPalette.quaternary.light,
-                border:
-                  (overview?.maintenance.urgent || 0) > 0
-                    ? 'none'
-                    : `2px solid ${ownerPalette.quaternary.border}`,
-                boxShadow:
-                  (overview?.maintenance.urgent || 0) > 0
-                    ? `0 8px 32px ${ownerPalette.accent.shadow}`
-                    : `0 4px 16px ${ownerPalette.quaternary.shadow}`,
+                border: `2px solid ${(overview?.maintenance.urgent || 0) > 0 ? semanticColors.danger.border : ownerPalette.quaternary.border}`,
+                boxShadow: `0 4px 16px ${ownerPalette.quaternary.shadow}`,
               }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{
-                    background:
-                      (overview?.maintenance.urgent || 0) > 0
-                        ? 'rgba(255,255,255,0.2)'
-                        : ownerPalette.quaternary.main,
-                  }}
-                >
-                  <Wrench
-                    className="w-5 h-5"
-                    style={{
-                      color: (overview?.maintenance.urgent || 0) > 0 ? 'white' : 'white',
-                    }}
-                  />
-                </div>
-                {overview?.maintenance.urgent && overview.maintenance.urgent > 0 && (
-                  <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-bold text-white animate-pulse">
-                    {overview.maintenance.urgent} {t?.kpi?.urgent?.[language] || 'urgent'}
-                  </span>
-                )}
-              </div>
-              <p
-                className="text-3xl font-bold mb-1"
-                style={{
-                  color: (overview?.maintenance.urgent || 0) > 0 ? 'white' : ownerPalette.quaternary.text,
-                }}
-              >
-                {(overview?.maintenance.open || 0) + (overview?.maintenance.inProgress || 0)}
-              </p>
-              <p
-                className="text-sm font-medium"
-                style={{
-                  color: (overview?.maintenance.urgent || 0) > 0 ? 'rgba(255,255,255,0.8)' : ownerPalette.quaternary.text,
-                  opacity: (overview?.maintenance.urgent || 0) > 0 ? 1 : 0.8,
-                }}
-              >
-                {t?.kpi?.openTickets?.[language] || 'Open tickets'}
-              </p>
+              {/* Decorative circle */}
               <div
-                className="mt-3 text-xs"
-                style={{
-                  color: (overview?.maintenance.urgent || 0) > 0 ? 'rgba(255,255,255,0.7)' : ownerPalette.quaternary.text,
-                }}
-              >
-                {overview?.maintenance.open || 0} {t?.kpi?.open?.[language] || 'open'} · {overview?.maintenance.inProgress || 0} {t?.kpi?.inProgress?.[language] || 'in progress'}
+                className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10"
+                style={{ background: (overview?.maintenance.urgent || 0) > 0 ? semanticColors.danger.gradient : ownerPalette.quaternary.main }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{
+                      background: (overview?.maintenance.urgent || 0) > 0
+                        ? semanticColors.danger.gradient
+                        : ownerPalette.quaternary.main,
+                    }}
+                  >
+                    <Wrench className="w-6 h-6 text-white" />
+                  </div>
+                  {overview?.maintenance.urgent && overview.maintenance.urgent > 0 && (
+                    <span
+                      className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                      style={{ background: semanticColors.danger.gradient }}
+                    >
+                      {overview.maintenance.urgent} {t?.kpi?.urgent?.[language] || 'urgent'}
+                    </span>
+                  )}
+                </div>
+                <p
+                  className="text-4xl font-bold mb-1"
+                  style={{ color: (overview?.maintenance.urgent || 0) > 0 ? semanticColors.danger.text : ownerPalette.quaternary.text }}
+                >
+                  {(overview?.maintenance.open || 0) + (overview?.maintenance.inProgress || 0)}
+                </p>
+                <p className="text-sm font-medium text-gray-600">
+                  {t?.kpi?.openTickets?.[language] || 'Open tickets'}
+                </p>
+                <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
+                  {overview?.maintenance.open || 0} {t?.kpi?.open?.[language] || 'open'} · {overview?.maintenance.inProgress || 0} {t?.kpi?.inProgress?.[language] || 'in progress'}
+                </div>
               </div>
             </motion.div>
 
-            {/* Card 4: Health Score - ACCENT (changes based on score) */}
+            {/* Card 4: Health Score - White card with semantic colors */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
               style={{
-                background: healthStyle.bg,
                 border: `2px solid ${healthStyle.border}`,
                 boxShadow: `0 4px 16px ${ownerPalette.accent.shadow}`,
               }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: healthStyle.gradient }}
-                >
-                  {overview?.healthScore && overview.healthScore >= 80 ? (
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  ) : (
-                    <AlertTriangle className="w-5 h-5 text-white" />
-                  )}
-                </div>
-                <span
-                  className="px-2 py-1 rounded-full text-xs font-medium"
-                  style={{ background: healthStyle.bg, color: healthStyle.text, border: `1px solid ${healthStyle.border}` }}
-                >
-                  {overview?.healthScore && overview.healthScore >= 80
-                    ? (t?.kpi?.excellent?.[language] || 'Excellent')
-                    : overview?.healthScore && overview.healthScore >= 50
-                    ? (t?.kpi?.attention?.[language] || 'Attention')
-                    : (t?.kpi?.urgentLabel?.[language] || 'Urgent')}
-                </span>
-              </div>
-              <p className="text-3xl font-bold mb-1" style={{ color: healthStyle.text }}>
-                {overview?.healthScore || 100}%
-              </p>
-              <p className="text-sm font-medium" style={{ color: healthStyle.text, opacity: 0.8 }}>
-                {t?.kpi?.globalHealth?.[language] || 'Global health'}
-              </p>
-              {/* Progress bar */}
-              <div className="mt-3">
-                <div
-                  className="h-2 rounded-full overflow-hidden"
-                  style={{ background: healthStyle.border }}
-                >
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${overview?.healthScore || 100}%` }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="h-full rounded-full"
+              {/* Decorative circle */}
+              <div
+                className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10"
+                style={{ background: healthStyle.gradient }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
                     style={{ background: healthStyle.gradient }}
-                  />
+                  >
+                    {overview?.healthScore && overview.healthScore >= 80 ? (
+                      <CheckCircle className="w-6 h-6 text-white" />
+                    ) : (
+                      <AlertTriangle className="w-6 h-6 text-white" />
+                    )}
+                  </div>
+                  <span
+                    className="px-2 py-1 rounded-full text-xs font-medium"
+                    style={{ background: healthStyle.bg, color: healthStyle.text, border: `1px solid ${healthStyle.border}` }}
+                  >
+                    {overview?.healthScore && overview.healthScore >= 80
+                      ? (t?.kpi?.excellent?.[language] || 'Excellent')
+                      : overview?.healthScore && overview.healthScore >= 50
+                      ? (t?.kpi?.attention?.[language] || 'Attention')
+                      : (t?.kpi?.urgentLabel?.[language] || 'Urgent')}
+                  </span>
+                </div>
+                <p className="text-4xl font-bold mb-1" style={{ color: healthStyle.text }}>
+                  {overview?.healthScore || 100}%
+                </p>
+                <p className="text-sm font-medium text-gray-600">
+                  {t?.kpi?.globalHealth?.[language] || 'Global health'}
+                </p>
+                {/* Progress bar */}
+                <div className="mt-3 pt-3 border-t border-gray-100">
+                  <div
+                    className="h-2 rounded-full overflow-hidden"
+                    style={{ background: healthStyle.border }}
+                  >
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${overview?.healthScore || 100}%` }}
+                      transition={{ delay: 0.5, duration: 0.8 }}
+                      className="h-full rounded-full"
+                      style={{ background: healthStyle.gradient }}
+                    />
+                  </div>
                 </div>
               </div>
             </motion.div>

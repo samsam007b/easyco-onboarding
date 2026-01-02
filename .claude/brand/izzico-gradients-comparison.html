@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Gradients Comparison Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --panel: #12121a;
+            --control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle { color: var(--text-muted); }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .section {
+            background: var(--panel);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-current { background: var(--control); color: var(--text-muted); }
+        .badge-proposed { background: var(--success); color: white; }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .comparison-column { }
+        .column-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .role-block {
+            margin-bottom: 1.5rem;
+        }
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .role-emoji { font-size: 1.25rem; }
+        .role-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+        }
+        .role-range {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: auto;
+            font-family: monospace;
+        }
+        .gradient-bar {
+            height: 50px;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .gradient-bar:hover { transform: scaleY(1.1); }
+        .color-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: space-between;
+        }
+        .color-dot {
+            flex: 1;
+            text-align: center;
+        }
+        .dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            margin: 0 auto 0.25rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+        }
+        .dot:hover { transform: scale(1.2); }
+        .dot-hex {
+            font-family: monospace;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        .signature-gradient {
+            height: 80px;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+        }
+        .hue-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--control);
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        .hue-bar {
+            flex: 1;
+            height: 30px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .hue-marker {
+            position: absolute;
+            top: -8px;
+            width: 4px;
+            height: 46px;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .hue-label {
+            position: absolute;
+            top: 42px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .delta-box {
+            background: var(--control);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .delta-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        .delta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .delta-item { text-align: center; }
+        .delta-label { font-size: 0.7rem; color: var(--text-muted); }
+        .delta-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .delta-value.improved { color: var(--success); }
+        .delta-value.same { color: var(--text-muted); }
+        .problem-highlight {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #fca5a5;
+        }
+        .solution-highlight {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #86efac;
+        }
+        .copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .control-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--control);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .control-btn:hover { background: var(--border); }
+        .control-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .css-output {
+            background: var(--control);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: var(--accent);
+            color: white;
+        }
+        .tab:hover:not(.active) { color: var(--text); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🔬 IzzIco Gradients Lab</div>
+        <div class="subtitle">Comparaison Actuel vs. Propositions</div>
+    </div>
+
+    <div class="container" id="app"></div>
+    <div class="copy-toast" id="toast">Copie!</div>
+
+    <script>
+        // ========== COLOR DATA ==========
+        var CURRENT = {
+            owner: {
+                name: 'Owner', emoji: '🔑',
+                colors: ['#9c5698', '#a5568d', '#af5682', '#b85676', '#c2566b'],
+                hueRange: [303, 346]
+            },
+            resident: {
+                name: 'Resident', emoji: '👤',
+                colors: ['#e05747', '#f8572b', '#ff651e', '#ff7b19', '#ff9014'],
+                hueRange: [6, 38]
+            },
+            searcher: {
+                name: 'Searcher', emoji: '🔍',
+                colors: ['#ff7b19', '#ff8915', '#ff9612', '#ffa40e', '#ffb10b'],
+                hueRange: [31, 43]
+            }
+        };
+
+        // Proposed: Searcher shifted to yellow, Resident tightened
+        var PROPOSED = {
+            owner: {
+                name: 'Owner', emoji: '🔑',
+                colors: ['#9c5698', '#a5568d', '#af5682', '#b85676', '#c2566b'],
+                hueRange: [303, 346],
+                note: 'Inchange - fonctionne bien'
+            },
+            resident: {
+                name: 'Resident', emoji: '👤',
+                colors: ['#e05747', '#f25a35', '#ff6524', '#ff7018', '#ff7c10'],
+                hueRange: [6, 32],
+                note: 'Resserre vers rouge-orange (termine a 32 au lieu de 38)'
+            },
+            searcher: {
+                name: 'Searcher', emoji: '🔍',
+                colors: ['#ffa000', '#ffaa00', '#ffb400', '#ffbe00', '#ffc800'],
+                hueRange: [45, 55],
+                note: 'Decale vers jaune pur (45-55 au lieu de 31-43)'
+            }
+        };
+
+        // ========== HELPERS ==========
+        function clearEl(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+        function create(tag, classes, text) {
+            var el = document.createElement(tag);
+            if (classes) el.className = classes;
+            if (text) el.textContent = text;
+            return el;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            var toast = document.getElementById('toast');
+            toast.textContent = 'Copie: ' + text;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 2000);
+        }
+
+        function hexToHSL(hex) {
+            hex = hex.replace('#', '');
+            var r = parseInt(hex.substr(0, 2), 16) / 255;
+            var g = parseInt(hex.substr(2, 2), 16) / 255;
+            var b = parseInt(hex.substr(4, 2), 16) / 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; }
+            else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        }
+
+        // ========== RENDER FUNCTIONS ==========
+        function renderRoleBlock(role, showProblem, showSolution) {
+            var block = create('div', 'role-block');
+
+            var header = create('div', 'role-header');
+            header.appendChild(create('span', 'role-emoji', role.emoji));
+            header.appendChild(create('span', 'role-name', role.name));
+            var range = create('span', 'role-range');
+            range.textContent = 'H: ' + role.hueRange[0] + ' - ' + role.hueRange[1] + ' (' + (role.hueRange[1] - role.hueRange[0]) + ')';
+            header.appendChild(range);
+            block.appendChild(header);
+
+            var bar = create('div', 'gradient-bar');
+            bar.style.background = 'linear-gradient(90deg, ' + role.colors.join(', ') + ')';
+            block.appendChild(bar);
+
+            var dots = create('div', 'color-dots');
+            role.colors.forEach(function(color) {
+                var dotWrapper = create('div', 'color-dot');
+                var dot = create('div', 'dot');
+                dot.style.background = color;
+                dot.onclick = function() { copyToClipboard(color); };
+                dotWrapper.appendChild(dot);
+                dotWrapper.appendChild(create('div', 'dot-hex', color));
+                dots.appendChild(dotWrapper);
+            });
+            block.appendChild(dots);
+
+            if (showProblem && role.name === 'Searcher') {
+                var problem = create('div', 'problem-highlight');
+                problem.textContent = '⚠️ Chevauche Resident (31-38 = zone commune)';
+                block.appendChild(problem);
+            }
+            if (showProblem && role.name === 'Resident') {
+                var problem = create('div', 'problem-highlight');
+                problem.textContent = '⚠️ Termine a 38, trop proche de Searcher (31)';
+                block.appendChild(problem);
+            }
+
+            if (showSolution && role.note) {
+                var solution = create('div', 'solution-highlight');
+                solution.textContent = '✓ ' + role.note;
+                block.appendChild(solution);
+            }
+
+            return block;
+        }
+
+        function renderHueBar(dataset, label) {
+            var container = create('div', 'hue-diagram');
+
+            var labelEl = create('div', '', label);
+            labelEl.style.width = '80px';
+            labelEl.style.fontSize = '0.75rem';
+            labelEl.style.color = 'var(--text-muted)';
+            container.appendChild(labelEl);
+
+            var bar = create('div', 'hue-bar');
+            // Create full hue spectrum
+            bar.style.background = 'linear-gradient(90deg, hsl(0,70%,50%), hsl(60,70%,50%), hsl(120,70%,50%), hsl(180,70%,50%), hsl(240,70%,50%), hsl(300,70%,50%), hsl(360,70%,50%))';
+
+            // Add markers for each role
+            var roles = ['owner', 'resident', 'searcher'];
+            var roleColors = {
+                owner: '#9c5698',
+                resident: '#ff6524',
+                searcher: '#ffb400'
+            };
+
+            roles.forEach(function(roleKey) {
+                var role = dataset[roleKey];
+                // Start marker
+                var startMarker = create('div', 'hue-marker');
+                startMarker.style.left = (role.hueRange[0] / 360 * 100) + '%';
+                startMarker.style.background = role.colors[0];
+                bar.appendChild(startMarker);
+
+                // End marker
+                var endMarker = create('div', 'hue-marker');
+                endMarker.style.left = (role.hueRange[1] / 360 * 100) + '%';
+                endMarker.style.background = role.colors[4];
+                bar.appendChild(endMarker);
+
+                // Label
+                var midPoint = (role.hueRange[0] + role.hueRange[1]) / 2;
+                var labelDiv = create('div', 'hue-label', role.emoji + ' ' + role.hueRange[0] + '-' + role.hueRange[1]);
+                labelDiv.style.left = (midPoint / 360 * 100) + '%';
+                bar.appendChild(labelDiv);
+            });
+
+            container.appendChild(bar);
+            return container;
+        }
+
+        function renderSignatureGradient(dataset, label) {
+            var container = create('div', '');
+            container.appendChild(create('div', 'column-label', label));
+
+            var allColors = dataset.owner.colors.concat(
+                dataset.resident.colors,
+                dataset.searcher.colors
+            );
+
+            var gradient = create('div', 'signature-gradient');
+            gradient.style.background = 'linear-gradient(135deg, ' + allColors.join(', ') + ')';
+            container.appendChild(gradient);
+
+            return container;
+        }
+
+        function calculateGap(dataset) {
+            var residentEnd = dataset.resident.hueRange[1];
+            var searcherStart = dataset.searcher.hueRange[0];
+            return searcherStart - residentEnd;
+        }
+
+        function renderComparisonSection() {
+            var section = create('div', 'section');
+
+            var header = create('div', 'section-header');
+            header.appendChild(create('span', 'section-title', '⚖️ Comparaison Cote a Cote'));
+            section.appendChild(header);
+
+            var grid = create('div', 'comparison-grid');
+
+            // Left column - Current
+            var leftCol = create('div', 'comparison-column');
+            leftCol.appendChild(create('div', 'column-label', '📌 Actuel (Production)'));
+            leftCol.appendChild(renderRoleBlock(CURRENT.owner, false, false));
+            leftCol.appendChild(renderRoleBlock(CURRENT.resident, true, false));
+            leftCol.appendChild(renderRoleBlock(CURRENT.searcher, true, false));
+            grid.appendChild(leftCol);
+
+            // Right column - Proposed
+            var rightCol = create('div', 'comparison-column');
+            rightCol.appendChild(create('div', 'column-label', '✨ Proposition Ajustee'));
+            rightCol.appendChild(renderRoleBlock(PROPOSED.owner, false, true));
+            rightCol.appendChild(renderRoleBlock(PROPOSED.resident, false, true));
+            rightCol.appendChild(renderRoleBlock(PROPOSED.searcher, false, true));
+            grid.appendChild(rightCol);
+
+            section.appendChild(grid);
+
+            // Delta analysis
+            var deltaBox = create('div', 'delta-box');
+            deltaBox.appendChild(create('div', 'delta-title', '📊 Analyse des changements'));
+
+            var deltaGrid = create('div', 'delta-grid');
+
+            // Gap Resident-Searcher
+            var gapCurrent = calculateGap(CURRENT);
+            var gapProposed = calculateGap(PROPOSED);
+
+            var gapItem = create('div', 'delta-item');
+            gapItem.appendChild(create('div', 'delta-label', 'Ecart Resident↔Searcher'));
+            var gapValue = create('div', 'delta-value ' + (gapProposed > gapCurrent ? 'improved' : 'same'));
+            gapValue.textContent = gapCurrent + ' → ' + gapProposed + ' (+' + (gapProposed - gapCurrent) + ')';
+            gapItem.appendChild(gapValue);
+            deltaGrid.appendChild(gapItem);
+
+            // Searcher yellow shift
+            var yellowItem = create('div', 'delta-item');
+            yellowItem.appendChild(create('div', 'delta-label', 'Searcher Teinte'));
+            var yellowValue = create('div', 'delta-value improved');
+            yellowValue.textContent = '31-43 → 45-55 (plus jaune)';
+            yellowItem.appendChild(yellowValue);
+            deltaGrid.appendChild(yellowItem);
+
+            // Distinctiveness
+            var distinctItem = create('div', 'delta-item');
+            distinctItem.appendChild(create('div', 'delta-label', 'Distinction visuelle'));
+            var distinctValue = create('div', 'delta-value improved');
+            distinctValue.textContent = 'Faible → Forte';
+            distinctItem.appendChild(distinctValue);
+            deltaGrid.appendChild(distinctItem);
+
+            deltaBox.appendChild(deltaGrid);
+            section.appendChild(deltaBox);
+
+            return section;
+        }
+
+        function renderHueMapSection() {
+            var section = create('div', 'section');
+
+            var header = create('div', 'section-header');
+            header.appendChild(create('span', 'section-title', '🎡 Carte des Teintes (Hue Map)'));
+            section.appendChild(header);
+
+            section.appendChild(renderHueBar(CURRENT, 'Actuel'));
+            section.appendChild(renderHueBar(PROPOSED, 'Propose'));
+
+            var explanation = create('div', 'delta-box');
+            explanation.style.marginTop = '1rem';
+            var expText = create('div', '');
+            expText.style.fontSize = '0.85rem';
+            expText.style.lineHeight = '1.6';
+            expText.appendChild(document.createTextNode('Le probleme actuel: Resident termine a 38 et Searcher commence a 31. '));
+            expText.appendChild(document.createElement('br'));
+            expText.appendChild(document.createTextNode('Ils se chevauchent de 7 (31-38). Visuellement, cest la meme zone orange.'));
+            expText.appendChild(document.createElement('br'));
+            expText.appendChild(document.createElement('br'));
+            expText.appendChild(document.createTextNode('La solution: Searcher decale vers 45-55 (jaune pur), Resident resserre vers 6-32.'));
+            expText.appendChild(document.createElement('br'));
+            expText.appendChild(document.createTextNode('Nouvel ecart: 13 (32→45). Plus de confusion possible.'));
+            explanation.appendChild(expText);
+            section.appendChild(explanation);
+
+            return section;
+        }
+
+        function renderSignatureSection() {
+            var section = create('div', 'section');
+
+            var header = create('div', 'section-header');
+            header.appendChild(create('span', 'section-title', '✨ Gradient Signature Compare'));
+            section.appendChild(header);
+
+            var grid = create('div', 'comparison-grid');
+            grid.appendChild(renderSignatureGradient(CURRENT, 'Actuel'));
+            grid.appendChild(renderSignatureGradient(PROPOSED, 'Propose'));
+            section.appendChild(grid);
+
+            var note = create('div', 'solution-highlight');
+            note.textContent = '✓ Le gradient signature reste harmonieux - la transition Owner→Resident→Searcher fonctionne toujours car les couleurs restent sur le meme arc chaud de la roue chromatique.';
+            section.appendChild(note);
+
+            return section;
+        }
+
+        function renderCSSSection() {
+            var section = create('div', 'section');
+
+            var header = create('div', 'section-header');
+            header.appendChild(create('span', 'section-title', '💻 CSS Variables'));
+            section.appendChild(header);
+
+            var tabs = create('div', 'tab-bar');
+            var tabCurrent = create('button', 'tab active', 'Actuel');
+            var tabProposed = create('button', 'tab', 'Propose');
+            tabs.appendChild(tabCurrent);
+            tabs.appendChild(tabProposed);
+            section.appendChild(tabs);
+
+            var contentCurrent = create('div', 'tab-content active');
+            contentCurrent.id = 'css-current';
+            var cssCurrent = create('div', 'css-output');
+            var cssCurrentText = '/* IzzIco Gradients - ACTUEL */\n\n';
+            cssCurrentText += '/* Owner */\n';
+            cssCurrentText += '--gradient-owner: linear-gradient(135deg, ' + CURRENT.owner.colors.join(', ') + ');\n';
+            cssCurrentText += '--owner-500: ' + CURRENT.owner.colors[0] + ';\n\n';
+            cssCurrentText += '/* Resident */\n';
+            cssCurrentText += '--gradient-resident: linear-gradient(135deg, ' + CURRENT.resident.colors.join(', ') + ');\n';
+            cssCurrentText += '--resident-500: ' + CURRENT.resident.colors[0] + ';\n\n';
+            cssCurrentText += '/* Searcher */\n';
+            cssCurrentText += '--gradient-searcher: linear-gradient(135deg, ' + CURRENT.searcher.colors.join(', ') + ');\n';
+            cssCurrentText += '--searcher-500: ' + CURRENT.searcher.colors[0] + ';\n\n';
+            cssCurrentText += '/* Signature */\n';
+            var allCurrent = CURRENT.owner.colors.concat(CURRENT.resident.colors, CURRENT.searcher.colors);
+            cssCurrentText += '--gradient-signature: linear-gradient(135deg, ' + allCurrent.join(', ') + ');';
+            cssCurrent.textContent = cssCurrentText;
+            contentCurrent.appendChild(cssCurrent);
+            section.appendChild(contentCurrent);
+
+            var contentProposed = create('div', 'tab-content');
+            contentProposed.id = 'css-proposed';
+            var cssProposed = create('div', 'css-output');
+            var cssProposedText = '/* IzzIco Gradients - PROPOSE */\n\n';
+            cssProposedText += '/* Owner (inchange) */\n';
+            cssProposedText += '--gradient-owner: linear-gradient(135deg, ' + PROPOSED.owner.colors.join(', ') + ');\n';
+            cssProposedText += '--owner-500: ' + PROPOSED.owner.colors[0] + ';\n\n';
+            cssProposedText += '/* Resident (resserre) */\n';
+            cssProposedText += '--gradient-resident: linear-gradient(135deg, ' + PROPOSED.resident.colors.join(', ') + ');\n';
+            cssProposedText += '--resident-500: ' + PROPOSED.resident.colors[0] + ';\n\n';
+            cssProposedText += '/* Searcher (plus jaune) */\n';
+            cssProposedText += '--gradient-searcher: linear-gradient(135deg, ' + PROPOSED.searcher.colors.join(', ') + ');\n';
+            cssProposedText += '--searcher-500: ' + PROPOSED.searcher.colors[0] + ';\n\n';
+            cssProposedText += '/* Signature */\n';
+            var allProposed = PROPOSED.owner.colors.concat(PROPOSED.resident.colors, PROPOSED.searcher.colors);
+            cssProposedText += '--gradient-signature: linear-gradient(135deg, ' + allProposed.join(', ') + ');';
+            cssProposed.textContent = cssProposedText;
+            contentProposed.appendChild(cssProposed);
+            section.appendChild(contentProposed);
+
+            // Tab switching
+            tabCurrent.onclick = function() {
+                tabCurrent.classList.add('active');
+                tabProposed.classList.remove('active');
+                contentCurrent.classList.add('active');
+                contentProposed.classList.remove('active');
+            };
+            tabProposed.onclick = function() {
+                tabProposed.classList.add('active');
+                tabCurrent.classList.remove('active');
+                contentProposed.classList.add('active');
+                contentCurrent.classList.remove('active');
+            };
+
+            return section;
+        }
+
+        // ========== MAIN RENDER ==========
+        function render() {
+            var app = document.getElementById('app');
+            clearEl(app);
+
+            app.appendChild(renderComparisonSection());
+            app.appendChild(renderHueMapSection());
+            app.appendChild(renderSignatureSection());
+            app.appendChild(renderCSSSection());
+        }
+
+        render();
+    </script>
+</body>
+</html>

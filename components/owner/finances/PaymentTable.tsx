@@ -22,8 +22,52 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import type { Locale } from 'date-fns';
 import { ownerGradient, semanticColors } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const dateLocales: Record<string, Locale> = { fr, en: enUS, nl, de };
+const numberLocales: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+
+const t = {
+  status: {
+    paid: { fr: 'Payé', en: 'Paid', nl: 'Betaald', de: 'Bezahlt' },
+    pending: { fr: 'En attente', en: 'Pending', nl: 'In afwachting', de: 'Ausstehend' },
+    overdue: { fr: 'En retard', en: 'Overdue', nl: 'Achterstallig', de: 'Überfällig' },
+  },
+  filter: {
+    all: { fr: 'Tous', en: 'All', nl: 'Alle', de: 'Alle' },
+    paid: { fr: 'Payés', en: 'Paid', nl: 'Betaald', de: 'Bezahlt' },
+    pending: { fr: 'Attente', en: 'Pending', nl: 'Afwachtend', de: 'Ausstehend' },
+    overdue: { fr: 'Retard', en: 'Overdue', nl: 'Achterstallig', de: 'Überfällig' },
+  },
+  search: {
+    placeholder: { fr: 'Rechercher...', en: 'Search...', nl: 'Zoeken...', de: 'Suchen...' },
+  },
+  summary: {
+    payments: { fr: 'paiements', en: 'payments', nl: 'betalingen', de: 'Zahlungen' },
+    collected: { fr: 'encaissés', en: 'collected', nl: 'ontvangen', de: 'eingezogen' },
+    toCollect: { fr: 'à percevoir', en: 'to collect', nl: 'te ontvangen', de: 'ausstehend' },
+  },
+  table: {
+    property: { fr: 'Propriété', en: 'Property', nl: 'Eigendom', de: 'Immobilie' },
+    tenant: { fr: 'Locataire', en: 'Tenant', nl: 'Huurder', de: 'Mieter' },
+    amount: { fr: 'Montant', en: 'Amount', nl: 'Bedrag', de: 'Betrag' },
+    dueDate: { fr: 'Échéance', en: 'Due date', nl: 'Vervaldatum', de: 'Fälligkeitsdatum' },
+    status: { fr: 'Statut', en: 'Status', nl: 'Status', de: 'Status' },
+    actions: { fr: 'Actions', en: 'Actions', nl: 'Acties', de: 'Aktionen' },
+  },
+  empty: {
+    title: { fr: 'Aucun paiement trouvé', en: 'No payments found', nl: 'Geen betalingen gevonden', de: 'Keine Zahlungen gefunden' },
+    subtitle: { fr: 'Modifiez vos filtres de recherche', en: 'Adjust your search filters', nl: 'Pas uw zoekfilters aan', de: 'Passen Sie Ihre Suchfilter an' },
+  },
+  actions: {
+    paidOn: { fr: 'Payé le', en: 'Paid on', nl: 'Betaald op', de: 'Bezahlt am' },
+    markPaid: { fr: 'Marquer payé', en: 'Mark paid', nl: 'Markeer betaald', de: 'Als bezahlt markieren' },
+    sendReminder: { fr: 'Relancer', en: 'Send reminder', nl: 'Herinnering sturen', de: 'Erinnerung senden' },
+  },
+};
 
 export interface PaymentRecord {
   id: string;
@@ -49,26 +93,26 @@ interface PaymentTableProps {
   isLoading?: boolean;
 }
 
-const statusConfig = {
+const getStatusConfig = (language: string) => ({
   paid: {
-    label: 'Paye',
+    label: t.status.paid[language as keyof typeof t.status.paid] || 'Paid',
     icon: CheckCircle2,
     className: 'bg-emerald-100 text-emerald-700 border-emerald-200',
     iconColor: '#059669',
   },
   pending: {
-    label: 'En attente',
+    label: t.status.pending[language as keyof typeof t.status.pending] || 'Pending',
     icon: Clock,
     className: 'bg-amber-100 text-amber-700 border-amber-200',
     iconColor: '#D97706',
   },
   overdue: {
-    label: 'En retard',
+    label: t.status.overdue[language as keyof typeof t.status.overdue] || 'Overdue',
     icon: AlertTriangle,
     className: 'bg-red-100 text-red-700 border-red-200',
     iconColor: '#DC2626',
   },
-};
+});
 
 export function PaymentTable({
   payments,
@@ -77,11 +121,15 @@ export function PaymentTable({
   onPaymentClick,
   isLoading = false,
 }: PaymentTableProps) {
+  const { language } = useLanguage();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'paid' | 'pending' | 'overdue'>('all');
   const [sortField, setSortField] = useState<PaymentSortField>('dueDate');
   const [sortOrder, setSortOrder] = useState<PaymentSortOrder>('desc');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // Memoized status config based on language
+  const statusConfig = useMemo(() => getStatusConfig(language), [language]);
 
   // Filter and sort payments
   const filteredPayments = useMemo(() => {
@@ -175,7 +223,7 @@ export function PaymentTable({
           <div className="relative flex-1 max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
-              placeholder="Rechercher..."
+              placeholder={t.search.placeholder[language as keyof typeof t.search.placeholder] || 'Search...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9 rounded-full bg-gray-50 border-gray-200"
@@ -197,12 +245,12 @@ export function PaymentTable({
                 style={statusFilter === status ? { background: ownerGradient } : {}}
               >
                 {status === 'all'
-                  ? `Tous (${payments.length})`
+                  ? `${t.filter.all[language as keyof typeof t.filter.all] || 'All'} (${payments.length})`
                   : status === 'paid'
-                  ? `Payes (${stats.paid})`
+                  ? `${t.filter.paid[language as keyof typeof t.filter.paid] || 'Paid'} (${stats.paid})`
                   : status === 'pending'
-                  ? `Attente (${stats.pending})`
-                  : `Retard (${stats.overdue})`}
+                  ? `${t.filter.pending[language as keyof typeof t.filter.pending] || 'Pending'} (${stats.pending})`
+                  : `${t.filter.overdue[language as keyof typeof t.filter.overdue] || 'Overdue'} (${stats.overdue})`}
               </button>
             ))}
           </div>
@@ -211,15 +259,15 @@ export function PaymentTable({
         {/* Summary */}
         <div className="mt-4 flex items-center gap-6 text-sm">
           <span className="text-gray-500">
-            <strong className="text-gray-900">{stats.total}</strong> paiements
+            <strong className="text-gray-900">{stats.total}</strong> {t.summary.payments[language as keyof typeof t.summary.payments] || 'payments'}
           </span>
           <span className="text-gray-300">|</span>
           <span className="text-emerald-600">
-            <strong>{stats.paidAmount.toLocaleString()}e</strong> encaisses
+            <strong>{stats.paidAmount.toLocaleString(numberLocales[language] || 'en-US')}€</strong> {t.summary.collected[language as keyof typeof t.summary.collected] || 'collected'}
           </span>
           <span className="text-gray-300">|</span>
           <span className="text-amber-600">
-            <strong>{(stats.totalAmount - stats.paidAmount).toLocaleString()}e</strong> a percevoir
+            <strong>{(stats.totalAmount - stats.paidAmount).toLocaleString(numberLocales[language] || 'en-US')}€</strong> {t.summary.toCollect[language as keyof typeof t.summary.toCollect] || 'to collect'}
           </span>
         </div>
       </div>
@@ -235,7 +283,7 @@ export function PaymentTable({
               >
                 <div className="flex items-center gap-1">
                   <Building2 className="w-3.5 h-3.5" />
-                  Propriete
+                  {t.table.property[language as keyof typeof t.table.property] || 'Property'}
                   {sortField === 'property' && <SortIcon className="w-3 h-3" />}
                 </div>
               </th>
@@ -245,7 +293,7 @@ export function PaymentTable({
               >
                 <div className="flex items-center gap-1">
                   <User className="w-3.5 h-3.5" />
-                  Locataire
+                  {t.table.tenant[language as keyof typeof t.table.tenant] || 'Tenant'}
                   {sortField === 'tenant' && <SortIcon className="w-3 h-3" />}
                 </div>
               </th>
@@ -254,7 +302,7 @@ export function PaymentTable({
                 onClick={() => handleSort('amount')}
               >
                 <div className="flex items-center gap-1">
-                  Montant
+                  {t.table.amount[language as keyof typeof t.table.amount] || 'Amount'}
                   {sortField === 'amount' && <SortIcon className="w-3 h-3" />}
                 </div>
               </th>
@@ -264,7 +312,7 @@ export function PaymentTable({
               >
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" />
-                  Echeance
+                  {t.table.dueDate[language as keyof typeof t.table.dueDate] || 'Due date'}
                   {sortField === 'dueDate' && <SortIcon className="w-3 h-3" />}
                 </div>
               </th>
@@ -273,12 +321,12 @@ export function PaymentTable({
                 onClick={() => handleSort('status')}
               >
                 <div className="flex items-center gap-1">
-                  Statut
+                  {t.table.status[language as keyof typeof t.table.status] || 'Status'}
                   {sortField === 'status' && <SortIcon className="w-3 h-3" />}
                 </div>
               </th>
               <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600">
-                Actions
+                {t.table.actions[language as keyof typeof t.table.actions] || 'Actions'}
               </th>
             </tr>
           </thead>
@@ -293,8 +341,8 @@ export function PaymentTable({
                     >
                       <Filter className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-gray-600 font-medium">Aucun paiement trouve</p>
-                    <p className="text-sm text-gray-400 mt-1">Modifiez vos filtres de recherche</p>
+                    <p className="text-gray-600 font-medium">{t.empty.title[language as keyof typeof t.empty.title] || 'No payments found'}</p>
+                    <p className="text-sm text-gray-400 mt-1">{t.empty.subtitle[language as keyof typeof t.empty.subtitle] || 'Adjust your search filters'}</p>
                   </div>
                 </td>
               </tr>
@@ -327,11 +375,11 @@ export function PaymentTable({
                     </td>
                     <td className="px-4 py-4">
                       <p className="text-sm text-gray-600">
-                        {format(new Date(payment.dueDate), 'd MMM yyyy', { locale: fr })}
+                        {format(new Date(payment.dueDate), 'd MMM yyyy', { locale: dateLocales[language] || dateLocales.en })}
                       </p>
                       {payment.paidAt && (
                         <p className="text-xs text-emerald-600">
-                          Paye le {format(new Date(payment.paidAt), 'd MMM', { locale: fr })}
+                          {t.actions.paidOn[language as keyof typeof t.actions.paidOn] || 'Paid on'} {format(new Date(payment.paidAt), 'd MMM', { locale: dateLocales[language] || dateLocales.en })}
                         </p>
                       )}
                     </td>

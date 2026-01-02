@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Import shared owner components
 import { OwnerPageHeader, OwnerKPICard, OwnerKPIGrid, OwnerAlertBanner } from '@/components/owner';
@@ -113,6 +114,8 @@ function getMockConversations(residents: PropertyResident[]) {
 export default function TenantsPage() {
   const router = useRouter();
   const { setActiveRole } = useRole();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.tenants;
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -151,7 +154,7 @@ export default function TenantsPage() {
 
       if (propError) {
         console.error('[Tenants] Failed to fetch properties:', propError);
-        toast.error('Impossible de charger vos propriétés');
+        toast.error(t?.toast?.failedToLoadProperties?.[language] || 'Unable to load your properties');
         setIsLoading(false);
         return;
       }
@@ -174,7 +177,7 @@ export default function TenantsPage() {
 
       if (resError) {
         console.error('[Tenants] Failed to fetch residents:', resError);
-        toast.error('Erreur lors du chargement des locataires');
+        toast.error(t?.toast?.errorLoadingTenants?.[language] || 'Error loading tenants');
       }
 
       // Create property map with resident counts
@@ -227,7 +230,7 @@ export default function TenantsPage() {
 
     } catch (error) {
       console.error('[Tenants] Error fetching data:', error);
-      toast.error('Erreur lors du chargement des données');
+      toast.error(t?.toast?.errorLoadingData?.[language] || 'Error loading data');
     } finally {
       setIsLoading(false);
     }
@@ -309,10 +312,10 @@ export default function TenantsPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Loading tenants...
+            {t?.loading?.title?.[language] || 'Loading tenants...'}
           </h3>
           <p className="text-gray-600">
-            Fetching data from database
+            {t?.loading?.subtitle?.[language] || 'Fetching data from database'}
           </p>
         </div>
       </div>
@@ -333,17 +336,20 @@ export default function TenantsPage() {
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Gestion
+            {t?.breadcrumb?.management?.[language] || 'Management'}
           </button>
           <span className="text-gray-300">/</span>
-          <span className="font-medium" style={{ color: '#9c5698' }}>Locataires</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>{t?.breadcrumb?.tenants?.[language] || 'Tenants'}</span>
         </motion.div>
 
         {/* Header using shared component */}
         <OwnerPageHeader
           icon={Users}
-          title="Locataires"
-          subtitle={`${stats.total} locataire${stats.total !== 1 ? 's' : ''} sur ${properties.length} propriété${properties.length !== 1 ? 's' : ''}`}
+          title={t?.header?.title?.[language] || 'Tenants'}
+          subtitle={t?.header?.subtitle?.[language]
+            ?.replace('{tenantCount}', String(stats.total))
+            ?.replace('{propertyCount}', String(properties.length))
+            || `${stats.total} tenant${stats.total !== 1 ? 's' : ''} across ${properties.length} propert${properties.length !== 1 ? 'ies' : 'y'}`}
           actions={
             <>
               <Button
@@ -356,14 +362,14 @@ export default function TenantsPage() {
                   fetchTenantsData();
                 }}
                 className="rounded-full border-gray-300 hover:border-purple-400"
-                aria-label="Actualiser les locataires"
+                aria-label={t?.header?.refreshAriaLabel?.[language] || 'Refresh tenants'}
                 disabled={isLoading}
               >
                 <RefreshCw className={cn('w-5 h-5', isLoading && 'animate-spin')} />
               </Button>
               <Button
                 onClick={() => {
-                  toast.info('Pour ajouter un locataire, acceptez une candidature depuis la page Candidatures');
+                  toast.info(t?.toast?.addTenantInfo?.[language] || 'To add a tenant, accept an application from the Applications page');
                   router.push('/dashboard/owner/applications');
                 }}
                 className="rounded-full text-white border-0 shadow-md hover:shadow-lg transition-all"
@@ -373,7 +379,7 @@ export default function TenantsPage() {
                 }}
               >
                 <UserPlus className="w-5 h-5 mr-2" />
-                Ajouter Locataire
+                {t?.header?.addTenant?.[language] || 'Add Tenant'}
               </Button>
             </>
           }
@@ -383,29 +389,29 @@ export default function TenantsPage() {
         <OwnerKPIGrid columns={4} className="mb-6">
           <OwnerKPICard
             icon={Users}
-            title="Total"
+            title={t?.kpi?.total?.[language] || 'Total'}
             value={stats.total}
             variant="primary"
           />
           <OwnerKPICard
             icon={Users}
-            title="Actifs"
+            title={t?.kpi?.active?.[language] || 'Active'}
             value={stats.active}
             variant="success"
           />
           <OwnerKPICard
             icon={UserPlus}
-            title="Nouveaux"
+            title={t?.kpi?.new?.[language] || 'New'}
             value={stats.newThisMonth}
             variant="info"
-            subtext="ce mois"
+            subtext={t?.kpi?.thisMonth?.[language] || 'this month'}
           />
           <OwnerKPICard
             icon={Clock}
-            title="Fin de bail"
+            title={t?.kpi?.leaseEnding?.[language] || 'Lease ending'}
             value={stats.leavingSoon}
             variant="warning"
-            subtext="dans 3 mois"
+            subtext={t?.kpi?.inThreeMonths?.[language] || 'in 3 months'}
           />
         </OwnerKPIGrid>
 
@@ -413,10 +419,13 @@ export default function TenantsPage() {
         <OwnerAlertBanner
           severity="warning"
           icon={Clock}
-          title={`${stats.leavingSoon} locataire${stats.leavingSoon > 1 ? 's' : ''} termine${stats.leavingSoon > 1 ? 'nt' : ''} leur bail prochainement`}
-          description="Anticipez les départs et planifiez les relances ou recherches de nouveaux locataires"
+          title={(stats.leavingSoon > 1
+            ? t?.alert?.titlePlural?.[language]?.replace('{count}', String(stats.leavingSoon))
+            : t?.alert?.titleSingular?.[language])
+            || `${stats.leavingSoon} tenant${stats.leavingSoon > 1 ? 's' : ''} lease${stats.leavingSoon > 1 ? 's' : ''} ending soon`}
+          description={t?.alert?.description?.[language] || 'Plan ahead for departures and schedule follow-ups or new tenant searches'}
           action={{
-            label: 'Voir les baux',
+            label: t?.alert?.viewLeases?.[language] || 'View leases',
             onClick: () => router.push('/dashboard/owner/leases?filter=ending_soon')
           }}
           show={stats.leavingSoon > 0}
@@ -454,11 +463,11 @@ export default function TenantsPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
               <input
                 type="text"
-                placeholder="Rechercher un locataire..."
+                placeholder={t?.search?.placeholder?.[language] || 'Search for a tenant...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all"
-                aria-label="Rechercher un locataire par nom, profession ou propriété"
+                aria-label={t?.search?.ariaLabel?.[language] || 'Search for a tenant by name, occupation or property'}
               />
             </div>
 
@@ -468,9 +477,9 @@ export default function TenantsPage() {
                 value={filterProperty}
                 onChange={(e) => setFilterProperty(e.target.value)}
                 className="appearance-none pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all cursor-pointer min-w-[200px]"
-                aria-label="Filtrer par propriété"
+                aria-label={t?.filter?.ariaLabel?.[language] || 'Filter by property'}
               >
-                <option value="all">Toutes les propriétés</option>
+                <option value="all">{t?.filter?.allProperties?.[language] || 'All properties'}</option>
                 {properties.map(p => (
                   <option key={p.id} value={p.id}>
                     {p.name} ({p.resident_count})
@@ -514,23 +523,23 @@ export default function TenantsPage() {
 
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 {properties.length === 0
-                  ? 'Aucune propriété'
+                  ? t?.empty?.noProperties?.[language] || 'No properties'
                   : searchQuery || filterProperty !== 'all'
-                    ? 'Aucun locataire trouvé'
-                    : 'Aucun locataire'}
+                    ? t?.empty?.noTenantsFound?.[language] || 'No tenants found'
+                    : t?.empty?.noTenants?.[language] || 'No tenants'}
               </h3>
               <p className="text-gray-600 mb-4 max-w-md mx-auto">
                 {properties.length === 0
-                  ? 'Ajoutez une propriété pour gérer vos locataires'
+                  ? t?.empty?.addPropertyHint?.[language] || 'Add a property to manage your tenants'
                   : searchQuery || filterProperty !== 'all'
-                    ? 'Essayez une autre recherche ou filtre'
-                    : 'Ajoutez des locataires à vos propriétés'}
+                    ? t?.empty?.tryAnotherSearch?.[language] || 'Try another search or filter'
+                    : t?.empty?.addTenantsHint?.[language] || 'Add tenants to your properties'}
               </p>
               {properties.length > 0 && !searchQuery && filterProperty === 'all' && (
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     onClick={() => {
-                      toast.info('Pour ajouter un locataire, acceptez une candidature depuis la page Candidatures');
+                      toast.info(t?.toast?.addTenantInfo?.[language] || 'To add a tenant, accept an application from the Applications page');
                       router.push('/dashboard/owner/applications');
                     }}
                     className="rounded-full text-white border-0 px-8 shadow-md hover:shadow-lg transition-all"
@@ -540,7 +549,7 @@ export default function TenantsPage() {
                     }}
                   >
                     <UserPlus className="w-5 h-5 mr-2" />
-                    Ajouter un locataire
+                    {t?.header?.addTenant?.[language] || 'Add Tenant'}
                   </Button>
                 </motion.div>
               )}

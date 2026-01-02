@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Role Gradients Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --panel: #12121a;
+            --control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .gradients-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .role-section {
+            background: var(--panel);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .role-emoji { font-size: 2rem; }
+        .role-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .role-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+            color: white;
+        }
+        .gradient-display {
+            height: 80px;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .gradient-stops {
+            display: flex;
+            height: 100%;
+        }
+        .gradient-stop {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 0.5rem;
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .gradient-stop:hover { transform: scaleY(1.1); }
+        .smooth-gradient {
+            height: 40px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .analysis-card {
+            background: var(--control);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .analysis-swatch {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin: 0 auto 0.75rem;
+            border: 2px solid var(--border);
+        }
+        .analysis-hex {
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        .analysis-hex:hover { color: var(--accent); }
+        .analysis-hsl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .stat-delta {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            margin-left: 0.25rem;
+        }
+        .stat-delta.positive {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        .stat-delta.negative {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        .combined-section {
+            background: var(--panel);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .combined-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .combined-gradient {
+            height: 100px;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+        .css-output {
+            background: var(--control);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .hue-wheel-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .hue-wheel {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .hue-wheel canvas { border-radius: 50%; }
+        .hue-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transform: translate(-50%, -50%);
+        }
+        .hue-wheel-label {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        .flow-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+        }
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+        .flow-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🎨 IzzIco Gradients</div>
+        <div class="subtitle">Analyse des degradés par rôle - Version Production</div>
+    </div>
+
+    <div class="gradients-container" id="container"></div>
+    <div class="copy-toast" id="toast">Copié !</div>
+
+    <script>
+        var ROLE_GRADIENTS = {
+            owner: {
+                name: 'Owner',
+                emoji: '🔑',
+                colors: ['#9c5698', '#a5568d', '#af5682', '#b85676', '#c2566b'],
+                description: 'Mauve → Rose'
+            },
+            resident: {
+                name: 'Resident',
+                emoji: '👤',
+                colors: ['#e05747', '#f8572b', '#ff651e', '#ff7b19', '#ff9014'],
+                description: 'Rouge → Or'
+            },
+            searcher: {
+                name: 'Searcher',
+                emoji: '🔍',
+                colors: ['#ff7b19', '#ff8915', '#ff9612', '#ffa40e', '#ffb10b'],
+                description: 'Orange → Or'
+            }
+        };
+
+        function clearEl(el) {
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
+
+        function create(tag, classes, text) {
+            var el = document.createElement(tag);
+            if (classes) el.className = classes;
+            if (text) el.textContent = text;
+            return el;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            var toast = document.getElementById('toast');
+            toast.textContent = 'Copié: ' + text;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 2000);
+        }
+
+        function hexToHSL(hex) {
+            hex = hex.replace('#', '');
+            var r = parseInt(hex.substr(0, 2), 16) / 255;
+            var g = parseInt(hex.substr(2, 2), 16) / 255;
+            var b = parseInt(hex.substr(4, 2), 16) / 255;
+            var max = Math.max(r, g, b);
+            var min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            if (max === min) {
+                h = s = 0;
+            } else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        }
+
+        function analyzeGradient(colors) {
+            var hslValues = colors.map(hexToHSL);
+            var first = hslValues[0];
+            var last = hslValues[hslValues.length - 1];
+            return {
+                hslValues: hslValues,
+                hueRotation: last.h - first.h,
+                saturationChange: last.s - first.s,
+                lightnessChange: last.l - first.l
+            };
+        }
+
+        function drawHueWheel(canvas) {
+            var ctx = canvas.getContext('2d');
+            var size = canvas.width;
+            var center = size / 2;
+            var radius = size / 2 - 10;
+            for (var angle = 0; angle < 360; angle++) {
+                var startAngle = (angle - 90) * Math.PI / 180;
+                var endAngle = (angle - 89) * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.arc(center, center, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = 'hsl(' + angle + ', 70%, 50%)';
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.arc(center, center, radius * 0.6, 0, Math.PI * 2);
+            ctx.fillStyle = '#12121a';
+            ctx.fill();
+        }
+
+        function renderRoleSection(roleKey, role) {
+            var section = create('div', 'role-section');
+            section.id = 'role-' + roleKey;
+
+            var header = create('div', 'role-header');
+            header.appendChild(create('span', 'role-emoji', role.emoji));
+            header.appendChild(create('span', 'role-title', role.name));
+            var badge = create('span', 'role-badge', role.description);
+            badge.style.background = role.colors[0];
+            header.appendChild(badge);
+            section.appendChild(header);
+
+            var gradientDisplay = create('div', 'gradient-display');
+            var gradientStops = create('div', 'gradient-stops');
+            role.colors.forEach(function(color) {
+                var stop = create('div', 'gradient-stop', color);
+                stop.style.background = color;
+                stop.onclick = function() { copyToClipboard(color); };
+                gradientStops.appendChild(stop);
+            });
+            gradientDisplay.appendChild(gradientStops);
+            section.appendChild(gradientDisplay);
+
+            var smoothGradient = create('div', 'smooth-gradient');
+            smoothGradient.style.background = 'linear-gradient(90deg, ' + role.colors.join(', ') + ')';
+            section.appendChild(smoothGradient);
+
+            var analysis = analyzeGradient(role.colors);
+
+            var analysisGrid = create('div', 'analysis-grid');
+            role.colors.forEach(function(color, i) {
+                var hsl = analysis.hslValues[i];
+                var card = create('div', 'analysis-card');
+                var swatch = create('div', 'analysis-swatch');
+                swatch.style.background = color;
+                card.appendChild(swatch);
+                var hex = create('div', 'analysis-hex', color);
+                hex.onclick = function() { copyToClipboard(color); };
+                card.appendChild(hex);
+                var hslDiv = create('div', 'analysis-hsl');
+                hslDiv.appendChild(document.createTextNode('H: ' + hsl.h + '°'));
+                hslDiv.appendChild(document.createElement('br'));
+                hslDiv.appendChild(document.createTextNode('S: ' + hsl.s + '%'));
+                hslDiv.appendChild(document.createElement('br'));
+                hslDiv.appendChild(document.createTextNode('L: ' + hsl.l + '%'));
+                card.appendChild(hslDiv);
+                analysisGrid.appendChild(card);
+            });
+            section.appendChild(analysisGrid);
+
+            var statsRow = create('div', 'stats-row');
+
+            var hueStat = create('div', 'stat-item');
+            hueStat.appendChild(create('div', 'stat-label', 'Rotation Teinte'));
+            var hueValue = create('div', 'stat-value');
+            hueValue.appendChild(document.createTextNode(analysis.hslValues[0].h + '° → ' + analysis.hslValues[4].h + '°'));
+            var hueDelta = create('span', 'stat-delta ' + (analysis.hueRotation >= 0 ? 'positive' : 'negative'));
+            hueDelta.textContent = (analysis.hueRotation >= 0 ? '+' : '') + analysis.hueRotation + '°';
+            hueValue.appendChild(hueDelta);
+            hueStat.appendChild(hueValue);
+            statsRow.appendChild(hueStat);
+
+            var satStat = create('div', 'stat-item');
+            satStat.appendChild(create('div', 'stat-label', 'Δ Saturation'));
+            var satValue = create('div', 'stat-value');
+            satValue.appendChild(document.createTextNode(analysis.hslValues[0].s + '% → ' + analysis.hslValues[4].s + '%'));
+            var satDelta = create('span', 'stat-delta ' + (analysis.saturationChange >= 0 ? 'positive' : 'negative'));
+            satDelta.textContent = (analysis.saturationChange >= 0 ? '+' : '') + analysis.saturationChange + '%';
+            satValue.appendChild(satDelta);
+            satStat.appendChild(satValue);
+            statsRow.appendChild(satStat);
+
+            var lightStat = create('div', 'stat-item');
+            lightStat.appendChild(create('div', 'stat-label', 'Δ Luminosité'));
+            var lightValue = create('div', 'stat-value');
+            lightValue.appendChild(document.createTextNode(analysis.hslValues[0].l + '% → ' + analysis.hslValues[4].l + '%'));
+            var lightDelta = create('span', 'stat-delta ' + (analysis.lightnessChange >= 0 ? 'positive' : 'negative'));
+            lightDelta.textContent = (analysis.lightnessChange >= 0 ? '+' : '') + analysis.lightnessChange + '%';
+            lightValue.appendChild(lightDelta);
+            lightStat.appendChild(lightValue);
+            statsRow.appendChild(lightStat);
+
+            section.appendChild(statsRow);
+            return section;
+        }
+
+        function renderHueWheels() {
+            var section = create('div', 'combined-section');
+            section.appendChild(create('div', 'combined-title', '🎡 Visualisation sur Roue Chromatique'));
+
+            var container = create('div', 'hue-wheel-container');
+
+            ['owner', 'resident', 'searcher'].forEach(function(roleKey) {
+                var role = ROLE_GRADIENTS[roleKey];
+                var wheelWrapper = create('div', 'hue-wheel');
+                var canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                wheelWrapper.appendChild(canvas);
+                drawHueWheel(canvas);
+
+                role.colors.forEach(function(color) {
+                    var hsl = hexToHSL(color);
+                    var angle = (hsl.h - 90) * Math.PI / 180;
+                    var radius = 70;
+                    var x = 100 + Math.cos(angle) * radius;
+                    var y = 100 + Math.sin(angle) * radius;
+                    var marker = create('div', 'hue-marker');
+                    marker.style.left = x + 'px';
+                    marker.style.top = y + 'px';
+                    marker.style.background = color;
+                    wheelWrapper.appendChild(marker);
+                });
+
+                wheelWrapper.appendChild(create('div', 'hue-wheel-label', role.emoji + ' ' + role.name));
+                container.appendChild(wheelWrapper);
+            });
+
+            section.appendChild(container);
+            return section;
+        }
+
+        function renderCombinedSection() {
+            var section = create('div', 'combined-section');
+            section.appendChild(create('div', 'combined-title', '✨ Gradient Signature IzzIco'));
+
+            var allColors = ROLE_GRADIENTS.owner.colors.concat(
+                ROLE_GRADIENTS.resident.colors,
+                ROLE_GRADIENTS.searcher.colors
+            );
+
+            var combinedGradient = create('div', 'combined-gradient');
+            combinedGradient.style.background = 'linear-gradient(135deg, ' + allColors.join(', ') + ')';
+            section.appendChild(combinedGradient);
+
+            var flowDiagram = create('div', 'flow-diagram');
+            allColors.forEach(function(color, i) {
+                var colorDiv = create('div', 'flow-color');
+                colorDiv.style.background = color;
+                colorDiv.title = color;
+                colorDiv.style.cursor = 'pointer';
+                colorDiv.onclick = function() { copyToClipboard(color); };
+                flowDiagram.appendChild(colorDiv);
+                if (i < allColors.length - 1 && (i === 4 || i === 9)) {
+                    flowDiagram.appendChild(create('span', 'flow-arrow', '→'));
+                }
+            });
+            section.appendChild(flowDiagram);
+
+            var cssOutput = create('div', 'css-output');
+            var cssText = '/* IzzIco Signature Gradient - Production */\n';
+            cssText += 'background: linear-gradient(135deg,\n';
+            allColors.forEach(function(color, i) {
+                var percent = Math.round((i / (allColors.length - 1)) * 100);
+                cssText += '  ' + color + ' ' + percent + '%';
+                if (i < allColors.length - 1) cssText += ',';
+                cssText += '\n';
+            });
+            cssText += ');\n\n';
+            cssText += '/* Role-specific gradients */\n';
+            cssText += '--gradient-owner: linear-gradient(135deg, ' + ROLE_GRADIENTS.owner.colors.join(', ') + ');\n';
+            cssText += '--gradient-resident: linear-gradient(135deg, ' + ROLE_GRADIENTS.resident.colors.join(', ') + ');\n';
+            cssText += '--gradient-searcher: linear-gradient(135deg, ' + ROLE_GRADIENTS.searcher.colors.join(', ') + ');';
+            cssOutput.textContent = cssText;
+            section.appendChild(cssOutput);
+
+            return section;
+        }
+
+        function render() {
+            var container = document.getElementById('container');
+            clearEl(container);
+            ['owner', 'resident', 'searcher'].forEach(function(roleKey) {
+                container.appendChild(renderRoleSection(roleKey, ROLE_GRADIENTS[roleKey]));
+            });
+            container.appendChild(renderHueWheels());
+            container.appendChild(renderCombinedSection());
+        }
+
+        render();
+    </script>
+</body>
+</html>
